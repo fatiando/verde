@@ -21,6 +21,9 @@ Verde
 .. image:: https://img.shields.io/codeclimate/maintainability/fatiando/verde.svg?style=flat-square
     :alt: Code quality status
     :target: https://codeclimate.com/github/fatiando/verde
+.. image:: https://img.shields.io/codacy/grade/6b698defc0df47288a634930d41a9d65.svg?style=flat-square&label=codacy
+    :alt: Code quality grade on codacy
+    :target: https://www.codacy.com/app/leouieda/verde
 .. image:: https://img.shields.io/pypi/pyversions/verde.svg?style=flat-square
     :alt: Compatible Python versions.
     :target: https://pypi.python.org/pypi/verde
