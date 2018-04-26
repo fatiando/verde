@@ -19,10 +19,10 @@ env:
     global:
         # Encrypted variables
         # Github Token for pushing the built HTML (GH_TOKEN)
-        #- secure: "JUMBLE OF CHARACTERS"
+        - secure: "Y8ulfXO+hO9MnChNNkwciZQ7qaj3N3sGhAPe69QPrJxxge8c4BUpQHtNrBZB4aMqxVGMfQQ7SVC4qB64WMEYYbCuD/NUaerS6wLzMXkYcS42xyA/qv7TUSJyjbvqnEz6DV92VyPaQGM6GAk+sY8b1lXoR3v+W2Ee7zxb3Z3fGkiK5gp14kjRlc66xSFr1ShnenlG766vS+NC5oeIGBMEtHNb7XcQNbXGliS1+iFi6eYxeJLa13DQhmyjUVSVSAHyNFvyTb+J5fWHii9cCxO+3GUvt3Geb/AP5wpjbr+V6EYc8Mi86/oMdq+PexsbzayggKQ0HPABvsDrpAHbiPa+TnnRv9MI5oemkzIWdDU/JCBFt0sR4JO3VyyEyXAfdK3Zp+eQvbeXmSYITlYP90fC7iDuz2YYnwyH84LYcMA9lJNAXdBEa4qrrOCawem8l77d7X/dCgiFzzWjwHKgRXyHQZrKN+rWnuVP7X1RhzAjOBkH1uVqevmyqI9Te2X0oM/vRBMk727YX3HeItgVUlvj9kAFI43sSMlN1+WNVyYSV7vjZ2pKNCaJadwwVn67Os8GGGtcQrdosF9fBGGTPcAzGYoGlyxT3u76weoNer/YpYyRW8d4kwyjEIddFEbyaLprnuGe1mMrxaYISoBV69SXzZXKJyaoBaTeRQD5JZeR9Nk="
         # PyPI password for deploying releases (TWINE_PASSWORD)
-        #- secure: "JUMBLE OF CHARACTERS"
-        #- TWINE_USERNAME=your-user-name
+        - secure: "Gvd2kH5bGIng7Wz3R4Md5d48qU0vYo0Sb4g7A1UAn8EOuWAcbkdSAq5yDiAp4pENeGceHQG0+jX+GQBZoSOMUpwAfhPkWG5HBIc+P/G+iTUyF2oELLCekcGgccPzwNgQt574FzM0PkC9L4hINNRjVtnFa+SIx72D2r1OdTvmk2+c4jXBZl52e4l5dU+Hjzwh22KNzAMtXDVuvr3NVdJZHA/ldTwEBUQfiLo2CGkgls6o8ZLixK0tCRGIFKlZko9WeBTzQYidloSo3EQx0eqiTz7qydm3UfCezA9UYPefGOtUaA/4ysqs8tgG8xrnx8NhhRqH9pfPAhgsCMwfmtibslNwH+C7gtbERT8lLY5NfU1xyDC4UxkjbwbzKQno/vPhiqEJ/uR458IdZbzUeWXlt+Rz+Dyj1lW7FqPLOl3Zpfgfv1swWqxjVwduV46c3nlgu9fEkAiEH2SzAtBlsQ2qwbJCZKXj+8Ps9FmaqvQ+SCOTAycgR9WnYoIIutpn0cs3k8zqqQyBq2zXJLkPHflVich8wKKaOsaFMCIKLWaOODCw5fLkfxck/QtlolGGFi3lh5W5p4Zxxr7KdL8f+UrkAb6gY9LStvqwe2rSG2olqc95+zozsMY/YHXTIG092WB3EmptwO9jL67D3AIVBKOdvcRYFetWMyY61ZmEK0s/43I="
+        - TWINE_USERNAME=Leonardo.Uieda
         #
         # The file with the listed requirements to be installed by conda
         - CONDA_REQUIREMENTS=requirements.txt
@@ -83,34 +83,34 @@ script:
 # Things to do if the build is successful
 after_success:
     # Upload coverage information
-    #- if [ "$COVERAGE" == "true" ]; then
-        #coverage xml;
-        #echo "Uploading coverage to Codecov";
-        #codecov -e PYTHON;
-      #fi
+    - if [ "$COVERAGE" == "true" ]; then
+        coverage xml;
+        echo "Uploading coverage to Codecov";
+        codecov -e PYTHON;
+      fi
 
 # Deploy
 deploy:
     # Make a release on PyPI
-    #- provider: script
-      #script: continuous-integration/travis/deploy-pypi.sh
-      #on:
-          #tags: true
-          #condition: '$DEPLOY_PYPI == "true"'
+    - provider: script
+      script: continuous-integration/travis/deploy-pypi.sh
+      on:
+          tags: true
+          condition: '$DEPLOY_PYPI == "true"'
     # Push the built HTML in doc/_build/html to the gh-pages branch
-    #- provider: script
-      #script: continuous-integration/travis/deploy-gh-pages.sh
-      #skip_cleanup: true
-      #on:
-          #branch: master
-          #condition: '$DEPLOY_DOCS == "true"'
+    - provider: script
+      script: continuous-integration/travis/deploy-gh-pages.sh
+      skip_cleanup: true
+      on:
+          branch: master
+          condition: '$DEPLOY_DOCS == "true"'
     # Push HTML when building tags as well
-    #- provider: script
-      #script: continuous-integration/travis/deploy-gh-pages.sh
-      #skip_cleanup: true
-      #on:
-          #tags: true
-          #condition: '$DEPLOY_DOCS == "true"'
+    - provider: script
+      script: continuous-integration/travis/deploy-gh-pages.sh
+      skip_cleanup: true
+      on:
+          tags: true
+          condition: '$DEPLOY_DOCS == "true"'
 
 # Don't send out emails every time a build fails
 notifications:
