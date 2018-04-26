@@ -1,6 +1,7 @@
 """
 General utilities for dealing with grids and point generation.
 """
+import numpy as np
 from numpy.random import RandomState
 
 
@@ -73,4 +74,54 @@ def scatter_points(region, size, random_seed=None):
     w, e, s, n = region
     easting = random.uniform(w, e, size)
     northing = random.uniform(s, n, size)
+    return easting, northing
+
+
+def grid_coordinates(region, shape):
+    """
+    Generate the coordinates for each point on a regular grid.
+
+    Parameters
+    ----------
+    region : list
+        The boundaries (``[W, E, S, N]``) of a given region in Cartesian or
+        geographic coordinates.
+    shape : tuple
+        The number of points in South-North and West-East directions,
+        respectively.
+
+    Returns
+    -------
+    easting, northing : 2d arrays
+        The West-East and South-North coordinates of each point in the grid.
+        The arrays have the specified *shape*.
+
+    Examples
+    --------
+
+    >>> east, north = grid_coordinates(region=(0, 5, 0, 10), shape=(5, 3))
+    >>> print(east.shape, north.shape)
+    (5, 3) (5, 3)
+    >>> for line in east:
+    ...     print(', '.join(['{:1.1f}'.format(i) for i in line]))
+    0.0, 2.5, 5.0
+    0.0, 2.5, 5.0
+    0.0, 2.5, 5.0
+    0.0, 2.5, 5.0
+    0.0, 2.5, 5.0
+    >>> for line in north:
+    ...     print(', '.join(['{:>4.1f}'.format(i) for i in line]))
+     0.0,  0.0,  0.0
+     2.5,  2.5,  2.5
+     5.0,  5.0,  5.0
+     7.5,  7.5,  7.5
+    10.0, 10.0, 10.0
+
+    """
+    check_region(region)
+    w, e, s, n = region
+    nnorth, neast = shape
+    east_lines = np.linspace(w, e, neast)
+    north_lines = np.linspace(s, n, nnorth)
+    easting, northing = np.meshgrid(east_lines, north_lines)
     return easting, northing
