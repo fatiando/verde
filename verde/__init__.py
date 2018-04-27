@@ -6,6 +6,7 @@ from ._version import get_versions as _get_versions
 # Import functions/classes to make the API
 from .utils import scatter_points, grid_coordinates, profile_coordinates
 from . import datasets
+from .scipy_bridge import ScipyGridder
 
 
 # Get the version number through versioneer
