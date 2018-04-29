@@ -6,15 +6,15 @@ from sklearn.utils.validation import check_is_fitted
 from scipy.interpolate import LinearNDInterpolator, NearestNDInterpolator, \
     CloughTocher2DInterpolator
 
-from .base import BaseGridder
+from .base import BaseGridder, CartesianMixin, ScalarMixin
 
 
-class ScipyGridder(BaseGridder):
+class ScipyGridder(BaseGridder, CartesianMixin, ScalarMixin):
     """
     Gridding using scipy.interpolate as the backend.
     """
 
-    def __init__(self, method='linear', extra_args=None):
+    def __init__(self, method='cubic', extra_args=None):
         self.method = method
         self.extra_args = extra_args
 
@@ -22,6 +22,10 @@ class ScipyGridder(BaseGridder):
         classes = dict(linear=LinearNDInterpolator,
                        nearest=NearestNDInterpolator,
                        cubic=CloughTocher2DInterpolator)
+        if self.method not in classes:
+            raise ValueError(
+                "Invalid interpolation method '{}'. Must be one of {}."
+                .format(method, str(classes.keys())))
         if self.extra_args is None:
             kwargs = {}
         else:
