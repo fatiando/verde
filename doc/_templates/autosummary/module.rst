@@ -18,7 +18,7 @@
 .. autosummary::
   :toctree: ./
 {% for item in classes %}
-  {{ item }}
+  {{ fullname }}.{{ item }}
 {% endfor %}
 {% endif %}
 {% endblock %}
@@ -44,7 +44,7 @@
 .. autosummary::
   :toctree: ./
 {% for item in exceptions %}
-  {{ item }}
+  {{ fullname }}.{{ item }}
 {% endfor %}
 {% endif %}
 {% endblock %}
