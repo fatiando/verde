@@ -11,7 +11,35 @@ from .base import BaseGridder, CartesianMixin, ScalarMixin
 
 class ScipyGridder(BaseGridder, CartesianMixin, ScalarMixin):
     """
-    Gridding using scipy.interpolate as the backend.
+    Gridder using scipy.interpolate.
+
+    Provides a gridder interface to the scipy interpolators
+    :class:`scipy.interpolate.LinearNDInterpolator`,
+    :class:`scipy.interpolate.NearestNDInterpolator`, and
+    :class:`scipy.interpolate.CloughTocher2DInterpolator` (cubic).
+
+    Parameters
+    ----------
+    method : str
+        The interpolation method. Either ``'linear'``, ``'nearest'``, or
+        ``'cubic'``.
+    extra_args : None or dict
+        Extra keyword arguments to pass to the scipy interpolator class. See
+        the documentation for each interpolator for a list of possible
+        arguments..
+
+    Examples
+    --------
+
+    .. plot::
+
+        >>> import matplotlib.pyplot as plt
+        >>> import numpy as np
+        >>> import verde as vd
+        >>> plt.plot(np.arange(10), np.arange(10))
+        >>> plt.show()
+
+
     """
 
     def __init__(self, method='cubic', extra_args=None):
