@@ -2,7 +2,7 @@
 General utilities for dealing with grids and point generation.
 """
 import numpy as np
-from numpy.random import RandomState
+from sklearn.utils import check_random_state
 
 
 def check_region(region):
@@ -36,7 +36,7 @@ def check_region(region):
                          .format(region))
 
 
-def scatter_points(region, size, random_seed=None):
+def scatter_points(region, size, random_state=None):
     """
     Generate the coordinates for a random scatter of points.
 
@@ -49,8 +49,11 @@ def scatter_points(region, size, random_seed=None):
         geographic coordinates.
     size : int
         The number of points to generate.
-    random_seed : None or int
-        Value used to seed the random number generator.
+    random_state : numpy.random.RandomState or an int seed
+        A random number generator used to define the state of the random
+        permutations. Use a fixes seed to make sure computations are
+        reproducible.
+
 
     Returns
     -------
@@ -62,7 +65,7 @@ def scatter_points(region, size, random_seed=None):
 
     >>> # We'll use a seed value will ensure that the same will be generated
     >>> # every time.
-    >>> easting, northing = scatter_points((0, 10, -2, -1), 4, random_seed=0)
+    >>> easting, northing = scatter_points((0, 10, -2, -1), 4, random_state=0)
     >>> print(', '.join(['{:.4f}'.format(i) for i in easting]))
     5.4881, 7.1519, 6.0276, 5.4488
     >>> print(', '.join(['{:.4f}'.format(i) for i in northing]))
@@ -70,7 +73,7 @@ def scatter_points(region, size, random_seed=None):
 
     """
     check_region(region)
-    random = RandomState(seed=random_seed)
+    random = check_random_state(random_state)
     w, e, s, n = region
     easting = random.uniform(w, e, size)
     northing = random.uniform(s, n, size)
