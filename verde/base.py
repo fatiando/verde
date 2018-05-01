@@ -6,13 +6,11 @@ import xarray as xr
 import pandas as pd
 from sklearn.base import BaseEstimator
 
-from.import grid_coordinates, profile_coordinates
+from.import grid_coordinates, profile_coordinates, scatter_points
 
 
 def get_dimensions(instance):
     """
-    Get the dimension names from a gridder instance if it has them.
-    Otherwise, return default names.
 
     Examples
     --------
@@ -37,6 +35,36 @@ def get_dimensions(instance):
     if coords == 'geographic':
         return ('latitude', 'longitude')
     return ('northing', 'easting')
+
+
+def get_data_names(instance):
+    """
+
+    Examples
+    --------
+
+
+    """
+    valid_types =  ['scalar', 'vector2d', 'vector3d']
+    data_type = getattr(instance, 'data_type', 'scalar')
+    if data_type not in valid_types:
+        raise ValueError(
+            "Invalid data type for {}: '{}'. Must be one of {}."
+            .format(instance.__class__.__name__, data_type, str(valid_types)))
+    if data_type == 'vector2d':
+        return ('east_component', 'north_component')
+    elif data_type == 'vector3d':
+        return ('east_component', 'north_component', 'vertical_component')
+    return ('scalars',)
+
+
+def get_region(instance, region):
+    if region is None:
+        if not hasattr(instance, 'region_'):
+            raise ValueError(
+                "No default region found. Argument must be supplied.")
+        region = getattr(instance, 'region_')
+    return region
 
 
 def check_data(data):
@@ -106,13 +134,14 @@ class BaseGridder(BaseEstimator):
 
     """
 
-    def grid(self, region, shape, dims=None, data_names=None):
+    def grid(self, region=None, shape=(100, 100), dims=None, data_names=None):
         """
         """
         if dims is None:
             dims = get_dimensions(self)
         if data_names is None:
             data_names = get_data_names(self)
+        region = get_region(self, region)
         easting, northing = grid_coordinates(region, shape)
         data = check_data(self.predict(easting, northing))
         east_lines = easting[0, :]
@@ -124,6 +153,25 @@ class BaseGridder(BaseEstimator):
             data_vars[data_name] = (dims, data_array, attrs)
         datagrid = xr.Dataset(data_vars, coords=coords, attrs=attrs)
         return datagrid
+
+    def scatter(self, region=None, size=300, random_state=None, dims=None,
+                data_names=None):
+        """
+        """
+        if dims is None:
+            dims = get_dimensions(self)
+        if data_names is None:
+            data_names = get_data_names(self)
+        region = get_region(self, region)
+        east, north = scatter_points(region, size, random_state)
+        data = check_data(self.predict(east, north))
+        column_names = [dim for dim in dims]
+        column_names.extend(data_names)
+        columns = [north, east]
+        columns.extend(data)
+        table = pd.DataFrame(
+            {name: value for name, value in zip(column_names, columns)})
+        return table
 
     def profile(self, point1, point2, size, dims=None, data_names=None):
         """
@@ -141,6 +189,6 @@ class BaseGridder(BaseEstimator):
         column_names.extend(data_names)
         columns = [north, east, distances]
         columns.extend(data)
-        data_dict = {name: value for name, value in zip(column_names, columns)}
-        table = pd.DataFrame(data_dict)
+        table = pd.DataFrame(
+            {name: value for name, value in zip(column_names, columns)})
         return table
