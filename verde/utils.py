@@ -169,7 +169,7 @@ def profile_coordinates(point1, point2, size, coordinate_system='cartesian'):
     distance: 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0
 
     """
-    valid_coordinate_systems =  ['cartesian', 'geographic']
+    valid_coordinate_systems = ['cartesian', 'geographic']
     if coordinate_system not in valid_coordinate_systems:
         raise ValueError(
             "Invalid coordinate system '{}'. Must be one of {}."

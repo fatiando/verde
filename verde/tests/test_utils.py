@@ -3,7 +3,8 @@ Test the misc utilities in verde
 """
 import pytest
 
-from ..utils import check_region, profile_coordinates
+from ..utils import check_region
+from .. import profile_coordinates
 
 
 def test_check_region():
