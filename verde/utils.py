@@ -128,3 +128,63 @@ def grid_coordinates(region, shape):
     north_lines = np.linspace(s, n, nnorth)
     easting, northing = np.meshgrid(east_lines, north_lines)
     return easting, northing
+
+
+def profile_coordinates(point1, point2, size, coordinate_system='cartesian'):
+    """
+    Coordinates for a profile along a line between two points.
+
+    If on a geographic coordinate system, will calculate along a great circle.
+    Otherwise, will use a straight line.
+
+    Parameters
+    ----------
+    point1 : tuple or list
+        ``(easting, northing)`` West-East and South-North coordinates of the
+        first point, respectively.
+    point2 : tuple or list
+        ``(easting, northing)`` West-East and South-North coordinates of the
+        second point, respectively.
+    size : int
+        Number of points to sample along the line.
+    coordinate_system : str
+        The coordinate system used to define the points and the line. Either
+        ``'cartesian'`` or ``'geographic'``.
+
+    Returns
+    -------
+    easting, northing, distances : 1d arrays
+        The easting and northing coordinates of points along the straight line
+        and the distances from the first point.
+
+    Examples
+    --------
+
+    >>> east, north, dist = profile_coordinates((1, 10), (1, 20), size=11)
+    >>> print('easting:', ', '.join('{:.1f}'.format(i) for i in east))
+    easting: 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0
+    >>> print('northing:', ', '.join('{:.1f}'.format(i) for i in north))
+    northing: 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0
+    >>> print('distance:', ', '.join('{:.1f}'.format(i) for i in dist))
+    distance: 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0
+
+    """
+    valid_coordinate_systems = ['cartesian', 'geographic']
+    if coordinate_system not in valid_coordinate_systems:
+        raise ValueError(
+            "Invalid coordinate system '{}'. Must be one of {}."
+            .format(coordinate_system, str(valid_coordinate_systems)))
+    if size <= 0:
+        raise ValueError("Invalid profile size '{}'. Must be > 0."
+                         .format(size))
+    if coordinate_system == 'geographic':
+        raise NotImplementedError()
+    elif coordinate_system == 'cartesian':
+        east1, north1 = point1
+        east2, north2 = point2
+        separation = np.sqrt((east1 - east2)**2 + (north1 - north2)**2)
+        distances = np.linspace(0, separation, size)
+        angle = np.arctan2(north2 - north1, east2 - east1)
+        easting = east1 + distances*np.cos(angle)
+        northing = north1 + distances*np.sin(angle)
+    return easting, northing, distances
