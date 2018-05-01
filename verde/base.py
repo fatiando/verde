@@ -93,7 +93,8 @@ class BaseGridder(BaseEstimator):
     >>> class MeanGridder(BaseGridder):
     ...     "Gridder that always produces the mean of all data values"
     ...     def __init__(self, multiplier=1):
-    ...         self.multiplier = 1
+    ...         # Init should only assign the parameters to attributes
+    ...         self.multiplier = multiplier
     ...     def fit(self, easting, northing, data):
     ...         # Argument checking should be done in fit
     ...         assert self.multiplier > 0
