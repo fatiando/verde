@@ -6,8 +6,7 @@ import xarray as xr
 import pandas as pd
 from sklearn.base import BaseEstimator
 
-from . import grid_coordinates
-from .utils import profile_coordinates
+from.import grid_coordinates, profile_coordinates
 
 
 def get_dimensions(instance):
@@ -68,6 +67,15 @@ class BaseGridder(BaseEstimator):
 
     Doesn't define any new attributes.
 
+    This is a subclass of :class:`sklearn.base.BaseEstimator` and must abide by
+    the same rules of the scikit-learn classes. Mainly:
+
+    * ``__init__`` must **only** assign values to attributes based on the
+      parameters it receives. All parameters must have default values.
+      Parameter checking should be done in ``fit``.
+    * Estimated parameters should be stored as attributes with names ending in
+      ``_``.
+
     The child class can define the following attributes to control the names of
     coordinates and data values in the output ``xarray.Dataset``s and
     ``pandas.DataFrame``s and how distances are calculated:
@@ -78,10 +86,28 @@ class BaseGridder(BaseEstimator):
     * ``data_type``: one of ``'scalar'``, ``'vector2d'``, or ``'vector3d'``.
       Defaults to ``'scalar'``.
 
+    Examples
+    --------
+
+    >>> import numpy as np
+    >>> class MeanGridder(BaseGridder):
+    ...     "Gridder that always produces the mean of all data values"
+    ...     def __init__(self, multiplier=1):
+    ...         self.multiplier = 1
+    ...     def fit(self, easting, northing, data):
+    ...         # Argument checking should be done in fit
+    ...         assert self.multiplier > 0
+    ...         self.mean_ = data.mean()*self.multiplier
+    ...         return self
+    ...     def predict(self, easting, northing):
+    ...         return np.ones_like(easting)*self.mean_
+
 
     """
 
     def grid(self, region, shape, dims=None, data_names=None):
+        """
+        """
         if dims is None:
             dims = get_dimensions(self)
         if data_names is None:
@@ -99,18 +125,20 @@ class BaseGridder(BaseEstimator):
         return datagrid
 
     def profile(self, point1, point2, size, dims=None, data_names=None):
-        coordinate_system = getattr(self, 'coordinate_system', 'cartesian')
+        """
+        """
+        coordsys = getattr(self, 'coordinate_system', 'cartesian')
         if dims is None:
             dims = get_dimensions(self)
         if data_names is None:
             data_names = get_data_names(self)
-        easting, northing, distances = line_between(point1, point2, size,
-                                                    coordinate_system)
+        east, north, distances = profile_coordinates(
+            point1, point2, size, coordinate_system=coordsys)
         data = check_data(self.predict(easting, northing))
         column_names = [dim for dim in dims]
         column_names.append('distance')
         column_names.extend(data_names)
-        columns = [northing, easting, distances]
+        columns = [north, east, distances]
         columns.extend(data)
         data_dict = {name: value for name, value in zip(column_names, columns)}
         table = pd.DataFrame(data_dict)
