@@ -6,14 +6,14 @@ from sklearn.utils.validation import check_is_fitted
 from scipy.interpolate import LinearNDInterpolator, NearestNDInterpolator, \
     CloughTocher2DInterpolator
 
-from .base import BaseGridder, CartesianMixin, ScalarMixin
+from .base import BaseGridder
 
 
-class ScipyGridder(BaseGridder, CartesianMixin, ScalarMixin):
+class ScipyGridder(BaseGridder):
     """
-    Gridder using scipy.interpolate.
+    A scipy.interpolate based gridder.
 
-    Provides a gridder interface to the scipy interpolators
+    Provides a verde gridder interface to the scipy interpolators
     :class:`scipy.interpolate.LinearNDInterpolator`,
     :class:`scipy.interpolate.NearestNDInterpolator`, and
     :class:`scipy.interpolate.CloughTocher2DInterpolator` (cubic).
@@ -30,14 +30,6 @@ class ScipyGridder(BaseGridder, CartesianMixin, ScalarMixin):
 
     Examples
     --------
-
-    .. plot::
-
-        >>> import matplotlib.pyplot as plt
-        >>> import numpy as np
-        >>> import verde as vd
-        >>> plt.plot(np.arange(10), np.arange(10))
-        >>> plt.show()
 
 
     """
@@ -58,8 +50,10 @@ class ScipyGridder(BaseGridder, CartesianMixin, ScalarMixin):
             kwargs = {}
         else:
             kwargs = self.extra_args
-        points = np.column_stack((easting.ravel(), northing.ravel()))
-        self.interpolator_ = classes[self.method](points, data.ravel(),
+        self.region_ = (np.min(easting), np.max(easting),
+                        np.min(northing), np.max(northing))
+        points = np.column_stack((np.ravel(easting), np.ravel(northing)))
+        self.interpolator_ = classes[self.method](points, np.ravel(data),
                                                   **kwargs)
         return self
 
