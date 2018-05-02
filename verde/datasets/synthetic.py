@@ -38,9 +38,6 @@ class CheckerBoard(BaseGridder):
         The wavelength in the north direction. Defaults to half of the
         South-North size of the evaluating region.
 
-    Examples
-    --------
-
     """
 
     def __init__(self, amplitude=1000, w_east=None, w_north=None):

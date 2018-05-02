@@ -30,6 +30,7 @@ numpydoc_class_members_toctree = False
 
 # Always show the source code that generates a plot
 plot_include_source = True
+plot_formats = ['png']
 
 # Sphinx project configuration
 templates_path = ['_templates']
