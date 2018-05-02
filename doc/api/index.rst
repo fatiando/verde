@@ -4,4 +4,5 @@ API Reference
 =============
 
 .. include:: verde.rst
-.. include:: datasets.rst
+.. include:: verde.datasets.rst
+.. include:: verde.base.rst

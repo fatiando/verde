@@ -12,3 +12,4 @@ To include a new package/module, list it below and include it in api.index.rst
 
    verde
    verde.datasets
+   verde.base

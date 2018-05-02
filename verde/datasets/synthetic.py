@@ -89,7 +89,7 @@ class CheckerBoard(BaseGridder):
 
         """
         check_is_fitted(self, ['region_'])
-        data = (self.amplitude*
-                np.sin((2*np.pi/self.w_east)*easting)*
+        data = (self.amplitude *
+                np.sin((2*np.pi/self.w_east)*easting) *
                 np.cos((2*np.pi/self.w_north)*northing))
         return data

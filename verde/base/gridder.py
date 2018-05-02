@@ -1,32 +1,34 @@
 """
-Base class for all gridders and mix-in classes for different kinds of gridders.
+Base classes for all gridders.
 """
-import numpy as np
 import xarray as xr
 import pandas as pd
 from sklearn.base import BaseEstimator
 
-from.import grid_coordinates, profile_coordinates, scatter_points
+from .. import grid_coordinates, profile_coordinates, scatter_points
 
 
-def get_dimensions(instance):
+def get_dims(instance, dims):
     """
+    Get default dimension names for an instance if not given as arguments.
 
     Examples
     --------
 
     >>> grd = BaseGridder()
-    >>> get_dimensions(grd)
+    >>> get_dims(grd, dims=None)
     ('northing', 'easting')
     >>> grd.coordinate_system = 'geographic'
-    >>> get_dimensions(grd)
+    >>> get_dims(grd, dims=None)
     ('latitude', 'longitude')
     >>> grd.coordinate_system = 'cartesian'
-    >>> get_dimensions(grd)
-    ('northing', 'easting')
+    >>> get_dims(grd, dims=('john', 'paul'))
+    ('john', 'paul')
 
     """
-    valid_coords =  ['cartesian', 'geographic']
+    if dims is not None:
+        return dims
+    valid_coords = ['cartesian', 'geographic']
     coords = getattr(instance, 'coordinate_system', 'cartesian')
     if coords not in valid_coords:
         raise ValueError(
@@ -37,15 +39,29 @@ def get_dimensions(instance):
     return ('northing', 'easting')
 
 
-def get_data_names(instance):
+def get_data_names(instance, data_names):
     """
+    Get default names for data fields for an instance if not given as arguments
 
     Examples
     --------
 
+    >>> grd = BaseGridder()
+    >>> get_data_names(grd, data_names=None)
+    ('scalars',)
+    >>> grd.data_type = 'vector2d'
+    >>> get_data_names(grd, data_names=None)
+    ('east_component', 'north_component')
+    >>> grd.data_type = 'vector3d'
+    >>> get_data_names(grd, data_names=None)
+    ('east_component', 'north_component', 'vertical_component')
+    >>> get_data_names(grd, data_names=('ringo', 'george'))
+    ('ringo', 'george')
 
     """
-    valid_types =  ['scalar', 'vector2d', 'vector3d']
+    if data_names is not None:
+        return data_names
+    valid_types = ['scalar', 'vector2d', 'vector3d']
     data_type = getattr(instance, 'data_type', 'scalar')
     if data_type not in valid_types:
         raise ValueError(
@@ -59,6 +75,9 @@ def get_data_names(instance):
 
 
 def get_region(instance, region):
+    """
+    Get the region attribute stored in instance if one is not provided.
+    """
     if region is None:
         if not hasattr(instance, 'region_'):
             raise ValueError(
@@ -105,8 +124,8 @@ class BaseGridder(BaseEstimator):
       ``_``.
 
     The child class can define the following attributes to control the names of
-    coordinates and data values in the output ``xarray.Dataset``s and
-    ``pandas.DataFrame``s and how distances are calculated:
+    coordinates and data values in the output ``xarray.Dataset`` and
+    ``pandas.DataFrame`` and how distances are calculated:
 
     * ``coordinate_system``: either ``'cartesian'`` or ``'geographic'``. Will
       influence dimension names and distance calculations. Defaults to
@@ -117,51 +136,85 @@ class BaseGridder(BaseEstimator):
     Examples
     --------
 
+    Let's create a class that interpolates by attributing the mean value of the
+    data to every single point (it's not a very good interpolator).
+
+    >>> import verde as vd
     >>> import numpy as np
-    >>> class MeanGridder(BaseGridder):
+    >>> from sklearn.utils.validation import check_is_fitted
+    >>> class MeanGridder(vd.base.BaseGridder):
     ...     "Gridder that always produces the mean of all data values"
     ...     def __init__(self, multiplier=1):
     ...         # Init should only assign the parameters to attributes
     ...         self.multiplier = multiplier
     ...     def fit(self, easting, northing, data):
     ...         # Argument checking should be done in fit
-    ...         assert self.multiplier > 0
+    ...         if self.multiplier <= 0:
+    ...             raise ValueError('Invalid multiplier {}'
+    ...                              .format(self.multiplier))
     ...         self.mean_ = data.mean()*self.multiplier
+    ...         # fit should return self so that we can chain operations
     ...         return self
     ...     def predict(self, easting, northing):
+    ...         # We know the gridder has been fitted if it has the mean
+    ...         check_is_fitted(self, ['mean_'])
     ...         return np.ones_like(easting)*self.mean_
+    >>> # Try it on some synthetic data
+    >>> synthetic = vd.datasets.CheckerBoard().fit(region=(0, 5, -10, 8))
+    >>> data = synthetic.scatter(random_state=0)
+    >>> print('{:.4f}'.format(data.scalars.mean()))
+    -32.2182
+    >>> # Fit the gridder to our synthetic data
+    >>> grd = MeanGridder().fit(data.easting, data.northing, data.scalars)
+    >>> grd
+    MeanGridder(multiplier=1)
+    >>> # Interpolate on a regular grid
+    >>> grid = grd.grid(region=(0, 5, -10, -8), shape=(40, 40))
+    >>> type(grid)
+    <class 'xarray.core.dataset.Dataset'>
+    >>> np.allclose(grid.scalars, -32.2182)
+    True
+    >>> # Interpolate along a profile
+    >>> profile = grd.profile(point1=(0, -10), point2=(5, -8), size=10)
+    >>> type(profile)
+    <class 'pandas.core.frame.DataFrame'>
+    >>> print(', '.join(['{:.2f}'.format(i) for i in profile.distance]))
+    0.00, 0.60, 1.20, 1.80, 2.39, 2.99, 3.59, 4.19, 4.79, 5.39
+    >>> print(', '.join(['{:.1f}'.format(i) for i in profile.scalars]))
+    -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2
 
 
     """
 
+    def predict(self, easting, northing):
+        """
+        meh
+        """
+        raise NotImplementedError()
+
     def grid(self, region=None, shape=(100, 100), dims=None, data_names=None):
         """
+        meh
         """
-        if dims is None:
-            dims = get_dimensions(self)
-        if data_names is None:
-            data_names = get_data_names(self)
+        dims = get_dims(self, dims)
+        data_names = get_data_names(self, data_names)
         region = get_region(self, region)
         easting, northing = grid_coordinates(region, shape)
         data = check_data(self.predict(easting, northing))
-        east_lines = easting[0, :]
-        north_lines = northing[:, 0]
-        coords = {dims[0]: north_lines, dims[1]:east_lines}
+        coords = {dims[0]: easting[0, :], dims[1]: northing[:, 0]}
         attrs = {'Generated by': repr(self)}
         data_vars = {}
         for data_array, data_name in zip(data, data_names):
             data_vars[data_name] = (dims, data_array, attrs)
-        datagrid = xr.Dataset(data_vars, coords=coords, attrs=attrs)
-        return datagrid
+        return xr.Dataset(data_vars, coords=coords, attrs=attrs)
 
     def scatter(self, region=None, size=300, random_state=None, dims=None,
                 data_names=None):
         """
+        meh
         """
-        if dims is None:
-            dims = get_dimensions(self)
-        if data_names is None:
-            data_names = get_data_names(self)
+        dims = get_dims(self, dims)
+        data_names = get_data_names(self, data_names)
         region = get_region(self, region)
         east, north = scatter_points(region, size, random_state)
         data = check_data(self.predict(east, north))
@@ -175,15 +228,14 @@ class BaseGridder(BaseEstimator):
 
     def profile(self, point1, point2, size, dims=None, data_names=None):
         """
+        meh
         """
         coordsys = getattr(self, 'coordinate_system', 'cartesian')
-        if dims is None:
-            dims = get_dimensions(self)
-        if data_names is None:
-            data_names = get_data_names(self)
+        dims = get_dims(self, dims)
+        data_names = get_data_names(self, data_names)
         east, north, distances = profile_coordinates(
             point1, point2, size, coordinate_system=coordsys)
-        data = check_data(self.predict(easting, northing))
+        data = check_data(self.predict(east, north))
         column_names = [dim for dim in dims]
         column_names.append('distance')
         column_names.extend(data_names)
