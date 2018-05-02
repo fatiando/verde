@@ -18,7 +18,7 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.viewcode',
     'sphinx.ext.extlinks',
-    'sphinx.ext.intersphinx',
+    'matplotlib.sphinxext.plot_directive',
     'numpydoc',
     'nbsphinx',
 ]
@@ -27,6 +27,10 @@ extensions = [
 autosummary_generate = False
 
 numpydoc_class_members_toctree = False
+
+# Always show the source code that generates a plot
+plot_include_source = True
+plot_formats = ['png']
 
 # Sphinx project configuration
 templates_path = ['_templates']
@@ -80,12 +84,6 @@ html_context = {
     'github_repo': 'fatiando/verde',
     'github_version': 'master',
 }
-
-# intersphinx
-# intersphinx_mapping = {
-    # 'numpy': ('https://docs.scipy.org/doc/numpy/', None),
-    # 'pandas': ('http://pandas.pydata.org/pandas-docs/stable/', None),
-# }
 
 # Load the custom CSS files (needs sphinx >= 1.6 for this to work)
 def setup(app):
