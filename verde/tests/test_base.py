@@ -1,10 +1,14 @@
+# pylint: disable=unused-argument
 """
 Test the base classes and their utility functions.
 """
 import pytest
+import numpy as np
+import numpy.testing as npt
 
 from ..base import BaseGridder
 from ..base.gridder import get_dims, get_data_names, get_region
+from .. import grid_coordinates
 
 
 def test_get_dims():
@@ -89,3 +93,45 @@ def test_get_region():
     grd.region_ = (5, 6, 7, 8)
     assert get_region(grd, region=None) == (5, 6, 7, 8)
     assert get_region(grd, region=(1, 2, 3, 4)) == (1, 2, 3, 4)
+
+
+def test_basegridder():
+    "Test basic functionality of BaseGridder"
+
+    with pytest.raises(NotImplementedError):
+        BaseGridder().predict(None, None)
+
+    class TestGridder(BaseGridder):
+        "A test gridder"
+
+        def __init__(self, constant=0):
+            self.constant = constant
+
+        def fit(self, easting, northing, data):
+            "Get the data mean"
+            self.mean_ = data.mean()
+            return self
+
+        def predict(self, easting, northing):
+            "Predict the data mean"
+            return np.ones_like(easting)*self.mean_ + self.constant
+
+    grd = TestGridder()
+    assert repr(grd) == 'TestGridder(constant=0)'
+    grd.constant = 1000
+    assert repr(grd) == 'TestGridder(constant=1000)'
+
+    region = (0, 10, -10, -5)
+    shape = (50, 50)
+    east, north = grid_coordinates(region, shape)
+    data = np.ones_like(east)
+    grd = TestGridder().fit(east, north, data)
+
+    with pytest.raises(ValueError):
+        # A region should be given because it hasn't been assigned by
+        # TestGridder
+        grd.grid()
+
+    npt.assert_allclose(grd.grid(region, shape).scalars.values, data)
+    npt.assert_allclose(grd.scatter(region, 100).scalars, 1)
+    npt.assert_allclose(grd.profile((0, 100), (20, 10), 100).scalars, 1)

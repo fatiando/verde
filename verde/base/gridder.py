@@ -188,7 +188,26 @@ class BaseGridder(BaseEstimator):
 
     def predict(self, easting, northing):
         """
-        meh
+        Interpolate data on the given set of points.
+
+        This method is required for all other methods related to interpolation.
+
+        Parameters
+        ----------
+        easting : array
+            The values of the West-East coordinates of each point.
+        northing : array
+            The values of the South-North coordinates of each point.
+
+        Returns
+        -------
+        data : array or tuple of arrays
+            The data values interpolated on the given points. If the data are
+            scalars, then it should be a single array. If data are vectors,
+            then should be a tuple with a separate array for each vector
+            component. The order of components should be: east, north,
+            vertical.
+
         """
         raise NotImplementedError()
 

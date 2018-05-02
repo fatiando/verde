@@ -78,14 +78,14 @@ class CheckerBoard(BaseGridder):
         Parameters
         ----------
         easting : array
-            The values of the West-East coordinates.
+            The values of the West-East coordinates of each point.
         northing : array
-            The values of the South-North coordinates.
+            The values of the South-North coordinates of each point.
 
         Returns
         -------
         data : array
-            The evaluate checkerboard function.
+            The evaluated checkerboard function.
 
         """
         check_is_fitted(self, ['region_'])
