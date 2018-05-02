@@ -52,13 +52,13 @@ def test_get_data_names():
 
     grd.data_type = 'vector2d'
     assert get_data_names(grd, data_names=None) == ('east_component',
-                                                     'north_component')
+                                                    'north_component')
     assert get_data_names(grd, data_names=('a', 'b')) == ('a', 'b')
 
     grd.data_type = 'vector3d'
     assert get_data_names(grd, data_names=None) == ('east_component',
-                                                     'north_component',
-                                                     'vertical_component')
+                                                    'north_component',
+                                                    'vertical_component')
     assert get_data_names(grd, data_names=('a', 'b')) == ('a', 'b')
 
     # Make sure the given dims is returned no matter what
