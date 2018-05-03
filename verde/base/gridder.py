@@ -195,9 +195,9 @@ class BaseGridder(BaseEstimator):
         Parameters
         ----------
         easting : array
-            The values of the West-East coordinates of each point.
+            The values of the West-East coordinates of each data point.
         northing : array
-            The values of the South-North coordinates of each point.
+            The values of the South-North coordinates of each data point.
 
         Returns
         -------
