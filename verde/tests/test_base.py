@@ -122,7 +122,7 @@ def test_basegridder():
     assert repr(grd) == 'TestGridder(constant=1000)'
 
     region = (0, 10, -10, -5)
-    shape = (50, 50)
+    shape = (50, 30)
     east, north = grid_coordinates(region, shape)
     data = np.ones_like(east)
     grd = TestGridder().fit(east, north, data)
@@ -132,6 +132,9 @@ def test_basegridder():
         # TestGridder
         grd.grid()
 
-    npt.assert_allclose(grd.grid(region, shape).scalars.values, data)
+    grid = grd.grid(region, shape)
+    npt.assert_allclose(grid.scalars.values, data)
+    npt.assert_allclose(grid.easting.values, east[0, :])
+    npt.assert_allclose(grid.northing.values, north[:, 0])
     npt.assert_allclose(grd.scatter(region, 100).scalars, 1)
     npt.assert_allclose(grd.profile((0, 100), (20, 10), 100).scalars, 1)
