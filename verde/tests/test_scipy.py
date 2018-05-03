@@ -2,9 +2,10 @@
 Test the scipy based interpolator.
 """
 import pytest
+import pandas as pd
 import numpy.testing as npt
 
-from .. import ScipyGridder
+from .. import ScipyGridder, grid_coordinates
 from ..datasets import CheckerBoard
 
 
@@ -32,6 +33,22 @@ def test_scipy_gridder():
     npt.assert_almost_equal(grd.predict(east, north), true_data, decimal=2)
     grd = ScipyGridder('linear').fit(data.easting, data.northing, data.scalars)
     npt.assert_almost_equal(grd.predict(east, north), true_data, decimal=1)
+
+
+def test_scipy_gridder_region():
+    "See if the region is gotten from the data is correct."
+    region = (1000, 5000, -8000, -6000)
+    synth = CheckerBoard().fit(region=region)
+    # Test using xarray objects
+    grid = synth.grid()
+    east, north = grid_coordinates(region, grid.scalars.shape)
+    grd = ScipyGridder().fit(east, north, grid.scalars)
+    npt.assert_allclose(grd.region_, region)
+    # Test using pandas objects
+    data = pd.DataFrame({'easting': east.ravel(), 'northing': north.ravel(),
+                         'scalars': grid.scalars.values.ravel()})
+    grd = ScipyGridder().fit(data.easting, data.northing, data.scalars)
+    npt.assert_allclose(grd.region_, region)
 
 
 def test_scipy_gridder_extra_args():
