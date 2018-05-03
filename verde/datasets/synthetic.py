@@ -38,9 +38,14 @@ class CheckerBoard(BaseGridder):
         The wavelength in the north direction. Defaults to half of the
         South-North size of the evaluating region.
 
+    Attributes
+    ----------
+    region_ : tuple
+        The boundaries (``[W, E, S, N]``) of the region used to generate the
+        synthetic data.
+
     Examples
     --------
-
     >>> # Lower printing precision to shorten this example
     >>> import pandas as pd; pd.set_option('precision', 1)
     >>> import xarray as xr; _ = xr.set_options(display_width=60)
@@ -99,6 +104,11 @@ class CheckerBoard(BaseGridder):
             The boundaries (``[W, E, S, N]``) of a given region in Cartesian or
             geographic coordinates.
 
+        Returns
+        -------
+        self : verde.datasets.CheckerBoard
+            Returns this gridder instance for chaining operations.
+
         """
         check_region(region)
         w, e, s, n = region
@@ -116,9 +126,9 @@ class CheckerBoard(BaseGridder):
         Parameters
         ----------
         easting : array
-            The values of the West-East coordinates of each point.
+            The values of the West-East coordinates of each data point.
         northing : array
-            The values of the South-North coordinates of each point.
+            The values of the South-North coordinates of each data point.
 
         Returns
         -------
