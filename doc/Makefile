@@ -26,6 +26,8 @@ clean:
 	rm -rf $(BUILDDIR)/linkcheck
 	rm -rf api/verde*.rst
 	rm -rf api/generated
+	rm -rf api/backreferences
+	rm -rf gallery
 	rm -rf .ipynb_checkpoints
 
 html: api
