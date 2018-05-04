@@ -161,7 +161,7 @@ class BaseGridder(BaseEstimator):
     ...         return np.ones_like(easting)*self.mean_
     >>> # Try it on some synthetic data
     >>> synthetic = vd.datasets.CheckerBoard().fit(region=(0, 5, -10, 8))
-    >>> data = synthetic.scatter(random_state=0)
+    >>> data = synthetic.scatter()
     >>> print('{:.4f}'.format(data.scalars.mean()))
     -32.2182
     >>> # Fit the gridder to our synthetic data
@@ -261,7 +261,7 @@ class BaseGridder(BaseEstimator):
             data_vars[data_name] = (dims, data_array, attrs)
         return xr.Dataset(data_vars, coords=coords, attrs=attrs)
 
-    def scatter(self, region=None, size=300, random_state=None, dims=None,
+    def scatter(self, region=None, size=300, random_state=0, dims=None,
                 data_names=None):
         """
         Interpolate values onto a random scatter of points.
@@ -282,8 +282,9 @@ class BaseGridder(BaseEstimator):
             The number of points to generate.
         random_state : numpy.random.RandomState or an int seed
             A random number generator used to define the state of the random
-            permutations. Use a fixes seed to make sure computations are
-            reproducible.
+            permutations. Use a fixed seed to make sure computations are
+            reproducible. Use ``None`` to choose a seed automatically
+            (resulting in different numbers with each run).
         dims : list or None
             The names of the northing and easting data dimensions,
             respectively, in the output dataframe. Defaults to

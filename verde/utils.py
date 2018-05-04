@@ -51,8 +51,9 @@ def scatter_points(region, size, random_state=None):
         The number of points to generate.
     random_state : numpy.random.RandomState or an int seed
         A random number generator used to define the state of the random
-        permutations. Use a fixes seed to make sure computations are
-        reproducible.
+        permutations. Use a fixed seed to make sure computations are
+        reproducible. Use ``None`` to choose a seed automatically (resulting in
+        different numbers with each run).
 
 
     Returns

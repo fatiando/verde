@@ -74,7 +74,7 @@ class CheckerBoard(BaseGridder):
      [   0.   181.6 -293.9  293.9 -181.6   -0. ]
      [   0.   587.8 -951.1  951.1 -587.8   -0. ]]
     >>> # Use the random_state argument to seed the random number generator
-    >>> table = synth.scatter(random_state=0)
+    >>> table = synth.scatter()
     >>> # scatter and profile generate pandas.DataFrame objects
     >>> # Lower printing precision to shorten this example
     >>> import pandas as pd; pd.set_option('precision', 1)
