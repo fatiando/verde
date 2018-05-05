@@ -215,6 +215,9 @@ class BaseGridder(BaseEstimator):
         """
         Interpolate the data onto a regular grid.
 
+        See :func:`verde.grid_coordinates` for more information about how the
+        grid spacing is handled.
+
         If the interpolator collected the input data region, then it will be
         used if ``region=None``. Otherwise, you must specify the grid region.
 
@@ -247,6 +250,10 @@ class BaseGridder(BaseEstimator):
         grid : xarray.Dataset
             The interpolated grid. Metadata about the interpolator is written
             to the ``attrs`` attribute.
+
+        See also
+        --------
+        verde.grid_coordinates : Generate the coordinate values for the grid.
 
         """
         dims = get_dims(self, dims)
