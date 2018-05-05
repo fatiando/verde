@@ -124,9 +124,9 @@ class CheckerBoard(BaseGridder):
 
         Parameters
         ----------
-        region : list
-            The boundaries (``[W, E, S, N]``) of a given region in Cartesian or
-            geographic coordinates.
+        region : list = [W, E, S, N]
+            The boundaries of a given region in Cartesian or geographic
+            coordinates.
 
         Returns
         -------

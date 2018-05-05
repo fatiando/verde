@@ -14,9 +14,9 @@ def check_region(region):
 
     Parameters
     ----------
-    region : list
-        The boundaries (``[W, E, S, N]``) of a given region in Cartesian or
-        geographic coordinates.
+    region : list = [W, E, S, N]
+        The boundaries of a given region in Cartesian or geographic
+        coordinates.
 
     Raises
     ------
@@ -44,9 +44,9 @@ def scatter_points(region, size, random_state=None):
 
     Parameters
     ----------
-    region : list
-        The boundaries (``[W, E, S, N]``) of a given region in Cartesian or
-        geographic coordinates.
+    region : list = [W, E, S, N]
+        The boundaries of a given region in Cartesian or geographic
+        coordinates.
     size : int
         The number of points to generate.
     random_state : numpy.random.RandomState or an int seed
@@ -89,14 +89,30 @@ def grid_coordinates(region, shape=None, spacing=None, adjust='spacing'):
     """
     Generate the coordinates for each point on a regular grid.
 
+    The grid can be specified by either the number of points in each dimension
+    (the *shape*) or by the grid node spacing.
+
+    If the given region is not divisible by the desired spacing, either the
+    region or the spacing will have to be adjusted. By default, the spacing
+    will be rounded to the nearest multiple. Optionally, the East and North
+    boundaries of the region can be adjusted to fit the exact spacing given.
+    See the examples below.
+
     Parameters
     ----------
-    region : list
-        The boundaries (``[W, E, S, N]``) of a given region in Cartesian or
-        geographic coordinates.
-    shape : tuple
-        The number of points in South-North and West-East directions,
+    region : list = [W, E, S, N]
+        The boundaries of a given region in Cartesian or geographic
+        coordinates.
+    shape : tuple = (n_north, n_east) or None
+        The number of points in the South-North and West-East directions,
         respectively.
+    spacing : tuple = (s_north, s_east) or None
+        The grid spacing in the South-North and West-East directions,
+        respectively.
+    adjust : {'spacing', 'region'}
+        Whether to adjust the spacing or the region if required. Ignored if
+        *shape* is given instead of *spacing*. Defaults to adjusting the
+        spacing.
 
     Returns
     -------
@@ -218,6 +234,12 @@ def grid_coordinates(region, shape=None, spacing=None, adjust='spacing'):
     if shape is not None and spacing is not None:
         raise ValueError(
             "Both grid shape and spacing provided. Only one is allowed.")
+    if shape is None and spacing is None:
+        raise ValueError("Either a grid shape or a spacing must be provided.")
+    if adjust not in ['spacing', 'region']:
+        raise ValueError(
+            "Invalid value for *adjust* '{}'. Should be 'spacing' or 'region'"
+            .format(adjust))
     if spacing is not None:
         shape, region = spacing_to_shape(region, spacing, adjust)
     nnorth, neast = shape
@@ -237,6 +259,16 @@ def spacing_to_shape(region, spacing, adjust):
 
     Parameters
     ----------
+    region : list = [W, E, S, N]
+        The boundaries of a given region in Cartesian or geographic
+        coordinates.
+    spacing : tuple = (s_north, s_east) or None
+        The grid spacing in the South-North and West-East directions,
+        respectively.
+    adjust : {'spacing', 'region'}
+        Whether to adjust the spacing or the region if required. Ignored if
+        *shape* is given instead of *spacing*. Defaults to adjusting the
+        spacing.
 
     Returns
     -------
@@ -245,19 +277,6 @@ def spacing_to_shape(region, spacing, adjust):
         Spacing or region may be adjusted.
 
     """
-    # SHOULD BE UNIT TESTS
-    # region = (-10, 0, 0, 5)
-    # print(spacing_to_shape(region, spacing=2.5, adjust='spacing'))
-    # (3, 5), (-10, 0, 0, 5)
-    # print(spacing_to_shape(region, spacing=(2.5, 2), adjust='spacing'))
-    # (3, 6), (-10, 0, 0, 5)
-    # print(spacing_to_shape(region, spacing=2.6, adjust='spacing'))
-    # (3, 5), (-10, 0, 0, 5)
-    # print(spacing_to_shape(region, spacing=2.4, adjust='spacing'))
-    # (3, 5), (-10, 0, 0, 5)
-    # print(spacing_to_shape(region, spacing=2.6, adjust='region'))
-    # (3, 5), (-10, 0.4, 0, 5.2)
-
     spacing = np.atleast_1d(spacing)
     if len(spacing) == 1:
         deast = dnorth = spacing[0]
