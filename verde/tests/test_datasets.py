@@ -10,24 +10,37 @@ import pytest
 from ..datasets.download import fetch_data
 
 
+def compare_tiny_data(datapath):
+    """
+    Check if the file exists and compare its content with what we know it
+    should be.
+    """
+    assert os.path.exists(datapath)
+    with open(datapath) as datafile:
+        content = datafile.read()
+    true_content = "\n".join([
+        '# A tiny data file for test purposes only',
+        '1  2  3  4  5  6'])
+    assert content.strip() == true_content
+
+
 # Has to go first in order to guarantee that the file has been downloaded
 def test_fetch_data_from_remote():
     "Download data from Github to the data directory"
     with warnings.catch_warnings(record=True) as warn:
-        datapath = fetch_data('baja-california-bathymetry.csv.xz',
-                              force_download=True)
+        datapath = fetch_data('tiny-data.txt', force_download=True)
         assert len(warn) == 1
         assert issubclass(warn[-1].category, UserWarning)
         assert str(warn[-1].message).split()[0] == "Downloading"
-    assert os.path.exists(datapath)
+    compare_tiny_data(datapath)
 
 
 def test_fetch_data():
     "Make sure the file exists when not being downloaded"
     with warnings.catch_warnings(record=True) as warn:
-        datapath = fetch_data('baja-california-bathymetry.csv.xz')
-        assert len(warn) == 0
-    assert os.path.exists(datapath)
+        datapath = fetch_data('tiny-data.txt')
+        assert not warn
+    compare_tiny_data(datapath)
 
 
 def test_fetch_data_from_store_remote_fail():
