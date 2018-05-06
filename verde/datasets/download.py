@@ -12,20 +12,29 @@ from ..utils import get_data_dir
 VERDE_DATA_STORE_URL = 'https://github.com/fatiando/verde/raw/master/data'
 
 
-def fetch_data_from_store(filename, data_store=None):
+def fetch_data_from_store(filename):
     """
     Download data from the Verde data store.
 
     If the environment variable ``VERDE_DATA_STORE`` is set, will fetch data
-    files from there instead. This must be a local path.
+    files from there instead. This must be a local absolute path.
 
     Overwrites the file if it already exists in the Verde data directory.
+
+    Parameters
+    ----------
+    filename : str
+        The name of the data file to fetch. Only the name, not a path.
+
+    Return
+    ------
+    data_path : str
+        A full path to the local file in the data cache directory.
 
     """
     data_dest = os.path.join(get_data_dir(), filename)
     # Get data from a local data store if the environment variable is defined
-    if data_store is None:
-        data_store = os.environ.get('VERDE_DATA_STORE', None)
+    data_store = os.environ.get('VERDE_DATA_STORE', None)
     if data_store is not None:
         data_src = os.path.join(data_store, filename)
         if not os.path.exists(data_src):
