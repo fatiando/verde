@@ -3,13 +3,13 @@ Functions to download, verify, and update a sample dataset.
 """
 import os
 import shutil
+from warnings import warn
 from urllib.request import urlopen
 
 from ..utils import get_data_dir
 
 
 VERDE_DATA_STORE_URL = 'https://github.com/fatiando/verde/raw/master/data'
-
 
 
 def fetch_data_from_store(filename, data_store=None):
@@ -19,7 +19,7 @@ def fetch_data_from_store(filename, data_store=None):
     If the environment variable ``VERDE_DATA_STORE`` is set, will fetch data
     files from there instead. This must be a local path.
 
-    Overwrites the file in the Verde data directory if it already exists.
+    Overwrites the file if it already exists in the Verde data directory.
 
     """
     data_dest = os.path.join(get_data_dir(), filename)
@@ -32,10 +32,14 @@ def fetch_data_from_store(filename, data_store=None):
             raise FileNotFoundError(
                 "Unable to find data file '{}' at local data store '{}'."
                 .format(filename, data_store))
+        warn("Caching data file '{}' from local data store '{}' to '{}'."
+             .format(filename, data_store, get_data_dir()))
         shutil.copy2(data_src, data_dest)
         return data_dest
     # Download the data from the remote data store
-    data_src = '/'.join(VERDE_DATA_STORE_URL, filename)
+    data_src = '/'.join([VERDE_DATA_STORE_URL, filename])
+    warn("Downloading data file '{}' from remote data store '{}' to '{}'."
+         .format(filename, VERDE_DATA_STORE_URL, get_data_dir()))
     with urlopen(data_src) as request:
         with open(data_dest, 'wb') as dest:
             dest.write(request.read())

@@ -20,10 +20,9 @@ def get_home():
         The path of the home directory.
 
     """
-    home = os.environ.get('HOME')
+    home = os.path.abspath(os.environ.get('HOME'))
     verde_home = os.path.join(home, '.verde')
-    if not os.path.exists(verde_home):
-        os.mkdir(verde_home)
+    os.makedirs(verde_home, exist_ok=True)
     return verde_home
 
 
@@ -42,8 +41,7 @@ def get_data_dir():
 
     """
     data_dir = os.path.join(get_home(), 'data')
-    if not os.path.exists(data_dir):
-        os.mkdir(data_dir)
+    os.makedirs(data_dir, exist_ok=True)
     return data_dir
 
 
