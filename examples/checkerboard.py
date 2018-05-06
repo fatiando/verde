@@ -5,8 +5,8 @@ Checkerboard synthetic data
 The :class:`verde.datasets.CheckerBoard` class generates synthetic data in a
 checkerboard pattern. Use it like any gridder class.
 """
-import verde as vd
 import matplotlib.pyplot as plt
+import verde as vd
 
 # Instantiate the data generator class and fit it to set the data region.
 synth = vd.datasets.CheckerBoard().fit()

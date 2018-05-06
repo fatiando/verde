@@ -8,6 +8,7 @@ from requests.exceptions import HTTPError
 import pytest
 
 from ..datasets.download import fetch_data
+from ..datasets import fetch_baja_bathymetry
 
 
 def compare_tiny_data(datapath):
@@ -51,3 +52,11 @@ def test_fetch_data_from_store_remote_fail():
         assert len(warn) == 1
         assert issubclass(warn[-1].category, UserWarning)
         assert str(warn[-1].message).split()[0] == "Downloading"
+
+
+def test_fetch_baja_bathymetry():
+    "Make sure the data are loaded properly"
+    data = fetch_baja_bathymetry()
+    assert data.size == 248910
+    assert data.shape == (82970, 3)
+    assert all(data.columns == ['longitude', 'latitude', 'bathymetry_m'])
