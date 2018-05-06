@@ -1,8 +1,50 @@
 """
 General utilities for dealing with grids and point generation.
 """
+import os
 import numpy as np
 from sklearn.utils import check_random_state
+
+
+def get_home():
+    """
+    Get the path of the verde home directory.
+
+    Defaults to ``$HOME/.verde``.
+
+    If the folder doesn't already exist, it will be created.
+
+    Returns
+    -------
+    path : str
+        The path of the home directory.
+
+    """
+    home = os.environ.get('HOME')
+    verde_home = os.path.join(home, '.verde')
+    if not os.path.exists(verde_home):
+        os.mkdir(verde_home)
+    return verde_home
+
+
+def get_data_dir():
+    """
+    Get the path of the verde data directory.
+
+    Defaults to ``get_home()/data``.
+
+    If the folder doesn't already exist, it will be created.
+
+    Returns
+    -------
+    path : str
+        The path of the data directory.
+
+    """
+    data_dir = os.path.join(get_home(), 'data')
+    if not os.path.exists(data_dir):
+        os.mkdir(data_dir)
+    return data_dir
 
 
 def check_region(region):
