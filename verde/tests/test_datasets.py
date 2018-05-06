@@ -3,7 +3,7 @@ Test data fetching routines.
 """
 import os
 import warnings
-from urllib.error import HTTPError
+from requests.exceptions import HTTPError
 
 import pytest
 

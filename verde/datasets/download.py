@@ -3,7 +3,8 @@ Functions to download, verify, and update a sample dataset.
 """
 import os
 from warnings import warn
-from urllib.request import urlopen
+
+import requests
 
 from ..utils import get_data_dir
 
@@ -36,7 +37,8 @@ def fetch_data(filename, force_download=False):
         data_src = '/'.join([VERDE_DATA_STORE_URL, filename])
         warn("Downloading data file '{}' from remote data store '{}' to '{}'."
              .format(filename, VERDE_DATA_STORE_URL, data_dir))
-        with urlopen(data_src) as request:
-            with open(data_path, 'wb') as dest:
-                dest.write(request.read())
+        response = requests.get(data_src)
+        response.raise_for_status()
+        with open(data_path, 'wb') as dest:
+            dest.write(response.content)
     return data_path
