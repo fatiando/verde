@@ -13,6 +13,9 @@ The `awk` command isolates the hash only from the full output of `openssl`.
 
 Contents:
 
+* `tiny-data.txt`: A very small data file used to test the data downloading
+  function without using too much bandwidth.
 * `baja-california-bathymetry.csv.xz`: Bathymetry data from Baja California.
   This is the GMT tutorial data `@tut_ship.xyz` stored in CSV format and
   `xz` compressed.
+
