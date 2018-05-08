@@ -7,6 +7,7 @@ from scipy.interpolate import LinearNDInterpolator, NearestNDInterpolator, \
     CloughTocher2DInterpolator
 
 from .base import BaseGridder
+from .utils import get_region
 
 
 class ScipyGridder(BaseGridder):
@@ -81,8 +82,7 @@ class ScipyGridder(BaseGridder):
             kwargs = {}
         else:
             kwargs = self.extra_args
-        self.region_ = (np.min(easting), np.max(easting),
-                        np.min(northing), np.max(northing))
+        self.region_ = get_region(easting, northing)
         points = np.column_stack((np.ravel(easting), np.ravel(northing)))
         self.interpolator_ = classes[self.method](points, np.ravel(data),
                                                   **kwargs)

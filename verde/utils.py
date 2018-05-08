@@ -76,6 +76,36 @@ def check_region(region):
                          .format(region))
 
 
+def get_region(easting, northing):
+    """
+    Get the bounding region of the given coordinates.
+
+    Parameters
+    ----------
+    easting : array
+        The values of the West-East coordinates of each data point.
+    northing : array
+        The values of the South-North coordinates of each data point.
+
+    Returns
+    -------
+    region : tuple = (W, E, S, N)
+        The boundaries of a given region in Cartesian or geographic
+        coordinates.
+
+    Examples
+    --------
+
+    >>> east, north = grid_coordinates((0, 1, -10, -6), shape=(10, 10))
+    >>> print(get_region(east, north))
+    (0.0, 1.0, -10.0, -6.0)
+
+    """
+    region = (np.min(easting), np.max(easting),
+              np.min(northing), np.max(northing))
+    return region
+
+
 def scatter_points(region, size, random_state=None):
     """
     Generate the coordinates for a random scatter of points.
@@ -146,9 +176,10 @@ def grid_coordinates(region, shape=None, spacing=None, adjust='spacing'):
     shape : tuple = (n_north, n_east) or None
         The number of points in the South-North and West-East directions,
         respectively.
-    spacing : tuple = (s_north, s_east) or None
+    spacing : float, tuple = (s_north, s_east), or None
         The grid spacing in the South-North and West-East directions,
-        respectively.
+        respectively. A single value means that the spacing is equal in both
+        directions.
     adjust : {'spacing', 'region'}
         Whether to adjust the spacing or the region if required. Ignored if
         *shape* is given instead of *spacing*. Defaults to adjusting the
@@ -276,10 +307,6 @@ def grid_coordinates(region, shape=None, spacing=None, adjust='spacing'):
             "Both grid shape and spacing provided. Only one is allowed.")
     if shape is None and spacing is None:
         raise ValueError("Either a grid shape or a spacing must be provided.")
-    if adjust not in ['spacing', 'region']:
-        raise ValueError(
-            "Invalid value for *adjust* '{}'. Should be 'spacing' or 'region'"
-            .format(adjust))
     if spacing is not None:
         shape, region = spacing_to_shape(region, spacing, adjust)
     nnorth, neast = shape
@@ -302,9 +329,10 @@ def spacing_to_shape(region, spacing, adjust):
     region : list = [W, E, S, N]
         The boundaries of a given region in Cartesian or geographic
         coordinates.
-    spacing : tuple = (s_north, s_east) or None
+    spacing : float, tuple = (s_north, s_east), or None
         The grid spacing in the South-North and West-East directions,
-        respectively.
+        respectively. A single value means that the spacing is equal in both
+        directions.
     adjust : {'spacing', 'region'}
         Whether to adjust the spacing or the region if required. Ignored if
         *shape* is given instead of *spacing*. Defaults to adjusting the
@@ -317,6 +345,11 @@ def spacing_to_shape(region, spacing, adjust):
         Spacing or region may be adjusted.
 
     """
+    if adjust not in ['spacing', 'region']:
+        raise ValueError(
+            "Invalid value for *adjust* '{}'. Should be 'spacing' or 'region'"
+            .format(adjust))
+
     spacing = np.atleast_1d(spacing)
     if len(spacing) == 1:
         deast = dnorth = spacing[0]
@@ -325,6 +358,7 @@ def spacing_to_shape(region, spacing, adjust):
     else:
         raise ValueError("Only two values allowed for grid spacing: {}"
                          .format(str(spacing)))
+
     w, e, s, n = region
     # Add 1 to get the number of nodes, not segments
     nnorth = int(round((n - s)/dnorth)) + 1
@@ -400,3 +434,221 @@ def profile_coordinates(point1, point2, size, coordinate_system='cartesian'):
         easting = east1 + distances*np.cos(angle)
         northing = north1 + distances*np.sin(angle)
     return easting, northing, distances
+
+
+def block_reduce(easting, northing, data, reduction, spacing, region=None,
+                 adjust='spacing', center_coordinates=False):
+    """
+    Apply a reduction operation to the data in blocks (windows).
+
+    Returns the reduced data value for each block along with the associated
+    coordinates, which can be determined through the same reduction applied to
+    the coordinates or as the center of each block.
+
+    If a data region to be divided into blocks is not given, it will be the
+    bounding region of the data. When using this function to decimate data
+    before gridding, it's best to use the same region and spacing as the
+    desired grid.
+
+    If the given region is not divisible by the spacing (block size), either
+    the region or the spacing will have to be adjusted. By default, the spacing
+    will be rounded to the nearest multiple. Optionally, the East and North
+    boundaries of the region can be adjusted to fit the exact spacing given.
+
+    Blocks without any data are omitted from the output.
+
+    Parameters
+    ----------
+    easting : array
+        The values of the West-East coordinates of each data point.
+    northing : array
+        The values of the South-North coordinates of each data point.
+    data : array
+        The data values at each point.
+    reduction : function
+        A reduction function that takes an array and returns a single value
+        (e.g., ``np.mean``, ``np.median``, etc).
+    spacing : float, tuple = (s_north, s_east), or None
+        The block size in the South-North and West-East directions,
+        respectively. A single value means that the size is equal in both
+        directions.
+    region : list = [W, E, S, N]
+        The boundaries of a given region in Cartesian or geographic
+        coordinates.
+    adjust : {'spacing', 'region'}
+        Whether to adjust the spacing or the region if required. Ignored if
+        *shape* is given instead of *spacing*. Defaults to adjusting the
+        spacing.
+    center_coordinates : bool
+        If True, then the returned coordinates correspond to the center of each
+        block. Otherwise, the coordinates are calculated by applying the same
+        reduction operation to the input coordinates.
+
+    Returns
+    -------
+    easting, northing, data : arrays
+        The reduced coordinates and data values.
+
+    See also
+    --------
+    inside : Determine which points fall inside a given region.
+    block_region : Divide a region into blocks and yield their boundaries.
+
+    """
+    if region is None:
+        region = get_region(easting, northing)
+    # Allocate the boolean arrays required in 'inside' only once to avoid
+    # overhead.
+    out = np.empty_like(easting, dtype=np.bool)
+    tmp = tuple(np.empty_like(easting, dtype=np.bool) for i in range(4))
+    re_east, re_north, re_data = [], [], []
+    for block in block_region(region, spacing, adjust):
+        inblock = inside(easting, northing, block, out=out, tmp=tmp)
+        if np.any(inblock):
+            re_data.append(reduction(data[inblock]))
+            if center_coordinates:
+                re_east.append((block[1] + block[0])/2)
+                re_north.append((block[3] + block[2])/2)
+            else:
+                re_east.append(reduction(easting[inblock]))
+                re_north.append(reduction(northing[inblock]))
+    return np.array(re_east), np.array(re_north), np.array(re_data)
+
+
+def block_region(region, spacing, adjust='spacing'):
+    """
+    Divide a region into blocks and yield the boundaries of each block.
+
+    This is a generator. Use the ``list`` function to turn it into a list.
+
+    Parameters
+    ----------
+    region : list = [W, E, S, N]
+        The boundaries of a given region in Cartesian or geographic
+        coordinates.
+    spacing : float, tuple = (s_north, s_east), or None
+        The block size in the South-North and West-East directions,
+        respectively. A single value means that the size is equal in both
+        directions.
+    adjust : {'spacing', 'region'}
+        Whether to adjust the spacing or the region if required. Ignored if
+        *shape* is given instead of *spacing*. Defaults to adjusting the
+        spacing.
+
+    Yields
+    ------
+    block_region : tuple = (W, E, S, N)
+        The boundaries of each block taken from the region.
+
+    See also
+    --------
+    inside : Determine which points fall inside a given region.
+    block_reduce : Apply a reduction operation to the data in blocks (windows).
+
+    Examples
+    --------
+
+    >>> for block in block_region((0, 3, -20, -18), spacing=1):
+    ...     print(block)
+    (0.0, 1.0, -20.0, -19.0)
+    (1.0, 2.0, -20.0, -19.0)
+    (2.0, 3.0, -20.0, -19.0)
+    (0.0, 1.0, -19.0, -18.0)
+    (1.0, 2.0, -19.0, -18.0)
+    (2.0, 3.0, -19.0, -18.0)
+    >>> # The block size can be different for each dimension. It will be
+    >>> # rounded to the nearest multiple of the region.
+    >>> for block in block_region((0, 3, -20, -18), spacing=(1, 1.4)):
+    ...     print(block)
+    (0.0, 1.5, -20.0, -19.0)
+    (1.5, 3.0, -20.0, -19.0)
+    (0.0, 1.5, -19.0, -18.0)
+    (1.5, 3.0, -19.0, -18.0)
+
+    """
+    east, north = grid_coordinates(region, spacing=spacing, adjust=adjust)
+    nnorth, neast = east.shape
+    for i in range(nnorth - 1):
+        s, n = north[i:i + 2, 0]
+        for j in range(neast - 1):
+            w, e = east[0, j:j + 2]
+            yield (w, e, s, n)
+
+
+def inside(easting, northing, region, out=None, tmp=None):
+    """
+    Determine which points fall inside a given region.
+
+    Points at the boundary are counted as being outsize.
+
+    Parameters
+    ----------
+    easting : array
+        The values of the West-East coordinates of each data point.
+    northing : array
+        The values of the South-North coordinates of each data point.
+    region : list = [W, E, S, N]
+        The boundaries of a given region in Cartesian or geographic
+        coordinates.
+    out : None or array of booleans
+        Numpy array to be used as output. The contents will be overwritten and
+        the same array will be returned.
+    tmp : None or tuple
+        Numpy arrays used to store the outputs of temporary logical operations.
+        Passing in pre-allocated arrays avoids the overhead of allocation when
+        calling this function repeatedly. If not None, then should be a tuple
+        of 4 numpy arrays of boolean type and a shape equal to or broadcast
+        from the input coordinates.
+
+    Returns
+    -------
+    are_inside : array of booleans
+        An array of booleans with the same shape as the input coordinate
+        arrays. Will be ``True`` if the respective coordinates fall inside the
+        area, ``False`` otherwise.
+
+    See also
+    --------
+    block_reduce : Apply a reduction operation to the data in blocks (windows).
+    block_region : Divide a region into blocks and yield their boundaries.
+
+    Examples
+    --------
+
+    >>> import numpy as np
+    >>> east = np.array([1, 2, 3, 4, 5, 6])
+    >>> north = np.array([10, 11, 12, 13, 14, 15])
+    >>> region = [2.5, 5.5, 12, 15]
+    >>> print(inside(east, north, region))
+    [False False  True  True  True False]
+    >>> # This also works for 2D-arrays
+    >>> east = np.array([[1, 1, 1],
+    ...                  [2, 2, 2],
+    ...                  [3, 3, 3]])
+    >>> north = np.array([[5, 7, 9],
+    ...                   [5, 7, 9],
+    ...                   [5, 7, 9]])
+    >>> region = [0.5, 2.5, 6, 9]
+    >>> print(inside(east, north, region))
+    [[False  True  True]
+     [False  True  True]
+     [False False False]]
+
+    """
+    check_region(region)
+    w, e, s, n = region
+    # Allocate temporary arrays to minimize memory allocation overhead
+    if out is None:
+        out = np.empty_like(easting, dtype=np.bool)
+    if tmp is None:
+        tmp = tuple(np.empty_like(easting, dtype=np.bool) for i in range(4))
+    # Using the logical functions is a lot faster than & > < for some reason
+    # Plus, this way avoids repeated allocation of intermediate arrays
+    in_we = np.logical_and(np.greater_equal(easting, w, out=tmp[0]),
+                           np.less_equal(easting, e, out=tmp[1]),
+                           out=tmp[2])
+    in_ns = np.logical_and(np.greater_equal(northing, s, out=tmp[0]),
+                           np.less_equal(northing, n, out=tmp[1]),
+                           out=tmp[3])
+    are_inside = np.logical_and(in_we, in_ns, out=out)
+    return are_inside
