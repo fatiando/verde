@@ -5,7 +5,7 @@ from ._version import get_versions as _get_versions
 
 # Import functions/classes to make the API
 from .utils import scatter_points, grid_coordinates, profile_coordinates, \
-    block_reduce, inside
+    block_reduce, block_region, inside
 from . import datasets
 from .scipy_bridge import ScipyGridder
 

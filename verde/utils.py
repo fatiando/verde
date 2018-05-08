@@ -489,33 +489,93 @@ def block_reduce(easting, northing, data, reduction, spacing, region=None,
     easting, northing, data : arrays
         The reduced coordinates and data values.
 
+    See also
+    --------
+    inside : Determine which points fall inside a given region.
+    block_region : Divide a region into blocks and yield their boundaries.
+
     """
     if region is None:
         region = get_region(easting, northing)
-    block_east, block_north = grid_coordinates(region, spacing=spacing,
-                                               adjust=adjust)
-    nnorth, neast = block_east.shape
-    re_east, re_north, re_data = [], [], []
     # Allocate the boolean arrays required in 'inside' only once to avoid
-    # overhead. The block values are in out[0]
-    out = tuple(np.empty_like(easting, dtype=np.bool) for i in range(4))
-    for i in range(nnorth - 1):
-        s, n = block_north[i:i + 2, 0]
-        for j in range(neast - 1):
-            w, e = block_east[0, j:j + 2]
-            block = inside(easting, northing, (w, e, s, n), out=out)
-            if np.any(block):
-                re_data.append(reduction(data[block]))
-                if center_coordinates:
-                    re_east.append((e + w)/2)
-                    re_north.append((n + s)/2)
-                else:
-                    re_east.append(reduction(easting[block]))
-                    re_north.append(reduction(northing[block]))
+    # overhead.
+    out = np.empty_like(easting, dtype=np.bool)
+    tmp = tuple(np.empty_like(easting, dtype=np.bool) for i in range(4))
+    re_east, re_north, re_data = [], [], []
+    for block in block_region(region, spacing, adjust):
+        inblock = inside(easting, northing, block, out=out, tmp=tmp)
+        if np.any(inblock):
+            re_data.append(reduction(data[inblock]))
+            if center_coordinates:
+                re_east.append((block[1] + block[0])/2)
+                re_north.append((block[3] + block[2])/2)
+            else:
+                re_east.append(reduction(easting[inblock]))
+                re_north.append(reduction(northing[inblock]))
     return np.array(re_east), np.array(re_north), np.array(re_data)
 
 
-def inside(easting, northing, region, out=None):
+def block_region(region, spacing, adjust='spacing'):
+    """
+    Divide a region into blocks and yield the boundaries of each block.
+
+    This is a generator. Use the ``list`` function to turn it into a list.
+
+    Parameters
+    ----------
+    region : list = [W, E, S, N]
+        The boundaries of a given region in Cartesian or geographic
+        coordinates.
+    spacing : float, tuple = (s_north, s_east), or None
+        The block size in the South-North and West-East directions,
+        respectively. A single value means that the size is equal in both
+        directions.
+    adjust : {'spacing', 'region'}
+        Whether to adjust the spacing or the region if required. Ignored if
+        *shape* is given instead of *spacing*. Defaults to adjusting the
+        spacing.
+
+    Yields
+    ------
+    block_region : tuple = (W, E, S, N)
+        The boundaries of each block taken from the region.
+
+    See also
+    --------
+    inside : Determine which points fall inside a given region.
+    block_reduce : Apply a reduction operation to the data in blocks (windows).
+
+    Examples
+    --------
+
+    >>> for block in block_region((0, 3, -20, -18), spacing=1):
+    ...     print(block)
+    (0.0, 1.0, -20.0, -19.0)
+    (1.0, 2.0, -20.0, -19.0)
+    (2.0, 3.0, -20.0, -19.0)
+    (0.0, 1.0, -19.0, -18.0)
+    (1.0, 2.0, -19.0, -18.0)
+    (2.0, 3.0, -19.0, -18.0)
+    >>> # The block size can be different for each dimension. It will be
+    >>> # rounded to the nearest multiple of the region.
+    >>> for block in block_region((0, 3, -20, -18), spacing=(1, 1.4)):
+    ...     print(block)
+    (0.0, 1.5, -20.0, -19.0)
+    (1.5, 3.0, -20.0, -19.0)
+    (0.0, 1.5, -19.0, -18.0)
+    (1.5, 3.0, -19.0, -18.0)
+
+    """
+    east, north = grid_coordinates(region, spacing=spacing, adjust=adjust)
+    nnorth, neast = east.shape
+    for i in range(nnorth - 1):
+        s, n = north[i:i + 2, 0]
+        for j in range(neast - 1):
+            w, e = east[0, j:j + 2]
+            yield (w, e, s, n)
+
+
+def inside(easting, northing, region, out=None, tmp=None):
     """
     Determine which points fall inside a given region.
 
@@ -530,12 +590,15 @@ def inside(easting, northing, region, out=None):
     region : list = [W, E, S, N]
         The boundaries of a given region in Cartesian or geographic
         coordinates.
-    out : None or tuple
-        Numpy arrays to be used as outputs of the logical operations. Passing
-        in pre-allocated arrays avoids the overhead of allocation when calling
-        this function repeatedly. If not None, then should be a tuple of 4
-        numpy arrays of boolean type and a shape equal to or broadcast from the
-        input coordinates.
+    out : None or array of booleans
+        Numpy array to be used as output. The contents will be overwritten and
+        the same array will be returned.
+    tmp : None or tuple
+        Numpy arrays used to store the outputs of temporary logical operations.
+        Passing in pre-allocated arrays avoids the overhead of allocation when
+        calling this function repeatedly. If not None, then should be a tuple
+        of 4 numpy arrays of boolean type and a shape equal to or broadcast
+        from the input coordinates.
 
     Returns
     -------
@@ -543,6 +606,11 @@ def inside(easting, northing, region, out=None):
         An array of booleans with the same shape as the input coordinate
         arrays. Will be ``True`` if the respective coordinates fall inside the
         area, ``False`` otherwise.
+
+    See also
+    --------
+    block_reduce : Apply a reduction operation to the data in blocks (windows).
+    block_region : Divide a region into blocks and yield their boundaries.
 
     Examples
     --------
@@ -569,15 +637,18 @@ def inside(easting, northing, region, out=None):
     """
     check_region(region)
     w, e, s, n = region
+    # Allocate temporary arrays to minimize memory allocation overhead
     if out is None:
-        out = tuple(np.empty_like(easting, dtype=np.bool) for i in range(4))
+        out = np.empty_like(easting, dtype=np.bool)
+    if tmp is None:
+        tmp = tuple(np.empty_like(easting, dtype=np.bool) for i in range(4))
     # Using the logical functions is a lot faster than & > < for some reason
     # Plus, this way avoids repeated allocation of intermediate arrays
-    in_we = np.logical_and(np.greater_equal(easting, w, out=out[0]),
-                           np.less_equal(easting, e, out=out[1]),
-                           out=out[2])
-    in_ns = np.logical_and(np.greater_equal(northing, s, out=out[0]),
-                           np.less_equal(northing, n, out=out[1]),
-                           out=out[3])
-    are_inside = np.logical_and(in_we, in_ns, out=out[0])
+    in_we = np.logical_and(np.greater_equal(easting, w, out=tmp[0]),
+                           np.less_equal(easting, e, out=tmp[1]),
+                           out=tmp[2])
+    in_ns = np.logical_and(np.greater_equal(northing, s, out=tmp[0]),
+                           np.less_equal(northing, n, out=tmp[1]),
+                           out=tmp[3])
+    are_inside = np.logical_and(in_we, in_ns, out=out)
     return are_inside
