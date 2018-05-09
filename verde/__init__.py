@@ -12,6 +12,7 @@ from .grid_math import block_reduce, distance_mask
 from .scipy_bridge import ScipyGridder
 from .trend import Trend, trend_jacobian
 from .chain import Chain
+from .spline import BiharmonicSpline
 
 
 # Get the version number through versioneer
