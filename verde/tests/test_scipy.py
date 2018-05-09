@@ -5,8 +5,9 @@ import pytest
 import pandas as pd
 import numpy.testing as npt
 
-from .. import ScipyGridder, grid_coordinates
-from ..datasets import CheckerBoard
+from ..scipy_bridge import ScipyGridder
+from ..coordinates import grid_coordinates
+from ..datasets.synthetic import CheckerBoard
 
 
 def test_scipy_gridder_same_points():

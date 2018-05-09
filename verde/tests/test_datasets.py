@@ -8,7 +8,7 @@ from requests.exceptions import HTTPError
 import pytest
 
 from ..datasets.download import fetch_data
-from ..datasets import fetch_baja_bathymetry
+from ..datasets.sample_data import fetch_baja_bathymetry
 
 
 def compare_tiny_data(datapath):
