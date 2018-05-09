@@ -32,7 +32,7 @@ coverage:
 	rm -r $(TESTDIR)
 
 pep8:
-	flake8 $(PROJECT) setup.py
+	flake8 $(PROJECT) setup.py examples
 
 lint:
 	pylint $(PROJECT) setup.py
