@@ -1,4 +1,4 @@
-# pylint: disable=unused-argument
+# pylint: disable=unused-argument,too-many-locals
 """
 Test the base classes and their utility functions.
 """
@@ -8,7 +8,7 @@ import numpy.testing as npt
 
 from ..base import BaseGridder
 from ..base.gridder import get_dims, get_data_names, get_region
-from .. import grid_coordinates
+from .. import grid_coordinates, scatter_points
 
 
 def test_get_dims():
@@ -95,46 +95,89 @@ def test_get_region():
     assert get_region(grd, region=(1, 2, 3, 4)) == (1, 2, 3, 4)
 
 
+class PolyGridder(BaseGridder):
+    "A test gridder"
+
+    def __init__(self, degree=1):
+        self.degree = degree
+
+    def fit(self, easting, northing, data):
+        "Fit an easting polynomial"
+        ndata = data.size
+        nparams = self.degree + 1
+        jac = np.zeros((ndata, nparams))
+        for j in range(nparams):
+            jac[:, j] = easting.ravel()**j
+        self.coefs_ = np.linalg.solve(jac.T.dot(jac), jac.T.dot(data.ravel()))
+        return self
+
+    def predict(self, easting, northing):
+        "Predict the data"
+        return np.sum(cof*easting**deg for deg, cof in enumerate(self.coefs_))
+
+
 def test_basegridder():
     "Test basic functionality of BaseGridder"
 
     with pytest.raises(NotImplementedError):
         BaseGridder().predict(None, None)
 
-    class TestGridder(BaseGridder):
-        "A test gridder"
-
-        def __init__(self, constant=0):
-            self.constant = constant
-
-        def fit(self, easting, northing, data):
-            "Get the data mean"
-            self.mean_ = data.mean()
-            return self
-
-        def predict(self, easting, northing):
-            "Predict the data mean"
-            return np.ones_like(easting)*self.mean_ + self.constant
-
-    grd = TestGridder()
-    assert repr(grd) == 'TestGridder(constant=0)'
-    grd.constant = 1000
-    assert repr(grd) == 'TestGridder(constant=1000)'
+    grd = PolyGridder()
+    assert repr(grd) == 'PolyGridder(degree=1)'
+    grd.degree = 2
+    assert repr(grd) == 'PolyGridder(degree=2)'
 
     region = (0, 10, -10, -5)
     shape = (50, 30)
-    east, north = grid_coordinates(region, shape)
-    data = np.ones_like(east)
-    grd = TestGridder().fit(east, north, data)
+    angular, linear = 2, 100
+    east, north = scatter_points(region, 1000, random_state=0)
+    data = angular*east + linear
+    grd = PolyGridder().fit(east, north, data)
 
     with pytest.raises(ValueError):
-        # A region should be given because it hasn't been assigned by
-        # TestGridder
+        # A region should be given because it hasn't been assigned
         grd.grid()
 
+    east_true, north_true = grid_coordinates(region, shape)
+    data_true = angular*east_true + linear
     grid = grd.grid(region, shape)
-    npt.assert_allclose(grid.scalars.values, data)
-    npt.assert_allclose(grid.easting.values, east[0, :])
-    npt.assert_allclose(grid.northing.values, north[:, 0])
-    npt.assert_allclose(grd.scatter(region, 100).scalars, 1)
-    npt.assert_allclose(grd.profile((0, 100), (20, 10), 100).scalars, 1)
+
+    npt.assert_allclose(grd.coefs_, [linear, angular])
+    npt.assert_allclose(grid.scalars.values, data_true)
+    npt.assert_allclose(grid.easting.values, east_true[0, :])
+    npt.assert_allclose(grid.northing.values, north_true[:, 0])
+    npt.assert_allclose(grd.scatter(region, 1000, random_state=0).scalars,
+                        data)
+    npt.assert_allclose(grd.profile((0, 0), (10, 0), 30).scalars,
+                        angular*east_true[0, :] + linear)
+
+
+def test_basegridder_projection():
+    "Test basic functionality of BaseGridder when passing in a projection"
+
+    region = (0, 10, -10, -5)
+    shape = (50, 30)
+    angular, linear = 2, 100
+    east, north = scatter_points(region, 1000, random_state=0)
+    data = angular*east + linear
+    east_true, north_true = grid_coordinates(region, shape)
+    data_true = angular*east_true + linear
+    grd = PolyGridder().fit(east, north, data)
+
+    # Lets say we want to specify the region for a grid using a coordinate
+    # system that is lon/2, lat/2.
+    def proj(lon, lat):
+        "Project from the new coordinates to the original"
+        return (lon*2, lat*2)
+
+    proj_region = [i/2 for i in region]
+    grid = grd.grid(proj_region, shape, projection=proj)
+    scat = grd.scatter(proj_region, 1000, random_state=0, projection=proj)
+    prof = grd.profile((0, 0), (5, 0), 30, projection=proj)
+
+    npt.assert_allclose(grd.coefs_, [linear, angular])
+    npt.assert_allclose(grid.scalars.values, data_true)
+    npt.assert_allclose(grid.easting.values, east_true[0, :]/2)
+    npt.assert_allclose(grid.northing.values, north_true[:, 0]/2)
+    npt.assert_allclose(scat.scalars, data)
+    npt.assert_allclose(prof.scalars, angular*east_true[0, :] + linear)
