@@ -14,8 +14,9 @@ class BiharmonicSpline(BaseGridder):
     """
     """
 
-    def __init__(self, fudge=1e-5, damping=None, spacing=None):
+    def __init__(self, fudge=1e-5, damping=None, shape=None, spacing=None):
         self.damping = damping
+        self.shape = shape
         self.spacing = spacing
         self.fudge = fudge
 
@@ -24,11 +25,12 @@ class BiharmonicSpline(BaseGridder):
         """
         # Check that the data coordinates are all 1D arrays of same size
         self.region_ = get_region(easting, northing)
-        if self.spacing is None:
+        if self.shape is None:
             self.force_easting_ = easting
             self.force_northing_ = northing
         else:
-            coords = grid_coordinates(self.region_, spacing=self.spacing)
+            coords = grid_coordinates(self.region_, shape=self.shape,
+                                      spacing=self.spacing)
             self.force_easting_, self.force_northing_ = (
                 i.ravel() for i in coords)
         jac = biharmonic_spline_jacobian(easting, northing,
@@ -55,6 +57,8 @@ def biharmonic_spline_jacobian(easting, northing, force_easting,
                                force_northing, fudge=1e-5):
     """
     """
+    if easting.shape != northing.shape:
+        raise ValueError("Coordinate arrays must have the same shape.")
     size = easting.size
     # Reshaping the data to a column vector will automatically build a
     # Green's function matrix because of the array broadcasting.
@@ -63,4 +67,3 @@ def biharmonic_spline_jacobian(easting, northing, force_easting,
                               force_easting, force_northing,
                               fudge)
     return jac
-
