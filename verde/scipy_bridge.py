@@ -7,7 +7,7 @@ from scipy.interpolate import LinearNDInterpolator, NearestNDInterpolator, \
     CloughTocher2DInterpolator
 
 from .base import BaseGridder
-from .utils import get_region
+from . import get_region
 
 
 class ScipyGridder(BaseGridder):

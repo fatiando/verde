@@ -4,8 +4,8 @@ Generators of synthetic datasets.
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
-from ..base import BaseGridder
-from ..utils import check_region
+from ..base.gridder import BaseGridder
+from ..coordinates import check_region
 
 
 class CheckerBoard(BaseGridder):

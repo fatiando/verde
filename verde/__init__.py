@@ -4,9 +4,10 @@ The Verde public API.
 from ._version import get_versions as _get_versions
 
 # Import functions/classes to make the API
-from .utils import scatter_points, grid_coordinates, profile_coordinates, \
-    block_reduce, block_region, inside, get_region
 from . import datasets
+from .coordinates import scatter_points, grid_coordinates, inside, \
+    profile_coordinates, block_region, get_region
+from .grid_math import block_reduce
 from .scipy_bridge import ScipyGridder
 
 

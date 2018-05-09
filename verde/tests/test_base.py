@@ -6,9 +6,8 @@ import pytest
 import numpy as np
 import numpy.testing as npt
 
-from ..base import BaseGridder
-from ..base.gridder import get_dims, get_data_names, get_region
-from .. import grid_coordinates, scatter_points
+from ..base.gridder import get_dims, get_data_names, get_region, BaseGridder
+from ..coordinates import grid_coordinates, scatter_points
 
 
 def test_get_dims():

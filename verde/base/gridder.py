@@ -5,7 +5,7 @@ import xarray as xr
 import pandas as pd
 from sklearn.base import BaseEstimator
 
-from .. import grid_coordinates, profile_coordinates, scatter_points
+from ..coordinates import grid_coordinates, profile_coordinates, scatter_points
 
 
 def get_dims(instance, dims):
