@@ -18,4 +18,12 @@ Contents:
 * `baja-california-bathymetry.csv.xz`: Bathymetry data from Baja California.
   This is the GMT tutorial data `@tut_ship.xyz` stored in CSV format and
   `xz` compressed.
-
+* `rio-de-janeiro-magnetic.csv.xz`: Total-field magnetic anomaly data from the
+  northwestern part of an airborne survey of Rio de Janeiro, Brazil, conducted
+  in 1978. Columns are longitude, latitude, total field anomaly (nanoTesla),
+  and observation height above the ellipsoid (meters). The anomaly is
+  calculated with respect to the IGRF field at the center of the survey area at
+  500 m altitude for the year 1978.3. This dataset was cropped from the
+  original survey, made available by the Geological Survey of Brazil (CPRM)
+  through their [GEOSGB portal](http://geosgb.cprm.gov.br/). See the original
+  data for more processing information.

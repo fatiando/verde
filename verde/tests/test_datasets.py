@@ -8,7 +8,8 @@ from requests.exceptions import HTTPError
 import pytest
 
 from ..datasets.download import fetch_data
-from ..datasets.sample_data import fetch_baja_bathymetry
+from ..datasets.sample_data import fetch_baja_bathymetry, \
+    fetch_rio_magnetic_anomaly
 
 
 def compare_tiny_data(datapath):
@@ -60,3 +61,12 @@ def test_fetch_baja_bathymetry():
     assert data.size == 248910
     assert data.shape == (82970, 3)
     assert all(data.columns == ['longitude', 'latitude', 'bathymetry_m'])
+
+
+def test_fetch_rio_magnetic_anomaly():
+    "Make sure the data are loaded properly"
+    data = fetch_rio_magnetic_anomaly()
+    assert data.size == 150884
+    assert data.shape == (37721, 4)
+    assert all(data.columns == ['longitude', 'latitude',
+                                'total_field_anomaly_nt', 'height_ell_m'])
