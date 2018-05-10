@@ -1,6 +1,6 @@
 """
-Sample bathymetry data
-======================
+Bathymetry data from Baja California
+====================================
 
 We provide sample bathymetry data from Baja California to test the gridding
 methods. This is the ``@tut_ship.xyz`` sample data from the `GMT

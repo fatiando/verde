@@ -1,6 +1,6 @@
 """
-Checkerboard synthetic data
-===========================
+Checkerboard function
+=====================
 
 The :class:`verde.datasets.CheckerBoard` class generates synthetic data in a
 checkerboard pattern. Use it like any gridder class.
