@@ -4,6 +4,8 @@ import os
 import datetime
 import sphinx_rtd_theme
 import sphinx_gallery
+# Requires sphinx-gallery 0.1.13, which isn't on conda-forge yet
+# from sphinx_gallery.sorting import FileNameSortKey
 
 # Sphinx needs to be able to import the package to use autodoc and get the
 # version number
@@ -33,10 +35,13 @@ numpydoc_class_members_toctree = False
 plot_gallery = True
 sphinx_gallery_conf = {
     # path to your examples scripts
-    'examples_dirs': '../examples',
+    'examples_dirs': ['../examples', '../tutorials'],
     # path where to save gallery generated examples
-    'gallery_dirs': 'gallery',
+    'gallery_dirs': ['gallery', 'tutorials'],
     'filename_pattern': '\.py',
+    # Sort gallery example by file name instead of number of lines (default)
+    # Requires sphinx-gallery 0.1.13, which isn't on conda-forge yet
+     # 'within_subsection_order': FileNameSortKey,
     # directory where function granular galleries are stored
     'backreferences_dir': 'api/backreferences',
     # Modules for which function level galleries are created.  In
