@@ -1,12 +1,12 @@
-Verde
-=====
+Verde - Fatiando a Terra
+========================
 
-**Gridding and interpolation using Green's functions**
+**Processing and gridding spatial data using Green's functions**
 
-`Documentation <http://www.fatiando.org/verde/latest>`_ |
-`Install <http://www.fatiando.org/verde/latest/install.html>`_ |
-`Tutorials <http://www.fatiando.org/verde/latest/tutorials>`_ |
-`API <http://www.fatiando.org/verde/latest/api>`_ |
+`Documentation <http://www.fatiando.org/verde/dev>`_ |
+`Install <http://www.fatiando.org/verde/dev/install.html>`_ |
+`Gallery <http://www.fatiando.org/verde/dev/gallery>`_ |
+`API <http://www.fatiando.org/verde/dev/api>`_ |
 `Contact <https://gitter.im/fatiando/fatiando>`_
 
 .. image:: http://img.shields.io/pypi/v/verde.svg?style=flat-square
@@ -44,19 +44,44 @@ or send us a message on our
 `Gitter chatroom <https://gitter.im/fatiando/fatiando>`__.
 
 
-Getting started
----------------
-
-
-
 About
 -----
 
+Verde is a Python library for processing spatial data (bathymetry, geophysics
+surveys, etc) and interpolating it on regular grids (i.e., *gridding*).
+
+Most gridding methods in Verde use a Green's functions approach.
+A linear model is estimated based on the input data and then used to predict
+data on a regular grid (or in a scatter, a profile, as derivatives).
+The models are Green's functions from (mostly) elastic deformation theory.
+This approach is very similar to *machine learning* so we implement gridder
+classes that are similar to `scikit-learn <http://scikit-learn.org/>`__
+regression classes.
+The API is not 100% compatible but it should look familiar to those with some
+scikit-learn experience.
+
+Advantages of using Green's functions include:
+
+* Easily apply **weights** to data points. This is a linear least-squares
+  problem.
+* Perform **model selection** using established machine learning techniques,
+  like k-fold or holdout cross-validation.
+* The estimated model can be **easily stored** for later use, like
+  spherical-harmonic coefficients are used in gravimetry.
 
 
 Project goals
 -------------
 
+* Provide a machine-learning inspired interface for Green's functions gridding
+  of spatial data
+* Integration with the Scipy stack: numpy, pandas (for xyz data), and xarray
+  (for grids)
+* Include functions for common processing and data preparation tasks, like
+  blocked means and medians
+* Support for gridding scalar and vector data (like wind speed or GPS
+  velocities)
+* Support for both Cartesian and geographic coordinates
 
 
 Contacting Us
@@ -113,7 +138,6 @@ That's how we all improve and we are happy to help others learn.
 
 *This disclaimer was adapted from the*
 `MetPy project <https://github.com/Unidata/MetPy>`__.
-
 
 
 License
