@@ -33,6 +33,7 @@ data['residual'] = data.total_field_anomaly_nt - data.trend
 print("\nUpdated DataFrame:")
 print(data.head())
 
+
 # Make a function to plot the data using the same colorbar
 def plot_data(column, i, title):
     "Plot the column from the DataFrame in the ith subplot"
@@ -53,6 +54,7 @@ def plot_data(column, i, title):
     # Set the plot region to be tight around the data
     ax.set_extent(vd.get_region(data.longitude, data.latitude))
     return mappable
+
 
 plt.figure(figsize=(9, 8))
 
@@ -75,7 +77,7 @@ ax.set_xlabel('Total field anomaly (nT)')
 # Add a single colorbar on top of the histogram plot where there is some space
 cax = plt.axes((0.58, 0.44, 0.18, 0.015))
 cb = plt.colorbar(mappable, cax=cax, orientation='horizontal',
-                 ticks=np.arange(-800, 801, 400))
+                  ticks=np.arange(-800, 801, 400))
 cb.set_label('nT')
 
 plt.tight_layout()

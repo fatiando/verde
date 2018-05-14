@@ -59,6 +59,8 @@ def normalize_jacobian(jacobian):
 def linear_fit(jacobian, data, weights=None, damping=None):
     """
     """
+    if damping is not None and damping <= 0:
+        raise ValueError("Damping parameter must be > 0.")
     if weights is None:
         weights = np.ones_like(data)
     hessian = jacobian.T.dot(weights.reshape((weights.size, 1))*jacobian)
