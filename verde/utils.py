@@ -47,7 +47,23 @@ def get_data_dir():
 
 
 def normalize_jacobian(jacobian):
-    """
+    r"""
+    Normalize a matrix so that each column is within the range [-1, 1].
+
+    This is done by finding a diagonal linear transformation matrix
+    :math:`\mathbf{T}` that is post-multiplied to the input matrix.
+
+    .. math::
+
+        \mathbf{A}_{norm} = \mathbf{A}\mathbf{T}
+
+    Each element ``ii`` of the diagonal is one over the maximum absolute value
+    of the column ``i`` of the input matrix.
+
+    In the context of least-squares, this is equivalent to applying a linear
+    transformation to the parameter vector.
+
+
     """
     transform = 1/np.abs(jacobian).max(axis=0)
     # Element-wise multiplication with the diagonal of the scale matrix is the
