@@ -1,49 +1,13 @@
 """
-Biharmonic splines in 2D.
+2D polynomial trends.
 """
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
+from sklearn.preprocessing import StandardScaler
 
 from .base.gridder import BaseGridder
 from .coordinates import get_region
-from .utils import normalize_jacobian, linear_fit
-
-
-def polynomial_power_combinations(degree):
-    """
-    Combinations of powers for a 2D polynomial of a given degree.
-
-    Produces the (i, j) pairs to evaluate the polynomial with ``x**i*y**j``.
-
-    Parameters
-    ----------
-    degree : int
-        The degree of the 2D polynomial. Must be >= 1.
-
-    Returns
-    -------
-    combinations : tuple
-        A tuple with ``(i, j)`` pairs.
-
-    Examples
-    --------
-
-    >>> print(polynomial_power_combinations(1))
-    ((0, 0), (1, 0), (0, 1))
-    >>> print(polynomial_power_combinations(2))
-    ((0, 0), (1, 0), (0, 1), (2, 0), (1, 1), (0, 2))
-    >>> # This is a long polynomial so split it in two lines
-    >>> print(" ".join([str(c) for c in polynomial_power_combinations(3)]))
-    (0, 0) (1, 0) (0, 1) (2, 0) (1, 1) (0, 2) (3, 0) (2, 1) (1, 2) (0, 3)
-
-    """
-    if degree < 1:
-        raise ValueError("Invalid polynomial degree '{}'. Must be >= 1."
-                         .format(degree))
-    combinations = ((i, j)
-                    for j in range(degree + 1)
-                    for i in range(degree + 1 - j))
-    return tuple(sorted(combinations, key=sum))
+from .utils import linear_fit
 
 
 class Trend(BaseGridder):
@@ -127,10 +91,11 @@ class Trend(BaseGridder):
         self.region_ = get_region(easting, northing)
         jac = trend_jacobian(easting, northing, degree=self.degree,
                              dtype=data.dtype)
-        jac, transform = normalize_jacobian(jac)
+        scaler = StandardScaler(copy=True, with_mean=False, with_std=True)
+        jac = scaler.fit_transform(jac)
         params = linear_fit(jac, data.ravel(), weights=weights,
                             damping=self.damping)
-        self.coefs_ = params*transform
+        self.coefs_ = params/scaler.scale_
         self.residuals_ = data - jac.dot(params).reshape(data.shape)
         return self
 
@@ -157,6 +122,43 @@ class Trend(BaseGridder):
         jac = trend_jacobian(easting, northing, degree=self.degree)
         shape = np.broadcast(easting, northing).shape
         return jac.dot(self.coefs_).reshape(shape)
+
+
+def polynomial_power_combinations(degree):
+    """
+    Combinations of powers for a 2D polynomial of a given degree.
+
+    Produces the (i, j) pairs to evaluate the polynomial with ``x**i*y**j``.
+
+    Parameters
+    ----------
+    degree : int
+        The degree of the 2D polynomial. Must be >= 1.
+
+    Returns
+    -------
+    combinations : tuple
+        A tuple with ``(i, j)`` pairs.
+
+    Examples
+    --------
+
+    >>> print(polynomial_power_combinations(1))
+    ((0, 0), (1, 0), (0, 1))
+    >>> print(polynomial_power_combinations(2))
+    ((0, 0), (1, 0), (0, 1), (2, 0), (1, 1), (0, 2))
+    >>> # This is a long polynomial so split it in two lines
+    >>> print(" ".join([str(c) for c in polynomial_power_combinations(3)]))
+    (0, 0) (1, 0) (0, 1) (2, 0) (1, 1) (0, 2) (3, 0) (2, 1) (1, 2) (0, 3)
+
+    """
+    if degree < 1:
+        raise ValueError("Invalid polynomial degree '{}'. Must be >= 1."
+                         .format(degree))
+    combinations = ((i, j)
+                    for j in range(degree + 1)
+                    for i in range(degree + 1 - j))
+    return tuple(sorted(combinations, key=sum))
 
 
 def trend_jacobian(easting, northing, degree, dtype='float64'):
