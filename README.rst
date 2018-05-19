@@ -1,5 +1,5 @@
-Verde - Fatiando a Terra
-========================
+Verde
+=====
 
 **Processing and gridding spatial data using Green's functions**
 

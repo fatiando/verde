@@ -24,12 +24,11 @@ print(data.head())
 # Fit a 2nd degree 2D polynomial to the anomaly data
 trend = vd.Trend(degree=2).fit(data.longitude, data.latitude,
                                data.total_field_anomaly_nt)
-# For higher degrees, it might be necessary to apply damping regularization.
 print("\nTrend estimator:", trend)
 
 # Add the estimated trend and the residual data to the DataFrame
 data['trend'] = trend.predict(data.longitude, data.latitude)
-data['residual'] = data.total_field_anomaly_nt - data.trend
+data['residual'] = trend.residual_
 print("\nUpdated DataFrame:")
 print(data.head())
 

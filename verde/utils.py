@@ -3,9 +3,6 @@ General utilities.
 """
 import os
 
-import numpy as np
-import scipy.linalg as spla
-
 
 def get_home():
     """
@@ -44,24 +41,3 @@ def get_data_dir():
     data_dir = os.path.join(get_home(), 'data')
     os.makedirs(data_dir, exist_ok=True)
     return data_dir
-
-
-def linear_fit(jacobian, data, weights=None, damping=None):
-    """
-    """
-    if damping is not None and damping <= 0:
-        raise ValueError("Damping parameter must be > 0.")
-    if weights is None:
-        weights = np.ones_like(data)
-    hessian = jacobian.T.dot(weights.reshape((weights.size, 1))*jacobian)
-    if damping is not None:
-        hessian += damping*np.identity(jacobian.shape[1])
-    gradient = jacobian.T.dot(weights*data)
-    try:
-        params = spla.solve(hessian, gradient, assume_a='pos')
-    except spla.LinAlgError:
-        raise spla.LinAlgError(' '.join([
-            "Least-squares matrix is singular.",
-            "Try increasing regularization or decreasing the number",
-            "of model parameters."]))
-    return params

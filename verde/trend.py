@@ -4,54 +4,57 @@
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
 
 from .base.gridder import BaseGridder
 from .coordinates import get_region
-from .utils import linear_fit
 
 
 class Trend(BaseGridder):
     """
     Fit a 2D polynomial trend to spatial data.
 
-    The trend is estimated through weighted least-squares regression
-    with optional damping regularization (ridge regression).
+    The trend is estimated through weighted least-squares regression.
 
-    Regularization will likely be required for high degree polynomials (> 4).
-    The Jacobian (design, sensitivity, etc) matrix for the regression is
-    normalized to be in the range [-1, 1]. This means that a suitable damping
-    parameter will typically be in the range [1e-2, 1e-7]. This may vary for
-    different datasets.
+    The Jacobian (design, sensitivity, feature, etc) matrix for the regression
+    is normalized using :class:`sklearn.preprocessing.StandardScaler` without
+    centering the mean so that the transformation can be undone in the
+    estimated coefficients.
 
     Parameters
     ----------
     degree : int
-        The degree of the polynomial. Must be >= 1. High degrees may result in
-        ill-conditioned systems so damping may be required.
-    damping : None or float
-        The damping regularization parameter. If None, no regularization is
-        used. Otherwise, must be a positive number. Damping imposes that the
-        polynomial coefficients be as small as possible. The damping parameter
-        controls how strongly this condition is imposed.
+        The degree of the polynomial. Must be >= 1.
 
     Examples
     --------
 
     >>> from verde import grid_coordinates
     >>> east, north = grid_coordinates((1, 5, -5, -1), shape=(5, 5))
-    >>> data = 10 + 2*east - 0.5*north
+    >>> data = 10 + 2*east - 0.4*north
     >>> trend = Trend(degree=1).fit(east, north, data)
-    >>> print(', '.join(['{:.1f}'.format(i) for i in trend.coefs_]))
-    10.0, 2.0, -0.5
+    >>> print(', '.join(['{:.1f}'.format(i) for i in trend.coef_]))
+    10.0, 2.0, -0.4
     >>> import numpy as np
     >>> np.allclose(trend.predict(east, north), data)
     True
+    >>> np.allclose(trend.residual_, 0, atol=1e-5)
+    True
+    >>> # Use weights to account for outliers
+    >>> data_out = data.copy()
+    >>> data_out[2, 2] += 500
+    >>> weights = np.ones_like(data)
+    >>> weights[2, 2] = 1e-10
+    >>> trend_out = Trend(degree=1).fit(east, north, data_out, weights)
+    >>> print(', '.join(['{:.1f}'.format(i) for i in trend_out.coef_]))
+    10.0, 2.0, -0.4
+    >>> print('{:.2f}'.format(trend_out.residual_[2, 2]))
+    500.00
 
     """
 
-    def __init__(self, degree, damping=None):
+    def __init__(self, degree):
         self.degree = degree
-        self.damping = damping
 
     def fit(self, easting, northing, data, weights=None):
         """
@@ -80,7 +83,7 @@ class Trend(BaseGridder):
             Returns this estimator instance for chaining operations.
 
         """
-        if easting.shape != northing.shape != data.shape:
+        if easting.shape != northing.shape or easting.shape != data.shape:
             raise ValueError(
                 "Coordinate and data arrays must have the same shape.")
         if weights is not None:
@@ -91,12 +94,12 @@ class Trend(BaseGridder):
         self.region_ = get_region(easting, northing)
         jac = trend_jacobian(easting, northing, degree=self.degree,
                              dtype=data.dtype)
-        scaler = StandardScaler(copy=True, with_mean=False, with_std=True)
+        scaler = StandardScaler(copy=False, with_mean=False, with_std=True)
         jac = scaler.fit_transform(jac)
-        params = linear_fit(jac, data.ravel(), weights=weights,
-                            damping=self.damping)
-        self.coefs_ = params/scaler.scale_
-        self.residuals_ = data - jac.dot(params).reshape(data.shape)
+        regr = LinearRegression(fit_intercept=False, normalize=False)
+        regr.fit(jac, data.ravel(), sample_weight=weights)
+        self.residual_ = data - jac.dot(regr.coef_).reshape(data.shape)
+        self.coef_ = regr.coef_/scaler.scale_
         return self
 
     def predict(self, easting, northing):
@@ -118,10 +121,10 @@ class Trend(BaseGridder):
             The trend values evaluated on the given points.
 
         """
-        check_is_fitted(self, ['coefs_'])
+        check_is_fitted(self, ['coef_'])
         jac = trend_jacobian(easting, northing, degree=self.degree)
         shape = np.broadcast(easting, northing).shape
-        return jac.dot(self.coefs_).reshape(shape)
+        return jac.dot(self.coef_).reshape(shape)
 
 
 def polynomial_power_combinations(degree):
@@ -165,7 +168,7 @@ def trend_jacobian(easting, northing, degree, dtype='float64'):
     """
     Make the Jacobian for a 2D polynomial of the given degree.
 
-    Each column of the Jacobian is ``easting**i * northing**j` for each (i, j)
+    Each column of the Jacobian is ``easting**i * northing**j`` for each (i, j)
     pair in the polynomial of the given degree.
 
     Parameters
