@@ -45,7 +45,7 @@ class ScipyGridder(BaseGridder):
         self.method = method
         self.extra_args = extra_args
 
-    def fit(self, easting, northing, data):
+    def fit(self, coordinates, data):
         """
         Fit the interpolator to the given data.
 
@@ -58,10 +58,11 @@ class ScipyGridder(BaseGridder):
 
         Parameters
         ----------
-        easting : array
-            The values of the West-East coordinates of each data point.
-        northing : array
-            The values of the South-North coordinates of each data point.
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...). Only easting
+            and northing will be used, all subsequent coordinates will be
+            ignored.
         data : array
             The data values that will be interpolated.
 
@@ -82,13 +83,14 @@ class ScipyGridder(BaseGridder):
             kwargs = {}
         else:
             kwargs = self.extra_args
+        easting, northing = coordinates[:2]
         self.region_ = get_region(easting, northing)
         points = np.column_stack((np.ravel(easting), np.ravel(northing)))
         self.interpolator_ = classes[self.method](points, np.ravel(data),
                                                   **kwargs)
         return self
 
-    def predict(self, easting, northing):
+    def predict(self, coordinates):
         """
         Interpolate data on the given set of points.
 
@@ -96,10 +98,11 @@ class ScipyGridder(BaseGridder):
 
         Parameters
         ----------
-        easting : array
-            The values of the West-East coordinates of each data point.
-        northing : array
-            The values of the South-North coordinates of each data point.
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...). Only easting
+            and northing will be used, all subsequent coordinates will be
+            ignored.
 
         Returns
         -------
@@ -108,4 +111,4 @@ class ScipyGridder(BaseGridder):
 
         """
         check_is_fitted(self, ['interpolator_'])
-        return self.interpolator_((easting, northing))
+        return self.interpolator_(coordinates[:2])

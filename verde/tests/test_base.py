@@ -6,7 +6,7 @@ import pytest
 import numpy as np
 import numpy.testing as npt
 
-from ..base.gridder import get_dims, get_data_names, get_region, BaseGridder
+from ..base import get_dims, get_data_names, get_region, BaseGridder
 from ..coordinates import grid_coordinates, scatter_points
 
 
@@ -100,26 +100,27 @@ class PolyGridder(BaseGridder):
     def __init__(self, degree=1):
         self.degree = degree
 
-    def fit(self, easting, northing, data):
+    def fit(self, coordinates, data):
         "Fit an easting polynomial"
         ndata = data.size
         nparams = self.degree + 1
         jac = np.zeros((ndata, nparams))
         for j in range(nparams):
-            jac[:, j] = easting.ravel()**j
+            jac[:, j] = coordinates[0].ravel()**j
         self.coefs_ = np.linalg.solve(jac.T.dot(jac), jac.T.dot(data.ravel()))
         return self
 
-    def predict(self, easting, northing):
+    def predict(self, coordinates):
         "Predict the data"
-        return np.sum(cof*easting**deg for deg, cof in enumerate(self.coefs_))
+        return np.sum(cof*coordinates[0]**deg
+                      for deg, cof in enumerate(self.coefs_))
 
 
 def test_basegridder():
     "Test basic functionality of BaseGridder"
 
     with pytest.raises(NotImplementedError):
-        BaseGridder().predict(None, None)
+        BaseGridder().predict((None, None))
 
     grd = PolyGridder()
     assert repr(grd) == 'PolyGridder(degree=1)'
@@ -129,26 +130,26 @@ def test_basegridder():
     region = (0, 10, -10, -5)
     shape = (50, 30)
     angular, linear = 2, 100
-    east, north = scatter_points(region, 1000, random_state=0)
-    data = angular*east + linear
-    grd = PolyGridder().fit(east, north, data)
+    coordinates = scatter_points(region, 1000, random_state=0)
+    data = angular*coordinates[0] + linear
+    grd = PolyGridder().fit(coordinates, data)
 
     with pytest.raises(ValueError):
         # A region should be given because it hasn't been assigned
         grd.grid()
 
-    east_true, north_true = grid_coordinates(region, shape)
-    data_true = angular*east_true + linear
+    coordinates_true = grid_coordinates(region, shape)
+    data_true = angular*coordinates_true[0] + linear
     grid = grd.grid(region, shape)
 
     npt.assert_allclose(grd.coefs_, [linear, angular])
     npt.assert_allclose(grid.scalars.values, data_true)
-    npt.assert_allclose(grid.easting.values, east_true[0, :])
-    npt.assert_allclose(grid.northing.values, north_true[:, 0])
+    npt.assert_allclose(grid.easting.values, coordinates_true[0][0, :])
+    npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0])
     npt.assert_allclose(grd.scatter(region, 1000, random_state=0).scalars,
                         data)
     npt.assert_allclose(grd.profile((0, 0), (10, 0), 30).scalars,
-                        angular*east_true[0, :] + linear)
+                        angular*coordinates_true[0][0, :] + linear)
 
 
 def test_basegridder_projection():
@@ -157,11 +158,11 @@ def test_basegridder_projection():
     region = (0, 10, -10, -5)
     shape = (50, 30)
     angular, linear = 2, 100
-    east, north = scatter_points(region, 1000, random_state=0)
-    data = angular*east + linear
-    east_true, north_true = grid_coordinates(region, shape)
-    data_true = angular*east_true + linear
-    grd = PolyGridder().fit(east, north, data)
+    coordinates = scatter_points(region, 1000, random_state=0)
+    data = angular*coordinates[0] + linear
+    coordinates_true = grid_coordinates(region, shape)
+    data_true = angular*coordinates_true[0] + linear
+    grd = PolyGridder().fit(coordinates, data)
 
     # Lets say we want to specify the region for a grid using a coordinate
     # system that is lon/2, lat/2.
@@ -176,7 +177,8 @@ def test_basegridder_projection():
 
     npt.assert_allclose(grd.coefs_, [linear, angular])
     npt.assert_allclose(grid.scalars.values, data_true)
-    npt.assert_allclose(grid.easting.values, east_true[0, :]/2)
-    npt.assert_allclose(grid.northing.values, north_true[:, 0]/2)
+    npt.assert_allclose(grid.easting.values, coordinates_true[0][0, :]/2)
+    npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0]/2)
     npt.assert_allclose(scat.scalars, data)
-    npt.assert_allclose(prof.scalars, angular*east_true[0, :] + linear)
+    npt.assert_allclose(prof.scalars,
+                        angular*coordinates_true[0][0, :] + linear)

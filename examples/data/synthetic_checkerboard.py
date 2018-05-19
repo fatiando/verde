@@ -17,8 +17,8 @@ print("region:", synth.region_)
 print("wavelengths (east, north):", synth.w_east, synth.w_north)
 
 # The CheckerBoard class behaves like any gridder class
-print("Checkerboard value at (2000, -2500):",
-      synth.predict(easting=2000, northing=-2500))
+print("Checkerboard value at (easting=2000, northing=-2500):",
+      synth.predict((2000, -2500)))
 
 # Generating a grid results in a xarray.Dataset
 grid = synth.grid()

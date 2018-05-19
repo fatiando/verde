@@ -38,10 +38,10 @@ lon, lat, bathymetry = vd.block_reduce(data.longitude, data.latitude,
 # Project the data using pyproj so that we can use it as input for the gridder.
 # We'll set the latitude of true scale to the mean latitude of the data.
 projection = pyproj.Proj(proj='merc', lat_ts=data.latitude.mean())
-easting, northing = projection(lon, lat)
+coordinates = projection(lon, lat)
 
 # Now we can set up a gridder for the decimated data
-grd = vd.ScipyGridder(method='cubic').fit(easting, northing, bathymetry)
+grd = vd.ScipyGridder(method='cubic').fit(coordinates, bathymetry)
 print("Gridder used:", grd)
 
 # Get the grid region in geographic coordinates

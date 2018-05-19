@@ -4,7 +4,7 @@ Generators of synthetic datasets.
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
-from ..base.gridder import BaseGridder
+from ..base import BaseGridder
 from ..coordinates import check_region
 
 
@@ -143,16 +143,17 @@ class CheckerBoard(BaseGridder):
         self.region_ = region
         return self
 
-    def predict(self, easting, northing):
+    def predict(self, coordinates):
         """
         Evaluate the checkerboard function on a given set of points.
 
         Parameters
         ----------
-        easting : array
-            The values of the West-East coordinates of each data point.
-        northing : array
-            The values of the South-North coordinates of each data point.
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...). Only easting
+            and northing will be used, all subsequent coordinates will be
+            ignored.
 
         Returns
         -------
@@ -161,6 +162,7 @@ class CheckerBoard(BaseGridder):
 
         """
         check_is_fitted(self, ['region_'])
+        easting, northing = coordinates[:2]
         data = (self.amplitude *
                 np.sin((2*np.pi/self.w_east)*easting) *
                 np.cos((2*np.pi/self.w_north)*northing))
