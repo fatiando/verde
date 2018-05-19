@@ -16,6 +16,11 @@ class BaseGridder(BaseEstimator):
     data returned by it should be a 1d or 2d numpy array for scalar data or a
     tuple with 1d or 2d numpy arrays for each component of vector data.
 
+    Subclasses should define a ``residual_`` attribute after fitting that
+    contains the data residuals ``self.residual_ = data -
+    self.predict(coordinates)``. This is required for compatibility with
+    :class:`verde.Chain`.
+
     Doesn't define any new attributes.
 
     This is a subclass of :class:`sklearn.base.BaseEstimator` and must abide by

@@ -1,13 +1,15 @@
 """
 A gridder that uses scipy.interpolate as the backend.
 """
+from warnings import warn
+
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 from scipy.interpolate import LinearNDInterpolator, NearestNDInterpolator, \
     CloughTocher2DInterpolator
 
 from .base import BaseGridder
-from . import get_region
+from .coordinates import get_region
 
 
 class ScipyGridder(BaseGridder):
@@ -45,7 +47,7 @@ class ScipyGridder(BaseGridder):
         self.method = method
         self.extra_args = extra_args
 
-    def fit(self, coordinates, data):
+    def fit(self, coordinates, data, weights=None):
         """
         Fit the interpolator to the given data.
 
@@ -65,6 +67,11 @@ class ScipyGridder(BaseGridder):
             ignored.
         data : array
             The data values that will be interpolated.
+        weights : None or array
+            If not None, then the weights assigned to each data point.
+            Typically, this should be 1 over the data uncertainty squared.
+            Ignored for this interpolator. Only present for compatibility with
+            other gridder.
 
         Returns
         -------
@@ -83,11 +90,15 @@ class ScipyGridder(BaseGridder):
             kwargs = {}
         else:
             kwargs = self.extra_args
+        if weights is not None:
+            warn("{} does not support weights and they will be ignored."
+                 .format(self.__class__.__name__))
         easting, northing = coordinates[:2]
         self.region_ = get_region(easting, northing)
         points = np.column_stack((np.ravel(easting), np.ravel(northing)))
         self.interpolator_ = classes[self.method](points, np.ravel(data),
                                                   **kwargs)
+        self.residual_ = data - self.predict(coordinates)
         return self
 
     def predict(self, coordinates):

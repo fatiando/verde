@@ -21,6 +21,7 @@ def test_scipy_gridder_same_points():
         grd.fit((data.easting, data.northing), data.scalars)
         predicted = grd.predict((data.easting, data.northing))
         npt.assert_allclose(predicted, data.scalars)
+        npt.assert_allclose(grd.residual_, 0, atol=1e-5)
 
 
 def test_scipy_gridder():
