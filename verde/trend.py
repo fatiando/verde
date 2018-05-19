@@ -6,7 +6,7 @@ from sklearn.utils.validation import check_is_fitted
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 
-from .base.gridder import BaseGridder
+from .base import BaseGridder
 from .coordinates import get_region
 
 
@@ -30,13 +30,13 @@ class Trend(BaseGridder):
     --------
 
     >>> from verde import grid_coordinates
-    >>> east, north = grid_coordinates((1, 5, -5, -1), shape=(5, 5))
-    >>> data = 10 + 2*east - 0.4*north
-    >>> trend = Trend(degree=1).fit(east, north, data)
+    >>> coordinates = grid_coordinates((1, 5, -5, -1), shape=(5, 5))
+    >>> data = 10 + 2*coordinates[0] - 0.4*coordinates[1]
+    >>> trend = Trend(degree=1).fit(coordinates, data)
     >>> print(', '.join(['{:.1f}'.format(i) for i in trend.coef_]))
     10.0, 2.0, -0.4
     >>> import numpy as np
-    >>> np.allclose(trend.predict(east, north), data)
+    >>> np.allclose(trend.predict(coordinates), data)
     True
     >>> np.allclose(trend.residual_, 0, atol=1e-5)
     True
@@ -45,7 +45,7 @@ class Trend(BaseGridder):
     >>> data_out[2, 2] += 500
     >>> weights = np.ones_like(data)
     >>> weights[2, 2] = 1e-10
-    >>> trend_out = Trend(degree=1).fit(east, north, data_out, weights)
+    >>> trend_out = Trend(degree=1).fit(coordinates, data_out, weights)
     >>> print(', '.join(['{:.1f}'.format(i) for i in trend_out.coef_]))
     10.0, 2.0, -0.4
     >>> print('{:.2f}'.format(trend_out.residual_[2, 2]))
@@ -56,7 +56,7 @@ class Trend(BaseGridder):
     def __init__(self, degree):
         self.degree = degree
 
-    def fit(self, easting, northing, data, weights=None):
+    def fit(self, coordinates, data, weights=None):
         """
         Fit the trend to the given data.
 
@@ -67,10 +67,11 @@ class Trend(BaseGridder):
 
         Parameters
         ----------
-        easting : array
-            The values of the West-East coordinates of each data point.
-        northing : array
-            The values of the South-North coordinates of each data point.
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...). Only easting
+            and northing will be used, all subsequent coordinates will be
+            ignored.
         data : array
             The data values of each data point.
         weights : None or array
@@ -83,6 +84,7 @@ class Trend(BaseGridder):
             Returns this estimator instance for chaining operations.
 
         """
+        easting, northing = coordinates[:2]
         if easting.shape != northing.shape or easting.shape != data.shape:
             raise ValueError(
                 "Coordinate and data arrays must have the same shape.")
@@ -102,7 +104,7 @@ class Trend(BaseGridder):
         self.coef_ = regr.coef_/scaler.scale_
         return self
 
-    def predict(self, easting, northing):
+    def predict(self, coordinates):
         """
         Evaluate the polynomial trend on the given set of points.
 
@@ -110,10 +112,11 @@ class Trend(BaseGridder):
 
         Parameters
         ----------
-        easting : array
-            The values of the West-East coordinates of each data point.
-        northing : array
-            The values of the South-North coordinates of each data point.
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...). Only easting
+            and northing will be used, all subsequent coordinates will be
+            ignored.
 
         Returns
         -------
@@ -122,6 +125,7 @@ class Trend(BaseGridder):
 
         """
         check_is_fitted(self, ['coef_'])
+        easting, northing = coordinates[:2]
         jac = trend_jacobian(easting, northing, degree=self.degree)
         shape = np.broadcast(easting, northing).shape
         return jac.dot(self.coef_).reshape(shape)

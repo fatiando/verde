@@ -18,8 +18,8 @@ def test_scipy_gridder_same_points():
     # The interpolation should be perfect on top of the data points
     for method in ['nearest', 'linear', 'cubic']:
         grd = ScipyGridder(method=method)
-        grd.fit(data.easting, data.northing, data.scalars)
-        predicted = grd.predict(data.easting, data.northing)
+        grd.fit((data.easting, data.northing), data.scalars)
+        predicted = grd.predict((data.easting, data.northing))
         npt.assert_allclose(predicted, data.scalars)
 
 
@@ -27,13 +27,14 @@ def test_scipy_gridder():
     "See if the gridder recovers known points."
     synth = CheckerBoard().fit(region=(1000, 5000, -8000, -6000))
     data = synth.scatter(size=20000, random_state=0)
-    east, north = 3000, -7000
-    true_data = synth.predict(east, north)
+    coords = (data.easting, data.northing)
+    pt_coords = (3000, -7000)
+    true_data = synth.predict(pt_coords)
     # nearest will never be too close to the truth
-    grd = ScipyGridder('cubic').fit(data.easting, data.northing, data.scalars)
-    npt.assert_almost_equal(grd.predict(east, north), true_data, decimal=2)
-    grd = ScipyGridder('linear').fit(data.easting, data.northing, data.scalars)
-    npt.assert_almost_equal(grd.predict(east, north), true_data, decimal=1)
+    grd = ScipyGridder('cubic').fit(coords, data.scalars)
+    npt.assert_almost_equal(grd.predict(pt_coords), true_data, decimal=2)
+    grd = ScipyGridder('linear').fit(coords, data.scalars)
+    npt.assert_almost_equal(grd.predict(pt_coords), true_data, decimal=1)
 
 
 def test_scipy_gridder_region():
@@ -42,22 +43,24 @@ def test_scipy_gridder_region():
     synth = CheckerBoard().fit(region=region)
     # Test using xarray objects
     grid = synth.grid()
-    east, north = grid_coordinates(region, grid.scalars.shape)
-    grd = ScipyGridder().fit(east, north, grid.scalars)
+    coords = grid_coordinates(region, grid.scalars.shape)
+    grd = ScipyGridder().fit(coords, grid.scalars)
     npt.assert_allclose(grd.region_, region)
     # Test using pandas objects
-    data = pd.DataFrame({'easting': east.ravel(), 'northing': north.ravel(),
+    data = pd.DataFrame({'easting': coords[0].ravel(),
+                         'northing': coords[1].ravel(),
                          'scalars': grid.scalars.values.ravel()})
-    grd = ScipyGridder().fit(data.easting, data.northing, data.scalars)
+    grd = ScipyGridder().fit((data.easting, data.northing), data.scalars)
     npt.assert_allclose(grd.region_, region)
 
 
 def test_scipy_gridder_extra_args():
     "Passing in extra arguments to scipy"
     data = CheckerBoard().fit().scatter(random_state=100)
+    coords = (data.easting, data.northing)
     grd = ScipyGridder(method='linear', extra_args=dict(rescale=True))
-    grd.fit(data.easting, data.northing, data.scalars)
-    predicted = grd.predict(data.easting, data.northing)
+    grd.fit(coords, data.scalars)
+    predicted = grd.predict(coords)
     npt.assert_allclose(predicted, data.scalars)
 
 
@@ -66,4 +69,4 @@ def test_scipy_gridder_fails():
     data = CheckerBoard().fit().scatter(random_state=0)
     grd = ScipyGridder(method='some invalid method name')
     with pytest.raises(ValueError):
-        grd.fit(data.easting, data.northing, data.scalars)
+        grd.fit((data.easting, data.northing), data.scalars)
