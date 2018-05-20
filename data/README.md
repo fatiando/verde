@@ -27,3 +27,9 @@ Contents:
   original survey, made available by the Geological Survey of Brazil (CPRM)
   through their [GEOSGB portal](http://geosgb.cprm.gov.br/). See the original
   data for more processing information.
+* `california-gps.csv.xz`: GPS velocities (east, north, vertical) from the
+  United States West coast cut from EarthScope Plate Boundary Observatory data
+  provided by UNAVCO through the GAGE Facility with support from the National
+  Science Foundation (NSF) and National Aeronautics and Space Administration
+  (NASA) under NSF Cooperative Agreement No. EAR-1261833. Velocities are
+  referenced to the North American tectonic plate (NAM08).
