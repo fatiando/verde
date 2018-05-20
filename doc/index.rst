@@ -135,3 +135,4 @@ terms of the :ref:`BSD 3-clause License <license>`.
     tutorials/index.rst
     api/index.rst
     license.rst
+    references.rst

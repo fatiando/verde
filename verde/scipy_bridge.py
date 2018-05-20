@@ -8,7 +8,7 @@ from sklearn.utils.validation import check_is_fitted
 from scipy.interpolate import LinearNDInterpolator, NearestNDInterpolator, \
     CloughTocher2DInterpolator
 
-from .base import BaseGridder
+from .base import BaseGridder, check_fit_input
 from .coordinates import get_region
 
 
@@ -33,13 +33,15 @@ class ScipyGridder(BaseGridder):
 
     Attributes
     ----------
+    interpolator_ : scipy interpolator class
+        An instance of the corresponding scipy interpolator class.
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
         :meth:`~verde.ScipyGridder.grid` and
         :meth:`~verde.ScipyGridder.scatter` methods.
-    interpolator_ : scipy interpolator class
-        An instance of the corresponding scipy interpolator class.
+    residual_ : array
+        The difference between the input data and the interpolated values.
 
     """
 
@@ -93,6 +95,8 @@ class ScipyGridder(BaseGridder):
         if weights is not None:
             warn("{} does not support weights and they will be ignored."
                  .format(self.__class__.__name__))
+        coordinates, data, weights = check_fit_input(coordinates, data,
+                                                     weights)
         easting, northing = coordinates[:2]
         self.region_ = get_region(easting, northing)
         points = np.column_stack((np.ravel(easting), np.ravel(northing)))

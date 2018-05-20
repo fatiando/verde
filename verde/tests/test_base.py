@@ -6,7 +6,8 @@ import pytest
 import numpy as np
 import numpy.testing as npt
 
-from ..base import get_dims, get_data_names, get_region, BaseGridder
+from ..base import get_dims, get_data_names, get_region, BaseGridder, \
+    check_fit_input
 from ..coordinates import grid_coordinates, scatter_points
 
 
@@ -182,3 +183,20 @@ def test_basegridder_projection():
     npt.assert_allclose(scat.scalars, data)
     npt.assert_allclose(prof.scalars,
                         angular*coordinates_true[0][0, :] + linear)
+
+
+def test_check_fit_input_fails_coordinates():
+    "Test the failing conditions for check_fit_input"
+    coords = (np.arange(20), np.arange(20))
+    data = np.arange(30)
+    with pytest.raises(ValueError):
+        check_fit_input(coords, data, weights=None)
+
+
+def test_check_fit_input_fails_weights():
+    "Test the failing conditions for check_fit_input"
+    data = np.arange(20)
+    coords = (data, data)
+    weights = np.arange(30)
+    with pytest.raises(ValueError):
+        check_fit_input(coords, data, weights)

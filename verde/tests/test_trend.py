@@ -42,23 +42,6 @@ def test_trend_weights(simple_model):
     npt.assert_allclose(trend.predict(coords), data)
 
 
-def test_trend_fails_coordinates():
-    "Test the failing conditions for the trend estimator"
-    coords = (np.arange(20), np.arange(20))
-    data = np.arange(30)
-    with pytest.raises(ValueError):
-        Trend(degree=10).fit(coords, data)
-
-
-def test_trend_fails_weights():
-    "Test the failing conditions for the trend estimator"
-    data = np.arange(20)
-    coords = (data, data)
-    weights = np.arange(30)
-    with pytest.raises(ValueError):
-        Trend(degree=10).fit(coords, data, weights)
-
-
 def test_polynomial_combinations_fails():
     "Test failing conditions for the combinations"
     with pytest.raises(ValueError):
