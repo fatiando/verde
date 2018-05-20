@@ -400,3 +400,39 @@ def check_data(data):
     if not isinstance(data, tuple):
         data = (data,)
     return data
+
+
+def check_fit_input(coordinates, data, weights):
+    """
+    Validate the inputs to the fit method of gridders.
+
+    Checks that the coordinates, data, and weights (if given) all have the same
+    shape.
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+        Arrays with the coordinates of each data point. Should be in the
+        following order: (easting, northing, vertical, ...).
+    data : array
+        The data values of each data point.
+    weights : None or array
+        If not None, then the weights assigned to each data point.
+        Typically, this should be 1 over the data uncertainty squared.
+
+    Returns
+    -------
+    validated_inputs
+        The validated inputs in the same order. If weights are given, will
+        ravel the array before returning.
+
+    """
+    if any(coord.shape != data.shape for coord in coordinates):
+        raise ValueError(
+            "Coordinate and data arrays must have the same shape.")
+    if weights is not None:
+        if weights.shape != data.shape:
+            raise ValueError(
+                "Weights must have the same shape as the data array.")
+        weights = weights.ravel()
+    return coordinates, data, weights
