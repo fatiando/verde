@@ -111,7 +111,23 @@ def distance_mask(easting, northing, data_easting, data_northing, maxdist):
     mask : array
         The mask boolean array with the same shape as *easting* and *northing*.
 
+    Examples
+    --------
+
+    >>> from verde import grid_coordinates
+    >>> east, north = grid_coordinates((0, 5, -10, -5), spacing=1)
+    >>> mask = distance_mask(east, north, 2.5, -7.5, maxdist=2)
+    >>> print(mask)
+    [[ True  True  True  True  True  True]
+     [ True  True False False  True  True]
+     [ True False False False False  True]
+     [ True False False False False  True]
+     [ True  True False False  True  True]
+     [ True  True  True  True  True  True]]
+
     """
+    data_easting = np.atleast_1d(data_easting)
+    data_northing = np.atleast_1d(data_northing)
     data_points = np.transpose((data_easting.ravel(), data_northing.ravel()))
     tree = cKDTree(data_points)
     points = np.transpose((easting.ravel(), northing.ravel()))
