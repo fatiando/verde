@@ -33,13 +33,15 @@ class ScipyGridder(BaseGridder):
 
     Attributes
     ----------
+    interpolator_ : scipy interpolator class
+        An instance of the corresponding scipy interpolator class.
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
         :meth:`~verde.ScipyGridder.grid` and
         :meth:`~verde.ScipyGridder.scatter` methods.
-    interpolator_ : scipy interpolator class
-        An instance of the corresponding scipy interpolator class.
+    residual_ : array
+        The difference between the input data and the interpolated values.
 
     """
 

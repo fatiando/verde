@@ -47,7 +47,7 @@ weights[outliers] = 1e-5
 # Now we can fit two splines to our data, one with weights and one without.
 # The default spline will fit the data exactly.
 spline = vd.Spline().fit(coordinates, bathymetry)
-# The weights only work if we use an inexact least-squares solution.
+# The weights only work if we use an approximate least-squares solution.
 # This means that the spline won't be exact on the data points.
 # The easiest way of doing this is to apply some damping regularization to
 # smooth the solution.

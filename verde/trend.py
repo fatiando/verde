@@ -26,6 +26,18 @@ class Trend(BaseGridder):
     degree : int
         The degree of the polynomial. Must be >= 1.
 
+    Attributes
+    ----------
+    coef_ : array
+        The estimated polynomial coefficients that fit the observed data.
+    region_ : tuple
+        The boundaries (``[W, E, S, N]``) of the data used to fit the
+        interpolator. Used as the default region for the
+        :meth:`~verde.Trend.grid` and :meth:`~verde.Trend.scatter` methods.
+    residual_ : array
+        The difference between the input data and the predicted polynomial
+        trend.
+
     Examples
     --------
 
@@ -50,6 +62,10 @@ class Trend(BaseGridder):
     10.0, 2.0, -0.4
     >>> print('{:.2f}'.format(trend_out.residual_[2, 2]))
     500.00
+
+    See also
+    --------
+    verde.trend_jacobian ; Make the Jacobian matrix for 2D polynomial
 
     """
 
@@ -80,7 +96,7 @@ class Trend(BaseGridder):
 
         Returns
         -------
-        self : verde.Trend
+        self
             Returns this estimator instance for chaining operations.
 
         """
@@ -183,7 +199,7 @@ def trend_jacobian(easting, northing, degree, dtype='float64'):
     Returns
     -------
     jacobian : 2D array
-        The Jacobian matrix.
+        The (n_data, n_coefficients) Jacobian matrix.
 
     Examples
     --------
@@ -203,6 +219,10 @@ def trend_jacobian(easting, northing, degree, dtype='float64'):
      [ 1  2 -3  4 -6  9]
      [ 1  3 -2  9 -6  4]
      [ 1  4 -1 16 -4  1]]
+
+    See also
+    --------
+    verde.Trend ; Polynomial trend estimator
 
     """
     if easting.shape != northing.shape:

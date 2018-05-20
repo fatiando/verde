@@ -3,13 +3,10 @@ Test the biharmonic splines
 """
 import warnings
 
-import pytest
-import pandas as pd
 import numpy as np
 import numpy.testing as npt
 
-from ..spline import spline_jacobian, Spline
-from ..coordinates import grid_coordinates
+from ..spline import Spline
 from ..datasets.synthetic import CheckerBoard
 
 
