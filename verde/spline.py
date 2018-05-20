@@ -1,6 +1,8 @@
 """
 Biharmonic splines in 2D.
 """
+from warnings import warn
+
 import numpy as np
 import scipy.linalg as spla
 from sklearn.utils.validation import check_is_fitted
@@ -26,12 +28,18 @@ class Spline(BaseGridder):
         """
         coordinates, data, weights = check_fit_input(coordinates, data,
                                                      weights)
+        exact_solution = all(i is None
+                             for i in [self.damping, self.spacing, self.shape])
+        if weights is not None and exact_solution:
+            warn(' '.join([
+                "Weights are ignored for the exact spline solution.",
+                "Use damping or specify a shape/spacing for the forces."]))
         easting, northing = coordinates[:2]
         self.region_ = get_region(easting, northing)
         # Set the force positions. If no shape or spacing are given, then they
         # will coincide with the data points.
         if self.shape is None and self.spacing is None:
-            self.force_coords_ = (easting, northing)
+            self.force_coords_ = (easting.copy(), northing.copy())
         else:
             self.force_coords_ = grid_coordinates(
                 self.region_, shape=self.shape, spacing=self.spacing)
@@ -65,15 +73,15 @@ def spline_jacobian(easting, northing, force_easting, force_northing,
                     fudge=1e-5):
     """
     """
-    if easting.shape != northing.shape:
-        raise ValueError("Coordinate arrays must have the same shape.")
-    if force_easting.shape != force_northing.shape:
-        raise ValueError("Force coordinate arrays must have the same shape.")
-    size = easting.size
+    easting = np.atleast_1d(easting)
+    northing = np.atleast_1d(northing)
+    force_easting = np.atleast_1d(force_easting)
+    force_northing = np.atleast_1d(force_northing)
     # Reshaping the data to a column vector will automatically build a
     # Green's function matrix because of the array broadcasting.
-    distance = np.hypot(easting.reshape((size, 1)) - force_easting.ravel(),
-                        northing.reshape((size, 1)) - force_northing.ravel())
+    distance = np.hypot(
+        easting.reshape((easting.size, 1)) - force_easting.ravel(),
+        northing.reshape((northing.size, 1)) - force_northing.ravel())
     # The fudge factor helps avoid singular matrices when the force and
     # computation point are too close
     distance += fudge
