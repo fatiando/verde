@@ -9,7 +9,7 @@ import pytest
 
 from ..datasets.download import fetch_data
 from ..datasets.sample_data import fetch_baja_bathymetry, \
-    fetch_rio_magnetic_anomaly
+    fetch_rio_magnetic_anomaly, fetch_california_gps
 
 
 def compare_tiny_data(datapath):
@@ -70,3 +70,14 @@ def test_fetch_rio_magnetic_anomaly():
     assert data.shape == (37721, 4)
     assert all(data.columns == ['longitude', 'latitude',
                                 'total_field_anomaly_nt', 'height_ell_m'])
+
+
+def test_fetch_california_gps():
+    "Make sure the data are loaded properly"
+    data = fetch_california_gps()
+    assert data.size == 22122
+    assert data.shape == (2458, 9)
+    columns = ['latitude', 'longitude', 'height', 'velocity_north',
+               'velocity_east', 'velocity_up', 'std_north', 'std_east',
+               'std_up']
+    assert all(data.columns == columns)

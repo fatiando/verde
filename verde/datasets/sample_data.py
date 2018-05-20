@@ -74,3 +74,41 @@ def fetch_rio_magnetic_anomaly(force_download=False):
                            force_download=force_download)
     data = pd.read_csv(data_file, compression='xz')
     return data
+
+
+def fetch_california_gps(force_download=False):
+    """
+    Fetch sample GPS velocity data from California.
+
+    Velocities and their standard deviations are in meters/year. Height is
+    geometric height above WGS84 in meters. Velocities are referenced to the
+    North American tectonic plate (NAM08). The average velocities were released
+    on 2017-12-27.
+
+    This material is based on EarthScope Plate Boundary Observatory data
+    services provided by UNAVCO through the GAGE Facility with support from the
+    National Science Foundation (NSF) and National Aeronautics and Space
+    Administration (NASA) under NSF Cooperative Agreement No. EAR-1261833.
+
+    If the file isn't already in your data directory (``$HOME/.verde/data`` by
+    default), it will be downloaded.
+
+    Parameters
+    ----------
+    force_download : bool
+        If True, will download the file even if it already exists.
+
+    Returns
+    -------
+    data : pandas.DataFrame
+        The GPS velocity data. Columns are longitude, latitude, height
+        (geometric, in meters), East velocity (meter/year), North velocity
+        (meter/year), upward velocity (meter/year), standard deviation of East
+        velocity (meter/year), standard deviation of North velocity
+        (meter/year), standard deviation of upward velocity (meter/year).
+
+    """
+    data_file = fetch_data('california-gps.csv.xz',
+                           force_download=force_download)
+    data = pd.read_csv(data_file, compression='xz')
+    return data
