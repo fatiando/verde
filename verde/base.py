@@ -411,11 +411,14 @@ def check_fit_input(coordinates, data, weights):
     coordinates : tuple of arrays
         Arrays with the coordinates of each data point. Should be in the
         following order: (easting, northing, vertical, ...).
-    data : array
-        The data values of each data point.
+    data : array or tuple of arrays
+        The data values of each data point. Data can have more than one
+        component. In such cases, data should be a tuple of arrays.
     weights : None or array
         If not None, then the weights assigned to each data point.
         Typically, this should be 1 over the data uncertainty squared.
+        If the data has multiple components, the weights have the same number
+        of components.
 
     Returns
     -------
@@ -424,12 +427,24 @@ def check_fit_input(coordinates, data, weights):
         ravel the array before returning.
 
     """
-    if any(coord.shape != data.shape for coord in coordinates):
+    data = check_data(data)
+    if any(i.shape != j.shape for i in coordinates for j in data):
         raise ValueError(
             "Coordinate and data arrays must have the same shape.")
     if weights is not None:
-        if weights.shape != data.shape:
+        weights = check_data(weights)
+        if len(weights) != len(data):
             raise ValueError(
-                "Weights must have the same shape as the data array.")
-        weights = weights.ravel()
+                "Number of data '{}' and weights '{}' must be equal."
+                .format(len(data), len(weights)))
+        if any(i.size != j.size for i in weights for j in data):
+            raise ValueError(
+                "Weights must have the same size as the data array.")
+        weights = tuple(i.ravel() for i in weights)
+    else:
+        weights = tuple([None]*len(data))
+    if len(weights) == 1:
+        weights = weights[0]
+    if len(data) == 1:
+        data = data[0]
     return coordinates, data, weights

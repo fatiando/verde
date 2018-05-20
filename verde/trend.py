@@ -65,7 +65,8 @@ class Trend(BaseGridder):
 
     See also
     --------
-    verde.trend_jacobian ; Make the Jacobian matrix for 2D polynomial
+    verde.trend_jacobian : Make the Jacobian matrix for 2D polynomial
+    verde.VectorTrend : Polynomial trend estimator for multi-component data
 
     """
 
@@ -222,7 +223,8 @@ def trend_jacobian(easting, northing, degree, dtype='float64'):
 
     See also
     --------
-    verde.Trend ; Polynomial trend estimator
+    verde.Trend : Polynomial trend estimator
+    verde.VectorTrend : Polynomial trend estimator for multi-component data
 
     """
     if easting.shape != northing.shape:
@@ -234,3 +236,114 @@ def trend_jacobian(easting, northing, degree, dtype='float64'):
     for col, (i, j) in enumerate(combinations):
         out[:, col] = (easting.ravel()**i)*(northing.ravel()**j)
     return out
+
+
+class VectorTrend(BaseGridder):
+    """
+    Fit 2D polynomial trends to multi-component vector data.
+
+    Each data component is fitted to a separated :class:`verde.Trend`. The
+    trends can be evaluated separately through the ``VectorTrend.component_``
+    attribute or jointly using the methods of this class.
+
+    Parameters
+    ----------
+    degree : int
+        The degree of the polynomials. Must be >= 1.
+
+    Attributes
+    ----------
+    components_ : list
+        List of the fitted :class:`verde.Trend` on each component of the data.
+    region_ : tuple
+        The boundaries (``[W, E, S, N]``) of the data used to fit the
+        interpolator. Used as the default region for the
+        :meth:`~verde.Trend.grid` and :meth:`~verde.Trend.scatter` methods.
+    residual_ : list of array
+        The difference between each component of the input data and the
+        predicted polynomial trend.
+
+    See also
+    --------
+    verde.Trend : Polynomial trend estimator
+    verde.trend_jacobian : Make the Jacobian matrix for 2D polynomial
+
+    """
+
+    def __init__(self, degree):
+        self.degree = degree
+
+    def fit(self, coordinates, data, weights=None):
+        """
+        Fit the trend to the given multi-component data.
+
+        The data region is captured and used as default for the
+        :meth:`~verde.VectorTrend.grid` and :meth:`~verde.VectorTrend.scatter`
+        methods.
+
+        All input arrays must have the same shape. If weights are given, there
+        must be a separate array for each component of the data.
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...). Only easting
+            and northing will be used, all subsequent coordinates will be
+            ignored.
+        data : tuple of array
+            The data values of each component at each data point. Must be a
+            tuple.
+        weights : None or tuple of array
+            If not None, then the weights assigned to each data point of each
+            data component. Typically, this should be 1 over the data
+            uncertainty squared.
+
+        Returns
+        -------
+        self
+            Returns this estimator instance for chaining operations.
+
+        """
+        if not isinstance(data, tuple):
+            raise ValueError(
+                "Data must be a tuple of arrays. {} given.".format(type(data)))
+        if weights is not None and not isinstance(weights, tuple):
+            raise ValueError(
+                "Weights must be a tuple of arrays. {} given."
+                .format(type(weights)))
+        coordinates, data, weights = check_fit_input(coordinates, data,
+                                                     weights)
+        self.region_ = get_region(*coordinates[:2])
+        self.component_ = [
+            Trend(degree=self.degree).fit(coordinates, data_comp, weight_comp)
+            for data_comp, weight_comp in zip(data, weights)]
+        self.residual_ = tuple(
+            data_comp - comp.predict(coordinates).reshape(data_comp.shape)
+            for data_comp, comp in zip(data, self.component_))
+        return self
+
+    def predict(self, coordinates):
+        """
+        Evaluate the polynomial trend of each component on a of points.
+
+        Requires a fitted estimator (see :meth:`~verde.VectorTrend.fit`).
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...). Only easting
+            and northing will be used, all subsequent coordinates will be
+            ignored.
+
+        Returns
+        -------
+        data : tuple of array
+            The trend values for each vector component evaluated on the given
+            points. The order of components will be the same as was provided to
+            :meth:`~verde.VectorTrend.fit`.
+
+        """
+        check_is_fitted(self, ['component_'])
+        return tuple(comp.predict(coordinates) for comp in self.component_)
