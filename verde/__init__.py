@@ -11,6 +11,7 @@ from .coordinates import scatter_points, grid_coordinates, inside, \
 from .grid_math import block_reduce
 from .scipy_bridge import ScipyGridder
 from .trend import Trend, trend_jacobian
+from .chain import Chain
 
 
 # Get the version number through versioneer

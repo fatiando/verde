@@ -1,8 +1,11 @@
 """
 Test the scipy based interpolator.
 """
+import warnings
+
 import pytest
 import pandas as pd
+import numpy as np
 import numpy.testing as npt
 
 from ..scipy_bridge import ScipyGridder
@@ -21,6 +24,7 @@ def test_scipy_gridder_same_points():
         grd.fit((data.easting, data.northing), data.scalars)
         predicted = grd.predict((data.easting, data.northing))
         npt.assert_allclose(predicted, data.scalars)
+        npt.assert_allclose(grd.residual_, 0, atol=1e-5)
 
 
 def test_scipy_gridder():
@@ -70,3 +74,16 @@ def test_scipy_gridder_fails():
     grd = ScipyGridder(method='some invalid method name')
     with pytest.raises(ValueError):
         grd.fit((data.easting, data.northing), data.scalars)
+
+
+def test_scipy_gridder_warns():
+    "Check that a warning is issued when using weights."
+    data = CheckerBoard().fit().scatter(random_state=100)
+    weights = np.ones_like(data.scalars)
+    grd = ScipyGridder()
+    msg = "ScipyGridder does not support weights and they will be ignored."
+    with warnings.catch_warnings(record=True) as warn:
+        grd.fit((data.easting, data.northing), data.scalars, weights=weights)
+        assert len(warn) == 1
+        assert issubclass(warn[-1].category, UserWarning)
+        assert str(warn[-1].message) == msg
