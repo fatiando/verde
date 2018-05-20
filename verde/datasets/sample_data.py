@@ -78,7 +78,7 @@ def fetch_rio_magnetic_anomaly(force_download=False):
 
 def fetch_california_gps(force_download=False):
     """
-    Fetch sample GPS velocity data from California.
+    Fetch sample GPS velocity data from California (the U.S. West coast).
 
     Velocities and their standard deviations are in meters/year. Height is
     geometric height above WGS84 in meters. Velocities are referenced to the

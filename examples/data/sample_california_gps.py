@@ -2,10 +2,10 @@
 GPS velocities from California
 ==============================
 
-We provide sample 3-component GPS velocity data around the San Andreas Fault
-System cut from EarthScope Plate Boundary Observatory data provided by UNAVCO.
-The velocities are in the North American tectonic plate reference system
-(NAM08). The velocities and their associated standard deviations are in
+We provide sample 3-component GPS velocity data from the West coast of the U.S.
+The data were cut from EarthScope Plate Boundary Observatory data provided by
+UNAVCO. The velocities are in the North American tectonic plate reference
+system (NAM08). The velocities and their associated standard deviations are in
 meters/year.
 """
 import matplotlib.pyplot as plt
@@ -21,20 +21,22 @@ import verde as vd
 data = vd.datasets.fetch_california_gps()
 print(data.head())
 
-# Make a plot of the data using Cartopy to handle projections and coastlines
+
 def setup_map(ax):
     "Set the proper ticks for a Cartopy map and draw land and water"
-    ax.set_xticks(np.arange(-124, -115, 2), crs=crs)
+    ax.set_xticks(np.arange(-124, -115, 4), crs=crs)
     ax.set_yticks(np.arange(33, 42, 2), crs=crs)
     ax.xaxis.set_major_formatter(LongitudeFormatter())
     ax.yaxis.set_major_formatter(LatitudeFormatter())
-    # ax.set_extent(, crs=crs)
+    ax.set_extent(vd.get_region(data.longitude, data.latitude), crs=crs)
     # Plot the land and ocean as a solid color
     ax.add_feature(cfeature.LAND)
     ax.add_feature(cfeature.OCEAN)
 
+
+# Make a plot of the data using Cartopy to handle projections and coastlines
 crs = ccrs.PlateCarree()
-fig, axes = plt.subplots(1, 2, figsize=(7, 6),
+fig, axes = plt.subplots(1, 2, figsize=(8, 4),
                          subplot_kw=dict(projection=ccrs.Mercator()))
 # Plot the horizontal velocity vectors
 ax = axes[0]
@@ -49,9 +51,9 @@ ax.set_title('Vertical velocity')
 setup_map(ax)
 maxabs = np.abs([data.velocity_up.min(), data.velocity_up.max()]).max()
 tmp = ax.scatter(data.longitude, data.latitude, c=data.velocity_up,
-                 s=10, vmin=-maxabs, vmax=maxabs, cmap='seismic',
+                 s=10, vmin=-maxabs, vmax=maxabs, cmap='RdYlBu_r',
                  transform=crs)
 cb = plt.colorbar(tmp, ax=ax)
 cb.set_label('meters/year')
-plt.tight_layout()
+plt.tight_layout(w_pad=0)
 plt.show()
