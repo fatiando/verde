@@ -46,42 +46,28 @@ def test_get_dims_fails():
 
 def test_get_data_names():
     "Tests that get_data_names returns the expected results"
-    grd = BaseGridder()
-    assert get_data_names(grd, data_names=None) == ('scalars',)
-    assert get_data_names(grd, data_names=('a', 'b')) == ('a', 'b')
-
-    grd.data_type = 'scalar'
-    assert get_data_names(grd, data_names=None) == ('scalars',)
-    assert get_data_names(grd, data_names=('a', 'b')) == ('a', 'b')
-
-    grd.data_type = 'vector2d'
-    assert get_data_names(grd, data_names=None) == ('east_component',
-                                                    'north_component')
-    assert get_data_names(grd, data_names=('a', 'b')) == ('a', 'b')
-
-    grd.data_type = 'vector3d'
-    assert get_data_names(grd, data_names=None) == ('east_component',
-                                                    'north_component',
-                                                    'vertical_component')
-    assert get_data_names(grd, data_names=('a', 'b')) == ('a', 'b')
-
-    # Make sure the given dims is returned no matter what
-    grd.data_type = 'an invalid type'
-    assert get_data_names(grd, data_names=('a', 'b')) == ('a', 'b')
+    data1 = (np.arange(10), )
+    data2 = tuple([np.arange(10)]*2)
+    data3 = tuple([np.arange(10)]*3)
+    # Test the default names
+    assert get_data_names(data1, data_names=None) == ('scalars',)
+    assert get_data_names(data2, data_names=None) == ('east_component',
+                                                      'north_component')
+    assert get_data_names(data3, data_names=None) == ('east_component',
+                                                      'north_component',
+                                                      'vertical_component')
+    # Test custom names
+    assert get_data_names(data1, data_names=('a',)) == ('a',)
+    assert get_data_names(data2, data_names=('a', 'b')) == ('a', 'b')
+    assert get_data_names(data3, data_names=('a', 'b', 'c')) == ('a', 'b', 'c')
 
 
 def test_get_data_names_fails():
     "Check if fails for invalid data types"
-    grd = BaseGridder()
     with pytest.raises(ValueError):
-        grd.data_type = 'Scalars'
-        get_data_names(grd, data_names=None)
+        get_data_names(tuple([np.arange(5)]*4), data_names=None)
     with pytest.raises(ValueError):
-        grd.data_type = 'Vector3d'
-        get_data_names(grd, data_names=None)
-    with pytest.raises(ValueError):
-        grd.data_type = 'some totally not valid name'
-        get_data_names(grd, data_names=None)
+        get_data_names(tuple([np.arange(5)]*2), data_names=("meh",))
 
 
 def test_get_region():
