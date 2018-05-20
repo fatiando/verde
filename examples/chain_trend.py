@@ -36,7 +36,7 @@ coordinates = projection(lon, lat)
 # Create a chain that fits a 2nd degree trend to the anomaly data and then a
 # standard gridder to the residuals
 chain = vd.Chain([('trend', vd.Trend(degree=2)),
-                  ('gridder', vd.ScipyGridder())])
+                  ('spline', vd.Spline(damping=1e-8))])
 print("Chained estimator:", chain)
 # Calling 'fit' will automatically run the data through the chain
 chain.fit(coordinates, total_field)
@@ -47,7 +47,7 @@ grid_trend = chain.named_steps['trend'].grid()
 print("\nTrend grid:")
 print(grid_trend)
 
-grid_residual = chain.named_steps['gridder'].grid()
+grid_residual = chain.named_steps['spline'].grid()
 print("\nResidual grid:")
 print(grid_residual)
 
@@ -65,7 +65,7 @@ crs = ccrs.PlateCarree()
 
 plt.figure(figsize=(7, 5))
 ax = plt.axes(projection=ccrs.Mercator())
-ax.set_title("Chained trend and gridder")
+ax.set_title("Chained trend and spline")
 maxabs = np.max(np.abs([grid.total_field_anomaly.min(),
                         grid.total_field_anomaly.max()]))
 pc = ax.pcolormesh(grid.longitude, grid.latitude, grid.total_field_anomaly,
