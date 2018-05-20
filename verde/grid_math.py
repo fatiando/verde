@@ -2,7 +2,7 @@
 Operations on spatial data: block operations, derivatives, etc.
 """
 import numpy as np
-from scipy.spatial import cKDTree
+from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
 
 from .coordinates import block_region, inside, get_region
 
@@ -112,7 +112,8 @@ def distance_mask(easting, northing, data_easting, data_northing, maxdist):
         The mask boolean array with the same shape as *easting* and *northing*.
 
     """
-    tree = cKDTree(np.transpose((data_easting.ravel(), data_northing.ravel())))
+    data_points = np.transpose((data_easting.ravel(), data_northing.ravel()))
+    tree = cKDTree(data_points)
     points = np.transpose((easting.ravel(), northing.ravel()))
     distance = tree.query(points)[0].reshape(easting.shape)
     return distance > maxdist
