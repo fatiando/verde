@@ -7,7 +7,7 @@ from sklearn.utils.validation import check_is_fitted
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression, Ridge
 
-from .base import BaseGridder
+from .base import BaseGridder, check_fit_input
 from .coordinates import grid_coordinates, get_region
 
 
@@ -24,10 +24,9 @@ class Spline(BaseGridder):
     def fit(self, coordinates, data, weights=None):
         """
         """
+        coordinates, data, weights = check_fit_input(coordinates, data,
+                                                     weights)
         easting, northing = coordinates[:2]
-        if easting.shape != northing.shape and easting.shape != data.shape:
-            raise ValueError(
-                "Coordinate and data arrays must have the same shape.")
         self.region_ = get_region(easting, northing)
         # Set the force positions. If no shape or spacing are given, then they
         # will coincide with the data points.
