@@ -6,7 +6,7 @@ from sklearn.utils.validation import check_is_fitted
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 
-from .base import BaseGridder
+from .base import BaseGridder, check_fit_input
 from .coordinates import get_region
 
 
@@ -84,15 +84,9 @@ class Trend(BaseGridder):
             Returns this estimator instance for chaining operations.
 
         """
+        coordinates, data, weights = check_fit_input(coordinates, data,
+                                                     weights)
         easting, northing = coordinates[:2]
-        if easting.shape != northing.shape or easting.shape != data.shape:
-            raise ValueError(
-                "Coordinate and data arrays must have the same shape.")
-        if weights is not None:
-            if weights.shape != data.shape:
-                raise ValueError(
-                    "Weights must have the same shape as the data array.")
-            weights = weights.ravel()
         self.region_ = get_region(easting, northing)
         jac = trend_jacobian(easting, northing, degree=self.degree,
                              dtype=data.dtype)

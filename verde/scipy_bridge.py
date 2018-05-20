@@ -8,7 +8,7 @@ from sklearn.utils.validation import check_is_fitted
 from scipy.interpolate import LinearNDInterpolator, NearestNDInterpolator, \
     CloughTocher2DInterpolator
 
-from .base import BaseGridder
+from .base import BaseGridder, check_fit_input
 from .coordinates import get_region
 
 
@@ -93,6 +93,8 @@ class ScipyGridder(BaseGridder):
         if weights is not None:
             warn("{} does not support weights and they will be ignored."
                  .format(self.__class__.__name__))
+        coordinates, data, weights = check_fit_input(coordinates, data,
+                                                     weights)
         easting, northing = coordinates[:2]
         self.region_ = get_region(easting, northing)
         points = np.column_stack((np.ravel(easting), np.ravel(northing)))
