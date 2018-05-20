@@ -2,6 +2,7 @@
 Operations on spatial data: block operations, derivatives, etc.
 """
 import numpy as np
+from scipy.spatial import cKDTree
 
 from .coordinates import block_region, inside, get_region
 
@@ -83,3 +84,35 @@ def block_reduce(easting, northing, data, reduction, spacing, region=None,
                 re_east.append(reduction(easting[inblock]))
                 re_north.append(reduction(northing[inblock]))
     return np.array(re_east), np.array(re_north), np.array(re_data)
+
+
+def distance_mask(easting, northing, data_easting, data_northing, maxdist):
+    """
+    Create a mask for points that are too far from the given data points.
+
+    Produces a mask array that is True when a point is more than *maxdist* from
+    the closest data point.
+
+    Parameters
+    ----------
+    easting : array
+        The West-East coordinates of the points that will be masked.
+    northing : array
+        The South-North coordinates of the points that will be masked.
+    data_easting : array
+        The West-East coordinates of the data points.
+    data_northing : array
+        The South-North coordinates of the data points.
+    maxdist : float
+        The maximum distance that a point can be from the closest data point.
+
+    Returns
+    -------
+    mask : array
+        The mask boolean array with the same shape as *easting* and *northing*.
+
+    """
+    tree = cKDTree(np.transpose((data_easting.ravel(), data_northing.ravel())))
+    points = np.transpose((easting.ravel(), northing.ravel()))
+    distance = tree.query(points)[0].reshape(easting.shape)
+    return distance > maxdist
