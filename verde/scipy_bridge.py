@@ -126,4 +126,5 @@ class ScipyGridder(BaseGridder):
 
         """
         check_is_fitted(self, ['interpolator_'])
-        return self.interpolator_(coordinates[:2])
+        easting, northing = coordinates[:2]
+        return self.interpolator_((easting, northing))
