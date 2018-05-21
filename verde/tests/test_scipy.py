@@ -18,13 +18,15 @@ def test_scipy_gridder_same_points():
     region = (1000, 5000, -8000, -7000)
     synth = CheckerBoard().fit(region=region)
     data = synth.scatter(size=1000, random_state=0)
+    coords = (data.easting, data.northing)
     # The interpolation should be perfect on top of the data points
     for method in ['nearest', 'linear', 'cubic']:
         grd = ScipyGridder(method=method)
-        grd.fit((data.easting, data.northing), data.scalars)
-        predicted = grd.predict((data.easting, data.northing))
+        grd.fit(coords, data.scalars)
+        predicted = grd.predict(coords)
         npt.assert_allclose(predicted, data.scalars)
         npt.assert_allclose(grd.residual_, 0, atol=1e-5)
+        npt.assert_allclose(grd.score(coords, data.scalars), 1)
 
 
 def test_scipy_gridder():

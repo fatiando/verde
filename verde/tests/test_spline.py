@@ -20,6 +20,7 @@ def test_spline():
     spline = Spline().fit(coords, data.scalars)
     npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-5)
     npt.assert_allclose(spline.residual_, 0, atol=1e-5)
+    npt.assert_allclose(spline.score(coords, data.scalars), 1)
     # There should be 1 force per data point
     assert data.scalars.size == spline.force_.size
     npt.assert_allclose(spline.force_coords_, coords)

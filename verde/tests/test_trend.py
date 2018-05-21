@@ -84,6 +84,7 @@ def test_vector_trend(simple_2d_model):
         npt.assert_allclose(trend.component_[i].coef_, coef)
         npt.assert_allclose(trend.predict(coords)[i], data[i])
         npt.assert_allclose(trend.residual_[i], 0, atol=1e-5)
+        npt.assert_allclose(trend.score(coords, data), 1)
 
 
 def test_vector_trend_3d(simple_3d_model):
@@ -94,6 +95,7 @@ def test_vector_trend_3d(simple_3d_model):
         npt.assert_allclose(trend.component_[i].coef_, coef)
         npt.assert_allclose(trend.predict(coords)[i], data[i])
         npt.assert_allclose(trend.residual_[i], 0, atol=1e-5)
+        npt.assert_allclose(trend.score(coords, data), 1)
 
 
 def test_vector_trend_fails(simple_2d_model):
