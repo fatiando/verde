@@ -10,7 +10,7 @@ from .coordinates import scatter_points, grid_coordinates, inside, \
     profile_coordinates, block_region, get_region
 from .grid_math import block_reduce, distance_mask
 from .scipy_bridge import ScipyGridder
-from .trend import Trend, trend_jacobian
+from .trend import Trend, trend_jacobian, VectorTrend
 from .chain import Chain
 from .spline import Spline, spline_jacobian
 

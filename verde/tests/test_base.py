@@ -186,3 +186,5 @@ def test_check_fit_input_fails_weights():
     weights = np.arange(30)
     with pytest.raises(ValueError):
         check_fit_input(coords, data, weights)
+    with pytest.raises(ValueError):
+        check_fit_input(coords, (data, data), weights)
