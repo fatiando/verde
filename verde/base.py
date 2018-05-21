@@ -3,7 +3,9 @@ Base classes for all gridders.
 """
 import xarray as xr
 import pandas as pd
+import numpy as np
 from sklearn.base import BaseEstimator
+from sklearn.metrics import r2_score
 
 from .coordinates import grid_coordinates, profile_coordinates, scatter_points
 
@@ -114,6 +116,45 @@ class BaseGridder(BaseEstimator):
 
         """
         raise NotImplementedError()
+
+    def score(self, coordinates, data, weights=None):
+        """
+        Score the gridder predictions against the given data.
+
+        Calculates the R^2 coefficient of determination of between the
+        predicted values and the given data values. A maximum score of 1 means
+        a perfect fit. The score can be negative.
+
+        If the data has more than 1 component, the scores of each component
+        will be averaged.
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...).
+        data : array or tuple of arrays
+            The data values of each data point. If the data has more than one
+            component, *data* must be a tuple of arrays (one for each
+            component).
+        weights : None or array or tuple of arrays
+            If not None, then the weights assigned to each data point. If more
+            than one data component is provided, you must provide a weights
+            array for each data component (if not None).
+
+        Returns
+        -------
+        score : float
+            The R^2 score
+
+        """
+        coordinates, data, weights = check_fit_input(coordinates, data,
+                                                     weights, ravel=False)
+        pred = check_data(self.predict(coordinates))
+        result = np.mean(
+            [r2_score(datai, predi, sample_weight=weighti)
+             for datai, predi, weighti in zip(data, pred, weights)])
+        return result
 
     def grid(self, region=None, shape=None, spacing=None, adjust='spacing',
              dims=None, data_names=None, projection=None):
@@ -399,7 +440,7 @@ def check_data(data):
     return data
 
 
-def check_fit_input(coordinates, data, weights):
+def check_fit_input(coordinates, data, weights, ravel=True):
     """
     Validate the inputs to the fit method of gridders.
 
@@ -419,6 +460,10 @@ def check_fit_input(coordinates, data, weights):
         Typically, this should be 1 over the data uncertainty squared.
         If the data has multiple components, the weights have the same number
         of components.
+    ravel : bool
+        If False, data and weights will be tuples always. If they are single
+        arrays, then they will be returned as a 1-element tuple. If True, will
+        only return tuples if there are more than 1 array in each.
 
     Returns
     -------
@@ -443,8 +488,9 @@ def check_fit_input(coordinates, data, weights):
         weights = tuple(i.ravel() for i in weights)
     else:
         weights = tuple([None]*len(data))
-    if len(weights) == 1:
-        weights = weights[0]
-    if len(data) == 1:
-        data = data[0]
+    if ravel:
+        if len(weights) == 1:
+            weights = weights[0]
+        if len(data) == 1:
+            data = data[0]
     return coordinates, data, weights
