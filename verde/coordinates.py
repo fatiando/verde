@@ -423,66 +423,6 @@ def profile_coordinates(point1, point2, size, coordinate_system='cartesian'):
     return easting, northing, distances
 
 
-def block_region(region, spacing, adjust='spacing'):
-    """
-    Divide a region into blocks and yield the boundaries of each block.
-
-    This is a generator. Use the ``list`` function to turn it into a list.
-
-    Parameters
-    ----------
-    region : list = [W, E, S, N]
-        The boundaries of a given region in Cartesian or geographic
-        coordinates.
-    spacing : float, tuple = (s_north, s_east), or None
-        The block size in the South-North and West-East directions,
-        respectively. A single value means that the size is equal in both
-        directions.
-    adjust : {'spacing', 'region'}
-        Whether to adjust the spacing or the region if required. Ignored if
-        *shape* is given instead of *spacing*. Defaults to adjusting the
-        spacing.
-
-    Yields
-    ------
-    block_region : tuple = (W, E, S, N)
-        The boundaries of each block taken from the region.
-
-    See also
-    --------
-    inside : Determine which points fall inside a given region.
-    block_reduce : Apply a reduction operation to the data in blocks (windows).
-
-    Examples
-    --------
-
-    >>> for block in block_region((0, 3, -20, -18), spacing=1):
-    ...     print(block)
-    (0.0, 1.0, -20.0, -19.0)
-    (1.0, 2.0, -20.0, -19.0)
-    (2.0, 3.0, -20.0, -19.0)
-    (0.0, 1.0, -19.0, -18.0)
-    (1.0, 2.0, -19.0, -18.0)
-    (2.0, 3.0, -19.0, -18.0)
-    >>> # The block size can be different for each dimension. It will be
-    >>> # rounded to the nearest multiple of the region.
-    >>> for block in block_region((0, 3, -20, -18), spacing=(1, 1.4)):
-    ...     print(block)
-    (0.0, 1.5, -20.0, -19.0)
-    (1.5, 3.0, -20.0, -19.0)
-    (0.0, 1.5, -19.0, -18.0)
-    (1.5, 3.0, -19.0, -18.0)
-
-    """
-    east, north = grid_coordinates(region, spacing=spacing, adjust=adjust)
-    nnorth, neast = east.shape
-    for i in range(nnorth - 1):
-        s, n = north[i:i + 2, 0]
-        for j in range(neast - 1):
-            w, e = east[0, j:j + 2]
-            yield (w, e, s, n)
-
-
 def inside(easting, northing, region, out=None, tmp=None):
     """
     Determine which points fall inside a given region.
@@ -514,11 +454,6 @@ def inside(easting, northing, region, out=None, tmp=None):
         An array of booleans with the same shape as the input coordinate
         arrays. Will be ``True`` if the respective coordinates fall inside the
         area, ``False`` otherwise.
-
-    See also
-    --------
-    block_reduce : Apply a reduction operation to the data in blocks (windows).
-    block_region : Divide a region into blocks and yield their boundaries.
 
     Examples
     --------

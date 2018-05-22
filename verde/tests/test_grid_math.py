@@ -11,7 +11,7 @@ from ..grid_math import block_reduce
 def test_block_reduce():
     "Try reducing constant values in a regular grid"
     region = (-5, 0, 5, 10)
-    east, north = grid_coordinates(region, spacing=0.1)
+    east, north = grid_coordinates(region, spacing=0.1, pixel_register=True)
     data = 20*np.ones_like(east)
     re_east, re_north, re_data = block_reduce(
         east, north, data, np.mean, spacing=1)
