@@ -31,21 +31,21 @@ data = vd.datasets.fetch_baja_bathymetry()
 # the oversampling along the ship tracks. We'll use a blocked median with 5
 # arc-minute blocks.
 spacing = 5/60
-lon, lat, bathymetry = vd.block_reduce(data.longitude, data.latitude,
-                                       data.bathymetry_m, reduction=np.median,
-                                       spacing=spacing)
+coordinates, bathymetry = vd.block_reduce(
+    (data.longitude, data.latitude), data.bathymetry_m, reduction=np.median,
+    spacing=spacing)
 
 # Project the data using pyproj so that we can use it as input for the gridder.
 # We'll set the latitude of true scale to the mean latitude of the data.
 projection = pyproj.Proj(proj='merc', lat_ts=data.latitude.mean())
-coordinates = projection(lon, lat)
+proj_coordinates = projection(*coordinates)
 
 # Now we can set up a gridder for the decimated data
-grd = vd.ScipyGridder(method='cubic').fit(coordinates, bathymetry)
+grd = vd.ScipyGridder(method='cubic').fit(proj_coordinates, bathymetry)
 print("Gridder used:", grd)
 
 # Get the grid region in geographic coordinates
-region = vd.get_region(data.longitude, data.latitude)
+region = vd.get_region((data.longitude, data.latitude))
 print("Data region:", region)
 
 # The 'grid' method can still make a geographic grid if we pass in a projection
@@ -75,7 +75,7 @@ pc = ax.pcolormesh(grid.longitude, grid.latitude, grid.bathymetry_m,
 cb = plt.colorbar(pc, pad=0.08)
 cb.set_label('bathymetry [m]')
 # Plot the locations of the decimated data
-ax.plot(lon, lat, '.k', markersize=0.5, transform=crs)
+ax.plot(*coordinates, '.k', markersize=0.5, transform=crs)
 # Plot the land as a solid color
 ax.add_feature(cfeature.LAND, edgecolor='black', zorder=2)
 ax.set_extent(region, crs=crs)

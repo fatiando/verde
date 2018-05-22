@@ -21,13 +21,13 @@ import verde as vd
 
 # We'll test this on the Baja California shipborne bathymetry data
 data = vd.datasets.fetch_baja_bathymetry()
-region = vd.get_region(data.longitude, data.latitude)
+region = vd.get_region((data.longitude, data.latitude))
 
 # Before gridding, we need to decimate the data to avoid aliasing.
 spacing = 10/60
-lon, lat, bathymetry = vd.block_reduce(data.longitude, data.latitude,
-                                       data.bathymetry_m, reduction=np.median,
-                                       spacing=spacing)
+coordinates, bathymetry = vd.block_reduce(
+    (data.longitude, data.latitude), data.bathymetry_m, reduction=np.median,
+    spacing=spacing)
 
 # Now we can add some outliers to test our spline
 outliers = np.random.RandomState(2).randint(0, bathymetry.size, size=20)
@@ -37,7 +37,7 @@ print("Index of outliers:", outliers)
 # Project the data using pyproj so that we can use it as input for the gridder.
 # We'll set the latitude of true scale to the mean latitude of the data.
 projection = pyproj.Proj(proj='merc', lat_ts=data.latitude.mean())
-coordinates = projection(lon, lat)
+proj_coordinates = projection(*coordinates)
 
 # Create an array of weights and set the weights for the outliers to a very low
 # value
@@ -46,12 +46,13 @@ weights[outliers] = 1e-5
 
 # Now we can fit two splines to our data, one with weights and one without.
 # The default spline will fit the data exactly.
-spline = vd.Spline().fit(coordinates, bathymetry)
+spline = vd.Spline().fit(proj_coordinates, bathymetry)
 # The weights only work if we use an approximate least-squares solution.
 # This means that the spline won't be exact on the data points.
 # The easiest way of doing this is to apply some damping regularization to
 # smooth the solution.
-spline_weights = vd.Spline(damping=1e-8).fit(coordinates, bathymetry, weights)
+spline_weights = vd.Spline(damping=1e-8).fit(proj_coordinates, bathymetry,
+                                             weights)
 
 # We'll make two geographic grids, one for each spline, to compare the results
 grids = [sp.grid(region=region, spacing=spacing, projection=projection,
@@ -72,6 +73,7 @@ for ax, title, grid in zip(axes, titles, grids):
     # Plot the land as a solid color
     ax.add_feature(cfeature.LAND, edgecolor='black', zorder=2)
     # Plot the locations of the decimated data
+    lon, lat = coordinates
     ax.plot(lon, lat, '.k', markersize=0.5, transform=crs)
     # Plot the locations of the outliers
     ax.plot(lon[outliers], lat[outliers], 'xk', transform=crs,

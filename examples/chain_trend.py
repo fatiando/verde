@@ -19,19 +19,19 @@ import verde as vd
 
 # Load the Rio de Janeiro total field magnetic anomaly data
 data = vd.datasets.fetch_rio_magnetic_anomaly()
-region = vd.get_region(data.longitude, data.latitude)
+region = vd.get_region((data.longitude, data.latitude))
 
 # Before gridding, we need to decimate the data using a blocked mean to avoid
 # aliasing
 spacing = 0.5/60
-lon, lat, total_field = vd.block_reduce(data.longitude, data.latitude,
-                                        data.total_field_anomaly_nt,
-                                        reduction=np.median, spacing=spacing)
+coordinates, total_field = vd.block_reduce(
+    (data.longitude, data.latitude), data.total_field_anomaly_nt,
+    reduction=np.median, spacing=spacing)
 
 # Project the data using pyproj so that we can use it as input for the gridder.
 # We'll set the latitude of true scale to the mean latitude of the data.
 projection = pyproj.Proj(proj='merc', lat_ts=data.latitude.mean())
-coordinates = projection(lon, lat)
+proj_coordinates = projection(*coordinates)
 
 # Create a chain that fits a 2nd degree trend to the anomaly data and then a
 # standard gridder to the residuals
@@ -39,7 +39,7 @@ chain = vd.Chain([('trend', vd.Trend(degree=2)),
                   ('spline', vd.Spline(damping=1e-8))])
 print("Chained estimator:", chain)
 # Calling 'fit' will automatically run the data through the chain
-chain.fit(coordinates, total_field)
+chain.fit(proj_coordinates, total_field)
 
 # Each component of the chain can be accessed separately using the
 # 'named_steps' attribute
@@ -73,7 +73,7 @@ pc = ax.pcolormesh(grid.longitude, grid.latitude, grid.total_field_anomaly,
 cb = plt.colorbar(pc, pad=0.01)
 cb.set_label('total field anomaly [nT]')
 # Plot the locations of the decimated data
-ax.plot(lon, lat, '.k', markersize=0.5, transform=crs)
+ax.plot(*coordinates, '.k', markersize=0.5, transform=crs)
 # Set the proper ticks for a Cartopy map
 ax.set_xticks(np.arange(-42.5, -42, 0.1), crs=crs)
 ax.set_yticks(np.arange(-22.4, -22, 0.1), crs=crs)

@@ -68,7 +68,7 @@ def block_split(coordinates, spacing, adjust='spacing', region=None):
     """
     easting, northing = coordinates[:2]
     if region is None:
-        region = get_region(easting, northing)
+        region = get_region((easting, northing))
     block_coords = tuple(
         i.ravel() for i in grid_coordinates(
             region, spacing=spacing, adjust=adjust, pixel_register=True)
@@ -79,7 +79,7 @@ def block_split(coordinates, spacing, adjust='spacing', region=None):
     return block_coords, labels
 
 
-def block_reduce(easting, northing, data, reduction, spacing, region=None,
+def block_reduce(coordinates, data, reduction, spacing, region=None,
                  adjust='spacing', center_coordinates=False):
     """
     Apply a reduction operation to the data in blocks (windows).
@@ -102,10 +102,10 @@ def block_reduce(easting, northing, data, reduction, spacing, region=None,
 
     Parameters
     ----------
-    easting : array
-        The values of the West-East coordinates of each data point.
-    northing : array
-        The values of the South-North coordinates of each data point.
+    coordinates : tuple of arrays
+        Arrays with the coordinates of each data point. Should be in the
+        following order: (easting, northing, vertical, ...). Only easting and
+        northing will be used, all subsequent coordinates will be ignored.
     data : array
         The data values at each point.
     reduction : function
@@ -129,33 +129,36 @@ def block_reduce(easting, northing, data, reduction, spacing, region=None,
 
     Returns
     -------
-    easting, northing, data : arrays
-        The reduced coordinates and data values.
+    blocked_coordinates : tuple of arrays
+        (easting, northing) arrays with the coordinates of each block that
+        contains data.
+    blocked_data : array
+        The block reduced data values.
 
     See also
     --------
-    block_inside : Split a region into blocks and label points accordingly.
+    block_split : Split a region into blocks and label points accordingly.
 
     """
+    easting, northing = coordinates[:2]
     block_coords, labels = block_split((easting, northing), spacing, adjust,
                                        region)
     if center_coordinates:
         table = pd.DataFrame(dict(data=data.ravel(), block=labels))
         blocked = table.groupby('block').aggregate(reduction)
         unique = np.unique(labels)
-        block_east, block_north = [i[unique] for i in block_coords]
+        blocked_coords = tuple(i[unique] for i in block_coords)
     else:
         table = pd.DataFrame(dict(easting=easting.ravel(),
                                   northing=northing.ravel(),
                                   data=data.ravel(),
                                   block=labels))
         blocked = table.groupby('block').aggregate(reduction)
-        block_east = blocked.easting.values
-        block_north = blocked.northing.values
-    return block_east, block_north, blocked.data.values
+        blocked_coords = (blocked.easting.values, blocked.northing.values)
+    return blocked_coords, blocked.data.values
 
 
-def distance_mask(easting, northing, data_easting, data_northing, maxdist):
+def distance_mask(coordinates, data_coordinates, maxdist):
     """
     Create a mask for points that are too far from the given data points.
 
@@ -164,14 +167,13 @@ def distance_mask(easting, northing, data_easting, data_northing, maxdist):
 
     Parameters
     ----------
-    easting : array
-        The West-East coordinates of the points that will be masked.
-    northing : array
-        The South-North coordinates of the points that will be masked.
-    data_easting : array
-        The West-East coordinates of the data points.
-    data_northing : array
-        The South-North coordinates of the data points.
+    coordinates : tuple of arrays
+        Arrays with the coordinates of each point that will be masked. Should
+        be in the following order: (easting, northing, vertical, ...). Only
+        easting and northing will be used, all subsequent coordinates will be
+        ignored.
+    data_coordinates : tuple of arrays
+        Same as *coordinates* but for the data points.
     maxdist : float
         The maximum distance that a point can be from the closest data point.
 
@@ -184,8 +186,8 @@ def distance_mask(easting, northing, data_easting, data_northing, maxdist):
     --------
 
     >>> from verde import grid_coordinates
-    >>> east, north = grid_coordinates((0, 5, -10, -5), spacing=1)
-    >>> mask = distance_mask(east, north, 2.5, -7.5, maxdist=2)
+    >>> coords = grid_coordinates((0, 5, -10, -5), spacing=1)
+    >>> mask = distance_mask(coords, (2.5, -7.5), maxdist=2)
     >>> print(mask)
     [[ True  True  True  True  True  True]
      [ True  True False False  True  True]
@@ -195,6 +197,8 @@ def distance_mask(easting, northing, data_easting, data_northing, maxdist):
      [ True  True  True  True  True  True]]
 
     """
+    data_easting, data_northing = data_coordinates[:2]
+    easting, northing = coordinates[:2]
     data_easting = np.atleast_1d(data_easting)
     data_northing = np.atleast_1d(data_northing)
     data_points = np.transpose((data_easting.ravel(), data_northing.ravel()))

@@ -219,7 +219,7 @@ class BaseGridder(BaseEstimator):
         if shape is None and spacing is None:
             shape = (101, 101)
         dims = get_dims(self, dims)
-        region = get_region(self, region)
+        region = get_instance_region(self, region)
         coordinates = grid_coordinates(region, shape=shape, spacing=spacing,
                                        adjust=adjust)
         if projection is None:
@@ -276,7 +276,7 @@ class BaseGridder(BaseEstimator):
 
         """
         dims = get_dims(self, dims)
-        region = get_region(self, region)
+        region = get_instance_region(self, region)
         coordinates = scatter_points(region, size, random_state)
         if projection is None:
             data = check_data(self.predict(coordinates))
@@ -410,7 +410,7 @@ def get_data_names(data, data_names):
     return data_types[len(data) - 1]
 
 
-def get_region(instance, region):
+def get_instance_region(instance, region):
     """
     Get the region attribute stored in instance if one is not provided.
     """

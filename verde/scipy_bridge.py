@@ -98,7 +98,7 @@ class ScipyGridder(BaseGridder):
         coordinates, data, weights = check_fit_input(coordinates, data,
                                                      weights)
         easting, northing = coordinates[:2]
-        self.region_ = get_region(easting, northing)
+        self.region_ = get_region((easting, northing))
         points = np.column_stack((np.ravel(easting), np.ravel(northing)))
         self.interpolator_ = classes[self.method](points, np.ravel(data),
                                                   **kwargs)

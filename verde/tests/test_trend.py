@@ -73,7 +73,7 @@ def test_trend_jacobian_fails():
     "Test failing conditions for the trend jacobian builder"
     east, north = np.arange(50), np.arange(30)
     with pytest.raises(ValueError):
-        trend_jacobian(east, north, degree=1)
+        trend_jacobian((east, north), degree=1)
 
 
 def test_vector_trend(simple_2d_model):
