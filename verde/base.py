@@ -14,14 +14,13 @@ class BaseGridder(BaseEstimator):
     """
     Base class for gridders.
 
-    Requires the implementation of the ``predict(coordiantes)`` method. The
-    data returned by it should be a 1d or 2d numpy array for scalar data or a
-    tuple with 1d or 2d numpy arrays for each component of vector data.
+    Most methods of this class requires the implementation of a
+    :meth:`~verde.BaseGridder.predict` method. The data returned by it should
+    be a 1d or 2d numpy array for scalar data or a tuple with 1d or 2d numpy
+    arrays for each component of vector data.
 
-    Subclasses should define a ``residual_`` attribute after fitting that
-    contains the data residuals ``self.residual_ = data -
-    self.predict(coordinates)``. This is required for compatibility with
-    :class:`verde.Chain`.
+    The :meth:`~verde.BaseGridder.filter` method requires the implementation of
+    a :meth:`~verde.BaseGridder.fit` method to fit the gridder model to data.
 
     Doesn't define any new attributes.
 
@@ -68,7 +67,7 @@ class BaseGridder(BaseEstimator):
     ...         check_is_fitted(self, ['mean_'])
     ...         return np.ones_like(coordinates[0])*self.mean_
     >>> # Try it on some synthetic data
-    >>> synthetic = vd.datasets.CheckerBoard().fit(region=(0, 5, -10, 8))
+    >>> synthetic = vd.datasets.CheckerBoard(region=(0, 5, -10, 8))
     >>> data = synthetic.scatter()
     >>> print('{:.4f}'.format(data.scalars.mean()))
     -32.2182
@@ -95,27 +94,93 @@ class BaseGridder(BaseEstimator):
 
     def predict(self, coordinates):
         """
-        Interpolate data on the given set of points.
+        Predict data on the given coordinate values. NOT IMPLEMENTED.
 
-        This method is required for all other methods related to interpolation.
+        This is a dummy placeholder for an actual method.
 
         Parameters
         ----------
         coordinates : tuple of arrays
-            Arrays with the coordinates of each computation point. Should be in
-            the following order: (easting, northing, vertical, ...)
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...).
 
         Returns
         -------
-        data : array or tuple of arrays
-            The data values interpolated on the given points. If the data are
-            scalars, then it should be a single array. If data are vectors,
-            then should be a tuple with a separate array for each vector
-            component. The order of components should be: east, north,
-            vertical.
+        data : array
+            The data predicted at the give coordinates.
 
         """
         raise NotImplementedError()
+
+    def fit(self, coordinates, data, weights=None):
+        """
+        Fit the gridder to observed data. NOT IMPLEMENTED.
+
+        This is a dummy placeholder for an actual method.
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...).
+        data : array or tuple of arrays
+            The data values of each data point. If the data has more than one
+            component, *data* must be a tuple of arrays (one for each
+            component).
+        weights : None or array or tuple of arrays
+            If not None, then the weights assigned to each data point. If more
+            than one data component is provided, you must provide a weights
+            array for each data component (if not None).
+
+        Returns
+        -------
+        self
+            This instance of the gridder. Useful to chain operations.
+
+        """
+        raise NotImplementedError()
+
+    def filter(self, coordinates, data, weights=None):
+        """
+        Filter the data through the gridder and produce residuals.
+
+        Calls ``fit`` on the data, evaluates the residuals (data - predicted
+        data), and returns the coordinates, residuals, and weights.
+
+        No very useful by itself but this interface makes gridders compatible
+        with other processing operations and is used by :class:`verde.Chain` to
+        join them together (for example, so you can fit a spline on the
+        residuals of a trend).
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...).
+        data : array or tuple of arrays
+            The data values of each data point. If the data has more than one
+            component, *data* must be a tuple of arrays (one for each
+            component).
+        weights : None or array or tuple of arrays
+            If not None, then the weights assigned to each data point. If more
+            than one data component is provided, you must provide a weights
+            array for each data component (if not None).
+
+        Returns
+        -------
+        coordinates, residuals, weights
+            The coordinates and weights are same as the input. Residuals are
+            the input data minus the predicted data.
+
+        """
+        self.fit(coordinates, data, weights)
+        data = check_data(data)
+        pred = check_data(self.predict(coordinates))
+        residuals = tuple(datai - predi.reshape(datai.shape)
+                          for datai, predi in zip(data, pred))
+        if len(residuals) == 1:
+            residuals = residuals[0]
+        return coordinates, residuals, weights
 
     def score(self, coordinates, data, weights=None):
         """

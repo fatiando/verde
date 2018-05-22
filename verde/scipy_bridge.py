@@ -40,8 +40,6 @@ class ScipyGridder(BaseGridder):
         interpolator. Used as the default region for the
         :meth:`~verde.ScipyGridder.grid` and
         :meth:`~verde.ScipyGridder.scatter` methods.
-    residual_ : array
-        The difference between the input data and the interpolated values.
 
     """
 
@@ -102,7 +100,6 @@ class ScipyGridder(BaseGridder):
         points = np.column_stack((np.ravel(easting), np.ravel(northing)))
         self.interpolator_ = classes[self.method](points, np.ravel(data),
                                                   **kwargs)
-        self.residual_ = data - self.predict(coordinates)
         return self
 
     def predict(self, coordinates):

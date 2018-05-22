@@ -3,18 +3,18 @@ Checkerboard function
 =====================
 
 The :class:`verde.datasets.CheckerBoard` class generates synthetic data in a
-checkerboard pattern. Use it like any gridder class.
+checkerboard pattern. It has the same data generation methods that most
+gridders have: predict, grid, scatter, and profile.
 """
 import matplotlib.pyplot as plt
 import verde as vd
 
 # Instantiate the data generator class and fit it to set the data region.
-synth = vd.datasets.CheckerBoard().fit()
+synth = vd.datasets.CheckerBoard()
 
-# Default values are provided for the region and the wavelengths of the
-# function (these are determined from the region).
-print("region:", synth.region_)
-print("wavelengths (east, north):", synth.w_east, synth.w_north)
+# Default values are provided for the wavelengths of the function determined
+# from the region.
+print("wavelengths (east, north):", synth.w_east_, synth.w_north_)
 
 # The CheckerBoard class behaves like any gridder class
 print("Checkerboard value at (easting=2000, northing=-2500):",

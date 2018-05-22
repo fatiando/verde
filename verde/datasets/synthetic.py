@@ -1,8 +1,8 @@
+# pylint: disable=abstract-method
 """
 Generators of synthetic datasets.
 """
 import numpy as np
-from sklearn.utils.validation import check_is_fitted
 
 from ..base import BaseGridder
 from ..coordinates import check_region
@@ -24,13 +24,13 @@ class CheckerBoard(BaseGridder):
     coordinate, :math:`a` is the amplitude, and :math:`w_e` and :math:`w_n` are
     the wavelengths in the east and north directions, respectively.
 
-    The model will evaluated on random points or on a regular grid depending on
-    the value of *scatter*.
-
     Parameters
     ----------
     amplitude : float
         The amplitude of the checkerboard undulations.
+    region : tuple
+        The boundaries (``[W, E, S, N]``) of the region used to generate the
+        synthetic data.
     w_east : float
         The wavelength in the east direction. Defaults to half of the West-East
         size of the evaluating region.
@@ -38,20 +38,12 @@ class CheckerBoard(BaseGridder):
         The wavelength in the north direction. Defaults to half of the
         South-North size of the evaluating region.
 
-    Attributes
-    ----------
-    region_ : tuple
-        The boundaries (``[W, E, S, N]``) of the region used to generate the
-        synthetic data.
-
     Examples
     --------
-    >>> synth = CheckerBoard().fit()
-    >>> # Default values for the region and wavelengths are selected by fit()
-    >>> print(synth)
-    CheckerBoard(amplitude=1000, w_east=2500.0, w_north=2500.0)
-    >>> print(synth.region_)
-    (0, 5000, -5000, 0)
+    >>> synth = CheckerBoard()
+    >>> # Default values for the wavelengths are selected automatically
+    >>> print(synth.w_east_, synth.w_north_)
+    2500.0 2500.0
     >>> # grid produces an xarray.Dataset with data on a regular grid
     >>> grid = synth.grid(shape=(11, 6))
     >>> grid.northing.values
@@ -110,38 +102,32 @@ class CheckerBoard(BaseGridder):
 
     """
 
-    def __init__(self, amplitude=1000, w_east=None, w_north=None):
+    def __init__(self, amplitude=1000, region=(0, 5000, -5000, 0), w_east=None,
+                 w_north=None):
         self.amplitude = amplitude
         self.w_east = w_east
         self.w_north = w_north
+        self.region = region
 
-    def fit(self, region=(0, 5000, -5000, 0)):
-        """
-        Set the region in which the checkerboard will be evaluated.
-
-        If the wavelengths are not supplied, will set them to half of the
-        region extent in each dimension.
-
-        Parameters
-        ----------
-        region : list = [W, E, S, N]
-            The boundaries of a given region in Cartesian or geographic
-            coordinates.
-
-        Returns
-        -------
-        self : verde.datasets.CheckerBoard
-            Returns this gridder instance for chaining operations.
-
-        """
-        check_region(region)
-        w, e, s, n = region
+    @property
+    def w_east_(self):
+        "Use half of the E-W extent"
         if self.w_east is None:
-            self.w_east = (e - w)/2
+            return (self.region[1] - self.region[0])/2
+        return self.w_east
+
+    @property
+    def w_north_(self):
+        "Use half of the N-S extent"
         if self.w_north is None:
-            self.w_north = (n - s)/2
-        self.region_ = region
-        return self
+            return (self.region[3] - self.region[2])/2
+        return self.w_north
+
+    @property
+    def region_(self):
+        "Used to fool the BaseGridder methods"
+        check_region(self.region)
+        return self.region
 
     def predict(self, coordinates):
         """
@@ -161,9 +147,8 @@ class CheckerBoard(BaseGridder):
             The evaluated checkerboard function.
 
         """
-        check_is_fitted(self, ['region_'])
         easting, northing = coordinates[:2]
         data = (self.amplitude *
-                np.sin((2*np.pi/self.w_east)*easting) *
-                np.cos((2*np.pi/self.w_north)*northing))
+                np.sin((2*np.pi/self.w_east_)*easting) *
+                np.cos((2*np.pi/self.w_north_)*northing))
         return data

@@ -87,7 +87,7 @@ class PolyGridder(BaseGridder):
     def __init__(self, degree=1):
         self.degree = degree
 
-    def fit(self, coordinates, data):
+    def fit(self, coordinates, data, weights=None):
         "Fit an easting polynomial"
         ndata = data.size
         nparams = self.degree + 1
@@ -107,7 +107,9 @@ def test_basegridder():
     "Test basic functionality of BaseGridder"
 
     with pytest.raises(NotImplementedError):
-        BaseGridder().predict((None, None))
+        BaseGridder().predict(None)
+    with pytest.raises(NotImplementedError):
+        BaseGridder().fit(None, None)
 
     grd = PolyGridder()
     assert repr(grd) == 'PolyGridder(degree=1)'
