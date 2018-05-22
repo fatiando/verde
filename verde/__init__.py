@@ -8,7 +8,7 @@ from . import datasets
 from .base import BaseGridder
 from .coordinates import scatter_points, grid_coordinates, inside, \
     profile_coordinates, get_region
-from .grid_math import block_reduce, block_split, distance_mask
+from .grid_math import block_split, distance_mask, BlockReduce
 from .scipy_bridge import ScipyGridder
 from .trend import Trend, trend_jacobian, VectorTrend
 from .chain import Chain

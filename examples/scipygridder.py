@@ -31,9 +31,9 @@ data = vd.datasets.fetch_baja_bathymetry()
 # the oversampling along the ship tracks. We'll use a blocked median with 5
 # arc-minute blocks.
 spacing = 5/60
-coordinates, bathymetry = vd.block_reduce(
-    (data.longitude, data.latitude), data.bathymetry_m, reduction=np.median,
-    spacing=spacing)
+reducer = vd.BlockReduce(reduction=np.median, spacing=spacing)
+coordinates, bathymetry = reducer.filter((data.longitude, data.latitude),
+                                         data.bathymetry_m)
 
 # Project the data using pyproj so that we can use it as input for the gridder.
 # We'll set the latitude of true scale to the mean latitude of the data.
