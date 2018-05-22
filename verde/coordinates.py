@@ -115,7 +115,8 @@ def scatter_points(region, size, random_state=None):
     return easting, northing
 
 
-def grid_coordinates(region, shape=None, spacing=None, adjust='spacing'):
+def grid_coordinates(region, shape=None, spacing=None, adjust='spacing',
+                     pixel_register=False):
     """
     Generate the coordinates for each point on a regular grid.
 
@@ -144,6 +145,11 @@ def grid_coordinates(region, shape=None, spacing=None, adjust='spacing'):
         Whether to adjust the spacing or the region if required. Ignored if
         *shape* is given instead of *spacing*. Defaults to adjusting the
         spacing.
+    pixel_register : bool
+        If True, the coordinates will refer to the center of each grid pixel
+        instead of the grid lines. In practice, this means that there will be
+        one less element per dimension of the grid when compared to grid line
+        registered. Default is False.
 
     Returns
     -------
@@ -254,6 +260,24 @@ def grid_coordinates(region, shape=None, spacing=None, adjust='spacing'):
     [[0.  0.  0. ]
      [2.4 2.4 2.4]
      [4.8 4.8 4.8]]
+    >>> # We can optionally generate coordinates for the center of each grid
+    >>> # pixel instead of the corner (default)
+    >>> east, north = grid_coordinates(region=(0, 5, 0, 10), spacing=2.5,
+    ...                                pixel_register=True)
+    >>> # Lower printing precision to shorten this example
+    >>> import numpy as np; np.set_printoptions(precision=2, suppress=True)
+    >>> print(east.shape, north.shape)
+    (4, 2) (4, 2)
+    >>> print(east)
+    [[1.25 3.75]
+     [1.25 3.75]
+     [1.25 3.75]
+     [1.25 3.75]]
+    >>> print(north)
+    [[1.25 1.25]
+     [3.75 3.75]
+     [6.25 6.25]
+     [8.75 8.75]]
 
     See also
     --------
@@ -273,6 +297,9 @@ def grid_coordinates(region, shape=None, spacing=None, adjust='spacing'):
     w, e, s, n = region
     east_lines = np.linspace(w, e, neast)
     north_lines = np.linspace(s, n, nnorth)
+    if pixel_register:
+        east_lines = east_lines[:-1] + (east_lines[1] - east_lines[0])/2
+        north_lines = north_lines[:-1] + (north_lines[1] - north_lines[0])/2
     easting, northing = np.meshgrid(east_lines, north_lines)
     return easting, northing
 
