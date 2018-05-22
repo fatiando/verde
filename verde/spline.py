@@ -77,8 +77,6 @@ class Spline(BaseGridder):
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
         :meth:`~verde.Spline.grid` and :meth:`~verde.Spline.scatter` methods.
-    residual_ : array
-        The difference between the input data and the predicted spline values.
 
     See also
     --------
@@ -146,7 +144,6 @@ class Spline(BaseGridder):
             regr = Ridge(alpha=self.damping, fit_intercept=False,
                          normalize=False)
         regr.fit(jac, data.ravel(), sample_weight=weights)
-        self.residual_ = data - jac.dot(regr.coef_).reshape(data.shape)
         self.force_ = regr.coef_/scaler.scale_
         return self
 

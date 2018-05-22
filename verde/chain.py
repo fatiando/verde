@@ -9,11 +9,15 @@ from .coordinates import get_region
 
 class Chain(BaseGridder):
     """
-    Chain gridders to fit on each others residuals.
+    Chain filtering operations to fit on each subsequent output.
 
-    Given a set of gridders or trend estimators, :meth:`~verde.Chain.fit` will
-    fit each estimator on the data residuals of the previous one. When
-    predicting data, the predictions of each estimator will be added together.
+    The :meth:`~verde.BaseGridder.filter` method of each element of the set is
+    called with the outputs of the previous one. For gridders and trend
+    estimators this means that each element fits the residuals (input data
+    minus predicted data) of the previous one.
+
+    When predicting data, the predictions of each step in the chain are added
+    together. Steps that don't implement a ``predict`` method are ignored.
 
     This provides a convenient way to chaining operations like trend estimation
     to a given gridder.
@@ -21,9 +25,9 @@ class Chain(BaseGridder):
     Parameters
     ----------
     steps : list
-        A list of ``('name', gridder)`` pairs where ``gridder`` is any verde
-        class that implements the gridder interface (including ``Chain``
-        itself).
+        A list of ``('name', step)`` pairs where ``step`` is any verde
+        class that implements a ``filter(coordinates, data, weights)`` method
+        (including ``Chain`` itself).
 
     Attributes
     ----------
@@ -31,11 +35,9 @@ class Chain(BaseGridder):
         The boundaries (``[W, E, S, N]``) of the data used to fit the chain.
         Used as the default region for the :meth:`~verde.Chain.grid` and
         :meth:`~verde.Chain.scatter` methods.
-    residual_ : array or tuple of arrays
-        The data residual after all chained operations are applied to the data.
     named_steps : dict
         A dictionary version of *steps* where the ``'name'``  strings are keys
-        and the ``gridder`` objects are the values.
+        and the estimator/gridder/processor objects are the values.
 
     """
 
@@ -80,41 +82,41 @@ class Chain(BaseGridder):
 
         """
         self.region_ = get_region(coordinates[:2])
-        residuals = data
+        args = coordinates, data, weights
         for _, step in self.steps:
-            step.fit(coordinates, residuals, weights)
-            residuals = step.residual_
-        self.residual_ = residuals
+            args = step.filter(*args)
         return self
 
     def predict(self, coordinates):
         """
-        Interpolate data on the given set of points.
+        Evaluates the data predicted by the chain on the given set of points.
 
-        Requires a fitted gridder (see :meth:`~verde.ScipyGridder.fit`).
+        Predictions from each step in the chain are added together. Any step
+        that doesn't implement a ``predict`` method is ignored.
+
+        Requires a fitted gridder (see :meth:`~verde.Chain.fit`).
 
         Parameters
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
-            following order: (easting, northing, vertical, ...). Only easting
-            and northing will be used, all subsequent coordinates will be
-            ignored.
+            following order: (easting, northing, vertical, ...).
 
         Returns
         -------
         data : array
-            The data values interpolated on the given points.
+            The data values predicted on the given points.
 
         """
-        check_is_fitted(self, ['region_', 'residual_'])
+        check_is_fitted(self, ['region_'])
         result = None
         for _, step in self.steps:
-            predicted = check_data(step.predict(coordinates))
-            if result is None:
-                result = [0 for i in range(len(predicted))]
-            for i, pred in enumerate(predicted):
-                result[i] += pred
+            if hasattr(step, 'predict'):
+                predicted = check_data(step.predict(coordinates))
+                if result is None:
+                    result = [0 for i in range(len(predicted))]
+                for i, pred in enumerate(predicted):
+                    result[i] += pred
         if len(result) == 1:
             result = result[0]
         return result

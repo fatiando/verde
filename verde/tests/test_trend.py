@@ -44,7 +44,6 @@ def test_trend(simple_model):
     trend = Trend(degree=1).fit(coords, data)
     npt.assert_allclose(trend.coef_, coefs)
     npt.assert_allclose(trend.predict(coords), data)
-    npt.assert_allclose(trend.residual_, 0, atol=1e-5)
 
 
 def test_trend_weights(simple_model):
@@ -57,7 +56,7 @@ def test_trend_weights(simple_model):
     weights[20, 20] = 1e-10
     trend = Trend(degree=1).fit(coords, data_out, weights)
     npt.assert_allclose(trend.coef_, coefs)
-    npt.assert_allclose(trend.residual_[20, 20], outlier)
+    npt.assert_allclose((data_out - trend.predict(coords))[20, 20], outlier)
     npt.assert_allclose(trend.predict(coords), data)
 
 
@@ -83,7 +82,6 @@ def test_vector_trend(simple_2d_model):
     for i, coef in enumerate(coefs):
         npt.assert_allclose(trend.component_[i].coef_, coef)
         npt.assert_allclose(trend.predict(coords)[i], data[i])
-        npt.assert_allclose(trend.residual_[i], 0, atol=1e-5)
         npt.assert_allclose(trend.score(coords, data), 1)
 
 
@@ -94,7 +92,6 @@ def test_vector_trend_3d(simple_3d_model):
     for i, coef in enumerate(coefs):
         npt.assert_allclose(trend.component_[i].coef_, coef)
         npt.assert_allclose(trend.predict(coords)[i], data[i])
-        npt.assert_allclose(trend.residual_[i], 0, atol=1e-5)
         npt.assert_allclose(trend.score(coords, data), 1)
 
 
@@ -120,5 +117,6 @@ def test_vector_trend_weights(simple_2d_model):
     trend = VectorTrend(degree=1).fit(coords, data_out, weights)
     for i, coef in enumerate(coefs):
         npt.assert_allclose(trend.component_[i].coef_, coef)
-        npt.assert_allclose(trend.residual_[i][20, 20], outlier)
+        npt.assert_allclose((data_out[i] - trend.predict(coords)[i])[20, 20],
+                            outlier)
         npt.assert_allclose(trend.predict(coords)[i], data[i])
