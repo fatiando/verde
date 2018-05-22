@@ -36,16 +36,16 @@ def check_region(region):
                          .format(region))
 
 
-def get_region(easting, northing):
+def get_region(coordinates):
     """
     Get the bounding region of the given coordinates.
 
     Parameters
     ----------
-    easting : array
-        The values of the West-East coordinates of each data point.
-    northing : array
-        The values of the South-North coordinates of each data point.
+    coordinates : tuple of arrays
+        Arrays with the coordinates of each data point. Should be in the
+        following order: (easting, northing, vertical, ...). Only easting and
+        northing will be used, all subsequent coordinates will be ignored.
 
     Returns
     -------
@@ -56,11 +56,12 @@ def get_region(easting, northing):
     Examples
     --------
 
-    >>> east, north = grid_coordinates((0, 1, -10, -6), shape=(10, 10))
-    >>> print(get_region(east, north))
+    >>> coords = grid_coordinates((0, 1, -10, -6), shape=(10, 10))
+    >>> print(get_region(coords))
     (0.0, 1.0, -10.0, -6.0)
 
     """
+    easting, northing = coordinates[:2]
     region = (np.min(easting), np.max(easting),
               np.min(northing), np.max(northing))
     return region
@@ -423,7 +424,7 @@ def profile_coordinates(point1, point2, size, coordinate_system='cartesian'):
     return easting, northing, distances
 
 
-def inside(easting, northing, region, out=None, tmp=None):
+def inside(coordinates, region, out=None, tmp=None):
     """
     Determine which points fall inside a given region.
 
@@ -431,10 +432,10 @@ def inside(easting, northing, region, out=None, tmp=None):
 
     Parameters
     ----------
-    easting : array
-        The values of the West-East coordinates of each data point.
-    northing : array
-        The values of the South-North coordinates of each data point.
+    coordinates : tuple of arrays
+        Arrays with the coordinates of each data point. Should be in the
+        following order: (easting, northing, vertical, ...). Only easting and
+        northing will be used, all subsequent coordinates will be ignored.
     region : list = [W, E, S, N]
         The boundaries of a given region in Cartesian or geographic
         coordinates.
@@ -462,7 +463,7 @@ def inside(easting, northing, region, out=None, tmp=None):
     >>> east = np.array([1, 2, 3, 4, 5, 6])
     >>> north = np.array([10, 11, 12, 13, 14, 15])
     >>> region = [2.5, 5.5, 12, 15]
-    >>> print(inside(east, north, region))
+    >>> print(inside((east, north), region))
     [False False  True  True  True False]
     >>> # This also works for 2D-arrays
     >>> east = np.array([[1, 1, 1],
@@ -472,7 +473,7 @@ def inside(easting, northing, region, out=None, tmp=None):
     ...                   [5, 7, 9],
     ...                   [5, 7, 9]])
     >>> region = [0.5, 2.5, 6, 9]
-    >>> print(inside(east, north, region))
+    >>> print(inside((east, north), region))
     [[False  True  True]
      [False  True  True]
      [False False False]]
@@ -480,6 +481,7 @@ def inside(easting, northing, region, out=None, tmp=None):
     """
     check_region(region)
     w, e, s, n = region
+    easting, northing = coordinates[:2]
     # Allocate temporary arrays to minimize memory allocation overhead
     if out is None:
         out = np.empty_like(easting, dtype=np.bool)

@@ -128,17 +128,16 @@ class Spline(BaseGridder):
             warn(' '.join([
                 "Weights are ignored for the exact spline solution.",
                 "Use damping or specify a shape/spacing for the forces."]))
-        easting, northing = coordinates[:2]
-        self.region_ = get_region(easting, northing)
+        self.region_ = get_region(coordinates[:2])
         # Set the force positions. If no shape or spacing are given, then they
         # will coincide with the data points.
         if self.shape is None and self.spacing is None:
-            self.force_coords_ = (easting.copy(), northing.copy())
+            self.force_coords_ = tuple(i.copy() for i in coordinates[:2])
         else:
-            self.force_coords_ = grid_coordinates(
-                self.region_, shape=self.shape, spacing=self.spacing)
-        jac = spline_jacobian(easting, northing, self.force_coords_[0],
-                              self.force_coords_[1], self.fudge)
+            self.force_coords_ = grid_coordinates(self.region_,
+                                                  shape=self.shape,
+                                                  spacing=self.spacing)
+        jac = spline_jacobian(coordinates[:2], self.force_coords_, self.fudge)
         scaler = StandardScaler(copy=False, with_mean=False, with_std=True)
         jac = scaler.fit_transform(jac)
         if self.damping is None:
@@ -171,17 +170,13 @@ class Spline(BaseGridder):
             The data values evaluated on the given points.
 
         """
-        easting, northing = coordinates[:2]
         check_is_fitted(self, ['force_', 'force_coords_'])
-        jac = spline_jacobian(easting.ravel(), northing.ravel(),
-                              self.force_coords_[0], self.force_coords_[1],
-                              self.fudge)
-        shape = np.broadcast(easting, northing).shape
+        jac = spline_jacobian(coordinates[:2], self.force_coords_, self.fudge)
+        shape = np.broadcast(*coordinates[:2]).shape
         return jac.dot(self.force_).reshape(shape)
 
 
-def spline_jacobian(easting, northing, force_easting, force_northing,
-                    fudge=1e-5):
+def spline_jacobian(coordinates, force_coordinates, fudge=1e-5):
     """
     Make the Jacobian matrix for the 2D biharmonic spline.
 
@@ -190,14 +185,14 @@ def spline_jacobian(easting, northing, force_easting, force_northing,
 
     Parameters
     ----------
-    easting : array
-        The values of the West-East coordinates of each data point.
-    northing : array
-        The values of the South-North coordinates of each data point.
-    force_easting : array
-        The values of the West-East coordinates of each force.
-    force_northing : array
-        The values of the South-North coordinates of each force.
+    coordinates : tuple of arrays
+        Arrays with the coordinates of each data point. Should be in the
+        following order: (easting, northing, vertical, ...). Only easting and
+        northing will be used, all subsequent coordinates will be ignored.
+    force_coordinates : tuple of arrays
+        Arrays with the coordinates of each vertical force. Should be in the
+        following order: (easting, northing, vertical, ...). Only easting and
+        northing will be used, all subsequent coordinates will be ignored.
     fudge : float
         The positive fudge factor applied to the Green's function to avoid
         singularities.
@@ -212,8 +207,10 @@ def spline_jacobian(easting, northing, force_easting, force_northing,
     verde.Spline : Biharmonic spline gridder
 
     """
-    easting = np.atleast_1d(easting)
-    northing = np.atleast_1d(northing)
+    force_easting, force_northing = force_coordinates[:2]
+    easting, northing = coordinates[:2]
+    easting = np.atleast_1d(easting).ravel()
+    northing = np.atleast_1d(northing).ravel()
     force_easting = np.atleast_1d(force_easting)
     force_northing = np.atleast_1d(force_northing)
     # Reshaping the data to a column vector will automatically build a

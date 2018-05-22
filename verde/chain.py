@@ -79,7 +79,7 @@ class Chain(BaseGridder):
             Returns this estimator instance for chaining operations.
 
         """
-        self.region_ = get_region(*coordinates[:2])
+        self.region_ = get_region(coordinates[:2])
         residuals = data
         for _, step in self.steps:
             step.fit(coordinates, residuals, weights)

@@ -103,9 +103,8 @@ class Trend(BaseGridder):
         """
         coordinates, data, weights = check_fit_input(coordinates, data,
                                                      weights)
-        easting, northing = coordinates[:2]
-        self.region_ = get_region(easting, northing)
-        jac = trend_jacobian(easting, northing, degree=self.degree,
+        self.region_ = get_region(coordinates[:2])
+        jac = trend_jacobian(coordinates[:2], degree=self.degree,
                              dtype=data.dtype)
         scaler = StandardScaler(copy=False, with_mean=False, with_std=True)
         jac = scaler.fit_transform(jac)
@@ -136,9 +135,8 @@ class Trend(BaseGridder):
 
         """
         check_is_fitted(self, ['coef_'])
-        easting, northing = coordinates[:2]
-        jac = trend_jacobian(easting, northing, degree=self.degree)
-        shape = np.broadcast(easting, northing).shape
+        jac = trend_jacobian(coordinates[:2], degree=self.degree)
+        shape = np.broadcast(*coordinates[:2]).shape
         return jac.dot(self.coef_).reshape(shape)
 
 
@@ -179,7 +177,7 @@ def polynomial_power_combinations(degree):
     return tuple(sorted(combinations, key=sum))
 
 
-def trend_jacobian(easting, northing, degree, dtype='float64'):
+def trend_jacobian(coordinates, degree, dtype='float64'):
     """
     Make the Jacobian for a 2D polynomial of the given degree.
 
@@ -188,10 +186,10 @@ def trend_jacobian(easting, northing, degree, dtype='float64'):
 
     Parameters
     ----------
-    easting : array
-        The values of the West-East coordinates of each data point.
-    northing : array
-        The values of the South-North coordinates of each data point.
+    coordinates : tuple of arrays
+        Arrays with the coordinates of each data point. Should be in the
+        following order: (easting, northing, vertical, ...). Only easting and
+        northing will be used, all subsequent coordinates will be ignored.
     degree : int
         The degree of the 2D polynomial. Must be >= 1.
     dtype : str or numpy dtype
@@ -208,13 +206,13 @@ def trend_jacobian(easting, northing, degree, dtype='float64'):
     >>> import numpy as np
     >>> east = np.linspace(0, 4, 5)
     >>> north = np.linspace(-5, -1, 5)
-    >>> print(trend_jacobian(east, north, degree=1, dtype=np.int))
+    >>> print(trend_jacobian((east, north), degree=1, dtype=np.int))
     [[ 1  0 -5]
      [ 1  1 -4]
      [ 1  2 -3]
      [ 1  3 -2]
      [ 1  4 -1]]
-    >>> print(trend_jacobian(east, north, degree=2, dtype=np.int))
+    >>> print(trend_jacobian((east, north), degree=2, dtype=np.int))
     [[ 1  0 -5  0  0 25]
      [ 1  1 -4  1 -4 16]
      [ 1  2 -3  4 -6  9]
@@ -227,6 +225,7 @@ def trend_jacobian(easting, northing, degree, dtype='float64'):
     verde.VectorTrend : Polynomial trend estimator for multi-component data
 
     """
+    easting, northing = coordinates[:2]
     if easting.shape != northing.shape:
         raise ValueError("Coordinate arrays must have the same shape.")
     combinations = polynomial_power_combinations(degree)
@@ -314,7 +313,7 @@ class VectorTrend(BaseGridder):
                 .format(type(weights)))
         coordinates, data, weights = check_fit_input(coordinates, data,
                                                      weights)
-        self.region_ = get_region(*coordinates[:2])
+        self.region_ = get_region(coordinates[:2])
         self.component_ = [
             Trend(degree=self.degree).fit(coordinates, data_comp, weight_comp)
             for data_comp, weight_comp in zip(data, weights)]

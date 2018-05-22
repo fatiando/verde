@@ -6,8 +6,8 @@ import pytest
 import numpy as np
 import numpy.testing as npt
 
-from ..base import get_dims, get_data_names, get_region, BaseGridder, \
-    check_fit_input
+from ..base import get_dims, get_data_names, get_instance_region, \
+    BaseGridder, check_fit_input
 from ..coordinates import grid_coordinates, scatter_points
 
 
@@ -70,15 +70,15 @@ def test_get_data_names_fails():
         get_data_names(tuple([np.arange(5)]*2), data_names=("meh",))
 
 
-def test_get_region():
-    "Check if get_region finds the correct region"
+def test_get_instance_region():
+    "Check if get_instance_region finds the correct region"
     grd = BaseGridder()
-    assert get_region(grd, region=(1, 2, 3, 4)) == (1, 2, 3, 4)
+    assert get_instance_region(grd, region=(1, 2, 3, 4)) == (1, 2, 3, 4)
     with pytest.raises(ValueError):
-        get_region(grd, region=None)
+        get_instance_region(grd, region=None)
     grd.region_ = (5, 6, 7, 8)
-    assert get_region(grd, region=None) == (5, 6, 7, 8)
-    assert get_region(grd, region=(1, 2, 3, 4)) == (1, 2, 3, 4)
+    assert get_instance_region(grd, region=None) == (5, 6, 7, 8)
+    assert get_instance_region(grd, region=(1, 2, 3, 4)) == (1, 2, 3, 4)
 
 
 class PolyGridder(BaseGridder):

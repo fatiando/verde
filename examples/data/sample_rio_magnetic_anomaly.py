@@ -41,6 +41,6 @@ ax.set_yticks(np.arange(-22.4, -22, 0.1), crs=crs)
 ax.xaxis.set_major_formatter(LongitudeFormatter())
 ax.yaxis.set_major_formatter(LatitudeFormatter())
 # Set the extent of the plot to the limits of the data
-ax.set_extent(vd.get_region(data.longitude, data.latitude), crs=crs)
+ax.set_extent(vd.get_region((data.longitude, data.latitude)), crs=crs)
 plt.tight_layout()
 plt.show()

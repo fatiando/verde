@@ -28,7 +28,7 @@ def setup_map(ax):
     ax.set_yticks(np.arange(33, 42, 2), crs=crs)
     ax.xaxis.set_major_formatter(LongitudeFormatter())
     ax.yaxis.set_major_formatter(LatitudeFormatter())
-    ax.set_extent(vd.get_region(data.longitude, data.latitude), crs=crs)
+    ax.set_extent(vd.get_region((data.longitude, data.latitude)), crs=crs)
     # Plot the land and ocean as a solid color
     ax.add_feature(cfeature.LAND)
     ax.add_feature(cfeature.OCEAN)

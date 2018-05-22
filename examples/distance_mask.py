@@ -15,17 +15,17 @@ import verde as vd
 # The Baja California bathymetry dataset has big gaps on land. We want to mask
 # these gaps on a grid that we'll generate over the region
 data = vd.datasets.fetch_baja_bathymetry()
-region = vd.get_region(data.longitude, data.latitude)
+region = vd.get_region((data.longitude, data.latitude))
 
 # Generate the coordinates and a dummy grid with only ones that we'll want to
 # mask
 spacing = 10/60
-lons, lats = vd.grid_coordinates(region, spacing=spacing)
-dummy_data = np.ones_like(lons)
+coordinates = vd.grid_coordinates(region, spacing=spacing)
+dummy_data = np.ones_like(coordinates[0])
 
 # Generate a mask for points that are more than 2 grid spacings away from any
 # data point. The mask is True for points that are too far.
-mask = vd.distance_mask(lons, lats, data.longitude, data.latitude,
+mask = vd.distance_mask(coordinates, (data.longitude, data.latitude),
                         maxdist=spacing*2)
 print(mask)
 
@@ -38,7 +38,7 @@ plt.figure(figsize=(7, 6))
 ax = plt.axes(projection=ccrs.Mercator())
 ax.set_title('Only grid points that are close to data', pad=25)
 ax.plot(data.longitude, data.latitude, '.y', markersize=0.5, transform=crs)
-ax.pcolormesh(lons, lats, dummy_data, transform=crs)
+ax.pcolormesh(*coordinates, dummy_data, transform=crs)
 ax.gridlines(draw_labels=True)
 ax.set_extent(region, crs=crs)
 plt.tight_layout()

@@ -69,7 +69,7 @@ def plot_trend(ax, component, title):
     ax.xaxis.set_major_formatter(LongitudeFormatter())
     ax.yaxis.set_major_formatter(LatitudeFormatter())
     # ax.coastlines(color='white')
-    ax.set_extent(vd.get_region(data.longitude, data.latitude), crs=crs)
+    ax.set_extent(vd.get_region((data.longitude, data.latitude)), crs=crs)
 
 
 # Make a plot of the data using Cartopy to handle projections and coastlines

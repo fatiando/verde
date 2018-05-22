@@ -19,9 +19,10 @@ import verde as vd
 data = vd.datasets.fetch_baja_bathymetry()
 
 # Decimate the data using a blocked median with 10 arc-minute blocks
-lon, lat, bathymetry = vd.block_reduce(
-    data.longitude, data.latitude, data.bathymetry_m,
+coordinates, bathymetry = vd.block_reduce(
+    coordinates=(data.longitude, data.latitude), data=data.bathymetry_m,
     reduction=np.median, spacing=10/60)
+lon, lat = coordinates
 
 print("Original data size:", data.bathymetry_m.size)
 print("Decimated data size:", bathymetry.size)

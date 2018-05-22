@@ -51,7 +51,7 @@ def plot_data(column, i, title):
     ax.xaxis.set_major_formatter(LongitudeFormatter())
     ax.yaxis.set_major_formatter(LatitudeFormatter())
     # Set the plot region to be tight around the data
-    ax.set_extent(vd.get_region(data.longitude, data.latitude))
+    ax.set_extent(vd.get_region((data.longitude, data.latitude)))
     return mappable
 
 
