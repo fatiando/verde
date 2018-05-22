@@ -4,6 +4,7 @@ Operations on spatial data: block operations, derivatives, etc.
 import numpy as np
 import pandas as pd
 from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
+from sklearn.base import BaseEstimator
 
 from .coordinates import get_region, grid_coordinates
 
@@ -45,7 +46,7 @@ def block_split(coordinates, spacing, adjust='spacing', region=None):
 
     See also
     --------
-    block_reduce : Apply a reduction operation to the data in blocks (windows).
+    BlockReduce : Apply a reduction operation to the data in blocks (windows).
 
     Examples
     --------
@@ -79,19 +80,17 @@ def block_split(coordinates, spacing, adjust='spacing', region=None):
     return block_coords, labels
 
 
-def block_reduce(coordinates, data, reduction, spacing, region=None,
-                 adjust='spacing', center_coordinates=False):
+class BlockReduce(BaseEstimator):
     """
-    Apply a reduction operation to the data in blocks (windows).
+    Apply a reduction/aggregation operation to the data in blocks (windows).
 
     Returns the reduced data value for each block along with the associated
     coordinates, which can be determined through the same reduction applied to
     the coordinates or as the center of each block.
 
     If a data region to be divided into blocks is not given, it will be the
-    bounding region of the data. When using this function to decimate data
-    before gridding, it's best to use the same region and spacing as the
-    desired grid.
+    bounding region of the data. When using this class to decimate data before
+    gridding, it's best to use the same region and spacing as the desired grid.
 
     If the given region is not divisible by the spacing (block size), either
     the region or the spacing will have to be adjusted. By default, the spacing
@@ -100,14 +99,12 @@ def block_reduce(coordinates, data, reduction, spacing, region=None,
 
     Blocks without any data are omitted from the output.
 
+    Implements the :meth:`~verde.BlockReduce.filter` method so it can be used
+    with :class:`verde.Chain`. Only acts during data fitting and is ignored
+    during prediction.
+
     Parameters
     ----------
-    coordinates : tuple of arrays
-        Arrays with the coordinates of each data point. Should be in the
-        following order: (easting, northing, vertical, ...). Only easting and
-        northing will be used, all subsequent coordinates will be ignored.
-    data : array
-        The data values at each point.
     reduction : function
         A reduction function that takes an array and returns a single value
         (e.g., ``np.mean``, ``np.median``, etc).
@@ -127,35 +124,70 @@ def block_reduce(coordinates, data, reduction, spacing, region=None,
         block. Otherwise, the coordinates are calculated by applying the same
         reduction operation to the input coordinates.
 
-    Returns
-    -------
-    blocked_coordinates : tuple of arrays
-        (easting, northing) arrays with the coordinates of each block that
-        contains data.
-    blocked_data : array
-        The block reduced data values.
-
     See also
     --------
     block_split : Split a region into blocks and label points accordingly.
+    verde.Chain : Apply filter operations successively on data.
 
     """
-    easting, northing = coordinates[:2]
-    block_coords, labels = block_split((easting, northing), spacing, adjust,
-                                       region)
-    if center_coordinates:
-        table = pd.DataFrame(dict(data=data.ravel(), block=labels))
-        blocked = table.groupby('block').aggregate(reduction)
-        unique = np.unique(labels)
-        blocked_coords = tuple(i[unique] for i in block_coords)
-    else:
-        table = pd.DataFrame(dict(easting=easting.ravel(),
-                                  northing=northing.ravel(),
-                                  data=data.ravel(),
-                                  block=labels))
-        blocked = table.groupby('block').aggregate(reduction)
-        blocked_coords = (blocked.easting.values, blocked.northing.values)
-    return blocked_coords, blocked.data.values
+
+    def __init__(self, reduction, spacing, region=None, adjust='spacing',
+                 center_coordinates=False):
+        self.reduction = reduction
+        self.spacing = spacing
+        self.region = region
+        self.adjust = adjust
+        self.center_coordinates = center_coordinates
+
+    def filter(self, coordinates, data, weights=None):
+        """
+        Apply the blocked aggregation to the given data.
+
+        Returns the reduced data value for each block along with the associated
+        coordinates, which can be determined through the same reduction applied
+        to the coordinates or as the center of each block.
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...). Only easting
+            and northing will be used, all subsequent coordinates will be
+            ignored.
+        data : array
+            The data values at each point.
+        weights : None or array or tuple of arrays
+            If not None, then the weights assigned to each data point. If more
+            than one data component is provided, you must provide a weights
+            array for each data component (if not None).
+
+        Returns
+        -------
+        blocked_coordinates : tuple of arrays
+            (easting, northing) arrays with the coordinates of each block that
+            contains data.
+        blocked_data : array
+            The block reduced data values.
+
+        """
+        if weights is not None:
+            raise NotImplementedError()
+        easting, northing = coordinates[:2]
+        block_coords, labels = block_split((easting, northing), self.spacing,
+                                           self.adjust, self.region)
+        if self.center_coordinates:
+            table = pd.DataFrame(dict(data=data.ravel(), block=labels))
+            blocked = table.groupby('block').aggregate(self.reduction)
+            unique = np.unique(labels)
+            blocked_coords = tuple(i[unique] for i in block_coords)
+        else:
+            table = pd.DataFrame(dict(easting=easting.ravel(),
+                                      northing=northing.ravel(),
+                                      data=data.ravel(),
+                                      block=labels))
+            blocked = table.groupby('block').aggregate(self.reduction)
+            blocked_coords = (blocked.easting.values, blocked.northing.values)
+        return blocked_coords, blocked.data.values
 
 
 def distance_mask(coordinates, data_coordinates, maxdist):

@@ -4,7 +4,7 @@ Data decimation in blocks
 
 When gridding data that has been highly oversampled in a direction (shipborne
 and airborne data, for example), it is important to decimate the data before
-interpolation to avoid aliasing. Function :func:`verde.block_reduce` decimates
+interpolation to avoid aliasing. Class :func:`verde.BlockReduce` decimates
 data by applying a reduction operation (mean, median, mode, max, etc) to the
 data in blocks. For non-smooth data, like bathymetry, a blocked median filter
 is a good choice.
@@ -19,9 +19,9 @@ import verde as vd
 data = vd.datasets.fetch_baja_bathymetry()
 
 # Decimate the data using a blocked median with 10 arc-minute blocks
-coordinates, bathymetry = vd.block_reduce(
-    coordinates=(data.longitude, data.latitude), data=data.bathymetry_m,
-    reduction=np.median, spacing=10/60)
+reducer = vd.BlockReduce(reduction=np.median, spacing=10/60)
+coordinates, bathymetry = reducer.filter((data.longitude, data.latitude),
+                                         data.bathymetry_m)
 lon, lat = coordinates
 
 print("Original data size:", data.bathymetry_m.size)

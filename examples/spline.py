@@ -25,9 +25,9 @@ region = vd.get_region((data.longitude, data.latitude))
 
 # Before gridding, we need to decimate the data to avoid aliasing.
 spacing = 10/60
-coordinates, bathymetry = vd.block_reduce(
-    (data.longitude, data.latitude), data.bathymetry_m, reduction=np.median,
-    spacing=spacing)
+reducer = vd.BlockReduce(reduction=np.median, spacing=spacing)
+coordinates, bathymetry = reducer.filter((data.longitude, data.latitude),
+                                         data.bathymetry_m)
 
 # Now we can add some outliers to test our spline
 outliers = np.random.RandomState(2).randint(0, bathymetry.size, size=20)
