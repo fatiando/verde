@@ -2,9 +2,81 @@
 Operations on spatial data: block operations, derivatives, etc.
 """
 import numpy as np
+import pandas as pd
 from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
 
-from .coordinates import block_region, inside, get_region
+from .coordinates import get_region, grid_coordinates
+
+
+def block_split(coordinates, spacing, adjust='spacing', region=None):
+    """
+    Split a region into blocks and label points according to where they fall.
+
+    The labels are integers corresponding to the index of the block. The same
+    index is used for the coordinates of each block.
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+        Arrays with the coordinates of each data point. Should be in the
+        following order: (easting, northing, vertical, ...). Only easting and
+        northing will be used, all subsequent coordinates will be ignored.
+    spacing : float, tuple = (s_north, s_east), or None
+        The block size in the South-North and West-East directions,
+        respectively. A single value means that the size is equal in both
+        directions.
+    adjust : {'spacing', 'region'}
+        Whether to adjust the spacing or the region if required. Ignored if
+        *shape* is given instead of *spacing*. Defaults to adjusting the
+        spacing.
+    region : list = [W, E, S, N]
+        The boundaries of a given region in Cartesian or geographic
+        coordinates. If not region is given, will use the bounding region of
+        the given points.
+
+    Returns
+    -------
+    block_coordinates : tuple of arrays
+        (easting, northing) arrays with the coordinates of the center of each
+        block.
+    labels : array
+        Integer label for each data point. The label is the index of the block
+        to which that point belongs.
+
+    See also
+    --------
+    block_reduce : Apply a reduction operation to the data in blocks (windows).
+
+    Examples
+    --------
+
+    >>> from verde import grid_coordinates
+    >>> coords = grid_coordinates((-5, 0, 5, 10), spacing=1)
+    >>> block_coords, labels = block_split(coords, spacing=2.5)
+    >>> for coord in block_coords:
+    ...     print(', '.join(['{:.2f}'.format(i) for i in coord]))
+    -3.75, -1.25, -3.75, -1.25
+    6.25, 6.25, 8.75, 8.75
+    >>> print(labels.reshape(coords[0].shape))
+    [[0 0 0 1 1 1]
+     [0 0 0 1 1 1]
+     [0 0 0 1 1 1]
+     [2 2 2 3 3 3]
+     [2 2 2 3 3 3]
+     [2 2 2 3 3 3]]
+
+    """
+    easting, northing = coordinates[:2]
+    if region is None:
+        region = get_region(easting, northing)
+    block_coords = tuple(
+        i.ravel() for i in grid_coordinates(
+            region, spacing=spacing, adjust=adjust, pixel_register=True)
+    )
+    # The index of the block with the closest center to each data point
+    tree = cKDTree(np.transpose(block_coords))
+    labels = tree.query(np.transpose((easting.ravel(), northing.ravel())))[1]
+    return block_coords, labels
 
 
 def block_reduce(easting, northing, data, reduction, spacing, region=None,
@@ -62,28 +134,25 @@ def block_reduce(easting, northing, data, reduction, spacing, region=None,
 
     See also
     --------
-    inside : Determine which points fall inside a given region.
-    block_region : Divide a region into blocks and yield their boundaries.
+    block_inside : Split a region into blocks and label points accordingly.
 
     """
-    if region is None:
-        region = get_region(easting, northing)
-    # Allocate the boolean arrays required in 'inside' only once to avoid
-    # overhead.
-    out = np.empty_like(easting, dtype=np.bool)
-    tmp = tuple(np.empty_like(easting, dtype=np.bool) for i in range(4))
-    re_east, re_north, re_data = [], [], []
-    for block in block_region(region, spacing, adjust):
-        inblock = inside(easting, northing, block, out=out, tmp=tmp)
-        if np.any(inblock):
-            re_data.append(reduction(data[inblock]))
-            if center_coordinates:
-                re_east.append((block[1] + block[0])/2)
-                re_north.append((block[3] + block[2])/2)
-            else:
-                re_east.append(reduction(easting[inblock]))
-                re_north.append(reduction(northing[inblock]))
-    return np.array(re_east), np.array(re_north), np.array(re_data)
+    block_coords, labels = block_split((easting, northing), spacing, adjust,
+                                       region)
+    if center_coordinates:
+        table = pd.DataFrame(dict(data=data.ravel(), block=labels))
+        blocked = table.groupby('block').aggregate(reduction)
+        unique = np.unique(labels)
+        block_east, block_north = [i[unique] for i in block_coords]
+    else:
+        table = pd.DataFrame(dict(easting=easting.ravel(),
+                                  northing=northing.ravel(),
+                                  data=data.ravel(),
+                                  block=labels))
+        blocked = table.groupby('block').aggregate(reduction)
+        block_east = blocked.easting.values
+        block_north = blocked.northing.values
+    return block_east, block_north, blocked.data.values
 
 
 def distance_mask(easting, northing, data_easting, data_northing, maxdist):
