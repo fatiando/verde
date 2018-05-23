@@ -7,6 +7,7 @@ from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
 from sklearn.base import BaseEstimator
 
 from .coordinates import get_region, grid_coordinates
+from .base import check_fit_input
 
 
 def block_split(coordinates, spacing, adjust='spacing', region=None):
@@ -132,12 +133,13 @@ class BlockReduce(BaseEstimator):
     """
 
     def __init__(self, reduction, spacing, region=None, adjust='spacing',
-                 center_coordinates=False):
+                 center_coordinates=False, std=False):
         self.reduction = reduction
         self.spacing = spacing
         self.region = region
         self.adjust = adjust
         self.center_coordinates = center_coordinates
+        self.std = std
 
     def filter(self, coordinates, data, weights=None):
         """
@@ -170,24 +172,63 @@ class BlockReduce(BaseEstimator):
             The block reduced data values.
 
         """
-        if weights is not None:
-            raise NotImplementedError()
+        coordinates, data, weights = check_fit_input(coordinates, data,
+                                                     weights, ravel=True)
         easting, northing = coordinates[:2]
         block_coords, labels = block_split((easting, northing), self.spacing,
                                            self.adjust, self.region)
         if self.center_coordinates:
-            table = pd.DataFrame(dict(data=data.ravel(), block=labels))
-            blocked = table.groupby('block').aggregate(self.reduction)
             unique = np.unique(labels)
             blocked_coords = tuple(i[unique] for i in block_coords)
         else:
-            table = pd.DataFrame(dict(easting=easting.ravel(),
-                                      northing=northing.ravel(),
-                                      data=data.ravel(),
-                                      block=labels))
-            blocked = table.groupby('block').aggregate(self.reduction)
-            blocked_coords = (blocked.easting.values, blocked.northing.values)
-        return blocked_coords, blocked.data.values
+            # Doing the coordinates separately because in case of weights the
+            # reduction applied to then is different (no weights ever)
+            coords = (
+                pd.DataFrame(
+                    dict(easting=easting.ravel(), northing=northing.ravel(),
+                         block=labels)
+                ).groupby('block').aggregate(self.reduction))
+            blocked_coords = (coords.easting.values, coords.northing.values)
+        # if any(w is None for w in weights):
+        if weights is None:
+            table = pd.DataFrame(dict(data=data.ravel(), block=labels))
+            blocked = table.groupby('block')
+            blocked_data = blocked.aggregate(self.reduction).data.values
+            if self.std:
+                blocked_weights = blocked.aggregate(np.std).data.values
+            else:
+                blocked_weights = None
+        else:
+            table = pd.DataFrame(
+                dict(data=data.ravel(), weights=weights.ravel(),
+                     block=labels))
+            blocked = table.groupby('block')
+
+            def reduction(value):
+                w = table.loc[value.index, "weights"]
+                return self.reduction(value, weights=w)
+
+            def variance(w):
+                if w.size < 2:
+                    return w
+                value = table.loc[w.index, "data"]
+                mean = np.average(value, weights=w)
+                var = np.average((value - mean)**2, weights=w)
+                # v1 = w.sum()
+                # v2 = (w**2).sum()
+                # var *= v1/(v1 - v2/v1)
+                return var
+
+            agg = blocked.aggregate(dict(data=reduction, weights=variance))
+            blocked_data = agg.data.values.ravel()
+            # blocked_weights = (agg.weights.min()/agg.weights).values.ravel()
+            blocked_weights = (agg.weights).values.ravel()
+
+        if blocked_weights is None:
+            return blocked_coords, blocked_data
+        return blocked_coords, blocked_data, blocked_weights
+
+
 
 
 def distance_mask(coordinates, data_coordinates, maxdist):
