@@ -42,7 +42,7 @@ def block_split(coordinates, spacing, adjust='spacing', region=None):
         (easting, northing) arrays with the coordinates of the center of each
         block.
     labels : array
-        Integer label for each data point. The label is the index of the block
+        integer label for each data point. The label is the index of the block
         to which that point belongs.
 
     See also
@@ -133,13 +133,12 @@ class BlockReduce(BaseEstimator):
     """
 
     def __init__(self, reduction, spacing, region=None, adjust='spacing',
-                 center_coordinates=False, std=False):
+                 center_coordinates=False):
         self.reduction = reduction
         self.spacing = spacing
         self.region = region
         self.adjust = adjust
         self.center_coordinates = center_coordinates
-        self.std = std
 
     def filter(self, coordinates, data, weights=None):
         """
@@ -149,6 +148,12 @@ class BlockReduce(BaseEstimator):
         coordinates, which can be determined through the same reduction applied
         to the coordinates or as the center of each block.
 
+        If weights are given, the reduction function must accept a ``weights``
+        keyword argument. The weights are passed in to the reduction but we
+        have no generic way aggregating the weights or reporting uncertainties.
+        For that, look to the specialized classes like
+        :class:`verde.BlockMean`.
+
         Parameters
         ----------
         coordinates : tuple of arrays
@@ -156,8 +161,10 @@ class BlockReduce(BaseEstimator):
             following order: (easting, northing, vertical, ...). Only easting
             and northing will be used, all subsequent coordinates will be
             ignored.
-        data : array
-            The data values at each point.
+        data : array or tuple of arrays
+            The data values at each point. If you want to reduce more than one
+            data component, pass in multiple arrays as elements of a tuple. All
+            arrays must have the same shape.
         weights : None or array or tuple of arrays
             If not None, then the weights assigned to each data point. If more
             than one data component is provided, you must provide a weights
@@ -173,62 +180,89 @@ class BlockReduce(BaseEstimator):
 
         """
         coordinates, data, weights = check_fit_input(coordinates, data,
-                                                     weights, ravel=True)
-        easting, northing = coordinates[:2]
-        block_coords, labels = block_split((easting, northing), self.spacing,
-                                           self.adjust, self.region)
+                                                     weights, ravel=False)
+        blocks, labels = block_split(coordinates, self.spacing, self.adjust,
+                                     self.region)
+        columns = {'data{}'.format(i): comp.ravel()
+                   for i, comp in enumerate(data)}
+        columns['block'] = labels
+        if any(w is None for w in weights):
+            reduction = self.reduction
+        else:
+            columns.update({'weight{}'.format(i): comp.ravel()
+                            for i, comp in enumerate(weights)})
+            reduction = {'data{}'.format(i): attach_weights(self.reduction, w)
+                         for i, w in enumerate(weights)}
+        blocked = pd.DataFrame(columns).groupby('block').aggregate(reduction)
+        blocked_data = tuple(blocked['data{}'.format(i)].values.ravel()
+                             for i, _ in enumerate(data))
+        blocked_coords = self._block_coordinates(coordinates, blocks, labels)
+        if len(blocked_data) == 1:
+            return blocked_coords, blocked_data[0]
+        return blocked_coords, blocked_data
+
+    def _block_coordinates(self, coordinates, block_coordinates, labels):
+        """
+        Calculate a coordinate assigned to each block.
+
+        If self.center_coordinates, the coordinates will be the center of each
+        block. Otherwise, will apply the reduction to the coordinates.
+
+        Blocks without any data will be omitted.
+
+        *block_coordinates* and *labels* should be the outputs of
+        :func:`verde.block_split`.
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...). Only easting
+            and northing will be used, all subsequent coordinates will be
+            ignored.
+        block_coordinates : tuple of arrays
+            (easting, northing) arrays with the coordinates of the center of
+            each block.
+        labels : array
+            integer label for each data point. The label is the index of the
+            block to which that point belongs.
+
+        Returns
+        -------
+        coordinates : tuple of arrays
+            (easting, northing) arrays with the coordinates assigned to each
+            non-empty block.
+
+        """
         if self.center_coordinates:
             unique = np.unique(labels)
-            blocked_coords = tuple(i[unique] for i in block_coords)
-        else:
-            # Doing the coordinates separately because in case of weights the
-            # reduction applied to then is different (no weights ever)
-            coords = (
-                pd.DataFrame(
-                    dict(easting=easting.ravel(), northing=northing.ravel(),
-                         block=labels)
-                ).groupby('block').aggregate(self.reduction))
-            blocked_coords = (coords.easting.values, coords.northing.values)
-        # if any(w is None for w in weights):
-        if weights is None:
-            table = pd.DataFrame(dict(data=data.ravel(), block=labels))
-            blocked = table.groupby('block')
-            blocked_data = blocked.aggregate(self.reduction).data.values
-            if self.std:
-                blocked_weights = blocked.aggregate(np.std).data.values
-            else:
-                blocked_weights = None
-        else:
-            table = pd.DataFrame(
-                dict(data=data.ravel(), weights=weights.ravel(),
-                     block=labels))
-            blocked = table.groupby('block')
-
-            def reduction(value):
-                w = table.loc[value.index, "weights"]
-                return self.reduction(value, weights=w)
-
-            def variance(w):
-                if w.size < 2:
-                    return w
-                value = table.loc[w.index, "data"]
-                mean = np.average(value, weights=w)
-                var = np.average((value - mean)**2, weights=w)
-                # v1 = w.sum()
-                # v2 = (w**2).sum()
-                # var *= v1/(v1 - v2/v1)
-                return var
-
-            agg = blocked.aggregate(dict(data=reduction, weights=variance))
-            blocked_data = agg.data.values.ravel()
-            # blocked_weights = (agg.weights.min()/agg.weights).values.ravel()
-            blocked_weights = (agg.weights).values.ravel()
-
-        if blocked_weights is None:
-            return blocked_coords, blocked_data
-        return blocked_coords, blocked_data, blocked_weights
+            return tuple(i[unique] for i in block_coordinates)
+        # Doing the coordinates separately from the data because in case of
+        # weights the reduction applied to then is different (no weights
+        # ever)
+        easting, northing = coordinates[:2]
+        table = pd.DataFrame(dict(easting=easting.ravel(),
+                                  northing=northing.ravel(),
+                                  block=labels))
+        grouped = table.groupby('block').aggregate(self.reduction)
+        return grouped.easting.values, grouped.northing.values
 
 
+def attach_weights(reduction, weights):
+    """
+    Create a partial application of reduction with the proper weights attached.
+
+    Makes a function that calls *reduction* and gives it the weights
+    corresponding to the index of the particular values it receives. Meant for
+    used in a groupby aggregation of a pandas.DataFrame. See class BlockReduce.
+    """
+
+    def weighted_reduction(values):
+        "weighted reduction using the stored from the outer scope weights"
+        w = weights[values.index]
+        return reduction(values, weights=w)
+
+    return weighted_reduction
 
 
 def distance_mask(coordinates, data_coordinates, maxdist):
