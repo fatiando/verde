@@ -7,6 +7,7 @@ from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
 from sklearn.base import BaseEstimator
 
 from .coordinates import get_region, grid_coordinates
+from .base import check_fit_input
 
 
 def block_split(coordinates, spacing, adjust='spacing', region=None):
@@ -41,7 +42,7 @@ def block_split(coordinates, spacing, adjust='spacing', region=None):
         (easting, northing) arrays with the coordinates of the center of each
         block.
     labels : array
-        Integer label for each data point. The label is the index of the block
+        integer label for each data point. The label is the index of the block
         to which that point belongs.
 
     See also
@@ -147,6 +148,12 @@ class BlockReduce(BaseEstimator):
         coordinates, which can be determined through the same reduction applied
         to the coordinates or as the center of each block.
 
+        If weights are given, the reduction function must accept a ``weights``
+        keyword argument. The weights are passed in to the reduction but we
+        have no generic way aggregating the weights or reporting uncertainties.
+        For that, look to the specialized classes like
+        :class:`verde.BlockMean`.
+
         Parameters
         ----------
         coordinates : tuple of arrays
@@ -154,8 +161,10 @@ class BlockReduce(BaseEstimator):
             following order: (easting, northing, vertical, ...). Only easting
             and northing will be used, all subsequent coordinates will be
             ignored.
-        data : array
-            The data values at each point.
+        data : array or tuple of arrays
+            The data values at each point. If you want to reduce more than one
+            data component, pass in multiple arrays as elements of a tuple. All
+            arrays must have the same shape.
         weights : None or array or tuple of arrays
             If not None, then the weights assigned to each data point. If more
             than one data component is provided, you must provide a weights
@@ -170,24 +179,90 @@ class BlockReduce(BaseEstimator):
             The block reduced data values.
 
         """
-        if weights is not None:
-            raise NotImplementedError()
-        easting, northing = coordinates[:2]
-        block_coords, labels = block_split((easting, northing), self.spacing,
-                                           self.adjust, self.region)
-        if self.center_coordinates:
-            table = pd.DataFrame(dict(data=data.ravel(), block=labels))
-            blocked = table.groupby('block').aggregate(self.reduction)
-            unique = np.unique(labels)
-            blocked_coords = tuple(i[unique] for i in block_coords)
+        coordinates, data, weights = check_fit_input(coordinates, data,
+                                                     weights, ravel=False)
+        blocks, labels = block_split(coordinates, self.spacing, self.adjust,
+                                     self.region)
+        columns = {'data{}'.format(i): comp.ravel()
+                   for i, comp in enumerate(data)}
+        columns['block'] = labels
+        if any(w is None for w in weights):
+            reduction = self.reduction
         else:
-            table = pd.DataFrame(dict(easting=easting.ravel(),
-                                      northing=northing.ravel(),
-                                      data=data.ravel(),
-                                      block=labels))
-            blocked = table.groupby('block').aggregate(self.reduction)
-            blocked_coords = (blocked.easting.values, blocked.northing.values)
-        return blocked_coords, blocked.data.values
+            columns.update({'weight{}'.format(i): comp.ravel()
+                            for i, comp in enumerate(weights)})
+            reduction = {'data{}'.format(i): attach_weights(self.reduction, w)
+                         for i, w in enumerate(weights)}
+        blocked = pd.DataFrame(columns).groupby('block').aggregate(reduction)
+        blocked_data = tuple(blocked['data{}'.format(i)].values.ravel()
+                             for i, _ in enumerate(data))
+        blocked_coords = self._block_coordinates(coordinates, blocks, labels)
+        if len(blocked_data) == 1:
+            return blocked_coords, blocked_data[0]
+        return blocked_coords, blocked_data
+
+    def _block_coordinates(self, coordinates, block_coordinates, labels):
+        """
+        Calculate a coordinate assigned to each block.
+
+        If self.center_coordinates, the coordinates will be the center of each
+        block. Otherwise, will apply the reduction to the coordinates.
+
+        Blocks without any data will be omitted.
+
+        *block_coordinates* and *labels* should be the outputs of
+        :func:`verde.block_split`.
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...). Only easting
+            and northing will be used, all subsequent coordinates will be
+            ignored.
+        block_coordinates : tuple of arrays
+            (easting, northing) arrays with the coordinates of the center of
+            each block.
+        labels : array
+            integer label for each data point. The label is the index of the
+            block to which that point belongs.
+
+        Returns
+        -------
+        coordinates : tuple of arrays
+            (easting, northing) arrays with the coordinates assigned to each
+            non-empty block.
+
+        """
+        if self.center_coordinates:
+            unique = np.unique(labels)
+            return tuple(i[unique] for i in block_coordinates)
+        # Doing the coordinates separately from the data because in case of
+        # weights the reduction applied to then is different (no weights
+        # ever)
+        easting, northing = coordinates[:2]
+        table = pd.DataFrame(dict(easting=easting.ravel(),
+                                  northing=northing.ravel(),
+                                  block=labels))
+        grouped = table.groupby('block').aggregate(self.reduction)
+        return grouped.easting.values, grouped.northing.values
+
+
+def attach_weights(reduction, weights):
+    """
+    Create a partial application of reduction with the proper weights attached.
+
+    Makes a function that calls *reduction* and gives it the weights
+    corresponding to the index of the particular values it receives. Meant for
+    used in a groupby aggregation of a pandas.DataFrame. See class BlockReduce.
+    """
+
+    def weighted_reduction(values):
+        "weighted reduction using the stored from the outer scope weights"
+        w = weights[values.index]
+        return reduction(values, weights=w)
+
+    return weighted_reduction
 
 
 def distance_mask(coordinates, data_coordinates, maxdist):
