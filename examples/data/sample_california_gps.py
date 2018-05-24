@@ -30,7 +30,7 @@ def setup_map(ax):
     ax.yaxis.set_major_formatter(LatitudeFormatter())
     ax.set_extent(vd.get_region((data.longitude, data.latitude)), crs=crs)
     # Plot the land and ocean as a solid color
-    ax.add_feature(cfeature.LAND)
+    ax.add_feature(cfeature.LAND, facecolor='gray')
     ax.add_feature(cfeature.OCEAN)
 
 
@@ -51,7 +51,7 @@ ax.set_title('Vertical velocity')
 setup_map(ax)
 maxabs = np.abs([data.velocity_up.min(), data.velocity_up.max()]).max()
 tmp = ax.scatter(data.longitude, data.latitude, c=data.velocity_up,
-                 s=10, vmin=-maxabs, vmax=maxabs, cmap='RdYlBu_r',
+                 s=10, vmin=-maxabs/3, vmax=maxabs/3, cmap='seismic',
                  transform=crs)
 cb = plt.colorbar(tmp, ax=ax)
 cb.set_label('meters/year')
