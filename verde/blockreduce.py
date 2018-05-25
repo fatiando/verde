@@ -200,16 +200,14 @@ class BlockReduce(BaseEstimator):
                                                      weights, ravel=False)
         blocks, labels = block_split(coordinates, self.spacing, self.adjust,
                                      self.region)
-        columns = {'data{}'.format(i): comp.ravel()
-                   for i, comp in enumerate(data)}
-        columns['block'] = labels
         if any(w is None for w in weights):
             reduction = self.reduction
         else:
-            columns.update({'weight{}'.format(i): comp.ravel()
-                            for i, comp in enumerate(weights)})
             reduction = {'data{}'.format(i): attach_weights(self.reduction, w)
                          for i, w in enumerate(weights)}
+        columns = {'data{}'.format(i): comp.ravel()
+                   for i, comp in enumerate(data)}
+        columns['block'] = labels
         blocked = pd.DataFrame(columns).groupby('block').aggregate(reduction)
         blocked_data = tuple(blocked['data{}'.format(i)].values.ravel()
                              for i, _ in enumerate(data))
@@ -263,3 +261,123 @@ class BlockReduce(BaseEstimator):
                                   block=labels))
         grouped = table.groupby('block').aggregate(self.reduction)
         return grouped.easting.values, grouped.northing.values
+
+
+class BlockMean(BlockReduce):
+    """
+    """
+
+    def __init__(self, spacing, region=None, adjust='spacing',
+                 center_coordinates=False, uncertainty=False):
+        super().__init__(np.average, spacing, region, adjust,
+                         center_coordinates)
+        self.uncertainty = uncertainty
+
+    def filter(self, coordinates, data, weights=None):
+        """
+        Apply the blocked aggregation to the given data.
+
+        Returns the reduced data value for each block along with the associated
+        coordinates, which can be determined through the same reduction applied
+        to the coordinates or as the center of each block.
+
+        If weights are given, the reduction function must accept a ``weights``
+        keyword argument. The weights are passed in to the reduction but we
+        have no generic way aggregating the weights or reporting uncertainties.
+        For that, look to the specialized classes like
+        :class:`verde.BlockMean`.
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...). Only easting
+            and northing will be used, all subsequent coordinates will be
+            ignored.
+        data : array or tuple of arrays
+            The data values at each point. If you want to reduce more than one
+            data component, pass in multiple arrays as elements of a tuple. All
+            arrays must have the same shape.
+        weights : None or array or tuple of arrays
+            If not None, then the weights assigned to each data point. If more
+            than one data component is provided, you must provide a weights
+            array for each data component (if not None).
+
+        Returns
+        -------
+        blocked_coordinates : tuple of arrays
+            (easting, northing) arrays with the coordinates of each block that
+            contains data.
+        blocked_data : array
+            The block reduced data values.
+
+        """
+        coordinates, data, weights = check_fit_input(coordinates, data,
+                                                     weights, ravel=False)
+        blocks, labels = block_split(coordinates, self.spacing, self.adjust,
+                                     self.region)
+        ncomps = len(data)
+        columns = {'data{}'.format(i): comp.ravel()
+                   for i, comp in enumerate(data)}
+        columns.update({'weight{}'.format(i): comp.ravel()
+                       for i, comp in enumerate(weights)})
+        columns['block'] = labels
+        table = pd.DataFrame(columns)
+        if self.uncertainty:
+            if any(w is None for w in weights):
+                raise ValueError(
+                    "Weights are required for uncertainty propagation."
+                    "Either provide weights or use 'uncertainty=False'.")
+
+            reduction = {
+                'data{}'.format(i): attach_weights(self.reduction, w)
+                for i, w in enumerate(weights)}
+            reduction.update({'weight{}'.format(i): lambda x: 1/x.sum()
+                             for i in range(ncomps)})
+            blocked = table.groupby('block').aggregate(reduction)
+            variance = (blocked['weight{}'.format(i)] for i in range(ncomps))
+            mean = (blocked['data{}'.format(i)] for i in range(ncomps))
+        else:
+            if any(w is None for w in weights):
+                reduction = {'data{}'.format(i): (('mean', self.reduction),
+                                                  ('variance', np.var))
+                             for i in range(ncomps)}
+                blocked = table.groupby('block').aggregate(reduction)
+            else:
+                blocked = block_weighted_average_variance(table)
+            mean = (blocked['data{}'.format(i), 'mean'] for i in range(ncomps))
+            variance = (blocked['data{}'.format(i), 'variance']
+                        for i in range(ncomps))
+        blocked_data = tuple(comp.values.ravel() for comp in mean)
+        blocked_weights = tuple(variance_to_weights(var.values.ravel())
+                                for var in variance)
+        blocked_coords = self._block_coordinates(coordinates, blocks, labels)
+        if ncomps == 1:
+            return blocked_coords, blocked_data[0], blocked_weights[0]
+        return blocked_coords, blocked_data, blocked_weights
+
+def variance_to_weights(variance):
+    variance = np.nan_to_num(variance, copy=False)
+    nonzero = variance > 1e-15
+    nonzero_var = variance[nonzero]
+    weights = np.ones_like(variance)
+    weights[nonzero] = nonzero_var.min()/nonzero_var
+    return weights
+
+def block_weighted_average_variance(table):
+    # The -1 is because of the extra block label column
+    ncomps = (table.shape[1] - 1)//2
+    columns = ['data{}'.format(i) for i in range(ncomps)]
+    index = pd.MultiIndex.from_product([columns, ['mean', 'variance']])
+
+    def average_variance(group):
+        data = np.empty(ncomps*2)
+        for i, col in enumerate(columns):
+            weights = group['weight{}'.format(i)]
+            data[i*2] = np.average(group[col], weights=weights)
+            data[i*2 + 1] = np.average((group[col] - data[i*2])**2,
+                                      weights=weights)
+        return pd.DataFrame(data.reshape((1, data.size)), index=[0],
+                            columns=index)
+
+    return table.groupby('block').apply(average_variance)
