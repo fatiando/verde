@@ -5,7 +5,7 @@ import numpy.testing as npt
 
 from ..datasets.synthetic import CheckerBoard
 from ..chain import Chain
-from ..scipy_bridge import ScipyGridder
+from ..scipygridder import ScipyGridder
 from ..spline import Spline
 from ..trend import Trend
 

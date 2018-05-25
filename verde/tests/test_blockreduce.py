@@ -5,7 +5,7 @@ import numpy as np
 import numpy.testing as npt
 
 from ..coordinates import grid_coordinates, scatter_points
-from ..grid_math import BlockReduce
+from ..blockreduce import BlockReduce
 
 
 def test_block_reduce():
