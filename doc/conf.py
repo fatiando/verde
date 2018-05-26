@@ -39,6 +39,7 @@ sphinx_gallery_conf = {
     # path where to save gallery generated examples
     'gallery_dirs': ['gallery', 'tutorials'],
     'filename_pattern': '\.py',
+    'thumbnail_size': (400, 400),
     # Sort gallery example by file name instead of number of lines (default)
     # Requires sphinx-gallery 0.1.13, which isn't on conda-forge yet
      # 'within_subsection_order': FileNameSortKey,
@@ -104,6 +105,9 @@ html_context = {
     # Custom variables to enable "Improve this page"" and "Download notebook"
     # links
     'doc_path': 'doc',
+    'galleries': sphinx_gallery_conf['gallery_dirs'],
+    'gallery_dir': dict(zip(sphinx_gallery_conf['gallery_dirs'],
+                            sphinx_gallery_conf['examples_dirs'])),
     'github_repo': 'fatiando/verde',
     'github_version': 'master',
 }
