@@ -19,6 +19,16 @@ Dependencies
 ------------
 
 * `numpy <http://www.numpy.org/>`__
+* `scipy <https://scipy.org/>`__
+* `pandas <http://pandas.pydata.org/>`__
+* `xarray <http://xarray.pydata.org/>`__
+* `scikit-learn <http://scikit-learn.org/>`__
+* `requests <http://docs.python-requests.org/>`__
+
+Most of the examples in the `Gallery </gallery/index.html>`__ and
+`Tutorials </tutorials/index.html>`__
+also use `matplotlib <https://matplotlib.org/>`__ and
+`cartopy <https://scitools.org.uk/cartopy/>`__ for plotting.
 
 
 Installing the latest development version
@@ -40,7 +50,10 @@ Testing your install
 
 We ship a full test suite with the package.
 You can run our tests after you install it but you will need to install `pytest
-<https://docs.pytest.org/>`__ first.
+<https://docs.pytest.org/>`__ first::
+
+    conda install -c conda-forge pytest
+
 After that, you can test your installation by running the following inside a
 Python interpreter::
 
