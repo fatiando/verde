@@ -1,11 +1,14 @@
+# pylint: disable=protected-access
 """
 Test the grid math functions
 """
+import pandas as pd
 import numpy as np
 import numpy.testing as npt
+import pytest
 
 from ..coordinates import grid_coordinates, scatter_points
-from ..blockreduce import BlockReduce
+from ..blockreduce import BlockReduce, BlockMean
 
 
 def test_block_reduce():
@@ -97,3 +100,104 @@ def test_block_reduce_multiple_weights():
     assert all(len(i) == 25 for i in block_data)
     npt.assert_allclose(block_data[0], 20)
     npt.assert_allclose(block_data[1], -13)
+
+
+def test_blockmean_noweights():
+    "Try blockmean with no weights"
+    region = (-5, 0, 5, 10)
+    east, north = grid_coordinates(region, spacing=0.1, pixel_register=True)
+    data = 20*np.ones_like(east)
+    reducer = BlockMean(spacing=1)
+    block_coords, block_data, block_weights = reducer.filter((east, north),
+                                                             data)
+    assert len(block_coords[0]) == 25
+    assert len(block_coords[1]) == 25
+    assert len(block_data) == 25
+    assert len(block_weights) == 25
+    npt.assert_allclose(block_data, 20)
+    npt.assert_allclose(block_weights, 1)
+    npt.assert_allclose(block_coords[0][:5], np.linspace(-4.5, -0.5, 5))
+    npt.assert_allclose(block_coords[1][::5], np.linspace(5.5, 9.5, 5))
+
+
+def test_blockmean_noweights_multiple_components():
+    "Try blockmean with no weights and multiple data components"
+    region = (-5, 0, 5, 10)
+    east, north = grid_coordinates(region, spacing=0.1, pixel_register=True)
+    data = 20*np.ones_like(east)
+    reducer = BlockMean(spacing=1)
+    block_coords, block_data, block_weights = reducer.filter((east, north),
+                                                             (data, data))
+    assert len(block_coords[0]) == 25
+    assert len(block_coords[1]) == 25
+    npt.assert_allclose(block_coords[0][:5], np.linspace(-4.5, -0.5, 5))
+    npt.assert_allclose(block_coords[1][::5], np.linspace(5.5, 9.5, 5))
+    for datai, weighti in zip(block_data, block_weights):
+        assert len(datai) == 25
+        assert len(weighti) == 25
+        npt.assert_allclose(datai, 20)
+        npt.assert_allclose(weighti, 1)
+
+
+def test_blockmean_noweights_table():
+    "Try blockmean with no weights using a known blocked data table"
+    reducer = BlockMean(spacing=1)
+    table = pd.DataFrame(dict(data0=[1, 2, 10, 20, 5, 5],
+                              block=[1, 1, 2, 2, 3, 3]))
+    mean, variance = reducer._blocked_mean_variance(table, 1)
+    npt.assert_allclose(mean[0], [1.5, 15, 5])
+    # The variance is calculated with 1 degree-of-freedom so it's divided by
+    # N-1 instead of N because this is a sample variance, not a population
+    # variance.
+    npt.assert_allclose(variance[0], [0.5, 50, 0])
+
+
+def test_blockmean_uncertainty_weights():
+    "Try blockmean with uncertainty weights"
+    region = (-2, 0, 6, 8)
+    # This will be a 4x4 data grid that will be split into 2x2 blocks
+    coords = grid_coordinates(region, spacing=0.5, pixel_register=True)
+    data = 102.4*np.ones_like(coords[0])
+    uncertainty = np.ones_like(data)
+    # Set a higher uncertainty for the first block
+    uncertainty[:2, :2] = 2
+    weights = 1/uncertainty**2
+    reducer = BlockMean(spacing=1, uncertainty=True)
+    # Uncertainty propagation can only work if weights are given
+    with pytest.raises(ValueError):
+        reducer.filter(coords, data)
+    block_coords, block_data, block_weights = reducer.filter(coords, data,
+                                                             weights)
+    assert len(block_coords[0]) == 4
+    assert len(block_coords[1]) == 4
+    assert len(block_data) == 4
+    assert len(block_weights) == 4
+    npt.assert_allclose(block_data, 102.4)
+    npt.assert_allclose(block_weights, [0.25, 1, 1, 1])
+    npt.assert_allclose(block_coords[0][:2], [-1.5, -0.5])
+    npt.assert_allclose(block_coords[1][::2], [6.5, 7.5])
+
+
+def test_blockmean_variance_weights():
+    "Try blockmean with variance weights"
+    region = (-2, 0, 6, 8)
+    # This will be a 4x4 data grid that will be split into 2x2 blocks
+    coords = grid_coordinates(region, spacing=0.5, pixel_register=True)
+    data = 102.4*np.ones_like(coords[0])
+    uncertainty = np.ones_like(data)
+    # Set a higher uncertainty for the first block
+    uncertainty[:2, :2] = 2
+    weights = 1/uncertainty**2
+    reducer = BlockMean(spacing=1, uncertainty=False)
+    block_coords, block_data, block_weights = reducer.filter(coords, data,
+                                                             weights)
+    assert len(block_coords[0]) == 4
+    assert len(block_coords[1]) == 4
+    assert len(block_data) == 4
+    assert len(block_weights) == 4
+    npt.assert_allclose(block_data, 102.4)
+    # The uncertainty in the first block shouldn't matter because the variance
+    # is still zero, so the weights should be 1
+    npt.assert_allclose(block_weights, [1, 1, 1, 1])
+    npt.assert_allclose(block_coords[0][:2], [-1.5, -0.5])
+    npt.assert_allclose(block_coords[1][::2], [6.5, 7.5])

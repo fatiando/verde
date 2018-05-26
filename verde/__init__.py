@@ -9,6 +9,7 @@ from .base import BaseGridder
 from .coordinates import scatter_points, grid_coordinates, inside, \
     profile_coordinates, get_region
 from .grid_math import distance_mask
+from .utils import variance_to_weights
 from .blockreduce import block_split, BlockReduce, BlockMean
 from .scipygridder import ScipyGridder
 from .trend import Trend, trend_jacobian, VectorTrend
