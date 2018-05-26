@@ -4,6 +4,8 @@ General utilities.
 import os
 import numpy as np
 
+from .base import check_data
+
 
 def get_home():
     """
@@ -44,7 +46,7 @@ def get_data_dir():
     return data_dir
 
 
-def variance_to_weights(variance, tol=1e-15):
+def variance_to_weights(variance, tol=1e-15, dtype='float64'):
     """
     Converts data variances to weights for gridding.
 
@@ -56,16 +58,22 @@ def variance_to_weights(variance, tol=1e-15):
 
     Parameters
     ----------
-    variance : array
-        An array with the variance of each point. Can have NaNs but they will
-        be converted to zeros and therefore receive a weight of 1.
+    variance : array or tuple of arrays
+        An array with the variance of each point. If there are multiple arrays
+        in a tuple, will calculated weights for each of them separately. Can
+        have NaNs but they will be converted to zeros and therefore receive a
+        weight of 1.
     tol : float
         The tolerance, or cutoff threshold, for small variances.
+    dtype : str or numpy dtype
+        The type of the output weights array.
 
     Returns
     -------
-    weights : array
-        Data weights in the range [0, 1] with the same shape as *variance*.
+    weights : array or tuple of arrays
+        Data weights in the range [0, 1] with the same shape as *variance*. If
+        more than one variance array was provided, then this will be a tuple
+        with the weights corresponding to each variance array.
 
     Examples
     --------
@@ -73,13 +81,23 @@ def variance_to_weights(variance, tol=1e-15):
     >>> print(variance_to_weights([0, 2, 0.2, 1e-16]))
     [1.  0.1 1.  1. ]
     >>> print(variance_to_weights([0, 0, 0, 0]))
-    [1 1 1 1]
+    [1. 1. 1. 1.]
+    >>> for w  in variance_to_weights(([0, 1, 10], [2, 4.0, 8])):
+    ...     print(w)
+    [1.  1.  0.1]
+    [1.   0.5  0.25]
 
     """
-    variance = np.nan_to_num(np.atleast_1d(variance), copy=False)
-    weights = np.ones_like(variance)
-    nonzero = variance > tol
-    if np.any(nonzero):
-        nonzero_var = variance[nonzero]
-        weights[nonzero] = nonzero_var.min()/nonzero_var
+    variance = check_data(variance)
+    weights = []
+    for var in variance:
+        var = np.nan_to_num(np.atleast_1d(var), copy=False)
+        w = np.ones_like(var, dtype=dtype)
+        nonzero = var > tol
+        if np.any(nonzero):
+            nonzero_var = var[nonzero]
+            w[nonzero] = nonzero_var.min()/nonzero_var
+        weights.append(w)
+    if len(weights) == 1:
+        return weights[0]
     return weights
