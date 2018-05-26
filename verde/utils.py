@@ -100,4 +100,4 @@ def variance_to_weights(variance, tol=1e-15, dtype='float64'):
         weights.append(w)
     if len(weights) == 1:
         return weights[0]
-    return weights
+    return tuple(weights)

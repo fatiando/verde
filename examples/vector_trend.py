@@ -5,7 +5,9 @@ Trends in vector data
 Verde provides the :class:`verde.VectorTrend` class to estimate a polynomial
 trend on each component of vector data, like GPS velocities. You can access
 each trend as a separate :class:`verde.Trend` or operate on all vector
-components directly (for gridding, etc).
+components directly using using :meth:`verde.VectorTrend.predict`,
+:meth:`verde.VectorTrend.grid`, etc, or chaining it with a vector interpolator
+using :class:`verde.Chain`.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
@@ -22,12 +24,12 @@ import verde as vd
 data = vd.datasets.fetch_california_gps()
 
 # We'll fit a degree 4 trend on both the East and North components and weight
-# the data using the variance of each component.
+# the data using the inverse of the variance of each component.
 trend = vd.VectorTrend(degree=4)
+weights = vd.variance_to_weights((data.std_east**2, data.std_north**2))
 trend.fit(coordinates=(data.longitude, data.latitude),
           data=(data.velocity_east, data.velocity_north),
-          weights=((data.std_east.min()/data.std_east)**2,
-                   (data.std_north.min()/data.std_north)**2))
+          weights=weights)
 print("Vector trend estimator:", trend)
 
 # The separate Trend objects for each component can be accessed through the
@@ -68,7 +70,7 @@ def plot_trend(ax, component, title):
     ax.set_yticks(np.arange(33, 42, 2), crs=crs)
     ax.xaxis.set_major_formatter(LongitudeFormatter())
     ax.yaxis.set_major_formatter(LatitudeFormatter())
-    # ax.coastlines(color='white')
+    ax.coastlines(color='white')
     ax.set_extent(vd.get_region((data.longitude, data.latitude)), crs=crs)
 
 
