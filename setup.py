@@ -43,6 +43,12 @@ CLASSIFIERS = [
 ]
 PLATFORMS = "Any"
 INSTALL_REQUIRES = [
+    'numpy',
+    'scipy',
+    'pandas',
+    'xarray',
+    'scikit-learn',
+    'requests',
 ]
 
 if __name__ == '__main__':
