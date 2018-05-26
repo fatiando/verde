@@ -16,6 +16,7 @@ from .trend import Trend, trend_jacobian, VectorTrend
 from .chain import Chain
 from .spline import Spline, spline_jacobian
 from .model_selection import cross_val_score, train_test_split
+from .vector import Vector2D, vector2d_jacobian
 
 
 # Get the version number through versioneer

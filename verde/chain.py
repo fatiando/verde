@@ -122,4 +122,4 @@ class Chain(BaseGridder):
                     result[i] += pred
         if len(result) == 1:
             result = result[0]
-        return result
+        return tuple(result)
