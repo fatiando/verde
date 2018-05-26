@@ -48,13 +48,14 @@ class Vector2D(BaseGridder):
 
     """
 
-    def __init__(self, poisson, fudge=1e-5, damping=None, shape=None,
-                 spacing=None):
+    def __init__(self, poisson=0.5, fudge=1e-5, damping=None, shape=None,
+                 spacing=None, force_region=None):
         self.poisson = poisson
         self.damping = damping
         self.shape = shape
         self.spacing = spacing
         self.fudge = fudge
+        self.force_region = force_region
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -96,19 +97,23 @@ class Vector2D(BaseGridder):
         else:
             weights = None
         self.region_ = get_region(coordinates[:2])
+        if self.force_region is None:
+            self.force_region = self.region_
         # Set the force positions. If no shape or spacing are given, then they
         # will coincide with the data points.
         if self.shape is None and self.spacing is None:
             self.force_coords_ = tuple(i.copy() for i in coordinates[:2])
         else:
-            self.force_coords_ = grid_coordinates(self.region_,
+            self.force_coords_ = grid_coordinates(self.force_region,
                                                   shape=self.shape,
                                                   spacing=self.spacing)
         jac = vector2d_jacobian(coordinates[:2], self.force_coords_,
                                 self.poisson, self.fudge)
         if jac.shape[0] < jac.shape[1]:
-            warn("Under-determined problem detected (ndata, nparams) = {}."
-                 .format(jac.shape))
+            warn(" ".join([
+                "Under-determined problem detected:",
+                "(ndata, nparams)={}".format(jac.shape),
+                "spacing={} shape={}".format(self.spacing, self.shape)]))
         scaler = StandardScaler(copy=False, with_mean=False, with_std=True)
         jac = scaler.fit_transform(jac)
         if self.damping is None:
