@@ -7,8 +7,8 @@
         <h2>
             Processing and gridding spatial data using Green's functions
         </h2>
+        <a href="/gallery"><img src="_static/banner.png" alt="A sample of what Verde can do"></a>
     </div>
-
 
 .. attention::
 
