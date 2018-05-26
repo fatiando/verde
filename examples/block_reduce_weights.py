@@ -6,6 +6,9 @@ Sometimes data has outliers or less reliable points that might skew a blocked
 mean or even a median. If the reduction function can take a ``weights``
 argument, like ``numpy.average``, you can pass in weights to
 :class:`verde.BlockReduce` to lower the influence of the offending data points.
+However, :class:`verde.BlockReduce` can't produce weights for the blocked data
+(for use by a gridder, for example). If you want to produced blocked weights as
+well, use :class:`verde.BlockMean`.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs

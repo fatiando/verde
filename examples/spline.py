@@ -8,8 +8,10 @@ data. The results are equivalent to using :class:`verde.ScipyGridder` with
 ``method='cubic'`` but the interpolation is usually slower.
 The advantage of using :class:`verde.Spline` is that you can assign weights to
 the data to incorporate the data uncertainties or variance into the gridding.
-In this example, we'll use :class:`verde.BlockMean` which can calculate weights
-from input data and pass it along to the spline.
+
+In this example, we'll use :class:`verde.BlockMean` to decimate the data
+because it can calculate weights based on the data uncertainty from input data
+and pass it along to the spline.
 """
 import matplotlib.pyplot as plt
 from matplotlib.colors import PowerNorm
@@ -34,22 +36,21 @@ projection = pyproj.Proj(proj='merc', lat_ts=data.latitude.mean())
 # because our data vary smoothly but have different uncertainties.
 spacing = 5/60   # 5 arc-minutes which we'll approximate to 5*111e3 meters
 chain = vd.Chain([
-    # ('mean', vd.BlockMean(spacing=spacing*111e3, uncertainties=True)),
-    ('mean', vd.BlockReduce(np.average, spacing*111e3)),
-    ('spline', vd.Spline(damping=1e-8))])
+    ('mean', vd.BlockMean(spacing=spacing*111e3, uncertainty=True)),
+    ('spline', vd.Spline(damping=1e-10))])
 print(chain)
 
-# Weights are defined as 1/sigma^2 with sigma as the uncertainty of the data
+# Weights need to 1/uncertainty**2 for the error propagation in BlockMean to
+# work
 chain.fit(projection(*coordinates), data.velocity_up, weights=1/data.std_up**2)
 
-# Create a grid of the vertical velocity and plot it along side the data
-# uncertainties.
+# Create a grid of the vertical velocity and mask it to only show points close
+# to the actual data.
 region = vd.get_region(coordinates)
 grid = chain.grid(region=region, spacing=spacing, projection=projection,
                   dims=['latitude', 'longitude'], data_names=['velocity'])
-
 mask = vd.distance_mask(np.meshgrid(grid.longitude, grid.latitude),
-                        (data.longitude, data.latitude), maxdist=spacing*5)
+                        (data.longitude, data.latitude), maxdist=0.5)
 grid = grid.where(~mask)
 
 
@@ -69,15 +70,17 @@ fig, axes = plt.subplots(1, 2, figsize=(9, 7),
 crs = ccrs.PlateCarree()
 # Plot the data uncertainties
 ax = axes[0]
-ax.set_title('Uncertainty')
+ax.set_title('Data uncertainty')
 setup_map(ax)
-pc = ax.scatter(*coordinates, c=data.std_up*1000, s=20, transform=crs,
-                norm=PowerNorm(gamma=1/2))
+# Plot the uncertainties in mm/yr and using a power law for the color scale to
+# highlight the smaller values
+pc = ax.scatter(*coordinates, c=data.std_up*1000, s=20, cmap='magma',
+                transform=crs, norm=PowerNorm(gamma=1/2))
 cb = plt.colorbar(pc, ax=ax, orientation='horizontal', pad=0.05)
 cb.set_label('uncertainty [mm/yr]')
 # Plot the gridded velocities
 ax = axes[1]
-ax.set_title('Spline interpolated velocity')
+ax.set_title('Spline interpolated vertical velocity')
 setup_map(ax)
 maxabs = np.max(np.abs([data.velocity_up.min(),
                         data.velocity_up.max()]))*1000
