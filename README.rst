@@ -3,6 +3,9 @@ Verde
 
 **Processing and gridding spatial data using Green's functions**
 
+.. image:: doc/_static/banner.png
+    :target: https://www.fatiando.org/verde/dev/gallery/index.html
+
 `Documentation <http://www.fatiando.org/verde/dev>`_ |
 `Install <http://www.fatiando.org/verde/dev/install.html>`_ |
 `Gallery <http://www.fatiando.org/verde/dev/gallery>`_ |
