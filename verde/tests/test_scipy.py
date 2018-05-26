@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 import numpy.testing as npt
 
-from ..scipy_bridge import ScipyGridder
+from ..scipygridder import ScipyGridder
 from ..coordinates import grid_coordinates
 from ..datasets.synthetic import CheckerBoard
 

@@ -6,17 +6,19 @@ Sometimes data has outliers or less reliable points that might skew a blocked
 mean or even a median. If the reduction function can take a ``weights``
 argument, like ``numpy.average``, you can pass in weights to
 :class:`verde.BlockReduce` to lower the influence of the offending data points.
+However, :class:`verde.BlockReduce` can't produce weights for the blocked data
+(for use by a gridder, for example). If you want to produced blocked weights as
+well, use :class:`verde.BlockMean`.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 # We need these two classes to set proper ticklabels for Cartopy maps
 from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
-import pyproj
 import numpy as np
 import verde as vd
 
-# We'll test this on the California vertical GPS velocity data data
+# We'll test this on the California vertical GPS velocity data
 data = vd.datasets.fetch_california_gps()
 
 # We'll add some random extreme outliers to the data

@@ -7,9 +7,9 @@ multiple operations on data. Each step in the chain filters the input and
 passes the result along to the next step. For gridders and trend estimators,
 filtering means fitting the model and passing along the residuals (input data
 minus predicted data). When predicting data, the predictions of each step are
-added together. Other operations, like :class:`verde.BlockReduce` change
-the input data values and the coordinates as well but don't impact the
-predictions.
+added together. Other operations, like :class:`verde.BlockReduce` and
+:class:`verde.BlockMean` change the input data values and the coordinates as
+well but don't impact the predictions.
 
 For example, say we want to decimate some data, calculate a polynomial trend,
 and fit a gridder on the residual values (not the trend), but then make a grid
@@ -33,14 +33,15 @@ region = vd.get_region((data.longitude, data.latitude))
 # the data.
 projection = pyproj.Proj(proj='merc', lat_ts=data.latitude.mean())
 
-# Create a chain that decimates the data using a blocked mean to avoid
-# aliasing, fits a 2nd degree trend, and then fits a standard gridder to the
+# Create a chain that fits a 2nd degree trend, decimates the residuals using a
+# blocked mean to avoid aliasing, and then fits a standard gridder to the
 # residuals. The spacing for the blocked mean will be 0.5 arc-minutes
-# (approximately converted to meters)
+# (approximately converted to meters).
 spacing = 0.5/60
-chain = vd.Chain([('reduce', vd.BlockReduce(np.mean, spacing*111e3)),
-                  ('trend', vd.Trend(degree=2)),
-                  ('spline', vd.Spline(damping=1e-7))])
+chain = vd.Chain([
+    ('trend', vd.Trend(degree=2)),
+    ('reduce', vd.BlockReduce(np.mean, spacing*111e3)),
+    ('spline', vd.Spline(damping=1e-8))])
 print("Chained estimator:", chain)
 # Calling 'fit' will automatically run the data through the chain
 chain.fit(projection(data.longitude.values, data.latitude.values),
@@ -70,7 +71,7 @@ crs = ccrs.PlateCarree()
 
 plt.figure(figsize=(7, 5))
 ax = plt.axes(projection=ccrs.Mercator())
-ax.set_title("Decimate, de-trend, and spline")
+ax.set_title("De-trend, decimate, and spline")
 maxabs = np.max(np.abs([grid.total_field_anomaly.min(),
                         grid.total_field_anomaly.max()]))
 pc = ax.pcolormesh(grid.longitude, grid.latitude, grid.total_field_anomaly,
