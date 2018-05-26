@@ -72,11 +72,14 @@ def variance_to_weights(variance, tol=1e-15):
 
     >>> print(variance_to_weights([0, 2, 0.2, 1e-16]))
     [1.  0.1 1.  1. ]
+    >>> print(variance_to_weights([0, 0, 0, 0]))
+    [1 1 1 1]
 
     """
     variance = np.nan_to_num(np.atleast_1d(variance), copy=False)
-    nonzero = variance > tol
-    nonzero_var = variance[nonzero]
     weights = np.ones_like(variance)
-    weights[nonzero] = nonzero_var.min()/nonzero_var
+    nonzero = variance > tol
+    if np.any(nonzero):
+        nonzero_var = variance[nonzero]
+        weights[nonzero] = nonzero_var.min()/nonzero_var
     return weights
