@@ -25,10 +25,13 @@ Dependencies
 * `scikit-learn <http://scikit-learn.org/>`__
 * `requests <http://docs.python-requests.org/>`__
 
-Most of the examples in the `Gallery </gallery/index.html>`__ and
-`Tutorials </tutorials/index.html>`__
-also use `matplotlib <https://matplotlib.org/>`__ and
-`cartopy <https://scitools.org.uk/cartopy/>`__ for plotting.
+Most of the examples in the :ref:`gallery` and :ref:`tutorials` also use:
+
+* `matplotlib <https://matplotlib.org/>`__
+* `cartopy <https://scitools.org.uk/cartopy/>`__ for plotting maps
+* `pyproj <https://jswhit.github.io/pyproj/>`__ for cartographic projections
+* `dask <https://dask.pydata.org/>`__ for parallelism
+
 
 
 Installing the latest development version
@@ -50,10 +53,7 @@ Testing your install
 
 We ship a full test suite with the package.
 You can run our tests after you install it but you will need to install `pytest
-<https://docs.pytest.org/>`__ first::
-
-    conda install -c conda-forge pytest
-
+<https://docs.pytest.org/>`__ first.
 After that, you can test your installation by running the following inside a
 Python interpreter::
 
