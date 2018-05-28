@@ -1,5 +1,6 @@
 """
-Vector gridding using elasticity Green's functions
+Vector gridding using elasticity Green's functions from Sandwell and Wessel
+(2016).
 """
 from warnings import warn
 
@@ -14,6 +15,23 @@ from .coordinates import grid_coordinates, get_region
 
 class Vector2D(BaseGridder):
     r"""
+    Coupled interpolation of 2-component vector data.
+
+    Uses the Green's functions based on elastic deformation from
+    [SandwellWessel2016]_. The interpolation is done by estimating point forces
+    that generate an elastic deformation that fits the observed vector data.
+    The deformation equations are based on a 2D elastic sheet with a constant
+    Poisson's ratio. The data can then be predicted at any desired location.
+
+    The east and north data components are coupled through the elastic
+    deformation equations. This coupling is controlled by the Poisson's ratio,
+    which is usually between -1 and 1. The special case of Poisson's ratio -1
+    leads to an uncoupled interpolation, meaning that the east and north
+    components don't interfere with each other.
+
+    The point forces are traditionally placed under each data point
+
+
 
     Parameters
     ----------
