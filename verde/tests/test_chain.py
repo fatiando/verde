@@ -2,12 +2,15 @@
 Test the Chain class
 """
 import numpy.testing as npt
+import numpy as np
 
 from ..datasets.synthetic import CheckerBoard
+from ..blockreduce import BlockReduce
 from ..chain import Chain
 from ..scipygridder import ScipyGridder
 from ..spline import Spline
-from ..trend import Trend
+from ..trend import Trend, VectorTrend
+from ..coordinates import grid_coordinates
 
 
 def test_chain():
@@ -52,3 +55,18 @@ def test_chain_double():
 
     npt.assert_allclose(grd.predict(coords), all_data)
     npt.assert_allclose(grd.score(coords, all_data), 1)
+
+
+def test_chain_vector():
+    "Test chains with vector data"
+    coords = grid_coordinates((-10, 0, 0, 10), spacing=0.1)
+    coefs = [-50, -0.5, 2.1]
+    trend = coefs[0] + coefs[1]*coords[0] + coefs[2]*coords[1]
+    data = (trend, trend.copy())
+    chain = Chain([('mean', BlockReduce(np.mean, spacing=0.5)),
+                   ('trend', VectorTrend(degree=1))])
+    chain.fit(coords, data)
+    npt.assert_allclose(chain.score(coords, data), 1)
+    npt.assert_allclose(chain.predict(coords), data)
+    npt.assert_allclose(chain.named_steps['trend'].component_[0].coef_, coefs)
+    npt.assert_allclose(chain.named_steps['trend'].component_[1].coef_, coefs)

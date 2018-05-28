@@ -95,7 +95,7 @@ def train_test_split(coordinates, data, weights=None, **kwargs):
       (None,)
 
     """
-    args = check_fit_input(coordinates, data, weights, ravel=False)
+    args = check_fit_input(coordinates, data, weights, unpack=False)
     ndata = args[1][0].size
     indices = np.arange(ndata)
     split = next(ShuffleSplit(n_splits=1, **kwargs).split(indices))
@@ -178,7 +178,7 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None,
 
     """
     coordinates, data, weights = check_fit_input(coordinates, data, weights,
-                                                 ravel=False)
+                                                 unpack=False)
     if client is None:
         client = DummyClient()
     if cv is None:

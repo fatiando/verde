@@ -214,7 +214,7 @@ class BaseGridder(BaseEstimator):
 
         """
         coordinates, data, weights = check_fit_input(coordinates, data,
-                                                     weights, ravel=False)
+                                                     weights, unpack=False)
         pred = check_data(self.predict(coordinates))
         result = np.mean(
             [r2_score(datai, predi, sample_weight=weighti)
@@ -529,12 +529,12 @@ def check_data(data):
     return data
 
 
-def check_fit_input(coordinates, data, weights, ravel=True):
+def check_fit_input(coordinates, data, weights, unpack=True):
     """
     Validate the inputs to the fit method of gridders.
 
     Checks that the coordinates, data, and weights (if given) all have the same
-    shape.
+    shape. Weights arrays are raveled.
 
     Parameters
     ----------
@@ -549,10 +549,10 @@ def check_fit_input(coordinates, data, weights, ravel=True):
         Typically, this should be 1 over the data uncertainty squared.
         If the data has multiple components, the weights have the same number
         of components.
-    ravel : bool
+    unoack : bool
         If False, data and weights will be tuples always. If they are single
         arrays, then they will be returned as a 1-element tuple. If True, will
-        only return tuples if there are more than 1 array in each.
+        unpack the tuples if there is only 1 array in each.
 
     Returns
     -------
@@ -577,7 +577,7 @@ def check_fit_input(coordinates, data, weights, ravel=True):
         weights = tuple(i.ravel() for i in weights)
     else:
         weights = tuple([None]*len(data))
-    if ravel:
+    if unpack:
         if len(weights) == 1:
             weights = weights[0]
         if len(data) == 1:

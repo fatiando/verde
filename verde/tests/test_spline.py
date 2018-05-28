@@ -80,14 +80,25 @@ def test_spline_grid():
                         rtol=5e-2)
 
 
-def test_spline_warns():
+def test_spline_warns_weights():
     "Check that a warning is issued when using weights and the exact solution."
     data = CheckerBoard().scatter(random_state=100)
     weights = np.ones_like(data.scalars)
     grd = Spline()
-    msg = "Weights are ignored for the exact spline solution"
+    msg = "Weights are ignored for the exact solution"
     with warnings.catch_warnings(record=True) as warn:
         grd.fit((data.easting, data.northing), data.scalars, weights=weights)
         assert len(warn) == 1
         assert issubclass(warn[-1].category, UserWarning)
         assert str(warn[-1].message).split('.')[0] == msg
+
+
+def test_spline_warns_underdetermined():
+    "Check that a warning is issued when the problem is underdetermined"
+    data = CheckerBoard().scatter(size=50, random_state=100)
+    grd = Spline(shape=(10, 10))
+    with warnings.catch_warnings(record=True) as warn:
+        grd.fit((data.easting, data.northing), data.scalars)
+        assert len(warn) == 1
+        assert issubclass(warn[-1].category, UserWarning)
+        assert str(warn[-1].message).startswith("Under-determined problem")

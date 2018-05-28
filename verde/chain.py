@@ -121,5 +121,5 @@ class Chain(BaseGridder):
                 for i, pred in enumerate(predicted):
                     result[i] += pred
         if len(result) == 1:
-            result = result[0]
-        return result
+            return result[0]
+        return tuple(result)
