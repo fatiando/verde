@@ -50,14 +50,13 @@ chain.fit(*train)
 score = chain.score(*test)
 print("Cross-validation R^2 score: {:.2f}".format(score))
 
-# Interpolate our horizontal GPS velocities onto a regular geographic grid
+# Interpolate our horizontal GPS velocities onto a regular geographic grid and
+# mask the data that are far from the observation points
 grid = chain.grid(region, spacing=spacing, projection=projection,
                   dims=['latitude', 'longitude'])
-# Mask the data that are far from the observation points
-mask = vd.distance_mask(np.meshgrid(grid.longitude, grid.latitude),
-                        (data.longitude, data.latitude),
-                        maxdist=0.5)
-grid = grid.where(~mask)
+mask = vd.distance_mask((data.longitude, data.latitude), maxdist=0.5,
+                        region=region, spacing=spacing)
+grid = grid.where(mask)
 
 # Calculate residuals between the predictions and the original input data.
 # Even though we aren't using regularization or regularly distributed forces,

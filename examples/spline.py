@@ -56,11 +56,11 @@ print("\nScore: {:.3f}".format(score))
 # Create a grid of the vertical velocity and mask it to only show points close
 # to the actual data.
 region = vd.get_region(coordinates)
+mask = vd.distance_mask((data.longitude, data.latitude), maxdist=0.5,
+                        region=region, spacing=spacing)
 grid = chain.grid(region=region, spacing=spacing, projection=projection,
                   dims=['latitude', 'longitude'], data_names=['velocity'])
-mask = vd.distance_mask(np.meshgrid(grid.longitude, grid.latitude),
-                        (data.longitude, data.latitude), maxdist=0.5)
-grid = grid.where(~mask)
+grid = grid.where(mask)
 
 
 def setup_map(ax):
