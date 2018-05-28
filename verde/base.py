@@ -269,14 +269,6 @@ class BaseGridder(BaseEstimator):
             ``['east_component', 'north_component']`` for 2D vector data, and
             ``['east_component', 'north_component', 'vertical_component']`` for
             3D vector data.
-        projection : callable or None
-            If not None, then should be a callable object
-            ``projection(easting, northing) -> (proj_easting, proj_northing)``
-            that takes in easting and northing coordinate arrays and returns
-            projected northing and easting coordinate arrays. This function
-            will be used to project the generated grid coordinates before
-            passing them into ``predict``. For example, you can use this to
-            generate a geographic grid from a Cartesian gridder.
 
         Returns
         -------
@@ -341,14 +333,6 @@ class BaseGridder(BaseEstimator):
             ``['east_component', 'north_component']`` for 2D vector data, and
             ``['east_component', 'north_component', 'vertical_component']`` for
             3D vector data.
-        projection : callable or None
-            If not None, then should be a callable object
-            ``projection(easting, northing) -> (proj_easting, proj_northing)``
-            that takes in easting and northing coordinate arrays and returns
-            projected northing and easting coordinate arrays. This function
-            will be used to project the generated scatter coordinates before
-            passing them into ``predict``. For example, you can use this to
-            generate a geographic scatter from a Cartesian gridder.
 
         Returns
         -------
@@ -404,14 +388,6 @@ class BaseGridder(BaseEstimator):
             ``['east_component', 'north_component']`` for 2D vector data, and
             ``['east_component', 'north_component', 'vertical_component']`` for
             3D vector data.
-        projection : callable or None
-            If not None, then should be a callable object
-            ``projection(easting, northing) -> (proj_easting, proj_northing)``
-            that takes in easting and northing coordinate arrays and returns
-            projected northing and easting coordinate arrays. This function
-            will be used to project the generated profile coordinates before
-            passing them into ``predict``. For example, you can use this to
-            generate a geographic profile from a Cartesian gridder.
 
         Returns
         -------
@@ -562,11 +538,11 @@ def check_fit_input(coordinates, data, weights, ravel=True):
 
     """
     data = check_data(data)
+    weights = check_data(weights)
     if any(i.shape != j.shape for i in coordinates for j in data):
         raise ValueError(
             "Coordinate and data arrays must have the same shape.")
-    if weights is not None:
-        weights = check_data(weights)
+    if any(w is not None for w in weights):
         if len(weights) != len(data):
             raise ValueError(
                 "Number of data '{}' and weights '{}' must be equal."
