@@ -40,9 +40,18 @@ chain = vd.Chain([
     ('spline', vd.Spline(damping=1e-10))])
 print(chain)
 
-# Weights need to 1/uncertainty**2 for the error propagation in BlockMean to
-# work
-chain.fit(projection(*coordinates), data.velocity_up, weights=1/data.std_up**2)
+# Split the data into a training and testing set. We'll use the training set to
+# grid the data and the testing set to validate our spline model. Weights need
+# to 1/uncertainty**2 for the error propagation in BlockMean to work.
+train, test = vd.train_test_split(projection(*coordinates), data.velocity_up,
+                                  weights=1/data.std_up**2, random_state=0)
+# Fit the model on the training set
+chain.fit(*train)
+# And calculate an R^2 score coefficient on the testing set. The best possible
+# score (perfect prediction) is 1. This can tell us how good our spline is at
+# predicting data that was not in the input dataset.
+score = chain.score(*test)
+print("\nScore: {:.3f}".format(score))
 
 # Create a grid of the vertical velocity and mask it to only show points close
 # to the actual data.
