@@ -127,43 +127,75 @@ class Spline(BaseGridder):
         """
         coordinates, data, weights = check_fit_input(coordinates, data,
                                                      weights)
-        exact_solution = all(i is None
-                             for i in [self.damping, self.spacing, self.shape])
-        if weights is not None and exact_solution:
-            warn(' '.join([
-                "Weights are ignored for the exact spline solution.",
-                "Use damping or specify a shape/spacing for the forces."]))
+        self._check_weighted_exact_solution(weights)
+        # Capture the data region to use as a default when gridding.
         self.region_ = get_region(coordinates[:2])
-        # Set the force positions. If no shape or spacing are given, then they
-        # will coincide with the data points.
-        if self.shape is None and self.spacing is None:
-            self.force_coords_ = tuple(i.copy() for i in coordinates[:2])
-        else:
-            # Set the force grid region to the data region if none is given.
-            # This will only happen once so the model won't change during later
-            # fits.
-            if self.region is None:
-                self.region = self.region_
-            self.force_coords_ = grid_coordinates(self.region,
-                                                  shape=self.shape,
-                                                  spacing=self.spacing)
-        jac = spline_jacobian(coordinates[:2], self.force_coords_, self.fudge)
+        self.force_coords_ = self._get_force_coordinates(coordinates)
+        jacobian = spline_jacobian(coordinates[:2], self.force_coords_,
+                                   self.fudge)
+        self.force_ = self._estimate_forces(jacobian, data, weights)
+        return self
+
+    def _estimate_forces(self, jacobian, data, weights):
+        """
+        Estimate forces that fit the data using least-squares. Scales the
+        Jacobian matrix to have unit standard deviation. This helps balance the
+        regularization and the difference between forces.
+        """
+        if jacobian.shape[0] < jacobian.shape[1]:
+            warn(" ".join([
+                "Under-determined problem detected",
+                "(ndata, nparams)={}.".format(jacobian.shape),
+                "Configuration of forces:",
+                "spacing={} shape={}".format(self.spacing, self.shape)]))
         scaler = StandardScaler(copy=False, with_mean=False, with_std=True)
-        jac = scaler.fit_transform(jac)
+        jacobian = scaler.fit_transform(jacobian)
         if self.damping is None:
             regr = LinearRegression(fit_intercept=False, normalize=False)
         else:
             regr = Ridge(alpha=self.damping, fit_intercept=False,
                          normalize=False)
-        regr.fit(jac, data.ravel(), sample_weight=weights)
-        self.force_ = regr.coef_/scaler.scale_
-        return self
+        regr.fit(jacobian, data.ravel(), sample_weight=weights)
+        # Undo the scaling so that we can use forces on the unscaled Jacobian
+        # later on.
+        forces = regr.coef_/scaler.scale_
+        return forces
+
+    def _get_force_coordinates(self, coordinates):
+        """
+        Generate arrays for the force coordinates depending on the
+        configuration of the spline.
+        """
+        # Set the force positions. If no shape or spacing are given, then they
+        # will coincide with the data points. This will only happen once so the
+        # model won't change during later fits.
+        if self.shape is None and self.spacing is None:
+            coords = tuple(i.copy() for i in coordinates[:2])
+        else:
+            if self.region is None:
+                self.region = get_region(coordinates)
+            coords = grid_coordinates(self.region, shape=self.shape,
+                                      spacing=self.spacing)
+        return coords
+
+    def _check_weighted_exact_solution(self, weights):
+        """
+        If a weighted exact solution is requested, warn the user that it won't
+        work.
+        """
+        # Check if we're using weights with the exact solution and warn the
+        # user that it won't have any effect.
+        exact = all(i is None for i in [self.damping, self.spacing,
+                                        self.shape])
+        if weights is not None and exact:
+            warn("Weights are ignored for the exact solution. "
+                 "Use damping or specify a shape/spacing for the forces.")
 
     def predict(self, coordinates):
         """
         Evaluate the estimated spline on the given set of points.
 
-        Requires a fitted estimator (see :meth:`~verde.Trend.fit`).
+        Requires a fitted estimator (see :meth:`~verde.Spline.fit`).
 
         Parameters
         ----------
@@ -188,6 +220,8 @@ class Spline(BaseGridder):
 def spline_jacobian(coordinates, force_coordinates, fudge=1e-5):
     """
     Make the Jacobian matrix for the 2D biharmonic spline.
+
+    Follows [Sandwell1987]_.
 
     Each column of the Jacobian is the Green's function for a single force
     evaluated on all observation points.

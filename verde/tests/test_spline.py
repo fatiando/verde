@@ -85,7 +85,7 @@ def test_spline_warns():
     data = CheckerBoard().scatter(random_state=100)
     weights = np.ones_like(data.scalars)
     grd = Spline()
-    msg = "Weights are ignored for the exact spline solution"
+    msg = "Weights are ignored for the exact solution"
     with warnings.catch_warnings(record=True) as warn:
         grd.fit((data.easting, data.northing), data.scalars, weights=weights)
         assert len(warn) == 1

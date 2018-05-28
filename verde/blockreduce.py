@@ -199,7 +199,7 @@ class BlockReduce(BaseEstimator):
 
         """
         coordinates, data, weights = check_fit_input(coordinates, data,
-                                                     weights, ravel=False)
+                                                     weights, unpack=False)
         blocks, labels = block_split(coordinates, self.spacing, self.adjust,
                                      self.region)
         if any(w is None for w in weights):
@@ -390,7 +390,7 @@ class BlockMean(BlockReduce):
 
         """
         coordinates, data, weights = check_fit_input(coordinates, data,
-                                                     weights, ravel=False)
+                                                     weights, unpack=False)
         if any(w is None for w in weights) and self.uncertainty:
             raise ValueError(
                 "Weights are required for uncertainty propagation."
