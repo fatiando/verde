@@ -173,6 +173,21 @@ def test_basegridder_projection():
                         angular*coordinates_true[0][0, :] + linear)
 
 
+def test_check_fit_input():
+    "Make sure no exceptions are raised for standard cases"
+    size = 20
+    data = np.arange(size)
+    coords = (np.arange(size), np.arange(size))
+    weights = np.arange(size)
+    check_fit_input(coords, data, None)
+    check_fit_input(coords, data, weights)
+    check_fit_input(coords, (data, data), None)
+    check_fit_input(coords, (data, data), (weights, weights))
+    check_fit_input(coords, (data, data), (None, None))
+    check_fit_input(coords, (data,), (None,))
+    check_fit_input(coords, (data,), (weights,))
+
+
 def test_check_fit_input_fails_coordinates():
     "Test the failing conditions for check_fit_input"
     coords = (np.arange(20), np.arange(20))

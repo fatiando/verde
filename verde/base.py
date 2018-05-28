@@ -562,11 +562,11 @@ def check_fit_input(coordinates, data, weights, ravel=True):
 
     """
     data = check_data(data)
+    weights = check_data(weights)
     if any(i.shape != j.shape for i in coordinates for j in data):
         raise ValueError(
             "Coordinate and data arrays must have the same shape.")
-    if weights is not None:
-        weights = check_data(weights)
+    if any(w is not None for w in weights):
         if len(weights) != len(data):
             raise ValueError(
                 "Number of data '{}' and weights '{}' must be equal."

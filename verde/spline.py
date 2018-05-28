@@ -41,7 +41,8 @@ class Spline(BaseGridder):
 
     Approximate (and more stable) solutions can be obtained by applying damping
     regularization to smooth the estimated forces (and interpolated values) or
-    by distributing the forces on a regular grid instead of at the data points.
+    by distributing the forces on a regular grid instead (using arguments
+    *spacing*, *shape*, and/or *region*).
 
     Data weights can be used during fitting but only have an any effect when
     using the approximate solutions.
@@ -66,6 +67,10 @@ class Spline(BaseGridder):
     spacing : None or float or tuple
         If not None, then should be the spacing of the regular grid of forces.
         See :func:`verde.grid_coordinates` for details.
+    region : None or tuple
+        If not None, then the boundaries (``[W, E, S, N]``) used to generate a
+        regular grid of forces. If None is given, then will use the boundaries
+        of data given to the first call to :meth:`~verde.Spline.fit`.
 
     Attributes
     ----------
@@ -84,11 +89,13 @@ class Spline(BaseGridder):
 
     """
 
-    def __init__(self, fudge=1e-5, damping=None, shape=None, spacing=None):
+    def __init__(self, fudge=1e-5, damping=None, shape=None, spacing=None,
+                 region=None):
         self.damping = damping
         self.shape = shape
         self.spacing = spacing
         self.fudge = fudge
+        self.region = region
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -132,7 +139,12 @@ class Spline(BaseGridder):
         if self.shape is None and self.spacing is None:
             self.force_coords_ = tuple(i.copy() for i in coordinates[:2])
         else:
-            self.force_coords_ = grid_coordinates(self.region_,
+            # Set the force grid region to the data region if none is given.
+            # This will only happen once so the model won't change during later
+            # fits.
+            if self.region is None:
+                self.region = self.region_
+            self.force_coords_ = grid_coordinates(self.region,
                                                   shape=self.shape,
                                                   spacing=self.spacing)
         jac = spline_jacobian(coordinates[:2], self.force_coords_, self.fudge)

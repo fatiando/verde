@@ -69,11 +69,14 @@ class Chain(BaseGridder):
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
             following order: (easting, northing, vertical, ...).
-        data : array
-            The data values of each data point.
-        weights : None or array
-            If not None, then the weights assigned to each data point.
-            Typically, this should be 1 over the data uncertainty squared.
+        data : array or tuple of arrays
+            the data values of each data point. if the data has more than one
+            component, *data* must be a tuple of arrays (one for each
+            component).
+        weights : none or array or tuple of arrays
+            if not none, then the weights assigned to each data point. if more
+            than one data component is provided, you must provide a weights
+            array for each data component (if not none).
 
         Returns
         -------
