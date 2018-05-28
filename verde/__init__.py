@@ -7,7 +7,7 @@ from ._version import get_versions as _get_versions
 from . import datasets
 from .base import BaseGridder
 from .coordinates import scatter_points, grid_coordinates, inside, \
-    profile_coordinates, get_region
+    profile_coordinates, get_region, pad_region, project_region
 from .grid_math import distance_mask
 from .utils import variance_to_weights
 from .blockreduce import block_split, BlockReduce, BlockMean

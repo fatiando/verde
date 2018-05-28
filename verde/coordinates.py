@@ -67,6 +67,76 @@ def get_region(coordinates):
     return region
 
 
+def pad_region(region, pad):
+    """
+    Extend the borders of a region by the given amount.
+
+    Parameters
+    ----------
+    region : list = [W, E, S, N]
+        The boundaries of a given region in Cartesian or geographic
+        coordinates.
+    pad : float or tuple = (pad_north, pad_east)
+        The amount of padding to add to the region. If it's a single number,
+        add this to all boundaries of region equally. If it's a tuple of
+        numbers, then will add different padding to the North-South and
+        East-West dimensions.
+
+    Returns
+    -------
+    padded_region : list = [W, E, S, N]
+        The padded region.
+
+    Examples
+    --------
+
+    >>> pad_region((0, 1, -5, -3), 1)
+    (-1, 2, -6, -2)
+    >>> pad_region((0, 1, -5, -3), (3, 2))
+    (-2, 3, -8, 0)
+
+    """
+    if np.isscalar(pad):
+        pad = (pad, pad)
+    w, e, s, n = region
+    padded = (w - pad[1], e + pad[1], s - pad[0], n + pad[0])
+    return padded
+
+
+def project_region(region, projection):
+    """
+    Calculate the bounding box of a region in projected coordinates.
+
+    Parameters
+    ----------
+    region : list = [W, E, S, N]
+        The boundaries of a given region in Cartesian or geographic
+        coordinates.
+    projection : callable or None
+        If not None, then should be a callable object (like a function)
+        ``projection(easting, northing) -> (proj_easting, proj_northing)`` that
+        takes in easting and northing coordinate arrays and returns projected
+        northing and easting coordinate arrays.
+
+    Returns
+    -------
+    proj_region : list = [W, E, S, N]
+        The bounding box of the projected region.
+
+    Examples
+    --------
+
+    >>> def projection(x, y):
+    ...     return (2*x, -1*y)
+    >>> project_region((3, 5, -9, -4), projection)
+    (6.0, 10.0, 4.0, 9.0)
+
+    """
+    east, north = grid_coordinates(region, shape=(101, 101))
+    east, north = projection(east.ravel(), north.ravel())
+    return (east.min(), east.max(), north.min(), north.max())
+
+
 def scatter_points(region, size, random_state=None):
     """
     Generate the coordinates for a random scatter of points.
