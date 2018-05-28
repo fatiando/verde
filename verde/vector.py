@@ -29,12 +29,31 @@ class Vector2D(BaseGridder):
     leads to an uncoupled interpolation, meaning that the east and north
     components don't interfere with each other.
 
-    The point forces are traditionally placed under each data point
+    The point forces are traditionally placed under each data point. The force
+    locations are set the first time :meth:`~verde.Vector2D.fit` is called.
+    Subsequent calls will fit using the same force locations as the first call.
+    This configuration results in an exact prediction at the data points but
+    can be unstable.
 
+    [SandwellWessel2016]_ stabilize the solution using Singular Value
+    Decomposition but we use ridge regression instead. The regularization can
+    be controlled using the *damping* argument. Alternatively, we also allow
+    forces to be placed on a regular grid using the *spacing*, *shape*, and/or
+    *region* arguments. Regularization or forces on a grid will result in a
+    least-squares estimate at the data points, not an exact solution. Note that
+    the least-squares solution is required for data weights to have any effect.
 
+    The Jacobian (design, sensitivity, feature, etc) matrix for the spline
+    is normalized using :class:`sklearn.preprocessing.StandardScaler` without
+    centering the mean so that the transformation can be undone in the
+    estimated forces.
 
     Parameters
     ----------
+    poisson : float
+        The Poisson's ratio for the elastic deformation Green's functions.
+        Default is 0.5. A value of -1 will lead to uncoupled interpolation of
+        the east and north data components.
     fudge : float
         The positive fudge factor applied to the Green's function to avoid
         singularities.
@@ -48,6 +67,7 @@ class Vector2D(BaseGridder):
     spacing : None or float or tuple
         If not None, then should be the spacing of the regular grid of forces.
         See :func:`verde.grid_coordinates` for details.
+    region
 
     Attributes
     ----------
@@ -58,11 +78,11 @@ class Vector2D(BaseGridder):
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
-        :meth:`~verde.Spline.grid` and :meth:`~verde.Spline.scatter` methods.
+        :meth:`~verde.Vector.grid` and :meth:`~verde.Vector.scatter` methods.
 
     See also
     --------
-    verde.spline_jacobian : Make the Jacobian matrix for the biharmonic spline
+    verde.vector2d_jacobian : Jacobian matrix for the 2D elastic deformation
 
     """
 
