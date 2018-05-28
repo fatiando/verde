@@ -10,7 +10,7 @@ from sklearn.model_selection import KFold, ShuffleSplit
 from .base import check_fit_input
 
 
-class DummyClient():
+class DummyClient():  # pylint: disable=no-self-use,too-few-public-methods
     """
     Dummy client to mimic a dask.distributed.Client for immediate local
     execution.
@@ -106,6 +106,76 @@ def train_test_split(coordinates, data, weights=None, **kwargs):
 def cross_val_score(estimator, coordinates, data, weights=None, cv=None,
                     client=None):
     """
+    Score an estimator/gridder using cross-validation.
+
+    Similar to :func:`sklearn.model_selection.cross_val_score` but modified to
+    accept spatial multi-component data with weights.
+
+    By default, will use :class:`sklearn.model_selection.KFold` to split the
+    dataset. Another cross-validation class can be passed in through the *cv*
+    argument.
+
+    Can optionally run in parallel using `dask <https://dask.pydata.org/>`__.
+    To do this, pass in a :class:`dask.distributed.Client` as the *client*
+    argument. Tasks in this function will be submitted to the dask cluster,
+    which can be local. In this case, the resulting scores won't be the actual
+    values but :class:`dask.distributed.Future` objects. Call their
+    ``.result()`` methods to get back the values or pass them along to other
+    dask computations.
+
+    Parameters
+    ----------
+    estimator : verde gridder
+        Any verde gridder class that has the ``fit`` and ``score`` methods.
+    coordinates : tuple of arrays
+        Arrays with the coordinates of each data point. Should be in the
+        following order: (easting, northing, vertical, ...).
+    data : array or tuple of arrays
+        the data values of each data point. If the data has more than one
+        component, *data* must be a tuple of arrays (one for each component).
+    weights : none or array or tuple of arrays
+        if not none, then the weights assigned to each data point. If more than
+        one data component is provided, you must provide a weights array for
+        each data component (if not none).
+    cv : None or cross-validation generator
+        Any scikit-learn cross-validation generator. Defaults to
+        :class:`sklearn.model_selection.KFold`.
+    client : None or dask.distributed.Client
+        If None, then computations are run serially. Otherwise, should be a
+        dask ``Client`` object. It will be used to dispatch computations to the
+        dask cluster.
+
+    Returns
+    -------
+    scores : list
+        List of scores for each split of the cross-validation generator. If
+        *client* is not None, then the scores will be futures.
+
+    Examples
+    --------
+
+    >>> from verde import grid_coordinates, Trend
+    >>> coords = grid_coordinates((0, 10, -10, -5), spacing=0.1)
+    >>> data = 10 - coords[0] + 0.5*coords[1]
+    >>> # A linear trend should perfectly predict this data
+    >>> scores = cross_val_score(Trend(degree=1), coords, data)
+    >>> print(', '.join(['{:.2f}'.format(score) for score in scores]))
+    1.00, 1.00, 1.00
+
+    >>> # To run parallel, we need to create a dask.distributed Client. It will
+    >>> # create a local cluster if no arguments are given so we can run the
+    >>> # scoring on a single machine.
+    >>> from dask.distributed import Client
+    >>> client = Client()
+    >>> # The scoring will now only submit tasks to our local cluster
+    >>> scores = cross_val_score(Trend(degree=1), coords, data, client=client)
+    >>> # The scores are not the actual values but Futures
+    >>> type(scores[0])
+    <class 'distributed.client.Future'>
+    >>> # We need to call .result() to get back the actual value
+    >>> print('{:.2f}'.format(scores[0].result()))
+    1.00
+
     """
     coordinates, data, weights = check_fit_input(coordinates, data, weights,
                                                  ravel=False)
@@ -126,6 +196,7 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None,
 
 def fit_score(estimator, train_data, test_data):
     """
+    Fit an estimator on the training data and then score it on the testing data
     """
     estimator.fit(*train_data)
     return estimator.score(*test_data)

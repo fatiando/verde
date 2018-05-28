@@ -69,6 +69,8 @@ def test_spline_grid():
     spline = Spline(shape=(35, 35)).fit(coords, data.scalars)
     npt.assert_allclose(spline.score(coords, data.scalars), 1, rtol=1e-2)
     assert spline.force_.size == 35**2
+    npt.assert_allclose(spline.force_coords_[0].min(), data.easting.min())
+    npt.assert_allclose(spline.force_coords_[1].min(), data.northing.min())
     shape = (3, 3)
     region = (2700, 3200, -7700, -7200)
     # Tolerance needs to be kind of high to allow for error due to small
