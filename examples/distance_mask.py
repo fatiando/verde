@@ -24,13 +24,15 @@ coordinates = vd.grid_coordinates(region, spacing=spacing)
 dummy_data = np.ones_like(coordinates[0])
 
 # Generate a mask for points that are more than 2 grid spacings away from any
-# data point. The mask is True for points that are too far.
-mask = vd.distance_mask(coordinates, (data.longitude, data.latitude),
-                        maxdist=spacing*2)
+# data point. The mask is True for points that are within the maximum distance.
+# Here, we'll provide the grid coordinates to the function but we could also
+# give it a region and spacing instead if we hadn't generated the coordinates.
+mask = vd.distance_mask((data.longitude, data.latitude), maxdist=spacing*2,
+                        coordinates=coordinates)
 print(mask)
 
 # Turn points that are too far into NaNs so they won't show up in our plot
-dummy_data[mask] = np.nan
+dummy_data[~mask] = np.nan
 
 # Make a plot of the masked data and the data locations.
 crs = ccrs.PlateCarree()
