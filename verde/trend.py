@@ -252,7 +252,7 @@ class VectorTrend(BaseGridder):
 
     Attributes
     ----------
-    components_ : list
+    component_ : list
         List of the fitted :class:`verde.Trend` on each component of the data.
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
