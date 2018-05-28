@@ -25,7 +25,7 @@ def test_vector2d(data2d):
     coords, data = data2d
     spline = Vector2D().fit(coords, data)
     npt.assert_allclose(spline.score(coords, data), 1)
-    npt.assert_allclose(spline.predict(coords), data, rtol=1e-5)
+    npt.assert_allclose(spline.predict(coords), data, rtol=1e-3)
     # There should be 1 force per data point
     assert data[0].size == spline.force_coords_[0].size
     assert data[0].size*2 == spline.force_.size
