@@ -1,17 +1,18 @@
-Verde
-=====
+.. raw:: html
 
-**Processing and gridding spatial data using Green's functions**
+    <img src="doc/_static/readme-banner.png">
+    <h2 align="center">
+        <strong>Processing and gridding spatial data using Green's functions</strong>
+    </h2>
 
-.. image:: doc/_static/banner.png
-    :target: https://www.fatiando.org/verde/dev/gallery/index.html
-
-`Documentation <http://www.fatiando.org/verde/dev>`_ |
-`Install <http://www.fatiando.org/verde/dev/install.html>`_ |
-`Gallery <http://www.fatiando.org/verde/dev/gallery>`_ |
-`API <http://www.fatiando.org/verde/dev/api>`_ |
-`Contact <https://gitter.im/fatiando/fatiando>`_
-
+    <p align="center">
+    <a href="http://www.fatiando.org/verde/dev">Documentation</a> |
+    <a href="http://www.fatiando.org/verde/dev/install.html">Install</a> |
+    <a href="http://www.fatiando.org/verde/dev/gallery">Gallery</a> |
+    <a href="http://www.fatiando.org/verde/dev/api">API</a> |
+    <a href="https://gitter.im/fatiando/fatiando">Contact</a>
+    </p>
+    
 .. image:: http://img.shields.io/pypi/v/verde.svg?style=flat-square
     :alt: Latest version on PyPI
     :target: https://pypi.python.org/pypi/verde
