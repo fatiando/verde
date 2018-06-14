@@ -1,0 +1,405 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    
+        <title>verde.datasets.synthetic &mdash; Verde</title>
+    
+
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/style.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    
+    <script src="../../../_static/require.js"></script>
+
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/verde-logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery/index.html">Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+            
+          
+
+    
+        <p class="caption">
+            <span class="caption-text">External links</span>
+        </p>
+        <ul>
+            
+                <li class="toctree-l1"><a href="https://www.fatiando.org"><i class="fa fa-external-link-square fa-fw"></i> Fatiando a Terra</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md"><i class="fa fa-users fa-fw"></i> Contributing</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
+            
+                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
+            
+        </ul>
+    
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Verde</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../verde.html">verde</a> &raquo;</li>
+        
+      <li>verde.datasets.synthetic</li>
+    
+    
+    <li class="source-link">
+        
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for verde.datasets.synthetic</h1><div class="highlight"><pre>
+<span></span><span class="c1"># pylint: disable=abstract-method</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Generators of synthetic datasets.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">..base</span> <span class="k">import</span> <span class="n">BaseGridder</span>
+<span class="kn">from</span> <span class="nn">..coordinates</span> <span class="k">import</span> <span class="n">check_region</span>
+
+
+<div class="viewcode-block" id="CheckerBoard"><a class="viewcode-back" href="../../../api/verde.datasets.CheckerBoard.html#verde.datasets.CheckerBoard">[docs]</a><span class="k">class</span> <span class="nc">CheckerBoard</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate synthetic data in a checkerboard pattern.</span>
+
+<span class="sd">    The mathematical model is:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        f(e, n) = a</span>
+<span class="sd">        \sin\left(\frac{2\pi}{w_e} e\right)</span>
+<span class="sd">        \cos\left(\frac{2\pi}{w_n} n\right)</span>
+
+<span class="sd">    in which :math:`e` is the easting coordinate, :math:`n` is the northing</span>
+<span class="sd">    coordinate, :math:`a` is the amplitude, and :math:`w_e` and :math:`w_n` are</span>
+<span class="sd">    the wavelengths in the east and north directions, respectively.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    amplitude : float</span>
+<span class="sd">        The amplitude of the checkerboard undulations.</span>
+<span class="sd">    region : tuple</span>
+<span class="sd">        The boundaries (``[W, E, S, N]``) of the region used to generate the</span>
+<span class="sd">        synthetic data.</span>
+<span class="sd">    w_east : float</span>
+<span class="sd">        The wavelength in the east direction. Defaults to half of the West-East</span>
+<span class="sd">        size of the evaluating region.</span>
+<span class="sd">    w_north : float</span>
+<span class="sd">        The wavelength in the north direction. Defaults to half of the</span>
+<span class="sd">        South-North size of the evaluating region.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; synth = CheckerBoard()</span>
+<span class="sd">    &gt;&gt;&gt; # Default values for the wavelengths are selected automatically</span>
+<span class="sd">    &gt;&gt;&gt; print(synth.w_east_, synth.w_north_)</span>
+<span class="sd">    2500.0 2500.0</span>
+<span class="sd">    &gt;&gt;&gt; # grid produces an xarray.Dataset with data on a regular grid</span>
+<span class="sd">    &gt;&gt;&gt; grid = synth.grid(shape=(11, 6))</span>
+<span class="sd">    &gt;&gt;&gt; grid.northing.values</span>
+<span class="sd">    array([-5000., -4500., -4000., -3500., -3000., -2500., -2000., -1500.,</span>
+<span class="sd">           -1000.,  -500.,     0.])</span>
+<span class="sd">    &gt;&gt;&gt; grid.easting.values</span>
+<span class="sd">    array([   0., 1000., 2000., 3000., 4000., 5000.])</span>
+<span class="sd">    &gt;&gt;&gt; # Lower printing precision to shorten this example</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np; np.set_printoptions(precision=1, suppress=True)</span>
+<span class="sd">    &gt;&gt;&gt; print(grid.scalars.values)</span>
+<span class="sd">    [[   0.   587.8 -951.1  951.1 -587.8   -0. ]</span>
+<span class="sd">     [   0.   181.6 -293.9  293.9 -181.6   -0. ]</span>
+<span class="sd">     [  -0.  -475.5  769.4 -769.4  475.5    0. ]</span>
+<span class="sd">     [  -0.  -475.5  769.4 -769.4  475.5    0. ]</span>
+<span class="sd">     [   0.   181.6 -293.9  293.9 -181.6   -0. ]</span>
+<span class="sd">     [   0.   587.8 -951.1  951.1 -587.8   -0. ]</span>
+<span class="sd">     [   0.   181.6 -293.9  293.9 -181.6   -0. ]</span>
+<span class="sd">     [  -0.  -475.5  769.4 -769.4  475.5    0. ]</span>
+<span class="sd">     [  -0.  -475.5  769.4 -769.4  475.5    0. ]</span>
+<span class="sd">     [   0.   181.6 -293.9  293.9 -181.6   -0. ]</span>
+<span class="sd">     [   0.   587.8 -951.1  951.1 -587.8   -0. ]]</span>
+<span class="sd">    &gt;&gt;&gt; # Use the random_state argument to seed the random number generator</span>
+<span class="sd">    &gt;&gt;&gt; table = synth.scatter()</span>
+<span class="sd">    &gt;&gt;&gt; # scatter and profile generate pandas.DataFrame objects</span>
+<span class="sd">    &gt;&gt;&gt; # Lower printing precision to shorten this example</span>
+<span class="sd">    &gt;&gt;&gt; import pandas as pd; pd.set_option(&#39;precision&#39;, 1)</span>
+<span class="sd">    &gt;&gt;&gt; print(table.head())</span>
+<span class="sd">       northing  easting  scalars</span>
+<span class="sd">    0    -467.2   2744.1    222.3</span>
+<span class="sd">    1   -1129.8   3575.9   -404.4</span>
+<span class="sd">    2   -3334.3   3013.8   -482.6</span>
+<span class="sd">    3   -4594.5   2724.4    280.2</span>
+<span class="sd">    4   -2963.8   2118.3   -322.8</span>
+<span class="sd">    &gt;&gt;&gt; print(table.tail())</span>
+<span class="sd">         northing  easting  scalars</span>
+<span class="sd">    295     -10.2   1121.6    317.1</span>
+<span class="sd">    296   -3189.1    489.2   -151.0</span>
+<span class="sd">    297   -2646.8   4311.0   -920.7</span>
+<span class="sd">    298   -3108.8   4864.6    -13.6</span>
+<span class="sd">    299    -102.4   4804.2   -457.0</span>
+<span class="sd">    &gt;&gt;&gt; profile = synth.profile(point1=(0, 0), point2=(2500, -2500), size=100)</span>
+<span class="sd">    &gt;&gt;&gt; print(profile.head())</span>
+<span class="sd">       northing  easting  distance  scalars</span>
+<span class="sd">    0       0.0      0.0       0.0      0.0</span>
+<span class="sd">    1     -25.3     25.3      35.7     63.3</span>
+<span class="sd">    2     -50.5     50.5      71.4    125.6</span>
+<span class="sd">    3     -75.8     75.8     107.1    185.8</span>
+<span class="sd">    4    -101.0    101.0     142.8    243.1</span>
+<span class="sd">    &gt;&gt;&gt; print(profile.tail())</span>
+<span class="sd">        northing  easting  distance  scalars</span>
+<span class="sd">    95   -2399.0   2399.0    3392.7 -2.4e+02</span>
+<span class="sd">    96   -2424.2   2424.2    3428.4 -1.9e+02</span>
+<span class="sd">    97   -2449.5   2449.5    3464.1 -1.3e+02</span>
+<span class="sd">    98   -2474.7   2474.7    3499.8 -6.3e+01</span>
+<span class="sd">    99   -2500.0   2500.0    3535.5 -2.4e-13</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="o">-</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">w_east</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">w_north</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">amplitude</span> <span class="o">=</span> <span class="n">amplitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_east</span> <span class="o">=</span> <span class="n">w_east</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w_north</span> <span class="o">=</span> <span class="n">w_north</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">region</span> <span class="o">=</span> <span class="n">region</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">w_east_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&quot;Use half of the E-W extent&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_east</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_east</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">w_north_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&quot;Use half of the N-S extent&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_north</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">region</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">region</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="mi">2</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_north</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">region_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s2">&quot;Used to fool the BaseGridder methods&quot;</span>
+        <span class="n">check_region</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">region</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">region</span>
+
+<div class="viewcode-block" id="CheckerBoard.predict"><a class="viewcode-back" href="../../../api/verde.datasets.CheckerBoard.html#verde.datasets.CheckerBoard.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluate the checkerboard function on a given set of points.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        coordinates : tuple of arrays</span>
+<span class="sd">            Arrays with the coordinates of each data point. Should be in the</span>
+<span class="sd">            following order: (easting, northing, vertical, ...). Only easting</span>
+<span class="sd">            and northing will be used, all subsequent coordinates will be</span>
+<span class="sd">            ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        data : array</span>
+<span class="sd">            The evaluated checkerboard function.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">amplitude</span> <span class="o">*</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">w_east_</span><span class="p">)</span><span class="o">*</span><span class="n">easting</span><span class="p">)</span> <span class="o">*</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">w_north_</span><span class="p">)</span><span class="o">*</span><span class="n">northing</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">data</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2018, Leonardo Uieda.
+      Last updated on Jun 14, 2018.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,380 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    
+        <title>Checkerboard function &mdash; Verde</title>
+    
+
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.png"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Bathymetry data from Baja California" href="sample_baja_bathymetry.html" />
+    <link rel="prev" title="Gridding 2-component vector data" href="../vector2d.html" />
+    
+    <script src="../../_static/require.js"></script>
+
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/verde-logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Gallery</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../block_reduce.html">Data decimation in blocks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../distance_mask.html">Mask grid points by distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../block_reduce_weights.html">Data decimation with weights</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scipygridder.html">Gridding with Scipy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chain_trend.html">Chaining operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../trend.html">Polynomial trend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../blockmean_weights.html">Different weights in block mean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vector_trend.html">Trends in vector data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spline.html">Gridding with splines and weights</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vector2d.html">Gridding 2-component vector data</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#synthetic-and-sample-datasets">Synthetic and sample datasets</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Checkerboard function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sample_baja_bathymetry.html">Bathymetry data from Baja California</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sample_rio_magnetic_anomaly.html">Magnetic data from Rio de Janeiro</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sample_california_gps.html">GPS velocities from California</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+
+    
+        <p class="caption">
+            <span class="caption-text">External links</span>
+        </p>
+        <ul>
+            
+                <li class="toctree-l1"><a href="https://www.fatiando.org"><i class="fa fa-external-link-square fa-fw"></i> Fatiando a Terra</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md"><i class="fa fa-users fa-fw"></i> Contributing</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
+            
+                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
+            
+        </ul>
+    
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Verde</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Gallery</a> &raquo;</li>
+        
+      <li>Checkerboard function</li>
+    
+    
+    <li class="source-link">
+        
+            
+                
+                
+                
+                    
+                
+                <a href="https://github.com/fatiando/verde/edit/master/doc/../examples/data/synthetic_checkerboard.py"
+                   class="fa fa-github"> Improve this page</a>
+            
+        
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="checkerboard-function">
+<span id="sphx-glr-gallery-data-synthetic-checkerboard-py"></span><h1>Checkerboard function<a class="headerlink" href="#checkerboard-function" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="../../api/verde.datasets.CheckerBoard.html#verde.datasets.CheckerBoard" title="verde.datasets.CheckerBoard"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.datasets.CheckerBoard</span></code></a> class generates synthetic data in a
+checkerboard pattern. It has the same data generation methods that most
+gridders have: predict, grid, scatter, and profile.</p>
+<img alt="../../_images/sphx_glr_synthetic_checkerboard_001.png" class="align-center" src="../../_images/sphx_glr_synthetic_checkerboard_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wavelengths</span> <span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">):</span> <span class="mf">2500.0</span> <span class="mf">2500.0</span>
+<span class="n">Checkerboard</span> <span class="n">value</span> <span class="n">at</span> <span class="p">(</span><span class="n">easting</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">northing</span><span class="o">=-</span><span class="mi">2500</span><span class="p">):</span> <span class="o">-</span><span class="mf">951.0565162951536</span>
+
+<span class="n">Data</span> <span class="n">grid</span><span class="p">:</span>
+ <span class="o">&lt;</span><span class="n">xarray</span><span class="o">.</span><span class="n">Dataset</span><span class="o">&gt;</span>
+<span class="n">Dimensions</span><span class="p">:</span>   <span class="p">(</span><span class="n">easting</span><span class="p">:</span> <span class="mi">101</span><span class="p">,</span> <span class="n">northing</span><span class="p">:</span> <span class="mi">101</span><span class="p">)</span>
+<span class="n">Coordinates</span><span class="p">:</span>
+  <span class="o">*</span> <span class="n">easting</span>   <span class="p">(</span><span class="n">easting</span><span class="p">)</span> <span class="n">float64</span> <span class="mf">0.0</span> <span class="mf">50.0</span> <span class="mf">100.0</span> <span class="mf">150.0</span> <span class="mf">200.0</span> <span class="mf">250.0</span> <span class="mf">300.0</span> <span class="mf">350.0</span> <span class="o">...</span>
+  <span class="o">*</span> <span class="n">northing</span>  <span class="p">(</span><span class="n">northing</span><span class="p">)</span> <span class="n">float64</span> <span class="o">-</span><span class="mf">5e+03</span> <span class="o">-</span><span class="mf">4.95e+03</span> <span class="o">-</span><span class="mf">4.9e+03</span> <span class="o">-</span><span class="mf">4.85e+03</span> <span class="o">...</span>
+<span class="n">Data</span> <span class="n">variables</span><span class="p">:</span>
+    <span class="n">scalars</span>   <span class="p">(</span><span class="n">northing</span><span class="p">,</span> <span class="n">easting</span><span class="p">)</span> <span class="n">float64</span> <span class="mf">0.0</span> <span class="mf">125.3</span> <span class="mf">248.7</span> <span class="mf">368.1</span> <span class="mf">481.8</span> <span class="mf">587.8</span> <span class="o">...</span>
+<span class="n">Attributes</span><span class="p">:</span>
+    <span class="n">metadata</span><span class="p">:</span>  <span class="n">Generated</span> <span class="n">by</span> <span class="n">CheckerBoard</span><span class="p">(</span><span class="n">amplitude</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="o">-</span><span class="mf">50.</span><span class="o">..</span>
+
+<span class="n">Table</span> <span class="n">of</span> <span class="n">scattered</span> <span class="n">data</span><span class="p">:</span>
+       <span class="n">northing</span>      <span class="n">easting</span>     <span class="n">scalars</span>
+<span class="mi">0</span> <span class="o">-</span><span class="mf">1610.917316</span>  <span class="mf">2744.067520</span> <span class="o">-</span><span class="mf">354.631332</span>
+<span class="mi">1</span> <span class="o">-</span><span class="mf">3649.960134</span>  <span class="mf">3575.946832</span> <span class="o">-</span><span class="mf">410.305405</span>
+<span class="mi">2</span> <span class="o">-</span><span class="mf">1324.029889</span>  <span class="mf">3013.816880</span> <span class="o">-</span><span class="mf">944.622429</span>
+<span class="mi">3</span>  <span class="o">-</span><span class="mf">189.057274</span>  <span class="mf">2724.415915</span>  <span class="mf">475.366775</span>
+<span class="mi">4</span> <span class="o">-</span><span class="mf">3756.234282</span>  <span class="mf">2118.273997</span>  <span class="mf">818.736516</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">verde</span> <span class="kn">as</span> <span class="nn">vd</span>
+
+<span class="c1"># Instantiate the data generator class and fit it to set the data region.</span>
+<span class="n">synth</span> <span class="o">=</span> <a href="../../api/verde.datasets.CheckerBoard.html#verde.datasets.CheckerBoard" title="View documentation for verde.datasets.CheckerBoard"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">CheckerBoard</span></a><span class="p">()</span>
+
+<span class="c1"># Default values are provided for the wavelengths of the function determined</span>
+<span class="c1"># from the region.</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;wavelengths (east, north):&quot;</span><span class="p">,</span> <span class="n">synth</span><span class="o">.</span><span class="n">w_east_</span><span class="p">,</span> <span class="n">synth</span><span class="o">.</span><span class="n">w_north_</span><span class="p">)</span>
+
+<span class="c1"># The CheckerBoard class behaves like any gridder class</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Checkerboard value at (easting=2000, northing=-2500):&quot;</span><span class="p">,</span>
+      <span class="n">synth</span><span class="o">.</span><span class="n">predict</span><span class="p">((</span><span class="mi">2000</span><span class="p">,</span> <span class="o">-</span><span class="mi">2500</span><span class="p">)))</span>
+
+<span class="c1"># Generating a grid results in a xarray.Dataset</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">synth</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Data grid:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
+
+<span class="c1"># while a random scatter generates a pandas.DataFrame</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">synth</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Table of scattered data:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">5.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;CheckerBoard&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">scalars</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.203 seconds)</p>
+<div class="sphx-glr-footer docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../_downloads/synthetic_checkerboard.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">synthetic_checkerboard.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../_downloads/synthetic_checkerboard.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">synthetic_checkerboard.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="sample_baja_bathymetry.html" class="btn btn-neutral float-right" title="Bathymetry data from Baja California" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../vector2d.html" class="btn btn-neutral" title="Gridding 2-component vector data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2018, Leonardo Uieda.
+      Last updated on Jun 14, 2018.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

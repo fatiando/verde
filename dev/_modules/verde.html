@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
-        <title>verde &mdash; verde</title>
+        <title>verde &mdash; Verde</title>
     
 
 
@@ -29,9 +29,9 @@
 
   
 
-  
-    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../_static/style.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -54,18 +54,27 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search">
           
-    <a href="../index.html"><h2 class="sidebar-title">Verde</h2></a>
 
-    
-        
-        
-            <div class="version">
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/verde-logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
                 dev
-            </div>
-        
-    
+              </div>
+            
+          
 
-    
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -74,7 +83,7 @@
   </form>
 </div>
 
-
+          
         </div>
 
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
@@ -87,10 +96,12 @@
             
               <p class="caption"><span class="caption-text">Documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gallery/index.html">Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
             
@@ -101,6 +112,8 @@
             <span class="caption-text">External links</span>
         </p>
         <ul>
+            
+                <li class="toctree-l1"><a href="https://www.fatiando.org"><i class="fa fa-external-link-square fa-fw"></i> Fatiando a Terra</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md"><i class="fa fa-users fa-fw"></i> Contributing</a></li>
             
@@ -180,6 +193,21 @@
 <span class="kn">from</span> <span class="nn">._version</span> <span class="k">import</span> <span class="n">get_versions</span> <span class="k">as</span> <span class="n">_get_versions</span>
 
 <span class="c1"># Import functions/classes to make the API</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">datasets</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">BaseGridder</span>
+<span class="kn">from</span> <span class="nn">.coordinates</span> <span class="k">import</span> <span class="n">scatter_points</span><span class="p">,</span> <span class="n">grid_coordinates</span><span class="p">,</span> <span class="n">inside</span><span class="p">,</span> \
+    <span class="n">profile_coordinates</span><span class="p">,</span> <span class="n">get_region</span><span class="p">,</span> <span class="n">pad_region</span><span class="p">,</span> <span class="n">project_region</span>
+<span class="kn">from</span> <span class="nn">.grid_math</span> <span class="k">import</span> <span class="n">distance_mask</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">variance_to_weights</span>
+<span class="kn">from</span> <span class="nn">.blockreduce</span> <span class="k">import</span> <span class="n">block_split</span><span class="p">,</span> <span class="n">BlockReduce</span><span class="p">,</span> <span class="n">BlockMean</span>
+<span class="kn">from</span> <span class="nn">.scipygridder</span> <span class="k">import</span> <span class="n">ScipyGridder</span>
+<span class="kn">from</span> <span class="nn">.trend</span> <span class="k">import</span> <span class="n">Trend</span><span class="p">,</span> <span class="n">trend_jacobian</span><span class="p">,</span> <span class="n">VectorTrend</span>
+<span class="kn">from</span> <span class="nn">.chain</span> <span class="k">import</span> <span class="n">Chain</span>
+<span class="kn">from</span> <span class="nn">.spline</span> <span class="k">import</span> <span class="n">Spline</span><span class="p">,</span> <span class="n">spline_jacobian</span>
+<span class="kn">from</span> <span class="nn">.model_selection</span> <span class="k">import</span> <span class="n">cross_val_score</span><span class="p">,</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">.vector</span> <span class="k">import</span> <span class="n">Vector2D</span><span class="p">,</span> <span class="n">vector2d_jacobian</span>
+
+
 <span class="c1"># Get the version number through versioneer</span>
 <span class="n">__version__</span> <span class="o">=</span> <span class="n">_get_versions</span><span class="p">()[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span>
 <span class="n">__commit__</span> <span class="o">=</span> <span class="n">_get_versions</span><span class="p">()[</span><span class="s1">&#39;full-revisionid&#39;</span><span class="p">]</span>
@@ -240,7 +268,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Apr 26, 2018.
+      Last updated on Jun 14, 2018.
 
     </p>
   </div>
@@ -277,16 +305,11 @@
 
   
 
-  
-  
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
 
   <script type="text/javascript">
       jQuery(function () {
-          
-          SphinxRtdTheme.Navigation.enableSticky();
-          
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script> 
 
