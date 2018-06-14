@@ -6,34 +6,22 @@
     </h2>
 
     <p align="center">
+    <a href="https://pypi.python.org/pypi/verde"><img alt="Latest version on PyPI" src="http://img.shields.io/pypi/v/verde.svg?style=flat-square"></a>
+    <a href="https://travis-ci.org/fatiando/verde"><img alt="Travis CI build status" src="http://img.shields.io/travis/fatiando/verde/master.svg?style=flat-square&label=TravisCI"></a>
+    <a href="https://codecov.io/gh/fatiando/verde"><img alt="Test coverage status" src="https://img.shields.io/codecov/c/github/fatiando/verde/master.svg?style=flat-square"></a>
+    <a href="https://codeclimate.com/github/fatiando/verde"><img alt="Code quality status" src="https://img.shields.io/codeclimate/maintainability/fatiando/verde.svg?style=flat-square"></a>
+    <a href="https://www.codacy.com/app/leouieda/verde"><img alt="Code quality grade on codacy" src="https://img.shields.io/codacy/grade/6b698defc0df47288a634930d41a9d65.svg?style=flat-square&label=codacy"></a>
+    <a href="https://pypi.python.org/pypi/verde"><img alt="Compatible Python versions." src="https://img.shields.io/pypi/pyversions/verde.svg?style=flat-square"></a>
+    <a href="https://gitter.im/fatiando/fatiando"><img alt="Chat room on Gitter" src="https://img.shields.io/gitter/room/fatiando/fatiando.svg?style=flat-square"></a>
+    </p>
+
+    <p align="center">
     <a href="http://www.fatiando.org/verde/dev">Documentation</a> |
     <a href="http://www.fatiando.org/verde/dev/install.html">Install</a> |
     <a href="http://www.fatiando.org/verde/dev/gallery">Gallery</a> |
     <a href="http://www.fatiando.org/verde/dev/api">API</a> |
     <a href="https://gitter.im/fatiando/fatiando">Contact</a>
     </p>
-    
-.. image:: http://img.shields.io/pypi/v/verde.svg?style=flat-square
-    :alt: Latest version on PyPI
-    :target: https://pypi.python.org/pypi/verde
-.. image:: http://img.shields.io/travis/fatiando/verde/master.svg?style=flat-square&label=TravisCI
-    :alt: Travis CI build status
-    :target: https://travis-ci.org/fatiando/verde
-.. image:: https://img.shields.io/codecov/c/github/fatiando/verde/master.svg?style=flat-square
-    :alt: Test coverage status
-    :target: https://codecov.io/gh/fatiando/verde
-.. image:: https://img.shields.io/codeclimate/maintainability/fatiando/verde.svg?style=flat-square
-    :alt: Code quality status
-    :target: https://codeclimate.com/github/fatiando/verde
-.. image:: https://img.shields.io/codacy/grade/6b698defc0df47288a634930d41a9d65.svg?style=flat-square&label=codacy
-    :alt: Code quality grade on codacy
-    :target: https://www.codacy.com/app/leouieda/verde
-.. image:: https://img.shields.io/pypi/pyversions/verde.svg?style=flat-square
-    :alt: Compatible Python versions.
-    :target: https://pypi.python.org/pypi/verde
-.. image:: https://img.shields.io/gitter/room/fatiando/fatiando.svg?style=flat-square
-    :alt: Chat room on Gitter
-    :target: https://gitter.im/fatiando/fatiando
 
 
 Disclaimer
