@@ -4,13 +4,9 @@
 
     <div class="banner">
         <img src="_static/verde-logo.png" alt="Verde">
-        <h2>
-            Processing and gridding spatial data using Green's functions
-        </h2>
-        <h3>
-            A <a href="https://www.fatiando.org/">Fatiando a Terra</a> project.
-        </h3>
+        <h2>Processing and gridding spatial data using Green's functions</h2>
         <a href="/gallery"><img src="_static/banner.png" alt="A sample of what Verde can do"></a>
+        <h2>A part of the <a href="https://www.fatiando.org/">Fatiando a Terra</a> project.</h2>
     </div>
 
 .. attention::
