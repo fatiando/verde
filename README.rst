@@ -23,6 +23,10 @@
     <a href="https://gitter.im/fatiando/fatiando">Contact</a>
     </p>
 
+    <p align="center">
+    A part of the <a href="https://www.fatiando.org">Fatiando a Terra</a> project.
+    </p>
+
 
 Disclaimer
 ----------
