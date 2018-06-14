@@ -79,9 +79,9 @@ rst_epilog = """
 """.format(year=year)
 
 html_last_updated_fmt = '%b %d, %Y'
-html_title = 'verde'
-html_short_title = 'verde'
-html_logo = ''
+html_title = 'Verde'
+html_short_title = 'Verde'
+html_logo = '_static/verde-logo.png'
 html_favicon = '_static/favicon.png'
 html_static_path = ['_static']
 html_extra_path = []
@@ -94,6 +94,8 @@ html_show_copyright = True
 # Theme config
 html_theme = "sphinx_rtd_theme"
 html_theme_options = {
+    'logo_only': True,
+    'display_version': True,
 }
 html_context = {
     'menu_links': [
