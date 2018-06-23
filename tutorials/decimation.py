@@ -1,23 +1,15 @@
 """
-Getting Started
+Data decimation
 ===============
 
-This tutorial will help you get started with using Verde to grid some data.
-
-.. attention::
-
-    This is a work in progress. We're currently planning and prototyping what
-    will be included in the tutorial.
-
-Outline:
-
-* The library and where to find functions
-* Loading tests datasets (project it using pyproj)
-* Preparing data for gridding (block median)
-* The gridder classes, fitting, and their attributes
-* Predicting data using ``predict`` (evaluate the misfit)
-* Gridding (use Cartesian coordinates)
-* Using ``projection`` to make a geographic grid
+Often times, raw spatial data can be highly oversampled in a direction (shipborne
+and airborne data, for example).
+To avoid aliasing effects,
+it's important to decimate the data to match the desired grid interval before
+interpolation.
+:func:`verde.BlockReduce` decimates
+data by applying a reduction operation (mean, median, mode, max, etc) to the
+data in blocks.
 """
 ###############################################################################
 # First this we need to do is import the ``verde`` library. All of the main

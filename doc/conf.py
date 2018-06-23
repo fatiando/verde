@@ -98,6 +98,7 @@ html_theme_options = {
     'display_version': True,
 }
 html_context = {
+    'menu_links_name': 'Getting help and contributing',
     'menu_links': [
         ('<i class="fa fa-external-link-square fa-fw"></i> Fatiando a Terra', 'https://www.fatiando.org'),
         ('<i class="fa fa-users fa-fw"></i> Contributing', 'https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md'),

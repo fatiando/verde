@@ -21,7 +21,13 @@
 
     {% if menu_links %}
         <p class="caption">
-            <span class="caption-text">External links</span>
+            <span class="caption-text">
+            {% if menu_links_name %}
+                {{ menu_links_name }}
+            {% else %}
+                External links
+            {% endif %}
+            </span>
         </p>
         <ul>
             {% for text, link in menu_links %}
