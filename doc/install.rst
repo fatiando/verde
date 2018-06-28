@@ -33,6 +33,23 @@ Most of the examples in the :ref:`gallery` and :ref:`tutorials` also use:
 * `dask <https://dask.pydata.org/>`__ for parallelism
 
 
+Installing with conda
+---------------------
+
+You can install Verde using the `conda package manager <https://conda.io/>`__ that comes
+with the Anaconda distribution::
+
+    conda install verde --channel conda-forge
+
+
+Installing with pip
+-------------------
+
+Alternatively, you can also use the `pip package manager
+<https://pypi.org/project/pip/>`__::
+
+    pip install verde
+
 
 Installing the latest development version
 -----------------------------------------
