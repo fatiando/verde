@@ -286,13 +286,13 @@ class BlockMean(BlockReduce):
     the data coordinates or as the center of each block. Weights can be
     calculated in three ways:
 
-    1. Using the variance of the data: ``weights=1/variance**2``. This is the
+    1. Using the variance of the data: ``weights=1/variance``. This is the
        only possible option when no input weights are provided.
     2. Using the uncertainty of the weighted mean propagated from the
        uncertainties in the data: ``weights=1/uncertainty**2``. In this case,
        we assume that the input weights are also ``1/uncertainty**2``. **Do not
        normalize or scale the weights if using uncertainty propagation**.
-    3. Using the weighted variance of the data: ``1/weighted_variance**2``. In
+    3. Using the weighted variance of the data: ``1/weighted_variance``. In
        this case, we make no assumptions about the nature of the weights.
 
     For all three options, the output weights are scaled to the range [0, 1].
