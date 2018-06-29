@@ -48,7 +48,7 @@ fig, axes = plt.subplots(
 )
 titles = ["No Weights", "Weights"]
 crs = ccrs.PlateCarree()
-maxabs = np.max(np.abs([data.velocity_up.min(), data.velocity_up.max()]))
+maxabs = vd.maxabs(data.velocity_up)
 for ax, title, velocity in zip(axes, titles, (no_weights, with_weights)):
     ax.set_title(title)
     # Plot the locations of the outliers

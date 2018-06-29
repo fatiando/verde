@@ -41,9 +41,7 @@ def plot_data(column, i, title):
     ax = plt.subplot(2, 2, i, projection=ccrs.Mercator())
     ax.set_title(title)
     # Set vmin and vmax to the extremes of the original data
-    maxabs = np.max(
-        np.abs([data.total_field_anomaly_nt.min(), data.total_field_anomaly_nt.max()])
-    )
+    maxabs = vd.maxabs(data.total_field_anomaly_nt)
     mappable = ax.scatter(
         data.longitude,
         data.latitude,

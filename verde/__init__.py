@@ -16,7 +16,7 @@ from .coordinates import (
     project_region,
 )
 from .grid_math import distance_mask
-from .utils import variance_to_weights
+from .utils import variance_to_weights, maxabs
 from .blockreduce import block_split, BlockReduce, BlockMean
 from .scipygridder import ScipyGridder
 from .trend import Trend, trend_jacobian, VectorTrend
