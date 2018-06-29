@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import PowerNorm
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
+
 # We need these two classes to set proper ticklabels for Cartopy maps
 from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import pyproj
@@ -29,22 +30,29 @@ data = vd.datasets.fetch_california_gps()
 coordinates = (data.longitude.values, data.latitude.values)
 
 # Use a Mercator projection for our Cartesian gridder
-projection = pyproj.Proj(proj='merc', lat_ts=data.latitude.mean())
+projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 
 # Now we can chain a block weighted mean and weighted spline together. We'll
 # use uncertainty propagation to calculate the new weights from block mean
 # because our data vary smoothly but have different uncertainties.
-spacing = 5/60   # 5 arc-minutes which we'll approximate to 5*111e3 meters
-chain = vd.Chain([
-    ('mean', vd.BlockMean(spacing=spacing*111e3, uncertainty=True)),
-    ('spline', vd.Spline(damping=1e-10))])
+spacing = 5 / 60  # 5 arc-minutes which we'll approximate to 5*111e3 meters
+chain = vd.Chain(
+    [
+        ("mean", vd.BlockMean(spacing=spacing * 111e3, uncertainty=True)),
+        ("spline", vd.Spline(damping=1e-10)),
+    ]
+)
 print(chain)
 
 # Split the data into a training and testing set. We'll use the training set to
 # grid the data and the testing set to validate our spline model. Weights need
 # to 1/uncertainty**2 for the error propagation in BlockMean to work.
-train, test = vd.train_test_split(projection(*coordinates), data.velocity_up,
-                                  weights=1/data.std_up**2, random_state=0)
+train, test = vd.train_test_split(
+    projection(*coordinates),
+    data.velocity_up,
+    weights=1 / data.std_up ** 2,
+    random_state=0,
+)
 # Fit the model on the training set
 chain.fit(*train)
 # And calculate an R^2 score coefficient on the testing set. The best possible
@@ -56,10 +64,16 @@ print("\nScore: {:.3f}".format(score))
 # Create a grid of the vertical velocity and mask it to only show points close
 # to the actual data.
 region = vd.get_region(coordinates)
-mask = vd.distance_mask((data.longitude, data.latitude), maxdist=0.5,
-                        region=region, spacing=spacing)
-grid = chain.grid(region=region, spacing=spacing, projection=projection,
-                  dims=['latitude', 'longitude'], data_names=['velocity'])
+mask = vd.distance_mask(
+    (data.longitude, data.latitude), maxdist=0.5, region=region, spacing=spacing
+)
+grid = chain.grid(
+    region=region,
+    spacing=spacing,
+    projection=projection,
+    dims=["latitude", "longitude"],
+    data_names=["velocity"],
+)
 grid = grid.where(mask)
 
 
@@ -70,34 +84,47 @@ def setup_map(ax):
     ax.xaxis.set_major_formatter(LongitudeFormatter())
     ax.yaxis.set_major_formatter(LatitudeFormatter())
     ax.set_extent(region, crs=crs)
-    ax.add_feature(cfeature.LAND, facecolor='gray')
+    ax.add_feature(cfeature.LAND, facecolor="gray")
     ax.add_feature(cfeature.OCEAN)
 
 
-fig, axes = plt.subplots(1, 2, figsize=(9, 7),
-                         subplot_kw=dict(projection=ccrs.Mercator()))
+fig, axes = plt.subplots(
+    1, 2, figsize=(9, 7), subplot_kw=dict(projection=ccrs.Mercator())
+)
 crs = ccrs.PlateCarree()
 # Plot the data uncertainties
 ax = axes[0]
-ax.set_title('Data uncertainty')
+ax.set_title("Data uncertainty")
 setup_map(ax)
 # Plot the uncertainties in mm/yr and using a power law for the color scale to
 # highlight the smaller values
-pc = ax.scatter(*coordinates, c=data.std_up*1000, s=20, cmap='magma',
-                transform=crs, norm=PowerNorm(gamma=1/2))
-cb = plt.colorbar(pc, ax=ax, orientation='horizontal', pad=0.05)
-cb.set_label('uncertainty [mm/yr]')
+pc = ax.scatter(
+    *coordinates,
+    c=data.std_up * 1000,
+    s=20,
+    cmap="magma",
+    transform=crs,
+    norm=PowerNorm(gamma=1 / 2)
+)
+cb = plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.05)
+cb.set_label("uncertainty [mm/yr]")
 # Plot the gridded velocities
 ax = axes[1]
-ax.set_title('Spline interpolated vertical velocity')
+ax.set_title("Spline interpolated vertical velocity")
 setup_map(ax)
-maxabs = np.max(np.abs([data.velocity_up.min(),
-                        data.velocity_up.max()]))*1000
-pc = ax.pcolormesh(grid.longitude, grid.latitude, grid.velocity*1000,
-                   cmap='seismic', vmin=-maxabs, vmax=maxabs, transform=crs)
-cb = plt.colorbar(pc, ax=ax, orientation='horizontal', pad=0.05)
-cb.set_label('vertical velocity [mm/yr]')
-ax.scatter(*coordinates, c='black', s=0.5, alpha=0.1, transform=crs)
+maxabs = np.max(np.abs([data.velocity_up.min(), data.velocity_up.max()])) * 1000
+pc = ax.pcolormesh(
+    grid.longitude,
+    grid.latitude,
+    grid.velocity * 1000,
+    cmap="seismic",
+    vmin=-maxabs,
+    vmax=maxabs,
+    transform=crs,
+)
+cb = plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.05)
+cb.set_label("vertical velocity [mm/yr]")
+ax.scatter(*coordinates, c="black", s=0.5, alpha=0.1, transform=crs)
 ax.coastlines()
 plt.tight_layout()
 plt.show()

@@ -6,68 +6,77 @@ import pytest
 import numpy as np
 import numpy.testing as npt
 
-from ..base import get_dims, get_data_names, get_instance_region, \
-    BaseGridder, check_fit_input
+from ..base import (
+    get_dims,
+    get_data_names,
+    get_instance_region,
+    BaseGridder,
+    check_fit_input,
+)
 from ..coordinates import grid_coordinates, scatter_points
 
 
 def test_get_dims():
     "Tests that get_dims returns the expected results"
     grd = BaseGridder()
-    assert get_dims(grd, dims=None) == ('northing', 'easting')
-    assert get_dims(grd, dims=('john', 'paul')) == ('john', 'paul')
+    assert get_dims(grd, dims=None) == ("northing", "easting")
+    assert get_dims(grd, dims=("john", "paul")) == ("john", "paul")
 
-    grd.coordinate_system = 'geographic'
-    assert get_dims(grd, dims=None) == ('latitude', 'longitude')
-    assert get_dims(grd, dims=('john', 'paul')) == ('john', 'paul')
+    grd.coordinate_system = "geographic"
+    assert get_dims(grd, dims=None) == ("latitude", "longitude")
+    assert get_dims(grd, dims=("john", "paul")) == ("john", "paul")
 
-    grd.coordinate_system = 'cartesian'
-    assert get_dims(grd, dims=None) == ('northing', 'easting')
-    assert get_dims(grd, dims=('john', 'paul')) == ('john', 'paul')
+    grd.coordinate_system = "cartesian"
+    assert get_dims(grd, dims=None) == ("northing", "easting")
+    assert get_dims(grd, dims=("john", "paul")) == ("john", "paul")
 
     # Make sure the given dims is returned no matter what
-    grd.coordinate_system = 'an invalid system'
-    assert get_dims(grd, dims=('john', 'paul')) == ('john', 'paul')
+    grd.coordinate_system = "an invalid system"
+    assert get_dims(grd, dims=("john", "paul")) == ("john", "paul")
 
 
 def test_get_dims_fails():
     "Check if fails for invalid coordinate system"
     grd = BaseGridder()
     with pytest.raises(ValueError):
-        grd.coordinate_system = 'Cartesian'
+        grd.coordinate_system = "Cartesian"
         get_dims(grd, dims=None)
     with pytest.raises(ValueError):
-        grd.coordinate_system = 'Geographic'
+        grd.coordinate_system = "Geographic"
         get_dims(grd, dims=None)
     with pytest.raises(ValueError):
-        grd.coordinate_system = 'some totally not valid name'
+        grd.coordinate_system = "some totally not valid name"
         get_dims(grd, dims=None)
 
 
 def test_get_data_names():
     "Tests that get_data_names returns the expected results"
-    data1 = (np.arange(10), )
-    data2 = tuple([np.arange(10)]*2)
-    data3 = tuple([np.arange(10)]*3)
+    data1 = (np.arange(10),)
+    data2 = tuple([np.arange(10)] * 2)
+    data3 = tuple([np.arange(10)] * 3)
     # Test the default names
-    assert get_data_names(data1, data_names=None) == ('scalars',)
-    assert get_data_names(data2, data_names=None) == ('east_component',
-                                                      'north_component')
-    assert get_data_names(data3, data_names=None) == ('east_component',
-                                                      'north_component',
-                                                      'vertical_component')
+    assert get_data_names(data1, data_names=None) == ("scalars",)
+    assert get_data_names(data2, data_names=None) == (
+        "east_component",
+        "north_component",
+    )
+    assert get_data_names(data3, data_names=None) == (
+        "east_component",
+        "north_component",
+        "vertical_component",
+    )
     # Test custom names
-    assert get_data_names(data1, data_names=('a',)) == ('a',)
-    assert get_data_names(data2, data_names=('a', 'b')) == ('a', 'b')
-    assert get_data_names(data3, data_names=('a', 'b', 'c')) == ('a', 'b', 'c')
+    assert get_data_names(data1, data_names=("a",)) == ("a",)
+    assert get_data_names(data2, data_names=("a", "b")) == ("a", "b")
+    assert get_data_names(data3, data_names=("a", "b", "c")) == ("a", "b", "c")
 
 
 def test_get_data_names_fails():
     "Check if fails for invalid data types"
     with pytest.raises(ValueError):
-        get_data_names(tuple([np.arange(5)]*4), data_names=None)
+        get_data_names(tuple([np.arange(5)] * 4), data_names=None)
     with pytest.raises(ValueError):
-        get_data_names(tuple([np.arange(5)]*2), data_names=("meh",))
+        get_data_names(tuple([np.arange(5)] * 2), data_names=("meh",))
 
 
 def test_get_instance_region():
@@ -93,14 +102,15 @@ class PolyGridder(BaseGridder):
         nparams = self.degree + 1
         jac = np.zeros((ndata, nparams))
         for j in range(nparams):
-            jac[:, j] = coordinates[0].ravel()**j
+            jac[:, j] = coordinates[0].ravel() ** j
         self.coefs_ = np.linalg.solve(jac.T.dot(jac), jac.T.dot(data.ravel()))
         return self
 
     def predict(self, coordinates):
         "Predict the data"
-        return np.sum(cof*coordinates[0]**deg
-                      for deg, cof in enumerate(self.coefs_))
+        return np.sum(
+            cof * coordinates[0] ** deg for deg, cof in enumerate(self.coefs_)
+        )
 
 
 def test_basegridder():
@@ -112,15 +122,15 @@ def test_basegridder():
         BaseGridder().fit(None, None)
 
     grd = PolyGridder()
-    assert repr(grd) == 'PolyGridder(degree=1)'
+    assert repr(grd) == "PolyGridder(degree=1)"
     grd.degree = 2
-    assert repr(grd) == 'PolyGridder(degree=2)'
+    assert repr(grd) == "PolyGridder(degree=2)"
 
     region = (0, 10, -10, -5)
     shape = (50, 30)
     angular, linear = 2, 100
     coordinates = scatter_points(region, 1000, random_state=0)
-    data = angular*coordinates[0] + linear
+    data = angular * coordinates[0] + linear
     grd = PolyGridder().fit(coordinates, data)
 
     with pytest.raises(ValueError):
@@ -128,17 +138,18 @@ def test_basegridder():
         grd.grid()
 
     coordinates_true = grid_coordinates(region, shape)
-    data_true = angular*coordinates_true[0] + linear
+    data_true = angular * coordinates_true[0] + linear
     grid = grd.grid(region, shape)
 
     npt.assert_allclose(grd.coefs_, [linear, angular])
     npt.assert_allclose(grid.scalars.values, data_true)
     npt.assert_allclose(grid.easting.values, coordinates_true[0][0, :])
     npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0])
-    npt.assert_allclose(grd.scatter(region, 1000, random_state=0).scalars,
-                        data)
-    npt.assert_allclose(grd.profile((0, 0), (10, 0), 30).scalars,
-                        angular*coordinates_true[0][0, :] + linear)
+    npt.assert_allclose(grd.scatter(region, 1000, random_state=0).scalars, data)
+    npt.assert_allclose(
+        grd.profile((0, 0), (10, 0), 30).scalars,
+        angular * coordinates_true[0][0, :] + linear,
+    )
 
 
 def test_basegridder_projection():
@@ -148,29 +159,28 @@ def test_basegridder_projection():
     shape = (50, 30)
     angular, linear = 2, 100
     coordinates = scatter_points(region, 1000, random_state=0)
-    data = angular*coordinates[0] + linear
+    data = angular * coordinates[0] + linear
     coordinates_true = grid_coordinates(region, shape)
-    data_true = angular*coordinates_true[0] + linear
+    data_true = angular * coordinates_true[0] + linear
     grd = PolyGridder().fit(coordinates, data)
 
     # Lets say we want to specify the region for a grid using a coordinate
     # system that is lon/2, lat/2.
     def proj(lon, lat):
         "Project from the new coordinates to the original"
-        return (lon*2, lat*2)
+        return (lon * 2, lat * 2)
 
-    proj_region = [i/2 for i in region]
+    proj_region = [i / 2 for i in region]
     grid = grd.grid(proj_region, shape, projection=proj)
     scat = grd.scatter(proj_region, 1000, random_state=0, projection=proj)
     prof = grd.profile((0, 0), (5, 0), 30, projection=proj)
 
     npt.assert_allclose(grd.coefs_, [linear, angular])
     npt.assert_allclose(grid.scalars.values, data_true)
-    npt.assert_allclose(grid.easting.values, coordinates_true[0][0, :]/2)
-    npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0]/2)
+    npt.assert_allclose(grid.easting.values, coordinates_true[0][0, :] / 2)
+    npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0] / 2)
     npt.assert_allclose(scat.scalars, data)
-    npt.assert_allclose(prof.scalars,
-                        angular*coordinates_true[0][0, :] + linear)
+    npt.assert_allclose(prof.scalars, angular * coordinates_true[0][0, :] + linear)
 
 
 def test_check_fit_input():

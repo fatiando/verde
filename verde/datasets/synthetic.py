@@ -102,8 +102,9 @@ class CheckerBoard(BaseGridder):
 
     """
 
-    def __init__(self, amplitude=1000, region=(0, 5000, -5000, 0), w_east=None,
-                 w_north=None):
+    def __init__(
+        self, amplitude=1000, region=(0, 5000, -5000, 0), w_east=None, w_north=None
+    ):
         self.amplitude = amplitude
         self.w_east = w_east
         self.w_north = w_north
@@ -113,14 +114,14 @@ class CheckerBoard(BaseGridder):
     def w_east_(self):
         "Use half of the E-W extent"
         if self.w_east is None:
-            return (self.region[1] - self.region[0])/2
+            return (self.region[1] - self.region[0]) / 2
         return self.w_east
 
     @property
     def w_north_(self):
         "Use half of the N-S extent"
         if self.w_north is None:
-            return (self.region[3] - self.region[2])/2
+            return (self.region[3] - self.region[2]) / 2
         return self.w_north
 
     @property
@@ -148,7 +149,9 @@ class CheckerBoard(BaseGridder):
 
         """
         easting, northing = coordinates[:2]
-        data = (self.amplitude *
-                np.sin((2*np.pi/self.w_east_)*easting) *
-                np.cos((2*np.pi/self.w_north_)*northing))
+        data = (
+            self.amplitude
+            * np.sin((2 * np.pi / self.w_east_) * easting)
+            * np.cos((2 * np.pi / self.w_north_) * northing)
+        )
         return data

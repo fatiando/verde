@@ -10,6 +10,7 @@ Geological Survey of Brazil (CPRM) through their `GEOSGB portal
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+
 # We need these two classes to set proper ticklabels for Cartopy maps
 from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import numpy as np
@@ -23,18 +24,27 @@ print(data.head())
 crs = ccrs.PlateCarree()
 plt.figure(figsize=(7, 5))
 ax = plt.axes(projection=ccrs.Mercator())
-ax.set_title('Total-field Magnetic Anomaly of Rio de Janeiro')
+ax.set_title("Total-field Magnetic Anomaly of Rio de Janeiro")
 # Since the data is diverging (going from negative to positive)
 # we need to center our colorbar on 0. To do this, we calculate
 # the maximum absolute value of the data to set vmin and vmax.
-maxabs = np.max(np.abs([data.total_field_anomaly_nt.min(),
-                        data.total_field_anomaly_nt.max()]))
+maxabs = np.max(
+    np.abs([data.total_field_anomaly_nt.min(), data.total_field_anomaly_nt.max()])
+)
 # Cartopy requires setting the projection of the original data through the
 # transform argument. Use PlateCarree for geographic data.
-plt.scatter(data.longitude, data.latitude, c=data.total_field_anomaly_nt, s=1,
-            cmap='seismic', vmin=-maxabs, vmax=maxabs, transform=crs)
+plt.scatter(
+    data.longitude,
+    data.latitude,
+    c=data.total_field_anomaly_nt,
+    s=1,
+    cmap="seismic",
+    vmin=-maxabs,
+    vmax=maxabs,
+    transform=crs,
+)
 cb = plt.colorbar(pad=0.01)
-cb.set_label('nT')
+cb.set_label("nT")
 # Set the proper ticks for a Cartopy map
 ax.set_xticks(np.arange(-42.5, -42, 0.1), crs=crs)
 ax.set_yticks(np.arange(-22.4, -22, 0.1), crs=crs)

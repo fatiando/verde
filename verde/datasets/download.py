@@ -9,7 +9,7 @@ import requests
 from ..utils import get_data_dir
 
 
-VERDE_DATA_STORE_URL = 'https://github.com/fatiando/verde/raw/master/data'
+VERDE_DATA_STORE_URL = "https://github.com/fatiando/verde/raw/master/data"
 
 
 def fetch_data(filename, force_download=False):
@@ -34,11 +34,14 @@ def fetch_data(filename, force_download=False):
     data_dir = get_data_dir()
     data_path = os.path.join(data_dir, filename)
     if not os.path.exists(data_path) or force_download:
-        data_src = '/'.join([VERDE_DATA_STORE_URL, filename])
-        warn("Downloading data file '{}' from remote data store '{}' to '{}'."
-             .format(filename, VERDE_DATA_STORE_URL, data_dir))
+        data_src = "/".join([VERDE_DATA_STORE_URL, filename])
+        warn(
+            "Downloading data file '{}' from remote data store '{}' to '{}'.".format(
+                filename, VERDE_DATA_STORE_URL, data_dir
+            )
+        )
         response = requests.get(data_src)
         response.raise_for_status()
-        with open(data_path, 'wb') as dest:
+        with open(data_path, "wb") as dest:
             dest.write(response.content)
     return data_path

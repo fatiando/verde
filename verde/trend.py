@@ -101,17 +101,15 @@ class Trend(BaseGridder):
             Returns this estimator instance for chaining operations.
 
         """
-        coordinates, data, weights = check_fit_input(coordinates, data,
-                                                     weights)
+        coordinates, data, weights = check_fit_input(coordinates, data, weights)
         self.region_ = get_region(coordinates[:2])
-        jac = trend_jacobian(coordinates[:2], degree=self.degree,
-                             dtype=data.dtype)
+        jac = trend_jacobian(coordinates[:2], degree=self.degree, dtype=data.dtype)
         scaler = StandardScaler(copy=False, with_mean=False, with_std=True)
         jac = scaler.fit_transform(jac)
         regr = LinearRegression(fit_intercept=False, normalize=False)
         regr.fit(jac, data.ravel(), sample_weight=weights)
         self.residual_ = data - jac.dot(regr.coef_).reshape(data.shape)
-        self.coef_ = regr.coef_/scaler.scale_
+        self.coef_ = regr.coef_ / scaler.scale_
         return self
 
     def predict(self, coordinates):
@@ -134,7 +132,7 @@ class Trend(BaseGridder):
             The trend values evaluated on the given points.
 
         """
-        check_is_fitted(self, ['coef_'])
+        check_is_fitted(self, ["coef_"])
         jac = trend_jacobian(coordinates[:2], degree=self.degree)
         shape = np.broadcast(*coordinates[:2]).shape
         return jac.dot(self.coef_).reshape(shape)
@@ -169,15 +167,12 @@ def polynomial_power_combinations(degree):
 
     """
     if degree < 1:
-        raise ValueError("Invalid polynomial degree '{}'. Must be >= 1."
-                         .format(degree))
-    combinations = ((i, j)
-                    for j in range(degree + 1)
-                    for i in range(degree + 1 - j))
+        raise ValueError("Invalid polynomial degree '{}'. Must be >= 1.".format(degree))
+    combinations = ((i, j) for j in range(degree + 1) for i in range(degree + 1 - j))
     return tuple(sorted(combinations, key=sum))
 
 
-def trend_jacobian(coordinates, degree, dtype='float64'):
+def trend_jacobian(coordinates, degree, dtype="float64"):
     """
     Make the Jacobian for a 2D polynomial of the given degree.
 
@@ -233,7 +228,7 @@ def trend_jacobian(coordinates, degree, dtype='float64'):
     nparams = len(combinations)
     out = np.empty((ndata, nparams), dtype=dtype)
     for col, (i, j) in enumerate(combinations):
-        out[:, col] = (easting.ravel()**i)*(northing.ravel()**j)
+        out[:, col] = (easting.ravel() ** i) * (northing.ravel() ** j)
     return out
 
 
@@ -306,20 +301,22 @@ class VectorTrend(BaseGridder):
         """
         if not isinstance(data, tuple):
             raise ValueError(
-                "Data must be a tuple of arrays. {} given.".format(type(data)))
+                "Data must be a tuple of arrays. {} given.".format(type(data))
+            )
         if weights is not None and not isinstance(weights, tuple):
             raise ValueError(
-                "Weights must be a tuple of arrays. {} given."
-                .format(type(weights)))
-        coordinates, data, weights = check_fit_input(coordinates, data,
-                                                     weights)
+                "Weights must be a tuple of arrays. {} given.".format(type(weights))
+            )
+        coordinates, data, weights = check_fit_input(coordinates, data, weights)
         self.region_ = get_region(coordinates[:2])
         self.component_ = [
             Trend(degree=self.degree).fit(coordinates, data_comp, weight_comp)
-            for data_comp, weight_comp in zip(data, weights)]
+            for data_comp, weight_comp in zip(data, weights)
+        ]
         self.residual_ = tuple(
             data_comp - comp.predict(coordinates).reshape(data_comp.shape)
-            for data_comp, comp in zip(data, self.component_))
+            for data_comp, comp in zip(data, self.component_)
+        )
         return self
 
     def predict(self, coordinates):
@@ -344,5 +341,5 @@ class VectorTrend(BaseGridder):
             :meth:`~verde.VectorTrend.fit`.
 
         """
-        check_is_fitted(self, ['component_'])
+        check_is_fitted(self, ["component_"])
         return tuple(comp.predict(coordinates) for comp in self.component_)

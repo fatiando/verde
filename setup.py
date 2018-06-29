@@ -8,27 +8,25 @@ from setuptools import setup, find_packages
 import versioneer
 
 
-NAME = 'verde'
-FULLNAME = 'Verde'
+NAME = "verde"
+FULLNAME = "Verde"
 AUTHOR = "Leonardo Uieda"
-AUTHOR_EMAIL = 'leouieda@gmail.com'
+AUTHOR_EMAIL = "leouieda@gmail.com"
 MAINTAINER = AUTHOR
 MAINTAINER_EMAIL = AUTHOR_EMAIL
 LICENSE = "BSD License"
 URL = "https://github.com/fatiando/verde"
 DESCRIPTION = "Gridding and interpolation using Green's functions"
-KEYWORDS = ''
+KEYWORDS = ""
 with open("README.rst") as f:
-    LONG_DESCRIPTION = ''.join(f.readlines())
+    LONG_DESCRIPTION = "".join(f.readlines())
 
 VERSION = versioneer.get_version()
 CMDCLASS = versioneer.get_cmdclass()
 
-PACKAGES = find_packages(exclude=['doc'])
+PACKAGES = find_packages(exclude=["doc"])
 SCRIPTS = []
-PACKAGE_DATA = {
-    'verde.tests': ['data/*'],
-}
+PACKAGE_DATA = {"verde.tests": ["data/*"]}
 
 CLASSIFIERS = [
     "Development Status :: 3 - Alpha",
@@ -42,32 +40,27 @@ CLASSIFIERS = [
     "License :: OSI Approved :: {}".format(LICENSE),
 ]
 PLATFORMS = "Any"
-INSTALL_REQUIRES = [
-    'numpy',
-    'scipy',
-    'pandas',
-    'xarray',
-    'scikit-learn',
-    'requests',
-]
+INSTALL_REQUIRES = ["numpy", "scipy", "pandas", "xarray", "scikit-learn", "requests"]
 
-if __name__ == '__main__':
-    setup(name=NAME,
-          fullname=FULLNAME,
-          description=DESCRIPTION,
-          long_description=LONG_DESCRIPTION,
-          version=VERSION,
-          author=AUTHOR,
-          author_email=AUTHOR_EMAIL,
-          maintainer=MAINTAINER,
-          maintainer_email=MAINTAINER_EMAIL,
-          license=LICENSE,
-          url=URL,
-          platforms=PLATFORMS,
-          scripts=SCRIPTS,
-          packages=PACKAGES,
-          package_data=PACKAGE_DATA,
-          classifiers=CLASSIFIERS,
-          keywords=KEYWORDS,
-          install_requires=INSTALL_REQUIRES,
-          cmdclass=CMDCLASS)
+if __name__ == "__main__":
+    setup(
+        name=NAME,
+        fullname=FULLNAME,
+        description=DESCRIPTION,
+        long_description=LONG_DESCRIPTION,
+        version=VERSION,
+        author=AUTHOR,
+        author_email=AUTHOR_EMAIL,
+        maintainer=MAINTAINER,
+        maintainer_email=MAINTAINER_EMAIL,
+        license=LICENSE,
+        url=URL,
+        platforms=PLATFORMS,
+        scripts=SCRIPTS,
+        packages=PACKAGES,
+        package_data=PACKAGE_DATA,
+        classifiers=CLASSIFIERS,
+        keywords=KEYWORDS,
+        install_requires=INSTALL_REQUIRES,
+        cmdclass=CMDCLASS,
+    )

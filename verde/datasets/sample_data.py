@@ -28,9 +28,10 @@ def fetch_baja_bathymetry(force_download=False):
         (in meters) for each data point.
 
     """
-    data_file = fetch_data('baja-california-bathymetry.csv.xz',
-                           force_download=force_download)
-    data = pd.read_csv(data_file, compression='xz')
+    data_file = fetch_data(
+        "baja-california-bathymetry.csv.xz", force_download=force_download
+    )
+    data = pd.read_csv(data_file, compression="xz")
     return data
 
 
@@ -70,9 +71,10 @@ def fetch_rio_magnetic_anomaly(force_download=False):
         ellipsoid (in meters) for each data point.
 
     """
-    data_file = fetch_data('rio-de-janeiro-magnetic.csv.xz',
-                           force_download=force_download)
-    data = pd.read_csv(data_file, compression='xz')
+    data_file = fetch_data(
+        "rio-de-janeiro-magnetic.csv.xz", force_download=force_download
+    )
+    data = pd.read_csv(data_file, compression="xz")
     return data
 
 
@@ -108,7 +110,6 @@ def fetch_california_gps(force_download=False):
         (meter/year), standard deviation of upward velocity (meter/year).
 
     """
-    data_file = fetch_data('california-gps.csv.xz',
-                           force_download=force_download)
-    data = pd.read_csv(data_file, compression='xz')
+    data_file = fetch_data("california-gps.csv.xz", force_download=force_download)
+    data = pd.read_csv(data_file, compression="xz")
     return data

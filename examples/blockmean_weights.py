@@ -30,6 +30,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import PowerNorm, LogNorm
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
+
 # We need these two classes to set proper ticklabels for Cartopy maps
 from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import numpy as np
@@ -42,26 +43,26 @@ coordinates = (data.longitude, data.latitude)
 
 # We'll calculate the mean on large blocks to show the effect of the different
 # weighting schemes
-spacing = 30/60
+spacing = 30 / 60
 # It's important that the weights are given as 1/sigma**2 for the uncertainty
 # propagation. In this case, you should not use verde.variance_to_weights
 # because it would normalize the weights.
-weights = 1/data.std_up**2
+weights = 1 / data.std_up ** 2
 reducer = vd.BlockMean(spacing, center_coordinates=True)
 # First produce the weighted variance weights
 variance_weights = reducer.filter(coordinates, data.velocity_up, weights)[-1]
 # And now produce the uncertainty propagation weights
 reducer.set_params(uncertainty=True)
-block_coords, velocity, uncertainty_weights = reducer.filter(coordinates,
-                                                             data.velocity_up,
-                                                             weights)
+block_coords, velocity, uncertainty_weights = reducer.filter(
+    coordinates, data.velocity_up, weights
+)
 
 
 def setup_map(ax, title):
     "Draw coastlines, ticks, land, ocean, and set the title."
     ax.set_title(title)
     # Plot the land as a solid color
-    ax.add_feature(cfeature.LAND, edgecolor='black', facecolor='gray')
+    ax.add_feature(cfeature.LAND, edgecolor="black", facecolor="gray")
     ax.add_feature(cfeature.OCEAN)
     ax.set_extent(vd.get_region(coordinates), crs=crs)
     # Set the proper ticks for a Cartopy map
@@ -72,28 +73,37 @@ def setup_map(ax, title):
 
 
 # Now we can plot the different weights side by side on Mercator maps
-fig, axes = plt.subplots(1, 3, figsize=(13.5, 7),
-                         subplot_kw=dict(projection=ccrs.Mercator()))
+fig, axes = plt.subplots(
+    1, 3, figsize=(13.5, 7), subplot_kw=dict(projection=ccrs.Mercator())
+)
 crs = ccrs.PlateCarree()
-titles = ['Variance weights', 'Uncertainty weights']
+titles = ["Variance weights", "Uncertainty weights"]
 weight_estimates = [variance_weights, uncertainty_weights]
 for ax, title, w in zip(axes[:2], titles, weight_estimates):
     setup_map(ax, title)
     # Plot the original data locations
-    ax.plot(*coordinates, '.k', transform=crs, markersize=0.5)
+    ax.plot(*coordinates, ".k", transform=crs, markersize=0.5)
     # Plot the weights using a logarithmic color scale to highlight the
     # differences
-    pc = ax.scatter(*block_coords, c=w, s=70, cmap='magma', transform=crs,
-                    norm=LogNorm())
-    plt.colorbar(pc, ax=ax, orientation='horizontal', pad=0.05)
+    pc = ax.scatter(
+        *block_coords, c=w, s=70, cmap="magma", transform=crs, norm=LogNorm()
+    )
+    plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.05)
 # Plot the original data uncertainties
 ax = axes[2]
-setup_map(ax, 'Data uncertainty')
+setup_map(ax, "Data uncertainty")
 # Use a power law for the color scale because there is a lot of variability
 # Convert m/year to mm/year to have smaller values on the color bar
-pc = ax.scatter(*coordinates, c=data.std_up*1000, s=10, transform=crs,
-                alpha=1, cmap='magma', norm=PowerNorm(gamma=1/2))
-cb = plt.colorbar(pc, ax=ax, orientation='horizontal', pad=0.05)
-cb.set_label('mm/yr')
+pc = ax.scatter(
+    *coordinates,
+    c=data.std_up * 1000,
+    s=10,
+    transform=crs,
+    alpha=1,
+    cmap="magma",
+    norm=PowerNorm(gamma=1 / 2)
+)
+cb = plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.05)
+cb.set_label("mm/yr")
 plt.tight_layout()
 plt.show()

@@ -21,8 +21,8 @@ def get_home():
         The path of the home directory.
 
     """
-    home = os.path.abspath(os.environ.get('HOME'))
-    verde_home = os.path.join(home, '.verde')
+    home = os.path.abspath(os.environ.get("HOME"))
+    verde_home = os.path.join(home, ".verde")
     os.makedirs(verde_home, exist_ok=True)
     return verde_home
 
@@ -41,12 +41,12 @@ def get_data_dir():
         The path of the data directory.
 
     """
-    data_dir = os.path.join(get_home(), 'data')
+    data_dir = os.path.join(get_home(), "data")
     os.makedirs(data_dir, exist_ok=True)
     return data_dir
 
 
-def variance_to_weights(variance, tol=1e-15, dtype='float64'):
+def variance_to_weights(variance, tol=1e-15, dtype="float64"):
     """
     Converts data variances to weights for gridding.
 
@@ -96,7 +96,7 @@ def variance_to_weights(variance, tol=1e-15, dtype='float64'):
         nonzero = var > tol
         if np.any(nonzero):
             nonzero_var = var[nonzero]
-            w[nonzero] = nonzero_var.min()/nonzero_var
+            w[nonzero] = nonzero_var.min() / nonzero_var
         weights.append(w)
     if len(weights) == 1:
         return weights[0]

@@ -10,7 +10,7 @@ from sklearn.model_selection import KFold, ShuffleSplit
 from .base import check_fit_input
 
 
-class DummyClient():  # pylint: disable=no-self-use,too-few-public-methods
+class DummyClient:  # pylint: disable=no-self-use,too-few-public-methods
     """
     Dummy client to mimic a dask.distributed.Client for immediate local
     execution.
@@ -103,8 +103,7 @@ def train_test_split(coordinates, data, weights=None, **kwargs):
     return train, test
 
 
-def cross_val_score(estimator, coordinates, data, weights=None, cv=None,
-                    client=None):
+def cross_val_score(estimator, coordinates, data, weights=None, cv=None, client=None):
     """
     Score an estimator/gridder using cross-validation.
 
@@ -177,8 +176,9 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None,
     1.00
 
     """
-    coordinates, data, weights = check_fit_input(coordinates, data, weights,
-                                                 unpack=False)
+    coordinates, data, weights = check_fit_input(
+        coordinates, data, weights, unpack=False
+    )
     if client is None:
         client = DummyClient()
     if cv is None:
@@ -187,8 +187,9 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None,
     args = (coordinates, data, weights)
     scores = []
     for train, test in cv.split(np.arange(ndata)):
-        train_data, test_data = (tuple(select(i, index) for i in args)
-                                 for index in (train, test))
+        train_data, test_data = (
+            tuple(select(i, index) for i in args) for index in (train, test)
+        )
         score = client.submit(fit_score, estimator, train_data, test_data)
         scores.append(score)
     return scores

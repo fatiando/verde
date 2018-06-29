@@ -52,14 +52,13 @@ crs = ccrs.PlateCarree()
 
 plt.figure(figsize=(7, 6))
 ax = plt.axes(projection=ccrs.Mercator())
-ax.set_title('Bathymetry data from Baja California', pad=25)
+ax.set_title("Bathymetry data from Baja California", pad=25)
 # Plot the land as a solid color
-ax.add_feature(cfeature.LAND, edgecolor='black')
+ax.add_feature(cfeature.LAND, edgecolor="black")
 # Plot the bathymetry as colored circles.
-plt.scatter(data.longitude, data.latitude, c=data.bathymetry_m, s=0.1,
-            transform=crs)
+plt.scatter(data.longitude, data.latitude, c=data.bathymetry_m, s=0.1, transform=crs)
 cb = plt.colorbar(pad=0.08)
-cb.set_label('meters')
+cb.set_label("meters")
 ax.gridlines(draw_labels=True)
 plt.tight_layout()
 plt.show()

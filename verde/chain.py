@@ -111,10 +111,10 @@ class Chain(BaseGridder):
             The data values predicted on the given points.
 
         """
-        check_is_fitted(self, ['region_'])
+        check_is_fitted(self, ["region_"])
         result = None
         for _, step in self.steps:
-            if hasattr(step, 'predict'):
+            if hasattr(step, "predict"):
                 predicted = check_data(step.predict(coordinates))
                 if result is None:
                     result = [0 for i in range(len(predicted))]

@@ -126,6 +126,9 @@ Activate it by running:
 
     source activate ENVIRONMENT_NAME
 
+
+## Automation
+
 The `Makefile` provides rules for installing, running the tests and coverage
 analysis, running linters, etc.
 If you don't want to use `make`, see the [Makefile](Makefile) and copy the
@@ -145,8 +148,16 @@ and the coverage analysis using:
 
     make coverage
 
-To check your code for PEP8 style and common errors (runs `flake8` and
-`pylint`):
+We use [Black](https://github.com/ambv/black) to format the code so we don't have to
+think about it. You don't have to worry about formatting the code yourself. Before
+committing, run the following to automatically format your code:
+
+    make format
+
+Don't worry if you forget to do it. Our continuous integration systems will warn us and
+you can make a new commit with the formatted code.
+
+To check your code for style and common errors (runs `black` and `pylint`):
 
     make check
 

@@ -11,7 +11,7 @@ from .base import check_fit_input
 from .utils import variance_to_weights
 
 
-def block_split(coordinates, spacing, adjust='spacing', region=None):
+def block_split(coordinates, spacing, adjust="spacing", region=None):
     """
     Split a region into blocks and label points according to where they fall.
 
@@ -73,8 +73,10 @@ def block_split(coordinates, spacing, adjust='spacing', region=None):
     if region is None:
         region = get_region((easting, northing))
     block_coords = tuple(
-        i.ravel() for i in grid_coordinates(
-            region, spacing=spacing, adjust=adjust, pixel_register=True)
+        i.ravel()
+        for i in grid_coordinates(
+            region, spacing=spacing, adjust=adjust, pixel_register=True
+        )
     )
     # The index of the block with the closest center to each data point
     tree = cKDTree(np.transpose(block_coords))
@@ -151,8 +153,14 @@ class BlockReduce(BaseEstimator):
 
     """
 
-    def __init__(self, reduction, spacing, region=None, adjust='spacing',
-                 center_coordinates=False):
+    def __init__(
+        self,
+        reduction,
+        spacing,
+        region=None,
+        adjust="spacing",
+        center_coordinates=False,
+    ):
         self.reduction = reduction
         self.spacing = spacing
         self.region = region
@@ -198,21 +206,25 @@ class BlockReduce(BaseEstimator):
             The block reduced data values.
 
         """
-        coordinates, data, weights = check_fit_input(coordinates, data,
-                                                     weights, unpack=False)
-        blocks, labels = block_split(coordinates, self.spacing, self.adjust,
-                                     self.region)
+        coordinates, data, weights = check_fit_input(
+            coordinates, data, weights, unpack=False
+        )
+        blocks, labels = block_split(
+            coordinates, self.spacing, self.adjust, self.region
+        )
         if any(w is None for w in weights):
             reduction = self.reduction
         else:
-            reduction = {'data{}'.format(i): attach_weights(self.reduction, w)
-                         for i, w in enumerate(weights)}
-        columns = {'data{}'.format(i): comp.ravel()
-                   for i, comp in enumerate(data)}
-        columns['block'] = labels
-        blocked = pd.DataFrame(columns).groupby('block').aggregate(reduction)
-        blocked_data = tuple(blocked['data{}'.format(i)].values.ravel()
-                             for i, _ in enumerate(data))
+            reduction = {
+                "data{}".format(i): attach_weights(self.reduction, w)
+                for i, w in enumerate(weights)
+            }
+        columns = {"data{}".format(i): comp.ravel() for i, comp in enumerate(data)}
+        columns["block"] = labels
+        blocked = pd.DataFrame(columns).groupby("block").aggregate(reduction)
+        blocked_data = tuple(
+            blocked["data{}".format(i)].values.ravel() for i, _ in enumerate(data)
+        )
         blocked_coords = self._block_coordinates(coordinates, blocks, labels)
         if len(blocked_data) == 1:
             return blocked_coords, blocked_data[0]
@@ -258,10 +270,10 @@ class BlockReduce(BaseEstimator):
         # weights the reduction applied to then is different (no weights
         # ever)
         easting, northing = coordinates[:2]
-        table = pd.DataFrame(dict(easting=easting.ravel(),
-                                  northing=northing.ravel(),
-                                  block=labels))
-        grouped = table.groupby('block').aggregate(self.reduction)
+        table = pd.DataFrame(
+            dict(easting=easting.ravel(), northing=northing.ravel(), block=labels)
+        )
+        grouped = table.groupby("block").aggregate(self.reduction)
         return grouped.easting.values, grouped.northing.values
 
 
@@ -347,10 +359,15 @@ class BlockMean(BlockReduce):
 
     """
 
-    def __init__(self, spacing, region=None, adjust='spacing',
-                 center_coordinates=False, uncertainty=False):
-        super().__init__(np.average, spacing, region, adjust,
-                         center_coordinates)
+    def __init__(
+        self,
+        spacing,
+        region=None,
+        adjust="spacing",
+        center_coordinates=False,
+        uncertainty=False,
+    ):
+        super().__init__(np.average, spacing, region, adjust, center_coordinates)
         self.uncertainty = uncertainty
 
     def filter(self, coordinates, data, weights=None):
@@ -389,34 +406,36 @@ class BlockMean(BlockReduce):
             The weights calculated for the blocked data values.
 
         """
-        coordinates, data, weights = check_fit_input(coordinates, data,
-                                                     weights, unpack=False)
+        coordinates, data, weights = check_fit_input(
+            coordinates, data, weights, unpack=False
+        )
         if any(w is None for w in weights) and self.uncertainty:
             raise ValueError(
                 "Weights are required for uncertainty propagation."
                 "Either provide weights (as 1/uncertainty**2) or use "
-                "'uncertainty=False' to produce variance weights instead.")
-        blocks, labels = block_split(coordinates, self.spacing, self.adjust,
-                                     self.region)
+                "'uncertainty=False' to produce variance weights instead."
+            )
+        blocks, labels = block_split(
+            coordinates, self.spacing, self.adjust, self.region
+        )
         ncomps = len(data)
-        columns = {'data{}'.format(i): comp.ravel()
-                   for i, comp in enumerate(data)}
-        columns['block'] = labels
+        columns = {"data{}".format(i): comp.ravel() for i, comp in enumerate(data)}
+        columns["block"] = labels
         if any(w is None for w in weights):
-            mean, variance = self._blocked_mean_variance(pd.DataFrame(columns),
-                                                         ncomps)
+            mean, variance = self._blocked_mean_variance(pd.DataFrame(columns), ncomps)
         else:
-            columns.update({'weight{}'.format(i): comp.ravel()
-                            for i, comp in enumerate(weights)})
+            columns.update(
+                {"weight{}".format(i): comp.ravel() for i, comp in enumerate(weights)}
+            )
             table = pd.DataFrame(columns)
             if self.uncertainty:
                 mean, variance = self._blocked_mean_uncertainty(table, ncomps)
             else:
-                mean, variance = self._blocked_mean_variance_weighted(table,
-                                                                      ncomps)
+                mean, variance = self._blocked_mean_variance_weighted(table, ncomps)
         blocked_data = tuple(comp.values.ravel() for comp in mean)
-        blocked_weights = tuple(variance_to_weights(var.values.ravel())
-                                for var in variance)
+        blocked_weights = tuple(
+            variance_to_weights(var.values.ravel()) for var in variance
+        )
         blocked_coords = self._block_coordinates(coordinates, blocks, labels)
         if ncomps == 1:
             return blocked_coords, blocked_data[0], blocked_weights[0]
@@ -430,16 +449,19 @@ class BlockMean(BlockReduce):
         squared is 1/(sum(1/uncertainty**2)) = 1/sum(weights).
         """
         reduction = {
-            'data{}'.format(i): attach_weights(self.reduction,
-                                               table['weight{}'.format(i)])
-            for i in range(ncomps)}
+            "data{}".format(i): attach_weights(
+                self.reduction, table["weight{}".format(i)]
+            )
+            for i in range(ncomps)
+        }
         # The reduction of the weights will turn them into the propagated
         # uncertainty squared.
-        reduction.update({'weight{}'.format(i): lambda x: 1/x.sum()
-                          for i in range(ncomps)})
-        blocked = table.groupby('block').aggregate(reduction)
-        variance = [blocked['weight{}'.format(i)] for i in range(ncomps)]
-        mean = [blocked['data{}'.format(i)] for i in range(ncomps)]
+        reduction.update(
+            {"weight{}".format(i): lambda x: 1 / x.sum() for i in range(ncomps)}
+        )
+        blocked = table.groupby("block").aggregate(reduction)
+        variance = [blocked["weight{}".format(i)] for i in range(ncomps)]
+        mean = [blocked["data{}".format(i)] for i in range(ncomps)]
         return mean, variance
 
     def _blocked_mean_variance(self, table, ncomps):
@@ -447,13 +469,13 @@ class BlockMean(BlockReduce):
         Calculate the blocked mean and variance without weights.
         The variance will be the unweighted variance of the blocks.
         """
-        reduction = {'data{}'.format(i): (('mean', self.reduction),
-                                          ('variance', np.var))
-                     for i in range(ncomps)}
-        blocked = table.groupby('block').aggregate(reduction)
-        mean = [blocked['data{}'.format(i), 'mean'] for i in range(ncomps)]
-        variance = [blocked['data{}'.format(i), 'variance']
-                    for i in range(ncomps)]
+        reduction = {
+            "data{}".format(i): (("mean", self.reduction), ("variance", np.var))
+            for i in range(ncomps)
+        }
+        blocked = table.groupby("block").aggregate(reduction)
+        mean = [blocked["data{}".format(i), "mean"] for i in range(ncomps)]
+        variance = [blocked["data{}".format(i), "variance"] for i in range(ncomps)]
         return mean, variance
 
     def _blocked_mean_variance_weighted(self, table, ncomps):
@@ -465,25 +487,27 @@ class BlockMean(BlockReduce):
         # reduce because the weighted variance requires the average, so it
         # would be calculated twice. This way, we can calculate the average
         # only once and return both values.
-        columns = ['mean{}'.format(i) for i in range(ncomps)]
-        columns.extend('variance{}'.format(i) for i in range(ncomps))
+        columns = ["mean{}".format(i) for i in range(ncomps)]
+        columns.extend("variance{}".format(i) for i in range(ncomps))
 
         def weighted_average_variance(group):
             """
             Calculate the weighted average and variance of a group.
             Returns a DataFrame with columns for the averages and variances.
             """
-            data = np.empty(ncomps*2)
+            data = np.empty(ncomps * 2)
             for i in range(ncomps):
-                weights = group['weight{}'.format(i)]
-                values = group['data{}'.format(i)]
+                weights = group["weight{}".format(i)]
+                values = group["data{}".format(i)]
                 data[i] = self.reduction(values, weights=weights)
-                data[i + ncomps] = self.reduction((values - data[i])**2,
-                                                  weights=weights)
-            return pd.DataFrame(data.reshape((1, data.size)), index=[0],
-                                columns=columns)
+                data[i + ncomps] = self.reduction(
+                    (values - data[i]) ** 2, weights=weights
+                )
+            return pd.DataFrame(
+                data.reshape((1, data.size)), index=[0], columns=columns
+            )
 
-        blocked = table.groupby('block').apply(weighted_average_variance)
+        blocked = table.groupby("block").apply(weighted_average_variance)
         mean = [blocked[i] for i in columns[:ncomps]]
         variance = [blocked[i] for i in columns[ncomps:]]
         return mean, variance

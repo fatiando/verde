@@ -15,7 +15,7 @@ def test_block_reduce():
     "Try reducing constant values in a regular grid"
     region = (-5, 0, 5, 10)
     east, north = grid_coordinates(region, spacing=0.1, pixel_register=True)
-    data = 20*np.ones_like(east)
+    data = 20 * np.ones_like(east)
     reducer = BlockReduce(np.mean, spacing=1)
     block_coords, block_data = reducer.filter((east, north), data)
     assert len(block_coords[0]) == 25
@@ -30,10 +30,10 @@ def test_block_reduce_scatter():
     "Try reducing constant values in a dense enough scatter"
     region = (-5, 0, 5, 10)
     east, north = scatter_points(region, size=10000, random_state=0)
-    data = 20*np.ones_like(east)
+    data = 20 * np.ones_like(east)
     block_coords, block_data = BlockReduce(
-        np.mean, 1, region=region, center_coordinates=True).filter(
-            (east, north), data)
+        np.mean, 1, region=region, center_coordinates=True
+    ).filter((east, north), data)
     assert len(block_coords[0]) == 25
     assert len(block_coords[1]) == 25
     assert len(block_data) == 25
@@ -47,13 +47,14 @@ def test_block_reduce_weights():
     region = (-5, 0, 5, 10)
     size = 10000
     coords = scatter_points(region, size=size, random_state=0)
-    data = 20*np.ones(size)
+    data = 20 * np.ones(size)
     weights = np.ones_like(data)
     outlier = 1000
     data[outlier] = 10000
     weights[outlier] = 0
-    block_coords, block_data = BlockReduce(
-        np.average, 1, region=region).filter(coords, data, weights)
+    block_coords, block_data = BlockReduce(np.average, 1, region=region).filter(
+        coords, data, weights
+    )
     assert len(block_coords[0]) == 25
     assert len(block_coords[1]) == 25
     assert len(block_data) == 25
@@ -64,7 +65,7 @@ def test_block_reduce_multiple_components():
     "Try reducing multiple components in a regular grid"
     region = (-5, 0, 5, 10)
     coords = grid_coordinates(region, spacing=0.1, pixel_register=True)
-    data = 20*np.ones_like(coords[0]), -13*np.ones_like(coords[0])
+    data = 20 * np.ones_like(coords[0]), -13 * np.ones_like(coords[0])
     reducer = BlockReduce(np.mean, spacing=1)
     block_coords, block_data = reducer.filter(coords, data)
     assert len(block_coords[0]) == 25
@@ -83,7 +84,7 @@ def test_block_reduce_multiple_weights():
     region = (-5, 0, 5, 10)
     size = 10000
     coords = scatter_points(region, size=size, random_state=10)
-    data = 20*np.ones(size), -13*np.ones(size)
+    data = 20 * np.ones(size), -13 * np.ones(size)
     outlier1 = 1000
     outlier2 = 3000
     data[0][outlier1] = 10000
@@ -106,10 +107,9 @@ def test_blockmean_noweights():
     "Try blockmean with no weights"
     region = (-5, 0, 5, 10)
     east, north = grid_coordinates(region, spacing=0.1, pixel_register=True)
-    data = 20*np.ones_like(east)
+    data = 20 * np.ones_like(east)
     reducer = BlockMean(spacing=1)
-    block_coords, block_data, block_weights = reducer.filter((east, north),
-                                                             data)
+    block_coords, block_data, block_weights = reducer.filter((east, north), data)
     assert len(block_coords[0]) == 25
     assert len(block_coords[1]) == 25
     assert len(block_data) == 25
@@ -124,10 +124,11 @@ def test_blockmean_noweights_multiple_components():
     "Try blockmean with no weights and multiple data components"
     region = (-5, 0, 5, 10)
     east, north = grid_coordinates(region, spacing=0.1, pixel_register=True)
-    data = 20*np.ones_like(east)
+    data = 20 * np.ones_like(east)
     reducer = BlockMean(spacing=1)
-    block_coords, block_data, block_weights = reducer.filter((east, north),
-                                                             (data, data))
+    block_coords, block_data, block_weights = reducer.filter(
+        (east, north), (data, data)
+    )
     assert len(block_coords[0]) == 25
     assert len(block_coords[1]) == 25
     npt.assert_allclose(block_coords[0][:5], np.linspace(-4.5, -0.5, 5))
@@ -142,8 +143,7 @@ def test_blockmean_noweights_multiple_components():
 def test_blockmean_noweights_table():
     "Try blockmean with no weights using a known blocked data table"
     reducer = BlockMean(spacing=1)
-    table = pd.DataFrame(dict(data0=[1, 2, 10, 20, 5, 5],
-                              block=[1, 1, 2, 2, 3, 3]))
+    table = pd.DataFrame(dict(data0=[1, 2, 10, 20, 5, 5], block=[1, 1, 2, 2, 3, 3]))
     mean, variance = reducer._blocked_mean_variance(table, 1)
     npt.assert_allclose(mean[0], [1.5, 15, 5])
     # The variance is calculated with 1 degree-of-freedom so it's divided by
@@ -157,17 +157,16 @@ def test_blockmean_uncertainty_weights():
     region = (-2, 0, 6, 8)
     # This will be a 4x4 data grid that will be split into 2x2 blocks
     coords = grid_coordinates(region, spacing=0.5, pixel_register=True)
-    data = 102.4*np.ones_like(coords[0])
+    data = 102.4 * np.ones_like(coords[0])
     uncertainty = np.ones_like(data)
     # Set a higher uncertainty for the first block
     uncertainty[:2, :2] = 2
-    weights = 1/uncertainty**2
+    weights = 1 / uncertainty ** 2
     reducer = BlockMean(spacing=1, uncertainty=True)
     # Uncertainty propagation can only work if weights are given
     with pytest.raises(ValueError):
         reducer.filter(coords, data)
-    block_coords, block_data, block_weights = reducer.filter(coords, data,
-                                                             weights)
+    block_coords, block_data, block_weights = reducer.filter(coords, data, weights)
     assert len(block_coords[0]) == 4
     assert len(block_coords[1]) == 4
     assert len(block_data) == 4
@@ -183,14 +182,13 @@ def test_blockmean_variance_weights():
     region = (-2, 0, 6, 8)
     # This will be a 4x4 data grid that will be split into 2x2 blocks
     coords = grid_coordinates(region, spacing=0.5, pixel_register=True)
-    data = 102.4*np.ones_like(coords[0])
+    data = 102.4 * np.ones_like(coords[0])
     uncertainty = np.ones_like(data)
     # Set a higher uncertainty for the first block
     uncertainty[:2, :2] = 2
-    weights = 1/uncertainty**2
+    weights = 1 / uncertainty ** 2
     reducer = BlockMean(spacing=1, uncertainty=False)
-    block_coords, block_data, block_weights = reducer.filter(coords, data,
-                                                             weights)
+    block_coords, block_data, block_weights = reducer.filter(coords, data, weights)
     assert len(block_coords[0]) == 4
     assert len(block_coords[1]) == 4
     assert len(block_data) == 4
