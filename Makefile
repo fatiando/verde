@@ -2,15 +2,16 @@
 PROJECT=verde
 TESTDIR=tmp-test-dir-with-unique-name
 PYTEST_ARGS=--cov-config=../.coveragerc --cov-report=term-missing --cov=$(PROJECT) --doctest-modules -v --pyargs
+CHECK_FILES=setup.py verde
+FORMAT_FILES=setup.py verde examples tutorials
 
 help:
 	@echo "Commands:"
 	@echo ""
 	@echo "    develop       install in editable mode"
 	@echo "    test          run the test suite (including doctests)"
-	@echo "    check         run all code quality checks (pep8, linter)"
-	@echo "    pep8          check for PEP8 style compliance"
-	@echo "    lint          run static analysis using pylint"
+	@echo "    check         run code quality checks (black and pylint)"
+	@echo "    format        run black to automatically format the code"
 	@echo "    coverage      calculate test coverage"
 	@echo "    clean         clean up build and generated files"
 	@echo ""
@@ -31,13 +32,12 @@ coverage:
 	cp $(TESTDIR)/.coverage* .
 	rm -r $(TESTDIR)
 
-pep8:
-	flake8 $(PROJECT) setup.py examples tutorials
+format:
+	black $(FORMAT_FILES)
 
-lint:
-	pylint $(PROJECT) setup.py
-
-check: pep8 lint
+check:
+	black --check $(FORMAT_FILES)
+	pylint $(CHECK_FILES)
 
 clean:
 	find . -name "*.pyc" -exec rm -v {} \;

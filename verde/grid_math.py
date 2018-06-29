@@ -7,8 +7,15 @@ from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
 from .coordinates import grid_coordinates
 
 
-def distance_mask(data_coordinates, maxdist, coordinates=None, region=None,
-                  spacing=None, shape=None, **kwargs):
+def distance_mask(
+    data_coordinates,
+    maxdist,
+    coordinates=None,
+    region=None,
+    spacing=None,
+    shape=None,
+    **kwargs
+):
     """
     Create a mask for points that are too far from the given data points.
 
@@ -76,10 +83,13 @@ def distance_mask(data_coordinates, maxdist, coordinates=None, region=None,
     """
     if coordinates is None:
         if region is None:
-            raise ValueError("Either coordinates or region and shape/spacing "
-                             "must be given to generate the mask.")
-        coordinates = grid_coordinates(region=region, spacing=spacing,
-                                       shape=shape, **kwargs)
+            raise ValueError(
+                "Either coordinates or region and shape/spacing "
+                "must be given to generate the mask."
+            )
+        coordinates = grid_coordinates(
+            region=region, spacing=spacing, shape=shape, **kwargs
+        )
     data_easting, data_northing = data_coordinates[:2]
     easting, northing = coordinates[:2]
     data_easting = np.atleast_1d(data_easting)

@@ -25,15 +25,16 @@ def check_region(region):
 
     """
     if len(region) != 4:
-        raise ValueError("Invalid region '{}'. Only 4 values allowed."
-                         .format(region))
+        raise ValueError("Invalid region '{}'. Only 4 values allowed.".format(region))
     w, e, s, n = region
     if w > e:
-        raise ValueError("Invalid region '{}' (W, E, S, N). Must have W =< E."
-                         .format(region))
+        raise ValueError(
+            "Invalid region '{}' (W, E, S, N). Must have W =< E.".format(region)
+        )
     if s > n:
-        raise ValueError("Invalid region '{}' (W, E, S, N). Must have S =< N."
-                         .format(region))
+        raise ValueError(
+            "Invalid region '{}' (W, E, S, N). Must have S =< N.".format(region)
+        )
 
 
 def get_region(coordinates):
@@ -62,8 +63,7 @@ def get_region(coordinates):
 
     """
     easting, northing = coordinates[:2]
-    region = (np.min(easting), np.max(easting),
-              np.min(northing), np.max(northing))
+    region = (np.min(easting), np.max(easting), np.min(northing), np.max(northing))
     return region
 
 
@@ -186,8 +186,9 @@ def scatter_points(region, size, random_state=None):
     return easting, northing
 
 
-def grid_coordinates(region, shape=None, spacing=None, adjust='spacing',
-                     pixel_register=False):
+def grid_coordinates(
+    region, shape=None, spacing=None, adjust="spacing", pixel_register=False
+):
     """
     Generate the coordinates for each point on a regular grid.
 
@@ -358,8 +359,7 @@ def grid_coordinates(region, shape=None, spacing=None, adjust='spacing',
     """
     check_region(region)
     if shape is not None and spacing is not None:
-        raise ValueError(
-            "Both grid shape and spacing provided. Only one is allowed.")
+        raise ValueError("Both grid shape and spacing provided. Only one is allowed.")
     if shape is None and spacing is None:
         raise ValueError("Either a grid shape or a spacing must be provided.")
     if spacing is not None:
@@ -369,8 +369,8 @@ def grid_coordinates(region, shape=None, spacing=None, adjust='spacing',
     east_lines = np.linspace(w, e, neast)
     north_lines = np.linspace(s, n, nnorth)
     if pixel_register:
-        east_lines = east_lines[:-1] + (east_lines[1] - east_lines[0])/2
-        north_lines = north_lines[:-1] + (north_lines[1] - north_lines[0])/2
+        east_lines = east_lines[:-1] + (east_lines[1] - east_lines[0]) / 2
+        north_lines = north_lines[:-1] + (north_lines[1] - north_lines[0]) / 2
     easting, northing = np.meshgrid(east_lines, north_lines)
     return easting, northing
 
@@ -403,10 +403,12 @@ def spacing_to_shape(region, spacing, adjust):
         Spacing or region may be adjusted.
 
     """
-    if adjust not in ['spacing', 'region']:
+    if adjust not in ["spacing", "region"]:
         raise ValueError(
-            "Invalid value for *adjust* '{}'. Should be 'spacing' or 'region'"
-            .format(adjust))
+            "Invalid value for *adjust* '{}'. Should be 'spacing' or 'region'".format(
+                adjust
+            )
+        )
 
     spacing = np.atleast_1d(spacing)
     if len(spacing) == 1:
@@ -414,22 +416,23 @@ def spacing_to_shape(region, spacing, adjust):
     elif len(spacing) == 2:
         dnorth, deast = spacing
     else:
-        raise ValueError("Only two values allowed for grid spacing: {}"
-                         .format(str(spacing)))
+        raise ValueError(
+            "Only two values allowed for grid spacing: {}".format(str(spacing))
+        )
 
     w, e, s, n = region
     # Add 1 to get the number of nodes, not segments
-    nnorth = int(round((n - s)/dnorth)) + 1
-    neast = int(round((e - w)/deast)) + 1
-    if adjust == 'region':
+    nnorth = int(round((n - s) / dnorth)) + 1
+    neast = int(round((e - w) / deast)) + 1
+    if adjust == "region":
         # The shape is the same but we adjust the region so that the spacing
         # isn't altered when we do the linspace.
-        n = s + (nnorth - 1)*dnorth
-        e = w + (neast - 1)*deast
+        n = s + (nnorth - 1) * dnorth
+        e = w + (neast - 1) * deast
     return (nnorth, neast), (w, e, s, n)
 
 
-def profile_coordinates(point1, point2, size, coordinate_system='cartesian'):
+def profile_coordinates(point1, point2, size, coordinate_system="cartesian"):
     """
     Coordinates for a profile along a line between two points.
 
@@ -473,24 +476,25 @@ def profile_coordinates(point1, point2, size, coordinate_system='cartesian'):
     grid_coordinates : Generate coordinates for each point on a regular grid
 
     """
-    valid_coordinate_systems = ['cartesian', 'geographic']
+    valid_coordinate_systems = ["cartesian", "geographic"]
     if coordinate_system not in valid_coordinate_systems:
         raise ValueError(
-            "Invalid coordinate system '{}'. Must be one of {}."
-            .format(coordinate_system, str(valid_coordinate_systems)))
+            "Invalid coordinate system '{}'. Must be one of {}.".format(
+                coordinate_system, str(valid_coordinate_systems)
+            )
+        )
     if size <= 0:
-        raise ValueError("Invalid profile size '{}'. Must be > 0."
-                         .format(size))
-    if coordinate_system == 'geographic':
+        raise ValueError("Invalid profile size '{}'. Must be > 0.".format(size))
+    if coordinate_system == "geographic":
         raise NotImplementedError()
-    elif coordinate_system == 'cartesian':
+    elif coordinate_system == "cartesian":
         east1, north1 = point1
         east2, north2 = point2
-        separation = np.sqrt((east1 - east2)**2 + (north1 - north2)**2)
+        separation = np.sqrt((east1 - east2) ** 2 + (north1 - north2) ** 2)
         distances = np.linspace(0, separation, size)
         angle = np.arctan2(north2 - north1, east2 - east1)
-        easting = east1 + distances*np.cos(angle)
-        northing = north1 + distances*np.sin(angle)
+        easting = east1 + distances * np.cos(angle)
+        northing = north1 + distances * np.sin(angle)
     return easting, northing, distances
 
 
@@ -559,11 +563,15 @@ def inside(coordinates, region, out=None, tmp=None):
         tmp = tuple(np.empty_like(easting, dtype=np.bool) for i in range(4))
     # Using the logical functions is a lot faster than & > < for some reason
     # Plus, this way avoids repeated allocation of intermediate arrays
-    in_we = np.logical_and(np.greater_equal(easting, w, out=tmp[0]),
-                           np.less_equal(easting, e, out=tmp[1]),
-                           out=tmp[2])
-    in_ns = np.logical_and(np.greater_equal(northing, s, out=tmp[0]),
-                           np.less_equal(northing, n, out=tmp[1]),
-                           out=tmp[3])
+    in_we = np.logical_and(
+        np.greater_equal(easting, w, out=tmp[0]),
+        np.less_equal(easting, e, out=tmp[1]),
+        out=tmp[2],
+    )
+    in_ns = np.logical_and(
+        np.greater_equal(northing, s, out=tmp[0]),
+        np.less_equal(northing, n, out=tmp[1]),
+        out=tmp[3],
+    )
     are_inside = np.logical_and(in_we, in_ns, out=out)
     return are_inside

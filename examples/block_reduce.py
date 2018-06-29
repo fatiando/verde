@@ -19,9 +19,10 @@ import verde as vd
 data = vd.datasets.fetch_baja_bathymetry()
 
 # Decimate the data using a blocked median with 10 arc-minute blocks
-reducer = vd.BlockReduce(reduction=np.median, spacing=10/60)
-coordinates, bathymetry = reducer.filter((data.longitude, data.latitude),
-                                         data.bathymetry_m)
+reducer = vd.BlockReduce(reduction=np.median, spacing=10 / 60)
+coordinates, bathymetry = reducer.filter(
+    (data.longitude, data.latitude), data.bathymetry_m
+)
 lon, lat = coordinates
 
 print("Original data size:", data.bathymetry_m.size)
@@ -32,13 +33,13 @@ plt.figure(figsize=(7, 6))
 ax = plt.axes(projection=ccrs.Mercator())
 ax.set_title("10' Block Median Bathymetry", pad=25)
 # Plot the land as a solid color
-ax.add_feature(cfeature.LAND, edgecolor='black')
+ax.add_feature(cfeature.LAND, edgecolor="black")
 # Plot the bathymetry as colored circles.
 # Cartopy requires setting the projection of the original data through the
 # transform argument. Use PlateCarree for geographic data.
 plt.scatter(lon, lat, c=bathymetry, s=5, transform=ccrs.PlateCarree())
 cb = plt.colorbar(pad=0.08)
-cb.set_label('meters')
+cb.set_label("meters")
 ax.gridlines(draw_labels=True)
 plt.tight_layout()
 plt.show()

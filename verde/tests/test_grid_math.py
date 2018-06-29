@@ -10,14 +10,15 @@ def test_distance_mask():
     "Check that the mask works for basic input"
     region = (0, 5, -10, -5)
     spacing = 1
-    mask = distance_mask((2.5, -7.5), maxdist=2, region=region,
-                         spacing=spacing)
-    true = [[False, False, False, False, False, False],
-            [False, False, True, True, False, False],
-            [False, True, True, True, True, False],
-            [False, True, True, True, True, False],
-            [False, False, True, True, False, False],
-            [False, False, False, False, False, False]]
+    mask = distance_mask((2.5, -7.5), maxdist=2, region=region, spacing=spacing)
+    true = [
+        [False, False, False, False, False, False],
+        [False, False, True, True, False, False],
+        [False, True, True, True, True, False],
+        [False, True, True, True, True, False],
+        [False, False, True, True, False, False],
+        [False, False, False, False, False, False],
+    ]
     assert mask.tolist() == true
 
 

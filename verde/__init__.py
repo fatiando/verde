@@ -6,8 +6,15 @@ from ._version import get_versions as _get_versions
 # Import functions/classes to make the API
 from . import datasets
 from .base import BaseGridder
-from .coordinates import scatter_points, grid_coordinates, inside, \
-    profile_coordinates, get_region, pad_region, project_region
+from .coordinates import (
+    scatter_points,
+    grid_coordinates,
+    inside,
+    profile_coordinates,
+    get_region,
+    pad_region,
+    project_region,
+)
 from .grid_math import distance_mask
 from .utils import variance_to_weights
 from .blockreduce import block_split, BlockReduce, BlockMean
@@ -20,8 +27,8 @@ from .vector import Vector2D, vector2d_jacobian
 
 
 # Get the version number through versioneer
-__version__ = _get_versions()['version']
-__commit__ = _get_versions()['full-revisionid']
+__version__ = _get_versions()["version"]
+__commit__ = _get_versions()["full-revisionid"]
 
 
 def test(doctest=True, verbose=True, coverage=False):
@@ -53,16 +60,17 @@ def test(doctest=True, verbose=True, coverage=False):
 
     """
     import pytest
+
     package = __name__
     args = []
     if verbose:
-        args.append('-vv')
+        args.append("-vv")
     if coverage:
-        args.append('--cov={}'.format(package))
-        args.append('--cov-report=term-missing')
+        args.append("--cov={}".format(package))
+        args.append("--cov-report=term-missing")
     if doctest:
-        args.append('--doctest-modules')
-    args.append('--pyargs')
+        args.append("--doctest-modules")
+    args.append("--pyargs")
     args.append(package)
     status = pytest.main(args)
     assert status == 0, "Some tests have failed."

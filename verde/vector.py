@@ -87,11 +87,19 @@ class Vector2D(Spline):
 
     """
 
-    def __init__(self, poisson=0.5, fudge=1e-5, damping=None, shape=None,
-                 spacing=None, region=None):
+    def __init__(
+        self,
+        poisson=0.5,
+        fudge=1e-5,
+        damping=None,
+        shape=None,
+        spacing=None,
+        region=None,
+    ):
         self.poisson = poisson
-        super().__init__(fudge=fudge, damping=damping, shape=shape,
-                         spacing=spacing, region=region)
+        super().__init__(
+            fudge=fudge, damping=damping, shape=shape, spacing=spacing, region=region
+        )
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -124,11 +132,13 @@ class Vector2D(Spline):
             Returns this estimator instance for chaining operations.
 
         """
-        coordinates, data, weights = check_fit_input(coordinates, data,
-                                                     weights, unpack=False)
+        coordinates, data, weights = check_fit_input(
+            coordinates, data, weights, unpack=False
+        )
         if len(data) != 2:
-            raise ValueError("Need two data components. Only {} given."
-                             .format(len(data)))
+            raise ValueError(
+                "Need two data components. Only {} given.".format(len(data))
+            )
         # Capture the data region to use as a default when gridding.
         self.region_ = get_region(coordinates[:2])
         self.force_coords_ = self._get_force_coordinates(coordinates)
@@ -138,8 +148,9 @@ class Vector2D(Spline):
             weights = None
         self._check_weighted_exact_solution(weights)
         data = np.concatenate([i.ravel() for i in data])
-        jacobian = vector2d_jacobian(coordinates[:2], self.force_coords_,
-                                     self.poisson, self.fudge)
+        jacobian = vector2d_jacobian(
+            coordinates[:2], self.force_coords_, self.poisson, self.fudge
+        )
         self.force_ = self._estimate_forces(jacobian, data, weights)
         return self
 
@@ -164,17 +175,19 @@ class Vector2D(Spline):
             predicted vector data values at each point.
 
         """
-        check_is_fitted(self, ['force_', 'force_coords_'])
-        jac = vector2d_jacobian(coordinates[:2], self.force_coords_,
-                                self.poisson, self.fudge)
+        check_is_fitted(self, ["force_", "force_coords_"])
+        jac = vector2d_jacobian(
+            coordinates[:2], self.force_coords_, self.poisson, self.fudge
+        )
         cast = np.broadcast(*coordinates[:2])
         npoints = cast.size
         components = jac.dot(self.force_).reshape((2, npoints))
         return tuple(comp.reshape(cast.shape) for comp in components)
 
 
-def vector2d_jacobian(coordinates, force_coordinates, poisson, fudge=1e-5,
-                      dtype="float32"):
+def vector2d_jacobian(
+    coordinates, force_coordinates, poisson, fudge=1e-5, dtype="float32"
+):
     """
     Make the Jacobian matrix for the 2D coupled elastic deformation.
 
@@ -220,25 +233,26 @@ def vector2d_jacobian(coordinates, force_coordinates, poisson, fudge=1e-5,
     verde.Vector2D : Coupled gridder for 2-component vector data
 
     """
-    force_coordinates = [np.atleast_1d(i).ravel()
-                         for i in force_coordinates[:2]]
+    force_coordinates = [np.atleast_1d(i).ravel() for i in force_coordinates[:2]]
     coordinates = [np.atleast_1d(i).ravel() for i in coordinates[:2]]
     npoints = coordinates[0].size
     nforces = force_coordinates[0].size
     # Reshaping the data coordinates to a column vector will automatically
     # build a distance matrix between each data point and force.
-    east, north = (datac.reshape((npoints, 1)) - forcec
-                   for datac, forcec in zip(coordinates, force_coordinates))
+    east, north = (
+        datac.reshape((npoints, 1)) - forcec
+        for datac, forcec in zip(coordinates, force_coordinates)
+    )
     distance = np.hypot(east, north, dtype=dtype)
     # The fudge factor helps avoid singular matrices when the force and
     # computation point are too close
     distance += fudge
     # Pre-compute common terms for the Green's functions of each component
-    ln_r = (3 - poisson)*np.log(distance)
-    over_r2 = (1 + poisson)/distance**2
-    jac = np.empty((npoints*2, nforces*2), dtype=dtype)
-    jac[:npoints, :nforces] = ln_r + over_r2*north**2  # J_ee
-    jac[npoints:, nforces:] = ln_r + over_r2*east**2  # J_nn
-    jac[:npoints, nforces:] = -over_r2*east*north  # J_ne
+    ln_r = (3 - poisson) * np.log(distance)
+    over_r2 = (1 + poisson) / distance ** 2
+    jac = np.empty((npoints * 2, nforces * 2), dtype=dtype)
+    jac[:npoints, :nforces] = ln_r + over_r2 * north ** 2  # J_ee
+    jac[npoints:, nforces:] = ln_r + over_r2 * east ** 2  # J_nn
+    jac[:npoints, nforces:] = -over_r2 * east * north  # J_ne
     jac[npoints:, :nforces] = jac[:npoints, nforces:]  # J is symmetric
     return jac

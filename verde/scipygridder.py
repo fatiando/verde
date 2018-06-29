@@ -5,8 +5,11 @@ from warnings import warn
 
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
-from scipy.interpolate import LinearNDInterpolator, NearestNDInterpolator, \
-    CloughTocher2DInterpolator
+from scipy.interpolate import (
+    LinearNDInterpolator,
+    NearestNDInterpolator,
+    CloughTocher2DInterpolator,
+)
 
 from .base import BaseGridder, check_fit_input
 from .coordinates import get_region
@@ -43,7 +46,7 @@ class ScipyGridder(BaseGridder):
 
     """
 
-    def __init__(self, method='cubic', extra_args=None):
+    def __init__(self, method="cubic", extra_args=None):
         self.method = method
         self.extra_args = extra_args
 
@@ -79,27 +82,32 @@ class ScipyGridder(BaseGridder):
             Returns this gridder instance for chaining operations.
 
         """
-        classes = dict(linear=LinearNDInterpolator,
-                       nearest=NearestNDInterpolator,
-                       cubic=CloughTocher2DInterpolator)
+        classes = dict(
+            linear=LinearNDInterpolator,
+            nearest=NearestNDInterpolator,
+            cubic=CloughTocher2DInterpolator,
+        )
         if self.method not in classes:
             raise ValueError(
-                "Invalid interpolation method '{}'. Must be one of {}."
-                .format(self.method, str(classes.keys())))
+                "Invalid interpolation method '{}'. Must be one of {}.".format(
+                    self.method, str(classes.keys())
+                )
+            )
         if self.extra_args is None:
             kwargs = {}
         else:
             kwargs = self.extra_args
         if weights is not None:
-            warn("{} does not support weights and they will be ignored."
-                 .format(self.__class__.__name__))
-        coordinates, data, weights = check_fit_input(coordinates, data,
-                                                     weights)
+            warn(
+                "{} does not support weights and they will be ignored.".format(
+                    self.__class__.__name__
+                )
+            )
+        coordinates, data, weights = check_fit_input(coordinates, data, weights)
         easting, northing = coordinates[:2]
         self.region_ = get_region((easting, northing))
         points = np.column_stack((np.ravel(easting), np.ravel(northing)))
-        self.interpolator_ = classes[self.method](points, np.ravel(data),
-                                                  **kwargs)
+        self.interpolator_ = classes[self.method](points, np.ravel(data), **kwargs)
         return self
 
     def predict(self, coordinates):
@@ -122,6 +130,6 @@ class ScipyGridder(BaseGridder):
             The data values interpolated on the given points.
 
         """
-        check_is_fitted(self, ['interpolator_'])
+        check_is_fitted(self, ["interpolator_"])
         easting, northing = coordinates[:2]
         return self.interpolator_((easting, northing))

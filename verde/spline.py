@@ -89,8 +89,7 @@ class Spline(BaseGridder):
 
     """
 
-    def __init__(self, fudge=1e-5, damping=None, shape=None, spacing=None,
-                 region=None):
+    def __init__(self, fudge=1e-5, damping=None, shape=None, spacing=None, region=None):
         self.damping = damping
         self.shape = shape
         self.spacing = spacing
@@ -125,14 +124,12 @@ class Spline(BaseGridder):
             Returns this estimator instance for chaining operations.
 
         """
-        coordinates, data, weights = check_fit_input(coordinates, data,
-                                                     weights)
+        coordinates, data, weights = check_fit_input(coordinates, data, weights)
         self._check_weighted_exact_solution(weights)
         # Capture the data region to use as a default when gridding.
         self.region_ = get_region(coordinates[:2])
         self.force_coords_ = self._get_force_coordinates(coordinates)
-        jacobian = spline_jacobian(coordinates[:2], self.force_coords_,
-                                   self.fudge)
+        jacobian = spline_jacobian(coordinates[:2], self.force_coords_, self.fudge)
         self.force_ = self._estimate_forces(jacobian, data, weights)
         return self
 
@@ -143,22 +140,26 @@ class Spline(BaseGridder):
         regularization and the difference between forces.
         """
         if jacobian.shape[0] < jacobian.shape[1]:
-            warn(" ".join([
-                "Under-determined problem detected",
-                "(ndata, nparams)={}.".format(jacobian.shape),
-                "Configuration of forces:",
-                "spacing={} shape={}".format(self.spacing, self.shape)]))
+            warn(
+                " ".join(
+                    [
+                        "Under-determined problem detected",
+                        "(ndata, nparams)={}.".format(jacobian.shape),
+                        "Configuration of forces:",
+                        "spacing={} shape={}".format(self.spacing, self.shape),
+                    ]
+                )
+            )
         scaler = StandardScaler(copy=False, with_mean=False, with_std=True)
         jacobian = scaler.fit_transform(jacobian)
         if self.damping is None:
             regr = LinearRegression(fit_intercept=False, normalize=False)
         else:
-            regr = Ridge(alpha=self.damping, fit_intercept=False,
-                         normalize=False)
+            regr = Ridge(alpha=self.damping, fit_intercept=False, normalize=False)
         regr.fit(jacobian, data.ravel(), sample_weight=weights)
         # Undo the scaling so that we can use forces on the unscaled Jacobian
         # later on.
-        forces = regr.coef_/scaler.scale_
+        forces = regr.coef_ / scaler.scale_
         return forces
 
     def _get_force_coordinates(self, coordinates):
@@ -174,8 +175,9 @@ class Spline(BaseGridder):
         else:
             if self.region is None:
                 self.region = get_region(coordinates)
-            coords = grid_coordinates(self.region, shape=self.shape,
-                                      spacing=self.spacing)
+            coords = grid_coordinates(
+                self.region, shape=self.shape, spacing=self.spacing
+            )
         return coords
 
     def _check_weighted_exact_solution(self, weights):
@@ -185,11 +187,12 @@ class Spline(BaseGridder):
         """
         # Check if we're using weights with the exact solution and warn the
         # user that it won't have any effect.
-        exact = all(i is None for i in [self.damping, self.spacing,
-                                        self.shape])
+        exact = all(i is None for i in [self.damping, self.spacing, self.shape])
         if weights is not None and exact:
-            warn("Weights are ignored for the exact solution. "
-                 "Use damping or specify a shape/spacing for the forces.")
+            warn(
+                "Weights are ignored for the exact solution. "
+                "Use damping or specify a shape/spacing for the forces."
+            )
 
     def predict(self, coordinates):
         """
@@ -211,7 +214,7 @@ class Spline(BaseGridder):
             The data values evaluated on the given points.
 
         """
-        check_is_fitted(self, ['force_', 'force_coords_'])
+        check_is_fitted(self, ["force_", "force_coords_"])
         jac = spline_jacobian(coordinates[:2], self.force_coords_, self.fudge)
         shape = np.broadcast(*coordinates[:2]).shape
         return jac.dot(self.force_).reshape(shape)
@@ -250,15 +253,17 @@ def spline_jacobian(coordinates, force_coordinates, fudge=1e-5):
     verde.Spline : Biharmonic spline gridder
 
     """
-    force_easting, force_northing = (np.atleast_1d(i).ravel()
-                                     for i in force_coordinates[:2])
+    force_easting, force_northing = (
+        np.atleast_1d(i).ravel() for i in force_coordinates[:2]
+    )
     easting, northing = (np.atleast_1d(i).ravel() for i in coordinates[:2])
     # Reshaping the data to a column vector will automatically build a
     # distance matrix between each data point and force.
     distance = np.hypot(
         easting.reshape((easting.size, 1)) - force_easting.ravel(),
-        northing.reshape((northing.size, 1)) - force_northing.ravel())
+        northing.reshape((northing.size, 1)) - force_northing.ravel(),
+    )
     # The fudge factor helps avoid singular matrices when the force and
     # computation point are too close
     distance += fudge
-    return (distance**2)*(np.log(distance) - 1)
+    return (distance ** 2) * (np.log(distance) - 1)

@@ -11,6 +11,7 @@ Janeiro magnetic anomaly data.
 import numpy as np
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+
 # We need these two classes to set proper ticklabels for Cartopy maps
 from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import verde as vd
@@ -27,8 +28,8 @@ trend = vd.Trend(degree=2).fit(coordinates, data.total_field_anomaly_nt)
 print("\nTrend estimator:", trend)
 
 # Add the estimated trend and the residual data to the DataFrame
-data['trend'] = trend.predict(coordinates)
-data['residual'] = trend.residual_
+data["trend"] = trend.predict(coordinates)
+data["residual"] = trend.residual_
 print("\nUpdated DataFrame:")
 print(data.head())
 
@@ -40,11 +41,19 @@ def plot_data(column, i, title):
     ax = plt.subplot(2, 2, i, projection=ccrs.Mercator())
     ax.set_title(title)
     # Set vmin and vmax to the extremes of the original data
-    maxabs = np.max(np.abs([data.total_field_anomaly_nt.min(),
-                            data.total_field_anomaly_nt.max()]))
-    mappable = ax.scatter(data.longitude, data.latitude, c=data[column], s=1,
-                          cmap='seismic', vmin=-maxabs, vmax=maxabs,
-                          transform=crs)
+    maxabs = np.max(
+        np.abs([data.total_field_anomaly_nt.min(), data.total_field_anomaly_nt.max()])
+    )
+    mappable = ax.scatter(
+        data.longitude,
+        data.latitude,
+        c=data[column],
+        s=1,
+        cmap="seismic",
+        vmin=-maxabs,
+        vmax=maxabs,
+        transform=crs,
+    )
     # Set the proper ticks for a Cartopy map
     ax.set_xticks(np.arange(-42.5, -42, 0.1), crs=crs)
     ax.set_yticks(np.arange(-22.4, -22, 0.1), crs=crs)
@@ -59,25 +68,25 @@ plt.figure(figsize=(9, 8))
 
 # Plot the data fields and capture the mappable returned by scatter to use for
 # the colorbar
-mappable = plot_data('total_field_anomaly_nt', 1, 'Original magnetic anomaly')
-plot_data('trend', 2, 'Regional trend')
-plot_data('residual', 3, 'Residual')
+mappable = plot_data("total_field_anomaly_nt", 1, "Original magnetic anomaly")
+plot_data("trend", 2, "Regional trend")
+plot_data("residual", 3, "Residual")
 
 # Make histograms of the data and the residuals to show that the trend was
 # removed
 ax = plt.subplot(2, 2, 4)
-ax.set_title('Distribution of data')
-ax.hist(data.total_field_anomaly_nt, bins='auto', alpha=0.7,
-        label='Original data')
-ax.hist(data.residual, bins='auto', alpha=0.7, label='Residuals')
+ax.set_title("Distribution of data")
+ax.hist(data.total_field_anomaly_nt, bins="auto", alpha=0.7, label="Original data")
+ax.hist(data.residual, bins="auto", alpha=0.7, label="Residuals")
 ax.legend()
-ax.set_xlabel('Total field anomaly (nT)')
+ax.set_xlabel("Total field anomaly (nT)")
 
 # Add a single colorbar on top of the histogram plot where there is some space
 cax = plt.axes((0.58, 0.44, 0.18, 0.015))
-cb = plt.colorbar(mappable, cax=cax, orientation='horizontal',
-                  ticks=np.arange(-800, 801, 400))
-cb.set_label('nT')
+cb = plt.colorbar(
+    mappable, cax=cax, orientation="horizontal", ticks=np.arange(-800, 801, 400)
+)
+cb.set_label("nT")
 
 plt.tight_layout()
 plt.show()

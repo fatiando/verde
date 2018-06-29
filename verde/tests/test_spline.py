@@ -27,9 +27,11 @@ def test_spline():
     region = (270, 320, -770, -720)
     # Tolerance needs to be kind of high to allow for error due to small
     # dataset
-    npt.assert_allclose(spline.grid(region, shape=shape).scalars,
-                        synth.grid(region, shape=shape).scalars,
-                        rtol=5e-2)
+    npt.assert_allclose(
+        spline.grid(region, shape=shape).scalars,
+        synth.grid(region, shape=shape).scalars,
+        rtol=5e-2,
+    )
 
 
 def test_spline_region():
@@ -54,9 +56,11 @@ def test_spline_damping():
     region = (270, 320, -770, -720)
     # Tolerance needs to be kind of high to allow for error due to small
     # dataset
-    npt.assert_allclose(spline.grid(region, shape=shape).scalars,
-                        synth.grid(region, shape=shape).scalars,
-                        rtol=5e-2)
+    npt.assert_allclose(
+        spline.grid(region, shape=shape).scalars,
+        synth.grid(region, shape=shape).scalars,
+        rtol=5e-2,
+    )
 
 
 def test_spline_grid():
@@ -68,16 +72,18 @@ def test_spline_grid():
     # The interpolation should be close on top of the data points
     spline = Spline(shape=(35, 35)).fit(coords, data.scalars)
     npt.assert_allclose(spline.score(coords, data.scalars), 1, rtol=1e-2)
-    assert spline.force_.size == 35**2
+    assert spline.force_.size == 35 ** 2
     npt.assert_allclose(spline.force_coords_[0].min(), data.easting.min())
     npt.assert_allclose(spline.force_coords_[1].min(), data.northing.min())
     shape = (3, 3)
     region = (2700, 3200, -7700, -7200)
     # Tolerance needs to be kind of high to allow for error due to small
     # dataset
-    npt.assert_allclose(spline.grid(region, shape=shape).scalars,
-                        synth.grid(region, shape=shape).scalars,
-                        rtol=5e-2)
+    npt.assert_allclose(
+        spline.grid(region, shape=shape).scalars,
+        synth.grid(region, shape=shape).scalars,
+        rtol=5e-2,
+    )
 
 
 def test_spline_warns_weights():
@@ -90,7 +96,7 @@ def test_spline_warns_weights():
         grd.fit((data.easting, data.northing), data.scalars, weights=weights)
         assert len(warn) == 1
         assert issubclass(warn[-1].category, UserWarning)
-        assert str(warn[-1].message).split('.')[0] == msg
+        assert str(warn[-1].message).split(".")[0] == msg
 
 
 def test_spline_warns_underdetermined():
