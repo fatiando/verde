@@ -19,11 +19,11 @@ data = vd.datasets.fetch_baja_bathymetry()
 crs = ccrs.PlateCarree()
 plt.figure(figsize=(7, 7))
 ax = plt.axes(projection=ccrs.Mercator())
-ax.set_title('Locations of bathymetry measurements from Baja California', pad=25)
+ax.set_title("Locations of bathymetry measurements from Baja California", pad=25)
 # Plot the land as a solid color
-ax.add_feature(cfeature.LAND, edgecolor='black')
+ax.add_feature(cfeature.LAND, edgecolor="black")
 # Plot the bathymetry data locations as black dots
-plt.plot(data.longitude, data.latitude, '.k', markersize=1, transform=crs)
+plt.plot(data.longitude, data.latitude, ".k", markersize=1, transform=crs)
 ax.gridlines(draw_labels=True)
 plt.tight_layout()
 plt.show()
@@ -44,22 +44,22 @@ import numpy as np
 # arc-minutes. The reason for using a median over a mean is because bathymetry data can
 # vary abruptly and a mean would smooth the data too much. For data varies more
 # smoothly (like gravity and magnetic data), a mean would be a better option.
-reducer = vd.BlockReduce(reduction=np.median, spacing=5/60)
+reducer = vd.BlockReduce(reduction=np.median, spacing=5 / 60)
 print(reducer)
 
 ########################################################################################
-# To reduce our data using the blocked median, use the :meth:`~verde.BlockReduce.filter`
-# method:
-coordinates, bathymetry = reducer.filter(coordinates=(data.longitude, data.latitude),
-                                         data=data.bathymetry_m)
+# Use the :meth:`~verde.BlockReduce.filter` method to apply the reduction:
+coordinates, bathymetry = reducer.filter(
+    coordinates=(data.longitude, data.latitude), data=data.bathymetry_m
+)
 
 plt.figure(figsize=(7, 7))
 ax = plt.axes(projection=ccrs.Mercator())
-ax.set_title('Locations of decimated data', pad=25)
+ax.set_title("Locations of decimated data", pad=25)
 # Plot the land as a solid color
-ax.add_feature(cfeature.LAND, edgecolor='black')
+ax.add_feature(cfeature.LAND, edgecolor="black")
 # Plot the bathymetry data locations as black dots
-plt.plot(*coordinates, '.k', markersize=1, transform=crs)
+plt.plot(*coordinates, ".k", markersize=1, transform=crs)
 ax.gridlines(draw_labels=True)
 plt.tight_layout()
 plt.show()
@@ -68,19 +68,19 @@ plt.show()
 ########################################################################################
 # By default, the coordinates of the decimated data are obtained by applying the same
 # reduction operation to the coordinates of the original data. Alternatively, we can
-# tell :class:`~verde.BlockReduce` to return the coordinates of centers of each block:
-coordinates_center, _ = vd.BlockReduce(reduction=np.median, spacing=5/60,
-                                       center_coordinates=True).filter(coordinates=(data.longitude,
-                                                                                    data.latitude),
-                                                                       data=data.bathymetry_m)
+# tell :class:`~verde.BlockReduce` to return the coordinates of the center of each
+# block:
+coordinates_center, __ = vd.BlockReduce(
+    reduction=np.median, spacing=5 / 60, center_coordinates=True
+).filter(coordinates=(data.longitude, data.latitude), data=data.bathymetry_m)
 
 plt.figure(figsize=(7, 7))
 ax = plt.axes(projection=ccrs.Mercator())
-ax.set_title('Locations of decimated data using block centers', pad=25)
+ax.set_title("Locations of decimated data using block centers", pad=25)
 # Plot the land as a solid color
-ax.add_feature(cfeature.LAND, edgecolor='black')
+ax.add_feature(cfeature.LAND, edgecolor="black")
 # Plot the bathymetry data locations as black dots
-plt.plot(*coordinates_center, '.k', markersize=1, transform=crs)
+plt.plot(*coordinates_center, ".k", markersize=1, transform=crs)
 ax.gridlines(draw_labels=True)
 plt.tight_layout()
 plt.show()

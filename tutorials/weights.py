@@ -15,6 +15,7 @@ from matplotlib.colors import LogNorm
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
+
 # We need these two classes to set proper ticklabels for Cartopy maps
 from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import numpy as np
@@ -24,14 +25,18 @@ import verde as vd
 data = vd.datasets.fetch_california_gps()
 print(data.head())
 
-# Plot the data using matplotlib and Cartopy
-crs = ccrs.PlateCarree()
+########################################################################################
+# Let's plot our data using Cartopy to see what the vertical velocities and their
+# uncertainties look like. The ``setup_map`` function adds the land and ocean features
+# and tick labels.
+
 
 def setup_map(ax, title):
     "Draw coastlines, ticks, land, ocean, and set the title."
+    crs = ccrs.PlateCarree()
     ax.set_title(title)
     # Plot the land as a solid color
-    ax.add_feature(cfeature.LAND, edgecolor='black', facecolor='gray')
+    ax.add_feature(cfeature.LAND, edgecolor="black", facecolor="gray")
     ax.add_feature(cfeature.OCEAN)
     ax.set_extent(vd.get_region((data.longitude, data.latitude)), crs=crs)
     # Set the proper ticks for a Cartopy map
@@ -40,19 +45,37 @@ def setup_map(ax, title):
     ax.xaxis.set_major_formatter(LongitudeFormatter())
     ax.yaxis.set_major_formatter(LatitudeFormatter())
 
-fig, axes = plt.subplots(1, 2, figsize=(10, 7),
-                         subplot_kw=dict(projection=ccrs.Mercator()))
+
+fig, axes = plt.subplots(
+    1, 2, figsize=(9.5, 7), subplot_kw=dict(projection=ccrs.Mercator())
+)
+crs = ccrs.PlateCarree()
 ax = axes[0]
-# maxabs = vd.maxabs(data.velocity_up)
-pc = ax.scatter(data.longitude, data.latitude, c=data.velocity_up, s=50, cmap='seismic', transform=crs)
-plt.colorbar(pc, ax=ax, orientation='horizontal', pad=0.05).set_label('m/yr')
-setup_map(ax, 'Vertical GPS velocity')
+setup_map(ax, "Vertical GPS velocity")
+maxabs = vd.maxabs(data.velocity_up)
+pc = ax.scatter(
+    data.longitude,
+    data.latitude,
+    c=data.velocity_up,
+    s=30,
+    cmap="seismic",
+    vmin=-maxabs,
+    vmax=maxabs,
+    transform=crs,
+)
+plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.05).set_label("m/yr")
 ax = axes[1]
-# maxabs = vd.maxabs(data.velocity_up)
-pc = ax.scatter(data.longitude, data.latitude, c=data.std_up, s=50, cmap='magma',
-                transform=crs, norm=LogNorm())
-plt.colorbar(pc, ax=ax, orientation='horizontal', pad=0.05).set_label('m/yr')
-setup_map(ax, 'Uncertainty')
+setup_map(ax, "Uncertainty")
+pc = ax.scatter(
+    data.longitude,
+    data.latitude,
+    c=data.std_up,
+    s=30,
+    cmap="magma",
+    transform=crs,
+    norm=LogNorm(),
+)
+plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.05).set_label("m/yr")
 plt.tight_layout()
 plt.show()
 
@@ -84,63 +107,50 @@ plt.show()
 #    Output weights are always normalized to the ]0, 1] range. See
 #    :func:`verde.variance_to_weights`.
 #
-coordinates, _, weights_variance = vd.BlockMean(spacing=15/60).filter((data.longitude,
-                                                            data.latitude),
-                                                                     data.velocity_up)
-_, _, weights_wvariance = vd.BlockMean(spacing=15/60).filter((data.longitude,
-                                                            data.latitude),
-                                                                     data.velocity_up,
-                                                             weights=1/data.std_up**2)
-_, _, weights_uncertainty = vd.BlockMean(spacing=15/60,uncertainty=True).filter((data.longitude,
-                                                            data.latitude),
-                                                                     data.velocity_up,
-                                                             weights=1/data.std_up**2)
+reducer = vd.BlockMean(spacing=15 / 60)
+coordinates, _, weights_variance = vd.BlockMean(spacing=15 / 60).filter(
+    (data.longitude, data.latitude), data.velocity_up
+)
+_, _, weights_wvariance = vd.BlockMean(spacing=15 / 60).filter(
+    (data.longitude, data.latitude), data.velocity_up, weights=1 / data.std_up ** 2
+)
+_, _, weights_uncertainty = vd.BlockMean(spacing=15 / 60, uncertainty=True).filter(
+    (data.longitude, data.latitude), data.velocity_up, weights=1 / data.std_up ** 2
+)
 
 
+########################################################################################
+# Plot all weights side-by-side for comparison.
 
-def setup_map(ax, title):
-    "Draw coastlines, ticks, land, ocean, and set the title."
-    ax.set_title(title)
-    # Plot the land as a solid color
-    ax.add_feature(cfeature.LAND, edgecolor='black', facecolor='gray')
-    ax.add_feature(cfeature.OCEAN)
-    ax.set_extent(vd.get_region(coordinates), crs=crs)
-    # Set the proper ticks for a Cartopy map
-    ax.set_xticks(np.arange(-124, -115, 4), crs=crs)
-    ax.set_yticks(np.arange(33, 42, 2), crs=crs)
-    ax.xaxis.set_major_formatter(LongitudeFormatter())
-    ax.yaxis.set_major_formatter(LatitudeFormatter())
-
-plt.figure(figsize=(8, 7))
-ax = plt.axes(projection=ccrs.Mercator())
-# Plot the land as a solid color
-ax.add_feature(cfeature.LAND, edgecolor='black')
-# Plot the output weights as colored circles
-plt.scatter(*coordinates, c=weights_variance, s=50, cmap='magma', transform=crs,
-            norm=LogNorm())
-plt.colorbar(aspect=50)
-setup_map(ax, 'Decimated data weights based on the variance')
-plt.tight_layout()
-
-plt.figure(figsize=(8, 7))
-ax = plt.axes(projection=ccrs.Mercator())
-# Plot the land as a solid color
-ax.add_feature(cfeature.LAND, edgecolor='black')
-# Plot the output weights as colored circles
-plt.scatter(*coordinates, c=weights_wvariance, s=50, cmap='magma', transform=crs,
-            norm=LogNorm())
-plt.colorbar(aspect=50)
-setup_map(ax, 'Decimated data weights based on the weighted variance')
-plt.tight_layout()
-
-plt.figure(figsize=(8, 7))
-ax = plt.axes(projection=ccrs.Mercator())
-# Plot the land as a solid color
-ax.add_feature(cfeature.LAND, edgecolor='black')
-# Plot the output weights as colored circles
-plt.scatter(*coordinates, c=weights_uncertainty, s=50, cmap='magma', transform=crs,
-            norm=LogNorm())
-plt.colorbar(aspect=50)
-setup_map(ax, 'Decimated data weights based on the weighted variance')
+fig, axes = plt.subplots(
+    1, 3, figsize=(13.5, 7), subplot_kw=dict(projection=ccrs.Mercator())
+)
+crs = ccrs.PlateCarree()
+ax = axes[0]
+setup_map(ax, "Vertical GPS velocity")
+maxabs = vd.maxabs(data.velocity_up)
+pc = ax.scatter(
+    data.longitude,
+    data.latitude,
+    c=data.velocity_up,
+    s=30,
+    cmap="seismic",
+    vmin=-maxabs,
+    vmax=maxabs,
+    transform=crs,
+)
+plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.05).set_label("m/yr")
+ax = axes[1]
+setup_map(ax, "Uncertainty")
+pc = ax.scatter(
+    data.longitude,
+    data.latitude,
+    c=data.std_up,
+    s=30,
+    cmap="magma",
+    transform=crs,
+    norm=LogNorm(),
+)
+plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.05).set_label("m/yr")
 plt.tight_layout()
 plt.show()
