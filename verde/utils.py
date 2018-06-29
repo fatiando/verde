@@ -132,4 +132,3 @@ def maxabs(*args):
     arrays = [np.atleast_1d(i) for i in args]
     absolute = [np.abs([i.min(), i.max()]).max() for i in arrays]
     return np.max(absolute)
-

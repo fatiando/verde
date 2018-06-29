@@ -112,7 +112,7 @@ cb.set_label("uncertainty [mm/yr]")
 ax = axes[1]
 ax.set_title("Spline interpolated vertical velocity")
 setup_map(ax)
-maxabs = vd.maxabs(data.velocity_up)*1000
+maxabs = vd.maxabs(data.velocity_up) * 1000
 pc = ax.pcolormesh(
     grid.longitude,
     grid.latitude,
