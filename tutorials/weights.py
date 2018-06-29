@@ -10,6 +10,8 @@ interpolation or the data decimation.
 We'll use some sample GPS vertical ground velocity which has some variable uncertainties
 associated with each data point.
 """
+# The weights vary a lot so it's better to plot them using a logarithmic color scale
+from matplotlib.colors import LogNorm
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
@@ -22,10 +24,37 @@ import verde as vd
 data = vd.datasets.fetch_california_gps()
 print(data.head())
 
-# TODO: plot the data and uncertainty
-
-# Plot it using matplotlib and Cartopy
+# Plot the data using matplotlib and Cartopy
 crs = ccrs.PlateCarree()
+
+def setup_map(ax, title):
+    "Draw coastlines, ticks, land, ocean, and set the title."
+    ax.set_title(title)
+    # Plot the land as a solid color
+    ax.add_feature(cfeature.LAND, edgecolor='black', facecolor='gray')
+    ax.add_feature(cfeature.OCEAN)
+    ax.set_extent(vd.get_region((data.longitude, data.latitude)), crs=crs)
+    # Set the proper ticks for a Cartopy map
+    ax.set_xticks(np.arange(-124, -115, 4), crs=crs)
+    ax.set_yticks(np.arange(33, 42, 2), crs=crs)
+    ax.xaxis.set_major_formatter(LongitudeFormatter())
+    ax.yaxis.set_major_formatter(LatitudeFormatter())
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 7),
+                         subplot_kw=dict(projection=ccrs.Mercator()))
+ax = axes[0]
+# maxabs = vd.maxabs(data.velocity_up)
+pc = ax.scatter(data.longitude, data.latitude, c=data.velocity_up, s=50, cmap='seismic', transform=crs)
+plt.colorbar(pc, ax=ax, orientation='horizontal', pad=0.05).set_label('m/yr')
+setup_map(ax, 'Vertical GPS velocity')
+ax = axes[1]
+# maxabs = vd.maxabs(data.velocity_up)
+pc = ax.scatter(data.longitude, data.latitude, c=data.std_up, s=50, cmap='magma',
+                transform=crs, norm=LogNorm())
+plt.colorbar(pc, ax=ax, orientation='horizontal', pad=0.05).set_label('m/yr')
+setup_map(ax, 'Uncertainty')
+plt.tight_layout()
+plt.show()
 
 ########################################################################################
 # Weights in data decimation
@@ -68,8 +97,6 @@ _, _, weights_uncertainty = vd.BlockMean(spacing=15/60,uncertainty=True).filter(
                                                              weights=1/data.std_up**2)
 
 
-# The weights vary a lot so it's better to plot them using a logarithmic color scale
-from matplotlib.colors import LogNorm
 
 def setup_map(ax, title):
     "Draw coastlines, ticks, land, ocean, and set the title."
