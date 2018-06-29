@@ -81,9 +81,7 @@ crs = ccrs.PlateCarree()
 plt.figure(figsize=(7, 5))
 ax = plt.axes(projection=ccrs.Mercator())
 ax.set_title("De-trend, decimate, and spline")
-maxabs = np.max(
-    np.abs([grid.total_field_anomaly.min(), grid.total_field_anomaly.max()])
-)
+maxabs = vd.maxabs(grid.total_field_anomaly)
 pc = ax.pcolormesh(
     grid.longitude,
     grid.latitude,

@@ -101,3 +101,34 @@ def variance_to_weights(variance, tol=1e-15, dtype="float64"):
     if len(weights) == 1:
         return weights[0]
     return tuple(weights)
+
+
+def maxabs(*args):
+    """
+    Calculate the maximum absolute value of the given array(s).
+
+    Use this to set the limits of your colorbars and center them on zero.
+
+    Parameters
+    ----------
+    args
+        One or more arrays. If more than one are given, a single maximum will be
+        calculated across all arrays.
+
+    Returns
+    -------
+    maxabs : float
+        The maximum absolute value across all arrays.
+
+    Examples
+    --------
+
+    >>> maxabs((1, -10, 25, 2, 3))
+    25
+    >>> maxabs((1, -10.5, 25, 2), (0.1, 100, -500), (-200, -300, -0.1, -499))
+    500.0
+
+    """
+    arrays = [np.atleast_1d(i) for i in args]
+    absolute = [np.abs([i.min(), i.max()]).max() for i in arrays]
+    return np.max(absolute)

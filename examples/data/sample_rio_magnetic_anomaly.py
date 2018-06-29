@@ -28,9 +28,7 @@ ax.set_title("Total-field Magnetic Anomaly of Rio de Janeiro")
 # Since the data is diverging (going from negative to positive)
 # we need to center our colorbar on 0. To do this, we calculate
 # the maximum absolute value of the data to set vmin and vmax.
-maxabs = np.max(
-    np.abs([data.total_field_anomaly_nt.min(), data.total_field_anomaly_nt.max()])
-)
+maxabs = vd.maxabs(data.total_field_anomaly_nt)
 # Cartopy requires setting the projection of the original data through the
 # transform argument. Use PlateCarree for geographic data.
 plt.scatter(
