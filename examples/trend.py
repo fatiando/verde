@@ -2,23 +2,18 @@
 Polynomial trend
 ================
 
-Verde offers the :class:`verde.Trend` class to fit a 2D polynomial trend to
-your data. This can be useful for isolating a regional component of your data,
-for example, which is a common operation for gravity and magnetic data. Let's
-look at how we can use Verde to remove the clear positive trend from the Rio de
-Janeiro magnetic anomaly data.
+Verde offers the :class:`verde.Trend` class to fit a 2D polynomial trend to your data.
+This can be useful for isolating a regional component of your data, for example, which
+is a common operation for gravity and magnetic data. Let's look at how we can use Verde
+to remove the clear positive trend from the Rio de Janeiro magnetic anomaly data.
 """
 import numpy as np
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-
-# We need these two classes to set proper ticklabels for Cartopy maps
-from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import verde as vd
 
-# Load the Rio de Janeiro total field magnetic anomaly data as a
-# pandas.DataFrame
-data = vd.datasets.fetch_rio_magnetic_anomaly()
+# Load the Rio de Janeiro total field magnetic anomaly data as a pandas.DataFrame
+data = vd.datasets.fetch_rio_magnetic()
 print("Original data:")
 print(data.head())
 
@@ -53,12 +48,7 @@ def plot_data(column, i, title):
         transform=crs,
     )
     # Set the proper ticks for a Cartopy map
-    ax.set_xticks(np.arange(-42.5, -42, 0.1), crs=crs)
-    ax.set_yticks(np.arange(-22.4, -22, 0.1), crs=crs)
-    ax.xaxis.set_major_formatter(LongitudeFormatter())
-    ax.yaxis.set_major_formatter(LatitudeFormatter())
-    # Set the plot region to be tight around the data
-    ax.set_extent(vd.get_region((data.longitude, data.latitude)))
+    vd.datasets.setup_rio_magnetic_map(ax)
     return mappable
 
 

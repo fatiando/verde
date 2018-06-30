@@ -224,6 +224,42 @@ request anyway.
 We will help you create the tests and sort out any kind of problem during code
 review.
 
+### Testing plots
+
+We use the [pytest-mpl](https://github.com/matplotlib/pytest-mpl) plugin to
+test plot generating code.
+Every time the tests are run, `pytest-mpl` compares the generated plots with
+known correct ones stored in `verde/tests/baseline`.
+To make a plot comparison test, add the `pytest.mark.mpl_image_compare` decorator to
+your test function:
+
+```python
+@pytest.mark.mpl_image_compare
+def test_my_plotting_case():
+    "Test that my plotting function works"
+    fig = plt.figure()
+    plt.plot([0, 1, 2], [3, 4, 5])
+    return fig
+```
+
+Your test function **must** return the matplotlib figure object and you can only
+test one figure per function.
+
+Before you can run your test, you'll need to generate a *baseline* (a correct
+version) of your plot.
+Run the following from the repository root:
+
+    py.test --mpl-generate-path=baseline verde/tests/NAME_OF_TEST_FILE.py
+
+This will create a `baseline` folder with all the plots generated in your test
+file.
+Visually inspect the one corresponding to your test function.
+If it's correct, copy it (and only it) to `verde/tests/baseline`.
+When you run `make test` the next time, your test should be executed and
+passing.
+
+Don't forget to commit the baseline image as well.
+
 
 ## Credit
 

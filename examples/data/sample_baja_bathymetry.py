@@ -9,23 +9,19 @@ directory if it's not there already.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import cartopy.feature as cfeature
-from verde.datasets import fetch_baja_bathymetry
+import verde as vd
 
 
 # The data are in a pandas.DataFrame
-data = fetch_baja_bathymetry()
+data = vd.datasets.fetch_baja_bathymetry()
 print(data.head())
 
-# Make a plot of the data using Cartopy to handle projections and coastlines
+# Make a Mercator map of the data using Cartopy
 plt.figure(figsize=(7, 6))
 ax = plt.axes(projection=ccrs.Mercator())
-ax.set_title("Bathymetry from Baja California", pad=25)
-# Plot the land as a solid color
-ax.add_feature(cfeature.LAND, edgecolor="black")
-# Plot the bathymetry as colored circles.
-# Cartopy requires setting the projection of the original data through the
-# transform argument. Use PlateCarree for geographic data.
+ax.set_title("Bathymetry from Baja California")
+# Plot the bathymetry as colored circles. Cartopy requires setting the projection of the
+# original data through the transform argument. Use PlateCarree for geographic data.
 plt.scatter(
     data.longitude,
     data.latitude,
@@ -33,8 +29,8 @@ plt.scatter(
     s=0.1,
     transform=ccrs.PlateCarree(),
 )
-cb = plt.colorbar(pad=0.08)
-cb.set_label("meters")
-ax.gridlines(draw_labels=True)
+plt.colorbar().set_label("meters")
+# Use an utility function to add tick labels and land and ocean features to the map.
+vd.datasets.setup_baja_bathymetry_map(ax)
 plt.tight_layout()
 plt.show()

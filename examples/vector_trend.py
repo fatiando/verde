@@ -2,30 +2,24 @@
 Trends in vector data
 =====================
 
-Verde provides the :class:`verde.VectorTrend` class to estimate a polynomial
-trend on each component of vector data, like GPS velocities. You can access
-each trend as a separate :class:`verde.Trend` or operate on all vector
-components directly using using :meth:`verde.VectorTrend.predict`,
-:meth:`verde.VectorTrend.grid`, etc, or chaining it with a vector interpolator
-using :class:`verde.Chain`.
+Verde provides the :class:`verde.VectorTrend` class to estimate a polynomial trend on
+each component of vector data, like GPS velocities. You can access each trend as a
+separate :class:`verde.Trend` or operate on all vector components directly using using
+:meth:`verde.VectorTrend.predict`, :meth:`verde.VectorTrend.grid`, etc, or chaining it
+with a vector interpolator using :class:`verde.Chain`.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import cartopy.feature as cfeature
-
-# We need these two classes to set proper ticklabels for Cartopy maps
-from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import numpy as np
 import verde as vd
 
 
-# Fetch the GPS data from the U.S. West coast. The data has a strong trend
-# toward the North-West because of the relative movement along the San Andreas
-# Fault System.
+# Fetch the GPS data from the U.S. West coast. The data has a strong trend toward the
+# North-West because of the relative movement along the San Andreas Fault System.
 data = vd.datasets.fetch_california_gps()
 
-# We'll fit a degree 4 trend on both the East and North components and weight
-# the data using the inverse of the variance of each component.
+# We'll fit a degree 4 trend on both the East and North components and weight the data
+# using the inverse of the variance of each component.
 trend = vd.VectorTrend(degree=4)
 weights = vd.variance_to_weights((data.std_east ** 2, data.std_north ** 2))
 trend.fit(
@@ -35,8 +29,8 @@ trend.fit(
 )
 print("Vector trend estimator:", trend)
 
-# The separate Trend objects for each component can be accessed through the
-# 'component_' attribute. You could grid them individually if you wanted.
+# The separate Trend objects for each component can be accessed through the 'component_'
+# attribute. You could grid them individually if you wanted.
 print("East component trend:", trend.component_[0])
 print("East trend coefficients:", trend.component_[0].coef_)
 print("North component trend:", trend.component_[1])
@@ -49,12 +43,17 @@ print(grid)
 
 
 # Now we can map both trends along with the original data for comparison
-def plot_trend(ax, component, title):
-    "Make a map of the given trend component on the given axes"
-    crs = ccrs.PlateCarree()
+fig, axes = plt.subplots(
+    1, 2, figsize=(9, 7), subplot_kw=dict(projection=ccrs.Mercator())
+)
+crs = ccrs.PlateCarree()
+# Plot the two trend components
+titles = ["East component trend", "North component trend"]
+components = [grid.east_component, grid.north_component]
+for ax, component, title in zip(axes, components, titles):
     ax.set_title(title)
     # Plot the trend in pseudo color
-    maxabs = np.abs([component.min(), component.max()]).max()
+    maxabs = vd.maxabs(component)
     tmp = ax.pcolormesh(
         component.longitude,
         component.latitude,
@@ -89,21 +88,8 @@ def plot_trend(ax, component, title):
         label="Residuals",
     )
     # Setup the map ticks
-    ax.set_xticks(np.arange(-124, -115, 4), crs=crs)
-    ax.set_yticks(np.arange(33, 42, 2), crs=crs)
-    ax.xaxis.set_major_formatter(LongitudeFormatter())
-    ax.yaxis.set_major_formatter(LatitudeFormatter())
+    vd.datasets.setup_california_gps_map(ax, land=None, ocean=None)
     ax.coastlines(color="white")
-    ax.set_extent(vd.get_region((data.longitude, data.latitude)), crs=crs)
-
-
-# Make a plot of the data using Cartopy to handle projections and coastlines
-fig, axes = plt.subplots(
-    1, 2, figsize=(9, 7), subplot_kw=dict(projection=ccrs.Mercator())
-)
-# Plot the two trend components
-plot_trend(axes[0], grid.east_component, "East component trend")
-plot_trend(axes[1], grid.north_component, "North component trend")
 axes[0].legend(loc="lower left")
 plt.tight_layout()
 plt.show()

@@ -26,7 +26,7 @@ CMDCLASS = versioneer.get_cmdclass()
 
 PACKAGES = find_packages(exclude=["doc"])
 SCRIPTS = []
-PACKAGE_DATA = {"verde.tests": ["data/*"]}
+PACKAGE_DATA = {"verde.tests": ["data/*", "baseline/*"]}
 
 CLASSIFIERS = [
     "Development Status :: 3 - Alpha",
