@@ -6,22 +6,20 @@ One of the advantages of using a Green's functions approach to interpolation is 
 can easily weight the data to give each point more or less influence over the results.
 This is a good way to not less data points with large uncertainties bias the
 interpolation or the data decimation.
-
-We'll use some sample GPS vertical ground velocity which has some variable uncertainties
-associated with each data point.
 """
 # The weights vary a lot so it's better to plot them using a logarithmic color scale
 from matplotlib.colors import LogNorm
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
-
-# We need these two classes to set proper ticklabels for Cartopy maps
 from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import numpy as np
 import verde as vd
 
-# Load the data as a pandas.DataFrame
+########################################################################################
+# We'll use some sample GPS vertical ground velocity which has some variable
+# uncertainties associated with each data point. The data are loaded as a
+# pandas.DataFrame:
 data = vd.datasets.fetch_california_gps()
 print(data.head())
 
@@ -31,10 +29,9 @@ print(data.head())
 # and tick labels.
 
 
-def setup_map(ax, title):
+def setup_map(ax):
     "Draw coastlines, ticks, land, ocean, and set the title."
     crs = ccrs.PlateCarree()
-    ax.set_title(title)
     # Plot the land as a solid color
     ax.add_feature(cfeature.LAND, edgecolor="black", facecolor="gray")
     ax.add_feature(cfeature.OCEAN)
@@ -51,7 +48,8 @@ fig, axes = plt.subplots(
 )
 crs = ccrs.PlateCarree()
 ax = axes[0]
-setup_map(ax, "Vertical GPS velocity")
+setup_map(ax)
+ax.set_title("Vertical GPS velocity")
 maxabs = vd.maxabs(data.velocity_up)
 pc = ax.scatter(
     data.longitude,
