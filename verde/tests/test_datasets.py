@@ -7,7 +7,8 @@ from requests.exceptions import HTTPError
 
 import pytest
 import matplotlib
-matplotlib.use('agg')
+
+matplotlib.use("agg")
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 
