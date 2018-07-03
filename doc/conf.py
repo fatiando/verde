@@ -35,16 +35,16 @@ numpydoc_class_members_toctree = False
 plot_gallery = True
 sphinx_gallery_conf = {
     # path to your examples scripts
-    'examples_dirs': ['../examples', '../tutorials'],
+    'examples_dirs': ['../examples', '../tutorials', '../data/gallery'],
     # path where to save gallery generated examples
-    'gallery_dirs': ['gallery', 'tutorials'],
+    'gallery_dirs': ['gallery', 'tutorials', 'sample_data'],
     'filename_pattern': '\.py',
     'thumbnail_size': (400, 400),
     # Sort gallery example by file name instead of number of lines (default)
     # Requires sphinx-gallery 0.1.13, which isn't on conda-forge yet
      # 'within_subsection_order': FileNameSortKey,
     # directory where function granular galleries are stored
-    'backreferences_dir': 'api/backreferences',
+    'backreferences_dir': 'api/generated/backreferences',
     # Modules for which function level galleries are created.  In
     # this case sphinx_gallery and numpy in a tuple of strings.
     'doc_module': 'verde',

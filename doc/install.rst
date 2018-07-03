@@ -8,9 +8,10 @@ Which Python?
 
 You'll need **Python 3.5 or greater**.
 
-We recommend using the `Anaconda <http://continuum.io/downloads#all>`__ Python
-distribution to ensure you have all dependencies installed and the ``conda``
-package manager available.
+We recommend using the
+`Anaconda Python distribution <https://www.anaconda.com/download>`__
+to ensure you have all dependencies installed and the ``conda`` package manager
+available.
 Installing Anaconda does not require administrative rights to your computer and
 doesn't interfere with any other Python installations in your system.
 
@@ -19,7 +20,7 @@ Dependencies
 ------------
 
 * `numpy <http://www.numpy.org/>`__
-* `scipy <https://scipy.org/>`__
+* `scipy <https://docs.scipy.org/doc/scipy/reference/>`__
 * `pandas <http://pandas.pydata.org/>`__
 * `xarray <http://xarray.pydata.org/>`__
 * `scikit-learn <http://scikit-learn.org/>`__

@@ -35,9 +35,7 @@ def test(doctest=True, verbose=True, coverage=False, figures=True):
     """
     Run the test suite.
 
-    Uses `py.test <http://pytest.org/>`__ to discover and run the tests. If you
-    haven't already, you can install it with `conda
-    <http://conda.pydata.org/>`__ or `pip <https://pip.pypa.io/en/stable/>`__.
+    Uses `py.test <http://pytest.org/>`__ to discover and run the tests.
 
     Parameters
     ----------
