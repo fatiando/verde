@@ -30,6 +30,12 @@ clean:
 	rm -rf sample_data
 	rm -rf .ipynb_checkpoints
 
+api:
+	@echo
+	@echo "Building API docs."
+	@echo
+	$(SPHINXAUTOGEN) -i -t _templates -o api/generated api/index.rst ../examples-data/README.txt
+
 html: api
 	@echo
 	@echo "Building HTML files."
@@ -38,14 +44,7 @@ html: api
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
-api:
-	@echo
-	@echo "Building API docs."
-	@echo
-	$(SPHINXAUTOGEN) -i -t _templates -o api/generated api/index.rst ../examples-data/README.txt
-
-
-linkcheck:
+linkcheck: api
 	$(SPHINXBUILD) -b linkcheck $(ALLSPHINXOPTS) $(BUILDDIR)/linkcheck
 	@echo
 	@echo "Link check complete; look for any errors in the above output " \
