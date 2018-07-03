@@ -24,11 +24,10 @@ clean:
 	rm -rf $(BUILDDIR)/html/*
 	rm -rf $(BUILDDIR)/doctrees
 	rm -rf $(BUILDDIR)/linkcheck
-	rm -rf api/verde*.rst
 	rm -rf api/generated
-	rm -rf api/backreferences
 	rm -rf gallery
 	rm -rf tutorials
+	rm -rf sample_data
 	rm -rf .ipynb_checkpoints
 
 html: api
@@ -43,7 +42,7 @@ api:
 	@echo
 	@echo "Building API docs."
 	@echo
-	$(SPHINXAUTOGEN) -i -t _templates -o api/ api/_generate_api.rst
+	$(SPHINXAUTOGEN) -i -t _templates -o api/generated api/index.rst ../examples-data/README.txt
 
 
 linkcheck:

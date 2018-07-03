@@ -120,18 +120,25 @@ License
 -------
 
 This is free software: you can redistribute it and/or modify it under the
-terms of the :ref:`BSD 3-clause License <license>`.
+terms of the `BSD 3-clause License <https://github.com/fatiando/verde/blob/master/LICENSE.txt>`.
 
 
 
 .. toctree::
     :maxdepth: 2
     :hidden:
-    :caption: Documentation
+    :caption: Getting Started
 
     install.rst
     gallery/index.rst
-    tutorials/index.rst
+    sample_data/index.rst
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+    :caption: User Guide
+
+    tutorials/decimation.rst
+    tutorials/weights.rst
     api/index.rst
-    license.rst
     references.rst
