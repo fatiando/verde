@@ -1,3 +1,4 @@
+# pylint: disable=wrong-import-position
 """
 Test data fetching routines.
 """
@@ -5,13 +6,24 @@ import os
 import warnings
 from requests.exceptions import HTTPError
 
+# Import matplotlib and set the backend before anything else to make sure no windows are
+# created and there are no problem with TravisCI running in headless mode.
+import matplotlib
+
+matplotlib.use("agg")
+import matplotlib.pyplot as plt
+import cartopy.crs as ccrs
+
 import pytest
 
 from ..datasets.download import fetch_data
 from ..datasets.sample_data import (
     fetch_baja_bathymetry,
-    fetch_rio_magnetic_anomaly,
+    setup_baja_bathymetry_map,
+    fetch_rio_magnetic,
+    setup_rio_magnetic_map,
     fetch_california_gps,
+    setup_california_gps_map,
 )
 
 
@@ -66,15 +78,33 @@ def test_fetch_baja_bathymetry():
     assert all(data.columns == ["longitude", "latitude", "bathymetry_m"])
 
 
-def test_fetch_rio_magnetic_anomaly():
+@pytest.mark.mpl_image_compare
+def test_setup_baja_bathymetry():
+    "Test the map setup"
+    fig = plt.figure()
+    ax = plt.subplot(111, projection=ccrs.Mercator())
+    setup_baja_bathymetry_map(ax)
+    return fig
+
+
+def test_fetch_rio_magnetic():
     "Make sure the data are loaded properly"
-    data = fetch_rio_magnetic_anomaly()
+    data = fetch_rio_magnetic()
     assert data.size == 150884
     assert data.shape == (37721, 4)
     assert all(
         data.columns
         == ["longitude", "latitude", "total_field_anomaly_nt", "height_ell_m"]
     )
+
+
+@pytest.mark.mpl_image_compare
+def test_setup_rio_magnetic():
+    "Test the map setup"
+    fig = plt.figure()
+    ax = plt.subplot(111, projection=ccrs.Mercator())
+    setup_rio_magnetic_map(ax)
+    return fig
 
 
 def test_fetch_california_gps():
@@ -94,3 +124,12 @@ def test_fetch_california_gps():
         "std_up",
     ]
     assert all(data.columns == columns)
+
+
+@pytest.mark.mpl_image_compare
+def test_setup_california_gps():
+    "Test the map setup"
+    fig = plt.figure()
+    ax = plt.subplot(111, projection=ccrs.Mercator())
+    setup_california_gps_map(ax)
+    return fig

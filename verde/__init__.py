@@ -31,7 +31,7 @@ __version__ = _get_versions()["version"]
 __commit__ = _get_versions()["full-revisionid"]
 
 
-def test(doctest=True, verbose=True, coverage=False):
+def test(doctest=True, verbose=True, coverage=False, figures=True):
     """
     Run the test suite.
 
@@ -50,6 +50,9 @@ def test(doctest=True, verbose=True, coverage=False):
     coverage : bool
         If ``True``, will run test coverage analysis on the code as well.
         Requires ``pytest-cov``.
+    figures : bool
+        If ``True``, will test generated figures against saved baseline
+        figures.  Requires ``pytest-mpl`` and ``matplotlib``.
 
     Raises
     ------
@@ -70,6 +73,8 @@ def test(doctest=True, verbose=True, coverage=False):
         args.append("--cov-report=term-missing")
     if doctest:
         args.append("--doctest-modules")
+    if figures:
+        args.append("--mpl")
     args.append("--pyargs")
     args.append(package)
     status = pytest.main(args)

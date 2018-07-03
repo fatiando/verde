@@ -11,7 +11,6 @@ is a good choice.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import cartopy.feature as cfeature
 import numpy as np
 import verde as vd
 
@@ -31,15 +30,11 @@ print("Decimated data size:", bathymetry.size)
 # Make a plot of the decimated data using Cartopy
 plt.figure(figsize=(7, 6))
 ax = plt.axes(projection=ccrs.Mercator())
-ax.set_title("10' Block Median Bathymetry", pad=25)
-# Plot the land as a solid color
-ax.add_feature(cfeature.LAND, edgecolor="black")
+ax.set_title("10' Block Median Bathymetry")
 # Plot the bathymetry as colored circles.
-# Cartopy requires setting the projection of the original data through the
-# transform argument. Use PlateCarree for geographic data.
 plt.scatter(lon, lat, c=bathymetry, s=5, transform=ccrs.PlateCarree())
-cb = plt.colorbar(pad=0.08)
-cb.set_label("meters")
-ax.gridlines(draw_labels=True)
+plt.colorbar().set_label("meters")
+# Use a utility function to setup the tick labels and land feature
+vd.datasets.setup_baja_bathymetry_map(ax)
 plt.tight_layout()
 plt.show()

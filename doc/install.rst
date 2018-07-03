@@ -52,10 +52,15 @@ Testing your install
 --------------------
 
 We ship a full test suite with the package.
-You can run our tests after you install it but you will need to install `pytest
-<https://docs.pytest.org/>`__ first.
-After that, you can test your installation by running the following inside a
-Python interpreter::
+To run the tests, you'll need to install some extra dependencies first:
+
+* `pytest <https://docs.pytest.org/>`__
+* `pytest-mpl <https://github.com/matplotlib/pytest-mpl>`__
+* `matplotlib <https://matplotlib.org/>`__
+* `cartopy <https://scitools.org.uk/cartopy/>`__
+
+After that, you can test your installation by running the following inside a Python
+interpreter::
 
     import verde
     verde.test()
