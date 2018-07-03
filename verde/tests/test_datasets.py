@@ -1,3 +1,4 @@
+# pylint: disable=wrong-import-position
 """
 Test data fetching routines.
 """
@@ -5,12 +6,15 @@ import os
 import warnings
 from requests.exceptions import HTTPError
 
-import pytest
+# Import matplotlib and set the backend before anything else to make sure no windows are
+# created and there are no problem with TravisCI running in headless mode.
 import matplotlib
 
 matplotlib.use("agg")
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+
+import pytest
 
 from ..datasets.download import fetch_data
 from ..datasets.sample_data import (
