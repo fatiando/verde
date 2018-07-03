@@ -40,6 +40,8 @@ sphinx_gallery_conf = {
     'gallery_dirs': ['gallery', 'tutorials', 'sample_data'],
     'filename_pattern': '\.py',
     'thumbnail_size': (400, 400),
+    # Remove the "Download all examples" button from the top level gallery
+    'download_all_examples': False,
     # Sort gallery example by file name instead of number of lines (default)
     # Requires sphinx-gallery 0.1.13, which isn't on conda-forge yet
      # 'within_subsection_order': FileNameSortKey,
