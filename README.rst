@@ -16,17 +16,10 @@
     </p>
 
     <p align="center">
-    <a href="http://www.fatiando.org/verde/dev">Documentation</a> |
-    <a href="http://www.fatiando.org/verde/dev/install.html">Install</a> |
-    <a href="http://www.fatiando.org/verde/dev/gallery">Gallery</a> |
-    <a href="http://www.fatiando.org/verde/dev/api">API</a> |
-    <a href="https://gitter.im/fatiando/fatiando">Contact</a>
+    <a href="http://www.fatiando.org/verde">Documentation</a> |
+    <a href="https://gitter.im/fatiando/fatiando">Contact</a> |
+    Part of the <a href="https://www.fatiando.org">Fatiando a Terra</a> project
     </p>
-
-    <p align="center">
-    A part of the <a href="https://www.fatiando.org">Fatiando a Terra</a> project.
-    </p>
-
 
 Disclaimer
 ----------
