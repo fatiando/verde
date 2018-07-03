@@ -3,14 +3,15 @@ Data decimation
 ===============
 
 Often times, raw spatial data can be highly oversampled in a direction. In these cases,
-we need to decimate the data before interpolation to avoid aliasing effects. For
-example, our sample shipborne bathymetry data has a higher sampling frequency along the
-tracks than between tracks:
+we need to decimate the data before interpolation to avoid aliasing effects.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import cartopy.feature as cfeature
 import verde as vd
+
+########################################################################################
+# For example, our sample shipborne bathymetry data has a higher sampling frequency
+# along the tracks than between tracks:
 
 # Load the data as a pandas.DataFrame
 data = vd.datasets.fetch_baja_bathymetry()
@@ -19,23 +20,20 @@ data = vd.datasets.fetch_baja_bathymetry()
 crs = ccrs.PlateCarree()
 plt.figure(figsize=(7, 7))
 ax = plt.axes(projection=ccrs.Mercator())
-ax.set_title("Locations of bathymetry measurements from Baja California", pad=25)
-# Plot the land as a solid color
-ax.add_feature(cfeature.LAND, edgecolor="black")
+ax.set_title("Locations of bathymetry measurements from Baja California")
 # Plot the bathymetry data locations as black dots
 plt.plot(data.longitude, data.latitude, ".k", markersize=1, transform=crs)
-ax.gridlines(draw_labels=True)
+vd.datasets.setup_baja_bathymetry_map(ax)
 plt.tight_layout()
 plt.show()
 
 ########################################################################################
-# Class :class:`verde.BlockReduce` can be used to apply a reduction/aggregation operation (mean,
-# median, standard deviation, etc) to the data in regular blocks.
-# All data inside each block will be replaced by their aggregated value.
-# :class:`~verde.BlockReduce` takes an aggregation function as input.
-# It can be any function that receives a numpy array as input and returns a single
-# scalar value. The :func:`numpy.mean` or :func:`numpy.median` functions are usually
-# what we want.
+# Class :class:`verde.BlockReduce` can be used to apply a reduction/aggregation
+# operation (mean, median, standard deviation, etc) to the data in regular blocks. All
+# data inside each block will be replaced by their aggregated value.
+# :class:`~verde.BlockReduce` takes an aggregation function as input. It can be any
+# function that receives a numpy array as input and returns a single scalar value. The
+# :func:`numpy.mean` or :func:`numpy.median` functions are usually what we want.
 import numpy as np
 
 ########################################################################################
@@ -55,12 +53,10 @@ coordinates, bathymetry = reducer.filter(
 
 plt.figure(figsize=(7, 7))
 ax = plt.axes(projection=ccrs.Mercator())
-ax.set_title("Locations of decimated data", pad=25)
-# Plot the land as a solid color
-ax.add_feature(cfeature.LAND, edgecolor="black")
+ax.set_title("Locations of decimated data")
 # Plot the bathymetry data locations as black dots
 plt.plot(*coordinates, ".k", markersize=1, transform=crs)
-ax.gridlines(draw_labels=True)
+vd.datasets.setup_baja_bathymetry_map(ax)
 plt.tight_layout()
 plt.show()
 
@@ -70,18 +66,19 @@ plt.show()
 # reduction operation to the coordinates of the original data. Alternatively, we can
 # tell :class:`~verde.BlockReduce` to return the coordinates of the center of each
 # block:
-coordinates_center, __ = vd.BlockReduce(
+reducer_center = vd.BlockReduce(
     reduction=np.median, spacing=5 / 60, center_coordinates=True
-).filter(coordinates=(data.longitude, data.latitude), data=data.bathymetry_m)
+)
+coordinates_center, bathymetry = reducer_center.filter(
+    coordinates=(data.longitude, data.latitude), data=data.bathymetry_m
+)
 
 plt.figure(figsize=(7, 7))
 ax = plt.axes(projection=ccrs.Mercator())
-ax.set_title("Locations of decimated data using block centers", pad=25)
-# Plot the land as a solid color
-ax.add_feature(cfeature.LAND, edgecolor="black")
+ax.set_title("Locations of decimated data using block centers")
 # Plot the bathymetry data locations as black dots
 plt.plot(*coordinates_center, ".k", markersize=1, transform=crs)
-ax.gridlines(draw_labels=True)
+vd.datasets.setup_baja_bathymetry_map(ax)
 plt.tight_layout()
 plt.show()
 
