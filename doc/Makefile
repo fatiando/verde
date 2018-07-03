@@ -42,7 +42,7 @@ api:
 	@echo
 	@echo "Building API docs."
 	@echo
-	$(SPHINXAUTOGEN) -i -t _templates -o api/generated api/index.rst ../data/gallery/README.txt
+	$(SPHINXAUTOGEN) -i -t _templates -o api/generated api/index.rst ../examples-data/README.txt
 
 
 linkcheck:

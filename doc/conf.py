@@ -35,7 +35,7 @@ numpydoc_class_members_toctree = False
 plot_gallery = True
 sphinx_gallery_conf = {
     # path to your examples scripts
-    'examples_dirs': ['../examples', '../tutorials', '../data/gallery'],
+    'examples_dirs': ['../examples', '../tutorials', '../examples-data'],
     # path where to save gallery generated examples
     'gallery_dirs': ['gallery', 'tutorials', 'sample_data'],
     'filename_pattern': '\.py',
