@@ -7,7 +7,8 @@
 
     <p align="center">
     <a href="https://pypi.python.org/pypi/verde"><img alt="Latest version on PyPI" src="http://img.shields.io/pypi/v/verde.svg?style=flat-square"></a>
-    <a href="https://travis-ci.org/fatiando/verde"><img alt="Travis CI build status" src="http://img.shields.io/travis/fatiando/verde/master.svg?style=flat-square&label=TravisCI"></a>
+    <a href="https://travis-ci.org/fatiando/verde"><img alt="TravisCI build status" src="http://img.shields.io/travis/fatiando/verde/master.svg?style=flat-square&label=Linux|Mac"></a>
+    <a href="https://ci.appveyor.com/project/fatiando/verde"><img alt="AppVeyor build status" src="http://img.shields.io/appveyor/ci/fatiando/verde/master.svg?style=flat-square&label=Windows"></a>
     <a href="https://codecov.io/gh/fatiando/verde"><img alt="Test coverage status" src="https://img.shields.io/codecov/c/github/fatiando/verde/master.svg?style=flat-square"></a>
     <a href="https://codeclimate.com/github/fatiando/verde"><img alt="Code quality status" src="https://img.shields.io/codeclimate/maintainability/fatiando/verde.svg?style=flat-square"></a>
     <a href="https://www.codacy.com/app/leouieda/verde"><img alt="Code quality grade on codacy" src="https://img.shields.io/codacy/grade/6b698defc0df47288a634930d41a9d65.svg?style=flat-square&label=codacy"></a>
