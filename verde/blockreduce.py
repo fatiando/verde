@@ -3,12 +3,16 @@ Classes for reducing/aggregating data in blocks.
 """
 import numpy as np
 import pandas as pd
-from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
 from sklearn.base import BaseEstimator
 
 from .coordinates import get_region, grid_coordinates
 from .base import check_fit_input
 from .utils import variance_to_weights
+
+try:
+    from pykdtree.kdtree import KDTree
+except ImportError:
+    from scipy.spatial import cKDTree as KDTree  # pylint: disable=no-name-in-module
 
 
 def block_split(coordinates, spacing, adjust="spacing", region=None):
@@ -68,6 +72,10 @@ def block_split(coordinates, spacing, adjust="spacing", region=None):
      [2 2 2 3 3 3]
      [2 2 2 3 3 3]]
 
+    .. note::
+
+        If available, `pykdtree` can be installed for better performance.
+
     """
     easting, northing = coordinates[:2]
     if region is None:
@@ -79,7 +87,7 @@ def block_split(coordinates, spacing, adjust="spacing", region=None):
         )
     )
     # The index of the block with the closest center to each data point
-    tree = cKDTree(np.transpose(block_coords))
+    tree = KDTree(np.transpose(block_coords))
     labels = tree.query(np.transpose((easting.ravel(), northing.ravel())))[1]
     return block_coords, labels
 
