@@ -1,7 +1,5 @@
 
-..https://github.com/fatiando/verde/raw/master/
-
-.. image:: doc/_static/readme-banner.png
+.. image:: https://github.com/fatiando/verde/raw/master/doc/_static/readme-banner.png
     :alt: Verde
 
 `Documentation <http://www.fatiando.org/verde>`__ |
@@ -34,10 +32,11 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
     :alt: Chat room on Gitter
     :target: https://gitter.im/fatiando/fatiando
 
+
 Disclaimer
 ----------
 
-**This package in early stages of design and implementation.**
+**This package is in early stages of design and implementation.**
 
 We welcome any feedback and ideas!
 Let us know by submitting
