@@ -2,9 +2,13 @@
 Operations on spatial data: block operations, derivatives, etc.
 """
 import numpy as np
-from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
 
 from .coordinates import grid_coordinates
+
+try:
+    from pykdtree.kdtree import KDTree
+except ImportError:
+    from scipy.spatial import cKDTree as KDTree  # pylint: disable=no-name-in-module
 
 
 def distance_mask(
@@ -80,6 +84,10 @@ def distance_mask(
      [False False False  True  True False]
      [False False False False False False]]
 
+    .. note::
+
+        If available, `pykdtree` can be installed for better performance.
+
     """
     if coordinates is None:
         if region is None:
@@ -95,7 +103,7 @@ def distance_mask(
     data_easting = np.atleast_1d(data_easting)
     data_northing = np.atleast_1d(data_northing)
     data_points = np.transpose((data_easting.ravel(), data_northing.ravel()))
-    tree = cKDTree(data_points)
+    tree = KDTree(data_points)
     points = np.transpose((easting.ravel(), northing.ravel()))
     distance = tree.query(points)[0].reshape(easting.shape)
     return distance <= maxdist

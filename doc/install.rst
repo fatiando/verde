@@ -25,6 +25,7 @@ Dependencies
 * `xarray <http://xarray.pydata.org/>`__
 * `scikit-learn <http://scikit-learn.org/>`__
 * `requests <http://docs.python-requests.org/>`__
+* `pykdtree <https://github.com/storpipfugl/pykdtree>`__ (optional)
 
 Most of the examples in the :ref:`gallery` and :ref:`tutorials` also use:
 
@@ -33,6 +34,10 @@ Most of the examples in the :ref:`gallery` and :ref:`tutorials` also use:
 * `pyproj <https://jswhit.github.io/pyproj/>`__ for cartographic projections
 * `dask <https://dask.pydata.org/>`__ for parallelism
 
+.. note::
+
+    PyKDTree is an optional dependency and will be used instead of scipy's
+    cKDTree if available for better performance.
 
 Installing with conda
 ---------------------
