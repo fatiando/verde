@@ -6,3 +6,4 @@ This project was initially created by
 The following people have made contributions to the project:
 
 * [Leonardo Uieda](http://www.leouieda.com/)
+* [David Hoese](https://github.com/djhoese)
