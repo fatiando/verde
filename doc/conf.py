@@ -11,7 +11,7 @@ import sphinx_gallery
 # version number
 sys.path.append(os.path.pardir)
 
-from verde import version as verde_version
+from verde.version import full_version
 
 extensions = [
     'sphinx.ext.autodoc',
@@ -81,10 +81,10 @@ master_doc = 'index'
 year = datetime.date.today().year
 project = 'Verde'
 copyright = '2018-{}, Leonardo Uieda'.format(year)
-if len(verde_version.split('+')) > 1 or verde_version == 'unknown':
+if len(full_version.split('+')) > 1 or full_version == 'unknown':
     version = 'dev'
 else:
-    version = verde_version
+    version = full_version
 
 # These enable substitutions using |variable| in the rst files
 rst_epilog = """

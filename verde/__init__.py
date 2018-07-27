@@ -1,7 +1,7 @@
 # pylint: disable=missing-docstring
 # Import functions/classes to make the public API
 from . import datasets
-from .version import version, git_revision
+from . import version
 from .base import BaseGridder
 from .coordinates import (
     scatter_points,

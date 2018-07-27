@@ -7,13 +7,13 @@ import numpy as np
 import pandas as pd
 import pooch
 
-from ..version import version
+from ..version import full_version
 
 
 POOCH = pooch.create(
     path=["~", ".verde", "data"],
     base_url="https://github.com/fatiando/verde/raw/{version}/data/",
-    version=version,
+    version=full_version,
     version_dev="master",
     env="VERDE_DATA_DIR",
 )
