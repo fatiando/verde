@@ -1,3 +1,4 @@
+# pylint: disable=missing-docstring
 from .synthetic import CheckerBoard
 from .sample_data import (
     fetch_baja_bathymetry,

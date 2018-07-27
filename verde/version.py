@@ -1,3 +1,4 @@
+# pylint: disable=invalid-name
 """
 Get the version number and commit hash from versioneer.
 """
