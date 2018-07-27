@@ -26,7 +26,6 @@ Data Processing
     BlockReduce
     BlockMean
     Trend
-    VectorTrend
 
 Composite Estimators
 --------------------
@@ -35,6 +34,7 @@ Composite Estimators
    :toctree: generated/
 
     Chain
+    Components
 
 Model Selection
 ---------------

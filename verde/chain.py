@@ -39,6 +39,10 @@ class Chain(BaseGridder):
         A dictionary version of *steps* where the ``'name'``  strings are keys
         and the estimator/gridder/processor objects are the values.
 
+    See also
+    --------
+    verde.Components : Fit an estimator to each component of multi-component vector data
+
     """
 
     def __init__(self, steps):

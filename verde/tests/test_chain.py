@@ -9,8 +9,9 @@ from ..blockreduce import BlockReduce
 from ..chain import Chain
 from ..scipygridder import ScipyGridder
 from ..spline import Spline
-from ..trend import Trend, VectorTrend
+from ..trend import Trend
 from ..coordinates import grid_coordinates
+from ..components import Components
 
 
 def test_chain():
@@ -62,10 +63,13 @@ def test_chain_vector():
     trend = coefs[0] + coefs[1] * coords[0] + coefs[2] * coords[1]
     data = (trend, trend.copy())
     chain = Chain(
-        [("mean", BlockReduce(np.mean, spacing=0.5)), ("trend", VectorTrend(degree=1))]
+        [
+            ("mean", BlockReduce(np.mean, spacing=0.5)),
+            ("trend", Components([Trend(degree=1), Trend(degree=1)])),
+        ]
     )
     chain.fit(coords, data)
     npt.assert_allclose(chain.score(coords, data), 1)
     npt.assert_allclose(chain.predict(coords), data)
-    npt.assert_allclose(chain.named_steps["trend"].component_[0].coef_, coefs)
-    npt.assert_allclose(chain.named_steps["trend"].component_[1].coef_, coefs)
+    npt.assert_allclose(chain.named_steps["trend"].components[0].coef_, coefs)
+    npt.assert_allclose(chain.named_steps["trend"].components[1].coef_, coefs)

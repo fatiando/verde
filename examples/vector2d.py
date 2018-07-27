@@ -1,12 +1,13 @@
 """
-Gridding 2-component vector data
-================================
+Coupled gridding of 2-component vector data
+===========================================
 
 One way of gridding vector data would be grid each component separately using
-:class:`verde.Spline`. Alternatively, :class:`verde.Vector2D` can grid two components
-simultaneously in a way that couples them through elastic deformation theory. This is
-particularly suited, though not exclusive, to data that represent elastic/semi-elastic
-deformation, like horizontal GPS velocities.
+:class:`verde.Spline` and :class:`verde.Components`. Alternatively,
+:class:`verde.Vector2D` can grid two components simultaneously in a way that couples
+them through elastic deformation theory. This is particularly suited, though not
+exclusive, to data that represent elastic/semi-elastic deformation, like horizontal GPS
+velocities.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
@@ -38,7 +39,7 @@ spacing = 20 / 60
 chain = vd.Chain(
     [
         ("mean", vd.BlockReduce(np.mean, spacing * 111e3)),
-        ("trend", vd.VectorTrend(degree=5)),
+        ("trend", vd.Components([vd.Trend(degree=5) for i in range(2)])),
         ("spline", vd.Vector2D(poisson=0.5)),
     ]
 )
