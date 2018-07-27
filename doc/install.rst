@@ -24,7 +24,7 @@ Dependencies
 * `pandas <http://pandas.pydata.org/>`__
 * `xarray <http://xarray.pydata.org/>`__
 * `scikit-learn <http://scikit-learn.org/>`__
-* `requests <http://docs.python-requests.org/>`__
+* `pooch <http://www.fatiando.org/pooch/>`__
 * `pykdtree <https://github.com/storpipfugl/pykdtree>`__ (optional)
 
 Most of the examples in the :ref:`gallery` and :ref:`tutorials` also use:
@@ -36,8 +36,9 @@ Most of the examples in the :ref:`gallery` and :ref:`tutorials` also use:
 
 .. note::
 
-    PyKDTree is an optional dependency and will be used instead of scipy's
-    cKDTree if available for better performance.
+    PyKDTree is an optional dependency and will be used instead of
+    :class:`scipy.spatial.cKDTree` if available for better performance.
+
 
 Installing with conda
 ---------------------

@@ -1,10 +1,23 @@
 """
 Functions to load sample data
 """
+import os
+
 import numpy as np
 import pandas as pd
+import pooch
 
-from .download import fetch_data
+from ..version import full_version
+
+
+POOCH = pooch.create(
+    path=["~", ".verde", "data"],
+    base_url="https://github.com/fatiando/verde/raw/{version}/data/",
+    version=full_version,
+    version_dev="master",
+    env="VERDE_DATA_DIR",
+)
+POOCH.load_registry(os.path.join(os.path.dirname(__file__), "registry.txt"))
 
 
 def _setup_map(ax, xticks, yticks, crs, region, land=None, ocean=None):
@@ -26,20 +39,15 @@ def _setup_map(ax, xticks, yticks, crs, region, land=None, ocean=None):
     ax.yaxis.set_major_formatter(LatitudeFormatter())
 
 
-def fetch_baja_bathymetry(force_download=False):
+def fetch_baja_bathymetry():
     """
     Fetch sample bathymetry data from Baja California.
 
     This is the ``@tut_ship.xyz`` sample data from the `GMT
     <http://gmt.soest.hawaii.edu/>`__ tutorial.
 
-    If the file isn't already in your data directory (``$HOME/.verde/data`` by
-    default), it will be downloaded.
-
-    Parameters
-    ----------
-    force_download : bool
-        If True, will download the file even if it already exists.
+    If the file isn't already in your data directory, it will be downloaded
+    automatically.
 
     Returns
     -------
@@ -52,9 +60,7 @@ def fetch_baja_bathymetry(force_download=False):
     setup_baja_bathymetry_map: Utility function to help setup a Cartopy map.
 
     """
-    data_file = fetch_data(
-        "baja-california-bathymetry.csv.xz", force_download=force_download
-    )
+    data_file = POOCH.fetch("baja-bathymetry.csv.xz")
     data = pd.read_csv(data_file, compression="xz")
     return data
 
@@ -94,17 +100,17 @@ def setup_baja_bathymetry_map(
     )
 
 
-def fetch_rio_magnetic(force_download=False):
+def fetch_rio_magnetic():
     """
     Fetch sample total-field magnetic anomaly data from Rio de Janeiro, Brazil.
 
-    These data were cropped from the northwestern part of an airborne survey of
-    Rio de Janeiro, Brazil, conducted in 1978. The data are made available by
-    the Geological Survey of Brazil (CPRM) through their `GEOSGB portal
+    These data were cropped from the northwestern part of an airborne survey of Rio de
+    Janeiro, Brazil, conducted in 1978. The data are made available by the Geological
+    Survey of Brazil (CPRM) through their `GEOSGB portal
     <http://geosgb.cprm.gov.br/>`__.
 
-    The anomaly is calculated with respect to the IGRF field parameters listed
-    on the table below. See the original data for more processing information.
+    The anomaly is calculated with respect to the IGRF field parameters listed on the
+    table below. See the original data for more processing information.
 
     +----------+-----------+----------------+-------------+-------------+
     |               IGRF for year 1978.3 at 500 m height                |
@@ -114,13 +120,8 @@ def fetch_rio_magnetic(force_download=False):
     |  -22º15' |  -42º15'  |     23834      |   -19º19'   |   -27º33'   |
     +----------+-----------+----------------+-------------+-------------+
 
-    If the file isn't already in your data directory (``$HOME/.verde/data`` by
-    default), it will be downloaded.
-
-    Parameters
-    ----------
-    force_download : bool
-        If True, will download the file even if it already exists.
+    If the file isn't already in your data directory, it will be downloaded
+    automatically.
 
     Returns
     -------
@@ -134,9 +135,7 @@ def fetch_rio_magnetic(force_download=False):
     setup_rio_magnetic_map: Utility function to help setup a Cartopy map.
 
     """
-    data_file = fetch_data(
-        "rio-de-janeiro-magnetic.csv.xz", force_download=force_download
-    )
+    data_file = POOCH.fetch("rio-magnetic.csv.xz")
     data = pd.read_csv(data_file, compression="xz")
     return data
 
@@ -174,27 +173,21 @@ def setup_rio_magnetic_map(ax, region=(-42.6, -42, -22.5, -22)):
     )
 
 
-def fetch_california_gps(force_download=False):
+def fetch_california_gps():
     """
     Fetch sample GPS velocity data from California (the U.S. West coast).
 
-    Velocities and their standard deviations are in meters/year. Height is
-    geometric height above WGS84 in meters. Velocities are referenced to the
-    North American tectonic plate (NAM08). The average velocities were released
-    on 2017-12-27.
+    Velocities and their standard deviations are in meters/year. Height is geometric
+    height above WGS84 in meters. Velocities are referenced to the North American
+    tectonic plate (NAM08). The average velocities were released on 2017-12-27.
 
-    This material is based on EarthScope Plate Boundary Observatory data
-    services provided by UNAVCO through the GAGE Facility with support from the
-    National Science Foundation (NSF) and National Aeronautics and Space
-    Administration (NASA) under NSF Cooperative Agreement No. EAR-1261833.
+    This material is based on EarthScope Plate Boundary Observatory data services
+    provided by UNAVCO through the GAGE Facility with support from the National Science
+    Foundation (NSF) and National Aeronautics and Space Administration (NASA) under NSF
+    Cooperative Agreement No. EAR-1261833.
 
-    If the file isn't already in your data directory (``$HOME/.verde/data`` by
-    default), it will be downloaded.
-
-    Parameters
-    ----------
-    force_download : bool
-        If True, will download the file even if it already exists.
+    If the file isn't already in your data directory, it will be downloaded
+    automatically.
 
     Returns
     -------
@@ -210,7 +203,7 @@ def fetch_california_gps(force_download=False):
     setup_california_gps_map: Utility function to help setup a Cartopy map.
 
     """
-    data_file = fetch_data("california-gps.csv.xz", force_download=force_download)
+    data_file = POOCH.fetch("california-gps.csv.xz")
     data = pd.read_csv(data_file, compression="xz")
     return data
 
