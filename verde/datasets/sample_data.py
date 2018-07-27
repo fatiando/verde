@@ -52,9 +52,7 @@ def fetch_baja_bathymetry(force_download=False):
     setup_baja_bathymetry_map: Utility function to help setup a Cartopy map.
 
     """
-    data_file = fetch_data(
-        "baja-california-bathymetry.csv.xz", force_download=force_download
-    )
+    data_file = fetch_data("baja-bathymetry.csv.xz", force_download=force_download)
     data = pd.read_csv(data_file, compression="xz")
     return data
 
@@ -134,9 +132,7 @@ def fetch_rio_magnetic(force_download=False):
     setup_rio_magnetic_map: Utility function to help setup a Cartopy map.
 
     """
-    data_file = fetch_data(
-        "rio-de-janeiro-magnetic.csv.xz", force_download=force_download
-    )
+    data_file = fetch_data("rio-magnetic.csv.xz", force_download=force_download)
     data = pd.read_csv(data_file, compression="xz")
     return data
 
