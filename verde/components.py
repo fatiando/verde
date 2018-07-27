@@ -117,4 +117,3 @@ class Components(BaseGridder):
         """
         check_is_fitted(self, ["component_"])
         return tuple(comp.predict(coordinates) for comp in self.component_)
-
