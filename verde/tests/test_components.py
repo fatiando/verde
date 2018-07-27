@@ -42,7 +42,8 @@ def test_components_vector_trend(simple_2d_model):
 def test_components_vector_trend_3d(simple_3d_model):
     "Test the vector trend estimation on a simple problem"
     coords, coefs, data = simple_3d_model
-    trend = Components([Trend(degree=1), Trend(degree=1)]).fit(coords, data)
+    trend = Components([Trend(degree=1), Trend(degree=1), Trend(degree=1)])
+    trend.fit(coords, data)
     for i, coef in enumerate(coefs):
         npt.assert_allclose(trend.components[i].coef_, coef)
         npt.assert_allclose(trend.predict(coords)[i], data[i])

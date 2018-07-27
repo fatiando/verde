@@ -2,11 +2,12 @@
 Trends in vector data
 =====================
 
-Verde provides the :class:`verde.VectorTrend` class to estimate a polynomial trend on
-each component of vector data, like GPS velocities. You can access each trend as a
-separate :class:`verde.Trend` or operate on all vector components directly using using
-:meth:`verde.VectorTrend.predict`, :meth:`verde.VectorTrend.grid`, etc, or chaining it
-with a vector interpolator using :class:`verde.Chain`.
+Verde provides the :class:`verde.Trend` class to estimate a polynomial trend and the
+:class:`verde.Components` to apply it to each component of vector data, like GPS
+velocities. You can access each trend as a separate :class:`verde.Trend` or operate on
+all vector components directly using using :meth:`verde.Components.predict`,
+:meth:`verde.Components.grid`, etc, or chaining it with a vector interpolator using
+:class:`verde.Chain`.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
@@ -20,7 +21,7 @@ data = vd.datasets.fetch_california_gps()
 
 # We'll fit a degree 4 trend on both the East and North components and weight the data
 # using the inverse of the variance of each component.
-trend = vd.VectorTrend(degree=4)
+trend = vd.Components([vd.Trend(degree=4), vd.Trend(degree=4)])
 weights = vd.variance_to_weights((data.std_east ** 2, data.std_north ** 2))
 trend.fit(
     coordinates=(data.longitude, data.latitude),
@@ -29,12 +30,12 @@ trend.fit(
 )
 print("Vector trend estimator:", trend)
 
-# The separate Trend objects for each component can be accessed through the 'component_'
+# The separate Trend objects for each component can be accessed through the 'components'
 # attribute. You could grid them individually if you wanted.
-print("East component trend:", trend.component_[0])
-print("East trend coefficients:", trend.component_[0].coef_)
-print("North component trend:", trend.component_[1])
-print("North trend coefficients:", trend.component_[1].coef_)
+print("East component trend:", trend.components[0])
+print("East trend coefficients:", trend.components[0].coef_)
+print("North component trend:", trend.components[1])
+print("North trend coefficients:", trend.components[1].coef_)
 
 # We can make a grid with both trend components as data variables
 grid = trend.grid(spacing=0.1, dims=["latitude", "longitude"])

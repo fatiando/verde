@@ -1,7 +1,10 @@
 """
 Components meta-estimator to use different estimators on multi-component data.
 """
+from sklearn.utils.validation import check_is_fitted
+
 from .base import BaseGridder, check_fit_input
+from .coordinates import get_region
 
 
 class Components(BaseGridder):
@@ -19,7 +22,7 @@ class Components(BaseGridder):
     Parameters
     ----------
     components : tuple or list
-        A tuple or list of the estimator/gridder instances used for each components. The
+        A tuple or list of the estimator/gridder instances used for each component. The
         estimators will be applied for each data component in the same order that they
         are given here.
 
@@ -38,16 +41,15 @@ class Components(BaseGridder):
 
     """
 
-    def __init__(self, degree):
-        self.degree = degree
+    def __init__(self, components):
+        self.components = components
 
     def fit(self, coordinates, data, weights=None):
         """
-        Fit the trend to the given multi-component data.
+        Fit the estimators to the given multi-component data.
 
         The data region is captured and used as default for the
-        :meth:`~verde.VectorTrend.grid` and :meth:`~verde.VectorTrend.scatter`
-        methods.
+        :meth:`~verde.Components.grid` and :meth:`~verde.Components.scatter` methods.
 
         All input arrays must have the same shape. If weights are given, there
         must be a separate array for each component of the data.
@@ -83,21 +85,15 @@ class Components(BaseGridder):
             )
         coordinates, data, weights = check_fit_input(coordinates, data, weights)
         self.region_ = get_region(coordinates[:2])
-        self.component_ = [
-            Trend(degree=self.degree).fit(coordinates, data_comp, weight_comp)
-            for data_comp, weight_comp in zip(data, weights)
-        ]
-        self.residual_ = tuple(
-            data_comp - comp.predict(coordinates).reshape(data_comp.shape)
-            for data_comp, comp in zip(data, self.component_)
-        )
+        for estimator, data_comp, weight_comp in zip(self.components, data, weights):
+            estimator.fit(coordinates, data_comp, weight_comp)
         return self
 
     def predict(self, coordinates):
         """
-        Evaluate the polynomial trend of each component on a of points.
+        Evaluate each data component on a set of points.
 
-        Requires a fitted estimator (see :meth:`~verde.VectorTrend.fit`).
+        Requires a fitted estimator (see :meth:`~verde.Components.fit`).
 
         Parameters
         ----------
@@ -110,10 +106,10 @@ class Components(BaseGridder):
         Returns
         -------
         data : tuple of array
-            The trend values for each vector component evaluated on the given
-            points. The order of components will be the same as was provided to
-            :meth:`~verde.VectorTrend.fit`.
+            The values for each vector component evaluated on the given points. The
+            order of components will be the same as was provided to
+            :meth:`~verde.Components.fit`.
 
         """
-        check_is_fitted(self, ["component_"])
-        return tuple(comp.predict(coordinates) for comp in self.component_)
+        check_is_fitted(self, ["region_"])
+        return tuple(comp.predict(coordinates) for comp in self.components)
