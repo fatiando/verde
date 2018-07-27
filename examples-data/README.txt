@@ -4,15 +4,11 @@ Sample Data
 ===========
 
 Verde provides some sample data and ways of generating synthetic data through the
-``verde.datasets`` module.
-The sample data are automatically downloaded
-`from Github <https://github.com/fatiando/verde/tree/master/data>`__ to a
-``$HOME/.verde/data`` directory the first time you use them.
-After that, the data are loaded from this directory.
-
-If you have any issues with the data, try deleting the ``$HOME/.verde/data`` directory
-to force Verde to re-download the data files. If the problem persists, please
-`open an issue <https://github.com/fatiando/verde/issues>`__ to let us know.
+``verde.datasets`` module. The sample data are automatically downloaded from the `Github
+repository <https://github.com/fatiando/verde>`__ to a folder on your computer the first
+time you use them. After that, the data are loaded from this folder. The download is
+managed by the :mod:`pooch` package. See :func:`pooch.os_cache` for an explanation of
+where the data is stored depending on your system.
 
 .. currentmodule:: verde
 

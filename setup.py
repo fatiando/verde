@@ -26,7 +26,10 @@ CMDCLASS = versioneer.get_cmdclass()
 
 PACKAGES = find_packages(exclude=["doc"])
 SCRIPTS = []
-PACKAGE_DATA = {"verde.tests": ["data/*", "baseline/*"]}
+PACKAGE_DATA = {
+    "verde.datasets": ["registry.txt"],
+    "verde.tests": ["data/*", "baseline/*"],
+}
 
 CLASSIFIERS = [
     "Development Status :: 3 - Alpha",
@@ -40,7 +43,7 @@ CLASSIFIERS = [
     "License :: OSI Approved :: {}".format(LICENSE),
 ]
 PLATFORMS = "Any"
-INSTALL_REQUIRES = ["numpy", "scipy", "pandas", "xarray", "scikit-learn", "requests"]
+INSTALL_REQUIRES = ["numpy", "scipy", "pandas", "xarray", "scikit-learn", "pooch"]
 
 if __name__ == "__main__":
     setup(
