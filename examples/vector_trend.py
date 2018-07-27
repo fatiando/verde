@@ -3,11 +3,11 @@ Trends in vector data
 =====================
 
 Verde provides the :class:`verde.Trend` class to estimate a polynomial trend and the
-:class:`verde.Components` to apply it to each component of vector data, like GPS
-velocities. You can access each trend as a separate :class:`verde.Trend` or operate on
-all vector components directly using using :meth:`verde.Components.predict`,
-:meth:`verde.Components.grid`, etc, or chaining it with a vector interpolator using
-:class:`verde.Chain`.
+:class:`verde.Components` class to apply any combination of estimators to each component
+of vector data, like GPS velocities. You can access each component as a separate
+(fitted) :class:`verde.Trend` instance or operate on all vector components directly
+using using :meth:`verde.Components.predict`, :meth:`verde.Components.grid`, etc, or
+chaining it with a vector interpolator using :class:`verde.Chain`.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
@@ -19,9 +19,11 @@ import verde as vd
 # North-West because of the relative movement along the San Andreas Fault System.
 data = vd.datasets.fetch_california_gps()
 
-# We'll fit a degree 4 trend on both the East and North components and weight the data
+# We'll fit a degree 2 trend on both the East and North components and weight the data
 # using the inverse of the variance of each component.
-trend = vd.Components([vd.Trend(degree=4), vd.Trend(degree=4)])
+# Note: Never use [Trend(...)]*2 as an argument to Components. This creates references
+# to the same Trend instance and will mess up the fitting.
+trend = vd.Components([vd.Trend(degree=2) for i in range(2)])
 weights = vd.variance_to_weights((data.std_east ** 2, data.std_north ** 2))
 trend.fit(
     coordinates=(data.longitude, data.latitude),
@@ -74,19 +76,9 @@ for ax, component, title in zip(axes, components, titles):
         data.velocity_north.values,
         scale=0.2,
         transform=crs,
-        color="y",
-        label="Original data",
-    )
-    # and the residuals
-    ax.quiver(
-        data.longitude.values,
-        data.latitude.values,
-        trend.residual_[0].values,
-        trend.residual_[1].values,
-        scale=0.2,
-        transform=crs,
         color="k",
-        label="Residuals",
+        width=0.001,
+        label="Original data",
     )
     # Setup the map ticks
     vd.datasets.setup_california_gps_map(ax, land=None, ocean=None)

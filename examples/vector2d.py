@@ -39,7 +39,7 @@ spacing = 20 / 60
 chain = vd.Chain(
     [
         ("mean", vd.BlockReduce(np.mean, spacing * 111e3)),
-        ("trend", vd.Components([vd.Trend(degree=5), vd.Trend(degree=5)]),
+        ("trend", vd.Components([vd.Trend(degree=5) for i in range(2)])),
         ("spline", vd.Vector2D(poisson=0.5)),
     ]
 )

@@ -19,6 +19,13 @@ class Components(BaseGridder):
     :meth:`~verde.Components.predict` will operate on the multiple components
     simultaneously.
 
+    .. warning::
+
+        Never pass code like this as input to this class: ``[vd.Trend(1)]*3``. This
+        creates 3 references to the **same instance** of ``Trend``, which means that
+        they will all get the same coefficients after fitting. Use a list comprehension
+        instead: ``[vd.Trend(1) for i in range(3)]``.
+
     Parameters
     ----------
     components : tuple or list
