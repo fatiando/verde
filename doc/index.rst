@@ -3,10 +3,10 @@
 .. raw:: html
 
     <div class="banner">
-        <img src="_static/verde-logo.png" alt="Verde">
-        <h2>Processing and gridding spatial data using Green's functions</h2>
+        <img src="_static/verde-logo.png" alt="Verde" width="300px">
+        <h2>Processing and gridding spatial data</h2>
+        <p>A part of the <a href="https://www.fatiando.org/">Fatiando a Terra</a> project.</p>
         <a href="/gallery"><img src="_static/banner.png" alt="A sample of what Verde can do"></a>
-        <h2>A part of the <a href="https://www.fatiando.org/">Fatiando a Terra</a> project.</h2>
     </div>
 
 .. attention::
@@ -120,7 +120,7 @@ License
 -------
 
 This is free software: you can redistribute it and/or modify it under the
-terms of the `BSD 3-clause License <https://github.com/fatiando/verde/blob/master/LICENSE.txt>`.
+terms of the `BSD 3-clause License <https://github.com/fatiando/verde/blob/master/LICENSE.txt>`__.
 
 
 
