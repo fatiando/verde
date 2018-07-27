@@ -1,7 +1,4 @@
-"""
-The Verde public API.
-"""
-# Import functions/classes to make the API
+# Import functions/classes to make the public API
 from . import datasets
 from .version import version, git_revision
 from .base import BaseGridder

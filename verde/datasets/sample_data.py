@@ -11,7 +11,7 @@ from ..version import version
 
 
 POOCH = pooch.create(
-    path=pooch.os_cache("verde"),
+    path=["~", ".verde", "data"],
     base_url="https://github.com/fatiando/verde/raw/{version}/data/",
     version=version,
     version_dev="master",

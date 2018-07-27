@@ -1,6 +1,3 @@
-"""
-Functions and classes for loading sample data and generating synthetic datasets:
-"""
 from .synthetic import CheckerBoard
 from .sample_data import (
     fetch_baja_bathymetry,

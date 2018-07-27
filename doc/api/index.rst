@@ -3,6 +3,8 @@
 API Reference
 =============
 
+.. automodule:: verde
+
 .. currentmodule:: verde
 
 Interpolators
