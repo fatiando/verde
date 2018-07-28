@@ -6,7 +6,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from ..trend import Trend, polynomial_power_combinations, trend_jacobian
+from ..trend import Trend, polynomial_power_combinations
 from ..coordinates import grid_coordinates
 
 
@@ -52,5 +52,6 @@ def test_polynomial_combinations_fails():
 def test_trend_jacobian_fails():
     "Test failing conditions for the trend jacobian builder"
     east, north = np.arange(50), np.arange(30)
+    trend = Trend(degree=1)
     with pytest.raises(ValueError):
-        trend_jacobian((east, north), degree=1)
+        trend.jacobian((east, north))

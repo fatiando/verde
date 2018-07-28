@@ -83,10 +83,6 @@ class Spline(BaseGridder):
         interpolator. Used as the default region for the
         :meth:`~verde.Spline.grid` and :meth:`~verde.Spline.scatter` methods.
 
-    See also
-    --------
-    verde.spline_jacobian : Make the Jacobian matrix for the biharmonic spline
-
     """
 
     def __init__(self, fudge=1e-5, damping=None, shape=None, spacing=None, region=None):
@@ -124,12 +120,14 @@ class Spline(BaseGridder):
             Returns this estimator instance for chaining operations.
 
         """
+        # Remove pre-existing force coordinates when fitting for a second time.
+        if hasattr(self, "force_coords_"):
+            del self.force_coords_
         coordinates, data, weights = check_fit_input(coordinates, data, weights)
         self._check_weighted_exact_solution(weights)
         # Capture the data region to use as a default when gridding.
         self.region_ = get_region(coordinates[:2])
-        self.force_coords_ = self._get_force_coordinates(coordinates)
-        jacobian = spline_jacobian(coordinates[:2], self.force_coords_, self.fudge)
+        jacobian = self.jacobian(coordinates[:2])
         self.force_ = self._estimate_forces(jacobian, data, weights)
         return self
 
@@ -215,55 +213,46 @@ class Spline(BaseGridder):
 
         """
         check_is_fitted(self, ["force_", "force_coords_"])
-        jac = spline_jacobian(coordinates[:2], self.force_coords_, self.fudge)
+        jac = self.jacobian(coordinates[:2])
         shape = np.broadcast(*coordinates[:2]).shape
         return jac.dot(self.force_).reshape(shape)
 
+    def jacobian(self, coordinates, dtype="float64"):
+        """
+        Make the Jacobian matrix for the 2D biharmonic spline.
 
-def spline_jacobian(coordinates, force_coordinates, fudge=1e-5):
-    """
-    Make the Jacobian matrix for the 2D biharmonic spline.
+        Each column of the Jacobian is the Green's function for a single force evaluated
+        on all observation points [Sandwell1987]_.
 
-    Follows [Sandwell1987]_.
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...). Only easting and
+            northing will be used, all subsequent coordinates will be ignored.
+        dtype : str or numpy dtype
+            The type of the Jacobian array.
 
-    Each column of the Jacobian is the Green's function for a single force
-    evaluated on all observation points.
+        Returns
+        -------
+        jacobian : 2D array
+            The (n_data, n_forces) Jacobian matrix.
 
-    Parameters
-    ----------
-    coordinates : tuple of arrays
-        Arrays with the coordinates of each data point. Should be in the
-        following order: (easting, northing, vertical, ...). Only easting and
-        northing will be used, all subsequent coordinates will be ignored.
-    force_coordinates : tuple of arrays
-        Arrays with the coordinates of each vertical force. Should be in the
-        following order: (easting, northing, vertical, ...). Only easting and
-        northing will be used, all subsequent coordinates will be ignored.
-    fudge : float
-        The positive fudge factor applied to the Green's function to avoid
-        singularities.
-
-    Returns
-    -------
-    jacobian : 2D array
-        The (n_data, n_forces) Jacobian matrix.
-
-    See also
-    --------
-    verde.Spline : Biharmonic spline gridder
-
-    """
-    force_easting, force_northing = (
-        np.atleast_1d(i).ravel() for i in force_coordinates[:2]
-    )
-    easting, northing = (np.atleast_1d(i).ravel() for i in coordinates[:2])
-    # Reshaping the data to a column vector will automatically build a
-    # distance matrix between each data point and force.
-    distance = np.hypot(
-        easting.reshape((easting.size, 1)) - force_easting.ravel(),
-        northing.reshape((northing.size, 1)) - force_northing.ravel(),
-    )
-    # The fudge factor helps avoid singular matrices when the force and
-    # computation point are too close
-    distance += fudge
-    return (distance ** 2) * (np.log(distance) - 1)
+        """
+        if not hasattr(self, "force_coords_"):
+            self.force_coords_ = self._get_force_coordinates(coordinates)
+        force_easting, force_northing = (
+            np.atleast_1d(i).ravel() for i in self.force_coords_[:2]
+        )
+        easting, northing = (np.atleast_1d(i).ravel() for i in coordinates[:2])
+        # Reshaping the data to a column vector will automatically build a
+        # distance matrix between each data point and force.
+        distance = np.hypot(
+            easting.reshape((easting.size, 1)) - force_easting.ravel(),
+            northing.reshape((northing.size, 1)) - force_northing.ravel(),
+            dtype=dtype,
+        )
+        # The fudge factor helps avoid singular matrices when the force and
+        # computation point are too close
+        distance += self.fudge
+        return (distance ** 2) * (np.log(distance) - 1)

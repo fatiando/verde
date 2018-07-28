@@ -32,6 +32,17 @@ def test_vector2d(data2d):
     npt.assert_allclose(spline.force_coords_, coords)
 
 
+def test_vector2d_twice(data2d):
+    "Check that the force coordinates are updated if fitting a second time"
+    coords, data = data2d
+    spline = Vector2D().fit(coords, data)
+    npt.assert_allclose(spline.force_coords_, coords)
+    coords2 = tuple(i * 1000 for i in coords)
+    spline.fit(coords2, data)
+    npt.assert_allclose(spline.force_coords_, coords2)
+    assert not np.allclose(spline.force_coords_, coords)
+
+
 def test_vector2d_weights(data2d):
     "Use unit weights and a regular grid solution"
     coords, data = data2d

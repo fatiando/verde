@@ -63,11 +63,6 @@ class Trend(BaseGridder):
     >>> print('{:.2f}'.format(trend_out.residual_[2, 2]))
     500.00
 
-    See also
-    --------
-    verde.trend_jacobian : Make the Jacobian matrix for 2D polynomial
-    verde.VectorTrend : Polynomial trend estimator for multi-component data
-
     """
 
     def __init__(self, degree):
@@ -103,7 +98,7 @@ class Trend(BaseGridder):
         """
         coordinates, data, weights = check_fit_input(coordinates, data, weights)
         self.region_ = get_region(coordinates[:2])
-        jac = trend_jacobian(coordinates[:2], degree=self.degree, dtype=data.dtype)
+        jac = self.jacobian(coordinates[:2], dtype=data.dtype)
         scaler = StandardScaler(copy=False, with_mean=False, with_std=True)
         jac = scaler.fit_transform(jac)
         regr = LinearRegression(fit_intercept=False, normalize=False)
@@ -133,9 +128,61 @@ class Trend(BaseGridder):
 
         """
         check_is_fitted(self, ["coef_"])
-        jac = trend_jacobian(coordinates[:2], degree=self.degree)
+        jac = self.jacobian(coordinates[:2])
         shape = np.broadcast(*coordinates[:2]).shape
         return jac.dot(self.coef_).reshape(shape)
+
+    def jacobian(self, coordinates, dtype="float64"):
+        """
+        Make the Jacobian matrix for a 2D polynomial.
+
+        Each column of the Jacobian is ``easting**i * northing**j`` for each (i, j)
+        pair in the polynomial.
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...). Only easting and
+            northing will be used, all subsequent coordinates will be ignored.
+        dtype : str or numpy dtype
+            The type of the output Jacobian numpy array.
+
+        Returns
+        -------
+        jacobian : 2D array
+            The (n_data, n_coefficients) Jacobian matrix.
+
+        Examples
+        --------
+
+        >>> import numpy as np
+        >>> east = np.linspace(0, 4, 5)
+        >>> north = np.linspace(-5, -1, 5)
+        >>> print(Trend(degree=1).jacobian((east, north), dtype=np.int))
+        [[ 1  0 -5]
+         [ 1  1 -4]
+         [ 1  2 -3]
+         [ 1  3 -2]
+         [ 1  4 -1]]
+        >>> print(Trend(degree=2).jacobian((east, north), dtype=np.int))
+        [[ 1  0 -5  0  0 25]
+         [ 1  1 -4  1 -4 16]
+         [ 1  2 -3  4 -6  9]
+         [ 1  3 -2  9 -6  4]
+         [ 1  4 -1 16 -4  1]]
+
+        """
+        easting, northing = coordinates[:2]
+        if easting.shape != northing.shape:
+            raise ValueError("Coordinate arrays must have the same shape.")
+        combinations = polynomial_power_combinations(self.degree)
+        ndata = easting.size
+        nparams = len(combinations)
+        out = np.empty((ndata, nparams), dtype=dtype)
+        for col, (i, j) in enumerate(combinations):
+            out[:, col] = (easting.ravel() ** i) * (northing.ravel() ** j)
+        return out
 
 
 def polynomial_power_combinations(degree):
@@ -170,63 +217,3 @@ def polynomial_power_combinations(degree):
         raise ValueError("Invalid polynomial degree '{}'. Must be >= 1.".format(degree))
     combinations = ((i, j) for j in range(degree + 1) for i in range(degree + 1 - j))
     return tuple(sorted(combinations, key=sum))
-
-
-def trend_jacobian(coordinates, degree, dtype="float64"):
-    """
-    Make the Jacobian for a 2D polynomial of the given degree.
-
-    Each column of the Jacobian is ``easting**i * northing**j`` for each (i, j)
-    pair in the polynomial of the given degree.
-
-    Parameters
-    ----------
-    coordinates : tuple of arrays
-        Arrays with the coordinates of each data point. Should be in the
-        following order: (easting, northing, vertical, ...). Only easting and
-        northing will be used, all subsequent coordinates will be ignored.
-    degree : int
-        The degree of the 2D polynomial. Must be >= 1.
-    dtype : str or numpy dtype
-        The type of the output Jacobian numpy array.
-
-    Returns
-    -------
-    jacobian : 2D array
-        The (n_data, n_coefficients) Jacobian matrix.
-
-    Examples
-    --------
-
-    >>> import numpy as np
-    >>> east = np.linspace(0, 4, 5)
-    >>> north = np.linspace(-5, -1, 5)
-    >>> print(trend_jacobian((east, north), degree=1, dtype=np.int))
-    [[ 1  0 -5]
-     [ 1  1 -4]
-     [ 1  2 -3]
-     [ 1  3 -2]
-     [ 1  4 -1]]
-    >>> print(trend_jacobian((east, north), degree=2, dtype=np.int))
-    [[ 1  0 -5  0  0 25]
-     [ 1  1 -4  1 -4 16]
-     [ 1  2 -3  4 -6  9]
-     [ 1  3 -2  9 -6  4]
-     [ 1  4 -1 16 -4  1]]
-
-    See also
-    --------
-    verde.Trend : Polynomial trend estimator
-    verde.VectorTrend : Polynomial trend estimator for multi-component data
-
-    """
-    easting, northing = coordinates[:2]
-    if easting.shape != northing.shape:
-        raise ValueError("Coordinate arrays must have the same shape.")
-    combinations = polynomial_power_combinations(degree)
-    ndata = easting.size
-    nparams = len(combinations)
-    out = np.empty((ndata, nparams), dtype=dtype)
-    for col, (i, j) in enumerate(combinations):
-        out[:, col] = (easting.ravel() ** i) * (northing.ravel() ** j)
-    return out
