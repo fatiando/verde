@@ -34,6 +34,20 @@ def test_spline():
     )
 
 
+def test_spline_twice():
+    "Check that the forces are updated when fitting twice"
+    grid = CheckerBoard(region=(1000, 5000, -8000, -6000)).grid(shape=(10, 10))
+    coords = np.meshgrid(grid.easting, grid.northing)
+    spline = Spline()
+    spline.fit(coords, grid.scalars.values)
+    npt.assert_allclose(spline.force_coords_, coords)
+    grid2 = CheckerBoard(region=(-15, -5, 10, 20)).grid(shape=(10, 10))
+    coords2 = np.meshgrid(grid2.easting, grid2.northing)
+    spline.fit(coords2, grid2.scalars.values)
+    npt.assert_allclose(spline.force_coords_, coords2)
+    assert not np.allclose(spline.force_coords_, coords)
+
+
 def test_spline_region():
     "See if the region is gotten from the data is correct."
     region = (1000, 5000, -8000, -6000)

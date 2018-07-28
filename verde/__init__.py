@@ -16,12 +16,12 @@ from .grid_math import distance_mask
 from .utils import variance_to_weights, maxabs
 from .blockreduce import block_split, BlockReduce, BlockMean
 from .scipygridder import ScipyGridder
-from .trend import Trend, trend_jacobian
+from .trend import Trend
 from .chain import Chain
 from .components import Components
-from .spline import Spline, spline_jacobian
+from .spline import Spline
 from .model_selection import cross_val_score, train_test_split
-from .vector import Vector2D, vector2d_jacobian
+from .vector import Vector2D
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=True):
