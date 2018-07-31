@@ -19,3 +19,7 @@ functions:
   National Aeronautics and Space Administration (NASA) under NSF Cooperative Agreement
   No. EAR-1261833. Velocities are referenced to the North American tectonic plate
   (NAM08).
+* `texas-wind.csv`: Monthly average for January 2018 of wind speed (in knots) and air
+  temperature (in C) for the state of Texas, USA. The original data was downloaded from
+  the [Iowa State University](https://mesonet.agron.iastate.edu/request/download.phtml)
+  archive.
