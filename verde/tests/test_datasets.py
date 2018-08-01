@@ -19,7 +19,36 @@ from ..datasets.sample_data import (
     setup_rio_magnetic_map,
     fetch_california_gps,
     setup_california_gps_map,
+    fetch_texas_wind,
+    setup_texas_wind_map,
 )
+
+
+def test_fetch_texas_wind():
+    "Make sure the data are loaded properly"
+    data = fetch_texas_wind()
+    assert data.size == 1116
+    assert data.shape == (186, 6)
+    assert all(
+        data.columns
+        == [
+            "station_id",
+            "longitude",
+            "latitude",
+            "air_temperature_c",
+            "wind_speed_east_knots",
+            "wind_speed_north_knots",
+        ]
+    )
+
+
+@pytest.mark.mpl_image_compare
+def test_setup_texas_wind():
+    "Test the map setup"
+    fig = plt.figure()
+    ax = plt.subplot(111, projection=ccrs.Mercator())
+    setup_texas_wind_map(ax)
+    return fig
 
 
 def test_fetch_baja_bathymetry():
