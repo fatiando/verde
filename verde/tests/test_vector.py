@@ -8,7 +8,7 @@ import numpy.testing as npt
 
 from ..datasets.synthetic import CheckerBoard
 from ..coordinates import grid_coordinates
-from ..vector import Vector2D
+from ..vector import VectorSpline2D
 
 
 @pytest.fixture
@@ -23,7 +23,7 @@ def data2d():
 def test_vector2d(data2d):
     "See if the exact solution works"
     coords, data = data2d
-    spline = Vector2D().fit(coords, data)
+    spline = VectorSpline2D().fit(coords, data)
     npt.assert_allclose(spline.score(coords, data), 1)
     npt.assert_allclose(spline.predict(coords), data, rtol=1e-3)
     # There should be 1 force per data point
@@ -35,7 +35,7 @@ def test_vector2d(data2d):
 def test_vector2d_twice(data2d):
     "Check that the force coordinates are updated if fitting a second time"
     coords, data = data2d
-    spline = Vector2D().fit(coords, data)
+    spline = VectorSpline2D().fit(coords, data)
     npt.assert_allclose(spline.force_coords_, coords)
     coords2 = tuple(i * 1000 for i in coords)
     spline.fit(coords2, data)
@@ -47,7 +47,7 @@ def test_vector2d_weights(data2d):
     "Use unit weights and a regular grid solution"
     coords, data = data2d
     weights = tuple(np.ones_like(data[0]) for i in range(2))
-    spline = Vector2D(shape=(11, 11)).fit(coords, data, weights)
+    spline = VectorSpline2D(shape=(11, 11)).fit(coords, data, weights)
     npt.assert_allclose(spline.score(coords, data), 1, rtol=1e-3)
     npt.assert_allclose(spline.predict(coords), data, rtol=5e-2)
     assert spline.force_coords_[0].size == 11 * 11
@@ -57,7 +57,7 @@ def test_vector2d_weights(data2d):
 def test_vector2d_fails(data2d):
     "Should fail if not given 2 data components"
     coords, data = data2d
-    spline = Vector2D()
+    spline = VectorSpline2D()
     with pytest.raises(ValueError):
         spline.fit(coords, data[0])
     with pytest.raises(ValueError):

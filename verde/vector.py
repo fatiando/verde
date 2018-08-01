@@ -10,64 +10,65 @@ from .spline import Spline
 from .coordinates import get_region
 
 
-class Vector2D(Spline):
+class VectorSpline2D(Spline):
     r"""
     Elastically coupled interpolation of 2-component vector data.
 
-    Uses the Green's functions based on elastic deformation from
-    [SandwellWessel2016]_. The interpolation is done by estimating point forces
-    that generate an elastic deformation that fits the observed vector data.
-    The deformation equations are based on a 2D elastic sheet with a constant
-    Poisson's ratio. The data can then be predicted at any desired location.
+    This gridder assumes Cartesian coordinates.
 
-    The east and north data components are coupled through the elastic
-    deformation equations. This coupling is controlled by the Poisson's ratio,
-    which is usually between -1 and 1. The special case of Poisson's ratio -1
-    leads to an uncoupled interpolation, meaning that the east and north
-    components don't interfere with each other.
+    Uses the Green's functions based on elastic deformation from [SandwellWessel2016]_.
+    The interpolation is done by estimating point forces that generate an elastic
+    deformation that fits the observed vector data. The deformation equations are based
+    on a 2D elastic sheet with a constant Poisson's ratio. The data can then be
+    predicted at any desired location.
 
-    The point forces are traditionally placed under each data point. The force
-    locations are set the first time :meth:`~verde.Vector2D.fit` is called.
-    Subsequent calls will fit using the same force locations as the first call.
-    This configuration results in an exact prediction at the data points but
-    can be unstable.
+    The east and north data components are coupled through the elastic deformation
+    equations. This coupling is controlled by the Poisson's ratio, which is usually
+    between -1 and 1. The special case of Poisson's ratio -1 leads to an uncoupled
+    interpolation, meaning that the east and north components don't interfere with each
+    other.
 
-    [SandwellWessel2016]_ stabilize the solution using Singular Value
-    Decomposition but we use ridge regression instead. The regularization can
-    be controlled using the *damping* argument. Alternatively, we also allow
-    forces to be placed on a regular grid using the *spacing*, *shape*, and/or
-    *region* arguments. Regularization or forces on a grid will result in a
-    least-squares estimate at the data points, not an exact solution. Note that
-    the least-squares solution is required for data weights to have any effect.
+    The point forces are traditionally placed under each data point. The force locations
+    are set the first time :meth:`~verde.VectorSpline2D.fit` is called. Subsequent calls
+    will fit using the same force locations as the first call. This configuration
+    results in an exact prediction at the data points but can be unstable.
 
-    The Jacobian (design, sensitivity, feature, etc) matrix for the spline
-    is normalized using :class:`sklearn.preprocessing.StandardScaler` without
-    centering the mean so that the transformation can be undone in the
-    estimated forces.
+    [SandwellWessel2016]_ stabilize the solution using Singular Value Decomposition but
+    we use ridge regression instead. The regularization can be controlled using the
+    *damping* argument. Alternatively, we also allow forces to be placed on a regular
+    grid using the *spacing*, *shape*, and/or *region* arguments. Regularization or
+    forces on a grid will result in a least-squares estimate at the data points, not an
+    exact solution. Note that the least-squares solution is required for data weights to
+    have any effect.
+
+    The Jacobian (design, sensitivity, feature, etc) matrix for the spline is normalized
+    using :class:`sklearn.preprocessing.StandardScaler` without centering the mean so
+    that the transformation can be undone in the estimated forces.
 
     Parameters
     ----------
     poisson : float
-        The Poisson's ratio for the elastic deformation Green's functions.
-        Default is 0.5. A value of -1 will lead to uncoupled interpolation of
-        the east and north data components.
-    fudge : float
-        The positive fudge factor applied to the Green's function to avoid
-        singularities.
+        The Poisson's ratio for the elastic deformation Green's functions. Default is
+        0.5. A value of -1 will lead to uncoupled interpolation of the east and north
+        data components.
+    mindist : float
+        A minimum distance between the point forces and data points. Needed because the
+        Green's functions are singular when forces and data points coincide. Acts as a
+        fudge factor. A good rule of thumb is to use the average spacing between data
+        points.
     damping : None or float
-        The positive damping regularization parameter. Controls how much
-        smoothness is imposed on the estimated forces. If None, no
-        regularization is used.
+        The positive damping regularization parameter. Controls how much smoothness is
+        imposed on the estimated forces. If None, no regularization is used.
     shape : None or tuple
-        If not None, then should be the shape of the regular grid of forces.
-        See :func:`verde.grid_coordinates` for details.
+        If not None, then should be the shape of the regular grid of forces. See
+        :func:`verde.grid_coordinates` for details.
     spacing : None or float or tuple
-        If not None, then should be the spacing of the regular grid of forces.
-        See :func:`verde.grid_coordinates` for details.
+        If not None, then should be the spacing of the regular grid of forces. See
+        :func:`verde.grid_coordinates` for details.
     region : None or tuple
-        If not None, then the boundaries (``[W, E, S, N]``) used to generate a
-        regular grid of forces. If None is given, then will use the boundaries
-        of data given to the first call to :meth:`~verde.Vector2D.fit`.
+        If not None, then the boundaries (``[W, E, S, N]``) used to generate a regular
+        grid of forces. If None is given, then will use the boundaries of data given to
+        the first call to :meth:`~verde.VectorSpline2D.fit`.
 
     Attributes
     ----------
@@ -78,7 +79,7 @@ class Vector2D(Spline):
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
-        :meth:`~verde.Vector2D.grid` and :meth:`~verde.Vector2D.scatter`
+        :meth:`~verde.VectorSpline2D.grid` and :meth:`~verde.VectorSpline2D.scatter`
         methods.
 
     """
@@ -86,7 +87,7 @@ class Vector2D(Spline):
     def __init__(
         self,
         poisson=0.5,
-        fudge=1e-5,
+        mindist=10e3,
         damping=None,
         shape=None,
         spacing=None,
@@ -94,7 +95,11 @@ class Vector2D(Spline):
     ):
         self.poisson = poisson
         super().__init__(
-            fudge=fudge, damping=damping, shape=shape, spacing=spacing, region=region
+            mindist=mindist,
+            damping=damping,
+            shape=shape,
+            spacing=spacing,
+            region=region,
         )
 
     def fit(self, coordinates, data, weights=None):
@@ -102,7 +107,7 @@ class Vector2D(Spline):
         Fit the gridder to the given 2-component vector data.
 
         The data region is captured and used as default for the
-        :meth:`~verde.Vector2D.grid` and :meth:`~verde.Vector2D.scatter`
+        :meth:`~verde.VectorSpline2D.grid` and :meth:`~verde.VectorSpline2D.scatter`
         methods.
 
         All input arrays must have the same shape.
@@ -154,7 +159,7 @@ class Vector2D(Spline):
         """
         Evaluate the fitted gridder on the given set of points.
 
-        Requires a fitted estimator (see :meth:`~verde.Vector2D.fit`).
+        Requires a fitted estimator (see :meth:`~verde.VectorSpline2D.fit`).
 
         Parameters
         ----------
@@ -219,9 +224,9 @@ class Vector2D(Spline):
             for datac, forcec in zip(coordinates, force_coordinates)
         )
         distance = np.hypot(east, north, dtype=dtype)
-        # The fudge factor helps avoid singular matrices when the force and
+        # The mindist factor helps avoid singular matrices when the force and
         # computation point are too close
-        distance += self.fudge
+        distance += self.mindist
         # Pre-compute common terms for the Green's functions of each component
         ln_r = (3 - self.poisson) * np.log(distance)
         over_r2 = (1 + self.poisson) / distance ** 2

@@ -14,7 +14,7 @@ Interpolators
    :toctree: generated/
 
     Spline
-    Vector2D
+    VectorSpline2D
     ScipyGridder
 
 Data Processing
