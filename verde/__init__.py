@@ -21,7 +21,7 @@ from .chain import Chain
 from .components import Components
 from .spline import Spline
 from .model_selection import cross_val_score, train_test_split
-from .vector import Vector2D
+from .vector import VectorSpline2D
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=True):

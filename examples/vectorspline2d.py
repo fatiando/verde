@@ -4,8 +4,8 @@ Coupled gridding of 2-component vector data
 
 One way of gridding vector data would be grid each component separately using
 :class:`verde.Spline` and :class:`verde.Components`. Alternatively,
-:class:`verde.Vector2D` can grid two components simultaneously in a way that couples
-them through elastic deformation theory. This is particularly suited, though not
+:class:`verde.VectorSpline2D` can grid two components simultaneously in a way that
+couples them through elastic deformation theory. This is particularly suited, though not
 exclusive, to data that represent elastic/semi-elastic deformation, like horizontal GPS
 velocities.
 """
@@ -21,7 +21,7 @@ import verde as vd
 data = vd.datasets.fetch_california_gps()
 coordinates = (data.longitude.values, data.latitude.values)
 region = vd.get_region(coordinates)
-# Use a Mercator projection because Vector2D is a Cartesian gridder
+# Use a Mercator projection because VectorSpline2D is a Cartesian gridder
 projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 
 # Split the data into a training and testing set. We'll fit the gridder on the training
@@ -40,7 +40,7 @@ chain = vd.Chain(
     [
         ("mean", vd.BlockReduce(np.mean, spacing * 111e3)),
         ("trend", vd.Components([vd.Trend(degree=5) for i in range(2)])),
-        ("spline", vd.Vector2D(poisson=0.5)),
+        ("spline", vd.VectorSpline2D(poisson=0.5, mindist=10e3)),
     ]
 )
 # Fit on the training data

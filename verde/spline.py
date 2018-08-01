@@ -16,61 +16,60 @@ class Spline(BaseGridder):
     r"""
     Biharmonic spline interpolation using Green's functions.
 
-    Implements the 2D splines of [Sandwell1987]_. The Green's function for the
-    spline corresponds to the elastic deflection of a thin sheet subject to a
-    vertical force. For an observation point at the origin and a force at the
-    coordinates given by the vector :math:`\mathbf{x}`, the Green's function
-    is:
+    This gridder assumes Cartesian coordinates.
+
+    Implements the 2D splines of [Sandwell1987]_. The Green's function for the spline
+    corresponds to the elastic deflection of a thin sheet subject to a vertical force.
+    For an observation point at the origin and a force at the coordinates given by the
+    vector :math:`\mathbf{x}`, the Green's function is:
 
     .. math::
 
         g(\mathbf{x}) = \|\mathbf{x}\|^2 \left(\log \|\mathbf{x}\| - 1\right)
 
-    In practice, this function is not defined for data points that coincide
-    with a force. To prevent this, a fudge factor is added to
-    :math:`\|\mathbf{x}\|`.
+    In practice, this function is not defined for data points that coincide with a
+    force. To prevent this, a fudge factor is added to :math:`\|\mathbf{x}\|`.
 
-    The interpolation is performed by estimating forces that produce
-    deflections that fit the observed data (using least-squares). Then, the
-    interpolated points can be evaluated at any location.
+    The interpolation is performed by estimating forces that produce deflections that
+    fit the observed data (using least-squares). Then, the interpolated points can be
+    evaluated at any location.
 
-    By default, the forces will be placed at the same points as the input data
-    given to :meth:`~verde.Spline.fit`. This configuration provides an exact
-    solution on top of the data points. However, this solution can be unstable
-    for certain configurations of data points.
+    By default, the forces will be placed at the same points as the input data given to
+    :meth:`~verde.Spline.fit`. This configuration provides an exact solution on top of
+    the data points. However, this solution can be unstable for certain configurations
+    of data points.
 
     Approximate (and more stable) solutions can be obtained by applying damping
-    regularization to smooth the estimated forces (and interpolated values) or
-    by distributing the forces on a regular grid instead (using arguments
-    *spacing*, *shape*, and/or *region*).
+    regularization to smooth the estimated forces (and interpolated values) or by
+    distributing the forces on a regular grid instead (using arguments *spacing*,
+    *shape*, and/or *region*).
 
-    Data weights can be used during fitting but only have an any effect when
-    using the approximate solutions.
+    Data weights can be used during fitting but only have an any effect when using the
+    approximate solutions.
 
-    The Jacobian (design, sensitivity, feature, etc) matrix for the spline
-    is normalized using :class:`sklearn.preprocessing.StandardScaler` without
-    centering the mean so that the transformation can be undone in the
-    estimated forces.
+    The Jacobian (design, sensitivity, feature, etc) matrix for the spline is normalized
+    using :class:`sklearn.preprocessing.StandardScaler` without centering the mean so
+    that the transformation can be undone in the estimated forces.
 
     Parameters
     ----------
-    fudge : float
-        The positive fudge factor applied to the Green's function to avoid
-        singularities.
+    mindist : float
+        A minimum distance between the point forces and data points. Needed because the
+        Green's functions are singular when forces and data points coincide. Acts as a
+        fudge factor.
     damping : None or float
-        The positive damping regularization parameter. Controls how much
-        smoothness is imposed on the estimated forces. If None, no
-        regularization is used.
+        The positive damping regularization parameter. Controls how much smoothness is
+        imposed on the estimated forces. If None, no regularization is used.
     shape : None or tuple
-        If not None, then should be the shape of the regular grid of forces.
-        See :func:`verde.grid_coordinates` for details.
+        If not None, then should be the shape of the regular grid of forces. See
+        :func:`verde.grid_coordinates` for details.
     spacing : None or float or tuple
-        If not None, then should be the spacing of the regular grid of forces.
-        See :func:`verde.grid_coordinates` for details.
+        If not None, then should be the spacing of the regular grid of forces. See
+        :func:`verde.grid_coordinates` for details.
     region : None or tuple
-        If not None, then the boundaries (``[W, E, S, N]``) used to generate a
-        regular grid of forces. If None is given, then will use the boundaries
-        of data given to the first call to :meth:`~verde.Spline.fit`.
+        If not None, then the boundaries (``[W, E, S, N]``) used to generate a regular
+        grid of forces. If None is given, then will use the boundaries of data given to
+        the first call to :meth:`~verde.Spline.fit`.
 
     Attributes
     ----------
@@ -85,11 +84,13 @@ class Spline(BaseGridder):
 
     """
 
-    def __init__(self, fudge=1e-5, damping=None, shape=None, spacing=None, region=None):
+    def __init__(
+        self, mindist=1e-5, damping=None, shape=None, spacing=None, region=None
+    ):
         self.damping = damping
         self.shape = shape
         self.spacing = spacing
-        self.fudge = fudge
+        self.mindist = mindist
         self.region = region
 
     def fit(self, coordinates, data, weights=None):
@@ -252,7 +253,7 @@ class Spline(BaseGridder):
             northing.reshape((northing.size, 1)) - force_northing.ravel(),
             dtype=dtype,
         )
-        # The fudge factor helps avoid singular matrices when the force and
+        # The mindist factor helps avoid singular matrices when the force and
         # computation point are too close
-        distance += self.fudge
+        distance += self.mindist
         return (distance ** 2) * (np.log(distance) - 1)
