@@ -20,7 +20,9 @@ POOCH = pooch.create(
 POOCH.load_registry(os.path.join(os.path.dirname(__file__), "registry.txt"))
 
 
-def _setup_map(ax, xticks, yticks, crs, region, land=None, ocean=None):
+def _setup_map(
+    ax, xticks, yticks, crs, region, land=None, ocean=None, borders=None, states=None
+):
     """
     Setup a Cartopy map with land and ocean features and proper tick labels.
     """
@@ -31,6 +33,10 @@ def _setup_map(ax, xticks, yticks, crs, region, land=None, ocean=None):
         ax.add_feature(cfeature.LAND, facecolor=land)
     if ocean is not None:
         ax.add_feature(cfeature.OCEAN, facecolor=ocean)
+    if borders is not None:
+        ax.add_feature(cfeature.BORDERS, linewidth=borders)
+    if states is not None:
+        ax.add_feature(cfeature.STATES, linewidth=states)
     ax.set_extent(region, crs=crs)
     # Set the proper ticks for a Cartopy map
     ax.set_xticks(xticks, crs=crs)
@@ -51,7 +57,7 @@ def fetch_baja_bathymetry():
 
     Returns
     -------
-    data : pandas.DataFrame
+    data : :class:`pandas.DataFrame`
         The bathymetry data. Columns are longitude, latitude, and bathymetry
         (in meters) for each data point.
 
@@ -125,7 +131,7 @@ def fetch_rio_magnetic():
 
     Returns
     -------
-    data : pandas.DataFrame
+    data : :class:`pandas.DataFrame`
         The magnetic anomaly data. Columns are longitude, latitude, total-field
         magnetic anomaly (nanoTesla), and observation height above the
         ellipsoid (in meters) for each data point.
@@ -191,7 +197,7 @@ def fetch_california_gps():
 
     Returns
     -------
-    data : pandas.DataFrame
+    data : :class:`pandas.DataFrame`
         The GPS velocity data. Columns are longitude, latitude, height
         (geometric, in meters), East velocity (meter/year), North velocity
         (meter/year), upward velocity (meter/year), standard deviation of East
@@ -239,5 +245,71 @@ def setup_california_gps_map(
         land=land,
         ocean=ocean,
         region=region,
+        crs=ccrs.PlateCarree(),
+    )
+
+
+def fetch_texas_wind():
+    """
+    Fetch sample wind speed and air temperature data for the state of Texas, USA.
+
+    Data are average wind speed and air temperature for data for February 26 2018. The
+    original data was downloaded from `Iowa State University
+    <https://mesonet.agron.iastate.edu/request/download.phtml>`__.
+
+    If the file isn't already in your data directory, it will be downloaded
+    automatically.
+
+    Returns
+    -------
+    data : :class:`pandas.DataFrame`
+        Columns are the station ID, longitude, latitude, air temperature in C, east
+        component of wind speed in knots, and north component of wind speed in knots.
+
+    See also
+    --------
+    setup_texas_wind_map: Utility function to help setup a Cartopy map.
+
+    """
+    data_file = POOCH.fetch("texas-wind.csv")
+    data = pd.read_csv(data_file)
+    return data
+
+
+def setup_texas_wind_map(
+    ax, region=(-107, -93, 25.5, 37), land="#dddddd", borders=0.5, states=0.1
+):
+    """
+    Setup a Cartopy map for the Texas wind speed and air temperature dataset.
+
+    Parameters
+    ----------
+    ax : matplotlib Axes
+        The axes where the map is being plotted.
+    region : list = [W, E, S, N]
+        The boundaries of the map region in the coordinate system of the data.
+    land : str or None
+        The name of the color of the land feature or None to omit it.
+    borders : float or None
+        Line width of the country borders.
+    states : float or None
+        Line width of the state borders.
+
+    See also
+    --------
+    fetch_texas_wind: Sample wind speed and air temperature data for Texas.
+
+    """
+    import cartopy.crs as ccrs
+
+    _setup_map(
+        ax,
+        xticks=np.arange(-106, -92, 3),
+        yticks=np.arange(27, 38, 3),
+        land=land,
+        ocean=None,
+        region=region,
+        borders=borders,
+        states=states,
         crs=ccrs.PlateCarree(),
     )

@@ -7,4 +7,6 @@ from .sample_data import (
     setup_rio_magnetic_map,
     fetch_california_gps,
     setup_california_gps_map,
+    fetch_texas_wind,
+    setup_texas_wind_map,
 )

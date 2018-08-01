@@ -36,6 +36,7 @@ Loading Data
     datasets.fetch_baja_bathymetry
     datasets.fetch_california_gps
     datasets.fetch_rio_magnetic
+    datasets.fetch_texas_wind
 
 
 Utiltiy Functions
@@ -51,6 +52,7 @@ tutorials.
     datasets.setup_baja_bathymetry_map
     datasets.setup_california_gps_map
     datasets.setup_rio_magnetic_map
+    datasets.setup_texas_wind_map
 
 
 Synthetic Data
