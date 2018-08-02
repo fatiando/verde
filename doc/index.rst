@@ -138,6 +138,7 @@ terms of the `BSD 3-clause License <https://github.com/fatiando/verde/blob/maste
     :hidden:
     :caption: User Guide
 
+    tutorials/overview.rst
     tutorials/decimation.rst
     tutorials/weights.rst
     api/index.rst
