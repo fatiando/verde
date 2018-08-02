@@ -1,6 +1,6 @@
 """
-Coupled gridding of 2-component vector data
-===========================================
+Gridding 2D vectors (coupled)
+=============================
 
 One way of gridding vector data would be grid each component separately using
 :class:`verde.Spline` and :class:`verde.Components`. Alternatively,
