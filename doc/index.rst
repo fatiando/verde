@@ -129,6 +129,7 @@ terms of the `BSD 3-clause License <https://github.com/fatiando/verde/blob/maste
     :hidden:
     :caption: Getting Started
 
+    tutorials/overview.rst
     install.rst
     gallery/index.rst
     sample_data/index.rst

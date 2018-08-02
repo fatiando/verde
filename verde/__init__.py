@@ -2,7 +2,6 @@
 # Import functions/classes to make the public API
 from . import datasets
 from . import version
-from .base import BaseGridder
 from .coordinates import (
     scatter_points,
     grid_coordinates,

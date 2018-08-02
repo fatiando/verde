@@ -15,12 +15,12 @@ class BaseGridder(BaseEstimator):
     Base class for gridders.
 
     Most methods of this class requires the implementation of a
-    :meth:`~verde.BaseGridder.predict` method. The data returned by it should
+    :meth:`~verde.base.BaseGridder.predict` method. The data returned by it should
     be a 1d or 2d numpy array for scalar data or a tuple with 1d or 2d numpy
     arrays for each component of vector data.
 
-    The :meth:`~verde.BaseGridder.filter` method requires the implementation of
-    a :meth:`~verde.BaseGridder.fit` method to fit the gridder model to data.
+    The :meth:`~verde.base.BaseGridder.filter` method requires the implementation of
+    a :meth:`~verde.base.BaseGridder.fit` method to fit the gridder model to data.
 
     Doesn't define any new attributes.
 
@@ -220,7 +220,7 @@ class BaseGridder(BaseEstimator):
         pred = check_data(self.predict(coordinates))
         result = np.mean(
             [
-                r2_score(datai, predi, sample_weight=weighti)
+                r2_score(datai.ravel(), predi.ravel(), sample_weight=weighti)
                 for datai, predi, weighti in zip(data, pred, weights)
             ]
         )
@@ -272,10 +272,11 @@ class BaseGridder(BaseEstimator):
             *shape* is given instead of *spacing*. Defaults to adjusting the
             spacing.
         dims : list or None
-            The names of the northing and easting data dimensions,
-            respectively, in the output grid. Defaults to
-            ``['northing', 'easting']`` for Cartesian grids and
-            ``['latitude', 'longitude']`` for geographic grids.
+            The names of the northing and easting data dimensions, respectively, in the
+            output grid. Defaults to ``['northing', 'easting']`` for Cartesian grids and
+            ``['latitude', 'longitude']`` for geographic grids. **NOTE: This is an
+            exception to the "easting" then "northing" pattern but is required for
+            compatibility with xarray.**
         data_names : list of None
             The name(s) of the data variables in the output grid. Defaults to
             ``['scalars']`` for scalar data,
@@ -353,10 +354,11 @@ class BaseGridder(BaseEstimator):
             reproducible. Use ``None`` to choose a seed automatically
             (resulting in different numbers with each run).
         dims : list or None
-            The names of the northing and easting data dimensions,
-            respectively, in the output dataframe. Defaults to
-            ``['northing', 'easting']`` for Cartesian grids and
-            ``['latitude', 'longitude']`` for geographic grids.
+            The names of the northing and easting data dimensions, respectively, in the
+            output dataframe. Defaults to ``['northing', 'easting']`` for Cartesian
+            grids and ``['latitude', 'longitude']`` for geographic grids. **NOTE: This
+            is an exception to the "easting" then "northing" pattern but is required for
+            compatibility with xarray.**
         data_names : list of None
             The name(s) of the data variables in the output dataframe. Defaults
             to ``['scalars']`` for scalar data,
@@ -417,10 +419,11 @@ class BaseGridder(BaseEstimator):
         size : int
             The number of points to generate.
         dims : list or None
-            The names of the northing and easting data dimensions,
-            respectively, in the output dataframe. Defaults to
-            ``['northing', 'easting']`` for Cartesian grids and
-            ``['latitude', 'longitude']`` for geographic grids.
+            The names of the northing and easting data dimensions, respectively, in the
+            output dataframe. Defaults to ``['northing', 'easting']`` for Cartesian
+            grids and ``['latitude', 'longitude']`` for geographic grids. **NOTE: This
+            is an exception to the "easting" then "northing" pattern but is required for
+            compatibility with xarray.**
         data_names : list of None
             The name(s) of the data variables in the output dataframe. Defaults
             to ``['scalars']`` for scalar data,
