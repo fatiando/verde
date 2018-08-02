@@ -81,7 +81,9 @@ for ax, component, title in zip(axes, components, titles):
         label="Original data",
     )
     # Setup the map ticks
-    vd.datasets.setup_california_gps_map(ax, land=None, ocean=None)
+    vd.datasets.setup_california_gps_map(
+        ax, land=None, ocean=None, region=vd.get_region((data.longitude, data.latitude))
+    )
     ax.coastlines(color="white")
 axes[0].legend(loc="lower left")
 plt.tight_layout()

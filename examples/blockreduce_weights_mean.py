@@ -1,6 +1,6 @@
 """
-Different weights in block mean
-===============================
+Using weights in blocked means
+==============================
 
 :class:`verde.BlockReduce` is not able to output weights because we need to make
 assumptions about the reduction operation to know how to propagate uncertainties or

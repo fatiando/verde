@@ -1,6 +1,6 @@
 """
-Data decimation in blocks
-=========================
+Blocked reduction operations
+============================
 
 When gridding data that has been highly oversampled in a direction (shipborne
 and airborne data, for example), it is important to decimate the data before
