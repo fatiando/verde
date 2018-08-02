@@ -77,4 +77,4 @@ Base Classes
 .. autosummary::
    :toctree: generated/
 
-    BaseGridder
+    base.BaseGridder

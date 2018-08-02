@@ -11,13 +11,14 @@ class Chain(BaseGridder):
     """
     Chain filtering operations to fit on each subsequent output.
 
-    The :meth:`~verde.BaseGridder.filter` method of each element of the set is
+    The :meth:`~verde.base.BaseGridder.filter` method of each element of the set is
     called with the outputs of the previous one. For gridders and trend
     estimators this means that each element fits the residuals (input data
     minus predicted data) of the previous one.
 
-    When predicting data, the predictions of each step in the chain are added
-    together. Steps that don't implement a ``predict`` method are ignored.
+    When predicting data, the predictions of each step in the chain are added together.
+    Steps that don't implement a :meth:`~verde.base.BaseGridder.predict` method are
+    ignored.
 
     This provides a convenient way to chaining operations like trend estimation
     to a given gridder.

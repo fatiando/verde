@@ -15,12 +15,12 @@ class BaseGridder(BaseEstimator):
     Base class for gridders.
 
     Most methods of this class requires the implementation of a
-    :meth:`~verde.BaseGridder.predict` method. The data returned by it should
+    :meth:`~verde.base.BaseGridder.predict` method. The data returned by it should
     be a 1d or 2d numpy array for scalar data or a tuple with 1d or 2d numpy
     arrays for each component of vector data.
 
-    The :meth:`~verde.BaseGridder.filter` method requires the implementation of
-    a :meth:`~verde.BaseGridder.fit` method to fit the gridder model to data.
+    The :meth:`~verde.base.BaseGridder.filter` method requires the implementation of
+    a :meth:`~verde.base.BaseGridder.fit` method to fit the gridder model to data.
 
     Doesn't define any new attributes.
 
