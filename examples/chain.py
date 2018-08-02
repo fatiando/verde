@@ -8,7 +8,7 @@ to the next step. For gridders and trend estimators, filtering means fitting the
 and passing along the residuals (input data minus predicted data). When predicting data,
 the predictions of each step are added together. Other operations, like
 :class:`verde.BlockReduce` and :class:`verde.BlockMean` change the input data values and
-the coordinates as well but don't impact the predictions.
+the coordinates as well but don't impact the predictions directly.
 
 For example, say we want to decimate some data, calculate a polynomial trend, and fit a
 gridder on the residual values (not the trend), but then make a grid of the full data
@@ -37,7 +37,7 @@ chain = vd.Chain(
     [
         ("trend", vd.Trend(degree=2)),
         ("reduce", vd.BlockReduce(np.mean, spacing * 111e3)),
-        ("spline", vd.Spline(damping=1e-8)),
+        ("spline", vd.Spline(damping=1e-8, mindist=50e3)),
     ]
 )
 print("Chained estimator:", chain)

@@ -1,6 +1,6 @@
 """
-Data decimation with weights
-============================
+Using weights in blocked reduction
+==================================
 
 Sometimes data has outliers or less reliable points that might skew a blocked mean or
 even a median. If the reduction function can take a ``weights`` argument, like
