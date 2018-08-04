@@ -11,6 +11,8 @@ from sklearn.linear_model import LinearRegression, Ridge
 from .base import BaseGridder, check_fit_input
 from .coordinates import grid_coordinates, get_region
 
+import numba
+
 
 class Spline(BaseGridder):
     r"""
@@ -85,13 +87,15 @@ class Spline(BaseGridder):
     """
 
     def __init__(
-        self, mindist=1e-5, damping=None, shape=None, spacing=None, region=None
+        self, mindist=1e-5, damping=None, shape=None, spacing=None, region=None,
+            engine="auto",
     ):
         self.damping = damping
         self.shape = shape
         self.spacing = spacing
         self.mindist = mindist
         self.region = region
+        self.engine = engine
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -156,8 +160,6 @@ class Spline(BaseGridder):
         else:
             regr = Ridge(alpha=self.damping, fit_intercept=False, normalize=False)
         regr.fit(jacobian, data.ravel(), sample_weight=weights)
-        # Undo the scaling so that we can use forces on the unscaled Jacobian
-        # later on.
         forces = regr.coef_ / scaler.scale_
         return forces
 
@@ -246,14 +248,38 @@ class Spline(BaseGridder):
             np.atleast_1d(i).ravel() for i in self.force_coords_[:2]
         )
         easting, northing = (np.atleast_1d(i).ravel() for i in coordinates[:2])
-        # Reshaping the data to a column vector will automatically build a
-        # distance matrix between each data point and force.
-        distance = np.hypot(
-            easting.reshape((easting.size, 1)) - force_easting.ravel(),
-            northing.reshape((northing.size, 1)) - force_northing.ravel(),
-            dtype=dtype,
-        )
-        # The mindist factor helps avoid singular matrices when the force and
-        # computation point are too close
-        distance += self.mindist
-        return (distance ** 2) * (np.log(distance) - 1)
+        use_numba = self.engine in ("auto", "numba") and numba is not None
+        if use_numba:
+            jac = np.empty((easting.size, force_easting.size), dtype=dtype)
+            _jacobian_numba(easting, northing, force_easting, force_northing, self.mindist,
+                            jac)
+        else:
+            jac = _jacobian_numpy(easting, northing, force_easting, force_northing,
+                                  self.mindist,
+                            dtype)
+        return jac
+
+
+@numba.jit(nopython=True, target='cpu', fastmath=False, parallel=True)
+def _jacobian_numba(easting, northing, force_easting, force_northing, mindist, jac):
+    for i in numba.prange(easting.size):
+        for j in range(force_easting.size):
+            distance = np.sqrt((easting[i] - force_easting[j])**2
+                               + (northing[i] - force_northing[j])**2)
+            distance += mindist
+            jac[i, j] = (distance ** 2) * (np.log(distance) - 1)
+    return jac
+
+
+def _jacobian_numpy(easting, northing, force_easting, force_northing, mindist, dtype):
+    # Reshaping the data to a column vector will automatically build a
+    # distance matrix between each data point and force.
+    distance = np.hypot(
+        easting.reshape((easting.size, 1)) - force_easting,
+        northing.reshape((northing.size, 1)) - force_northing,
+        dtype=dtype,
+    )
+    # The mindist factor helps avoid singular matrices when the force and
+    # computation point are too close
+    distance += mindist
+    return (distance ** 2) * (np.log(distance) - 1)
