@@ -5,7 +5,7 @@ Vector gridding using elasticity Green's functions from Sandwell and Wessel
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
-from .base import check_fit_input
+from .base import check_fit_input, least_squares
 from .spline import Spline
 from .coordinates import get_region
 
@@ -152,7 +152,7 @@ class VectorSpline2D(Spline):
         self._check_weighted_exact_solution(weights)
         data = np.concatenate([i.ravel() for i in data])
         jacobian = self.jacobian(coordinates[:2])
-        self.force_ = self._estimate_forces(jacobian, data, weights)
+        self.force_ = least_squares(jacobian, data, weights, self.damping)
         return self
 
     def predict(self, coordinates):

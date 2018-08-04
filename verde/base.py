@@ -1,11 +1,15 @@
 """
 Base classes for all gridders.
 """
+from warnings import warn
+
 import xarray as xr
 import pandas as pd
 import numpy as np
 from sklearn.base import BaseEstimator
 from sklearn.metrics import r2_score
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression, Ridge
 
 from .coordinates import grid_coordinates, profile_coordinates, scatter_points
 
@@ -620,3 +624,26 @@ def check_fit_input(coordinates, data, weights, unpack=True):
         if len(data) == 1:
             data = data[0]
     return coordinates, data, weights
+
+
+def least_squares(jacobian, data, weights, damping=None):
+    """
+    Estimate forces that fit the data using least-squares. Scales the
+    Jacobian matrix to have unit standard deviation. This helps balance the
+    regularization and the difference between forces.
+    """
+    if jacobian.shape[0] < jacobian.shape[1]:
+        warn(
+            "Under-determined problem detected (ndata, nparams)={}.".format(
+                jacobian.shape
+            )
+        )
+    scaler = StandardScaler(copy=False, with_mean=False, with_std=True)
+    jacobian = scaler.fit_transform(jacobian)
+    if damping is None:
+        regr = LinearRegression(fit_intercept=False, normalize=False)
+    else:
+        regr = Ridge(alpha=damping, fit_intercept=False, normalize=False)
+    regr.fit(jacobian, data.ravel(), sample_weight=weights)
+    params = regr.coef_ / scaler.scale_
+    return params

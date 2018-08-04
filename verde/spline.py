@@ -5,10 +5,8 @@ from warnings import warn
 
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
-from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LinearRegression, Ridge
 
-from .base import BaseGridder, check_fit_input
+from .base import BaseGridder, check_fit_input, least_squares
 from .coordinates import grid_coordinates, get_region
 
 import numba
@@ -87,8 +85,13 @@ class Spline(BaseGridder):
     """
 
     def __init__(
-        self, mindist=1e-5, damping=None, shape=None, spacing=None, region=None,
-            engine="auto",
+        self,
+        mindist=1e-5,
+        damping=None,
+        shape=None,
+        spacing=None,
+        region=None,
+        engine="auto",
     ):
         self.damping = damping
         self.shape = shape
@@ -96,6 +99,10 @@ class Spline(BaseGridder):
         self.mindist = mindist
         self.region = region
         self.engine = engine
+
+    @property
+    def use_numba(self):
+        return self.engine in {"auto", "numba"} and numba is not None
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -133,35 +140,8 @@ class Spline(BaseGridder):
         # Capture the data region to use as a default when gridding.
         self.region_ = get_region(coordinates[:2])
         jacobian = self.jacobian(coordinates[:2])
-        self.force_ = self._estimate_forces(jacobian, data, weights)
+        self.force_ = least_squares(jacobian, data, weights, self.damping)
         return self
-
-    def _estimate_forces(self, jacobian, data, weights):
-        """
-        Estimate forces that fit the data using least-squares. Scales the
-        Jacobian matrix to have unit standard deviation. This helps balance the
-        regularization and the difference between forces.
-        """
-        if jacobian.shape[0] < jacobian.shape[1]:
-            warn(
-                " ".join(
-                    [
-                        "Under-determined problem detected",
-                        "(ndata, nparams)={}.".format(jacobian.shape),
-                        "Configuration of forces:",
-                        "spacing={} shape={}".format(self.spacing, self.shape),
-                    ]
-                )
-            )
-        scaler = StandardScaler(copy=False, with_mean=False, with_std=True)
-        jacobian = scaler.fit_transform(jacobian)
-        if self.damping is None:
-            regr = LinearRegression(fit_intercept=False, normalize=False)
-        else:
-            regr = Ridge(alpha=self.damping, fit_intercept=False, normalize=False)
-        regr.fit(jacobian, data.ravel(), sample_weight=weights)
-        forces = regr.coef_ / scaler.scale_
-        return forces
 
     def _get_force_coordinates(self, coordinates):
         """
@@ -248,30 +228,36 @@ class Spline(BaseGridder):
             np.atleast_1d(i).ravel() for i in self.force_coords_[:2]
         )
         easting, northing = (np.atleast_1d(i).ravel() for i in coordinates[:2])
-        use_numba = self.engine in ("auto", "numba") and numba is not None
-        if use_numba:
+        if self.use_numba:
             jac = np.empty((easting.size, force_easting.size), dtype=dtype)
-            _jacobian_numba(easting, northing, force_easting, force_northing, self.mindist,
-                            jac)
+            _jacobian_numba(
+                easting, northing, force_easting, force_northing, self.mindist, jac
+            )
         else:
-            jac = _jacobian_numpy(easting, northing, force_easting, force_northing,
-                                  self.mindist,
-                            dtype)
+            jac = _jacobian_numpy(
+                easting, northing, force_easting, force_northing, self.mindist, dtype
+            )
         return jac
 
 
-@numba.jit(nopython=True, target='cpu', fastmath=False, parallel=True)
+@numba.jit(nopython=True, target="cpu", fastmath=True, parallel=True)
 def _jacobian_numba(easting, northing, force_easting, force_northing, mindist, jac):
+    """
+    """
     for i in numba.prange(easting.size):
         for j in range(force_easting.size):
-            distance = np.sqrt((easting[i] - force_easting[j])**2
-                               + (northing[i] - force_northing[j])**2)
+            distance = np.sqrt(
+                (easting[i] - force_easting[j]) ** 2
+                + (northing[i] - force_northing[j]) ** 2
+            )
             distance += mindist
             jac[i, j] = (distance ** 2) * (np.log(distance) - 1)
     return jac
 
 
 def _jacobian_numpy(easting, northing, force_easting, force_northing, mindist, dtype):
+    """
+    """
     # Reshaping the data to a column vector will automatically build a
     # distance matrix between each data point and force.
     distance = np.hypot(

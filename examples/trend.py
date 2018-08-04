@@ -24,7 +24,7 @@ print("\nTrend estimator:", trend)
 
 # Add the estimated trend and the residual data to the DataFrame
 data["trend"] = trend.predict(coordinates)
-data["residual"] = trend.residual_
+data["residual"] = data.total_field_anomaly_nt - data.trend
 print("\nUpdated DataFrame:")
 print(data.head())
 

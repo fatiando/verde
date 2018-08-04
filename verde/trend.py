@@ -3,10 +3,8 @@
 """
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
-from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LinearRegression
 
-from .base import BaseGridder, check_fit_input
+from .base import BaseGridder, check_fit_input, least_squares
 from .coordinates import get_region
 
 
@@ -34,9 +32,6 @@ class Trend(BaseGridder):
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
         :meth:`~verde.Trend.grid` and :meth:`~verde.Trend.scatter` methods.
-    residual_ : array
-        The difference between the input data and the predicted polynomial
-        trend.
 
     Examples
     --------
@@ -50,8 +45,6 @@ class Trend(BaseGridder):
     >>> import numpy as np
     >>> np.allclose(trend.predict(coordinates), data)
     True
-    >>> np.allclose(trend.residual_, 0, atol=1e-5)
-    True
     >>> # Use weights to account for outliers
     >>> data_out = data.copy()
     >>> data_out[2, 2] += 500
@@ -60,7 +53,8 @@ class Trend(BaseGridder):
     >>> trend_out = Trend(degree=1).fit(coordinates, data_out, weights)
     >>> print(', '.join(['{:.1f}'.format(i) for i in trend_out.coef_]))
     10.0, 2.0, -0.4
-    >>> print('{:.2f}'.format(trend_out.residual_[2, 2]))
+    >>> residual = data_out - trend_out.predict(coordinates)
+    >>> print('{:.2f}'.format(residual[2, 2]))
     500.00
 
     """
@@ -99,12 +93,7 @@ class Trend(BaseGridder):
         coordinates, data, weights = check_fit_input(coordinates, data, weights)
         self.region_ = get_region(coordinates[:2])
         jac = self.jacobian(coordinates[:2], dtype=data.dtype)
-        scaler = StandardScaler(copy=False, with_mean=False, with_std=True)
-        jac = scaler.fit_transform(jac)
-        regr = LinearRegression(fit_intercept=False, normalize=False)
-        regr.fit(jac, data.ravel(), sample_weight=weights)
-        self.residual_ = data - jac.dot(regr.coef_).reshape(data.shape)
-        self.coef_ = regr.coef_ / scaler.scale_
+        self.coef_ = least_squares(jac, data, weights, damping=None)
         return self
 
     def predict(self, coordinates):
