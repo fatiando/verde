@@ -6,6 +6,35 @@ import numpy as np
 from .base import check_data
 
 
+def n_1d_arrays(arrays, n):
+    """
+    Get the first n elements from a tuple/list, make sure they are arrays, and ravel.
+
+    Parameters
+    ----------
+    arrays : tuple of arrays
+        The arrays. Can be lists or anything that can be converted to a numpy array
+        (including numpy arrays).
+    n : int
+        How many arrays to return.
+
+    Returns
+    -------
+    1darrays : tuple of arrays
+        The converted 1D numpy arrays.
+
+    Examples
+    --------
+
+    >>> import numpy as np
+    >>> arrays = [np.arange(4).reshape(2, 2)]*3
+    >>> n_1d_arrays(arrays, n=2)
+    (array([0, 1, 2, 3]), array([0, 1, 2, 3]))
+
+    """
+    return tuple(np.atleast_1d(i).ravel() for i in arrays[:n])
+
+
 def variance_to_weights(variance, tol=1e-15, dtype="float64"):
     """
     Converts data variances to weights for gridding.
