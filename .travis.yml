@@ -32,6 +32,7 @@ env:
         - LINKCHECK=false
         - DEPLOY_DOCS=false
         - DEPLOY_PYPI=false
+        - EXTRAS=false
 
 # Specify the build configurations. Be sure to only deploy from a single build.
 matrix:
@@ -48,6 +49,11 @@ matrix:
           env:
               - PYTHON=3.5
               - BUILD_DOCS=true
+        - os: linux
+          env:
+              - PYTHON=3.6
+              - COVERAGE=true
+              - EXTRAS=true
         - os: osx
           env:
               - PYTHON=3.6
@@ -73,6 +79,10 @@ before_install:
     # Black is Python 3.6 only so it can't be in the requirements file.
     - if [ "$CHECK_FORMAT" == "true" ]; then
           conda install --yes --channel conda-forge black python=$PYTHON;
+      fi
+    # Install extra dependencies
+    - if [ "$EXTRAS" == "true" ]; then
+          conda install --yes --channel conda-forge pykdtree numba python=$PYTHON;
       fi
     # Show installed pkg information for postmortem diagnostic
     - conda list

@@ -8,8 +8,14 @@ from sklearn.utils.validation import check_is_fitted
 
 from .base import BaseGridder, check_fit_input, least_squares
 from .coordinates import grid_coordinates, get_region
+from .utils import n_1d_arrays, parse_engine
 
-import numba
+try:
+    import numba
+    from numba import jit
+except ImportError:
+    numba = None
+    from .utils import dummy_jit as jit
 
 
 class Spline(BaseGridder):
@@ -100,10 +106,6 @@ class Spline(BaseGridder):
         self.region = region
         self.engine = engine
 
-    @property
-    def use_numba(self):
-        return self.engine in {"auto", "numba"} and numba is not None
-
     def fit(self, coordinates, data, weights=None):
         """
         Fit the biharmonic spline to the given data.
@@ -132,48 +134,14 @@ class Spline(BaseGridder):
             Returns this estimator instance for chaining operations.
 
         """
-        # Remove pre-existing force coordinates when fitting for a second time.
-        if hasattr(self, "force_coords_"):
-            del self.force_coords_
         coordinates, data, weights = check_fit_input(coordinates, data, weights)
-        self._check_weighted_exact_solution(weights)
+        warn_weighted_exact_solution(self, weights)
         # Capture the data region to use as a default when gridding.
         self.region_ = get_region(coordinates[:2])
-        jacobian = self.jacobian(coordinates[:2])
+        self.force_coords_ = get_force_coordinates(self, coordinates)
+        jacobian = self.jacobian(coordinates[:2], self.force_coords_)
         self.force_ = least_squares(jacobian, data, weights, self.damping)
         return self
-
-    def _get_force_coordinates(self, coordinates):
-        """
-        Generate arrays for the force coordinates depending on the
-        configuration of the spline.
-        """
-        # Set the force positions. If no shape or spacing are given, then they
-        # will coincide with the data points. This will only happen once so the
-        # model won't change during later fits.
-        if self.shape is None and self.spacing is None:
-            coords = tuple(i.copy() for i in coordinates[:2])
-        else:
-            if self.region is None:
-                self.region = get_region(coordinates)
-            coords = grid_coordinates(
-                self.region, shape=self.shape, spacing=self.spacing
-            )
-        return coords
-
-    def _check_weighted_exact_solution(self, weights):
-        """
-        If a weighted exact solution is requested, warn the user that it won't
-        work.
-        """
-        # Check if we're using weights with the exact solution and warn the
-        # user that it won't have any effect.
-        exact = all(i is None for i in [self.damping, self.spacing, self.shape])
-        if weights is not None and exact:
-            warn(
-                "Weights are ignored for the exact solution. "
-                "Use damping or specify a shape/spacing for the forces."
-            )
 
     def predict(self, coordinates):
         """
@@ -196,11 +164,11 @@ class Spline(BaseGridder):
 
         """
         check_is_fitted(self, ["force_", "force_coords_"])
-        jac = self.jacobian(coordinates[:2])
+        jac = self.jacobian(coordinates[:2], self.force_coords_)
         shape = np.broadcast(*coordinates[:2]).shape
         return jac.dot(self.force_).reshape(shape)
 
-    def jacobian(self, coordinates, dtype="float64"):
+    def jacobian(self, coordinates, force_coordinates, dtype="float64"):
         """
         Make the Jacobian matrix for the 2D biharmonic spline.
 
@@ -213,6 +181,9 @@ class Spline(BaseGridder):
             Arrays with the coordinates of each data point. Should be in the
             following order: (easting, northing, vertical, ...). Only easting and
             northing will be used, all subsequent coordinates will be ignored.
+        force_coordinates : tuple of arrays
+            Arrays with the coordinates for the forces. Should be in the same order as
+            the coordinate arrays.
         dtype : str or numpy dtype
             The type of the Jacobian array.
 
@@ -222,47 +193,110 @@ class Spline(BaseGridder):
             The (n_data, n_forces) Jacobian matrix.
 
         """
-        if not hasattr(self, "force_coords_"):
-            self.force_coords_ = self._get_force_coordinates(coordinates)
-        force_easting, force_northing = (
-            np.atleast_1d(i).ravel() for i in self.force_coords_[:2]
-        )
-        easting, northing = (np.atleast_1d(i).ravel() for i in coordinates[:2])
-        if self.use_numba:
-            jac = np.empty((easting.size, force_easting.size), dtype=dtype)
-            _jacobian_numba(
-                easting, northing, force_easting, force_northing, self.mindist, jac
-            )
+        force_east, force_north = n_1d_arrays(force_coordinates, n=2)
+        east, north = n_1d_arrays(coordinates, n=2)
+        if parse_engine(self.engine) == "numba":
+            jac = np.empty((east.size, force_east.size), dtype=dtype)
+            jacobian_numba(east, north, force_east, force_north, self.mindist, jac)
         else:
-            jac = _jacobian_numpy(
-                easting, northing, force_easting, force_northing, self.mindist, dtype
+            jac = jacobian_numpy(
+                east, north, force_east, force_north, self.mindist, dtype
             )
         return jac
 
 
-@numba.jit(nopython=True, target="cpu", fastmath=True, parallel=True)
-def _jacobian_numba(easting, northing, force_easting, force_northing, mindist, jac):
+def warn_weighted_exact_solution(spline, weights):
     """
+    Warn the user that a weights doesn't work for the exact solution.
+
+    Parameters
+    ----------
+    spline : estimator
+        The spline instance that we'll check. Needs to have ``shape``, ``spacing``, and
+        ``damping`` attributes.
+    weights : array or None
+        The weights given to fit.
+
     """
-    for i in numba.prange(easting.size):
-        for j in range(force_easting.size):
+    # Check if we're using weights with the exact solution and warn the
+    # user that it won't have any effect.
+    exact = all(i is None for i in [spline.damping, spline.spacing, spline.shape])
+    if weights is not None and exact:
+        warn(
+            "Weights are ignored for the exact solution. "
+            "Use damping or specify a shape/spacing for the forces."
+        )
+
+
+def get_force_coordinates(spline, coordinates):
+    """
+    Make arrays for force coordinates depending on the spline configuration.
+
+    If no ``shape`` and ``spacing`` are given, then will use the data coordinates as
+    force coordinates. Otherwise, will generate a grid based on the given spacing/shape
+    and the data region.
+
+    Parameters
+    ----------
+    spline : estimator
+        The spline instance. Needs to have ``shape`` and ``spacing`` attributes. If
+        ``region`` is present, will use it to define the grid region. If not, will use
+        the data region.
+    coordinates : tuple of arrays
+        Arrays with the coordinates of each data point. Should be in the
+        following order: (easting, northing, vertical, ...). Only easting and
+        northing will be used, all subsequent coordinates will be ignored.
+
+    Returns
+    -------
+    force_coordinates : tuple of arrays
+        The coordinate arrays for the forces.
+
+    """
+    # Set the force positions. If no shape or spacing are given, then they
+    # will coincide with the data points. This will only happen once so the
+    # model won't change during later fits.
+    if spline.shape is None and spline.spacing is None:
+        coords = tuple(i.copy() for i in n_1d_arrays(coordinates, n=2))
+    else:
+        if spline.region is None:
+            region = get_region(coordinates)
+        else:
+            region = spline.region
+        coords = tuple(
+            i.ravel()
+            for i in grid_coordinates(
+                region, shape=spline.shape, spacing=spline.spacing
+            )
+        )
+    return coords
+
+
+@jit(nopython=True, target="cpu", fastmath=True, parallel=True)
+def jacobian_numba(east, north, force_east, force_north, mindist, jac):
+    """
+    Calculate the Jacobian matrix using numba to speed things up.
+    """
+    for i in numba.prange(east.size):  # pylint: disable=not-an-iterable
+        for j in range(force_east.size):
             distance = np.sqrt(
-                (easting[i] - force_easting[j]) ** 2
-                + (northing[i] - force_northing[j]) ** 2
+                (east[i] - force_east[j]) ** 2 + (north[i] - force_north[j]) ** 2
             )
             distance += mindist
             jac[i, j] = (distance ** 2) * (np.log(distance) - 1)
     return jac
 
 
-def _jacobian_numpy(easting, northing, force_easting, force_northing, mindist, dtype):
+def jacobian_numpy(east, north, force_east, force_north, mindist, dtype):
     """
+    Calculate the Jacobian using numpy broadcasting. Is slightly slower than the numba
+    version.
     """
     # Reshaping the data to a column vector will automatically build a
     # distance matrix between each data point and force.
     distance = np.hypot(
-        easting.reshape((easting.size, 1)) - force_easting,
-        northing.reshape((northing.size, 1)) - force_northing,
+        east.reshape((east.size, 1)) - force_east,
+        north.reshape((north.size, 1)) - force_north,
         dtype=dtype,
     )
     # The mindist factor helps avoid singular matrices when the force and

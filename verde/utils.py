@@ -1,9 +1,70 @@
 """
 General utilities.
 """
+import functools
+
 import numpy as np
 
 from .base import check_data
+
+
+def parse_engine(engine):
+    """
+    Choose the best engine available and check if it's valid.
+
+    Parameters
+    ----------
+    engine : str
+        The name of the engine. If ``"auto"`` will favor numba if it's available.
+
+    Returns
+    -------
+    engine : str
+        The name of the engine that should be used.
+
+    """
+    engines = {"auto", "numba", "numpy"}
+    if engine not in engines:
+        raise ValueError("Invalid engine '{}'. Must be in {}.".format(engine, engines))
+    if engine == "auto":
+        try:
+            import numba  # pylint: disable=unused-variable
+
+            return "numba"
+        except ImportError:
+            return "numpy"
+    return engine
+
+
+def dummy_jit(**kwargs):  # pylint: disable=unused-argument
+    """
+    Replace numba.jit if not installed with a function that raises RunTimeError.
+
+    Use as a decorator.
+
+    Parameters
+    ----------
+    function
+        A function that you would decorate with :func:`numba.jit`.
+
+    Returns
+    -------
+    function
+        A function that raises :class:`RunTimeError` warning that numba isn't installed.
+
+    """
+
+    def dummy_decorator(function):
+        "The actual decorator"
+
+        @functools.wraps(function)
+        def dummy_function(*args, **kwargs):  # pylint: disable=unused-argument
+            "Just raise an exception."
+            raise RuntimeError("Could not find numba.")
+
+        return dummy_function
+
+    return dummy_decorator
 
 
 def n_1d_arrays(arrays, n):

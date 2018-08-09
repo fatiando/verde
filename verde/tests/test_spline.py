@@ -8,6 +8,8 @@ import numpy.testing as npt
 
 from ..spline import Spline
 from ..datasets.synthetic import CheckerBoard
+from ..utils import n_1d_arrays
+from .utils import requires_numba
 
 
 def test_spline():
@@ -37,13 +39,13 @@ def test_spline():
 def test_spline_twice():
     "Check that the forces are updated when fitting twice"
     grid = CheckerBoard(region=(1000, 5000, -8000, -6000)).grid(shape=(10, 10))
-    coords = np.meshgrid(grid.easting, grid.northing)
+    coords = n_1d_arrays(np.meshgrid(grid.easting, grid.northing), n=2)
     spline = Spline()
-    spline.fit(coords, grid.scalars.values)
+    spline.fit(coords, grid.scalars.values.ravel())
     npt.assert_allclose(spline.force_coords_, coords)
     grid2 = CheckerBoard(region=(-15, -5, 10, 20)).grid(shape=(10, 10))
-    coords2 = np.meshgrid(grid2.easting, grid2.northing)
-    spline.fit(coords2, grid2.scalars.values)
+    coords2 = n_1d_arrays(np.meshgrid(grid2.easting, grid2.northing), n=2)
+    spline.fit(coords2, grid2.scalars.values.ravel())
     npt.assert_allclose(spline.force_coords_, coords2)
     assert not np.allclose(spline.force_coords_, coords)
 
@@ -122,3 +124,13 @@ def test_spline_warns_underdetermined():
         assert len(warn) == 1
         assert issubclass(warn[-1].category, UserWarning)
         assert str(warn[-1].message).startswith("Under-determined problem")
+
+
+@requires_numba
+def test_spline_jacobian_implementations():
+    "Compare the numba and numpy implementations."
+    data = CheckerBoard().scatter(size=1500, random_state=1)
+    coords = (data.easting, data.northing)
+    jac_numpy = Spline(engine="numpy").jacobian(coords, coords)
+    jac_numba = Spline(engine="numba").jacobian(coords, coords)
+    npt.assert_allclose(jac_numpy, jac_numba)
