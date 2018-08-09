@@ -10,6 +10,7 @@ from ..datasets.synthetic import CheckerBoard
 from ..coordinates import grid_coordinates
 from ..vector import VectorSpline2D
 from ..utils import n_1d_arrays
+from .utils import requires_numba
 
 
 @pytest.fixture
@@ -63,3 +64,12 @@ def test_vector2d_fails(data2d):
         spline.fit(coords, data[0])
     with pytest.raises(ValueError):
         spline.fit(coords, data + coords)
+
+
+@requires_numba
+def test_vector2d_jacobian_implementations(data2d):
+    "Compare the numba and numpy implementations."
+    coords = data2d[0]
+    jac_numpy = VectorSpline2D(engine="numpy").jacobian(coords, coords)
+    jac_numba = VectorSpline2D(engine="numba").jacobian(coords, coords)
+    npt.assert_allclose(jac_numpy, jac_numba)
