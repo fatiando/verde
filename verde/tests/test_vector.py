@@ -9,6 +9,7 @@ import numpy.testing as npt
 from ..datasets.synthetic import CheckerBoard
 from ..coordinates import grid_coordinates
 from ..vector import VectorSpline2D
+from ..utils import n_1d_arrays
 
 
 @pytest.fixture
@@ -29,18 +30,18 @@ def test_vector2d(data2d):
     # There should be 1 force per data point
     assert data[0].size == spline.force_coords_[0].size
     assert data[0].size * 2 == spline.force_.size
-    npt.assert_allclose(spline.force_coords_, coords)
+    npt.assert_allclose(spline.force_coords_, n_1d_arrays(coords, n=2))
 
 
 def test_vector2d_twice(data2d):
     "Check that the force coordinates are updated if fitting a second time"
     coords, data = data2d
     spline = VectorSpline2D().fit(coords, data)
-    npt.assert_allclose(spline.force_coords_, coords)
+    npt.assert_allclose(spline.force_coords_, n_1d_arrays(coords, n=2))
     coords2 = tuple(i * 1000 for i in coords)
     spline.fit(coords2, data)
-    npt.assert_allclose(spline.force_coords_, coords2)
-    assert not np.allclose(spline.force_coords_, coords)
+    npt.assert_allclose(spline.force_coords_, n_1d_arrays(coords2, n=2))
+    assert not np.allclose(spline.force_coords_, n_1d_arrays(coords, n=2))
 
 
 def test_vector2d_weights(data2d):

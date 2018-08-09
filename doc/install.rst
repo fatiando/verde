@@ -25,7 +25,15 @@ Dependencies
 * `xarray <http://xarray.pydata.org/>`__
 * `scikit-learn <http://scikit-learn.org/>`__
 * `pooch <http://www.fatiando.org/pooch/>`__
-* `pykdtree <https://github.com/storpipfugl/pykdtree>`__ (optional)
+
+The following are optional dependencies that can make some parts of the code faster if
+they are installed:
+
+* `pykdtree <https://github.com/storpipfugl/pykdtree>`__: replaces
+  :class:`scipy.spatial.cKDTree` in :class:`verde.BlockReduce` and
+  :func:`verde.distance_mask` for better performance.
+* `numba <https://numba.pydata.org/>`__: replaces numpy calculations of Jacobian
+  matrices in splines with multi-threaded versions.
 
 Most of the examples in the :ref:`gallery` and :ref:`tutorials` also use:
 
@@ -33,11 +41,6 @@ Most of the examples in the :ref:`gallery` and :ref:`tutorials` also use:
 * `cartopy <https://scitools.org.uk/cartopy/>`__ for plotting maps
 * `pyproj <https://jswhit.github.io/pyproj/>`__ for cartographic projections
 * `dask <https://dask.pydata.org/>`__ for parallelism
-
-.. note::
-
-    PyKDTree is an optional dependency and will be used instead of
-    :class:`scipy.spatial.cKDTree` if available for better performance.
 
 
 Installing with conda

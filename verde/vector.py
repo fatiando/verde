@@ -5,12 +5,13 @@ Vector gridding using elasticity Green's functions from Sandwell and Wessel
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
-from .base import check_fit_input
-from .spline import Spline
+from .base import check_fit_input, least_squares, BaseGridder
+from .spline import warn_weighted_exact_solution, get_force_coordinates
+from .utils import n_1d_arrays
 from .coordinates import get_region
 
 
-class VectorSpline2D(Spline):
+class VectorSpline2D(BaseGridder):
     r"""
     Elastically coupled interpolation of 2-component vector data.
 
@@ -94,13 +95,11 @@ class VectorSpline2D(Spline):
         region=None,
     ):
         self.poisson = poisson
-        super().__init__(
-            mindist=mindist,
-            damping=damping,
-            shape=shape,
-            spacing=spacing,
-            region=region,
-        )
+        self.damping = damping
+        self.shape = shape
+        self.spacing = spacing
+        self.mindist = mindist
+        self.region = region
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -133,9 +132,6 @@ class VectorSpline2D(Spline):
             Returns this estimator instance for chaining operations.
 
         """
-        # Remove pre-existing force coordinates when fitting for a second time.
-        if hasattr(self, "force_coords_"):
-            del self.force_coords_
         coordinates, data, weights = check_fit_input(
             coordinates, data, weights, unpack=False
         )
@@ -149,10 +145,11 @@ class VectorSpline2D(Spline):
             weights = np.concatenate([i.ravel() for i in weights])
         else:
             weights = None
-        self._check_weighted_exact_solution(weights)
+        warn_weighted_exact_solution(self, weights)
         data = np.concatenate([i.ravel() for i in data])
-        jacobian = self.jacobian(coordinates[:2])
-        self.force_ = self._estimate_forces(jacobian, data, weights)
+        self.force_coords_ = get_force_coordinates(self, coordinates)
+        jacobian = self.jacobian(coordinates[:2], self.force_coords_)
+        self.force_ = least_squares(jacobian, data, weights, self.damping)
         return self
 
     def predict(self, coordinates):
@@ -177,13 +174,13 @@ class VectorSpline2D(Spline):
 
         """
         check_is_fitted(self, ["force_", "force_coords_"])
-        jac = self.jacobian(coordinates[:2])
+        jac = self.jacobian(coordinates[:2], self.force_coords_)
         cast = np.broadcast(*coordinates[:2])
         npoints = cast.size
         components = jac.dot(self.force_).reshape((2, npoints))
         return tuple(comp.reshape(cast.shape) for comp in components)
 
-    def jacobian(self, coordinates, dtype="float64"):
+    def jacobian(self, coordinates, force_coordinates, dtype="float64"):
         """
         Make the Jacobian matrix for the 2D coupled elastic deformation.
 
@@ -202,6 +199,9 @@ class VectorSpline2D(Spline):
             Arrays with the coordinates of each data point. Should be in the
             following order: (easting, northing, vertical, ...). Only easting and
             northing will be used, all subsequent coordinates will be ignored.
+        force_coordinates : tuple of arrays
+            Arrays with the coordinates for the forces. Should be in the same order as
+            the coordinate arrays.
         dtype : str or numpy dtype
             The type of the Jacobian array.
 
@@ -211,10 +211,8 @@ class VectorSpline2D(Spline):
             The (n_data*2, n_forces*2) Jacobian matrix.
 
         """
-        if not hasattr(self, "force_coords_"):
-            self.force_coords_ = self._get_force_coordinates(coordinates)
-        force_coordinates = [np.atleast_1d(i).ravel() for i in self.force_coords_[:2]]
-        coordinates = [np.atleast_1d(i).ravel() for i in coordinates[:2]]
+        force_coordinates = n_1d_arrays(force_coordinates, n=2)
+        coordinates = n_1d_arrays(coordinates, n=2)
         npoints = coordinates[0].size
         nforces = force_coordinates[0].size
         # Reshaping the data coordinates to a column vector will automatically
