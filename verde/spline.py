@@ -76,6 +76,11 @@ class Spline(BaseGridder):
         If not None, then the boundaries (``[W, E, S, N]``) used to generate a regular
         grid of forces. If None is given, then will use the boundaries of data given to
         the first call to :meth:`~verde.Spline.fit`.
+    engine : str
+        Computation engine for the Jacobian matrix. Can be ``'auto'``, ``'numba'``, or
+        ``'numpy'``. If ``'auto'``, will use numba if it is installed or numpy
+        otherwise. The numba version is multi-threaded and considerably faster, which
+        makes fitting and predicting faster.
 
     Attributes
     ----------
