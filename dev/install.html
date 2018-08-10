@@ -36,7 +36,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Gallery" href="gallery/index.html" />
-    <link rel="prev" title="About" href="index.html" />
+    <link rel="prev" title="Overview" href="tutorials/overview.html" />
     
     <script src="_static/require.js"></script>
 
@@ -96,19 +96,27 @@
               
             
             
-              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tutorials/overview.html">Overview</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#which-python">Which Python?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-with-conda">Installing with conda</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-with-pip">Installing with pip</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installing-the-latest-development-version">Installing the latest development version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#testing-your-install">Testing your install</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="gallery/index.html">Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample_data/index.html">Sample Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/trend_estimation.html">Trend estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/decimation.html">Data decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/weights.html">Using weights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
 </ul>
 
@@ -117,7 +125,11 @@
 
     
         <p class="caption">
-            <span class="caption-text">External links</span>
+            <span class="caption-text">
+            
+                Getting help and contributing
+            
+            </span>
         </p>
         <ul>
             
@@ -221,9 +233,10 @@
 <div class="section" id="which-python">
 <h2>Which Python?<a class="headerlink" href="#which-python" title="Permalink to this headline">¶</a></h2>
 <p>You’ll need <strong>Python 3.5 or greater</strong>.</p>
-<p>We recommend using the <a class="reference external" href="http://continuum.io/downloads#all">Anaconda</a> Python
-distribution to ensure you have all dependencies installed and the <code class="docutils literal notranslate"><span class="pre">conda</span></code>
-package manager available.
+<p>We recommend using the
+<a class="reference external" href="https://www.anaconda.com/download">Anaconda Python distribution</a>
+to ensure you have all dependencies installed and the <code class="docutils literal notranslate"><span class="pre">conda</span></code> package manager
+available.
 Installing Anaconda does not require administrative rights to your computer and
 doesn’t interfere with any other Python installations in your system.</p>
 </div>
@@ -231,11 +244,20 @@ doesn’t interfere with any other Python installations in your system.</p>
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><a class="reference external" href="http://www.numpy.org/">numpy</a></li>
-<li><a class="reference external" href="https://scipy.org/">scipy</a></li>
+<li><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/">scipy</a></li>
 <li><a class="reference external" href="http://pandas.pydata.org/">pandas</a></li>
 <li><a class="reference external" href="http://xarray.pydata.org/">xarray</a></li>
 <li><a class="reference external" href="http://scikit-learn.org/">scikit-learn</a></li>
-<li><a class="reference external" href="http://docs.python-requests.org/">requests</a></li>
+<li><a class="reference external" href="http://www.fatiando.org/pooch/">pooch</a></li>
+</ul>
+<p>The following are optional dependencies that can make some parts of the code faster if
+they are installed:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/storpipfugl/pykdtree">pykdtree</a>: replaces
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.cKDTree.html#scipy.spatial.cKDTree" title="(in SciPy v1.1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.spatial.cKDTree</span></code></a> in <a class="reference internal" href="api/generated/verde.BlockReduce.html#verde.BlockReduce" title="verde.BlockReduce"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.BlockReduce</span></code></a> and
+<a class="reference internal" href="api/generated/verde.distance_mask.html#verde.distance_mask" title="verde.distance_mask"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.distance_mask</span></code></a> for better performance.</li>
+<li><a class="reference external" href="https://numba.pydata.org/">numba</a>: replaces numpy calculations of Jacobian
+matrices in splines with multi-threaded versions.</li>
 </ul>
 <p>Most of the examples in the <a class="reference internal" href="gallery/index.html#gallery"><span class="std std-ref">Gallery</span></a> and <a class="reference internal" href="tutorials/index.html#tutorials"><span class="std std-ref">Tutorials</span></a> also use:</p>
 <ul class="simple">
@@ -244,6 +266,21 @@ doesn’t interfere with any other Python installations in your system.</p>
 <li><a class="reference external" href="https://jswhit.github.io/pyproj/">pyproj</a> for cartographic projections</li>
 <li><a class="reference external" href="https://dask.pydata.org/">dask</a> for parallelism</li>
 </ul>
+</div>
+<div class="section" id="installing-with-conda">
+<h2>Installing with conda<a class="headerlink" href="#installing-with-conda" title="Permalink to this headline">¶</a></h2>
+<p>You can install Verde using the <a class="reference external" href="https://conda.io/">conda package manager</a> that comes
+with the Anaconda distribution:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">verde</span> <span class="o">--</span><span class="n">channel</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="installing-with-pip">
+<h2>Installing with pip<a class="headerlink" href="#installing-with-pip" title="Permalink to this headline">¶</a></h2>
+<p>Alternatively, you can also use the <a class="reference external" href="https://pypi.org/project/pip/">pip package manager</a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">verde</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="installing-the-latest-development-version">
 <h2>Installing the latest development version<a class="headerlink" href="#installing-the-latest-development-version" title="Permalink to this headline">¶</a></h2>
@@ -261,9 +298,15 @@ doesn’t interfere with any other Python installations in your system.</p>
 <div class="section" id="testing-your-install">
 <h2>Testing your install<a class="headerlink" href="#testing-your-install" title="Permalink to this headline">¶</a></h2>
 <p>We ship a full test suite with the package.
-You can run our tests after you install it but you will need to install <a class="reference external" href="https://docs.pytest.org/">pytest</a> first.
-After that, you can test your installation by running the following inside a
-Python interpreter:</p>
+To run the tests, you’ll need to install some extra dependencies first:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://docs.pytest.org/">pytest</a></li>
+<li><a class="reference external" href="https://github.com/matplotlib/pytest-mpl">pytest-mpl</a></li>
+<li><a class="reference external" href="https://matplotlib.org/">matplotlib</a></li>
+<li><a class="reference external" href="https://scitools.org.uk/cartopy/">cartopy</a></li>
+</ul>
+<p>After that, you can test your installation by running the following inside a Python
+interpreter:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">verde</span>
 <span class="n">verde</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>
 </pre></div>
@@ -282,7 +325,7 @@ Python interpreter:</p>
         <a href="gallery/index.html" class="btn btn-neutral float-right" title="Gallery" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="About" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="tutorials/overview.html" class="btn btn-neutral" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -292,7 +335,7 @@ Python interpreter:</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Jun 14, 2018.
+      Last updated on Aug 10, 2018.
 
     </p>
   </div>

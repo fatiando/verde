@@ -94,13 +94,19 @@
               
             
             
-              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/trend_estimation.html">Trend estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/decimation.html">Data decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/weights.html">Using weights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
 
@@ -109,7 +115,11 @@
 
     
         <p class="caption">
-            <span class="caption-text">External links</span>
+            <span class="caption-text">
+            
+                Getting help and contributing
+            
+            </span>
         </p>
         <ul>
             
@@ -196,72 +206,82 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="k">import</span> <span class="n">check_is_fitted</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span><span class="p">,</span> <span class="n">Ridge</span>
 
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">BaseGridder</span><span class="p">,</span> <span class="n">check_fit_input</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">BaseGridder</span><span class="p">,</span> <span class="n">check_fit_input</span><span class="p">,</span> <span class="n">least_squares</span>
 <span class="kn">from</span> <span class="nn">.coordinates</span> <span class="k">import</span> <span class="n">grid_coordinates</span><span class="p">,</span> <span class="n">get_region</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">n_1d_arrays</span><span class="p">,</span> <span class="n">parse_engine</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">numba</span>
+    <span class="kn">from</span> <span class="nn">numba</span> <span class="k">import</span> <span class="n">jit</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">numba</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">dummy_jit</span> <span class="k">as</span> <span class="n">jit</span>
 
 
-<div class="viewcode-block" id="Spline"><a class="viewcode-back" href="../../api/verde.Spline.html#verde.Spline">[docs]</a><span class="k">class</span> <span class="nc">Spline</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
+<div class="viewcode-block" id="Spline"><a class="viewcode-back" href="../../api/generated/verde.Spline.html#verde.Spline">[docs]</a><span class="k">class</span> <span class="nc">Spline</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Biharmonic spline interpolation using Green&#39;s functions.</span>
 
-<span class="sd">    Implements the 2D splines of [Sandwell1987]_. The Green&#39;s function for the</span>
-<span class="sd">    spline corresponds to the elastic deflection of a thin sheet subject to a</span>
-<span class="sd">    vertical force. For an observation point at the origin and a force at the</span>
-<span class="sd">    coordinates given by the vector :math:`\mathbf{x}`, the Green&#39;s function</span>
-<span class="sd">    is:</span>
+<span class="sd">    This gridder assumes Cartesian coordinates.</span>
+
+<span class="sd">    Implements the 2D splines of [Sandwell1987]_. The Green&#39;s function for the spline</span>
+<span class="sd">    corresponds to the elastic deflection of a thin sheet subject to a vertical force.</span>
+<span class="sd">    For an observation point at the origin and a force at the coordinates given by the</span>
+<span class="sd">    vector :math:`\mathbf{x}`, the Green&#39;s function is:</span>
 
 <span class="sd">    .. math::</span>
 
 <span class="sd">        g(\mathbf{x}) = \|\mathbf{x}\|^2 \left(\log \|\mathbf{x}\| - 1\right)</span>
 
-<span class="sd">    In practice, this function is not defined for data points that coincide</span>
-<span class="sd">    with a force. To prevent this, a fudge factor is added to</span>
-<span class="sd">    :math:`\|\mathbf{x}\|`.</span>
+<span class="sd">    In practice, this function is not defined for data points that coincide with a</span>
+<span class="sd">    force. To prevent this, a fudge factor is added to :math:`\|\mathbf{x}\|`.</span>
 
-<span class="sd">    The interpolation is performed by estimating forces that produce</span>
-<span class="sd">    deflections that fit the observed data (using least-squares). Then, the</span>
-<span class="sd">    interpolated points can be evaluated at any location.</span>
+<span class="sd">    The interpolation is performed by estimating forces that produce deflections that</span>
+<span class="sd">    fit the observed data (using least-squares). Then, the interpolated points can be</span>
+<span class="sd">    evaluated at any location.</span>
 
-<span class="sd">    By default, the forces will be placed at the same points as the input data</span>
-<span class="sd">    given to :meth:`~verde.Spline.fit`. This configuration provides an exact</span>
-<span class="sd">    solution on top of the data points. However, this solution can be unstable</span>
-<span class="sd">    for certain configurations of data points.</span>
+<span class="sd">    By default, the forces will be placed at the same points as the input data given to</span>
+<span class="sd">    :meth:`~verde.Spline.fit`. This configuration provides an exact solution on top of</span>
+<span class="sd">    the data points. However, this solution can be unstable for certain configurations</span>
+<span class="sd">    of data points.</span>
 
 <span class="sd">    Approximate (and more stable) solutions can be obtained by applying damping</span>
-<span class="sd">    regularization to smooth the estimated forces (and interpolated values) or</span>
-<span class="sd">    by distributing the forces on a regular grid instead (using arguments</span>
-<span class="sd">    *spacing*, *shape*, and/or *region*).</span>
+<span class="sd">    regularization to smooth the estimated forces (and interpolated values) or by</span>
+<span class="sd">    distributing the forces on a regular grid instead (using arguments *spacing*,</span>
+<span class="sd">    *shape*, and/or *region*).</span>
 
-<span class="sd">    Data weights can be used during fitting but only have an any effect when</span>
-<span class="sd">    using the approximate solutions.</span>
+<span class="sd">    Data weights can be used during fitting but only have an any effect when using the</span>
+<span class="sd">    approximate solutions.</span>
 
-<span class="sd">    The Jacobian (design, sensitivity, feature, etc) matrix for the spline</span>
-<span class="sd">    is normalized using :class:`sklearn.preprocessing.StandardScaler` without</span>
-<span class="sd">    centering the mean so that the transformation can be undone in the</span>
-<span class="sd">    estimated forces.</span>
+<span class="sd">    The Jacobian (design, sensitivity, feature, etc) matrix for the spline is normalized</span>
+<span class="sd">    using :class:`sklearn.preprocessing.StandardScaler` without centering the mean so</span>
+<span class="sd">    that the transformation can be undone in the estimated forces.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    fudge : float</span>
-<span class="sd">        The positive fudge factor applied to the Green&#39;s function to avoid</span>
-<span class="sd">        singularities.</span>
+<span class="sd">    mindist : float</span>
+<span class="sd">        A minimum distance between the point forces and data points. Needed because the</span>
+<span class="sd">        Green&#39;s functions are singular when forces and data points coincide. Acts as a</span>
+<span class="sd">        fudge factor.</span>
 <span class="sd">    damping : None or float</span>
-<span class="sd">        The positive damping regularization parameter. Controls how much</span>
-<span class="sd">        smoothness is imposed on the estimated forces. If None, no</span>
-<span class="sd">        regularization is used.</span>
+<span class="sd">        The positive damping regularization parameter. Controls how much smoothness is</span>
+<span class="sd">        imposed on the estimated forces. If None, no regularization is used.</span>
 <span class="sd">    shape : None or tuple</span>
-<span class="sd">        If not None, then should be the shape of the regular grid of forces.</span>
-<span class="sd">        See :func:`verde.grid_coordinates` for details.</span>
+<span class="sd">        If not None, then should be the shape of the regular grid of forces. See</span>
+<span class="sd">        :func:`verde.grid_coordinates` for details.</span>
 <span class="sd">    spacing : None or float or tuple</span>
-<span class="sd">        If not None, then should be the spacing of the regular grid of forces.</span>
-<span class="sd">        See :func:`verde.grid_coordinates` for details.</span>
+<span class="sd">        If not None, then should be the spacing of the regular grid of forces. See</span>
+<span class="sd">        :func:`verde.grid_coordinates` for details.</span>
 <span class="sd">    region : None or tuple</span>
-<span class="sd">        If not None, then the boundaries (``[W, E, S, N]``) used to generate a</span>
-<span class="sd">        regular grid of forces. If None is given, then will use the boundaries</span>
-<span class="sd">        of data given to the first call to :meth:`~verde.Spline.fit`.</span>
+<span class="sd">        If not None, then the boundaries (``[W, E, S, N]``) used to generate a regular</span>
+<span class="sd">        grid of forces. If None is given, then will use the boundaries of data given to</span>
+<span class="sd">        the first call to :meth:`~verde.Spline.fit`.</span>
+<span class="sd">    engine : str</span>
+<span class="sd">        Computation engine for the Jacobian matrix. Can be ``&#39;auto&#39;``, ``&#39;numba&#39;``, or</span>
+<span class="sd">        ``&#39;numpy&#39;``. If ``&#39;auto&#39;``, will use numba if it is installed or numpy</span>
+<span class="sd">        otherwise. The numba version is multi-threaded and considerably faster, which</span>
+<span class="sd">        makes fitting and predicting faster.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -274,21 +294,25 @@
 <span class="sd">        interpolator. Used as the default region for the</span>
 <span class="sd">        :meth:`~verde.Spline.grid` and :meth:`~verde.Spline.scatter` methods.</span>
 
-<span class="sd">    See also</span>
-<span class="sd">    --------</span>
-<span class="sd">    verde.spline_jacobian : Make the Jacobian matrix for the biharmonic spline</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fudge</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">mindist</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span>
+        <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">damping</span> <span class="o">=</span> <span class="n">damping</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">shape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span> <span class="o">=</span> <span class="n">spacing</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fudge</span> <span class="o">=</span> <span class="n">fudge</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mindist</span> <span class="o">=</span> <span class="n">mindist</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">region</span> <span class="o">=</span> <span class="n">region</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">engine</span>
 
-<div class="viewcode-block" id="Spline.fit"><a class="viewcode-back" href="../../api/verde.Spline.html#verde.Spline.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Spline.fit"><a class="viewcode-back" href="../../api/generated/verde.Spline.html#verde.Spline.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fit the biharmonic spline to the given data.</span>
 
@@ -316,73 +340,16 @@
 <span class="sd">            Returns this estimator instance for chaining operations.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">check_fit_input</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span>
-                                                     <span class="n">weights</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_weighted_exact_solution</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+        <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">check_fit_input</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+        <span class="n">warn_weighted_exact_solution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
         <span class="c1"># Capture the data region to use as a default when gridding.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">region_</span> <span class="o">=</span> <span class="n">get_region</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">force_coords_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_force_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
-        <span class="n">jacobian</span> <span class="o">=</span> <span class="n">spline_jacobian</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_coords_</span><span class="p">,</span>
-                                   <span class="bp">self</span><span class="o">.</span><span class="n">fudge</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">force_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_estimate_forces</span><span class="p">(</span><span class="n">jacobian</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">force_coords_</span> <span class="o">=</span> <span class="n">get_force_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">)</span>
+        <span class="n">jacobian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_coords_</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">force_</span> <span class="o">=</span> <span class="n">least_squares</span><span class="p">(</span><span class="n">jacobian</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">damping</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-    <span class="k">def</span> <span class="nf">_estimate_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jacobian</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Estimate forces that fit the data using least-squares. Scales the</span>
-<span class="sd">        Jacobian matrix to have unit standard deviation. This helps balance the</span>
-<span class="sd">        regularization and the difference between forces.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">jacobian</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">jacobian</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-            <span class="n">warn</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
-                <span class="s2">&quot;Under-determined problem detected&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;(ndata, nparams)=</span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">jacobian</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span>
-                <span class="s2">&quot;Configuration of forces:&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;spacing=</span><span class="si">{}</span><span class="s2"> shape=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spacing</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)]))</span>
-        <span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">(</span><span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">with_mean</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">with_std</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">jacobian</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">jacobian</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">damping</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">regr</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">(</span><span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">regr</span> <span class="o">=</span> <span class="n">Ridge</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">damping</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                         <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">regr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">jacobian</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
-        <span class="c1"># Undo the scaling so that we can use forces on the unscaled Jacobian</span>
-        <span class="c1"># later on.</span>
-        <span class="n">forces</span> <span class="o">=</span> <span class="n">regr</span><span class="o">.</span><span class="n">coef_</span><span class="o">/</span><span class="n">scaler</span><span class="o">.</span><span class="n">scale_</span>
-        <span class="k">return</span> <span class="n">forces</span>
-
-    <span class="k">def</span> <span class="nf">_get_force_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Generate arrays for the force coordinates depending on the</span>
-<span class="sd">        configuration of the spline.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Set the force positions. If no shape or spacing are given, then they</span>
-        <span class="c1"># will coincide with the data points. This will only happen once so the</span>
-        <span class="c1"># model won&#39;t change during later fits.</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">coords</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">region</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">region</span> <span class="o">=</span> <span class="n">get_region</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
-            <span class="n">coords</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">region</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
-                                      <span class="n">spacing</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spacing</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">coords</span>
-
-    <span class="k">def</span> <span class="nf">_check_weighted_exact_solution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        If a weighted exact solution is requested, warn the user that it won&#39;t</span>
-<span class="sd">        work.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Check if we&#39;re using weights with the exact solution and warn the</span>
-        <span class="c1"># user that it won&#39;t have any effect.</span>
-        <span class="n">exact</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">i</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">damping</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span><span class="p">,</span>
-                                        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">exact</span><span class="p">:</span>
-            <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Weights are ignored for the exact solution. &quot;</span>
-                 <span class="s2">&quot;Use damping or specify a shape/spacing for the forces.&quot;</span><span class="p">)</span>
-
-<div class="viewcode-block" id="Spline.predict"><a class="viewcode-back" href="../../api/verde.Spline.html#verde.Spline.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+<div class="viewcode-block" id="Spline.predict"><a class="viewcode-back" href="../../api/generated/verde.Spline.html#verde.Spline.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluate the estimated spline on the given set of points.</span>
 
@@ -402,57 +369,146 @@
 <span class="sd">            The data values evaluated on the given points.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;force_&#39;</span><span class="p">,</span> <span class="s1">&#39;force_coords_&#39;</span><span class="p">])</span>
-        <span class="n">jac</span> <span class="o">=</span> <span class="n">spline_jacobian</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_coords_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fudge</span><span class="p">)</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;force_&quot;</span><span class="p">,</span> <span class="s2">&quot;force_coords_&quot;</span><span class="p">])</span>
+        <span class="n">jac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_coords_</span><span class="p">)</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">shape</span>
-        <span class="k">return</span> <span class="n">jac</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">force_</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">jac</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">force_</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Spline.jacobian"><a class="viewcode-back" href="../../api/generated/verde.Spline.html#verde.Spline.jacobian">[docs]</a>    <span class="k">def</span> <span class="nf">jacobian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">force_coordinates</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make the Jacobian matrix for the 2D biharmonic spline.</span>
+
+<span class="sd">        Each column of the Jacobian is the Green&#39;s function for a single force evaluated</span>
+<span class="sd">        on all observation points [Sandwell1987]_.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        coordinates : tuple of arrays</span>
+<span class="sd">            Arrays with the coordinates of each data point. Should be in the</span>
+<span class="sd">            following order: (easting, northing, vertical, ...). Only easting and</span>
+<span class="sd">            northing will be used, all subsequent coordinates will be ignored.</span>
+<span class="sd">        force_coordinates : tuple of arrays</span>
+<span class="sd">            Arrays with the coordinates for the forces. Should be in the same order as</span>
+<span class="sd">            the coordinate arrays.</span>
+<span class="sd">        dtype : str or numpy dtype</span>
+<span class="sd">            The type of the Jacobian array.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        jacobian : 2D array</span>
+<span class="sd">            The (n_data, n_forces) Jacobian matrix.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span> <span class="o">=</span> <span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">force_coordinates</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">east</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">parse_engine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;numba&quot;</span><span class="p">:</span>
+            <span class="n">jac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">east</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">force_east</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="n">jacobian_numba</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mindist</span><span class="p">,</span> <span class="n">jac</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">jac</span> <span class="o">=</span> <span class="n">jacobian_numpy</span><span class="p">(</span>
+                <span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mindist</span><span class="p">,</span> <span class="n">dtype</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">jac</span></div></div>
 
 
-<div class="viewcode-block" id="spline_jacobian"><a class="viewcode-back" href="../../api/verde.spline_jacobian.html#verde.spline_jacobian">[docs]</a><span class="k">def</span> <span class="nf">spline_jacobian</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">force_coordinates</span><span class="p">,</span> <span class="n">fudge</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">warn_weighted_exact_solution</span><span class="p">(</span><span class="n">spline</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Make the Jacobian matrix for the 2D biharmonic spline.</span>
-
-<span class="sd">    Follows [Sandwell1987]_.</span>
-
-<span class="sd">    Each column of the Jacobian is the Green&#39;s function for a single force</span>
-<span class="sd">    evaluated on all observation points.</span>
+<span class="sd">    Warn the user that a weights doesn&#39;t work for the exact solution.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+<span class="sd">    spline : estimator</span>
+<span class="sd">        The spline instance that we&#39;ll check. Needs to have ``shape``, ``spacing``, and</span>
+<span class="sd">        ``damping`` attributes.</span>
+<span class="sd">    weights : array or None</span>
+<span class="sd">        The weights given to fit.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check if we&#39;re using weights with the exact solution and warn the</span>
+    <span class="c1"># user that it won&#39;t have any effect.</span>
+    <span class="n">exact</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">i</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="n">spline</span><span class="o">.</span><span class="n">damping</span><span class="p">,</span> <span class="n">spline</span><span class="o">.</span><span class="n">spacing</span><span class="p">,</span> <span class="n">spline</span><span class="o">.</span><span class="n">shape</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">exact</span><span class="p">:</span>
+        <span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Weights are ignored for the exact solution. &quot;</span>
+            <span class="s2">&quot;Use damping or specify a shape/spacing for the forces.&quot;</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_force_coordinates</span><span class="p">(</span><span class="n">spline</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Make arrays for force coordinates depending on the spline configuration.</span>
+
+<span class="sd">    If no ``shape`` and ``spacing`` are given, then will use the data coordinates as</span>
+<span class="sd">    force coordinates. Otherwise, will generate a grid based on the given spacing/shape</span>
+<span class="sd">    and the data region.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    spline : estimator</span>
+<span class="sd">        The spline instance. Needs to have ``shape`` and ``spacing`` attributes. If</span>
+<span class="sd">        ``region`` is present, will use it to define the grid region. If not, will use</span>
+<span class="sd">        the data region.</span>
 <span class="sd">    coordinates : tuple of arrays</span>
 <span class="sd">        Arrays with the coordinates of each data point. Should be in the</span>
 <span class="sd">        following order: (easting, northing, vertical, ...). Only easting and</span>
 <span class="sd">        northing will be used, all subsequent coordinates will be ignored.</span>
-<span class="sd">    force_coordinates : tuple of arrays</span>
-<span class="sd">        Arrays with the coordinates of each vertical force. Should be in the</span>
-<span class="sd">        following order: (easting, northing, vertical, ...). Only easting and</span>
-<span class="sd">        northing will be used, all subsequent coordinates will be ignored.</span>
-<span class="sd">    fudge : float</span>
-<span class="sd">        The positive fudge factor applied to the Green&#39;s function to avoid</span>
-<span class="sd">        singularities.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    jacobian : 2D array</span>
-<span class="sd">        The (n_data, n_forces) Jacobian matrix.</span>
-
-<span class="sd">    See also</span>
-<span class="sd">    --------</span>
-<span class="sd">    verde.Spline : Biharmonic spline gridder</span>
+<span class="sd">    force_coordinates : tuple of arrays</span>
+<span class="sd">        The coordinate arrays for the forces.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">force_easting</span><span class="p">,</span> <span class="n">force_northing</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-                                     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">force_coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
-    <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+    <span class="c1"># Set the force positions. If no shape or spacing are given, then they</span>
+    <span class="c1"># will coincide with the data points. This will only happen once so the</span>
+    <span class="c1"># model won&#39;t change during later fits.</span>
+    <span class="k">if</span> <span class="n">spline</span><span class="o">.</span><span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">spline</span><span class="o">.</span><span class="n">spacing</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">spline</span><span class="o">.</span><span class="n">region</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">region</span> <span class="o">=</span> <span class="n">get_region</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">region</span> <span class="o">=</span> <span class="n">spline</span><span class="o">.</span><span class="n">region</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">i</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">grid_coordinates</span><span class="p">(</span>
+                <span class="n">region</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">spline</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spline</span><span class="o">.</span><span class="n">spacing</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">coords</span>
+
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">jacobian_numba</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">jac</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the Jacobian matrix using numba to speed things up.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">numba</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>  <span class="c1"># pylint: disable=not-an-iterable</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">force_east</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">east</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">force_east</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">north</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">force_north</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="p">)</span>
+            <span class="n">distance</span> <span class="o">+=</span> <span class="n">mindist</span>
+            <span class="n">jac</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">distance</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jac</span>
+
+
+<span class="k">def</span> <span class="nf">jacobian_numpy</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the Jacobian using numpy broadcasting. Is slightly slower than the numba</span>
+<span class="sd">    version.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Reshaping the data to a column vector will automatically build a</span>
     <span class="c1"># distance matrix between each data point and force.</span>
     <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span>
-        <span class="n">easting</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">easting</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">force_easting</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
-        <span class="n">northing</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">northing</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">force_northing</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
-    <span class="c1"># The fudge factor helps avoid singular matrices when the force and</span>
+        <span class="n">east</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">east</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">force_east</span><span class="p">,</span>
+        <span class="n">north</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">north</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">force_north</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># The mindist factor helps avoid singular matrices when the force and</span>
     <span class="c1"># computation point are too close</span>
-    <span class="n">distance</span> <span class="o">+=</span> <span class="n">fudge</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">distance</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span></div>
+    <span class="n">distance</span> <span class="o">+=</span> <span class="n">mindist</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">distance</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 
            </div>
@@ -466,7 +522,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Jun 14, 2018.
+      Last updated on Aug 10, 2018.
 
     </p>
   </div>

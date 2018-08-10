@@ -1,4 +1,8 @@
+.. note::
+    :class: sphx-glr-download-link-note
 
+    Click :ref:`here <sphx_glr_download_gallery_trend.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
 
 .. _sphx_glr_gallery_trend.py:
 
@@ -6,22 +10,23 @@
 Polynomial trend
 ================
 
-Verde offers the :class:`verde.Trend` class to fit a 2D polynomial trend to
-your data. This can be useful for isolating a regional component of your data,
-for example, which is a common operation for gravity and magnetic data. Let's
-look at how we can use Verde to remove the clear positive trend from the Rio de
-Janeiro magnetic anomaly data.
+Verde offers the :class:`verde.Trend` class to fit a 2D polynomial trend to your data.
+This can be useful for isolating a regional component of your data, for example, which
+is a common operation for gravity and magnetic data. Let's look at how we can use Verde
+to remove the clear positive trend from the Rio de Janeiro magnetic anomaly data.
 
 
 
 
 .. image:: /gallery/images/sphx_glr_trend_001.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
+
+ .. code-block:: none
 
     Original data:
        longitude   latitude  total_field_anomaly_nt  height_ell_m
@@ -39,7 +44,7 @@ Janeiro magnetic anomaly data.
     1 -42.590485 -22.498978    ...      93.353128  27.996872
     2 -42.590530 -22.498077    ...      92.781212  35.508788
     3 -42.590591 -22.497177    ...      92.207709  41.032291
-    4 -42.590652 -22.496277    ...      91.637061  44.542939
+    4 -42.590652 -22.496277    ...      91.637062  44.542938
 
     [5 rows x 6 columns]
 
@@ -54,13 +59,10 @@ Janeiro magnetic anomaly data.
     import numpy as np
     import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
-    # We need these two classes to set proper ticklabels for Cartopy maps
-    from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
     import verde as vd
 
-    # Load the Rio de Janeiro total field magnetic anomaly data as a
-    # pandas.DataFrame
-    data = vd.datasets.fetch_rio_magnetic_anomaly()
+    # Load the Rio de Janeiro total field magnetic anomaly data as a pandas.DataFrame
+    data = vd.datasets.fetch_rio_magnetic()
     print("Original data:")
     print(data.head())
 
@@ -70,8 +72,8 @@ Janeiro magnetic anomaly data.
     print("\nTrend estimator:", trend)
 
     # Add the estimated trend and the residual data to the DataFrame
-    data['trend'] = trend.predict(coordinates)
-    data['residual'] = trend.residual_
+    data["trend"] = trend.predict(coordinates)
+    data["residual"] = data.total_field_anomaly_nt - data.trend
     print("\nUpdated DataFrame:")
     print(data.head())
 
@@ -83,18 +85,19 @@ Janeiro magnetic anomaly data.
         ax = plt.subplot(2, 2, i, projection=ccrs.Mercator())
         ax.set_title(title)
         # Set vmin and vmax to the extremes of the original data
-        maxabs = np.max(np.abs([data.total_field_anomaly_nt.min(),
-                                data.total_field_anomaly_nt.max()]))
-        mappable = ax.scatter(data.longitude, data.latitude, c=data[column], s=1,
-                              cmap='seismic', vmin=-maxabs, vmax=maxabs,
-                              transform=crs)
+        maxabs = vd.maxabs(data.total_field_anomaly_nt)
+        mappable = ax.scatter(
+            data.longitude,
+            data.latitude,
+            c=data[column],
+            s=1,
+            cmap="seismic",
+            vmin=-maxabs,
+            vmax=maxabs,
+            transform=crs,
+        )
         # Set the proper ticks for a Cartopy map
-        ax.set_xticks(np.arange(-42.5, -42, 0.1), crs=crs)
-        ax.set_yticks(np.arange(-22.4, -22, 0.1), crs=crs)
-        ax.xaxis.set_major_formatter(LongitudeFormatter())
-        ax.yaxis.set_major_formatter(LatitudeFormatter())
-        # Set the plot region to be tight around the data
-        ax.set_extent(vd.get_region((data.longitude, data.latitude)))
+        vd.datasets.setup_rio_magnetic_map(ax)
         return mappable
 
 
@@ -102,34 +105,40 @@ Janeiro magnetic anomaly data.
 
     # Plot the data fields and capture the mappable returned by scatter to use for
     # the colorbar
-    mappable = plot_data('total_field_anomaly_nt', 1, 'Original magnetic anomaly')
-    plot_data('trend', 2, 'Regional trend')
-    plot_data('residual', 3, 'Residual')
+    mappable = plot_data("total_field_anomaly_nt", 1, "Original magnetic anomaly")
+    plot_data("trend", 2, "Regional trend")
+    plot_data("residual", 3, "Residual")
 
     # Make histograms of the data and the residuals to show that the trend was
     # removed
     ax = plt.subplot(2, 2, 4)
-    ax.set_title('Distribution of data')
-    ax.hist(data.total_field_anomaly_nt, bins='auto', alpha=0.7,
-            label='Original data')
-    ax.hist(data.residual, bins='auto', alpha=0.7, label='Residuals')
+    ax.set_title("Distribution of data")
+    ax.hist(data.total_field_anomaly_nt, bins="auto", alpha=0.7, label="Original data")
+    ax.hist(data.residual, bins="auto", alpha=0.7, label="Residuals")
     ax.legend()
-    ax.set_xlabel('Total field anomaly (nT)')
+    ax.set_xlabel("Total field anomaly (nT)")
 
     # Add a single colorbar on top of the histogram plot where there is some space
     cax = plt.axes((0.58, 0.44, 0.18, 0.015))
-    cb = plt.colorbar(mappable, cax=cax, orientation='horizontal',
-                      ticks=np.arange(-800, 801, 400))
-    cb.set_label('nT')
+    cb = plt.colorbar(
+        mappable, cax=cax, orientation="horizontal", ticks=np.arange(-800, 801, 400)
+    )
+    cb.set_label("nT")
 
     plt.tight_layout()
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  2.733 seconds)
+**Total running time of the script:** ( 0 minutes  1.803 seconds)
 
 
+.. _sphx_glr_download_gallery_trend.py:
 
-.. container:: sphx-glr-footer
+
+.. only :: html
+
+ .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
 
 
   .. container:: sphx-glr-download
@@ -142,6 +151,9 @@ Janeiro magnetic anomaly data.
 
      :download:`Download Jupyter notebook: trend.ipynb <trend.ipynb>`
 
-.. rst-class:: sphx-glr-signature
 
-    `Generated by Sphinx-Gallery <https://sphinx-gallery.readthedocs.io>`_
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.readthedocs.io>`_

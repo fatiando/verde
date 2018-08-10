@@ -94,13 +94,19 @@
               
             
             
-              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gallery/index.html">Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/trend_estimation.html">Trend estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/decimation.html">Data decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/weights.html">Using weights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
@@ -109,7 +115,11 @@
 
     
         <p class="caption">
-            <span class="caption-text">External links</span>
+            <span class="caption-text">
+            
+                Getting help and contributing
+            
+            </span>
         </p>
         <ul>
             
@@ -187,39 +197,36 @@
            <div itemprop="articleBody">
             
   <h1>Source code for verde</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">The Verde public API.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">._version</span> <span class="k">import</span> <span class="n">get_versions</span> <span class="k">as</span> <span class="n">_get_versions</span>
-
-<span class="c1"># Import functions/classes to make the API</span>
+<span></span><span class="c1"># pylint: disable=missing-docstring</span>
+<span class="c1"># Import functions/classes to make the public API</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">datasets</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">BaseGridder</span>
-<span class="kn">from</span> <span class="nn">.coordinates</span> <span class="k">import</span> <span class="n">scatter_points</span><span class="p">,</span> <span class="n">grid_coordinates</span><span class="p">,</span> <span class="n">inside</span><span class="p">,</span> \
-    <span class="n">profile_coordinates</span><span class="p">,</span> <span class="n">get_region</span><span class="p">,</span> <span class="n">pad_region</span><span class="p">,</span> <span class="n">project_region</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">version</span>
+<span class="kn">from</span> <span class="nn">.coordinates</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">scatter_points</span><span class="p">,</span>
+    <span class="n">grid_coordinates</span><span class="p">,</span>
+    <span class="n">inside</span><span class="p">,</span>
+    <span class="n">profile_coordinates</span><span class="p">,</span>
+    <span class="n">get_region</span><span class="p">,</span>
+    <span class="n">pad_region</span><span class="p">,</span>
+    <span class="n">project_region</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.grid_math</span> <span class="k">import</span> <span class="n">distance_mask</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">variance_to_weights</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">variance_to_weights</span><span class="p">,</span> <span class="n">maxabs</span>
 <span class="kn">from</span> <span class="nn">.blockreduce</span> <span class="k">import</span> <span class="n">block_split</span><span class="p">,</span> <span class="n">BlockReduce</span><span class="p">,</span> <span class="n">BlockMean</span>
 <span class="kn">from</span> <span class="nn">.scipygridder</span> <span class="k">import</span> <span class="n">ScipyGridder</span>
-<span class="kn">from</span> <span class="nn">.trend</span> <span class="k">import</span> <span class="n">Trend</span><span class="p">,</span> <span class="n">trend_jacobian</span><span class="p">,</span> <span class="n">VectorTrend</span>
+<span class="kn">from</span> <span class="nn">.trend</span> <span class="k">import</span> <span class="n">Trend</span>
 <span class="kn">from</span> <span class="nn">.chain</span> <span class="k">import</span> <span class="n">Chain</span>
-<span class="kn">from</span> <span class="nn">.spline</span> <span class="k">import</span> <span class="n">Spline</span><span class="p">,</span> <span class="n">spline_jacobian</span>
+<span class="kn">from</span> <span class="nn">.components</span> <span class="k">import</span> <span class="n">Components</span>
+<span class="kn">from</span> <span class="nn">.spline</span> <span class="k">import</span> <span class="n">Spline</span>
 <span class="kn">from</span> <span class="nn">.model_selection</span> <span class="k">import</span> <span class="n">cross_val_score</span><span class="p">,</span> <span class="n">train_test_split</span>
-<span class="kn">from</span> <span class="nn">.vector</span> <span class="k">import</span> <span class="n">Vector2D</span><span class="p">,</span> <span class="n">vector2d_jacobian</span>
+<span class="kn">from</span> <span class="nn">.vector</span> <span class="k">import</span> <span class="n">VectorSpline2D</span>
 
 
-<span class="c1"># Get the version number through versioneer</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="n">_get_versions</span><span class="p">()[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span>
-<span class="n">__commit__</span> <span class="o">=</span> <span class="n">_get_versions</span><span class="p">()[</span><span class="s1">&#39;full-revisionid&#39;</span><span class="p">]</span>
-
-
-<div class="viewcode-block" id="test"><a class="viewcode-back" href="../api/verde.test.html#verde.test">[docs]</a><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">doctest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">coverage</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="test"><a class="viewcode-back" href="../api/generated/verde.test.html#verde.test">[docs]</a><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">doctest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">coverage</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figures</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Run the test suite.</span>
 
-<span class="sd">    Uses `py.test &lt;http://pytest.org/&gt;`__ to discover and run the tests. If you</span>
-<span class="sd">    haven&#39;t already, you can install it with `conda</span>
-<span class="sd">    &lt;http://conda.pydata.org/&gt;`__ or `pip &lt;https://pip.pypa.io/en/stable/&gt;`__.</span>
+<span class="sd">    Uses `py.test &lt;http://pytest.org/&gt;`__ to discover and run the tests.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -232,6 +239,9 @@
 <span class="sd">    coverage : bool</span>
 <span class="sd">        If ``True``, will run test coverage analysis on the code as well.</span>
 <span class="sd">        Requires ``pytest-cov``.</span>
+<span class="sd">    figures : bool</span>
+<span class="sd">        If ``True``, will test generated figures against saved baseline</span>
+<span class="sd">        figures.  Requires ``pytest-mpl`` and ``matplotlib``.</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
@@ -242,16 +252,19 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span> <span class="nn">pytest</span>
+
     <span class="n">package</span> <span class="o">=</span> <span class="vm">__name__</span>
     <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;-vv&#39;</span><span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;-vv&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">coverage</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;--cov=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">package</span><span class="p">))</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;--cov-report=term-missing&#39;</span><span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--cov=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">package</span><span class="p">))</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--cov-report=term-missing&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">doctest</span><span class="p">:</span>
-        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;--doctest-modules&#39;</span><span class="p">)</span>
-    <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;--pyargs&#39;</span><span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--doctest-modules&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">figures</span><span class="p">:</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--mpl&quot;</span><span class="p">)</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--pyargs&quot;</span><span class="p">)</span>
     <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">package</span><span class="p">)</span>
     <span class="n">status</span> <span class="o">=</span> <span class="n">pytest</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">status</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Some tests have failed.&quot;</span></div>
@@ -268,7 +281,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Jun 14, 2018.
+      Last updated on Aug 10, 2018.
 
     </p>
   </div>

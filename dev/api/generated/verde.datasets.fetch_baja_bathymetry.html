@@ -1,0 +1,367 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    
+        <title>verde.datasets.fetch_baja_bathymetry &mdash; Verde</title>
+    
+
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.png"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="verde.datasets.fetch_california_gps" href="verde.datasets.fetch_california_gps.html" />
+    <link rel="prev" title="Sample Data" href="../../sample_data/index.html" />
+    
+    <script src="../../_static/require.js"></script>
+
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/verde-logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../sample_data/index.html#where-is-my-data">Where is my data?</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../sample_data/index.html#loading-data">Loading Data</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">verde.datasets.fetch_baja_bathymetry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#examples-using-verde-datasets-fetch-baja-bathymetry">Examples using <code class="docutils literal notranslate"><span class="pre">verde.datasets.fetch_baja_bathymetry</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="verde.datasets.fetch_california_gps.html">verde.datasets.fetch_california_gps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="verde.datasets.fetch_rio_magnetic.html">verde.datasets.fetch_rio_magnetic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="verde.datasets.fetch_texas_wind.html">verde.datasets.fetch_texas_wind</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../sample_data/index.html#utiltiy-functions">Utiltiy Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sample_data/index.html#synthetic-data">Synthetic Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../sample_data/index.html#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/trend_estimation.html">Trend estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/decimation.html">Data decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/weights.html">Using weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+
+    
+        <p class="caption">
+            <span class="caption-text">
+            
+                Getting help and contributing
+            
+            </span>
+        </p>
+        <ul>
+            
+                <li class="toctree-l1"><a href="https://www.fatiando.org"><i class="fa fa-external-link-square fa-fw"></i> Fatiando a Terra</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md"><i class="fa fa-users fa-fw"></i> Contributing</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
+            
+                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
+            
+        </ul>
+    
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Verde</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../sample_data/index.html">Sample Data</a> &raquo;</li>
+        
+      <li>verde.datasets.fetch_baja_bathymetry</li>
+    
+    
+    <li class="source-link">
+        
+            
+                
+                
+                <a href="https://github.com/fatiando/verde/issues/new?title=Suggested%20improvement%20for%20api/generated/verde.datasets.fetch_baja_bathymetry&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                   class="fa fa-github"> Improve this page</a>
+            
+        
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="verde-datasets-fetch-baja-bathymetry">
+<h1>verde.datasets.fetch_baja_bathymetry<a class="headerlink" href="#verde-datasets-fetch-baja-bathymetry" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="verde.datasets.fetch_baja_bathymetry">
+<code class="descclassname">verde.datasets.</code><code class="descname">fetch_baja_bathymetry</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/datasets/sample_data.html#fetch_baja_bathymetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.datasets.fetch_baja_bathymetry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch sample bathymetry data from Baja California.</p>
+<p>This is the <code class="docutils literal notranslate"><span class="pre">&#64;tut_ship.xyz</span></code> sample data from the <a class="reference external" href="http://gmt.soest.hawaii.edu/">GMT</a> tutorial.</p>
+<p>If the file isn’t already in your data directory, it will be downloaded
+automatically.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>data</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></span></dt>
+<dd><p class="first last">The bathymetry data. Columns are longitude, latitude, and bathymetry
+(in meters) for each data point.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="verde.datasets.setup_baja_bathymetry_map.html#verde.datasets.setup_baja_bathymetry_map" title="verde.datasets.setup_baja_bathymetry_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_baja_bathymetry_map</span></code></a></dt>
+<dd>Utility function to help setup a Cartopy map.</dd>
+</dl>
+</div>
+</dd></dl>
+
+<div class="section" id="examples-using-verde-datasets-fetch-baja-bathymetry">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">verde.datasets.fetch_baja_bathymetry</span></code><a class="headerlink" href="#examples-using-verde-datasets-fetch-baja-bathymetry" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="When gridding data that has been highly oversampled in a direction (shipborne and airborne data..."><div class="figure" id="id1">
+<img alt="../../_images/sphx_glr_blockreduce_thumb.png" src="../../_images/sphx_glr_blockreduce_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/blockreduce.html#sphx-glr-gallery-blockreduce-py"><span class="std std-ref">Blocked reduction operations</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Sometimes, data points are unevenly distributed. In such cases, we might not want to have inter..."><div class="figure" id="id2">
+<img alt="../../_images/sphx_glr_distance_mask_thumb.png" src="../../_images/sphx_glr_distance_mask_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/distance_mask.html#sphx-glr-gallery-distance-mask-py"><span class="std std-ref">Mask grid points by distance</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Scipy offers a range of interpolation methods in :mod:`scipy.interpolate` and 3 specifically fo..."><div class="figure" id="id3">
+<img alt="../../_images/sphx_glr_scipygridder_thumb.png" src="../../_images/sphx_glr_scipygridder_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/scipygridder.html#sphx-glr-gallery-scipygridder-py"><span class="std std-ref">Gridding with Scipy</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Often times, raw spatial data can be highly oversampled in a direction. In these cases, we need..."><div class="figure" id="id4">
+<img alt="../../_images/sphx_glr_decimation_thumb.png" src="../../_images/sphx_glr_decimation_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/decimation.html#sphx-glr-tutorials-decimation-py"><span class="std std-ref">Data decimation</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="We provide sample bathymetry data from Baja California to test the gridding methods. This is th..."><div class="figure" id="id5">
+<img alt="../../_images/sphx_glr_baja_bathymetry_thumb.png" src="../../_images/sphx_glr_baja_bathymetry_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../sample_data/baja_bathymetry.html#sphx-glr-sample-data-baja-bathymetry-py"><span class="std std-ref">Bathymetry data from Baja California</span></a></span></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="verde.datasets.fetch_california_gps.html" class="btn btn-neutral float-right" title="verde.datasets.fetch_california_gps" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../sample_data/index.html" class="btn btn-neutral" title="Sample Data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2018, Leonardo Uieda.
+      Last updated on Aug 10, 2018.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

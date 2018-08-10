@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="../_static/style.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Data decimation in blocks" href="block_reduce.html" />
+    <link rel="next" title="Blocked reduction operations" href="blockreduce.html" />
     <link rel="prev" title="Installing" href="../install.html" />
     
     <script src="../_static/require.js"></script>
@@ -96,32 +96,33 @@
               
             
             
-              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Gallery</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="block_reduce.html">Data decimation in blocks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blockreduce.html">Blocked reduction operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blockreduce_weights.html">Using weights in blocked reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blockreduce_weights_mean.html">Using weights in blocked means</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chain.html">Chaining operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="distance_mask.html">Mask grid points by distance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="block_reduce_weights.html">Data decimation with weights</a></li>
 <li class="toctree-l2"><a class="reference internal" href="scipygridder.html">Gridding with Scipy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="chain_trend.html">Chaining operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spline.html">Gridding with splines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spline_weights.html">Gridding with splines and weights</a></li>
 <li class="toctree-l2"><a class="reference internal" href="trend.html">Polynomial trend</a></li>
-<li class="toctree-l2"><a class="reference internal" href="blockmean_weights.html">Different weights in block mean</a></li>
 <li class="toctree-l2"><a class="reference internal" href="vector_trend.html">Trends in vector data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="spline.html">Gridding with splines and weights</a></li>
-<li class="toctree-l2"><a class="reference internal" href="vector2d.html">Gridding 2-component vector data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#synthetic-and-sample-datasets">Synthetic and sample datasets</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="data/synthetic_checkerboard.html">Checkerboard function</a></li>
-<li class="toctree-l3"><a class="reference internal" href="data/sample_baja_bathymetry.html">Bathymetry data from Baja California</a></li>
-<li class="toctree-l3"><a class="reference internal" href="data/sample_rio_magnetic_anomaly.html">Magnetic data from Rio de Janeiro</a></li>
-<li class="toctree-l3"><a class="reference internal" href="data/sample_california_gps.html">GPS velocities from California</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vector_uncoupled.html">Gridding 2D vectors (uncoupled)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vectorspline2d.html">Gridding 2D vectors (coupled)</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/trend_estimation.html">Trend estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/decimation.html">Data decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/weights.html">Using weights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
@@ -130,7 +131,11 @@
 
     
         <p class="caption">
-            <span class="caption-text">External links</span>
+            <span class="caption-text">
+            
+                Getting help and contributing
+            
+            </span>
         </p>
         <ul>
             
@@ -238,99 +243,78 @@
 <span id="id1"></span><h1>Gallery<a class="headerlink" href="#gallery" title="Permalink to this headline">¶</a></h1>
 <p>This gallery contains a selection examples of what Verde can do.</p>
 <div class="sphx-glr-thumbcontainer" tooltip="When gridding data that has been highly oversampled in a direction (shipborne and airborne data..."><div class="figure" id="id2">
-<img alt="../_images/sphx_glr_block_reduce_thumb.png" src="../_images/sphx_glr_block_reduce_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="block_reduce.html#sphx-glr-gallery-block-reduce-py"><span class="std std-ref">Data decimation in blocks</span></a></span></p>
+<img alt="../_images/sphx_glr_blockreduce_thumb.png" src="../_images/sphx_glr_blockreduce_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="blockreduce.html#sphx-glr-gallery-blockreduce-py"><span class="std std-ref">Blocked reduction operations</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="Sometimes, data points are unevenly distributed. In such cases, we might not want to have inter..."><div class="figure" id="id3">
+<div class="sphx-glr-thumbcontainer" tooltip="Sometimes data has outliers or less reliable points that might skew a blocked mean or even a me..."><div class="figure" id="id3">
+<img alt="../_images/sphx_glr_blockreduce_weights_thumb.png" src="../_images/sphx_glr_blockreduce_weights_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="blockreduce_weights.html#sphx-glr-gallery-blockreduce-weights-py"><span class="std std-ref">Using weights in blocked reduction</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip=":class:`verde.BlockReduce` is not able to output weights because we need to make assumptions ab..."><div class="figure" id="id4">
+<img alt="../_images/sphx_glr_blockreduce_weights_mean_thumb.png" src="../_images/sphx_glr_blockreduce_weights_mean_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="blockreduce_weights_mean.html#sphx-glr-gallery-blockreduce-weights-mean-py"><span class="std std-ref">Using weights in blocked means</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="The :class:`verde.Chain` class allows us to created gridders that perform multiple operations o..."><div class="figure" id="id5">
+<img alt="../_images/sphx_glr_chain_thumb.png" src="../_images/sphx_glr_chain_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="chain.html#sphx-glr-gallery-chain-py"><span class="std std-ref">Chaining operations</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Sometimes, data points are unevenly distributed. In such cases, we might not want to have inter..."><div class="figure" id="id6">
 <img alt="../_images/sphx_glr_distance_mask_thumb.png" src="../_images/sphx_glr_distance_mask_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="distance_mask.html#sphx-glr-gallery-distance-mask-py"><span class="std std-ref">Mask grid points by distance</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="Sometimes data has outliers or less reliable points that might skew a blocked mean or even a me..."><div class="figure" id="id4">
-<img alt="../_images/sphx_glr_block_reduce_weights_thumb.png" src="../_images/sphx_glr_block_reduce_weights_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="block_reduce_weights.html#sphx-glr-gallery-block-reduce-weights-py"><span class="std std-ref">Data decimation with weights</span></a></span></p>
-</div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="Scipy offers a range of interpolation methods in :mod:`scipy.interpolate` and 3 specifically fo..."><div class="figure" id="id5">
+<div class="sphx-glr-thumbcontainer" tooltip="Scipy offers a range of interpolation methods in :mod:`scipy.interpolate` and 3 specifically fo..."><div class="figure" id="id7">
 <img alt="../_images/sphx_glr_scipygridder_thumb.png" src="../_images/sphx_glr_scipygridder_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="scipygridder.html#sphx-glr-gallery-scipygridder-py"><span class="std std-ref">Gridding with Scipy</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="The :class:`verde.Chain` class allows us to created gridders that perform multiple operations o..."><div class="figure" id="id6">
-<img alt="../_images/sphx_glr_chain_trend_thumb.png" src="../_images/sphx_glr_chain_trend_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="chain_trend.html#sphx-glr-gallery-chain-trend-py"><span class="std std-ref">Chaining operations</span></a></span></p>
+<div class="sphx-glr-thumbcontainer" tooltip="Biharmonic spline interpolation is based on estimating vertical forces acting on an elastic she..."><div class="figure" id="id8">
+<img alt="../_images/sphx_glr_spline_thumb.png" src="../_images/sphx_glr_spline_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="spline.html#sphx-glr-gallery-spline-py"><span class="std std-ref">Gridding with splines</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="Verde offers the :class:`verde.Trend` class to fit a 2D polynomial trend to your data. This can..."><div class="figure" id="id7">
+<div class="sphx-glr-thumbcontainer" tooltip="An advantage of using the Green&#x27;s functions based :class:`verde.Spline` over :class:`verde.Scip..."><div class="figure" id="id9">
+<img alt="../_images/sphx_glr_spline_weights_thumb.png" src="../_images/sphx_glr_spline_weights_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="spline_weights.html#sphx-glr-gallery-spline-weights-py"><span class="std std-ref">Gridding with splines and weights</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Verde offers the :class:`verde.Trend` class to fit a 2D polynomial trend to your data. This can..."><div class="figure" id="id10">
 <img alt="../_images/sphx_glr_trend_thumb.png" src="../_images/sphx_glr_trend_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="trend.html#sphx-glr-gallery-trend-py"><span class="std std-ref">Polynomial trend</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip=":class:`verde.BlockReduce` is not able to output weights because we need to make assumptions ab..."><div class="figure" id="id8">
-<img alt="../_images/sphx_glr_blockmean_weights_thumb.png" src="../_images/sphx_glr_blockmean_weights_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="blockmean_weights.html#sphx-glr-gallery-blockmean-weights-py"><span class="std std-ref">Different weights in block mean</span></a></span></p>
-</div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="Verde provides the :class:`verde.VectorTrend` class to estimate a polynomial trend on each comp..."><div class="figure" id="id9">
+<div class="sphx-glr-thumbcontainer" tooltip="Verde provides the :class:`verde.Trend` class to estimate a polynomial trend and the :class:`ve..."><div class="figure" id="id11">
 <img alt="../_images/sphx_glr_vector_trend_thumb.png" src="../_images/sphx_glr_vector_trend_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="vector_trend.html#sphx-glr-gallery-vector-trend-py"><span class="std std-ref">Trends in vector data</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="Biharmonic spline interpolation is based on estimating vertical forces acting on an elastic she..."><div class="figure" id="id10">
-<img alt="../_images/sphx_glr_spline_thumb.png" src="../_images/sphx_glr_spline_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="spline.html#sphx-glr-gallery-spline-py"><span class="std std-ref">Gridding with splines and weights</span></a></span></p>
+<div class="sphx-glr-thumbcontainer" tooltip="We can use :class:`verde.Components` to simultaneously process and grid all components of vecto..."><div class="figure" id="id12">
+<img alt="../_images/sphx_glr_vector_uncoupled_thumb.png" src="../_images/sphx_glr_vector_uncoupled_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="vector_uncoupled.html#sphx-glr-gallery-vector-uncoupled-py"><span class="std std-ref">Gridding 2D vectors (uncoupled)</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="One way of gridding vector data would be grid each component separately using :class:`verde.Spl..."><div class="figure" id="id11">
-<img alt="../_images/sphx_glr_vector2d_thumb.png" src="../_images/sphx_glr_vector2d_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="vector2d.html#sphx-glr-gallery-vector2d-py"><span class="std std-ref">Gridding 2-component vector data</span></a></span></p>
+<div class="sphx-glr-thumbcontainer" tooltip="One way of gridding vector data would be grid each component separately using :class:`verde.Spl..."><div class="figure" id="id13">
+<img alt="../_images/sphx_glr_vectorspline2d_thumb.png" src="../_images/sphx_glr_vectorspline2d_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="vectorspline2d.html#sphx-glr-gallery-vectorspline2d-py"><span class="std std-ref">Gridding 2D vectors (coupled)</span></a></span></p>
 </div>
 </div><div class="toctree-wrapper compound">
 </div>
-<div style='clear:both'></div><div class="section" id="synthetic-and-sample-datasets">
-<h2>Synthetic and sample datasets<a class="headerlink" href="#synthetic-and-sample-datasets" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="The :class:`verde.datasets.CheckerBoard` class generates synthetic data in a checkerboard patte..."><div class="figure" id="id12">
-<img alt="../_images/sphx_glr_synthetic_checkerboard_thumb.png" src="../_images/sphx_glr_synthetic_checkerboard_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="data/synthetic_checkerboard.html#sphx-glr-gallery-data-synthetic-checkerboard-py"><span class="std std-ref">Checkerboard function</span></a></span></p>
-</div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="We provide sample bathymetry data from Baja California to test the gridding methods. This is th..."><div class="figure" id="id13">
-<img alt="../_images/sphx_glr_sample_baja_bathymetry_thumb.png" src="../_images/sphx_glr_sample_baja_bathymetry_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="data/sample_baja_bathymetry.html#sphx-glr-gallery-data-sample-baja-bathymetry-py"><span class="std std-ref">Bathymetry data from Baja California</span></a></span></p>
-</div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="We provide sample total-field magnetic anomaly data from an airborne survey of Rio de Janeiro, ..."><div class="figure" id="id14">
-<img alt="../_images/sphx_glr_sample_rio_magnetic_anomaly_thumb.png" src="../_images/sphx_glr_sample_rio_magnetic_anomaly_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="data/sample_rio_magnetic_anomaly.html#sphx-glr-gallery-data-sample-rio-magnetic-anomaly-py"><span class="std std-ref">Magnetic data from Rio de Janeiro</span></a></span></p>
-</div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="We provide sample 3-component GPS velocity data from the West coast of the U.S. The data were c..."><div class="figure" id="id15">
-<img alt="../_images/sphx_glr_sample_california_gps_thumb.png" src="../_images/sphx_glr_sample_california_gps_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="data/sample_california_gps.html#sphx-glr-gallery-data-sample-california-gps-py"><span class="std std-ref">GPS velocities from California</span></a></span></p>
-</div>
-</div><div class="toctree-wrapper compound">
-</div>
-<div style='clear:both'></div><div class="sphx-glr-footer docutils container">
-<div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/gallery_python.zip" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">gallery_python.zip</span></code></a></div>
-<div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/gallery_jupyter.zip" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">gallery_jupyter.zip</span></code></a></div>
-</div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
-</div>
+<div style='clear:both'></div><p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 
 
@@ -341,7 +325,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="block_reduce.html" class="btn btn-neutral float-right" title="Data decimation in blocks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="blockreduce.html" class="btn btn-neutral float-right" title="Blocked reduction operations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../install.html" class="btn btn-neutral" title="Installing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -354,7 +338,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Jun 14, 2018.
+      Last updated on Aug 10, 2018.
 
     </p>
   </div>

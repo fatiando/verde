@@ -94,13 +94,19 @@
               
             
             
-              <p class="caption"><span class="caption-text">Documentation</span></p>
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/trend_estimation.html">Trend estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/decimation.html">Data decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/weights.html">Using weights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
 
@@ -109,7 +115,11 @@
 
     
         <p class="caption">
-            <span class="caption-text">External links</span>
+            <span class="caption-text">
+            
+                Getting help and contributing
+            
+            </span>
         </p>
         <ul>
             
@@ -198,17 +208,18 @@
 <span class="kn">from</span> <span class="nn">.coordinates</span> <span class="k">import</span> <span class="n">get_region</span>
 
 
-<div class="viewcode-block" id="Chain"><a class="viewcode-back" href="../../api/verde.Chain.html#verde.Chain">[docs]</a><span class="k">class</span> <span class="nc">Chain</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
+<div class="viewcode-block" id="Chain"><a class="viewcode-back" href="../../api/generated/verde.Chain.html#verde.Chain">[docs]</a><span class="k">class</span> <span class="nc">Chain</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Chain filtering operations to fit on each subsequent output.</span>
 
-<span class="sd">    The :meth:`~verde.BaseGridder.filter` method of each element of the set is</span>
+<span class="sd">    The :meth:`~verde.base.BaseGridder.filter` method of each element of the set is</span>
 <span class="sd">    called with the outputs of the previous one. For gridders and trend</span>
 <span class="sd">    estimators this means that each element fits the residuals (input data</span>
 <span class="sd">    minus predicted data) of the previous one.</span>
 
-<span class="sd">    When predicting data, the predictions of each step in the chain are added</span>
-<span class="sd">    together. Steps that don&#39;t implement a ``predict`` method are ignored.</span>
+<span class="sd">    When predicting data, the predictions of each step in the chain are added together.</span>
+<span class="sd">    Steps that don&#39;t implement a :meth:`~verde.base.BaseGridder.predict` method are</span>
+<span class="sd">    ignored.</span>
 
 <span class="sd">    This provides a convenient way to chaining operations like trend estimation</span>
 <span class="sd">    to a given gridder.</span>
@@ -230,6 +241,10 @@
 <span class="sd">        A dictionary version of *steps* where the ``&#39;name&#39;``  strings are keys</span>
 <span class="sd">        and the estimator/gridder/processor objects are the values.</span>
 
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    verde.Components : Fit an estimator to each component of multi-component vector data</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
@@ -242,7 +257,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Chain.fit"><a class="viewcode-back" href="../../api/verde.Chain.html#verde.Chain.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Chain.fit"><a class="viewcode-back" href="../../api/generated/verde.Chain.html#verde.Chain.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fit the chained estimators to the given data.</span>
 
@@ -281,7 +296,7 @@
             <span class="n">args</span> <span class="o">=</span> <span class="n">step</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="Chain.predict"><a class="viewcode-back" href="../../api/verde.Chain.html#verde.Chain.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+<div class="viewcode-block" id="Chain.predict"><a class="viewcode-back" href="../../api/generated/verde.Chain.html#verde.Chain.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluates the data predicted by the chain on the given set of points.</span>
 
@@ -302,10 +317,10 @@
 <span class="sd">            The data values predicted on the given points.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;region_&#39;</span><span class="p">])</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;region_&quot;</span><span class="p">])</span>
         <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">step</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="s1">&#39;predict&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="s2">&quot;predict&quot;</span><span class="p">):</span>
                 <span class="n">predicted</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">predicted</span><span class="p">))]</span>
@@ -327,7 +342,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Jun 14, 2018.
+      Last updated on Aug 10, 2018.
 
     </p>
   </div>
