@@ -29,7 +29,6 @@ env:
         - COVERAGE=false
         - BUILD_DOCS=false
         - CHECK_FORMAT=false
-        - LINKCHECK=false
         - DEPLOY_DOCS=false
         - DEPLOY_PYPI=false
         - EXTRAS=false
@@ -58,7 +57,6 @@ matrix:
           env:
               - PYTHON=3.6
               - COVERAGE=true
-              - LINKCHECK=true
         - os: osx
           env:
               - PYTHON=3.5
@@ -107,9 +105,6 @@ script:
           make test;
       fi
     # Build the documentation
-    - if [ "$LINKCHECK" == "true" ]; then
-          make -C doc linkcheck;
-      fi
     - if [ "$BUILD_DOCS" == "true" ]; then
           make -C doc clean all;
       fi
