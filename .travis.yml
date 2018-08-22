@@ -72,8 +72,6 @@ before_install:
     # Download and install miniconda and setup dependencies
     # Need to source the script to set the PATH variable globaly
     - source continuous-integration/travis/setup-miniconda.sh
-    # Install pooch using pip to test it out
-    - pip install pooch
     # Black is Python 3.6 only so it can't be in the requirements file.
     - if [ "$CHECK_FORMAT" == "true" ]; then
           conda install --yes --channel conda-forge black python=$PYTHON;
