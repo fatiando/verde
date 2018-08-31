@@ -1,8 +1,4 @@
-**Description of proposed changes**
-
-
-
-<!-- Please describe changes proposed and **why** you made them. If unsure, open an issue first to discuss the idea. -->
+<!-- Please describe changes proposed and WHY you made them. If unsure, open an issue first to discuss the idea. -->
 
 <!-- If fixing an issue, put the issue number after the # below (no spaces). Github will automatically close it when this gets merged. -->
 Fixes #
