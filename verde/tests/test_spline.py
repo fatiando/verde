@@ -75,7 +75,8 @@ def test_spline_damping():
     npt.assert_allclose(
         spline.grid(region, shape=shape).scalars,
         synth.grid(region, shape=shape).scalars,
-        rtol=1e-2, atol=10,
+        rtol=1e-2,
+        atol=10,
     )
 
 
