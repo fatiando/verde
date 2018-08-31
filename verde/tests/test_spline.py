@@ -61,21 +61,21 @@ def test_spline_region():
 
 def test_spline_damping():
     "Test the spline solution with a bit of damping"
-    region = (100, 500, -800, -700)
+    region = (1000, 5000, -8000, -6000)
     synth = CheckerBoard(region=region)
-    data = synth.scatter(size=1200, random_state=1)
+    data = synth.scatter(size=3000, random_state=1)
     coords = (data.easting, data.northing)
     # The interpolation should be close on top of the data points
-    spline = Spline(damping=1e-15).fit(coords, data.scalars)
-    npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-5)
+    spline = Spline(damping=1e-8, mindist=1000).fit(coords, data.scalars)
+    npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-2, atol=1)
     shape = (5, 5)
-    region = (270, 320, -770, -720)
+    region = (2000, 4000, -7500, -6500)
     # Tolerance needs to be kind of high to allow for error due to small
     # dataset
     npt.assert_allclose(
         spline.grid(region, shape=shape).scalars,
         synth.grid(region, shape=shape).scalars,
-        rtol=5e-2,
+        rtol=1e-2, atol=10,
     )
 
 
