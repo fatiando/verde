@@ -6,7 +6,7 @@ import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
 from .base import check_fit_input, least_squares, BaseGridder
-from .spline import warn_weighted_exact_solution, get_force_coordinates
+from .spline import warn_weighted_exact_solution
 from .utils import n_1d_arrays, parse_engine
 from .coordinates import get_region
 
@@ -43,15 +43,15 @@ class VectorSpline2D(BaseGridder):
 
     [SandwellWessel2016]_ stabilize the solution using Singular Value Decomposition but
     we use ridge regression instead. The regularization can be controlled using the
-    *damping* argument. Alternatively, we also allow forces to be placed on a regular
-    grid using the *spacing*, *shape*, and/or *region* arguments. Regularization or
-    forces on a grid will result in a least-squares estimate at the data points, not an
-    exact solution. Note that the least-squares solution is required for data weights to
-    have any effect.
+    *damping* argument. Alternatively, you can specify the position of the forces
+    manually using the *force_coords* argument. Regularization or forces not coinciding
+    with data points will result in a least-squares estimate, not an exact solution.
+    Note that the least-squares solution is required for data weights to have any
+    effect.
 
-    The Jacobian (design, sensitivity, feature, etc) matrix for the spline is normalized
-    using :class:`sklearn.preprocessing.StandardScaler` without centering the mean so
-    that the transformation can be undone in the estimated forces.
+    Before fitting, the Jacobian (design, sensitivity, feature, etc) matrix for the
+    spline is normalized using :class:`sklearn.preprocessing.StandardScaler` without
+    centering the mean so that the transformation can be undone in the estimated forces.
 
     Parameters
     ----------
@@ -67,16 +67,10 @@ class VectorSpline2D(BaseGridder):
     damping : None or float
         The positive damping regularization parameter. Controls how much smoothness is
         imposed on the estimated forces. If None, no regularization is used.
-    shape : None or tuple
-        If not None, then should be the shape of the regular grid of forces. See
-        :func:`verde.grid_coordinates` for details.
-    spacing : None or float or tuple
-        If not None, then should be the spacing of the regular grid of forces. See
-        :func:`verde.grid_coordinates` for details.
-    region : None or tuple
-        If not None, then the boundaries (``[W, E, S, N]``) used to generate a regular
-        grid of forces. If None is given, then will use the boundaries of data given to
-        the first call to :meth:`~verde.VectorSpline2D.fit`.
+    force_coords : None or tuple of arrays
+        The easting and northing coordinates of the point forces. If None (default),
+        then will be set to the data coordinates the first time
+        :meth:`~verde.VectorSpline2D.fit` is called.
     engine : str
         Computation engine for the Jacobian matrix. Can be ``'auto'``, ``'numba'``, or
         ``'numpy'``. If ``'auto'``, will use numba if it is installed or numpy
@@ -87,8 +81,6 @@ class VectorSpline2D(BaseGridder):
     ----------
     forces_ : array
         The estimated forces that fit the observed data.
-    force_coords_ : tuple of arrays
-        The easting and northing coordinates of the forces.
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
@@ -98,21 +90,12 @@ class VectorSpline2D(BaseGridder):
     """
 
     def __init__(
-        self,
-        poisson=0.5,
-        mindist=10e3,
-        damping=None,
-        shape=None,
-        spacing=None,
-        region=None,
-        engine="auto",
+        self, poisson=0.5, mindist=10e3, damping=None, force_coords=None, engine="auto"
     ):
         self.poisson = poisson
-        self.damping = damping
-        self.shape = shape
-        self.spacing = spacing
         self.mindist = mindist
-        self.region = region
+        self.damping = damping
+        self.force_coords = force_coords
         self.engine = engine
 
     def fit(self, coordinates, data, weights=None):
@@ -161,8 +144,9 @@ class VectorSpline2D(BaseGridder):
             weights = None
         warn_weighted_exact_solution(self, weights)
         data = np.concatenate([i.ravel() for i in data])
-        self.force_coords_ = get_force_coordinates(self, coordinates)
-        jacobian = self.jacobian(coordinates[:2], self.force_coords_)
+        if self.force_coords is None:
+            self.force_coords = tuple(i.copy() for i in n_1d_arrays(coordinates, n=2))
+        jacobian = self.jacobian(coordinates[:2], self.force_coords)
         self.force_ = least_squares(jacobian, data, weights, self.damping)
         return self
 
@@ -187,14 +171,14 @@ class VectorSpline2D(BaseGridder):
             predicted vector data values at each point.
 
         """
-        check_is_fitted(self, ["force_", "force_coords_"])
-        jac = self.jacobian(coordinates[:2], self.force_coords_)
+        check_is_fitted(self, ["force_"])
+        jac = self.jacobian(coordinates[:2], self.force_coords)
         cast = np.broadcast(*coordinates[:2])
         npoints = cast.size
         components = jac.dot(self.force_).reshape((2, npoints))
         return tuple(comp.reshape(cast.shape) for comp in components)
 
-    def jacobian(self, coordinates, force_coordinates, dtype="float64"):
+    def jacobian(self, coordinates, force_coords, dtype="float64"):
         """
         Make the Jacobian matrix for the 2D coupled elastic deformation.
 
@@ -213,7 +197,7 @@ class VectorSpline2D(BaseGridder):
             Arrays with the coordinates of each data point. Should be in the
             following order: (easting, northing, vertical, ...). Only easting and
             northing will be used, all subsequent coordinates will be ignored.
-        force_coordinates : tuple of arrays
+        force_coords : tuple of arrays
             Arrays with the coordinates for the forces. Should be in the same order as
             the coordinate arrays.
         dtype : str or numpy dtype
@@ -225,7 +209,7 @@ class VectorSpline2D(BaseGridder):
             The (n_data*2, n_forces*2) Jacobian matrix.
 
         """
-        force_east, force_north = n_1d_arrays(force_coordinates, n=2)
+        force_east, force_north = n_1d_arrays(force_coords, n=2)
         east, north = n_1d_arrays(coordinates, n=2)
         if parse_engine(self.engine) == "numba":
             jac = jacobian_numba(

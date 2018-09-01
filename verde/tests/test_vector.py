@@ -16,10 +16,10 @@ from .utils import requires_numba
 @pytest.fixture
 def data2d():
     "Make 2 component vector data"
-    synth = CheckerBoard(region=(2, 8, -3, 3), w_east=20, w_north=20)
-    coordinates = grid_coordinates(synth.region, spacing=0.5)
-    data = tuple(synth.predict(coordinates) for i in range(2))
-    return coordinates, data
+    synth = CheckerBoard()
+    coordinates = grid_coordinates(synth.region, shape=(30, 25))
+    data = tuple(synth.predict(coordinates).ravel() for i in range(2))
+    return tuple(i.ravel() for i in coordinates), data
 
 
 def test_vector2d(data2d):
@@ -27,33 +27,27 @@ def test_vector2d(data2d):
     coords, data = data2d
     spline = VectorSpline2D().fit(coords, data)
     npt.assert_allclose(spline.score(coords, data), 1)
-    npt.assert_allclose(spline.predict(coords), data, rtol=1e-3)
+    npt.assert_allclose(spline.predict(coords), data, rtol=1e-2, atol=1)
     # There should be 1 force per data point
-    assert data[0].size == spline.force_coords_[0].size
+    assert data[0].size == spline.force_coords[0].size
     assert data[0].size * 2 == spline.force_.size
-    npt.assert_allclose(spline.force_coords_, n_1d_arrays(coords, n=2))
-
-
-def test_vector2d_twice(data2d):
-    "Check that the force coordinates are updated if fitting a second time"
-    coords, data = data2d
-    spline = VectorSpline2D().fit(coords, data)
-    npt.assert_allclose(spline.force_coords_, n_1d_arrays(coords, n=2))
-    coords2 = tuple(i * 1000 for i in coords)
-    spline.fit(coords2, data)
-    npt.assert_allclose(spline.force_coords_, n_1d_arrays(coords2, n=2))
-    assert not np.allclose(spline.force_coords_, n_1d_arrays(coords, n=2))
+    npt.assert_allclose(spline.force_coords, n_1d_arrays(coords, n=2))
 
 
 def test_vector2d_weights(data2d):
     "Use unit weights and a regular grid solution"
     coords, data = data2d
-    weights = tuple(np.ones_like(data[0]) for i in range(2))
-    spline = VectorSpline2D(shape=(11, 11)).fit(coords, data, weights)
-    npt.assert_allclose(spline.score(coords, data), 1, rtol=1e-3)
-    npt.assert_allclose(spline.predict(coords), data, rtol=5e-2)
-    assert spline.force_coords_[0].size == 11 * 11
-    assert spline.force_.size == 2 * 11 * 11
+    outlier = 100
+    outlier_value = 100000
+    data_outlier = tuple(i.copy() for i in data)
+    data_outlier[0][outlier] += outlier_value
+    data_outlier[1][outlier] += outlier_value
+    weights = tuple(np.ones_like(data_outlier[0]) for i in range(2))
+    weights[0][outlier] = 1e-10
+    weights[1][outlier] = 1e-10
+    spline = VectorSpline2D(damping=1e-8).fit(coords, data_outlier, weights)
+    npt.assert_allclose(spline.score(coords, data), 1, atol=0.01)
+    npt.assert_allclose(spline.predict(coords), data, rtol=1e-2, atol=5)
 
 
 def test_vector2d_fails(data2d):

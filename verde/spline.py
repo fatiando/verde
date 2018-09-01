@@ -7,7 +7,7 @@ import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
 from .base import BaseGridder, check_fit_input, least_squares
-from .coordinates import grid_coordinates, get_region
+from .coordinates import get_region
 from .utils import n_1d_arrays, parse_engine
 
 try:
@@ -46,16 +46,16 @@ class Spline(BaseGridder):
     of data points.
 
     Approximate (and more stable) solutions can be obtained by applying damping
-    regularization to smooth the estimated forces (and interpolated values) or by
-    distributing the forces on a regular grid instead (using arguments *spacing*,
-    *shape*, and/or *region*).
+    regularization to smooth the estimated forces (and interpolated values) or by not
+    using the data coordinates to position the forces (use the *force_coords*
+    parameter).
 
     Data weights can be used during fitting but only have an any effect when using the
     approximate solutions.
 
-    The Jacobian (design, sensitivity, feature, etc) matrix for the spline is normalized
-    using :class:`sklearn.preprocessing.StandardScaler` without centering the mean so
-    that the transformation can be undone in the estimated forces.
+    Before fitting, the Jacobian (design, sensitivity, feature, etc) matrix for the
+    spline is normalized using :class:`sklearn.preprocessing.StandardScaler` without
+    centering the mean so that the transformation can be undone in the estimated forces.
 
     Parameters
     ----------
@@ -66,16 +66,10 @@ class Spline(BaseGridder):
     damping : None or float
         The positive damping regularization parameter. Controls how much smoothness is
         imposed on the estimated forces. If None, no regularization is used.
-    shape : None or tuple
-        If not None, then should be the shape of the regular grid of forces. See
-        :func:`verde.grid_coordinates` for details.
-    spacing : None or float or tuple
-        If not None, then should be the spacing of the regular grid of forces. See
-        :func:`verde.grid_coordinates` for details.
-    region : None or tuple
-        If not None, then the boundaries (``[W, E, S, N]``) used to generate a regular
-        grid of forces. If None is given, then will use the boundaries of data given to
-        the first call to :meth:`~verde.Spline.fit`.
+    force_coords : None or tuple of arrays
+        The easting and northing coordinates of the point forces. If None (default),
+        then will be set to the data coordinates the first time
+        :meth:`~verde.Spline.fit` is called.
     engine : str
         Computation engine for the Jacobian matrix. Can be ``'auto'``, ``'numba'``, or
         ``'numpy'``. If ``'auto'``, will use numba if it is installed or numpy
@@ -86,8 +80,6 @@ class Spline(BaseGridder):
     ----------
     forces_ : array
         The estimated forces that fit the observed data.
-    force_coords_ : tuple of arrays
-        The easting and northing coordinates of the forces.
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
@@ -95,20 +87,10 @@ class Spline(BaseGridder):
 
     """
 
-    def __init__(
-        self,
-        mindist=1e-5,
-        damping=None,
-        shape=None,
-        spacing=None,
-        region=None,
-        engine="auto",
-    ):
-        self.damping = damping
-        self.shape = shape
-        self.spacing = spacing
+    def __init__(self, mindist=1e-5, damping=None, force_coords=None, engine="auto"):
         self.mindist = mindist
-        self.region = region
+        self.damping = damping
+        self.force_coords = force_coords
         self.engine = engine
 
     def fit(self, coordinates, data, weights=None):
@@ -143,8 +125,9 @@ class Spline(BaseGridder):
         warn_weighted_exact_solution(self, weights)
         # Capture the data region to use as a default when gridding.
         self.region_ = get_region(coordinates[:2])
-        self.force_coords_ = get_force_coordinates(self, coordinates)
-        jacobian = self.jacobian(coordinates[:2], self.force_coords_)
+        if self.force_coords is None:
+            self.force_coords = tuple(i.copy() for i in n_1d_arrays(coordinates, n=2))
+        jacobian = self.jacobian(coordinates[:2], self.force_coords)
         self.force_ = least_squares(jacobian, data, weights, self.damping)
         return self
 
@@ -168,12 +151,12 @@ class Spline(BaseGridder):
             The data values evaluated on the given points.
 
         """
-        check_is_fitted(self, ["force_", "force_coords_"])
-        jac = self.jacobian(coordinates[:2], self.force_coords_)
+        check_is_fitted(self, ["force_"])
+        jac = self.jacobian(coordinates[:2], self.force_coords)
         shape = np.broadcast(*coordinates[:2]).shape
         return jac.dot(self.force_).reshape(shape)
 
-    def jacobian(self, coordinates, force_coordinates, dtype="float64"):
+    def jacobian(self, coordinates, force_coords, dtype="float64"):
         """
         Make the Jacobian matrix for the 2D biharmonic spline.
 
@@ -186,7 +169,7 @@ class Spline(BaseGridder):
             Arrays with the coordinates of each data point. Should be in the
             following order: (easting, northing, vertical, ...). Only easting and
             northing will be used, all subsequent coordinates will be ignored.
-        force_coordinates : tuple of arrays
+        force_coords : tuple of arrays
             Arrays with the coordinates for the forces. Should be in the same order as
             the coordinate arrays.
         dtype : str or numpy dtype
@@ -198,7 +181,7 @@ class Spline(BaseGridder):
             The (n_data, n_forces) Jacobian matrix.
 
         """
-        force_east, force_north = n_1d_arrays(force_coordinates, n=2)
+        force_east, force_north = n_1d_arrays(force_coords, n=2)
         east, north = n_1d_arrays(coordinates, n=2)
         if parse_engine(self.engine) == "numba":
             jac = np.empty((east.size, force_east.size), dtype=dtype)
@@ -217,64 +200,18 @@ def warn_weighted_exact_solution(spline, weights):
     Parameters
     ----------
     spline : estimator
-        The spline instance that we'll check. Needs to have ``shape``, ``spacing``, and
-        ``damping`` attributes.
+        The spline instance that we'll check. Needs to have the ``damping`` attribute.
     weights : array or None
         The weights given to fit.
 
     """
-    # Check if we're using weights with the exact solution and warn the
-    # user that it won't have any effect.
-    exact = all(i is None for i in [spline.damping, spline.spacing, spline.shape])
-    if weights is not None and exact:
+    # Check if we're using weights without damping and warn the user that it might not
+    # have any effect.
+    if weights is not None and spline.damping is None:
         warn(
-            "Weights are ignored for the exact solution. "
-            "Use damping or specify a shape/spacing for the forces."
+            "Weights might have no effect if no regularization is used. "
+            "Use damping or specify force positions that are different from the data."
         )
-
-
-def get_force_coordinates(spline, coordinates):
-    """
-    Make arrays for force coordinates depending on the spline configuration.
-
-    If no ``shape`` and ``spacing`` are given, then will use the data coordinates as
-    force coordinates. Otherwise, will generate a grid based on the given spacing/shape
-    and the data region.
-
-    Parameters
-    ----------
-    spline : estimator
-        The spline instance. Needs to have ``shape`` and ``spacing`` attributes. If
-        ``region`` is present, will use it to define the grid region. If not, will use
-        the data region.
-    coordinates : tuple of arrays
-        Arrays with the coordinates of each data point. Should be in the
-        following order: (easting, northing, vertical, ...). Only easting and
-        northing will be used, all subsequent coordinates will be ignored.
-
-    Returns
-    -------
-    force_coordinates : tuple of arrays
-        The coordinate arrays for the forces.
-
-    """
-    # Set the force positions. If no shape or spacing are given, then they
-    # will coincide with the data points. This will only happen once so the
-    # model won't change during later fits.
-    if spline.shape is None and spline.spacing is None:
-        coords = tuple(i.copy() for i in n_1d_arrays(coordinates, n=2))
-    else:
-        if spline.region is None:
-            region = get_region(coordinates)
-        else:
-            region = spline.region
-        coords = tuple(
-            i.ravel()
-            for i in grid_coordinates(
-                region, shape=spline.shape, spacing=spline.spacing
-            )
-        )
-    return coords
 
 
 @jit(nopython=True, target="cpu", fastmath=True, parallel=True)
