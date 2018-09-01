@@ -8,7 +8,6 @@ import numpy.testing as npt
 
 from ..spline import Spline
 from ..datasets.synthetic import CheckerBoard
-from ..utils import n_1d_arrays
 from .utils import requires_numba
 
 
@@ -24,7 +23,7 @@ def test_spline():
     npt.assert_allclose(spline.score(coords, data.scalars), 1)
     # There should be 1 force per data point
     assert data.scalars.size == spline.force_.size
-    npt.assert_allclose(spline.force_coords_, coords)
+    npt.assert_allclose(spline.force_coords, coords)
     shape = (5, 5)
     region = (270, 320, -770, -720)
     # Tolerance needs to be kind of high to allow for error due to small
@@ -36,18 +35,23 @@ def test_spline():
     )
 
 
-def test_spline_twice():
-    "Check that the forces are updated when fitting twice"
-    grid = CheckerBoard(region=(1000, 5000, -8000, -6000)).grid(shape=(10, 10))
-    coords = n_1d_arrays(np.meshgrid(grid.easting, grid.northing), n=2)
-    spline = Spline()
-    spline.fit(coords, grid.scalars.values.ravel())
-    npt.assert_allclose(spline.force_coords_, coords)
-    grid2 = CheckerBoard(region=(-15, -5, 10, 20)).grid(shape=(10, 10))
-    coords2 = n_1d_arrays(np.meshgrid(grid2.easting, grid2.northing), n=2)
-    spline.fit(coords2, grid2.scalars.values.ravel())
-    npt.assert_allclose(spline.force_coords_, coords2)
-    assert not np.allclose(spline.force_coords_, coords)
+def test_spline_weights():
+    "Use weights to ignore an outlier"
+    data = CheckerBoard().scatter(size=2000, random_state=1)
+    data_outlier = data.scalars.copy()
+    outlier = 500
+    outlier_value = 100e3
+    data_outlier[outlier] += outlier_value
+    weights = np.ones_like(data_outlier)
+    weights[outlier] = 1e-10
+    coords = (data.easting, data.northing)
+    spline = Spline(damping=1e-8).fit(coords, data_outlier, weights=weights)
+    npt.assert_allclose(spline.score(coords, data.scalars), 1, atol=0.01)
+    predicted = spline.predict(coords)
+    npt.assert_allclose(predicted, data.scalars, rtol=1e-2, atol=10)
+    npt.assert_allclose(
+        data_outlier[outlier] - predicted[outlier], outlier_value, rtol=1e-2
+    )
 
 
 def test_spline_region():
@@ -80,35 +84,12 @@ def test_spline_damping():
     )
 
 
-def test_spline_grid():
-    "Test the spline solution with forces on a grid"
-    region = (1000, 5000, -8000, -7000)
-    synth = CheckerBoard(region=region)
-    data = synth.scatter(size=1500, random_state=1)
-    coords = (data.easting, data.northing)
-    # The interpolation should be close on top of the data points
-    spline = Spline(shape=(35, 35)).fit(coords, data.scalars)
-    npt.assert_allclose(spline.score(coords, data.scalars), 1, rtol=1e-2)
-    assert spline.force_.size == 35 ** 2
-    npt.assert_allclose(spline.force_coords_[0].min(), data.easting.min())
-    npt.assert_allclose(spline.force_coords_[1].min(), data.northing.min())
-    shape = (3, 3)
-    region = (2700, 3200, -7700, -7200)
-    # Tolerance needs to be kind of high to allow for error due to small
-    # dataset
-    npt.assert_allclose(
-        spline.grid(region, shape=shape).scalars,
-        synth.grid(region, shape=shape).scalars,
-        rtol=5e-2,
-    )
-
-
 def test_spline_warns_weights():
     "Check that a warning is issued when using weights and the exact solution."
     data = CheckerBoard().scatter(random_state=100)
     weights = np.ones_like(data.scalars)
     grd = Spline()
-    msg = "Weights are ignored for the exact solution"
+    msg = "Weights might have no effect if no regularization is used"
     with warnings.catch_warnings(record=True) as warn:
         grd.fit((data.easting, data.northing), data.scalars, weights=weights)
         assert len(warn) == 1
@@ -119,7 +100,7 @@ def test_spline_warns_weights():
 def test_spline_warns_underdetermined():
     "Check that a warning is issued when the problem is underdetermined"
     data = CheckerBoard().scatter(size=50, random_state=100)
-    grd = Spline(shape=(10, 10))
+    grd = Spline(force_coords=(np.arange(60), np.arange(60)))
     with warnings.catch_warnings(record=True) as warn:
         grd.fit((data.easting, data.northing), data.scalars)
         assert len(warn) == 1
