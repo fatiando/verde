@@ -1,6 +1,6 @@
 """
 Trend estimation
-----------------
+================
 
 Trend estimation and removal is a common operation, particularly when dealing with
 geophysical data. Moreover, some of the interpolation methods, like

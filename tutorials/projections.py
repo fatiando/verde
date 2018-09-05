@@ -1,0 +1,101 @@
+"""
+Geographic coordinates
+======================
+
+Most gridders and processing methods in Verde operate under the assumption that the data
+coordinates are Cartesian. To process data in geographic (longitude and latitude)
+coordinates, we must first project them. There are different ways of doing this in
+Python but most of them rely on the `PROJ library <https://proj4.org/>`__. We'll use
+`pyproj <https://github.com/jswhit/pyproj>`__ to access PROJ directly and handle the
+projection operations.
+"""
+import pyproj
+import numpy as np
+import matplotlib.pyplot as plt
+import verde as vd
+
+########################################################################################
+# With pyproj, we can create functions that will project our coordinates to and from
+# different coordinate systems. For our Baja California bathymetry data, we'll use a
+# Mercator projection.
+
+data = vd.datasets.fetch_baja_bathymetry()
+# We're choosing the latitude of true scale as the mean latitude of our dataset.
+projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
+
+########################################################################################
+# The Proj object is a callable (meaning that it behaves like a function) that will take
+# longitude and latitude and return easting and northing coordinates.
+
+# pyproj doesn't play well with Pandas so we need to convert to numpy arrays
+proj_coords = projection(data.longitude.values, data.latitude.values)
+print(proj_coords)
+
+########################################################################################
+# We can plot our projected coordinates using matplotlib.
+
+plt.figure(figsize=(7, 7))
+plt.title("Projected coordinates of bathymetry measurements")
+# Plot the bathymetry data locations as black dots
+plt.plot(proj_coords[0], proj_coords[1], ".k", markersize=0.5)
+plt.xlabel("Easting (m)")
+plt.ylabel("Northing (m)")
+plt.tight_layout()
+plt.show()
+
+########################################################################################
+# Cartesian grids
+# ---------------
+#
+# Now we can use :class:`verde.BlockReduce` and :class:`verde.Spline` on our projected
+# coordinates instead. We'll specify the desired grid spacing as arc-minutes and convert
+# it to Cartesian using the 1 degree = 111 km rule-of-thumb.
+spacing = 7/60
+reducer = vd.BlockReduce(np.median, spacing=spacing*111e3)
+filter_coords, filter_bathy = reducer.filter(proj_coords, data.bathymetry_m)
+spline = vd.Spline().fit(filter_coords, filter_bathy)
+
+########################################################################################
+# If we now call :meth:`verde.Spline.grid` we'll get back a grid evenly spaced in
+# projected Cartesian coordinates.
+grid = spline.grid(spacing=spacing*111e3, data_names=["bathymetry"])
+print(grid)
+
+########################################################################################
+# We'll mask our grid using :func:`verde.distance_mask` to get rid of all the spurious
+# solutions far away from the data points.
+mask = vd.distance_mask(proj_coords, maxdist=30e3,
+                        coordinates=np.meshgrid(grid.easting, grid.northing))
+grid = grid.where(mask)
+
+plt.figure(figsize=(7, 7))
+plt.title("Gridded bathymetry in Cartesian coordinates")
+plt.pcolormesh(grid.easting, grid.northing, grid.bathymetry, cmap="viridis", vmax=0)
+plt.colorbar(pad=0.1, aspect=50).set_label("bathymetry (m)")
+plt.plot(filter_coords[0], filter_coords[1], ".k", markersize=0.5)
+plt.xlabel("Easting (m)")
+plt.ylabel("Northing (m)")
+plt.tight_layout()
+plt.show()
+
+
+########################################################################################
+# Geographic grids
+# ----------------
+#
+# The Cartesian grid that we generated won't evenly spaced if we convert the coordinates
+# back to geographic latitude and longitude. Verde gridders allow you to generate an
+# evenly spaced grid in geographic coordinates through the ``projection`` argument of
+# the ``grid`` method.
+#
+# By providing a projection function (like our ``projection`` variable) to ``grid``,
+# Verde will generate coordinates for a regular grid and then pass them through the
+# projection function before predicting data values. This way, you can generate a grid
+# in a projection that is not the one you used to fit the spline.
+
+# Get the geographic bounding region of the data
+region = vd.get_region((data.longitude, data.latitude))
+print(region)
+
+
+grid_geo = spline.grid(region=region, spacing=spacing, projection=projection, dims=["
