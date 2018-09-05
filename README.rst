@@ -73,22 +73,27 @@ Advantages of using Green's functions include:
 * The estimated model can be **easily stored** for later use, like
   spherical-harmonic coefficients are used in gravimetry.
 
+The main disadvantage is the heavy memory and processing time requirement (it's a linear
+regression problem). So it's not recommended for gridding large datasets (> 10,000
+points), though it will depend on how much RAM you have available.
+
 
 Project goals
 -------------
 
-* Provide a machine-learning inspired interface for Green's functions gridding
-  of spatial data
-* Integration with the Scipy stack: numpy, pandas (for xyz data), and xarray
-  (for grids)
-* Include functions for common processing and data preparation tasks, like
-  blocked means and medians
-* Support for gridding scalar and vector data (like wind speed or GPS
-  velocities)
+* Provide a machine-learning inspired interface for gridding spatial data
+* Integration with the Scipy stack: numpy, pandas, scikit-learn, and xarray
+* Include common processing and data preparation tasks, like blocked means and 2D trends
+* Support for gridding scalar and vector data (like wind speed or GPS velocities)
 * Support for both Cartesian and geographic coordinates
 
+The first release of Verde was focused on meeting these initial goals and establishing
+the look and feel of the library. Later releases will focus on expanding the range of
+gridders available, optimizing the code, and improving algorithms so that
+larger-than-memory datasets can also be supported.
 
-Contacting Us
+
+Contacting us
 -------------
 
 * Most discussion happens `on Github <https://github.com/fatiando/verde>`__.
