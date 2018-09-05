@@ -30,6 +30,7 @@
 
     tutorials/trend_estimation.rst
     tutorials/decimation.rst
+    tutorials/projections.rst
     tutorials/weights.rst
     api/index.rst
     references.rst
