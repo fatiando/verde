@@ -1,8 +1,8 @@
-
 .. image:: https://github.com/fatiando/verde/raw/master/doc/_static/readme-banner.png
     :alt: Verde
 
 `Documentation <http://www.fatiando.org/verde>`__ |
+`Documentation (dev version) <http://www.fatiando.org/verde/dev>`__ |
 `Contact <https://gitter.im/fatiando/fatiando>`__ |
 Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 
@@ -33,10 +33,13 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
     :target: https://gitter.im/fatiando/fatiando
 
 
+ .. placeholder-for-doc-index
+
+
 Disclaimer
 ----------
 
-**This package is in early stages of design and implementation.**
+🚨 **This package is in early stages of design and implementation.** 🚨
 
 We welcome any feedback and ideas!
 Let us know by submitting
@@ -147,3 +150,12 @@ License
 This is free software: you can redistribute it and/or modify it under the terms
 of the **BSD 3-clause License**. A copy of this license is provided in
 `LICENSE.txt <https://github.com/fatiando/verde/blob/master/LICENSE.txt>`__.
+
+
+Documentation for other versions
+--------------------------------
+
+* `Development <http://www.fatiando.org/verde/dev>`__ (reflects the *master* branch on
+  Github)
+* `Latest release <http://www.fatiando.org/verde/latest>`__
+* `v0.1.0 <http://www.fatiando.org/verde/v0.1a0>`__
