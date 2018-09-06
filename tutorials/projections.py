@@ -51,7 +51,7 @@ plt.show()
 # Now we can use :class:`verde.BlockReduce` and :class:`verde.Spline` on our projected
 # coordinates. We'll specify the desired grid spacing as degrees and convert it to
 # Cartesian using the 1 degree approx. 111 km rule-of-thumb.
-spacing = 7 / 60
+spacing =  / 60
 reducer = vd.BlockReduce(np.median, spacing=spacing * 111e3)
 filter_coords, filter_bathy = reducer.filter(proj_coords, data.bathymetry_m)
 spline = vd.Spline().fit(filter_coords, filter_bathy)
