@@ -65,7 +65,7 @@ chain = vd.Chain(
     [
         ("reduce", vd.BlockReduce(np.median, spacing * 111e3)),
         ("trend", vd.Trend(degree=1)),
-        ("spline", vd.Spline(mindist=10e3)),
+        ("spline", vd.Spline()),
     ]
 )
 print(chain)
