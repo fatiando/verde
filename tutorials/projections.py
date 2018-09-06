@@ -1,5 +1,5 @@
 """
-Geographic coordinates
+Geographic Coordinates
 ======================
 
 Most gridders and processing methods in Verde operate under the assumption that the data

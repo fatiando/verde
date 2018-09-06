@@ -21,16 +21,17 @@
     tutorials/overview.rst
     install.rst
     gallery/index.rst
-    sample_data/index.rst
 
 .. toctree::
     :maxdepth: 2
     :hidden:
     :caption: User Guide
 
-    tutorials/trend_estimation.rst
+    sample_data/index.rst
+    tutorials/trends.rst
     tutorials/decimation.rst
     tutorials/projections.rst
+    tutorials/chain.rst
     tutorials/weights.rst
     api/index.rst
     references.rst

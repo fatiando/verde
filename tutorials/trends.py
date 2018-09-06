@@ -1,5 +1,5 @@
 """
-Trend estimation
+Trend Estimation
 ================
 
 Trend estimation and removal is a common operation, particularly when dealing with
