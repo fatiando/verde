@@ -143,7 +143,7 @@ print(chain.named_steps["spline"])
 # All gridders and estimators in the chain have been fitted and can be used to generate
 # grids and predictions. For example, we can get a grid of the estimated trend:
 
-grid_trend = chain.named_steps['trend'].grid(
+grid_trend = chain.named_steps["trend"].grid(
     region=region,
     spacing=spacing,
     projection=projection,
