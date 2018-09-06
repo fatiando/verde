@@ -1,5 +1,5 @@
 """
-Geographic coordinates
+Geographic Coordinates
 ======================
 
 Most gridders and processing methods in Verde operate under the assumption that the data
@@ -12,6 +12,7 @@ projection operations.
 import pyproj
 import numpy as np
 import matplotlib.pyplot as plt
+import cartopy.crs as ccrs
 import verde as vd
 
 ########################################################################################
@@ -51,7 +52,7 @@ plt.show()
 # Now we can use :class:`verde.BlockReduce` and :class:`verde.Spline` on our projected
 # coordinates. We'll specify the desired grid spacing as degrees and convert it to
 # Cartesian using the 1 degree approx. 111 km rule-of-thumb.
-spacing = 7 / 60
+spacing = 10 / 60
 reducer = vd.BlockReduce(np.median, spacing=spacing * 111e3)
 filter_coords, filter_bathy = reducer.filter(proj_coords, data.bathymetry_m)
 spline = vd.Spline().fit(filter_coords, filter_bathy)
@@ -114,8 +115,6 @@ print(grid_geo)
 
 ########################################################################################
 # Now we can use the Cartopy library to plot our geographic grid.
-
-import cartopy.crs as ccrs
 
 plt.figure(figsize=(7, 6))
 ax = plt.axes(projection=ccrs.Mercator())

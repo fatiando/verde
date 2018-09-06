@@ -1,5 +1,5 @@
 """
-Using weights
+Using Weights
 =============
 
 One of the advantages of using a Green's functions approach to interpolation is that we

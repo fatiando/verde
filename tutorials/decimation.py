@@ -1,5 +1,5 @@
 """
-Data decimation
+Data Decimation
 ===============
 
 Often times, raw spatial data can be highly oversampled in a direction. In these cases,
