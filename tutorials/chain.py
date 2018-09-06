@@ -37,7 +37,7 @@ import verde as vd
 data = vd.datasets.fetch_baja_bathymetry()
 region = vd.get_region((data.longitude, data.latitude))
 # The desired grid spacing in degrees (converted to meters using 1 degree approx. 111km)
-spacing = 7 / 60
+spacing = 10 / 60
 # Use Mercator projection because Spline is a Cartesian gridder
 projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 proj_coords = projection(data.longitude.values, data.latitude.values)
