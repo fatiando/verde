@@ -23,14 +23,14 @@ test:
 	# Run a tmp folder to make sure the tests are run on the installed version
 	mkdir -p $(TESTDIR)
 	cd $(TESTDIR); python -c "import $(PROJECT); $(PROJECT).test()"
-	rm -r $(TESTDIR)
+	rm -rvf $(TESTDIR)
 
 coverage:
 	# Run a tmp folder to make sure the tests are run on the installed version
 	mkdir -p $(TESTDIR)
 	cd $(TESTDIR); pytest $(PYTEST_ARGS) $(PROJECT)
 	cp $(TESTDIR)/.coverage* .
-	rm -r $(TESTDIR)
+	rm -rvf $(TESTDIR)
 
 format:
 	black $(FORMAT_FILES)

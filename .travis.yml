@@ -25,13 +25,13 @@ env:
         - TWINE_USERNAME=Leonardo.Uieda
         # The file with the listed requirements to be installed by conda
         - CONDA_REQUIREMENTS=requirements.txt
+        - CONDA_REQUIREMENTS_DEV=requirements-dev.txt
         # These variables control which actions are performed in a build
         - COVERAGE=false
         - BUILD_DOCS=false
         - CHECK_FORMAT=false
         - DEPLOY_DOCS=false
         - DEPLOY_PYPI=false
-        - EXTRAS=false
 
 # Specify the build configurations. Be sure to only deploy from a single build.
 matrix:
@@ -39,11 +39,13 @@ matrix:
         - os: linux
           env:
               - PYTHON=3.6
-              - CHECK_FORMAT=true
               - COVERAGE=true
               - BUILD_DOCS=true
               - DEPLOY_DOCS=true
               - DEPLOY_PYPI=true
+              - CHECK_FORMAT=true
+              # Black is Python 3.6 only so it can't be in the requirements file.
+              - CONDA_INSTALL_EXTRA="black"
         - os: linux
           env:
               - PYTHON=3.5
@@ -52,7 +54,7 @@ matrix:
           env:
               - PYTHON=3.6
               - COVERAGE=true
-              - EXTRAS=true
+              - CONDA_INSTALL_EXTRA="pykdtree numba"
         - os: osx
           env:
               - PYTHON=3.6
@@ -72,14 +74,6 @@ before_install:
     # Download and install miniconda and setup dependencies
     # Need to source the script to set the PATH variable globaly
     - source continuous-integration/travis/setup-miniconda.sh
-    # Black is Python 3.6 only so it can't be in the requirements file.
-    - if [ "$CHECK_FORMAT" == "true" ]; then
-          conda install --yes --channel conda-forge black python=$PYTHON;
-      fi
-    # Install extra dependencies
-    - if [ "$EXTRAS" == "true" ]; then
-          conda install --yes --channel conda-forge pykdtree numba python=$PYTHON;
-      fi
     # Show installed pkg information for postmortem diagnostic
     - conda list
 
