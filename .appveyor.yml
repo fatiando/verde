@@ -21,6 +21,8 @@ init:
     # The file with the listed requirements to be installed by setup-miniconda.bat
     - set CONDA_REQUIREMENTS=requirements.txt
     - set CONDA_REQUIREMENTS_DEV=requirements-dev.txt
+    # Cartopy, scipy, and proj aren't on conda-forge for some reason.
+    - set CONDA_EXTRA_CHANNEL=defaults
 
 install:
     # Copy sample data to the verde data dir to avoid downloading all the time
