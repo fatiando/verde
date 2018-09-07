@@ -71,11 +71,18 @@ def test_setup_baja_bathymetry():
 def test_fetch_rio_magnetic():
     "Make sure the data are loaded properly"
     data = fetch_rio_magnetic()
-    assert data.size == 150884
-    assert data.shape == (37721, 4)
+    assert data.size == 226308
+    assert data.shape == (37718, 6)
     assert all(
         data.columns
-        == ["longitude", "latitude", "total_field_anomaly_nt", "height_ell_m"]
+        == [
+            "longitude",
+            "latitude",
+            "total_field_anomaly_nt",
+            "height_ell_m",
+            "line_type",
+            "line_number",
+        ]
     )
 
 

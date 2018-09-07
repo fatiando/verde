@@ -5,7 +5,7 @@ Magnetic data from Rio de Janeiro
 We provide sample total-field magnetic anomaly data from an airborne survey of Rio de
 Janeiro, Brazil, from the 1970s. The data are made available by the Geological Survey of
 Brazil (CPRM) through their `GEOSGB portal <http://geosgb.cprm.gov.br/>`__. See the
-documentation for :func:`verde.datasets.fetch_rio_magnetic_anomaly` for more details.
+documentation for :func:`verde.datasets.fetch_rio_magnetic` for more details.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
