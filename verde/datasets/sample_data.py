@@ -133,8 +133,9 @@ def fetch_rio_magnetic():
     -------
     data : :class:`pandas.DataFrame`
         The magnetic anomaly data. Columns are longitude, latitude, total-field
-        magnetic anomaly (nanoTesla), and observation height above the
-        ellipsoid (in meters) for each data point.
+        magnetic anomaly (nanoTesla), observation height above the WGS84 ellipsoid (in
+        meters), flight line type (LINE or TIE), and flight line number for each data
+        point.
 
     See also
     --------
