@@ -32,6 +32,7 @@
     tutorials/decimation.rst
     tutorials/projections.rst
     tutorials/chain.rst
+    tutorials/model_selection.rst
     tutorials/weights.rst
     api/index.rst
     references.rst
