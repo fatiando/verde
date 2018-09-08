@@ -34,7 +34,7 @@ train, test = vd.train_test_split(
     random_state=2,
 )
 
-# We'll make a 30 arc-minute grid in the end.
+# We'll make a 20 arc-minute grid
 spacing = 20 / 60
 
 # Chain together a blocked mean to avoid aliasing, a polynomial trend (Spline usually
@@ -51,6 +51,7 @@ chain = vd.Chain(
     ]
 )
 print(chain)
+
 # Fit on the training data
 chain.fit(*train)
 # And score on the testing data. The best possible score is 1, meaning a perfect
@@ -60,11 +61,12 @@ print("Cross-validation R^2 score: {:.2f}".format(score))
 
 # Interpolate the wind speed onto a regular geographic grid and mask the data that are
 # far from the observation points
-mask = vd.distance_mask(coordinates, maxdist=1, region=region, spacing=spacing)
-grid = chain.grid(
+grid_full = chain.grid(
     region, spacing=spacing, projection=projection, dims=["latitude", "longitude"]
 )
-grid = grid.where(mask)
+grid = vd.distance_mask(
+    coordinates, maxdist=3 * spacing * 111e3, grid=grid_full, projection=projection
+)
 
 # Make maps of the original and gridded wind speed
 plt.figure(figsize=(6, 6))

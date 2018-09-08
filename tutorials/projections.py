@@ -67,10 +67,7 @@ print(grid)
 ########################################################################################
 # We'll mask our grid using :func:`verde.distance_mask` to get rid of all the spurious
 # solutions far away from the data points.
-mask = vd.distance_mask(
-    proj_coords, maxdist=30e3, coordinates=np.meshgrid(grid.easting, grid.northing)
-)
-grid = grid.where(mask)
+grid = vd.distance_mask(proj_coords, maxdist=30e3, grid=grid)
 
 plt.figure(figsize=(7, 6))
 plt.title("Gridded bathymetry in Cartesian coordinates")
@@ -96,7 +93,7 @@ plt.show()
 # By providing a projection function (like our pyproj ``projection`` object), Verde will
 # generate coordinates for a regular grid and then pass them through the projection
 # function before predicting data values. This way, you can generate a grid in a
-# projection that is not the one you used to fit the spline.
+# coordinate system other than the one you used to fit the spline.
 
 # Get the geographic bounding region of the data
 region = vd.get_region((data.longitude, data.latitude))
@@ -114,6 +111,17 @@ print("Geographic grid:")
 print(grid_geo)
 
 ########################################################################################
+# Notice that grid has longitude and latitude coordinates and slightly different number
+# of points than the Cartesian grid.
+#
+# The :func:`verde.distance_mask` function also supports the ``projection`` argument and
+# will project the coordinates before calculating distances.
+
+grid_geo = vd.distance_mask(
+    (data.longitude, data.latitude), maxdist=30e3, grid=grid_geo, projection=projection
+)
+
+########################################################################################
 # Now we can use the Cartopy library to plot our geographic grid.
 
 plt.figure(figsize=(7, 6))
@@ -128,6 +136,6 @@ pc = ax.pcolormesh(
     zorder=-1,
 )
 plt.colorbar(pc).set_label("meters")
-vd.datasets.setup_baja_bathymetry_map(ax)
+vd.datasets.setup_baja_bathymetry_map(ax, land=None)
 plt.tight_layout()
 plt.show()

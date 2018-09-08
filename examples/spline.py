@@ -22,8 +22,8 @@ region = vd.get_region(coordinates)
 # Use a Mercator projection for our Cartesian gridder
 projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 
-# The output grid spacing will 5 arc-minutes
-spacing = 5 / 60
+# The output grid spacing will 15 arc-minutes
+spacing = 15 / 60
 
 # Now we can chain a blocked mean and spline together. The Spline can be regularized
 # by setting the damping coefficient (should be positive). It's also a good idea to set
@@ -53,17 +53,17 @@ score = chain.score(*test)
 print("\nScore: {:.3f}".format(score))
 
 # Now we can create a geographic grid of air temperature by providing a projection
-# function to the grid method.
-grid = chain.grid(
+# function to the grid method and mask points that are too far from the observations
+grid_full = chain.grid(
     region=region,
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
     data_names=["temperature"],
 )
-# And mask points that are too far from the observations
-mask = vd.distance_mask(coordinates, maxdist=1, region=region, spacing=spacing)
-grid = grid.where(mask)
+grid = vd.distance_mask(
+    coordinates, maxdist=3 * spacing * 111e3, grid=grid_full, projection=projection
+)
 print(grid)
 
 # Plot the grid and the original data points

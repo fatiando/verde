@@ -26,7 +26,7 @@ projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 # Now we can chain a block weighted mean and weighted spline together. We'll use
 # uncertainty propagation to calculate the new weights from block mean because our data
 # vary smoothly but have different uncertainties.
-spacing = 5 / 60  # 5 arc-minutes which we'll approximate to 5*111e3 meters
+spacing = 5 / 60  # 5 arc-minutes
 chain = vd.Chain(
     [
         ("mean", vd.BlockMean(spacing=spacing * 111e3, uncertainty=True)),
@@ -55,17 +55,19 @@ print("\nScore: {:.3f}".format(score))
 # Create a grid of the vertical velocity and mask it to only show points close to the
 # actual data.
 region = vd.get_region(coordinates)
-mask = vd.distance_mask(
-    (data.longitude, data.latitude), maxdist=0.5, region=region, spacing=spacing
-)
-grid = chain.grid(
+grid_full = chain.grid(
     region=region,
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
     data_names=["velocity"],
 )
-grid = grid.where(mask)
+grid = vd.distance_mask(
+    (data.longitude, data.latitude),
+    maxdist=5 * spacing * 111e3,
+    grid=grid_full,
+    projection=projection,
+)
 
 fig, axes = plt.subplots(
     1, 2, figsize=(9, 7), subplot_kw=dict(projection=ccrs.Mercator())
@@ -89,7 +91,7 @@ cb.set_label("uncertainty [mm/yr]")
 vd.datasets.setup_california_gps_map(ax, region=region)
 # Plot the gridded velocities
 ax = axes[1]
-ax.set_title("Spline interpolated vertical velocity")
+ax.set_title("Weighted spline interpolated velocity")
 maxabs = vd.maxabs(data.velocity_up) * 1000
 pc = ax.pcolormesh(
     grid.longitude,

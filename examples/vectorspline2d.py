@@ -30,8 +30,8 @@ train, test = vd.train_test_split(
     projection(*coordinates), (data.velocity_east, data.velocity_north), random_state=0
 )
 
-# We'll make a 20 arc-minute grid in the end.
-spacing = 20 / 60
+# We'll make a 15 arc-minute grid in the end.
+spacing = 15 / 60
 
 # Chain together a blocked mean to avoid aliasing, a polynomial trend to take care of
 # the increase toward the coast, and finally the vector gridder using Poisson's ratio
@@ -39,7 +39,7 @@ spacing = 20 / 60
 chain = vd.Chain(
     [
         ("mean", vd.BlockReduce(np.mean, spacing * 111e3)),
-        ("trend", vd.Components([vd.Trend(degree=5) for i in range(2)])),
+        ("trend", vd.Components([vd.Trend(degree=1) for i in range(2)])),
         ("spline", vd.VectorSpline2D(poisson=0.5, mindist=10e3)),
     ]
 )
@@ -52,13 +52,15 @@ print("Cross-validation R^2 score: {:.2f}".format(score))
 
 # Interpolate our horizontal GPS velocities onto a regular geographic grid and mask the
 # data that are far from the observation points
-grid = chain.grid(
+grid_full = chain.grid(
     region, spacing=spacing, projection=projection, dims=["latitude", "longitude"]
 )
-mask = vd.distance_mask(
-    (data.longitude, data.latitude), maxdist=0.5, region=region, spacing=spacing
+grid = vd.distance_mask(
+    (data.longitude, data.latitude),
+    maxdist=2 * spacing * 111e3,
+    grid=grid_full,
+    projection=projection,
 )
-grid = grid.where(mask)
 
 # Calculate residuals between the predictions and the original input data. Even though
 # we aren't using regularization or regularly distributed forces, the prediction won't

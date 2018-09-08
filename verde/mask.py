@@ -3,7 +3,6 @@ Mask grid points based on different criteria.
 """
 import numpy as np
 
-from .coordinates import grid_coordinates
 from .utils import n_1d_arrays
 
 try:
@@ -16,10 +15,10 @@ def distance_mask(
     data_coordinates, maxdist, coordinates=None, grid=None, projection=None
 ):
     """
-    Mask points that are too far from the given data points.
+    Mask grid points that are too far from the given data points.
 
-    Distances are Cartesian euclidean norms. If using geographic data, provide a
-    projection function to convert coordinates before distance calculations.
+    Distances are Euclidean norms. If using geographic data, provide a projection
+    function to convert coordinates to Cartesian before distance calculations.
 
     Either *coordinates* or *grid* must be given:
 
