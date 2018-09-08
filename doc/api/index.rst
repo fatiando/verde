@@ -59,7 +59,6 @@ Coordinate Manipulation
     project_region
     inside
     block_split
-    distance_mask
 
 Utilities
 ---------
@@ -67,9 +66,10 @@ Utilities
 .. autosummary::
    :toctree: generated/
 
-    test
+    distance_mask
     maxabs
     variance_to_weights
+    test
 
 Base Classes
 ------------

@@ -80,18 +80,19 @@ chain.fit(*train)
 ########################################################################################
 # Let's plot the gridded result to see what it looks like. We'll mask out grid points
 # that are too far from any given data point.
-
+mask = vd.distance_mask(
+    (data.longitude, data.latitude),
+    maxdist=3 * spacing * 111e3,
+    coordinates=vd.grid_coordinates(region, spacing=spacing),
+    projection=projection,
+)
 grid = chain.grid(
     region=region,
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
     data_names=["temperature"],
-)
-mask = vd.distance_mask(
-    (data.longitude, data.latitude), maxdist=3 * spacing, region=region, spacing=spacing
-)
-grid = grid.where(mask)
+).where(mask)
 
 plt.figure(figsize=(8, 6))
 ax = plt.axes(projection=ccrs.Mercator())
