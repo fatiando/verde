@@ -8,6 +8,7 @@ have interpolated grid points that are too far from any data point. Function
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import pyproj
 import numpy as np
 import verde as vd
 
@@ -16,21 +17,27 @@ import verde as vd
 data = vd.datasets.fetch_baja_bathymetry()
 region = vd.get_region((data.longitude, data.latitude))
 
-# Generate the coordinates and a dummy grid of ones to show the mask.
+# Generate the coordinates for a regular grid mask
 spacing = 10 / 60
 coordinates = vd.grid_coordinates(region, spacing=spacing)
-dummy_data = np.ones_like(coordinates[0])
 
 # Generate a mask for points that are more than 2 grid spacings away from any data
-# point. The mask is True for points that are within the maximum distance. Here, we'll
-# provide the grid coordinates to the function but we could also give it a region and
-# spacing instead if we hadn't generated the coordinates.
+# point. The mask is True for points that are within the maximum distance. Distance
+# calculations in the mask are Cartesian only. We can provide a projection function to
+# convert the coordinates before distances are calculated (Mercator in this case). In
+# this case, the maximum distance is also Cartesian and must be converted from degrees
+# to meters.
 mask = vd.distance_mask(
-    (data.longitude, data.latitude), maxdist=spacing * 2, coordinates=coordinates
+    (data.longitude, data.latitude),
+    maxdist=spacing * 2 * 111e3,
+    coordinates=coordinates,
+    projection=pyproj.Proj(proj="merc", lat_ts=data.latitude.mean()),
 )
 print(mask)
 
-# Turn points that are too far into NaNs so they won't show up in our plot
+# Create a dummy grid with ones that we can mask to show the results.
+# Turn points that are too far into NaNs so they won't show up in our plot.
+dummy_data = np.ones_like(coordinates[0])
 dummy_data[~mask] = np.nan
 
 # Make a plot of the masked data and the data locations.

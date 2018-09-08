@@ -11,7 +11,7 @@ from .coordinates import (
     pad_region,
     project_region,
 )
-from .grid_math import distance_mask
+from .mask import distance_mask
 from .utils import variance_to_weights, maxabs
 from .blockreduce import block_split, BlockReduce, BlockMean
 from .scipygridder import ScipyGridder
