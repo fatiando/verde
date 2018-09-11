@@ -5,8 +5,6 @@ import functools
 
 import numpy as np
 
-from .base import check_data
-
 
 def parse_engine(engine):
     """
@@ -94,6 +92,27 @@ def n_1d_arrays(arrays, n):
 
     """
     return tuple(np.atleast_1d(i).ravel() for i in arrays[:n])
+
+
+def check_data(data):
+    """
+    Check the *data* argument and make sure it's a tuple.
+    If the data is a single array, return it as a tuple with a single element.
+
+    This is the default format accepted and used by all gridders and processing
+    functions.
+
+    Examples
+    --------
+
+    >>> check_data([1, 2, 3])
+    ([1, 2, 3],)
+    >>> check_data(([1, 2], [3, 4]))
+    ([1, 2], [3, 4])
+    """
+    if not isinstance(data, tuple):
+        data = (data,)
+    return data
 
 
 def variance_to_weights(variance, tol=1e-15, dtype="float64"):

@@ -12,6 +12,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression, Ridge
 
 from .coordinates import grid_coordinates, profile_coordinates, scatter_points
+from .utils import check_data
 
 
 class BaseGridder(BaseEstimator):
@@ -550,24 +551,6 @@ def get_instance_region(instance, region):
             raise ValueError("No default region found. Argument must be supplied.")
         region = getattr(instance, "region_")
     return region
-
-
-def check_data(data):
-    """
-    Check the data returned by predict.
-    If the data is a single array, return it as a tuple with a single element.
-
-    Examples
-    --------
-
-    >>> check_data([1, 2, 3])
-    ([1, 2, 3],)
-    >>> check_data(([1, 2], [3, 4]))
-    ([1, 2], [3, 4])
-    """
-    if not isinstance(data, tuple):
-        data = (data,)
-    return data
 
 
 def check_fit_input(coordinates, data, weights, unpack=True):

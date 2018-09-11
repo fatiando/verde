@@ -4,6 +4,13 @@ Functions for generating and manipulating coordinates.
 import numpy as np
 from sklearn.utils import check_random_state
 
+try:
+    from pykdtree.kdtree import KDTree
+except ImportError:
+    from scipy.spatial import cKDTree as KDTree  # pylint: disable=no-name-in-module
+
+from .utils import n_1d_arrays
+
 
 def check_region(region):
     """
@@ -575,3 +582,79 @@ def inside(coordinates, region, out=None, tmp=None):
     )
     are_inside = np.logical_and(in_we, in_ns, out=out)
     return are_inside
+
+
+def block_split(coordinates, spacing, adjust="spacing", region=None):
+    """
+    Split a region into blocks and label points according to where they fall.
+
+    The labels are integers corresponding to the index of the block. The same
+    index is used for the coordinates of each block.
+
+    .. note::
+
+        If installed, package ``pykdtree`` will be used instead of
+        :class:`scipy.spatial.cKDTree` for better performance.
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+        Arrays with the coordinates of each data point. Should be in the
+        following order: (easting, northing, vertical, ...). Only easting and
+        northing will be used, all subsequent coordinates will be ignored.
+    spacing : float, tuple = (s_north, s_east), or None
+        The block size in the South-North and West-East directions,
+        respectively. A single value means that the size is equal in both
+        directions.
+    adjust : {'spacing', 'region'}
+        Whether to adjust the spacing or the region if required. Ignored if
+        *shape* is given instead of *spacing*. Defaults to adjusting the
+        spacing.
+    region : list = [W, E, S, N]
+        The boundaries of a given region in Cartesian or geographic
+        coordinates. If not region is given, will use the bounding region of
+        the given points.
+
+    Returns
+    -------
+    block_coordinates : tuple of arrays
+        (easting, northing) arrays with the coordinates of the center of each
+        block.
+    labels : array
+        integer label for each data point. The label is the index of the block
+        to which that point belongs.
+
+    See also
+    --------
+    BlockReduce : Apply a reduction operation to the data in blocks (windows).
+
+    Examples
+    --------
+
+    >>> from verde import grid_coordinates
+    >>> coords = grid_coordinates((-5, 0, 5, 10), spacing=1)
+    >>> block_coords, labels = block_split(coords, spacing=2.5)
+    >>> for coord in block_coords:
+    ...     print(', '.join(['{:.2f}'.format(i) for i in coord]))
+    -3.75, -1.25, -3.75, -1.25
+    6.25, 6.25, 8.75, 8.75
+    >>> print(labels.reshape(coords[0].shape))
+    [[0 0 0 1 1 1]
+     [0 0 0 1 1 1]
+     [0 0 0 1 1 1]
+     [2 2 2 3 3 3]
+     [2 2 2 3 3 3]
+     [2 2 2 3 3 3]]
+
+    """
+    if region is None:
+        region = get_region(coordinates)
+    block_coords = tuple(
+        i.ravel()
+        for i in grid_coordinates(
+            region, spacing=spacing, adjust=adjust, pixel_register=True
+        )
+    )
+    tree = KDTree(np.transpose(block_coords))
+    labels = tree.query(np.transpose(n_1d_arrays(coordinates, 2)))[1]
+    return block_coords, labels
