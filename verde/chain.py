@@ -3,7 +3,8 @@ Class for chaining gridders.
 """
 from sklearn.utils.validation import check_is_fitted
 
-from .base import BaseGridder, check_data
+from .base import BaseGridder
+from .utils import check_data
 from .coordinates import get_region
 
 

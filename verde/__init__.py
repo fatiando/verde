@@ -6,6 +6,7 @@ from .coordinates import (
     scatter_points,
     grid_coordinates,
     inside,
+    block_split,
     profile_coordinates,
     get_region,
     pad_region,
@@ -13,7 +14,7 @@ from .coordinates import (
 )
 from .mask import distance_mask
 from .utils import variance_to_weights, maxabs
-from .blockreduce import block_split, BlockReduce, BlockMean
+from .blockreduce import BlockReduce, BlockMean
 from .scipygridder import ScipyGridder
 from .trend import Trend
 from .chain import Chain
