@@ -33,6 +33,7 @@
     tutorials/projections.rst
     tutorials/chain.rst
     tutorials/model_selection.rst
+    tutorials/components.rst
     tutorials/weights.rst
     api/index.rst
     references.rst
