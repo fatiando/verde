@@ -1,7 +1,5 @@
 .. _sample_data:
 
-.. automodule:: verde.datasets
-
 Sample Data
 ===========
 
@@ -24,45 +22,8 @@ You can change the base data directory by setting the ``VERDE_DATA_DIR`` environ
 variable to a different path.
 
 
-.. currentmodule:: verde
+Available datasets
+------------------
 
-
-Loading Data
-------------
-
-.. autosummary::
-   :toctree: ../api/generated/
-
-    datasets.fetch_baja_bathymetry
-    datasets.fetch_california_gps
-    datasets.fetch_rio_magnetic
-    datasets.fetch_texas_wind
-
-
-Utiltiy Functions
------------------
-
-Setting up `Cartopy <https://scitools.org.uk/cartopy/docs/latest/>`__ maps can be a
-bit repetitive so we provide some utility functions to automate this in the examples and
-tutorials.
-
-.. autosummary::
-   :toctree: ../api/generated/
-
-    datasets.setup_baja_bathymetry_map
-    datasets.setup_california_gps_map
-    datasets.setup_rio_magnetic_map
-    datasets.setup_texas_wind_map
-
-
-Synthetic Data
---------------
-
-.. autosummary::
-   :toctree: ../api/generated/
-
-    datasets.CheckerBoard
-
-
-Examples
---------
+These are the datasets currently available. Most also come with a function for setting
+up a Cartopy map to display the data.
