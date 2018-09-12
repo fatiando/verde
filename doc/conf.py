@@ -47,11 +47,10 @@ numpydoc_class_members_toctree = False
 
 sphinx_gallery_conf = {
     # path to your examples scripts
-    'examples_dirs': ['../examples', '../tutorials', '../examples-data'],
+    'examples_dirs': ['../examples', '../tutorials', '../data/examples'],
     # path where to save gallery generated examples
     'gallery_dirs': ['gallery', 'tutorials', 'sample_data'],
     'filename_pattern': '\.py',
-    # 'thumbnail_size': (400, 400),
     # Remove the "Download all examples" button from the top level gallery
     'download_all_examples': False,
     # Sort gallery example by file name instead of number of lines (default)

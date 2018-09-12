@@ -34,7 +34,7 @@ api:
 	@echo
 	@echo "Building API docs."
 	@echo
-	$(SPHINXAUTOGEN) -i -t _templates -o api/generated api/index.rst ../examples-data/README.txt
+	$(SPHINXAUTOGEN) -i -t _templates -o api/generated api/index.rst
 
 html: api
 	@echo

@@ -71,6 +71,26 @@ Utilities
     variance_to_weights
     test
 
+.. automodule:: verde.datasets
+
+.. currentmodule:: verde
+
+Datasets
+--------
+
+.. autosummary::
+   :toctree: generated/
+
+    datasets.CheckerBoard
+    datasets.fetch_baja_bathymetry
+    datasets.setup_baja_bathymetry_map
+    datasets.fetch_california_gps
+    datasets.setup_california_gps_map
+    datasets.fetch_texas_wind
+    datasets.setup_texas_wind_map
+    datasets.fetch_rio_magnetic
+    datasets.setup_rio_magnetic_map
+
 Base Classes
 ------------
 
