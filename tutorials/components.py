@@ -1,8 +1,9 @@
 """
-Multi-Component Data
-====================
+Vector Data
+===========
 
-
+Some data have multiple related components that are measured for each location, like
+the East and West components of wind speed or GPS velocities.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
