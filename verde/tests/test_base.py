@@ -108,7 +108,7 @@ class PolyGridder(BaseGridder):
 
     def predict(self, coordinates):
         "Predict the data"
-        return np.sum(
+        return sum(
             cof * coordinates[0] ** deg for deg, cof in enumerate(self.coefs_)
         )
 

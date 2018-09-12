@@ -34,7 +34,7 @@ Composite Estimators
    :toctree: generated/
 
     Chain
-    Components
+    Vector
 
 Model Selection
 ---------------

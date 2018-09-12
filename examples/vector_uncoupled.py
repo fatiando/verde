@@ -2,10 +2,10 @@
 Gridding 2D vectors (uncoupled)
 ===============================
 
-We can use :class:`verde.Components` to simultaneously process and grid all
+We can use :class:`verde.Vector` to simultaneously process and grid all
 components of vector data. Each component is processed and gridded separately (see
 :class:`verde.VectorSpline2D` for a coupled alternative) but we have the convenience of
-dealing with a single estimator. :class:`verde.Components` can be combined with
+dealing with a single estimator. :class:`verde.Vector` can be combined with
 :class:`verde.Trend`, :class:`verde.Spline`, and :class:`verde.Chain` to create a full
 processing pipeline.
 """
@@ -39,14 +39,14 @@ spacing = 20 / 60
 
 # Chain together a blocked mean to avoid aliasing, a polynomial trend (Spline usually
 # requires de-trended data), and finally a Spline for each component. Notice that
-# BlockReduce can work on multicomponent data without the use of Components.
+# BlockReduce can work on multicomponent data without the use of Vector.
 chain = vd.Chain(
     [
         ("mean", vd.BlockReduce(np.mean, spacing * 111e3)),
-        ("trend", vd.Components([vd.Trend(degree=1) for i in range(2)])),
+        ("trend", vd.Vector([vd.Trend(degree=1) for i in range(2)])),
         (
             "spline",
-            vd.Components([vd.Spline(damping=1e-10, mindist=500e3) for i in range(2)]),
+            vd.Vector([vd.Spline(damping=1e-10, mindist=500e3) for i in range(2)]),
         ),
     ]
 )
