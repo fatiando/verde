@@ -99,7 +99,7 @@ This is research software **made by scientists**. Citations help us justify the 
 that goes into building and maintaining this project. If you used Verde for your
 research, please consider citing us.
 
-See our `CITATION file <https://github.com/fatiando/verde/blob/master/CITATION.rst>`__
+See our `CITATION.rst file <https://github.com/fatiando/verde/blob/master/CITATION.rst>`__
 to find out more.
 
 
@@ -162,4 +162,4 @@ Documentation for other versions
 * `Development <http://www.fatiando.org/verde/dev>`__ (reflects the *master* branch on
   Github)
 * `Latest release <http://www.fatiando.org/verde/latest>`__
-* `v0.1.0 <http://www.fatiando.org/verde/v0.1a0>`__
+* `v1.0.0 <http://www.fatiando.org/verde/v1.0.0>`__
