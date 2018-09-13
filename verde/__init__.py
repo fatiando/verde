@@ -18,10 +18,9 @@ from .blockreduce import BlockReduce, BlockMean
 from .scipygridder import ScipyGridder
 from .trend import Trend
 from .chain import Chain
-from .components import Components
 from .spline import Spline
 from .model_selection import cross_val_score, train_test_split
-from .vector import VectorSpline2D
+from .vector import Vector, VectorSpline2D
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=True):

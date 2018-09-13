@@ -3,10 +3,10 @@ Trends in vector data
 =====================
 
 Verde provides the :class:`verde.Trend` class to estimate a polynomial trend and the
-:class:`verde.Components` class to apply any combination of estimators to each component
+:class:`verde.Vector` class to apply any combination of estimators to each component
 of vector data, like GPS velocities. You can access each component as a separate
 (fitted) :class:`verde.Trend` instance or operate on all vector components directly
-using using :meth:`verde.Components.predict`, :meth:`verde.Components.grid`, etc, or
+using using :meth:`verde.Vector.predict`, :meth:`verde.Vector.grid`, etc, or
 chaining it with a vector interpolator using :class:`verde.Chain`.
 """
 import matplotlib.pyplot as plt
@@ -21,9 +21,9 @@ data = vd.datasets.fetch_california_gps()
 
 # We'll fit a degree 2 trend on both the East and North components and weight the data
 # using the inverse of the variance of each component.
-# Note: Never use [Trend(...)]*2 as an argument to Components. This creates references
+# Note: Never use [Trend(...)]*2 as an argument to Vector. This creates references
 # to the same Trend instance and will mess up the fitting.
-trend = vd.Components([vd.Trend(degree=2) for i in range(2)])
+trend = vd.Vector([vd.Trend(degree=2) for i in range(2)])
 weights = vd.variance_to_weights((data.std_east ** 2, data.std_north ** 2))
 trend.fit(
     coordinates=(data.longitude, data.latitude),

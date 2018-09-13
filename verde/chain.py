@@ -43,7 +43,7 @@ class Chain(BaseGridder):
 
     See also
     --------
-    verde.Components : Fit an estimator to each component of multi-component vector data
+    verde.Vector : Fit an estimator to each component of multi-component vector data
 
     """
 

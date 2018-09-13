@@ -3,7 +3,7 @@ Gridding 2D vectors (coupled)
 =============================
 
 One way of gridding vector data would be grid each component separately using
-:class:`verde.Spline` and :class:`verde.Components`. Alternatively,
+:class:`verde.Spline` and :class:`verde.Vector`. Alternatively,
 :class:`verde.VectorSpline2D` can grid two components simultaneously in a way that
 couples them through elastic deformation theory. This is particularly suited, though not
 exclusive, to data that represent elastic/semi-elastic deformation, like horizontal GPS
@@ -39,7 +39,7 @@ spacing = 15 / 60
 chain = vd.Chain(
     [
         ("mean", vd.BlockReduce(np.mean, spacing * 111e3)),
-        ("trend", vd.Components([vd.Trend(degree=1) for i in range(2)])),
+        ("trend", vd.Vector([vd.Trend(degree=1) for i in range(2)])),
         ("spline", vd.VectorSpline2D(poisson=0.5, mindist=10e3)),
     ]
 )

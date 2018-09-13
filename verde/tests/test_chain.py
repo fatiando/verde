@@ -11,7 +11,7 @@ from ..scipygridder import ScipyGridder
 from ..spline import Spline
 from ..trend import Trend
 from ..coordinates import grid_coordinates
-from ..components import Components
+from ..vector import Vector
 
 
 def test_chain():
@@ -65,7 +65,7 @@ def test_chain_vector():
     chain = Chain(
         [
             ("mean", BlockReduce(np.mean, spacing=0.5)),
-            ("trend", Components([Trend(degree=1), Trend(degree=1)])),
+            ("trend", Vector([Trend(degree=1), Trend(degree=1)])),
         ]
     )
     chain.fit(coords, data)
