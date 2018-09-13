@@ -90,6 +90,18 @@ There are a few steps that still must be done manually, though.
 5. Add a link to the new release version documentation in `README.rst`.
 5. Open a new PR with the updated changelog.
 
+### Check the README syntax
+
+Github is a bit forgiving when it comes to the RST syntax in the README but PyPI is not.
+So slightly broken RST can cause the PyPI page to not render the correct content. Check
+using the `rst2html.py` script that comes with docutils:
+
+```
+python setup.py --long-description | rst2html.py --no-raw > index.html
+```
+
+Open `index.html` and check for any flaws or error messages.
+
 ### Pushing to PyPI and updating the documentation
 
 After the changelog is updated, making a release should be as simple as creating a new
