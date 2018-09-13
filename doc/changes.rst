@@ -3,7 +3,7 @@
 Changelog
 =========
 
-Version 1.0.0 (2018-09-XX)
+Version 1.0.0 (2018-09-13)
 --------------------------
 
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.1415281.svg
