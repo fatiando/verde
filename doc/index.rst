@@ -20,6 +20,7 @@
 
     tutorials/overview.rst
     install.rst
+    citing.rst
     gallery/index.rst
 
 .. toctree::
@@ -35,5 +36,12 @@
     tutorials/model_selection.rst
     tutorials/weights.rst
     tutorials/vectors.rst
+
+.. toctree::
+    :maxdepth: 2
+    :hidden:
+    :caption: Reference documentation
+
     api/index.rst
+    changes.rst
     references.rst

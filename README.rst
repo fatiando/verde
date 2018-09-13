@@ -36,18 +36,6 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
  .. placeholder-for-doc-index
 
 
-Disclaimer
-----------
-
-🚨 **This package is in early stages of design and implementation.** 🚨
-
-We welcome any feedback and ideas!
-Let us know by submitting
-`issues on Github <https://github.com/fatiando/verde/issues>`__
-or send us a message on our
-`Gitter chatroom <https://gitter.im/fatiando/fatiando>`__.
-
-
 About
 -----
 
@@ -102,6 +90,17 @@ Contacting us
   on any open issue or pull request.
 * We have `chat room on Gitter <https://gitter.im/fatiando/fatiando>`__
   where you can ask questions and leave comments.
+
+
+Citing Verde
+------------
+
+This is research software **made by scientists**. Citations help us justify the effort
+that goes into building and maintaining this project. If you used Verde for your
+research, please consider citing us.
+
+See our `CITATION.rst file <https://github.com/fatiando/verde/blob/master/CITATION.rst>`__
+to find out more.
 
 
 Contributing
@@ -163,4 +162,4 @@ Documentation for other versions
 * `Development <http://www.fatiando.org/verde/dev>`__ (reflects the *master* branch on
   Github)
 * `Latest release <http://www.fatiando.org/verde/latest>`__
-* `v0.1.0 <http://www.fatiando.org/verde/v0.1a0>`__
+* `v1.0.0 <http://www.fatiando.org/verde/v1.0.0>`__

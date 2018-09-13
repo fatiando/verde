@@ -83,6 +83,10 @@ There are a few steps that still must be done manually, though.
 3. Replace the PR number in the commit titles with a link to the Github PR page.
 4. Copy the remaining changes to `doc/changes.rst` under a new section for the
    intended release.
+5. Reserve a DOI in [Zenodo](https://zenodo.org/) and pre-fill the fields for archiving
+   the new release. Include as authors anyone who made contributions between now and the
+   last release.
+6. Include the DOI badge in the changelog.
 5. Add a link to the new release version documentation in `README.rst`.
 5. Open a new PR with the updated changelog.
 
@@ -102,6 +106,11 @@ This should trigger Travis to do all the work for us.
 A new source distribution will be uploaded to PyPI, a new folder with the documentation
 HTML will be pushed to *gh-pages*, and the `latest` link will be updated to point to
 this new folder.
+
+### Archiving on Zenodo
+
+Grab a zip file from the Github release and upload to Zenodo using the previously
+reserved DOI.
 
 ### Updating the conda package
 
