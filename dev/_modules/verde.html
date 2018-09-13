@@ -98,15 +98,24 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Verde</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gallery/index.html">Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/trend_estimation.html">Trend estimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/decimation.html">Data decimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/weights.html">Using weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
@@ -205,21 +214,21 @@
     <span class="n">scatter_points</span><span class="p">,</span>
     <span class="n">grid_coordinates</span><span class="p">,</span>
     <span class="n">inside</span><span class="p">,</span>
+    <span class="n">block_split</span><span class="p">,</span>
     <span class="n">profile_coordinates</span><span class="p">,</span>
     <span class="n">get_region</span><span class="p">,</span>
     <span class="n">pad_region</span><span class="p">,</span>
     <span class="n">project_region</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.grid_math</span> <span class="k">import</span> <span class="n">distance_mask</span>
+<span class="kn">from</span> <span class="nn">.mask</span> <span class="k">import</span> <span class="n">distance_mask</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">variance_to_weights</span><span class="p">,</span> <span class="n">maxabs</span>
-<span class="kn">from</span> <span class="nn">.blockreduce</span> <span class="k">import</span> <span class="n">block_split</span><span class="p">,</span> <span class="n">BlockReduce</span><span class="p">,</span> <span class="n">BlockMean</span>
+<span class="kn">from</span> <span class="nn">.blockreduce</span> <span class="k">import</span> <span class="n">BlockReduce</span><span class="p">,</span> <span class="n">BlockMean</span>
 <span class="kn">from</span> <span class="nn">.scipygridder</span> <span class="k">import</span> <span class="n">ScipyGridder</span>
 <span class="kn">from</span> <span class="nn">.trend</span> <span class="k">import</span> <span class="n">Trend</span>
 <span class="kn">from</span> <span class="nn">.chain</span> <span class="k">import</span> <span class="n">Chain</span>
-<span class="kn">from</span> <span class="nn">.components</span> <span class="k">import</span> <span class="n">Components</span>
 <span class="kn">from</span> <span class="nn">.spline</span> <span class="k">import</span> <span class="n">Spline</span>
 <span class="kn">from</span> <span class="nn">.model_selection</span> <span class="k">import</span> <span class="n">cross_val_score</span><span class="p">,</span> <span class="n">train_test_split</span>
-<span class="kn">from</span> <span class="nn">.vector</span> <span class="k">import</span> <span class="n">VectorSpline2D</span>
+<span class="kn">from</span> <span class="nn">.vector</span> <span class="k">import</span> <span class="n">Vector</span><span class="p">,</span> <span class="n">VectorSpline2D</span>
 
 
 <div class="viewcode-block" id="test"><a class="viewcode-back" href="../api/generated/verde.test.html#verde.test">[docs]</a><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">doctest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">coverage</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figures</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -281,7 +290,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Aug 10, 2018.
+      Last updated on Sep 13, 2018.
 
     </p>
   </div>

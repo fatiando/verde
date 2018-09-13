@@ -36,7 +36,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Gridding with Scipy" href="scipygridder.html" />
-    <link rel="prev" title="Chaining operations" href="chain.html" />
+    <link rel="prev" title="Using weights in blocked means" href="blockreduce_weights_mean.html" />
     
     <script src="../_static/require.js"></script>
 
@@ -100,11 +100,11 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Verde</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Gallery</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="blockreduce.html">Blocked reduction operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blockreduce_weights.html">Using weights in blocked reduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blockreduce_weights_mean.html">Using weights in blocked means</a></li>
-<li class="toctree-l2"><a class="reference internal" href="chain.html">Chaining operations</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Mask grid points by distance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="scipygridder.html">Gridding with Scipy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spline.html">Gridding with splines</a></li>
@@ -115,14 +115,22 @@
 <li class="toctree-l2"><a class="reference internal" href="vectorspline2d.html">Gridding 2D vectors (coupled)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/trend_estimation.html">Trend estimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/decimation.html">Data decimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/weights.html">Using weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
@@ -266,6 +274,7 @@ have interpolated grid points that are too far from any data point. Function
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="kn">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">pyproj</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">verde</span> <span class="kn">as</span> <span class="nn">vd</span>
 
@@ -274,21 +283,27 @@ have interpolated grid points that are too far from any data point. Function
 <span class="n">data</span> <span class="o">=</span> <a href="../api/generated/verde.datasets.fetch_baja_bathymetry.html#verde.datasets.fetch_baja_bathymetry" title="View documentation for verde.datasets.fetch_baja_bathymetry"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">fetch_baja_bathymetry</span></a><span class="p">()</span>
 <span class="n">region</span> <span class="o">=</span> <a href="../api/generated/verde.get_region.html#verde.get_region" title="View documentation for verde.get_region"><span class="n">vd</span><span class="o">.</span><span class="n">get_region</span></a><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">))</span>
 
-<span class="c1"># Generate the coordinates and a dummy grid of ones to show the mask.</span>
+<span class="c1"># Generate the coordinates for a regular grid mask</span>
 <span class="n">spacing</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">/</span> <span class="mi">60</span>
 <span class="n">coordinates</span> <span class="o">=</span> <a href="../api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="View documentation for verde.grid_coordinates"><span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span></a><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">)</span>
-<span class="n">dummy_data</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ones_like.html#numpy.ones_like" title="View documentation for numpy.ones_like"><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span></a><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
 <span class="c1"># Generate a mask for points that are more than 2 grid spacings away from any data</span>
-<span class="c1"># point. The mask is True for points that are within the maximum distance. Here, we&#39;ll</span>
-<span class="c1"># provide the grid coordinates to the function but we could also give it a region and</span>
-<span class="c1"># spacing instead if we hadn&#39;t generated the coordinates.</span>
+<span class="c1"># point. The mask is True for points that are within the maximum distance. Distance</span>
+<span class="c1"># calculations in the mask are Cartesian only. We can provide a projection function to</span>
+<span class="c1"># convert the coordinates before distances are calculated (Mercator in this case). In</span>
+<span class="c1"># this case, the maximum distance is also Cartesian and must be converted from degrees</span>
+<span class="c1"># to meters.</span>
 <span class="n">mask</span> <span class="o">=</span> <a href="../api/generated/verde.distance_mask.html#verde.distance_mask" title="View documentation for verde.distance_mask"><span class="n">vd</span><span class="o">.</span><span class="n">distance_mask</span></a><span class="p">(</span>
-    <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">),</span> <span class="n">maxdist</span><span class="o">=</span><span class="n">spacing</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">coordinates</span><span class="o">=</span><span class="n">coordinates</span>
+    <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">),</span>
+    <span class="n">maxdist</span><span class="o">=</span><span class="n">spacing</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="mf">111e3</span><span class="p">,</span>
+    <span class="n">coordinates</span><span class="o">=</span><span class="n">coordinates</span><span class="p">,</span>
+    <span class="n">projection</span><span class="o">=</span><span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span><span class="p">(</span><span class="n">proj</span><span class="o">=</span><span class="s2">&quot;merc&quot;</span><span class="p">,</span> <span class="n">lat_ts</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">mean</span><span class="p">()),</span>
 <span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
 
-<span class="c1"># Turn points that are too far into NaNs so they won&#39;t show up in our plot</span>
+<span class="c1"># Create a dummy grid with ones that we can mask to show the results.</span>
+<span class="c1"># Turn points that are too far into NaNs so they won&#39;t show up in our plot.</span>
+<span class="n">dummy_data</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ones_like.html#numpy.ones_like" title="View documentation for numpy.ones_like"><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span></a><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">dummy_data</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/constants.html#numpy.nan" title="View documentation for numpy.nan"><span class="n">np</span><span class="o">.</span><span class="n">nan</span></a>
 
 <span class="c1"># Make a plot of the masked data and the data locations.</span>
@@ -303,12 +318,12 @@ have interpolated grid points that are too far from any data point. Function
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  2.144 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  2.037 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-distance-mask-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/distance_mask.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">distance_mask.py</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/649007aa762d699ce036a237d13fa6aa/distance_mask.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">distance_mask.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/distance_mask.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">distance_mask.ipynb</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/506f347f3967957c8185451a54fcba78/distance_mask.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">distance_mask.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -324,7 +339,7 @@ have interpolated grid points that are too far from any data point. Function
         <a href="scipygridder.html" class="btn btn-neutral float-right" title="Gridding with Scipy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="chain.html" class="btn btn-neutral" title="Chaining operations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="blockreduce_weights_mean.html" class="btn btn-neutral" title="Using weights in blocked means" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -334,7 +349,7 @@ have interpolated grid points that are too far from any data point. Function
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Aug 10, 2018.
+      Last updated on Sep 13, 2018.
 
     </p>
   </div>

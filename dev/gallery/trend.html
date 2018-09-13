@@ -100,11 +100,11 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Verde</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Gallery</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="blockreduce.html">Blocked reduction operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blockreduce_weights.html">Using weights in blocked reduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blockreduce_weights_mean.html">Using weights in blocked means</a></li>
-<li class="toctree-l2"><a class="reference internal" href="chain.html">Chaining operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="distance_mask.html">Mask grid points by distance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="scipygridder.html">Gridding with Scipy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spline.html">Gridding with splines</a></li>
@@ -115,14 +115,22 @@
 <li class="toctree-l2"><a class="reference internal" href="vectorspline2d.html">Gridding 2D vectors (coupled)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/trend_estimation.html">Trend estimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/decimation.html">Data decimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/weights.html">Using weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
@@ -254,24 +262,26 @@ to remove the clear positive trend from the Rio de Janeiro magnetic anomaly data
 <img alt="../_images/sphx_glr_trend_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_trend_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Original data:
-   longitude   latitude  total_field_anomaly_nt  height_ell_m
-0 -42.590424 -22.499878                  115.41        264.26
-1 -42.590485 -22.498978                  121.35        265.48
-2 -42.590530 -22.498077                  128.29        263.96
-3 -42.590591 -22.497177                  133.24        258.47
-4 -42.590652 -22.496277                  136.18        252.07
+   longitude   latitude     ...       line_type  line_number
+0 -42.590424 -22.499878     ...            LINE         2902
+1 -42.590485 -22.498978     ...            LINE         2902
+2 -42.590530 -22.498077     ...            LINE         2902
+3 -42.590591 -22.497177     ...            LINE         2902
+4 -42.590652 -22.496277     ...            LINE         2902
+
+[5 rows x 6 columns]
 
 Trend estimator: Trend(degree=2)
 
 Updated DataFrame:
    longitude   latitude    ...          trend   residual
-0 -42.590424 -22.499878    ...      93.932331  21.477669
-1 -42.590485 -22.498978    ...      93.353128  27.996872
-2 -42.590530 -22.498077    ...      92.781212  35.508788
-3 -42.590591 -22.497177    ...      92.207709  41.032291
-4 -42.590652 -22.496277    ...      91.637062  44.542938
+0 -42.590424 -22.499878    ...      93.929614  21.480386
+1 -42.590485 -22.498978    ...      93.350509  27.999491
+2 -42.590530 -22.498077    ...      92.778689  35.511311
+3 -42.590591 -22.497177    ...      92.205282  41.034718
+4 -42.590652 -22.496277    ...      91.634731  44.545269
 
-[5 rows x 6 columns]
+[5 rows x 8 columns]
 </pre></div>
 </div>
 <div class="line-block">
@@ -350,12 +360,12 @@ Updated DataFrame:
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  1.803 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  2.236 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-trend-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/trend.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">trend.py</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/6c4f1eff7353b535ba7ebfa7efdf8638/trend.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">trend.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/trend.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">trend.ipynb</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/128352b2f97ec54f7f0fd1c6b57adccd/trend.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">trend.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -381,7 +391,7 @@ Updated DataFrame:
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Aug 10, 2018.
+      Last updated on Sep 13, 2018.
 
     </p>
   </div>

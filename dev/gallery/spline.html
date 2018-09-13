@@ -100,11 +100,11 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Verde</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Gallery</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="blockreduce.html">Blocked reduction operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blockreduce_weights.html">Using weights in blocked reduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blockreduce_weights_mean.html">Using weights in blocked means</a></li>
-<li class="toctree-l2"><a class="reference internal" href="chain.html">Chaining operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="distance_mask.html">Mask grid points by distance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="scipygridder.html">Gridding with Scipy</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Gridding with splines</a></li>
@@ -115,14 +115,22 @@
 <li class="toctree-l2"><a class="reference internal" href="vectorspline2d.html">Gridding 2D vectors (coupled)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/trend_estimation.html">Trend estimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/decimation.html">Data decimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/weights.html">Using weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
@@ -255,16 +263,15 @@ the interpolation is usually a bit slower. However, the advantage of using
 <img alt="../_images/sphx_glr_spline_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_spline_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Chain(steps=[(&#39;mean&#39;, BlockReduce(adjust=&#39;spacing&#39;, center_coordinates=False,
-      reduction=&lt;function mean at 0x154605b5e268&gt;, region=None,
-      spacing=9250.0)), (&#39;spline&#39;, Spline(damping=1e-10, engine=&#39;auto&#39;, mindist=100000.0, region=None,
-    shape=None, spacing=None))])
+      reduction=&lt;function mean at 0x2b2970cf8d08&gt;, region=None,
+      spacing=27750.0)), (&#39;spline&#39;, Spline(damping=1e-10, engine=&#39;auto&#39;, force_coords=None, mindist=100000.0))])
 
-Score: 0.847
+Score: 0.856
 &lt;xarray.Dataset&gt;
-Dimensions:      (latitude: 127, longitude: 152)
+Dimensions:      (latitude: 43, longitude: 51)
 Coordinates:
-  * longitude    (longitude) float64 -106.4 -106.3 -106.2 -106.1 -106.0 ...
-  * latitude     (latitude) float64 25.91 26.0 26.08 26.16 26.25 26.33 26.41 ...
+  * longitude    (longitude) float64 -106.4 -106.1 -105.9 -105.6 -105.4 ...
+  * latitude     (latitude) float64 25.91 26.16 26.41 26.66 26.91 27.16 ...
 Data variables:
     temperature  (latitude, longitude) float64 nan nan nan nan nan nan nan ...
 Attributes:
@@ -288,8 +295,8 @@ Attributes:
 <span class="c1"># Use a Mercator projection for our Cartesian gridder</span>
 <span class="n">projection</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span><span class="p">(</span><span class="n">proj</span><span class="o">=</span><span class="s2">&quot;merc&quot;</span><span class="p">,</span> <span class="n">lat_ts</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
 
-<span class="c1"># The output grid spacing will 5 arc-minutes</span>
-<span class="n">spacing</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">/</span> <span class="mi">60</span>
+<span class="c1"># The output grid spacing will 15 arc-minutes</span>
+<span class="n">spacing</span> <span class="o">=</span> <span class="mi">15</span> <span class="o">/</span> <span class="mi">60</span>
 
 <span class="c1"># Now we can chain a blocked mean and spline together. The Spline can be regularized</span>
 <span class="c1"># by setting the damping coefficient (should be positive). It&#39;s also a good idea to set</span>
@@ -319,17 +326,17 @@ Attributes:
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Score: {:.3f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">score</span><span class="p">))</span>
 
 <span class="c1"># Now we can create a geographic grid of air temperature by providing a projection</span>
-<span class="c1"># function to the grid method.</span>
-<span class="n">grid</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+<span class="c1"># function to the grid method and mask points that are too far from the observations</span>
+<span class="n">grid_full</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
     <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
     <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
     <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
     <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span>
     <span class="n">data_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">],</span>
 <span class="p">)</span>
-<span class="c1"># And mask points that are too far from the observations</span>
-<span class="n">mask</span> <span class="o">=</span> <a href="../api/generated/verde.distance_mask.html#verde.distance_mask" title="View documentation for verde.distance_mask"><span class="n">vd</span><span class="o">.</span><span class="n">distance_mask</span></a><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">)</span>
-<span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+<span class="n">grid</span> <span class="o">=</span> <a href="../api/generated/verde.distance_mask.html#verde.distance_mask" title="View documentation for verde.distance_mask"><span class="n">vd</span><span class="o">.</span><span class="n">distance_mask</span></a><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="mi">3</span> <span class="o">*</span> <span class="n">spacing</span> <span class="o">*</span> <span class="mf">111e3</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">grid_full</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">projection</span>
+<span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
 
 <span class="c1"># Plot the grid and the original data points</span>
@@ -351,12 +358,12 @@ Attributes:
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.269 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  1.218 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-spline-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/spline.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">spline.py</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/7d92ec4b13724e61c84e9766e66221e5/spline.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">spline.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/spline.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">spline.ipynb</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/217b362fcb4a81af0953099660b8bc80/spline.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">spline.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -382,7 +389,7 @@ Attributes:
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Aug 10, 2018.
+      Last updated on Sep 13, 2018.
 
     </p>
   </div>

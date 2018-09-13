@@ -98,15 +98,24 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Verde</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/trend_estimation.html">Trend estimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/decimation.html">Data decimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/weights.html">Using weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
 
@@ -213,6 +222,7 @@
 <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span><span class="p">,</span> <span class="n">Ridge</span>
 
 <span class="kn">from</span> <span class="nn">.coordinates</span> <span class="k">import</span> <span class="n">grid_coordinates</span><span class="p">,</span> <span class="n">profile_coordinates</span><span class="p">,</span> <span class="n">scatter_points</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">check_data</span>
 
 
 <div class="viewcode-block" id="BaseGridder"><a class="viewcode-back" href="../../api/generated/verde.base.BaseGridder.html#verde.BaseGridder">[docs]</a><span class="k">class</span> <span class="nc">BaseGridder</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">):</span>
@@ -753,24 +763,6 @@
     <span class="k">return</span> <span class="n">region</span>
 
 
-<span class="k">def</span> <span class="nf">check_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check the data returned by predict.</span>
-<span class="sd">    If the data is a single array, return it as a tuple with a single element.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-
-<span class="sd">    &gt;&gt;&gt; check_data([1, 2, 3])</span>
-<span class="sd">    ([1, 2, 3],)</span>
-<span class="sd">    &gt;&gt;&gt; check_data(([1, 2], [3, 4]))</span>
-<span class="sd">    ([1, 2], [3, 4])</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">,)</span>
-    <span class="k">return</span> <span class="n">data</span>
-
-
 <span class="k">def</span> <span class="nf">check_fit_input</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Validate the inputs to the fit method of gridders.</span>
@@ -861,7 +853,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Aug 10, 2018.
+      Last updated on Sep 13, 2018.
 
     </p>
   </div>

@@ -100,11 +100,11 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Verde</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Gallery</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="blockreduce.html">Blocked reduction operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blockreduce_weights.html">Using weights in blocked reduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blockreduce_weights_mean.html">Using weights in blocked means</a></li>
-<li class="toctree-l2"><a class="reference internal" href="chain.html">Chaining operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="distance_mask.html">Mask grid points by distance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="scipygridder.html">Gridding with Scipy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spline.html">Gridding with splines</a></li>
@@ -115,14 +115,22 @@
 <li class="toctree-l2"><a class="reference internal" href="vectorspline2d.html">Gridding 2D vectors (coupled)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/trend_estimation.html">Trend estimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/decimation.html">Data decimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/weights.html">Using weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
@@ -248,14 +256,14 @@
 <div class="sphx-glr-example-title section" id="trends-in-vector-data">
 <span id="sphx-glr-gallery-vector-trend-py"></span><h1>Trends in vector data<a class="headerlink" href="#trends-in-vector-data" title="Permalink to this headline">¶</a></h1>
 <p>Verde provides the <a class="reference internal" href="../api/generated/verde.Trend.html#verde.Trend" title="verde.Trend"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Trend</span></code></a> class to estimate a polynomial trend and the
-<a class="reference internal" href="../api/generated/verde.Components.html#verde.Components" title="verde.Components"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Components</span></code></a> class to apply any combination of estimators to each component
+<a class="reference internal" href="../api/generated/verde.Vector.html#verde.Vector" title="verde.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Vector</span></code></a> class to apply any combination of estimators to each component
 of vector data, like GPS velocities. You can access each component as a separate
 (fitted) <a class="reference internal" href="../api/generated/verde.Trend.html#verde.Trend" title="verde.Trend"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Trend</span></code></a> instance or operate on all vector components directly
-using using <a class="reference internal" href="../api/generated/verde.Components.html#verde.Components.predict" title="verde.Components.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">verde.Components.predict</span></code></a>, <a class="reference internal" href="../api/generated/verde.Components.html#verde.Components.grid" title="verde.Components.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">verde.Components.grid</span></code></a>, etc, or
+using using <a class="reference internal" href="../api/generated/verde.Vector.html#verde.Vector.predict" title="verde.Vector.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">verde.Vector.predict</span></code></a>, <a class="reference internal" href="../api/generated/verde.Vector.html#verde.Vector.grid" title="verde.Vector.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">verde.Vector.grid</span></code></a>, etc, or
 chaining it with a vector interpolator using <a class="reference internal" href="../api/generated/verde.Chain.html#verde.Chain" title="verde.Chain"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Chain</span></code></a>.</p>
 <img alt="../_images/sphx_glr_vector_trend_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_vector_trend_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Vector trend estimator: Components(components=[Trend(degree=2), Trend(degree=2)])
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Vector trend estimator: Vector(components=[Trend(degree=2), Trend(degree=2)])
 East component trend: Trend(degree=2)
 East trend coefficients: [-2.63027348e+01  1.65325273e-01  3.15539485e-01 -2.54890059e-04
  -1.04529316e-03 -8.02571744e-04]
@@ -273,7 +281,7 @@ Data variables:
     east_component   (latitude, longitude) float64 -0.09947 -0.09833 -0.0972 ...
     north_component  (latitude, longitude) float64 0.1229 0.1213 0.1197 ...
 Attributes:
-    metadata:  Generated by Components(components=[Trend(degree=2), Trend(deg...
+    metadata:  Generated by Vector(components=[Trend(degree=2), Trend(degree=...
 </pre></div>
 </div>
 <div class="line-block">
@@ -291,9 +299,9 @@ Attributes:
 
 <span class="c1"># We&#39;ll fit a degree 2 trend on both the East and North components and weight the data</span>
 <span class="c1"># using the inverse of the variance of each component.</span>
-<span class="c1"># Note: Never use [Trend(...)]*2 as an argument to Components. This creates references</span>
+<span class="c1"># Note: Never use [Trend(...)]*2 as an argument to Vector. This creates references</span>
 <span class="c1"># to the same Trend instance and will mess up the fitting.</span>
-<span class="n">trend</span> <span class="o">=</span> <a href="../api/generated/verde.Components.html#verde.Components" title="View documentation for verde.Components"><span class="n">vd</span><span class="o">.</span><span class="n">Components</span></a><span class="p">([</span><a href="../api/generated/verde.Trend.html#verde.Trend" title="View documentation for verde.Trend"><span class="n">vd</span><span class="o">.</span><span class="n">Trend</span></a><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)])</span>
+<span class="n">trend</span> <span class="o">=</span> <a href="../api/generated/verde.Vector.html#verde.Vector" title="View documentation for verde.Vector"><span class="n">vd</span><span class="o">.</span><span class="n">Vector</span></a><span class="p">([</span><a href="../api/generated/verde.Trend.html#verde.Trend" title="View documentation for verde.Trend"><span class="n">vd</span><span class="o">.</span><span class="n">Trend</span></a><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)])</span>
 <span class="n">weights</span> <span class="o">=</span> <a href="../api/generated/verde.variance_to_weights.html#verde.variance_to_weights" title="View documentation for verde.variance_to_weights"><span class="n">vd</span><span class="o">.</span><span class="n">variance_to_weights</span></a><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">std_east</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">std_north</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 <span class="n">trend</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
     <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">),</span>
@@ -360,12 +368,12 @@ Attributes:
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.294 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.797 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-vector-trend-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/vector_trend.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">vector_trend.py</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/ac20348691cb1afc5379d410bf938a1b/vector_trend.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">vector_trend.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/vector_trend.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">vector_trend.ipynb</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/98d441fccabb55f4057c2ca9322f65db/vector_trend.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">vector_trend.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -391,7 +399,7 @@ Attributes:
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Aug 10, 2018.
+      Last updated on Sep 13, 2018.
 
     </p>
   </div>

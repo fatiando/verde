@@ -30,16 +30,15 @@ the interpolation is usually a bit slower. However, the advantage of using
  .. code-block:: none
 
     Chain(steps=[('mean', BlockReduce(adjust='spacing', center_coordinates=False,
-          reduction=<function mean at 0x154605b5e268>, region=None,
-          spacing=9250.0)), ('spline', Spline(damping=1e-10, engine='auto', mindist=100000.0, region=None,
-        shape=None, spacing=None))])
+          reduction=<function mean at 0x2b2970cf8d08>, region=None,
+          spacing=27750.0)), ('spline', Spline(damping=1e-10, engine='auto', force_coords=None, mindist=100000.0))])
 
-    Score: 0.847
+    Score: 0.856
     <xarray.Dataset>
-    Dimensions:      (latitude: 127, longitude: 152)
+    Dimensions:      (latitude: 43, longitude: 51)
     Coordinates:
-      * longitude    (longitude) float64 -106.4 -106.3 -106.2 -106.1 -106.0 ...
-      * latitude     (latitude) float64 25.91 26.0 26.08 26.16 26.25 26.33 26.41 ...
+      * longitude    (longitude) float64 -106.4 -106.1 -105.9 -105.6 -105.4 ...
+      * latitude     (latitude) float64 25.91 26.16 26.41 26.66 26.91 27.16 ...
     Data variables:
         temperature  (latitude, longitude) float64 nan nan nan nan nan nan nan ...
     Attributes:
@@ -67,8 +66,8 @@ the interpolation is usually a bit slower. However, the advantage of using
     # Use a Mercator projection for our Cartesian gridder
     projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 
-    # The output grid spacing will 5 arc-minutes
-    spacing = 5 / 60
+    # The output grid spacing will 15 arc-minutes
+    spacing = 15 / 60
 
     # Now we can chain a blocked mean and spline together. The Spline can be regularized
     # by setting the damping coefficient (should be positive). It's also a good idea to set
@@ -98,17 +97,17 @@ the interpolation is usually a bit slower. However, the advantage of using
     print("\nScore: {:.3f}".format(score))
 
     # Now we can create a geographic grid of air temperature by providing a projection
-    # function to the grid method.
-    grid = chain.grid(
+    # function to the grid method and mask points that are too far from the observations
+    grid_full = chain.grid(
         region=region,
         spacing=spacing,
         projection=projection,
         dims=["latitude", "longitude"],
         data_names=["temperature"],
     )
-    # And mask points that are too far from the observations
-    mask = vd.distance_mask(coordinates, maxdist=1, region=region, spacing=spacing)
-    grid = grid.where(mask)
+    grid = vd.distance_mask(
+        coordinates, maxdist=3 * spacing * 111e3, grid=grid_full, projection=projection
+    )
     print(grid)
 
     # Plot the grid and the original data points
@@ -129,7 +128,7 @@ the interpolation is usually a bit slower. However, the advantage of using
     plt.tight_layout()
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  0.269 seconds)
+**Total running time of the script:** ( 0 minutes  1.218 seconds)
 
 
 .. _sphx_glr_download_gallery_spline.py:

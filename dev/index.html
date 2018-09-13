@@ -99,15 +99,24 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citing.html">Citing Verde</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gallery/index.html">Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sample_data/index.html">Sample Data</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/trend_estimation.html">Trend estimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/decimation.html">Data decimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/weights.html">Using weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
 </ul>
 
@@ -224,16 +233,7 @@
     <h2>Processing and gridding spatial data</h2>
     <p>A part of the <a href="https://www.fatiando.org/">Fatiando a Terra</a> project.</p>
     <a href="/gallery"><img src="_static/banner.png" alt="A sample of what Verde can do"></a>
-</div><div class="admonition attention">
-<p class="first admonition-title">Attention</p>
-<p><strong>This package is in early stages of design and implementation.</strong></p>
-<p class="last">We welcome any feedback and ideas!
-Let us know by submitting
-<a class="reference external" href="https://github.com/fatiando/verde/issues">issues on Github</a>
-or send us a message on our
-<a class="reference external" href="https://gitter.im/fatiando/fatiando">Gitter chatroom</a>.</p>
-</div>
-<div class="section" id="about">
+</div><div class="section" id="about">
 <h1>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h1>
 <p>Verde is a Python library for processing spatial data (bathymetry, geophysics
 surveys, etc) and interpolating it on regular grids (i.e., <em>gridding</em>).</p>
@@ -255,23 +255,26 @@ like k-fold or holdout cross-validation.</li>
 <li>The estimated model can be <strong>easily stored</strong> for later use, like
 spherical-harmonic coefficients are used in gravimetry.</li>
 </ul>
+<p>The main disadvantage is the heavy memory and processing time requirement (it’s a linear
+regression problem). So it’s not recommended for gridding large datasets (&gt; 10,000
+points), though it will depend on how much RAM you have available.</p>
 </div>
 <div class="section" id="project-goals">
 <h1>Project goals<a class="headerlink" href="#project-goals" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li>Provide a machine-learning inspired interface for Green’s functions gridding
-of spatial data</li>
-<li>Integration with the Scipy stack: numpy, pandas (for xyz data), and xarray
-(for grids)</li>
-<li>Include functions for common processing and data preparation tasks, like
-blocked means and medians</li>
-<li>Support for gridding scalar and vector data (like wind speed or GPS
-velocities)</li>
+<li>Provide a machine-learning inspired interface for gridding spatial data</li>
+<li>Integration with the Scipy stack: numpy, pandas, scikit-learn, and xarray</li>
+<li>Include common processing and data preparation tasks, like blocked means and 2D trends</li>
+<li>Support for gridding scalar and vector data (like wind speed or GPS velocities)</li>
 <li>Support for both Cartesian and geographic coordinates</li>
 </ul>
+<p>The first release of Verde was focused on meeting these initial goals and establishing
+the look and feel of the library. Later releases will focus on expanding the range of
+gridders available, optimizing the code, and improving algorithms so that
+larger-than-memory datasets can also be supported.</p>
 </div>
 <div class="section" id="contacting-us">
-<h1>Contacting Us<a class="headerlink" href="#contacting-us" title="Permalink to this headline">¶</a></h1>
+<h1>Contacting us<a class="headerlink" href="#contacting-us" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li>Most discussion happens <a class="reference external" href="https://github.com/fatiando/verde">on Github</a>.
 Feel free to <a class="reference external" href="https://github.com/fatiando/verde/issues/new">open an issue</a> or comment
@@ -279,6 +282,14 @@ on any open issue or pull request.</li>
 <li>We have <a class="reference external" href="https://gitter.im/fatiando/fatiando">chat room on Gitter</a>
 where you can ask questions and leave comments.</li>
 </ul>
+</div>
+<div class="section" id="citing-verde">
+<h1>Citing Verde<a class="headerlink" href="#citing-verde" title="Permalink to this headline">¶</a></h1>
+<p>This is research software <strong>made by scientists</strong>. Citations help us justify the effort
+that goes into building and maintaining this project. If you used Verde for your
+research, please consider citing us.</p>
+<p>See our <a class="reference external" href="https://github.com/fatiando/verde/blob/master/CITATION.rst">CITATION.rst file</a>
+to find out more.</p>
 </div>
 <div class="section" id="contributing">
 <h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h1>
@@ -319,8 +330,20 @@ That’s how we all improve and we are happy to help others learn.</p>
 </div>
 <div class="section" id="license">
 <h1>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h1>
-<p>This is free software: you can redistribute it and/or modify it under the
-terms of the <a class="reference external" href="https://github.com/fatiando/verde/blob/master/LICENSE.txt">BSD 3-clause License</a>.</p>
+<p>This is free software: you can redistribute it and/or modify it under the terms
+of the <strong>BSD 3-clause License</strong>. A copy of this license is provided in
+<a class="reference external" href="https://github.com/fatiando/verde/blob/master/LICENSE.txt">LICENSE.txt</a>.</p>
+</div>
+<div class="section" id="documentation-for-other-versions">
+<h1>Documentation for other versions<a class="headerlink" href="#documentation-for-other-versions" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference external" href="http://www.fatiando.org/verde/dev">Development</a> (reflects the <em>master</em> branch on
+Github)</li>
+<li><a class="reference external" href="http://www.fatiando.org/verde/latest">Latest release</a></li>
+<li><a class="reference external" href="http://www.fatiando.org/verde/v1.0.0">v1.0.0</a></li>
+</ul>
+<div class="toctree-wrapper compound">
+</div>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
@@ -346,7 +369,7 @@ terms of the <a class="reference external" href="https://github.com/fatiando/ver
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Aug 10, 2018.
+      Last updated on Sep 13, 2018.
 
     </p>
   </div>

@@ -107,15 +107,24 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Verde</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gallery/index.html">Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="trend_estimation.html">Trend estimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="decimation.html">Data decimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="weights.html">Using weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
@@ -262,14 +271,14 @@ north.</li>
 <h2>The library<a class="headerlink" href="#the-library" title="Permalink to this headline">¶</a></h2>
 <p>Most classes and functions are available through the <a class="reference internal" href="../api/index.html#module-verde" title="verde"><code class="xref py py-mod docutils literal notranslate"><span class="pre">verde</span></code></a> top level package.
 The only exceptions are the functions related to loading sample data, which are in
-<a class="reference internal" href="../sample_data/index.html#module-verde.datasets" title="verde.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">verde.datasets</span></code></a>. Throughout the documentation we’ll use <code class="docutils literal notranslate"><span class="pre">vd</span></code> as the alias for
+<a class="reference internal" href="../api/index.html#module-verde.datasets" title="verde.datasets"><code class="xref py py-mod docutils literal notranslate"><span class="pre">verde.datasets</span></code></a>. Throughout the documentation we’ll use <code class="docutils literal notranslate"><span class="pre">vd</span></code> as the alias for
 <a class="reference internal" href="../api/index.html#module-verde" title="verde"><code class="xref py py-mod docutils literal notranslate"><span class="pre">verde</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">verde</span> <span class="kn">as</span> <span class="nn">vd</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="the-gridder-interface">
-<h2>The gridder interface<a class="headerlink" href="#the-gridder-interface" title="Permalink to this headline">¶</a></h2>
+<span id="gridder-interface"></span><h2>The gridder interface<a class="headerlink" href="#the-gridder-interface" title="Permalink to this headline">¶</a></h2>
 <p>All gridding and trend estimation classes in Verde share the same interface (they all
 inherit from <a class="reference internal" href="../api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder" title="verde.base.BaseGridder"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.base.BaseGridder</span></code></a>). Since most gridders in Verde are linear
 models, we based our gridder interface on the <a class="reference external" href="http://scikit-learn.org/">scikit-learn</a> estimator interface: they all implement a
@@ -314,8 +323,7 @@ we create a new <a class="reference internal" href="../api/generated/verde.Splin
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Spline(damping=None, engine=&#39;auto&#39;, mindist=1e-05, region=None, shape=None,
-    spacing=None)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Spline(damping=None, engine=&#39;auto&#39;, force_coords=None, mindist=1e-05)
 </pre></div>
 </div>
 <p>Before we can use the spline, we need to fit it to our synthetic data. After that, we
@@ -342,7 +350,7 @@ determination</a>.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9950450871662062
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9950450871661881
 </pre></div>
 </div>
 </div>
@@ -364,7 +372,7 @@ Coordinates:
 Data variables:
     scalars   (northing, easting) float64 495.6 521.3 549.0 578.7 610.0 ...
 Attributes:
-    metadata:  Generated by Spline(damping=None, engine=&#39;auto&#39;, mindist=1e-05...
+    metadata:  Generated by Spline(damping=None, engine=&#39;auto&#39;,\n    force_co...
 </pre></div>
 </div>
 <p><a class="reference internal" href="../api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.grid" title="verde.base.BaseGridder.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a> uses default names for the coordinates (“easting”
@@ -388,7 +396,7 @@ Coordinates:
 Data variables:
     gravity    (latitude, longitude) float64 495.6 521.3 549.0 578.7 610.0 ...
 Attributes:
-    metadata:  Generated by Spline(damping=None, engine=&#39;auto&#39;, mindist=1e-05...
+    metadata:  Generated by Spline(damping=None, engine=&#39;auto&#39;,\n    force_co...
 </pre></div>
 </div>
 <p>Gridders can also be used to interpolate data on a straight line between two points
@@ -424,12 +432,12 @@ documentation will involve some variation of the following workflow:</p>
 <li>Predict new values (using <a class="reference internal" href="../api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.predict" title="verde.base.BaseGridder.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict</span></code></a> or
 <a class="reference internal" href="../api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.grid" title="verde.base.BaseGridder.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a>)</li>
 </ol>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  1.646 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  8.552 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-overview-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/overview.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">overview.py</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/be263df3d78103bc145828133c8b7363/overview.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">overview.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/overview.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">overview.ipynb</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/d809c30e1070db12227da425b4b69e5d/overview.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">overview.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -456,7 +464,7 @@ documentation will involve some variation of the following workflow:</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Aug 10, 2018.
+      Last updated on Sep 13, 2018.
 
     </p>
   </div>

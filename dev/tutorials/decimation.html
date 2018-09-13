@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
     
-        <title>Data decimation &mdash; Verde</title>
+        <title>Data Decimation &mdash; Verde</title>
     
 
 
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../_static/style.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Using weights" href="weights.html" />
-    <link rel="prev" title="Trend estimation" href="trend_estimation.html" />
+    <link rel="next" title="Geographic Coordinates" href="projections.html" />
+    <link rel="prev" title="Trend Estimation" href="trends.html" />
     
     <script src="../_static/require.js"></script>
 
@@ -100,15 +100,24 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Verde</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gallery/index.html">Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="trend_estimation.html">Trend estimation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Data decimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="weights.html">Using weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trends.html">Trend Estimation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
@@ -180,7 +189,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Data decimation</li>
+      <li>Data Decimation</li>
     
     
     <li class="source-link">
@@ -230,7 +239,7 @@
 <p class="last">Click <a class="reference internal" href="#sphx-glr-download-tutorials-decimation-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="data-decimation">
-<span id="sphx-glr-tutorials-decimation-py"></span><h1>Data decimation<a class="headerlink" href="#data-decimation" title="Permalink to this headline">¶</a></h1>
+<span id="sphx-glr-tutorials-decimation-py"></span><h1>Data Decimation<a class="headerlink" href="#data-decimation" title="Permalink to this headline">¶</a></h1>
 <p>Often times, raw spatial data can be highly oversampled in a direction. In these cases,
 we need to decimate the data before interpolation to avoid aliasing effects.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
@@ -276,7 +285,7 @@ smoothly (like gravity and magnetic data), a mean would be a better option.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>BlockReduce(adjust=&#39;spacing&#39;, center_coordinates=False,
-      reduction=&lt;function median at 0x154605a546a8&gt;, region=None,
+      reduction=&lt;function median at 0x2b2970df3268&gt;, region=None,
       spacing=0.08333333333333333)
 </pre></div>
 </div>
@@ -319,12 +328,12 @@ block:</p>
 </div>
 <img alt="../_images/sphx_glr_decimation_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_decimation_003.png" />
 <p>Now the data are ready for interpolation.</p>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  2.872 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  2.564 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-decimation-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/decimation.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">decimation.py</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/512e1057799a1136f3c194e85feeb992/decimation.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">decimation.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/decimation.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">decimation.ipynb</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/70e83ae905bf839601128624c327ec7c/decimation.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">decimation.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -337,10 +346,10 @@ block:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="weights.html" class="btn btn-neutral float-right" title="Using weights" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="projections.html" class="btn btn-neutral float-right" title="Geographic Coordinates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="trend_estimation.html" class="btn btn-neutral" title="Trend estimation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="trends.html" class="btn btn-neutral" title="Trend Estimation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -350,7 +359,7 @@ block:</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Aug 10, 2018.
+      Last updated on Sep 13, 2018.
 
     </p>
   </div>

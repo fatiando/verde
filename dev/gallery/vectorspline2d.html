@@ -100,11 +100,11 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Verde</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Gallery</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="blockreduce.html">Blocked reduction operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blockreduce_weights.html">Using weights in blocked reduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blockreduce_weights_mean.html">Using weights in blocked means</a></li>
-<li class="toctree-l2"><a class="reference internal" href="chain.html">Chaining operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="distance_mask.html">Mask grid points by distance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="scipygridder.html">Gridding with Scipy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spline.html">Gridding with splines</a></li>
@@ -115,14 +115,22 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Gridding 2D vectors (coupled)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/trend_estimation.html">Trend estimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/decimation.html">Data decimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/weights.html">Using weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
 
@@ -248,7 +256,7 @@
 <div class="sphx-glr-example-title section" id="gridding-2d-vectors-coupled">
 <span id="sphx-glr-gallery-vectorspline2d-py"></span><h1>Gridding 2D vectors (coupled)<a class="headerlink" href="#gridding-2d-vectors-coupled" title="Permalink to this headline">¶</a></h1>
 <p>One way of gridding vector data would be grid each component separately using
-<a class="reference internal" href="../api/generated/verde.Spline.html#verde.Spline" title="verde.Spline"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Spline</span></code></a> and <a class="reference internal" href="../api/generated/verde.Components.html#verde.Components" title="verde.Components"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Components</span></code></a>. Alternatively,
+<a class="reference internal" href="../api/generated/verde.Spline.html#verde.Spline" title="verde.Spline"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Spline</span></code></a> and <a class="reference internal" href="../api/generated/verde.Vector.html#verde.Vector" title="verde.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Vector</span></code></a>. Alternatively,
 <a class="reference internal" href="../api/generated/verde.VectorSpline2D.html#verde.VectorSpline2D" title="verde.VectorSpline2D"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.VectorSpline2D</span></code></a> can grid two components simultaneously in a way that
 couples them through elastic deformation theory. This is particularly suited, though not
 exclusive, to data that represent elastic/semi-elastic deformation, like horizontal GPS
@@ -282,8 +290,8 @@ velocities.</p>
     <span class="n">projection</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">),</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">velocity_east</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">velocity_north</span><span class="p">),</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span>
 <span class="p">)</span>
 
-<span class="c1"># We&#39;ll make a 20 arc-minute grid in the end.</span>
-<span class="n">spacing</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">/</span> <span class="mi">60</span>
+<span class="c1"># We&#39;ll make a 15 arc-minute grid in the end.</span>
+<span class="n">spacing</span> <span class="o">=</span> <span class="mi">15</span> <span class="o">/</span> <span class="mi">60</span>
 
 <span class="c1"># Chain together a blocked mean to avoid aliasing, a polynomial trend to take care of</span>
 <span class="c1"># the increase toward the coast, and finally the vector gridder using Poisson&#39;s ratio</span>
@@ -291,7 +299,7 @@ velocities.</p>
 <span class="n">chain</span> <span class="o">=</span> <a href="../api/generated/verde.Chain.html#verde.Chain" title="View documentation for verde.Chain"><span class="n">vd</span><span class="o">.</span><span class="n">Chain</span></a><span class="p">(</span>
     <span class="p">[</span>
         <span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <a href="../api/generated/verde.BlockReduce.html#verde.BlockReduce" title="View documentation for verde.BlockReduce"><span class="n">vd</span><span class="o">.</span><span class="n">BlockReduce</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html#numpy.mean" title="View documentation for numpy.mean"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">,</span> <span class="n">spacing</span> <span class="o">*</span> <span class="mf">111e3</span><span class="p">)),</span>
-        <span class="p">(</span><span class="s2">&quot;trend&quot;</span><span class="p">,</span> <a href="../api/generated/verde.Components.html#verde.Components" title="View documentation for verde.Components"><span class="n">vd</span><span class="o">.</span><span class="n">Components</span></a><span class="p">([</span><a href="../api/generated/verde.Trend.html#verde.Trend" title="View documentation for verde.Trend"><span class="n">vd</span><span class="o">.</span><span class="n">Trend</span></a><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)])),</span>
+        <span class="p">(</span><span class="s2">&quot;trend&quot;</span><span class="p">,</span> <a href="../api/generated/verde.Vector.html#verde.Vector" title="View documentation for verde.Vector"><span class="n">vd</span><span class="o">.</span><span class="n">Vector</span></a><span class="p">([</span><a href="../api/generated/verde.Trend.html#verde.Trend" title="View documentation for verde.Trend"><span class="n">vd</span><span class="o">.</span><span class="n">Trend</span></a><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)])),</span>
         <span class="p">(</span><span class="s2">&quot;spline&quot;</span><span class="p">,</span> <a href="../api/generated/verde.VectorSpline2D.html#verde.VectorSpline2D" title="View documentation for verde.VectorSpline2D"><span class="n">vd</span><span class="o">.</span><span class="n">VectorSpline2D</span></a><span class="p">(</span><span class="n">poisson</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">mindist</span><span class="o">=</span><span class="mf">10e3</span><span class="p">)),</span>
     <span class="p">]</span>
 <span class="p">)</span>
@@ -304,13 +312,15 @@ velocities.</p>
 
 <span class="c1"># Interpolate our horizontal GPS velocities onto a regular geographic grid and mask the</span>
 <span class="c1"># data that are far from the observation points</span>
-<span class="n">grid</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+<span class="n">grid_full</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
     <span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">]</span>
 <span class="p">)</span>
-<span class="n">mask</span> <span class="o">=</span> <a href="../api/generated/verde.distance_mask.html#verde.distance_mask" title="View documentation for verde.distance_mask"><span class="n">vd</span><span class="o">.</span><span class="n">distance_mask</span></a><span class="p">(</span>
-    <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">),</span> <span class="n">maxdist</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span>
+<span class="n">grid</span> <span class="o">=</span> <a href="../api/generated/verde.distance_mask.html#verde.distance_mask" title="View documentation for verde.distance_mask"><span class="n">vd</span><span class="o">.</span><span class="n">distance_mask</span></a><span class="p">(</span>
+    <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">),</span>
+    <span class="n">maxdist</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">spacing</span> <span class="o">*</span> <span class="mf">111e3</span><span class="p">,</span>
+    <span class="n">grid</span><span class="o">=</span><span class="n">grid_full</span><span class="p">,</span>
+    <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
 
 <span class="c1"># Calculate residuals between the predictions and the original input data. Even though</span>
 <span class="c1"># we aren&#39;t using regularization or regularly distributed forces, the prediction won&#39;t</span>
@@ -379,12 +389,12 @@ velocities.</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.351 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  6.439 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-vectorspline2d-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/vectorspline2d.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">vectorspline2d.py</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/78fca31bb4715f658938135d05d60edd/vectorspline2d.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">vectorspline2d.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/vectorspline2d.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">vectorspline2d.ipynb</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/d11c04220ae0bf871bfccfd3738885df/vectorspline2d.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">vectorspline2d.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -410,7 +420,7 @@ velocities.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Aug 10, 2018.
+      Last updated on Sep 13, 2018.
 
     </p>
   </div>

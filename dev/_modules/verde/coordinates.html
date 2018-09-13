@@ -98,15 +98,24 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Verde</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/trend_estimation.html">Trend estimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/decimation.html">Data decimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/weights.html">Using weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
 
@@ -204,6 +213,13 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="k">import</span> <span class="n">check_random_state</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pykdtree.kdtree</span> <span class="k">import</span> <span class="n">KDTree</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="k">import</span> <span class="n">cKDTree</span> <span class="k">as</span> <span class="n">KDTree</span>  <span class="c1"># pylint: disable=no-name-in-module</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">n_1d_arrays</span>
 
 
 <span class="k">def</span> <span class="nf">check_region</span><span class="p">(</span><span class="n">region</span><span class="p">):</span>
@@ -776,6 +792,82 @@
     <span class="p">)</span>
     <span class="n">are_inside</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">in_we</span><span class="p">,</span> <span class="n">in_ns</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">are_inside</span></div>
+
+
+<div class="viewcode-block" id="block_split"><a class="viewcode-back" href="../../api/generated/verde.block_split.html#verde.block_split">[docs]</a><span class="k">def</span> <span class="nf">block_split</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">adjust</span><span class="o">=</span><span class="s2">&quot;spacing&quot;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Split a region into blocks and label points according to where they fall.</span>
+
+<span class="sd">    The labels are integers corresponding to the index of the block. The same</span>
+<span class="sd">    index is used for the coordinates of each block.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        If installed, package ``pykdtree`` will be used instead of</span>
+<span class="sd">        :class:`scipy.spatial.cKDTree` for better performance.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : tuple of arrays</span>
+<span class="sd">        Arrays with the coordinates of each data point. Should be in the</span>
+<span class="sd">        following order: (easting, northing, vertical, ...). Only easting and</span>
+<span class="sd">        northing will be used, all subsequent coordinates will be ignored.</span>
+<span class="sd">    spacing : float, tuple = (s_north, s_east), or None</span>
+<span class="sd">        The block size in the South-North and West-East directions,</span>
+<span class="sd">        respectively. A single value means that the size is equal in both</span>
+<span class="sd">        directions.</span>
+<span class="sd">    adjust : {&#39;spacing&#39;, &#39;region&#39;}</span>
+<span class="sd">        Whether to adjust the spacing or the region if required. Ignored if</span>
+<span class="sd">        *shape* is given instead of *spacing*. Defaults to adjusting the</span>
+<span class="sd">        spacing.</span>
+<span class="sd">    region : list = [W, E, S, N]</span>
+<span class="sd">        The boundaries of a given region in Cartesian or geographic</span>
+<span class="sd">        coordinates. If not region is given, will use the bounding region of</span>
+<span class="sd">        the given points.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    block_coordinates : tuple of arrays</span>
+<span class="sd">        (easting, northing) arrays with the coordinates of the center of each</span>
+<span class="sd">        block.</span>
+<span class="sd">    labels : array</span>
+<span class="sd">        integer label for each data point. The label is the index of the block</span>
+<span class="sd">        to which that point belongs.</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    BlockReduce : Apply a reduction operation to the data in blocks (windows).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; from verde import grid_coordinates</span>
+<span class="sd">    &gt;&gt;&gt; coords = grid_coordinates((-5, 0, 5, 10), spacing=1)</span>
+<span class="sd">    &gt;&gt;&gt; block_coords, labels = block_split(coords, spacing=2.5)</span>
+<span class="sd">    &gt;&gt;&gt; for coord in block_coords:</span>
+<span class="sd">    ...     print(&#39;, &#39;.join([&#39;{:.2f}&#39;.format(i) for i in coord]))</span>
+<span class="sd">    -3.75, -1.25, -3.75, -1.25</span>
+<span class="sd">    6.25, 6.25, 8.75, 8.75</span>
+<span class="sd">    &gt;&gt;&gt; print(labels.reshape(coords[0].shape))</span>
+<span class="sd">    [[0 0 0 1 1 1]</span>
+<span class="sd">     [0 0 0 1 1 1]</span>
+<span class="sd">     [0 0 0 1 1 1]</span>
+<span class="sd">     [2 2 2 3 3 3]</span>
+<span class="sd">     [2 2 2 3 3 3]</span>
+<span class="sd">     [2 2 2 3 3 3]]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">region</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">region</span> <span class="o">=</span> <span class="n">get_region</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+    <span class="n">block_coords</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+        <span class="n">i</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">grid_coordinates</span><span class="p">(</span>
+            <span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">adjust</span><span class="o">=</span><span class="n">adjust</span><span class="p">,</span> <span class="n">pixel_register</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">KDTree</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">block_coords</span><span class="p">))</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">block_coords</span><span class="p">,</span> <span class="n">labels</span></div>
 </pre></div>
 
            </div>
@@ -789,7 +881,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda.
-      Last updated on Aug 10, 2018.
+      Last updated on Sep 13, 2018.
 
     </p>
   </div>

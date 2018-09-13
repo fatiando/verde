@@ -30,8 +30,7 @@ and use weights based on the data uncertainty during gridding.
  .. code-block:: none
 
     Chain(steps=[('mean', BlockMean(adjust='spacing', center_coordinates=False, region=None,
-         spacing=9250.0, uncertainty=True)), ('spline', Spline(damping=1e-10, engine='auto', mindist=1e-05, region=None, shape=None,
-        spacing=None))])
+         spacing=9250.0, uncertainty=True)), ('spline', Spline(damping=1e-10, engine='auto', force_coords=None, mindist=1e-05))])
 
     Score: 0.819
 
@@ -61,7 +60,7 @@ and use weights based on the data uncertainty during gridding.
     # Now we can chain a block weighted mean and weighted spline together. We'll use
     # uncertainty propagation to calculate the new weights from block mean because our data
     # vary smoothly but have different uncertainties.
-    spacing = 5 / 60  # 5 arc-minutes which we'll approximate to 5*111e3 meters
+    spacing = 5 / 60  # 5 arc-minutes
     chain = vd.Chain(
         [
             ("mean", vd.BlockMean(spacing=spacing * 111e3, uncertainty=True)),
@@ -90,17 +89,19 @@ and use weights based on the data uncertainty during gridding.
     # Create a grid of the vertical velocity and mask it to only show points close to the
     # actual data.
     region = vd.get_region(coordinates)
-    mask = vd.distance_mask(
-        (data.longitude, data.latitude), maxdist=0.5, region=region, spacing=spacing
-    )
-    grid = chain.grid(
+    grid_full = chain.grid(
         region=region,
         spacing=spacing,
         projection=projection,
         dims=["latitude", "longitude"],
         data_names=["velocity"],
     )
-    grid = grid.where(mask)
+    grid = vd.distance_mask(
+        (data.longitude, data.latitude),
+        maxdist=5 * spacing * 111e3,
+        grid=grid_full,
+        projection=projection,
+    )
 
     fig, axes = plt.subplots(
         1, 2, figsize=(9, 7), subplot_kw=dict(projection=ccrs.Mercator())
@@ -124,7 +125,7 @@ and use weights based on the data uncertainty during gridding.
     vd.datasets.setup_california_gps_map(ax, region=region)
     # Plot the gridded velocities
     ax = axes[1]
-    ax.set_title("Spline interpolated vertical velocity")
+    ax.set_title("Weighted spline interpolated velocity")
     maxabs = vd.maxabs(data.velocity_up) * 1000
     pc = ax.pcolormesh(
         grid.longitude,
@@ -143,7 +144,7 @@ and use weights based on the data uncertainty during gridding.
     plt.tight_layout()
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  1.383 seconds)
+**Total running time of the script:** ( 0 minutes  4.110 seconds)
 
 
 .. _sphx_glr_download_gallery_spline_weights.py:
