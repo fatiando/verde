@@ -92,6 +92,17 @@ Contacting us
   where you can ask questions and leave comments.
 
 
+Citing Verde
+------------
+
+This is research software **made by scientists**. Citations help us justify the effort
+that goes into building and maintaining this project. If you used Verde for your
+research, please consider citing us.
+
+See our `CITATION file <https://github.com/fatiando/verde/blob/master/CITATION.rst>`__
+to find out more.
+
+
 Contributing
 ------------
 
