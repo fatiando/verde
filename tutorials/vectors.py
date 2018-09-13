@@ -18,7 +18,7 @@ data = vd.datasets.fetch_california_gps()
 projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 proj_coords = projection(data.longitude.values, data.latitude.values)
 # This will be our desired grid spacing in degrees
-spacing = 15 / 60
+spacing = 12 / 60
 
 plt.figure(figsize=(6, 8))
 ax = plt.axes(projection=ccrs.Mercator())
@@ -151,8 +151,10 @@ plt.show()
 #
 # Let's make geographic grids of these trends.
 
+region = vd.get_region((data.longitude, data.latitude))
+
 grid = trend.grid(
-    region=vd.get_region((data.longitude, data.latitude)),
+    region=region,
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
@@ -195,4 +197,143 @@ plt.show()
 # Gridding
 # --------
 #
+# You can use :class:`verde.Vector` to create multi-component gridders out of
+# :class:`verde.Spline` the same way as we did for trends. In this case, each component
+# is treated separately.
 #
+# We can start by splitting the data into training and testing sets (see
+# :ref:`model_selection`). Notice that :func:`verde.train_test_split` work for
+# multicomponent data automatically.
+
+train, test = vd.train_test_split(
+    coordinates=proj_coords,
+    data=(data.velocity_east, data.velocity_north),
+    weights=(1 / data.std_east ** 2, 1 / data.std_north ** 2),
+    random_state=1,
+)
+
+########################################################################################
+# Now we can make a 2-component spline. Since :class:`verde.Vector` implements
+# ``fit``, ``predict``, and ``filter``, we can use it in a :class:`verde.Chain` to build
+# a pipeline.
+#
+# We need to use a bit of damping so that the weights can be taken into account. Splines
+# without damping provide a perfect fit to the data and ignore the weights as a
+# consequence.
+
+chain = vd.Chain(
+    [
+        ("mean", vd.BlockMean(spacing=spacing * 111e3)),
+        ("trend", vd.Vector([vd.Trend(1), vd.Trend(1)])),
+        ("spline", vd.Vector([vd.Spline(damping=1e-15), vd.Spline(damping=1e-15)])),
+    ]
+)
+print(chain)
+
+########################################################################################
+#
+# .. warning::
+#
+#     Never generate the component gridders with ``[vd.Spline()]*2``. This will result
+#     in each component being a represented by **the same Spline object**, causing
+#     problems when trying to fit it to different components.
+#
+# Fitting the spline and gridding is exactly the same as what we've done before.
+
+chain.fit(*train)
+
+# Score on the test data
+print(chain.score(*test))
+
+grid = chain.grid(
+    region=region,
+    spacing=spacing,
+    projection=projection,
+    dims=["latitude", "longitude"],
+)
+print(grid)
+
+########################################################################################
+# Mask out the points too far from data and plot the gridded vectors.
+
+grid = vd.distance_mask(
+    (data.longitude, data.latitude),
+    maxdist=spacing * 2 * 111e3,
+    grid=grid,
+    projection=projection,
+)
+
+plt.figure(figsize=(6, 8))
+ax = plt.axes(projection=ccrs.Mercator())
+tmp = ax.quiver(
+    grid.longitude.values,
+    grid.latitude.values,
+    grid.east_component.values,
+    grid.north_component.values,
+    scale=0.3,
+    transform=crs,
+    width=0.002,
+)
+ax.quiverkey(tmp, 0.2, 0.15, 0.05, label="0.05 m/yr", coordinates="figure")
+ax.set_title("Gridded velocities")
+vd.datasets.setup_california_gps_map(ax)
+plt.tight_layout()
+plt.show()
+
+########################################################################################
+# Another way of gridding 2-component vector data is using
+# :class:`verde.VectorSpline2D`. This gridder uses linear elasticity theory to couple
+# the two vector components. The degree of coupling can be controlled through the
+# ``poisson`` parameter which sets the `Poisson's ratio
+# <https://en.wikipedia.org/wiki/Poisson%27s_ratio>`__ of the elastic medium.
+
+chain_coupled = vd.Chain(
+    [
+        ("mean", vd.BlockMean(spacing=spacing * 111e3)),
+        ("trend", vd.Vector([vd.Trend(1), vd.Trend(1)])),
+        ("spline", vd.VectorSpline2D(poisson=0.5, damping=1e-15)),
+    ]
+)
+chain_coupled.fit(*train)
+print(chain_coupled.score(*test))
+
+########################################################################################
+# :class:`~verde.VectorSpline2D` generally gives better results when gridding GPS
+# velocities, particularly for higher density grids and areas with sharp changes in
+# velocity [SandwellWessel2016]_. Here, we won't see a big difference because of the
+# low-density grid that we're making.
+
+grid_coupled = chain_coupled.grid(
+    region=region,
+    spacing=spacing,
+    projection=projection,
+    dims=["latitude", "longitude"],
+)
+grid_coupled = vd.distance_mask(
+    (data.longitude, data.latitude),
+    maxdist=spacing * 2 * 111e3,
+    grid=grid_coupled,
+    projection=projection,
+)
+
+fig, axes = plt.subplots(
+    1, 2, figsize=(9, 6.5), subplot_kw=dict(projection=ccrs.Mercator())
+)
+crs = ccrs.PlateCarree()
+titles = ["Gridded velocity (uncoupled)", "Gridded velocity (coupled)"]
+grids = [grid, grid_coupled]
+for ax, grd, title in zip(axes, grids, titles):
+    ax.set_title(title)
+    tmp = ax.quiver(
+        grd.longitude.values,
+        grd.latitude.values,
+        grd.east_component.values,
+        grd.north_component.values,
+        scale=0.3,
+        transform=crs,
+        width=0.002,
+    )
+    vd.datasets.setup_california_gps_map(ax)
+ax.quiverkey(tmp, 0.15, 0.15, 0.05, label="0.05 m/yr", coordinates="figure")
+plt.tight_layout()
+plt.show()
