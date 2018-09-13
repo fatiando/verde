@@ -36,18 +36,6 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
  .. placeholder-for-doc-index
 
 
-Disclaimer
-----------
-
-🚨 **This package is in early stages of design and implementation.** 🚨
-
-We welcome any feedback and ideas!
-Let us know by submitting
-`issues on Github <https://github.com/fatiando/verde/issues>`__
-or send us a message on our
-`Gitter chatroom <https://gitter.im/fatiando/fatiando>`__.
-
-
 About
 -----
 
