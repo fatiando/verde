@@ -223,9 +223,9 @@ train, test = vd.train_test_split(
 
 chain = vd.Chain(
     [
-        ("mean", vd.BlockMean(spacing=spacing * 111e3)),
+        ("mean", vd.BlockMean(spacing=spacing * 111e3, uncertainty=True)),
         ("trend", vd.Vector([vd.Trend(1), vd.Trend(1)])),
-        ("spline", vd.Vector([vd.Spline(damping=1e-15), vd.Spline(damping=1e-15)])),
+        ("spline", vd.Vector([vd.Spline(damping=1e-10), vd.Spline(damping=1e-10)])),
     ]
 )
 print(chain)
@@ -289,9 +289,9 @@ plt.show()
 
 chain_coupled = vd.Chain(
     [
-        ("mean", vd.BlockMean(spacing=spacing * 111e3)),
+        ("mean", vd.BlockMean(spacing=spacing * 111e3, uncertainty=True)),
         ("trend", vd.Vector([vd.Trend(1), vd.Trend(1)])),
-        ("spline", vd.VectorSpline2D(poisson=0.5, damping=1e-15)),
+        ("spline", vd.VectorSpline2D(poisson=0.5, damping=1e-10)),
     ]
 )
 chain_coupled.fit(*train)
