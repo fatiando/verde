@@ -85,6 +85,8 @@ To run the tests, you'll need to install some extra dependencies first:
 * `pytest-mpl <https://github.com/matplotlib/pytest-mpl>`__
 * `matplotlib <https://matplotlib.org/>`__
 * `cartopy <https://scitools.org.uk/cartopy/>`__
+* `dask <https://dask.pydata.org/>`__
+* `pyproj <https://jswhit.github.io/pyproj/>`__
 
 After that, you can test your installation by running the following inside a Python
 interpreter::
