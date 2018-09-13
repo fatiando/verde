@@ -39,6 +39,8 @@ Before we get started, here are a few of the conventions we use across Verde:
 import verde as vd
 
 ########################################################################################
+# .. _gridder_interface:
+#
 # The gridder interface
 # ---------------------
 #

@@ -8,7 +8,6 @@ sample GPS velocity data from the U.S. West coast.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import numpy as np
 import pyproj
 import verde as vd
 
@@ -59,21 +58,19 @@ plt.show()
 # components.
 
 # Use a blocked mean with uncertainty type weights
-reducer = vd.BlockMean(spacing=spacing*111e3, uncertainty=True)
+reducer = vd.BlockMean(spacing=spacing * 111e3, uncertainty=True)
 block_coords, block_data, block_weights = reducer.filter(
     coordinates=proj_coords,
     data=(data.velocity_east, data.velocity_north),
-    weights=(1/data.std_east**2, 1/data.std_north**2),
+    weights=(1 / data.std_east ** 2, 1 / data.std_north ** 2),
 )
-print(block_coords)
-print(block_data)
-print(block_weights)
+print(len(block_data), len(block_weights))
 
 ########################################################################################
 # We can convert the blocked coordinates back to longitude and latitude to plot with
 # Cartopy.
 
-block_lon, block_lat = projection(block_coords[0], block_coords[1], inverse=True),
+block_lon, block_lat = projection(*block_coords, inverse=True)
 
 plt.figure(figsize=(6, 8))
 ax = plt.axes(projection=ccrs.Mercator())
@@ -97,12 +94,105 @@ plt.show()
 # Trends
 # ------
 #
-# Trends can't handle vector data automatically, so you can't pass in
-# ``(data.velocity_east, data.velocity_north)`` to :meth:`verde.Trend.fit`. But
-# How to use Vector.
+# Trends can't handle vector data automatically, so you can't pass
+# ``data=(data.velocity_east, data.velocity_north)`` to :meth:`verde.Trend.fit`. To get
+# around that, you can use the :class:`verde.Vector` class to create multi-component
+# estimators and gridders from single component ones.
+#
+# :class:`~verde.Vector` takes an estimator/gridder for each data component and
+# implements the :ref:`gridder interface <gridder_interface>` for vector data, fitting
+# each estimator/gridder given to a different component of the data.
+#
+# For example, to fit a trend to our GPS velocities, we need to make a 2-component
+# vector trend:
+
+trend = vd.Vector([vd.Trend(4), vd.Trend(1)])
+print(trend)
+
+########################################################################################
+# We can use the ``trend`` as if it were a regular :class:`verde.Trend` but passing in
+# 2-component data to fit. This will fit each data component to a different
+# :class:`verde.Trend`.
+
+trend.fit(
+    coordinates=proj_coords,
+    data=(data.velocity_east, data.velocity_north),
+    weights=(1 / data.std_east ** 2, 1 / data.std_north ** 2),
+)
+
+########################################################################################
+# Each estimator can be accessed through the ``components`` attribute:
+
+print(trend.components)
+print("East trend coefficients:", trend.components[0].coef_)
+print("North trend coefficients:", trend.components[1].coef_)
+
+########################################################################################
+# When we call :meth:`verde.Vector.predict` or :meth:`verde.Vector.grid`, we'll get back
+# predictions for two components instead of just one. Each prediction comes from a
+# different :class:`verde.Trend`.
+
+pred_east, pred_north = trend.predict(proj_coords)
+
+# Make histograms of the residuals
+plt.figure(figsize=(6, 5))
+ax = plt.axes()
+ax.set_title("Trend residuals")
+ax.hist(data.velocity_north - pred_north, bins="auto", label="North", alpha=0.7)
+ax.hist(data.velocity_east - pred_east, bins="auto", label="East", alpha=0.7)
+ax.legend()
+ax.set_xlabel("Velocity (m/yr)")
+plt.tight_layout()
+plt.show()
+
+########################################################################################
+# As expected, the residuals are higher for the North component because of the lower
+# degree polynomial.
+#
+# Let's make geographic grids of these trends.
+
+grid = trend.grid(
+    region=vd.get_region((data.longitude, data.latitude)),
+    spacing=spacing,
+    projection=projection,
+    dims=["latitude", "longitude"],
+)
+print(grid)
+
+########################################################################################
+# By default, the names of the data components in the :class:`xarray.Dataset` are
+# ``east_component`` and ``north_component``. This can be customized using the
+# ``data_names`` argument.
+#
+# Now we can map the trends.
+
+fig, axes = plt.subplots(
+    1, 2, figsize=(9, 7), subplot_kw=dict(projection=ccrs.Mercator())
+)
+crs = ccrs.PlateCarree()
+titles = ["East component trend", "North component trend"]
+components = [grid.east_component, grid.north_component]
+for ax, component, title in zip(axes, components, titles):
+    ax.set_title(title)
+    maxabs = vd.maxabs(component)
+    tmp = ax.pcolormesh(
+        component.longitude,
+        component.latitude,
+        component.values,
+        vmin=-maxabs,
+        vmax=maxabs,
+        cmap="bwr",
+        transform=crs,
+    )
+    cb = plt.colorbar(tmp, ax=ax, orientation="horizontal", pad=0.05)
+    cb.set_label("meters/year")
+    vd.datasets.setup_california_gps_map(ax, land=None, ocean=None)
+    ax.coastlines(color="white")
+plt.tight_layout()
+plt.show()
 
 ########################################################################################
 # Gridding
 # --------
 #
-# Un-coupled using Components. Then coupled using VectorSpline2D.
+#
