@@ -33,7 +33,7 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
     :target: https://gitter.im/fatiando/fatiando
 
 
- .. placeholder-for-doc-index
+.. placeholder-for-doc-index
 
 
 About
