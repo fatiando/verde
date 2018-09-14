@@ -27,7 +27,7 @@ sparse measurements onto a regular grid (known as *gridding*) is a prominent pro
 the Earth Sciences.
 
 Popular gridding methods include kriging, minimum curvature with tension [@smith1990],
-and bi-harmonic splines [@sandwell1987]. The later belongs to a group of methods often
+and bi-harmonic splines [@sandwell1987]. The latter belongs to a group of methods often
 called *radial basis functions* and is similar to the *thin-plate spline* [@franke1982].
 In these methods, the data are assumed to be represented by a linear combination of
 Green's functions,
@@ -43,22 +43,21 @@ models used for prediction. As such, many of the model selection and evaluation
 techniques used in machine learning can be applied to griding problems as well.
 
 *Verde* is a Python library for gridding spatial data using different Green's functions.
-It differs from the radial basis functions provided in `scipy.interpolate` by providing
-an API inspired by scikit-learn [@pedregosa2011]. The *Verde* API should be familiar to
+It differs from the radial basis functions in `scipy.interpolate` by providing an API
+inspired by scikit-learn [@pedregosa2011]. The *Verde* API should be familiar to
 scikit-learn users but is tweaked to work with spatial data, which has Cartesian or
 geographic coordinates and multiple data components instead of an `X` feature matrix and
 `y` label vector. The library also includes more specialized Green's functions
 [@sandwell2016], utilities for trend estimation and data decimation (which are often
 required prior to gridding [@smith1990]), and more. Some of these interpolation and data
 processing methods already exist in the Generic Mapping Tools (GMT) [@wessel2013a], a
-collection of command-line programs popular in the Earth Sciences. However, there are no
-model selection tools in GMT and it can be difficult to separate parts of the processing
-that are done internally by its modules. *Verde* is designed to be modular, easily
-extended, and integrated into the scientific Python ecosystem. It can be used to
-implement new interpolation methods by subclassing the `verde.base.BaseGridder` class,
-requiring only the implementation of the new Green's function. For example, it is
-currently being used to develop a method for interpolation of 3-component GPS data
-[@uieda2018].
+command-line program popular in the Earth Sciences. However, there are no model
+selection tools in GMT and it can be difficult to separate parts of the processing that
+are done internally by its modules. *Verde* is designed to be modular, easily extended,
+and integrated into the scientific Python ecosystem. It can be used to implement new
+interpolation methods by subclassing the `verde.base.BaseGridder` class, requiring only
+the implementation of the new Green's function. For example, it is currently being used
+to develop a method for interpolation of 3-component GPS data [@uieda2018].
 
 # Acknowledgements
 
