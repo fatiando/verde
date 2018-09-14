@@ -20,50 +20,45 @@ bibliography: paper.bib
 Measurements made on the surface of the Earth are often sparse and unevenly distributed.
 For example, GPS displacement measurements are limited by the availability of ground
 stations and airborne geophysical measurements are highly sampled along flight lines but
-there is often a large gap between lines.
-Many data processing methods require data distributed on a uniform regular grid,
-particularly methods involving the Fourier transform or the computation of directional
-derivatives.
-Hence, the interpolation of sparse measurements onto a regular grid (known as
-*gridding*) is a prominent problem in the Earth Sciences.
+there is often a large gap between lines. Many data processing methods require data
+distributed on a uniform regular grid, particularly methods involving the Fourier
+transform or the computation of directional derivatives. Hence, the interpolation of
+sparse measurements onto a regular grid (known as *gridding*) is a prominent problem in
+the Earth Sciences.
 
 Popular gridding methods include kriging, minimum curvature with tension [@smith1990],
-and bi-harmonic splines [@sandwell1987].
-The later belongs to a group of methods often called *radial basis functions*  and is
-similar to the *thin-plate spline* [@franke1982].
+and bi-harmonic splines [@sandwell1987]. The later belongs to a group of methods often
+called *radial basis functions* and is similar to the *thin-plate spline* [@franke1982].
 In these methods, the data are assumed to be represented by a linear combination of
-Green's functions.
+Green's functions,
 
-$$ d_i = \sum\limits_{j=1}^M p_j G_{j}(\mathbf{x}_i, \mathbf{x}_j) $$
+$$ d_i = \sum\limits_{j=1}^M p_j G_{j}(\mathbf{x}_i, \mathbf{x}_j) , $$
 
 in which $d_i$ is the $i$th datum, $p_j$ is a scalar coefficient, $G_{j}$ is a Green's
 function, and $\mathbf{x}_i$ and $\mathbf{x}_j$ are the position vectors for the datum
-and the Green's function, respectively.
-Interpolation is done by estimating the $p_j$ coefficients through linear least-squares
-and using them to predict data values at new locations on a grid.
-Essentially, these methods are linear models used for prediction.
-As such, many of the model selection and evaluation techniques used in machine learning
-can be applied to griding problems as well, though this is rarely seen in the
-literature.
+and the point defining the Green's function, respectively. Interpolation is done by
+estimating the $M$ $p_j$ coefficients through linear least-squares and using them to
+predict data values at new locations on a grid. Essentially, these methods are linear
+models used for prediction. As such, many of the model selection and evaluation
+techniques used in machine learning can be applied to griding problems as well.
 
 *Verde* is a Python library for gridding spatial data using different Green's functions.
-It differs from radial basis functions provided in `scipy.interpolate` by providing an
-API inspired by scikit-learn [@pedregosa2011]. The *Verde* API should be familiar to
-scikit-learn users but is tweaked to work with spatial data that has Cartesian or
-geographic coordinates and multiple data components instead of an `X`
-feature matrix and `y` label vector.
-The library also includes utilities for trend estimation and data decimation (which are
-often required prior to gridding [@smith1990]), among others.
-Many of these methods are available through the Generic Mapping Tools [@wessel2013a], a
-collection of command-line programs popular in the Earth Sciences, but to the best of my
-knowledge there are no equivalent tools available to the Python community.
-
-*Verde* is designed to be integrated into the scientific Python ecosystem.
-It can be easily extended to implement new interpolation methods by subclassing
-the `verde.base.BaseGridder` class, requiring only the implementation of Green's
-functions.
-*Verde* is currently being used to develop a method for interpolation 3-component GPS
-data [@uieda2018].
+It differs from the radial basis functions provided in `scipy.interpolate` by providing
+an API inspired by scikit-learn [@pedregosa2011]. The *Verde* API should be familiar to
+scikit-learn users but is tweaked to work with spatial data, which has Cartesian or
+geographic coordinates and multiple data components instead of an `X` feature matrix and
+`y` label vector. The library also includes more specialized Green's functions
+[@sandwell2016], utilities for trend estimation and data decimation (which are often
+required prior to gridding [@smith1990]), and more. Some of these interpolation and data
+processing methods already exist in the Generic Mapping Tools (GMT) [@wessel2013a], a
+collection of command-line programs popular in the Earth Sciences. However, there are no
+model selection tools in GMT and it can be difficult to separate parts of the processing
+that are done internally by its modules. *Verde* is designed to be modular, easily
+extended, and integrated into the scientific Python ecosystem. It can be used to
+implement new interpolation methods by subclassing the `verde.base.BaseGridder` class,
+requiring only the implementation of the new Green's function. For example, it is
+currently being used to develop a method for interpolation of 3-component GPS data
+[@uieda2018].
 
 # Acknowledgements
 
