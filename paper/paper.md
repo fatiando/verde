@@ -1,5 +1,5 @@
 ---
-title: "Verde: Processing and gridding spatial data using Green's functions"
+title: "Verde: Processing and gridding spatial data using Green’s functions"
 tags:
   - python
   - geophysics
