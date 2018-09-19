@@ -4,7 +4,7 @@ Using Weights
 
 One of the advantages of using a Green's functions approach to interpolation is that we
 can easily weight the data to give each point more or less influence over the results.
-This is a good way to not less data points with large uncertainties bias the
+This is a good way to not let data points with large uncertainties bias the
 interpolation or the data decimation.
 """
 # The weights vary a lot so it's better to plot them using a logarithmic color scale
