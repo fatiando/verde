@@ -9,7 +9,7 @@ authors:
     orcid: 0000-0001-6123-9515
     affiliation: 1
 affiliations:
- - name: Department of Geology and Geophysics, SOEST, University of Hawai'i at Mānoa, Honolulu, Hawaii, USA
+ - name: Department of Earth Sciences, SOEST, University of Hawai'i at Mānoa, Honolulu, Hawaii, USA
    index: 1
 date: 13 September 2018
 bibliography: paper.bib
