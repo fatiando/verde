@@ -47,7 +47,7 @@ def test_scipy_gridder_region():
     region = (1000, 5000, -8000, -6000)
     synth = CheckerBoard(region=region)
     # Test using xarray objects
-    grid = synth.grid()
+    grid = synth.grid(shape=(101, 101))
     coords = grid_coordinates(region, grid.scalars.shape)
     grd = ScipyGridder().fit(coords, grid.scalars)
     npt.assert_allclose(grd.region_, region)
