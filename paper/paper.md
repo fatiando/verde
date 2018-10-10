@@ -32,9 +32,9 @@ called *radial basis functions* and is similar to the *thin-plate spline* [@fran
 In these methods, the data are assumed to be represented by a linear combination of
 Green's functions,
 
-$$ d_i = \sum\limits_{j=1}^M p_j G_{j}(\mathbf{x}_i, \mathbf{x}_j) , $$
+$$ d_i = \sum\limits_{j=1}^M p_j G(\mathbf{x}_i, \mathbf{x}_j) , $$
 
-in which $d_i$ is the $i$th datum, $p_j$ is a scalar coefficient, $G_{j}$ is a Green's
+in which $d_i$ is the $i$th datum, $p_j$ is a scalar coefficient, $G$ is a Green's
 function, and $\mathbf{x}_i$ and $\mathbf{x}_j$ are the position vectors for the datum
 and the point defining the Green's function, respectively. Interpolation is done by
 estimating the $M$ $p_j$ coefficients through linear least-squares and using them to
@@ -61,7 +61,8 @@ to develop a method for interpolation of 3-component GPS data [@uieda2018].
 
 # Acknowledgements
 
-I would like to thank Paul Wessel and David Hoese for helpful discussions and
-contributions to this project.
+I would like to thank collaborators Paul Wessel and David Hoese, reviewers Dom Fournier 
+and Philippe Rivière, and editor Lindsey Heagy for helpful discussions and contributions
+to this project. This is SOEST contribution 10467.
 
 # References
