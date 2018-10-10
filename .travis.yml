@@ -41,8 +41,10 @@ matrix:
           env:
               - PYTHON=3.6
               - CHECK=true
-              # Black is Python 3.6 only so it can't be in the requirements file.
-              - CONDA_INSTALL_EXTRA="black"
+              # Don't need to install everything just to run the style checks
+              - CONDA_INSTALL_EXTRA="black flake8 pylint"
+              - CONDA_REQUIREMENTS=
+              - CONDA_REQUIREMENTS_DEV=
         # Main build to deploy to PyPI and Github pages
         - os: linux
           env:
