@@ -308,8 +308,6 @@ class BaseGridder(BaseEstimator):
         verde.grid_coordinates : Generate the coordinate values for the grid.
 
         """
-        if shape is None and spacing is None:
-            shape = (101, 101)
         dims = get_dims(self, dims)
         region = get_instance_region(self, region)
         coordinates = grid_coordinates(
