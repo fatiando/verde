@@ -2,9 +2,9 @@
 """
 Test the base classes and their utility functions.
 """
-import pytest
 import numpy as np
 import numpy.testing as npt
+import pytest
 
 from ..base import (
     get_dims,

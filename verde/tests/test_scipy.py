@@ -3,10 +3,10 @@ Test the scipy based interpolator.
 """
 import warnings
 
-import pytest
 import pandas as pd
 import numpy as np
 import numpy.testing as npt
+import pytest
 
 from ..scipygridder import ScipyGridder
 from ..coordinates import grid_coordinates

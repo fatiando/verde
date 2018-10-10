@@ -35,7 +35,7 @@ check:
 	flake8 $(FLAKE8_FILES)
 
 lint:
-	pylint $(LINT_FILES)
+	pylint --jobs=0 $(LINT_FILES)
 
 clean:
 	find . -name "*.pyc" -exec rm -v {} \;

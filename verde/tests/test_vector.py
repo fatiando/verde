@@ -2,9 +2,9 @@
 """
 Test the vector data interpolators
 """
-import pytest
 import numpy as np
 import numpy.testing as npt
+import pytest
 
 from ..datasets.synthetic import CheckerBoard
 from ..coordinates import grid_coordinates

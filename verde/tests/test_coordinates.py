@@ -1,8 +1,8 @@
 """
 Test the coordinate generation functions
 """
-import pytest
 import numpy.testing as npt
+import pytest
 
 from ..coordinates import (
     check_region,
