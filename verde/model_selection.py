@@ -159,7 +159,7 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None, client=
     >>> # A linear trend should perfectly predict this data
     >>> scores = cross_val_score(Trend(degree=1), coords, data)
     >>> print(', '.join(['{:.2f}'.format(score) for score in scores]))
-    1.00, 1.00, 1.00
+    1.00, 1.00, 1.00, 1.00, 1.00
 
     >>> # To run parallel, we need to create a dask.distributed Client. It will
     >>> # create a local cluster if no arguments are given so we can run the
@@ -182,7 +182,7 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None, client=
     if client is None:
         client = DummyClient()
     if cv is None:
-        cv = KFold(shuffle=True, random_state=0)
+        cv = KFold(shuffle=True, random_state=0, n_splits=5)
     ndata = data[0].size
     args = (coordinates, data, weights)
     scores = []
