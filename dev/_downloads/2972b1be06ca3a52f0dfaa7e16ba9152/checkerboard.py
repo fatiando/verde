@@ -23,7 +23,7 @@ print(
 )
 
 # Generating a grid results in a xarray.Dataset
-grid = synth.grid()
+grid = synth.grid(shape=(150, 100))
 print("\nData grid:\n", grid)
 
 # while a random scatter generates a pandas.DataFrame
