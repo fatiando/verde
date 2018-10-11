@@ -38,13 +38,6 @@ class BaseGridder(BaseEstimator):
     * Estimated parameters should be stored as attributes with names ending in
       ``_``.
 
-    The child class can define the following attributes to control the names of
-    coordinates and how distances are calculated:
-
-    * ``coordinate_system``: either ``'cartesian'`` or ``'geographic'``. Will
-      influence dimension names and distance calculations. Defaults to
-      ``'cartesian'``.
-
     Examples
     --------
 
@@ -239,7 +232,7 @@ class BaseGridder(BaseEstimator):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs,
+        **kwargs
     ):
         """
         Interpolate the data onto a regular grid.
@@ -319,7 +312,7 @@ class BaseGridder(BaseEstimator):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs,
+        **kwargs
     ):
         """
         Interpolate values onto a random scatter of points.
@@ -393,7 +386,7 @@ class BaseGridder(BaseEstimator):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs,
+        **kwargs
     ):
         """
         Interpolate data along a profile between two points.
