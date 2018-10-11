@@ -1,0 +1,700 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    
+        <title>Model Selection &mdash; Verde</title>
+    
+
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using Weights" href="weights.html" />
+    <link rel="prev" title="Chaining Operations" href="chain.html" />
+    
+    <script src="../_static/require.js"></script>
+
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/verde-logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Verde</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gallery/index.html">Gallery</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chain.html">Chaining Operations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Model Selection</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#splitting-the-data">Splitting the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scoring">Scoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tuning">Tuning</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+
+            
+          
+
+    
+        <p class="caption">
+            <span class="caption-text">
+            
+                Getting help and contributing
+            
+            </span>
+        </p>
+        <ul>
+            
+                <li class="toctree-l1"><a href="https://www.fatiando.org"><i class="fa fa-external-link-square fa-fw"></i> Fatiando a Terra</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md"><i class="fa fa-users fa-fw"></i> Contributing</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
+            
+                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
+            
+        </ul>
+    
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Verde</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Model Selection</li>
+    
+    
+    <li class="source-link">
+        
+            
+                
+                
+                
+                    
+                
+                <a href="https://github.com/fatiando/verde/edit/master/doc/../tutorials/model_selection.py"
+                   class="fa fa-github"> Improve this page</a>
+            
+        
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-tutorials-model-selection-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="model-selection">
+<span id="sphx-glr-tutorials-model-selection-py"></span><span id="id1"></span><h1>Model Selection<a class="headerlink" href="#model-selection" title="Permalink to this headline">¶</a></h1>
+<p>The Green’s functions based interpolations in Verde are all linear regressions under the
+hood. This means that we can use some of the same tactics from
+<a class="reference external" href="http://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_selection" title="(in scikit-learn v0.20.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.model_selection</span></code></a> to evaluate our interpolator’s performance. Once we have
+a quantified measure of the quality of a given fitted gridder, we can use it to tune the
+gridder’s parameters, like <code class="docutils literal notranslate"><span class="pre">damping</span></code> for a <a class="reference internal" href="../api/generated/verde.Spline.html#verde.Spline" title="verde.Spline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spline</span></code></a>.</p>
+<p>Verde provides adaptations of common scikit-learn tools to work better with spatial
+data. Let’s use these tools to evaluate and tune a <a class="reference internal" href="../api/generated/verde.Spline.html#verde.Spline" title="verde.Spline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spline</span></code></a> to grid our
+sample air temperature data.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="kn">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">pyproj</span>
+<span class="kn">import</span> <span class="nn">verde</span> <span class="kn">as</span> <span class="nn">vd</span>
+
+<span class="n">data</span> <span class="o">=</span> <a href="../api/generated/verde.datasets.fetch_texas_wind.html#verde.datasets.fetch_texas_wind" title="View documentation for verde.datasets.fetch_texas_wind"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">fetch_texas_wind</span></a><span class="p">()</span>
+
+<span class="c1"># Use Mercator projection because Spline is a Cartesian gridder</span>
+<span class="n">projection</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span><span class="p">(</span><span class="n">proj</span><span class="o">=</span><span class="s2">&quot;merc&quot;</span><span class="p">,</span> <span class="n">lat_ts</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+<span class="n">proj_coords</span> <span class="o">=</span> <span class="n">projection</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+<span class="n">region</span> <span class="o">=</span> <a href="../api/generated/verde.get_region.html#verde.get_region" title="View documentation for verde.get_region"><span class="n">vd</span><span class="o">.</span><span class="n">get_region</span></a><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">))</span>
+<span class="c1"># The desired grid spacing in degrees (converted to meters using 1 degree approx. 111km)</span>
+<span class="n">spacing</span> <span class="o">=</span> <span class="mi">15</span> <span class="o">/</span> <span class="mi">60</span>
+</pre></div>
+</div>
+<div class="section" id="splitting-the-data">
+<h2>Splitting the data<a class="headerlink" href="#splitting-the-data" title="Permalink to this headline">¶</a></h2>
+<p>We can’t evaluate a gridder on the data that went into fitting it. The true test of a
+model is if it can correctly predict data that it hasn’t seen before. scikit-learn has
+the <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="(in scikit-learn v0.20.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.model_selection.train_test_split</span></code></a> function to separate a dataset
+into two parts: one for fitting the model (called <em>training</em> data) and a separate one
+for evaluating the model (called <em>testing</em> data). Using it with spatial data would
+involve some tedious array conversions so Verde implements
+<a class="reference internal" href="../api/generated/verde.train_test_split.html#verde.train_test_split" title="verde.train_test_split"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.train_test_split</span></code></a> which does the same thing but takes coordinates and
+data arrays instead.</p>
+<p>The split is done randomly so we specify a seed for the random number generator to
+guarantee that we’ll get the same result every time we run this example. You probably
+don’t want to do that for real data. We’ll keep 30% of the data to use for testing.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <a href="../api/generated/verde.train_test_split.html#verde.train_test_split" title="View documentation for verde.train_test_split"><span class="n">vd</span><span class="o">.</span><span class="n">train_test_split</span></a><span class="p">(</span>
+    <span class="n">proj_coords</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">air_temperature_c</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="View documentation for matplotlib.pyplot.axes"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Air temperature measurements for Texas&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">train</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;.r&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">test</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">test</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;.b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_model_selection_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_model_selection_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>((array([ -9471409.04145469,  -9242651.69892226,  -9518618.69368064,
+        -9226352.10603726,  -9196090.97662381,  -9211980.21676049,
+        -9111443.79343314,  -9285738.73749109,  -9261270.26198931,
+        -9322307.84752338,  -9449918.0091497 ,  -9210462.8659006 ,
+        -9437254.33247619,  -9336002.17761117,  -9770852.03064925,
+        -9286998.42499748,  -9121969.81858083,  -9225655.46067393,
+        -9784479.55912689,  -9724577.60096593,  -9119011.46155829,
+        -9366406.45333221,  -9104334.19349208,  -9468488.85678097,
+        -9512730.60889723,  -9752004.43349022,  -9474730.03578958,
+        -9295711.26358295,  -9407680.30533891,  -9409483.94881389,
+        -9113314.23851832,  -9581641.24134595,  -9051780.41245142,
+        -9151620.1904154 ,  -9526253.16341599,  -9370920.33356321,
+        -9422548.43514848,  -9363887.07831951,  -9926719.2733836 ,
+        -9263865.98169933, -10151535.32091524,  -9105488.90703955,
+        -9399024.72527645,  -9275584.89274308,  -9287132.02821771,
+        -9254036.60191507,  -9356519.81502485,  -9300826.35830558,
+        -9088836.21992941,  -9329331.55967991,  -9705882.69320157,
+        -9544881.26957023,  -9339151.39637705,  -9260420.92723128,
+        -9092882.48888909,  -9202923.82703691,  -9252023.01052236,
+        -9250143.02235004,  -9110031.41653215,  -9210586.92603379,
+        -9192082.88001273,  -9144987.74483283,  -9265793.68530754,
+        -9038200.59940965,  -9241182.06349818,  -9289031.10256449,
+        -9405189.55958775,  -9354792.51624734,  -9330810.73819114,
+        -9321372.62498082,  -9228556.55917335,  -9199536.03109192,
+        -9278581.42211417,  -9229978.47916156,  -9319244.51654206,
+        -9297171.35591977,  -9275775.75448643,  -9559682.59776963,
+        -9197073.91460223,  -9491697.64477644,  -9185221.40033809,
+        -9486172.19730542,  -9098512.91031894,  -9357970.36427463,
+        -9348971.2330741 ,  -9415391.11977161,  -9570580.80331692,
+        -9298450.12960044,  -9786178.22864295,  -9638164.94664899,
+        -9374995.23178449,  -9135062.93417687,  -9363782.10436067,
+        -9061161.26713871,  -9641390.51011218,  -9244388.540787  ,
+        -9743587.43060695,  -9128583.17798902,  -9688294.78354872,
+        -9878049.52882075,  -9261222.54655341,  -9959308.91606633,
+        -9374995.23178449,  -9324979.91193078, -10002090.57584577,
+        -9291378.70200816,  -9717038.56210237,  -9108943.50459486,
+        -9187130.01777196,  -9178474.43770947,  -9821430.39264604,
+        -9676089.17505937,  -9590325.45066986,  -9334752.033192  ,
+        -9349658.33535029,  -9217667.89671333,  -9192989.47329381,
+        -9735189.51389807,  -9062249.17907602,  -9332852.95884533,
+        -9455815.63702027,  -9796236.64251932,  -9443505.05457202,
+        -9320723.69505337,  -9754266.14514927,  -9765097.54908629,
+        -9081077.6900608 ,  -9042075.09280036,  -9433427.55452137,
+        -9587615.21391383]), array([2657710.28293861, 3302077.73567252, 2899046.15133399,
+       2838589.68737716, 3049850.71722841, 3290767.45780106,
+       2931160.45084784, 3271137.71227972, 3285325.92731206,
+       3104893.52310543, 3247812.59589509, 3166662.55342553,
+       3287606.04132201, 3103141.68482877, 3197876.76156001,
+       3149242.24908431, 3067381.83156894, 3400585.90023853,
+       3243911.5995015 , 3290869.09139339, 2992634.70248073,
+       3169418.17605082, 3246497.10552017, 2817264.46474637,
+       3252930.02674656, 3200327.43647367, 3459184.29516942,
+       3112292.18628403, 2917869.77563751, 3197809.62807528,
+       3290225.42947942, 3652939.53050434, 3222645.66433888,
+       2963817.97546003, 2824339.57488837, 3107155.82534808,
+       2698337.04679593, 2601703.23660133, 3025820.22660258,
+       3166283.29483646, 3185632.21052805, 3023883.40574366,
+       3417009.35720713, 3393428.62105992, 3316162.95136998,
+       3082031.84084665, 2953318.41751121, 2933549.90421567,
+       2932676.98398158, 3020406.81467849, 3574040.01091358,
+       2790505.48355738, 2973418.65910265, 3307698.11129963,
+       2945505.02203083, 3311522.23776725, 2975313.52946633,
+       2861050.32840049, 2887880.3960125 , 2945898.28967202,
+       2941474.84700705, 3225124.76062141, 3281387.74953726,
+       3159592.7976058 , 3315823.31326006, 2571845.86314015,
+       3331844.27865595, 2740231.34771917, 3387759.04557859,
+       3060081.02436476, 3041845.53079301, 3210124.8374159 ,
+       3164074.94938398, 3271836.50108902, 2579123.45324659,
+       2545954.59014788, 3342747.49976745, 2979356.30060547,
+       3009203.6131726 , 2719110.10495866, 2846814.97160994,
+       3188985.42191104, 2983466.36042869, 3294675.45126596,
+       3039773.54716658, 3071437.56540843, 3483134.04990316,
+       3294607.6695262 , 3667917.1194501 , 3619924.68699415,
+       2573548.51452294, 2821249.74463368, 2683074.91768678,
+       3285461.36507139, 3652271.03785312, 3283204.30900926,
+       3210853.02111693, 2943844.71518428, 3230601.11578242,
+       3137567.17555595, 2777047.34270749, 2945144.53916802,
+       3066497.95513723, 3110760.99744545, 3188091.12461516,
+       3298991.83921469, 3394820.85278175, 3391739.95155904,
+       3286590.08456857, 3389059.21988513, 3085628.36101872,
+       3630202.83368938, 3134419.72201147, 3256654.45390054,
+       2573738.88783378, 3339785.07776942, 3063935.13249589,
+       3648601.05705207, 3330211.5352512 , 3142162.17467495,
+       2982622.30031315, 3282673.97488324, 3183676.67838886,
+       3006522.74236789, 2990221.2234946 , 3532083.29147308,
+       2942206.50247381, 3121339.67312345, 2913261.59698676,
+       3259243.23756798])), (array([18.15166667, 12.17857143, 16.45916667, 16.60084507, 12.41170213,
+        9.67159091, 16.33043478,  9.43978723, 11.10313725, 10.22955556,
+       11.57575758, 12.47194444, 12.22138889, 10.36794118,  8.775     ,
+       10.46055556, 12.55241379, 11.78611111,  7.89736111,  7.06944444,
+       14.57882353, 12.33319444, 11.96138889, 16.88692308, 10.20833333,
+        9.1525    ,  9.64888889, 10.29677419, 15.16444444, 12.81565217,
+       10.        ,  3.16277778, 13.49071429, 14.98529412, 16.66666667,
+       13.06835821, 16.63416667, 20.43375   ,  5.96285714, 13.76470588,
+        9.16391304, 13.8736    , 10.99888889, 11.23633803,  9.751875  ,
+       12.43888889, 10.94418605, 15.23805556, 16.66589744, 11.40892857,
+        4.984     , 18.08955224, 11.45891304, 12.05545455, 16.13939394,
+       11.18275362, 14.49676056, 15.90777778, 18.8625    , 14.27527778,
+       14.97291667, 10.73239437,  8.98125   , 11.89032258, 11.46025641,
+       22.6082    , 10.77111111, 16.40823529,  9.23611111, 10.82863636,
+       12.57958333, 11.18545455, 11.13193548, 10.56277778, 20.97333333,
+       23.26113208, 10.365     , 14.46875   , 14.21430556, 16.8525    ,
+       17.01530612, 12.83722222, 15.22228571,  9.005     , 14.1       ,
+       14.19444444,  9.02333333, 12.11923077,  2.1525    ,  5.64638889,
+       21.09483871, 19.73611111, 18.09676056, 11.48449275,  4.29166667,
+        9.78117647, 10.1875    , 16.36536585,  8.73277778,  7.70694444,
+       17.2974    , 15.35777778, 14.53130435, 16.58333333,  7.52666667,
+       11.37028571,  5.79375   ,  8.54088235,  9.196     , 10.37263889,
+       11.39375   ,  7.08166667, 11.74291667, 10.86027778, 20.47454545,
+       10.9936    , 12.47652778,  3.43633803, 10.0825    ,  9.59677419,
+       13.55277778,  6.09319444, 20.58333333, 11.65820513, 14.4926087 ,
+        3.14875   , 16.80952381, 12.45724138, 15.76208333, 11.69902778]),), (None,))
+((array([ -9355174.23973406,  -9305731.50511056,  -9378946.06987249,
+        -9894654.50049513,  -9357159.20186525,  -9310436.24708494,
+        -9176098.20900436,  -9848465.95859632,  -9657890.50782771,
+        -9408987.70828107,  -9592090.92179619,  -9397058.84931958,
+        -9614660.3229513 ,  -9438991.174341  ,  -9220530.82286406,
+        -9464280.35533937,  -9148327.82534205,  -9254885.93667311,
+        -9284574.48085645,  -9103675.72047743,  -9617332.38735867,
+        -9038401.00424027,  -9631570.67341502,  -9133335.63539924,
+        -9125099.95117223,  -9369183.49169843,  -8985427.32736408,
+        -9520794.51755526,  -9397182.90945276,  -8972410.55646536,
+        -9418511.70927591,  -9312192.17512407,  -9633794.21272551,
+        -9386466.02256181,  -9298192.46624686, -10151936.13057628,
+        -9335849.48821648,  -9334064.93091582,  -8951759.31583123,
+        -9066696.25769684,  -9086927.60249552,  -9399253.75936852,
+        -9167595.31833663,  -9052610.66103518,  -9401849.47907855,
+        -9332280.37361521,  -8991029.11953241,  -8973832.47645353,
+        -9529249.69278712,  -9266070.43483542,  -9429505.34569483,
+        -8999875.56133822,  -9322689.57101016,  -9604983.63256177,
+        -9104467.79671247,  -9706970.60513881]), array([2719870.27460582, 2743685.56324252, 2933768.14517002,
+       3027361.13101297, 2757426.84021469, 3028296.78889616,
+       2903724.5557224 , 3182157.20869187, 3066100.23492454,
+       3255225.28091213, 2860584.19616269, 2934171.90242785,
+       3714012.76916745, 3011874.16439619, 3080991.84629854,
+       2915167.81938923, 2873187.46869299, 3003831.55941359,
+       2735051.95799933, 2953788.49303643, 2915178.71303919,
+       3249859.25595487, 2916780.19714376, 3182123.69352164,
+       3337515.62533228, 3230904.19741824, 3187923.45258656,
+       3041327.49695636, 2912727.91396922, 2979696.00616845,
+       2954947.37073634, 3348209.3192316 , 3284716.48014213,
+       3043124.19066597, 3246452.13452785, 3189924.51834186,
+       3339251.70946121, 2715192.27113021, 2992766.36237038,
+       3024323.56139652, 3192216.72345509, 3430837.16378734,
+       3327060.19688609, 2904921.67586422, 2871114.86619099,
+       2807032.29570529, 2992876.08017689, 3082728.91614068,
+       3254021.33225593, 3216131.11265389, 3253177.52895142,
+       3265222.50231349, 2744264.94274218, 3049585.98626738,
+       3129450.2499978 , 3452568.99011507])), (array([17.71611111, 17.3918    , 10.73421875,  8.08555556, 16.258125  ,
+       16.18181818, 15.87828571,  7.47625   , 11.02857143, 12.25472222,
+       17.16923077, 15.60208333,  5.04152778, 13.14263889, 12.47835821,
+       16.69304348, 18.73916667, 11.46194444, 18.38255319, 16.02173913,
+       16.57884615, 10.55866667, 16.48916667, 13.43583333, 10.67041667,
+       11.90319444, 11.49557143, 12.17826087, 14.27805556, 17.43382353,
+       12.95833333, 11.04708333,  9.60486111, 13.46      , 10.58730159,
+        7.39333333, 10.11722222, 17.7375    , 17.10013889, 14.64180556,
+       12.44957143,  9.68391304, 11.93055556, 20.34757576, 15.4025    ,
+       16.76319444, 17.33347222, 13.55152778, 10.49541667, 11.92041667,
+       10.42583333, 12.69078125, 17.22138889, 10.33333333, 12.80555556,
+        3.85638889]),), (None,))
+</pre></div>
+</div>
+<p>The returned <code class="docutils literal notranslate"><span class="pre">train</span></code> and <code class="docutils literal notranslate"><span class="pre">test</span></code> arguments are each tuples with the coordinates (in
+a tuple) and a data array. They are in a format that can be easily passed to the
+<a class="reference internal" href="../api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.fit" title="verde.base.BaseGridder.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a> method of most gridders using Python’s argument
+expansion using the <code class="docutils literal notranslate"><span class="pre">*</span></code> symbol.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span> <span class="o">=</span> <a href="../api/generated/verde.Chain.html#verde.Chain" title="View documentation for verde.Chain"><span class="n">vd</span><span class="o">.</span><span class="n">Chain</span></a><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;reduce&quot;</span><span class="p">,</span> <a href="../api/generated/verde.BlockReduce.html#verde.BlockReduce" title="View documentation for verde.BlockReduce"><span class="n">vd</span><span class="o">.</span><span class="n">BlockReduce</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html#numpy.mean" title="View documentation for numpy.mean"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">,</span> <span class="n">spacing</span> <span class="o">*</span> <span class="mf">111e3</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s2">&quot;trend&quot;</span><span class="p">,</span> <a href="../api/generated/verde.Trend.html#verde.Trend" title="View documentation for verde.Trend"><span class="n">vd</span><span class="o">.</span><span class="n">Trend</span></a><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s2">&quot;spline&quot;</span><span class="p">,</span> <a href="../api/generated/verde.Spline.html#verde.Spline" title="View documentation for verde.Spline"><span class="n">vd</span><span class="o">.</span><span class="n">Spline</span></a><span class="p">()),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+<span class="n">chain</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="o">*</span><span class="n">train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Let’s plot the gridded result to see what it looks like. We’ll mask out grid points
+that are too far from any given data point.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mask</span> <span class="o">=</span> <a href="../api/generated/verde.distance_mask.html#verde.distance_mask" title="View documentation for verde.distance_mask"><span class="n">vd</span><span class="o">.</span><span class="n">distance_mask</span></a><span class="p">(</span>
+    <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">),</span>
+    <span class="n">maxdist</span><span class="o">=</span><span class="mi">3</span> <span class="o">*</span> <span class="n">spacing</span> <span class="o">*</span> <span class="mf">111e3</span><span class="p">,</span>
+    <span class="n">coordinates</span><span class="o">=</span><a href="../api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="View documentation for verde.grid_coordinates"><span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span></a><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">),</span>
+    <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+    <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
+    <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
+    <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span>
+    <span class="n">data_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">],</span>
+<span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="View documentation for matplotlib.pyplot.axes"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">(</span><span class="n">projection</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.Mercator" title="View documentation for cartopy.crs.Mercator"><span class="n">ccrs</span><span class="o">.</span><span class="n">Mercator</span></a><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Gridded temperature&quot;</span><span class="p">)</span>
+<span class="n">pc</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+    <span class="n">grid</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+    <span class="n">grid</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+    <span class="n">grid</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;plasma&quot;</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">(),</span>
+<span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">pc</span><span class="p">)</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="s2">&quot;.k&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">())</span>
+<a href="../api/generated/verde.datasets.setup_texas_wind_map.html#verde.datasets.setup_texas_wind_map" title="View documentation for verde.datasets.setup_texas_wind_map"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">setup_texas_wind_map</span></a><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_model_selection_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_model_selection_002.png" />
+</div>
+<div class="section" id="scoring">
+<h2>Scoring<a class="headerlink" href="#scoring" title="Permalink to this headline">¶</a></h2>
+<p>Gridders in Verde implement the <a class="reference internal" href="../api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.score" title="verde.base.BaseGridder.score"><code class="xref py py-meth docutils literal notranslate"><span class="pre">score</span></code></a> method that
+calculates the <a class="reference external" href="https://en.wikipedia.org/wiki/Coefficient_of_determination">R² coefficient of determination</a>
+for a given comparison dataset (<code class="docutils literal notranslate"><span class="pre">test</span></code> in our case). The R² score is at most 1,
+meaning a perfect prediction, but has no lower bound.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">score</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="o">*</span><span class="n">test</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;R² score:&quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>R² score: 0.8455402431159149
+</pre></div>
+</div>
+<p>That’s a good score meaning that our gridder is able to accurately predict data that
+wasn’t used in the gridding algorithm.</p>
+</div>
+<div class="section" id="tuning">
+<h2>Tuning<a class="headerlink" href="#tuning" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="../api/generated/verde.Spline.html#verde.Spline" title="verde.Spline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spline</span></code></a> has many parameters that can be set to modify the final result.
+Mainly the <code class="docutils literal notranslate"><span class="pre">damping</span></code> regularization parameter and the <code class="docutils literal notranslate"><span class="pre">mindist</span></code> “fudge factor”
+which smooths the solution. Would changing the default values give us a better score?
+What if we used a 2nd degree trend instead?</p>
+<p>We can answer these questions by changing the values in our <code class="docutils literal notranslate"><span class="pre">chain</span></code> and
+re-evaluating the model score. Let’s test the following combinations of parameters:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dampings</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">]</span>
+<span class="n">mindists</span> <span class="o">=</span> <span class="p">[</span><span class="mf">10e3</span><span class="p">,</span> <span class="mf">100e3</span><span class="p">,</span> <span class="mf">1000e3</span><span class="p">]</span>
+<span class="n">degrees</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+
+<span class="c1"># Use itertools to create a list with all combinations of parameters to test</span>
+<span class="n">parameter_sets</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">dampings</span><span class="p">,</span> <span class="n">mindists</span><span class="p">,</span> <span class="n">degrees</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Number of combinations:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameter_sets</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Combinations:&quot;</span><span class="p">,</span> <span class="n">parameter_sets</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of combinations: 36
+Combinations: [(None, 10000.0, 1), (None, 10000.0, 2), (None, 10000.0, 3), (None, 10000.0, 4), (None, 100000.0, 1), (None, 100000.0, 2), (None, 100000.0, 3), (None, 100000.0, 4), (None, 1000000.0, 1), (None, 1000000.0, 2), (None, 1000000.0, 3), (None, 1000000.0, 4), (1e-08, 10000.0, 1), (1e-08, 10000.0, 2), (1e-08, 10000.0, 3), (1e-08, 10000.0, 4), (1e-08, 100000.0, 1), (1e-08, 100000.0, 2), (1e-08, 100000.0, 3), (1e-08, 100000.0, 4), (1e-08, 1000000.0, 1), (1e-08, 1000000.0, 2), (1e-08, 1000000.0, 3), (1e-08, 1000000.0, 4), (1e-06, 10000.0, 1), (1e-06, 10000.0, 2), (1e-06, 10000.0, 3), (1e-06, 10000.0, 4), (1e-06, 100000.0, 1), (1e-06, 100000.0, 2), (1e-06, 100000.0, 3), (1e-06, 100000.0, 4), (1e-06, 1000000.0, 1), (1e-06, 1000000.0, 2), (1e-06, 1000000.0, 3), (1e-06, 1000000.0, 4)]
+</pre></div>
+</div>
+<p>Now we can loop over the combinations and collect the scores for each parameter set.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">damping</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">degree</span> <span class="ow">in</span> <span class="n">parameter_sets</span><span class="p">:</span>
+    <span class="n">chain</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s2">&quot;spline&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">,</span> <span class="n">mindist</span><span class="o">=</span><span class="n">mindist</span><span class="p">)</span>
+    <span class="n">chain</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s2">&quot;trend&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="n">degree</span><span class="p">)</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="o">*</span><span class="n">train</span><span class="p">)</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="o">*</span><span class="n">test</span><span class="p">)</span>
+    <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[0.7238830882947062, 0.7070997586193799, 0.7116974741128288, 0.8355207134557427, 0.8625010250415266, 0.8595635581413738, 0.8684356255592811, 0.7631365452241242, 0.8615410794928423, 0.8586131408040516, 0.8673084289960357, 0.7607537665584987, 0.7373990722551209, 0.7232205306525006, 0.727299665943367, 0.8314180120026677, 0.862501007777039, 0.8595634396278273, 0.8684355655474266, 0.7631370161800535, 0.8615410770291272, 0.8586131345908206, 0.8673084255284418, 0.76075378587685, 0.827682619687416, 0.8292355572539247, 0.8305543665058613, 0.7111394283333616, 0.8624996340091982, 0.8595521447764479, 0.8684300027698172, 0.763183252203994, 0.8615408365168034, 0.8586125231165259, 0.8673080855615971, 0.7607556992123854]
+</pre></div>
+</div>
+<p>The largest score will yield the best parameter combination.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">best</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.argmax.html#numpy.argmax" title="View documentation for numpy.argmax"><span class="n">np</span><span class="o">.</span><span class="n">argmax</span></a><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Best score:&quot;</span><span class="p">,</span> <span class="n">scores</span><span class="p">[</span><span class="n">best</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Best damping, mindist, and degree:&quot;</span><span class="p">,</span> <span class="n">parameter_sets</span><span class="p">[</span><span class="n">best</span><span class="p">])</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Best score: 0.8684356255592811
+Best damping, mindist, and degree: (None, 100000.0, 3)
+</pre></div>
+</div>
+<p>We managed to get a slightly better score using the above configuration. That’s not a
+huge improvement but we also haven’t tried that many parameter combinations.</p>
+<p>We can now configure our chain with the best configuration and re-fit. We could also
+have kept separate chains, each fit on a combination, to avoid having to fit again.
+Since this is a small dataset, it doesn’t matter too much.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">damping</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">degree</span> <span class="o">=</span> <span class="n">parameter_sets</span><span class="p">[</span><span class="n">best</span><span class="p">]</span>
+<span class="n">chain</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s2">&quot;spline&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">,</span> <span class="n">mindist</span><span class="o">=</span><span class="n">mindist</span><span class="p">)</span>
+<span class="n">chain</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s2">&quot;trend&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="n">degree</span><span class="p">)</span>
+<span class="n">chain</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="o">*</span><span class="n">train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, we can make a grid with the best configuration to see how it compares to our
+previous result.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">grid_best</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+    <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
+    <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
+    <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span>
+    <span class="n">data_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">],</span>
+<span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">grd</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="p">[</span><span class="s2">&quot;Defaults&quot;</span><span class="p">,</span> <span class="s2">&quot;Tuned&quot;</span><span class="p">],</span> <span class="p">[</span><span class="n">grid</span><span class="p">,</span> <span class="n">grid_best</span><span class="p">]):</span>
+    <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.Mercator" title="View documentation for cartopy.crs.Mercator"><span class="n">ccrs</span><span class="o">.</span><span class="n">Mercator</span></a><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">pc</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+        <span class="n">grd</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+        <span class="n">grd</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+        <span class="n">grd</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;plasma&quot;</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">(),</span>
+        <span class="n">vmin</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">air_temperature_c</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span>
+        <span class="n">vmax</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">air_temperature_c</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span>
+    <span class="p">)</span>
+    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">pc</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="s2">&quot;.k&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">()</span>
+    <span class="p">)</span>
+    <a href="../api/generated/verde.datasets.setup_texas_wind_map.html#verde.datasets.setup_texas_wind_map" title="View documentation for verde.datasets.setup_texas_wind_map"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">setup_texas_wind_map</span></a><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_model_selection_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_model_selection_003.png" />
+<p>Notice that, for sparse data like these, smoother models tend to be better predictors.
+This is a sign that you should probably not trust many of the short wavelength
+features that we get from the defaults.</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  22.207 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-model-selection-py">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" download="" href="../_downloads/fd6e78bedaa261b386d9f69b0fce645c/model_selection.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">model_selection.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" download="" href="../_downloads/e550746602d3d1b42b1c98a72fbf0758/model_selection.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">model_selection.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="weights.html" class="btn btn-neutral float-right" title="Using Weights" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="chain.html" class="btn btn-neutral" title="Chaining Operations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2018, Leonardo Uieda
+      Last updated on Oct 11, 2018.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

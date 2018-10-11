@@ -1,0 +1,653 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    
+        <title>verde.vector &mdash; Verde</title>
+    
+
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.png"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    
+    <script src="../../_static/require.js"></script>
+
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/verde-logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Verde</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+
+    
+        <p class="caption">
+            <span class="caption-text">
+            
+                Getting help and contributing
+            
+            </span>
+        </p>
+        <ul>
+            
+                <li class="toctree-l1"><a href="https://www.fatiando.org"><i class="fa fa-external-link-square fa-fw"></i> Fatiando a Terra</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md"><i class="fa fa-users fa-fw"></i> Contributing</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
+            
+                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
+            
+        </ul>
+    
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Verde</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../verde.html">verde</a> &raquo;</li>
+        
+      <li>verde.vector</li>
+    
+    
+    <li class="source-link">
+        
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for verde.vector</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Classes for dealing with vector data.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="k">import</span> <span class="n">check_is_fitted</span>
+
+<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">check_fit_input</span><span class="p">,</span> <span class="n">least_squares</span><span class="p">,</span> <span class="n">BaseGridder</span>
+<span class="kn">from</span> <span class="nn">.spline</span> <span class="k">import</span> <span class="n">warn_weighted_exact_solution</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">n_1d_arrays</span><span class="p">,</span> <span class="n">parse_engine</span>
+<span class="kn">from</span> <span class="nn">.coordinates</span> <span class="k">import</span> <span class="n">get_region</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">numba</span>
+    <span class="kn">from</span> <span class="nn">numba</span> <span class="k">import</span> <span class="n">jit</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">numba</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">dummy_jit</span> <span class="k">as</span> <span class="n">jit</span>
+
+
+<div class="viewcode-block" id="Vector"><a class="viewcode-back" href="../../api/generated/verde.Vector.html#verde.Vector">[docs]</a><span class="k">class</span> <span class="nc">Vector</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fit an estimator to each component of multi-component vector data.</span>
+
+<span class="sd">    Provides a convenient way of fitting and gridding vector data using scalar gridders</span>
+<span class="sd">    and estimators.</span>
+
+<span class="sd">    Each data component provided to :meth:`~verde.Vector.fit` is fitted to a separated</span>
+<span class="sd">    estimator. Methods like :meth:`~verde.Vector.grid` and :meth:`~verde.Vector.predict`</span>
+<span class="sd">    will operate on the multiple components simultaneously.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        Never pass code like this as input to this class: ``[vd.Trend(1)]*3``. This</span>
+<span class="sd">        creates 3 references to the **same instance** of ``Trend``, which means that</span>
+<span class="sd">        they will all get the same coefficients after fitting. Use a list comprehension</span>
+<span class="sd">        instead: ``[vd.Trend(1) for i in range(3)]``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    components : tuple or list</span>
+<span class="sd">        A tuple or list of the estimator/gridder instances used for each component. The</span>
+<span class="sd">        estimators will be applied for each data component in the same order that they</span>
+<span class="sd">        are given here.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    components : tuple</span>
+<span class="sd">        Tuple of the fitted estimators on each component of the data.</span>
+<span class="sd">    region_ : tuple</span>
+<span class="sd">        The boundaries (``[W, E, S, N]``) of the data used to fit the interpolator. Used</span>
+<span class="sd">        as the default region for the :meth:`~verde.Vector.grid` and</span>
+<span class="sd">        :meth:`~verde.Vector.scatter` methods.</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    verde.Chain : Chain filtering operations to fit on each subsequent output.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">components</span> <span class="o">=</span> <span class="n">components</span>
+
+<div class="viewcode-block" id="Vector.fit"><a class="viewcode-back" href="../../api/generated/verde.Vector.html#verde.Vector.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the estimators to the given multi-component data.</span>
+
+<span class="sd">        The data region is captured and used as default for the</span>
+<span class="sd">        :meth:`~verde.Vector.grid` and :meth:`~verde.Vector.scatter` methods.</span>
+
+<span class="sd">        All input arrays must have the same shape. If weights are given, there</span>
+<span class="sd">        must be a separate array for each component of the data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        coordinates : tuple of arrays</span>
+<span class="sd">            Arrays with the coordinates of each data point. Should be in the</span>
+<span class="sd">            following order: (easting, northing, vertical, ...). Only easting</span>
+<span class="sd">            and northing will be used, all subsequent coordinates will be</span>
+<span class="sd">            ignored.</span>
+<span class="sd">        data : tuple of array</span>
+<span class="sd">            The data values of each component at each data point. Must be a</span>
+<span class="sd">            tuple.</span>
+<span class="sd">        weights : None or tuple of array</span>
+<span class="sd">            If not None, then the weights assigned to each data point of each</span>
+<span class="sd">            data component. Typically, this should be 1 over the data</span>
+<span class="sd">            uncertainty squared.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self</span>
+<span class="sd">            Returns this estimator instance for chaining operations.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Data must be a tuple of arrays. </span><span class="si">{}</span><span class="s2"> given.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Weights must be a tuple of arrays. </span><span class="si">{}</span><span class="s2"> given.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">weights</span><span class="p">))</span>
+            <span class="p">)</span>
+        <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">check_fit_input</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">region_</span> <span class="o">=</span> <span class="n">get_region</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">data_comp</span><span class="p">,</span> <span class="n">weight_comp</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+            <span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data_comp</span><span class="p">,</span> <span class="n">weight_comp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Vector.predict"><a class="viewcode-back" href="../../api/generated/verde.Vector.html#verde.Vector.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluate each data component on a set of points.</span>
+
+<span class="sd">        Requires a fitted estimator (see :meth:`~verde.Vector.fit`).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        coordinates : tuple of arrays</span>
+<span class="sd">            Arrays with the coordinates of each data point. Should be in the</span>
+<span class="sd">            following order: (easting, northing, vertical, ...). Only easting</span>
+<span class="sd">            and northing will be used, all subsequent coordinates will be</span>
+<span class="sd">            ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        data : tuple of array</span>
+<span class="sd">            The values for each vector component evaluated on the given points. The</span>
+<span class="sd">            order of components will be the same as was provided to</span>
+<span class="sd">            :meth:`~verde.Vector.fit`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;region_&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">comp</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span> <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="VectorSpline2D"><a class="viewcode-back" href="../../api/generated/verde.VectorSpline2D.html#verde.VectorSpline2D">[docs]</a><span class="k">class</span> <span class="nc">VectorSpline2D</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Elastically coupled interpolation of 2-component vector data.</span>
+
+<span class="sd">    This gridder assumes Cartesian coordinates.</span>
+
+<span class="sd">    Uses the Green&#39;s functions based on elastic deformation from [SandwellWessel2016]_.</span>
+<span class="sd">    The interpolation is done by estimating point forces that generate an elastic</span>
+<span class="sd">    deformation that fits the observed vector data. The deformation equations are based</span>
+<span class="sd">    on a 2D elastic sheet with a constant Poisson&#39;s ratio. The data can then be</span>
+<span class="sd">    predicted at any desired location.</span>
+
+<span class="sd">    The east and north data components are coupled through the elastic deformation</span>
+<span class="sd">    equations. This coupling is controlled by the Poisson&#39;s ratio, which is usually</span>
+<span class="sd">    between -1 and 1. The special case of Poisson&#39;s ratio -1 leads to an uncoupled</span>
+<span class="sd">    interpolation, meaning that the east and north components don&#39;t interfere with each</span>
+<span class="sd">    other.</span>
+
+<span class="sd">    The point forces are traditionally placed under each data point. The force locations</span>
+<span class="sd">    are set the first time :meth:`~verde.VectorSpline2D.fit` is called. Subsequent calls</span>
+<span class="sd">    will fit using the same force locations as the first call. This configuration</span>
+<span class="sd">    results in an exact prediction at the data points but can be unstable.</span>
+
+<span class="sd">    [SandwellWessel2016]_ stabilize the solution using Singular Value Decomposition but</span>
+<span class="sd">    we use ridge regression instead. The regularization can be controlled using the</span>
+<span class="sd">    *damping* argument. Alternatively, you can specify the position of the forces</span>
+<span class="sd">    manually using the *force_coords* argument. Regularization or forces not coinciding</span>
+<span class="sd">    with data points will result in a least-squares estimate, not an exact solution.</span>
+<span class="sd">    Note that the least-squares solution is required for data weights to have any</span>
+<span class="sd">    effect.</span>
+
+<span class="sd">    Before fitting, the Jacobian (design, sensitivity, feature, etc) matrix for the</span>
+<span class="sd">    spline is normalized using :class:`sklearn.preprocessing.StandardScaler` without</span>
+<span class="sd">    centering the mean so that the transformation can be undone in the estimated forces.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    poisson : float</span>
+<span class="sd">        The Poisson&#39;s ratio for the elastic deformation Green&#39;s functions. Default is</span>
+<span class="sd">        0.5. A value of -1 will lead to uncoupled interpolation of the east and north</span>
+<span class="sd">        data components.</span>
+<span class="sd">    mindist : float</span>
+<span class="sd">        A minimum distance between the point forces and data points. Needed because the</span>
+<span class="sd">        Green&#39;s functions are singular when forces and data points coincide. Acts as a</span>
+<span class="sd">        fudge factor. A good rule of thumb is to use the average spacing between data</span>
+<span class="sd">        points.</span>
+<span class="sd">    damping : None or float</span>
+<span class="sd">        The positive damping regularization parameter. Controls how much smoothness is</span>
+<span class="sd">        imposed on the estimated forces. If None, no regularization is used.</span>
+<span class="sd">    force_coords : None or tuple of arrays</span>
+<span class="sd">        The easting and northing coordinates of the point forces. If None (default),</span>
+<span class="sd">        then will be set to the data coordinates the first time</span>
+<span class="sd">        :meth:`~verde.VectorSpline2D.fit` is called.</span>
+<span class="sd">    engine : str</span>
+<span class="sd">        Computation engine for the Jacobian matrix. Can be ``&#39;auto&#39;``, ``&#39;numba&#39;``, or</span>
+<span class="sd">        ``&#39;numpy&#39;``. If ``&#39;auto&#39;``, will use numba if it is installed or numpy</span>
+<span class="sd">        otherwise. The numba version is multi-threaded and considerably faster, which</span>
+<span class="sd">        makes fitting and predicting faster.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    forces_ : array</span>
+<span class="sd">        The estimated forces that fit the observed data.</span>
+<span class="sd">    region_ : tuple</span>
+<span class="sd">        The boundaries (``[W, E, S, N]``) of the data used to fit the</span>
+<span class="sd">        interpolator. Used as the default region for the</span>
+<span class="sd">        :meth:`~verde.VectorSpline2D.grid` and :meth:`~verde.VectorSpline2D.scatter`</span>
+<span class="sd">        methods.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">poisson</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">mindist</span><span class="o">=</span><span class="mf">10e3</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_coords</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poisson</span> <span class="o">=</span> <span class="n">poisson</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mindist</span> <span class="o">=</span> <span class="n">mindist</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">damping</span> <span class="o">=</span> <span class="n">damping</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">force_coords</span> <span class="o">=</span> <span class="n">force_coords</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">engine</span>
+
+<div class="viewcode-block" id="VectorSpline2D.fit"><a class="viewcode-back" href="../../api/generated/verde.VectorSpline2D.html#verde.VectorSpline2D.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the gridder to the given 2-component vector data.</span>
+
+<span class="sd">        The data region is captured and used as default for the</span>
+<span class="sd">        :meth:`~verde.VectorSpline2D.grid` and :meth:`~verde.VectorSpline2D.scatter`</span>
+<span class="sd">        methods.</span>
+
+<span class="sd">        All input arrays must have the same shape.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        coordinates : tuple of arrays</span>
+<span class="sd">            Arrays with the coordinates of each data point. Should be in the</span>
+<span class="sd">            following order: (easting, northing, vertical, ...). Only easting</span>
+<span class="sd">            and northing will be used, all subsequent coordinates will be</span>
+<span class="sd">            ignored.</span>
+<span class="sd">        data : tuple of array</span>
+<span class="sd">            A tuple ``(east_component, north_component)`` of arrays with the</span>
+<span class="sd">            vector data values at each point.</span>
+<span class="sd">        weights : None or tuple array</span>
+<span class="sd">            If not None, then the weights assigned to each data point. Must be</span>
+<span class="sd">            one array per data component. Typically, this should be 1 over the</span>
+<span class="sd">            data uncertainty squared.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self</span>
+<span class="sd">            Returns this estimator instance for chaining operations.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">check_fit_input</span><span class="p">(</span>
+            <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Need two data components. Only </span><span class="si">{}</span><span class="s2"> given.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+            <span class="p">)</span>
+        <span class="c1"># Capture the data region to use as a default when gridding.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">region_</span> <span class="o">=</span> <span class="n">get_region</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">w</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">):</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">warn_weighted_exact_solution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_coords</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">force_coords</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+        <span class="n">jacobian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_coords</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">force_</span> <span class="o">=</span> <span class="n">least_squares</span><span class="p">(</span><span class="n">jacobian</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">damping</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="VectorSpline2D.predict"><a class="viewcode-back" href="../../api/generated/verde.VectorSpline2D.html#verde.VectorSpline2D.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluate the fitted gridder on the given set of points.</span>
+
+<span class="sd">        Requires a fitted estimator (see :meth:`~verde.VectorSpline2D.fit`).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        coordinates : tuple of arrays</span>
+<span class="sd">            Arrays with the coordinates of each data point. Should be in the</span>
+<span class="sd">            following order: (easting, northing, vertical, ...). Only easting</span>
+<span class="sd">            and northing will be used, all subsequent coordinates will be</span>
+<span class="sd">            ignored.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        data : tuple of arrays</span>
+<span class="sd">            A tuple ``(east_component, north_component)`` of arrays with the</span>
+<span class="sd">            predicted vector data values at each point.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;force_&quot;</span><span class="p">])</span>
+        <span class="n">jac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_coords</span><span class="p">)</span>
+        <span class="n">cast</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">npoints</span> <span class="o">=</span> <span class="n">cast</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">components</span> <span class="o">=</span> <span class="n">jac</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">force_</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">npoints</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">comp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">cast</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">components</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="VectorSpline2D.jacobian"><a class="viewcode-back" href="../../api/generated/verde.VectorSpline2D.html#verde.VectorSpline2D.jacobian">[docs]</a>    <span class="k">def</span> <span class="nf">jacobian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">force_coords</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make the Jacobian matrix for the 2D coupled elastic deformation.</span>
+
+<span class="sd">        The Jacobian is segmented into 4 parts, each relating a force component to a</span>
+<span class="sd">        data component [SandwellWessel2016]_::</span>
+
+<span class="sd">            | J_ee  J_ne |*|f_e| = |d_e|</span>
+<span class="sd">            | J_ne  J_nn | |f_n|   |d_n|</span>
+
+<span class="sd">        The forces and data are assumed to be stacked into 1D arrays with the east</span>
+<span class="sd">        component on top of the north component.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        coordinates : tuple of arrays</span>
+<span class="sd">            Arrays with the coordinates of each data point. Should be in the</span>
+<span class="sd">            following order: (easting, northing, vertical, ...). Only easting and</span>
+<span class="sd">            northing will be used, all subsequent coordinates will be ignored.</span>
+<span class="sd">        force_coords : tuple of arrays</span>
+<span class="sd">            Arrays with the coordinates for the forces. Should be in the same order as</span>
+<span class="sd">            the coordinate arrays.</span>
+<span class="sd">        dtype : str or numpy dtype</span>
+<span class="sd">            The type of the Jacobian array.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        jacobian : 2D array</span>
+<span class="sd">            The (n_data*2, n_forces*2) Jacobian matrix.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span> <span class="o">=</span> <span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">force_coords</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">east</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">parse_engine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;numba&quot;</span><span class="p">:</span>
+            <span class="n">jac</span> <span class="o">=</span> <span class="n">jacobian_numba</span><span class="p">(</span>
+                <span class="n">east</span><span class="p">,</span>
+                <span class="n">north</span><span class="p">,</span>
+                <span class="n">force_east</span><span class="p">,</span>
+                <span class="n">force_north</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mindist</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">poisson</span><span class="p">,</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">east</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">force_east</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">jac</span> <span class="o">=</span> <span class="n">jacobian_numpy</span><span class="p">(</span>
+                <span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mindist</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">poisson</span><span class="p">,</span> <span class="n">dtype</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">jac</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">jacobian_numpy</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">poisson</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the Jacobian matrix using numpy broadcasting.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">npoints</span> <span class="o">=</span> <span class="n">east</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">nforces</span> <span class="o">=</span> <span class="n">force_east</span><span class="o">.</span><span class="n">size</span>
+    <span class="c1"># Reshaping the data coordinates to a column vector will automatically build a</span>
+    <span class="c1"># distance matrix between each data point and force.</span>
+    <span class="n">east_orig</span> <span class="o">=</span> <span class="n">east</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">npoints</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">force_east</span>
+    <span class="n">north_orig</span> <span class="o">=</span> <span class="n">north</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">npoints</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">force_north</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">east_orig</span><span class="p">,</span> <span class="n">north_orig</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="c1"># The mindist factor helps avoid singular matrices when the force and</span>
+    <span class="c1"># computation point are too close</span>
+    <span class="n">distance</span> <span class="o">+=</span> <span class="n">mindist</span>
+    <span class="c1"># Pre-compute common terms for the Green&#39;s functions of each component</span>
+    <span class="n">ln_r</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span> <span class="o">-</span> <span class="n">poisson</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
+    <span class="n">over_r2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">poisson</span><span class="p">)</span> <span class="o">/</span> <span class="n">distance</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">jac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">npoints</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">nforces</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">jac</span><span class="p">[:</span><span class="n">npoints</span><span class="p">,</span> <span class="p">:</span><span class="n">nforces</span><span class="p">]</span> <span class="o">=</span> <span class="n">ln_r</span> <span class="o">+</span> <span class="n">over_r2</span> <span class="o">*</span> <span class="n">north_orig</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># J_ee</span>
+    <span class="n">jac</span><span class="p">[</span><span class="n">npoints</span><span class="p">:,</span> <span class="n">nforces</span><span class="p">:]</span> <span class="o">=</span> <span class="n">ln_r</span> <span class="o">+</span> <span class="n">over_r2</span> <span class="o">*</span> <span class="n">east_orig</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># J_nn</span>
+    <span class="n">jac</span><span class="p">[:</span><span class="n">npoints</span><span class="p">,</span> <span class="n">nforces</span><span class="p">:]</span> <span class="o">=</span> <span class="o">-</span><span class="n">over_r2</span> <span class="o">*</span> <span class="n">east_orig</span> <span class="o">*</span> <span class="n">north_orig</span>  <span class="c1"># J_ne</span>
+    <span class="n">jac</span><span class="p">[</span><span class="n">npoints</span><span class="p">:,</span> <span class="p">:</span><span class="n">nforces</span><span class="p">]</span> <span class="o">=</span> <span class="n">jac</span><span class="p">[:</span><span class="n">npoints</span><span class="p">,</span> <span class="n">nforces</span><span class="p">:]</span>  <span class="c1"># J is symmetric</span>
+    <span class="k">return</span> <span class="n">jac</span>
+
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">jacobian_numba</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">poisson</span><span class="p">,</span> <span class="n">jac</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the Jacobian matrix using numba to speed things up.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=too-many-locals</span>
+    <span class="n">nforces</span> <span class="o">=</span> <span class="n">force_east</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">npoints</span> <span class="o">=</span> <span class="n">east</span><span class="o">.</span><span class="n">size</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">numba</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="n">npoints</span><span class="p">):</span>  <span class="c1"># pylint: disable=not-an-iterable</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nforces</span><span class="p">):</span>
+            <span class="n">east_orig</span> <span class="o">=</span> <span class="n">east</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">force_east</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">north_orig</span> <span class="o">=</span> <span class="n">north</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">force_north</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">east_orig</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">north_orig</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">distance</span> <span class="o">+=</span> <span class="n">mindist</span>
+            <span class="c1"># Pre-compute common terms for the Green&#39;s functions of each component</span>
+            <span class="n">ln_r</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span> <span class="o">-</span> <span class="n">poisson</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
+            <span class="n">over_r2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">poisson</span><span class="p">)</span> <span class="o">/</span> <span class="n">distance</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="n">jac</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">ln_r</span> <span class="o">+</span> <span class="n">over_r2</span> <span class="o">*</span> <span class="n">north_orig</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># J_ee</span>
+            <span class="n">jac</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">npoints</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">nforces</span><span class="p">]</span> <span class="o">=</span> <span class="n">ln_r</span> <span class="o">+</span> <span class="n">over_r2</span> <span class="o">*</span> <span class="n">east_orig</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># J_nn</span>
+            <span class="n">jac</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">nforces</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">over_r2</span> <span class="o">*</span> <span class="n">east_orig</span> <span class="o">*</span> <span class="n">north_orig</span>  <span class="c1"># J_ne</span>
+            <span class="n">jac</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">npoints</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">jac</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">nforces</span><span class="p">]</span>  <span class="c1"># J is symmetric</span>
+    <span class="k">return</span> <span class="n">jac</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2018, Leonardo Uieda
+      Last updated on Oct 11, 2018.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
