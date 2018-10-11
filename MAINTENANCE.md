@@ -80,7 +80,9 @@ There are a few steps that still must be done manually, though.
 
 2. Edit the changes list to remove any trivial changes (updates to the README, typo
    fixes, CI configuration, etc).
-3. Replace the PR number in the commit titles with a link to the Github PR page.
+3. Replace the PR number in the commit titles with a link to the Github PR page. In Vim,
+   use `` %s$#\([0-9]\+\)$`#\1 <https://github.com/fatiando/verde/pull/\1>`__$g ``
+   to make the change automatically.
 4. Copy the remaining changes to `doc/changes.rst` under a new section for the
    intended release.
 5. Reserve a DOI in [Zenodo](https://zenodo.org/) and pre-fill the fields for archiving

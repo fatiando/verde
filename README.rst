@@ -7,7 +7,7 @@
 Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 
 
-.. image:: http://img.shields.io/pypi/v/verde.svg?style=flat-square
+.. image:: http://img.shields.io/pypi/v/verde.svg?style=flat-square&label=version
     :alt: Latest version on PyPI
     :target: https://pypi.python.org/pypi/verde
 .. image:: http://img.shields.io/travis/fatiando/verde/master.svg?style=flat-square&label=Linux|Mac
@@ -19,9 +19,6 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 .. image:: https://img.shields.io/codecov/c/github/fatiando/verde/master.svg?style=flat-square
     :alt: Test coverage status
     :target: https://codecov.io/gh/fatiando/verde
-.. image:: https://img.shields.io/codeclimate/maintainability/fatiando/verde.svg?style=flat-square
-    :alt: Code quality status
-    :target: https://codeclimate.com/github/fatiando/verde
 .. image:: https://img.shields.io/codacy/grade/6b698defc0df47288a634930d41a9d65.svg?style=flat-square&label=codacy
     :alt: Code quality grade on codacy
     :target: https://www.codacy.com/app/leouieda/verde
@@ -31,6 +28,9 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 .. image:: https://img.shields.io/gitter/room/fatiando/fatiando.svg?style=flat-square
     :alt: Chat room on Gitter
     :target: https://gitter.im/fatiando/fatiando
+.. image:: https://img.shields.io/badge/doi-10.21105%2Fjoss.00957-blue.svg?style=flat-square
+    :alt: Digital Object Identifier for the JOSS paper
+    :target: https://doi.org/10.21105/joss.00957
 
 
 .. placeholder-for-doc-index
@@ -162,4 +162,5 @@ Documentation for other versions
 * `Development <http://www.fatiando.org/verde/dev>`__ (reflects the *master* branch on
   Github)
 * `Latest release <http://www.fatiando.org/verde/latest>`__
+* `v1.0.1 <http://www.fatiando.org/verde/v1.0.1>`__
 * `v1.0.0 <http://www.fatiando.org/verde/v1.0.0>`__
