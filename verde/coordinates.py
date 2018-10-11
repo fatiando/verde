@@ -439,12 +439,9 @@ def spacing_to_shape(region, spacing, adjust):
     return (nnorth, neast), (w, e, s, n)
 
 
-def profile_coordinates(point1, point2, size, coordinate_system="cartesian"):
+def profile_coordinates(point1, point2, size):
     """
-    Coordinates for a profile along a line between two points.
-
-    If on a geographic coordinate system, will calculate along a great circle.
-    Otherwise, will use a straight line.
+    Coordinates for a profile along a straight line between two points.
 
     Parameters
     ----------
@@ -456,20 +453,17 @@ def profile_coordinates(point1, point2, size, coordinate_system="cartesian"):
         second point, respectively.
     size : int
         Number of points to sample along the line.
-    coordinate_system : str
-        The coordinate system used to define the points and the line. Either
-        ``'cartesian'`` or ``'geographic'``.
 
     Returns
     -------
-    easting, northing, distances : 1d arrays
-        The easting and northing coordinates of points along the straight line
-        and the distances from the first point.
+    coordinates, distances : tuple and 1d array
+        The coordinates of points along the straight line and the distances from the
+        first point.
 
     Examples
     --------
 
-    >>> east, north, dist = profile_coordinates((1, 10), (1, 20), size=11)
+    >>> (east, north), dist = profile_coordinates((1, 10), (1, 20), size=11)
     >>> print('easting:', ', '.join('{:.1f}'.format(i) for i in east))
     easting: 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0
     >>> print('northing:', ', '.join('{:.1f}'.format(i) for i in north))
@@ -483,29 +477,19 @@ def profile_coordinates(point1, point2, size, coordinate_system="cartesian"):
     grid_coordinates : Generate coordinates for each point on a regular grid
 
     """
-    valid_coordinate_systems = ["cartesian", "geographic"]
-    if coordinate_system not in valid_coordinate_systems:
-        raise ValueError(
-            "Invalid coordinate system '{}'. Must be one of {}.".format(
-                coordinate_system, str(valid_coordinate_systems)
-            )
-        )
     if size <= 0:
         raise ValueError("Invalid profile size '{}'. Must be > 0.".format(size))
-    if coordinate_system == "geographic":
-        raise NotImplementedError()
-    elif coordinate_system == "cartesian":
-        east1, north1 = point1
-        east2, north2 = point2
-        separation = np.sqrt((east1 - east2) ** 2 + (north1 - north2) ** 2)
-        distances = np.linspace(0, separation, size)
-        angle = np.arctan2(north2 - north1, east2 - east1)
-        easting = east1 + distances * np.cos(angle)
-        northing = north1 + distances * np.sin(angle)
-    return easting, northing, distances
+    east1, north1 = point1
+    east2, north2 = point2
+    separation = np.sqrt((east1 - east2) ** 2 + (north1 - north2) ** 2)
+    distances = np.linspace(0, separation, size)
+    angle = np.arctan2(north2 - north1, east2 - east1)
+    easting = east1 + distances * np.cos(angle)
+    northing = north1 + distances * np.sin(angle)
+    return (easting, northing), distances
 
 
-def inside(coordinates, region, out=None, tmp=None):
+def inside(coordinates, region):
     """
     Determine which points fall inside a given region.
 
@@ -520,15 +504,6 @@ def inside(coordinates, region, out=None, tmp=None):
     region : list = [W, E, S, N]
         The boundaries of a given region in Cartesian or geographic
         coordinates.
-    out : None or array of booleans
-        Numpy array to be used as output. The contents will be overwritten and
-        the same array will be returned.
-    tmp : None or tuple
-        Numpy arrays used to store the outputs of temporary logical operations.
-        Passing in pre-allocated arrays avoids the overhead of allocation when
-        calling this function repeatedly. If not None, then should be a tuple
-        of 4 numpy arrays of boolean type and a shape equal to or broadcast
-        from the input coordinates.
 
     Returns
     -------
@@ -564,10 +539,8 @@ def inside(coordinates, region, out=None, tmp=None):
     w, e, s, n = region
     easting, northing = coordinates[:2]
     # Allocate temporary arrays to minimize memory allocation overhead
-    if out is None:
-        out = np.empty_like(easting, dtype=np.bool)
-    if tmp is None:
-        tmp = tuple(np.empty_like(easting, dtype=np.bool) for i in range(4))
+    out = np.empty_like(easting, dtype=np.bool)
+    tmp = tuple(np.empty_like(easting, dtype=np.bool) for i in range(4))
     # Using the logical functions is a lot faster than & > < for some reason
     # Plus, this way avoids repeated allocation of intermediate arrays
     in_we = np.logical_and(

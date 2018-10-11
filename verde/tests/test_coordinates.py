@@ -92,7 +92,3 @@ def test_profile_coordiantes_fails():
         profile_coordinates((0, 1), (1, 2), size=0)
     with pytest.raises(ValueError):
         profile_coordinates((0, 1), (1, 2), size=-10)
-    with pytest.raises(ValueError):
-        profile_coordinates((0, 1), (1, 2), size=10, coordinate_system="meh")
-    with pytest.raises(NotImplementedError):
-        profile_coordinates((0, 1), (1, 2), size=10, coordinate_system="geographic")
