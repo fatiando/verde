@@ -2,8 +2,10 @@
 General utilities.
 """
 import functools
+import itertools
 
 import numpy as np
+import pandas as pd
 
 
 def parse_engine(engine):
@@ -201,3 +203,49 @@ def maxabs(*args):
     arrays = [np.atleast_1d(i) for i in args]
     absolute = [np.abs([i.min(), i.max()]).max() for i in arrays]
     return np.max(absolute)
+
+
+def grid_to_table(grid):
+    """
+    Converts an xarray Dataset grid to a Pandas DataFrame
+
+    Parameters
+    ----------
+    grid
+        An xarray grid Dataset composed of X and Y coordinates and a variable.
+
+    Returns
+    -------
+    grid_to_table : DataFrame
+        Pandas DataFrame with coordinates and variables and increasing index
+
+    Examples
+    --------
+
+
+    """
+    coordinate_names = [
+        *grid.coords.keys()
+    ]  # extracts the coordinate names from the dataarray
+    variable_name = [
+        *grid.data_vars.keys()
+    ]  # extracts the variable name from the dataarray
+    coord_one = grid.coords[
+        coordinate_names[0]
+    ].values  # gets the first set of coordinates as a list
+    coord_two = grid.coords[
+        coordinate_names[1]
+    ].values  # gets the second set of coordinates as a list
+    locations = np.asarray(
+        list(itertools.product(coord_one, coord_two))
+    )  # creates a numpy array from the coordinates
+    variable = grid[variable_name[0]].values.flatten(
+        order="F"
+    )  # extracts the variable values for each location
+    data_dict = {
+        coordinate_names[0]: locations[:, 0],
+        coordinate_names[1]: locations[:, 1],
+        variable_name[0]: variable,
+    }  # dict of coordinates and variables to pass to pandas
+    data = pd.DataFrame(data_dict)
+    return data
