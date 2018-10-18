@@ -2,9 +2,9 @@
 """
 Test the base classes and their utility functions.
 """
-import pytest
 import numpy as np
 import numpy.testing as npt
+import pytest
 
 from ..base import (
     get_dims,
@@ -18,35 +18,8 @@ from ..coordinates import grid_coordinates, scatter_points
 
 def test_get_dims():
     "Tests that get_dims returns the expected results"
-    grd = BaseGridder()
-    assert get_dims(grd, dims=None) == ("northing", "easting")
-    assert get_dims(grd, dims=("john", "paul")) == ("john", "paul")
-
-    grd.coordinate_system = "geographic"
-    assert get_dims(grd, dims=None) == ("latitude", "longitude")
-    assert get_dims(grd, dims=("john", "paul")) == ("john", "paul")
-
-    grd.coordinate_system = "cartesian"
-    assert get_dims(grd, dims=None) == ("northing", "easting")
-    assert get_dims(grd, dims=("john", "paul")) == ("john", "paul")
-
-    # Make sure the given dims is returned no matter what
-    grd.coordinate_system = "an invalid system"
-    assert get_dims(grd, dims=("john", "paul")) == ("john", "paul")
-
-
-def test_get_dims_fails():
-    "Check if fails for invalid coordinate system"
-    grd = BaseGridder()
-    with pytest.raises(ValueError):
-        grd.coordinate_system = "Cartesian"
-        get_dims(grd, dims=None)
-    with pytest.raises(ValueError):
-        grd.coordinate_system = "Geographic"
-        get_dims(grd, dims=None)
-    with pytest.raises(ValueError):
-        grd.coordinate_system = "some totally not valid name"
-        get_dims(grd, dims=None)
+    assert get_dims(dims=None) == ("northing", "easting")
+    assert get_dims(dims=("john", "paul")) == ("john", "paul")
 
 
 def test_get_data_names():

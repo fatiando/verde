@@ -29,11 +29,11 @@ def test_block_reduce():
 def test_block_reduce_scatter():
     "Try reducing constant values in a dense enough scatter"
     region = (-5, 0, 5, 10)
-    east, north = scatter_points(region, size=10000, random_state=0)
-    data = 20 * np.ones_like(east)
+    coordinates = scatter_points(region, size=10000, random_state=0)
+    data = 20 * np.ones_like(coordinates[0])
     block_coords, block_data = BlockReduce(
         np.mean, 1, region=region, center_coordinates=True
-    ).filter((east, north), data)
+    ).filter(coordinates, data)
     assert len(block_coords[0]) == 25
     assert len(block_coords[1]) == 25
     assert len(block_data) == 25

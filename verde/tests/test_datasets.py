@@ -1,12 +1,6 @@
-# pylint: disable=wrong-import-position
 """
 Test data fetching routines.
 """
-# Import matplotlib and set the backend before anything else to make sure no windows are
-# created and there are no problem with TravisCI running in headless mode.
-import matplotlib
-
-matplotlib.use("agg")
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 
