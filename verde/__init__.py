@@ -13,7 +13,7 @@ from .coordinates import (
     project_region,
 )
 from .mask import distance_mask
-from .utils import variance_to_weights, maxabs
+from .utils import variance_to_weights, maxabs, grid_to_table
 from .blockreduce import BlockReduce, BlockMean
 from .scipygridder import ScipyGridder
 from .trend import Trend
