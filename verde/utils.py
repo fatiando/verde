@@ -210,7 +210,7 @@ def grid_to_table(grid):
 
     Takes a 2D grid as input, extracts the coordinates and runs them through
     :func:`numpy.meshgrid` to create a 2D table. Works for 2D grids and
-    n-dimensional variables. Use cases includes passing gridded data to
+    any number of variables. Use cases includes passing gridded data to
     functions that expect data in XYZ format such as :class:`verde.BlockReduce`
 
     Parameters
@@ -225,69 +225,72 @@ def grid_to_table(grid):
 
     Examples
     --------
-    >>> var1 = xr.DataArray(np.arange(20).reshape(4,5), coords = (np.arange(4), np.arange(5)))
-    >>> var2 = xr.DataArray(np.arange(20,40).reshape(4,5), coords = (np.arange(4), np.arange(5)))
-    >>> print(var1)
-    <xarray.DataArray (dim_0: 4, dim_1: 5)>
-    array([[ 0,  1,  2,  3,  4],
-           [ 5,  6,  7,  8,  9],
-           [10, 11, 12, 13, 14],
-           [15, 16, 17, 18, 19]])
+    >>> import xarray as xr
+    >>> import numpy as np
+    >>> temperature = xr.DataArray(np.arange(20).reshape(4,5), coords = (
+        np.arange(4), np.arange(5)), dims=['northing', 'easting'])
+    >>> wind_speed = xr.DataArray(np.arange(20,40).reshape(4,5), coords = (
+        np.arange(4), np.arange(5)), dims=['northing', 'easting'])
+    >>> print(temperature)
+    <xarray.DataArray (northing: 4, easting: 5)>
+    array([[20, 21, 22, 23, 24],
+           [25, 26, 27, 28, 29],
+           [30, 31, 32, 33, 34],
+           [35, 36, 37, 38, 39]])
     Coordinates:
-      * dim_0    (dim_0) int32 0 1 2 3
-      * dim_1    (dim_1) int32 0 1 2 3 4
+      * northing  (northing) int32 0 1 2 3
+      * easting   (easting) int32 0 1 2 3 4
 
-    >>> ds = var1.to_dataset(name = 'var1')
-    >>> ds['var2'] = var2
-    >>> print(ds)
+    >>> example_dataset = temperature.to_dataset(name = 'temperature')
+    >>> example_dataset['wind_speed'] = wind_speed
+    >>> print(example_dataset)
     <xarray.Dataset>
-    Dimensions:  (dim_0: 4, dim_1: 5)
+    Dimensions:      (easting: 5, northing: 4)
     Coordinates:
-      * dim_0    (dim_0) int32 0 1 2 3
-      * dim_1    (dim_1) int32 0 1 2 3 4
+      * northing     (northing) int32 0 1 2 3
+      * easting      (easting) int32 0 1 2 3 4
     Data variables:
-        var1     (dim_0, dim_1) int32 0 1 2 3 4 5 6 7 8 ... 12 13 14 15 16 17 18 19
-        var2     (dim_0, dim_1) int32 20 21 22 23 24 25 26 ... 33 34 35 36 37 38 39
+        temperature  (northing, easting) int32 0 1 2 3 4 5 6 ... 14 15 16 17 18 19
+        wind_speed   (northing, easting) int32 20 21 22 23 24 25 ... 35 36 37 38 39
 
-    >>> print(grid_to_table(ds))
-        dim_0  dim_1  var1  var2
-    0       0      0     0    20
-    1       1      0     1    21
-    2       2      0     2    22
-    3       3      0     3    23
-    4       0      1     4    24
-    5       1      1     5    25
-    6       2      1     6    26
-    7       3      1     7    27
-    8       0      2     8    28
-    9       1      2     9    29
-    10      2      2    10    30
-    11      3      2    11    31
-    12      0      3    12    32
-    13      1      3    13    33
-    14      2      3    14    34
-    15      3      3    15    35
-    16      0      4    16    36
-    17      1      4    17    37
-    18      2      4    18    38
-    19      3      4    19    39
+    >>> print(grid_to_table(example_dataset))
+    	   northing	easting	temperature	wind_speed
+        0	0         0	       0	      20
+        1	0         1        1	      21
+        2	0	      2	       2	      22
+        3	0	      3        3          23
+        4	0	      4    	   4	      24
+        5	1	      0	       5	      25
+        6	1	      1	       6	      26
+        7	1	      2	       7	      27
+        8	1	      3	       8	      28
+        9	1	      4	       9	      29
+        10	2	      0	       10	      30
+        11	2	      1	       11	      31
+        12	2	      2	       12	      32
+        13	2	      3	       13  	      33
+        14	2	      4	       14	      34
+        15	3         0	       15	      35
+        16	3	      1	       16	      36
+        17	3	      2	       17         37
+        18	3         3	       18	      38
+        19	3	      4	       19	      39
 
 
     """
-    variable_arrays = []
     coordinate_names = [*grid.coords.keys()]
-    coord_one = grid.coords[coordinate_names[0]].values
-    coord_two = grid.coords[coordinate_names[1]].values
-    coordinates = [i.ravel() for i in np.meshgrid(coord_one, coord_two)]
+    coord_north = grid.coords[coordinate_names[0]].values
+    coord_east = grid.coords[coordinate_names[1]].values
+    coordinates = [i.ravel() for i in np.meshgrid(coord_east, coord_north)]
     coord_dict = {
-        coordinate_names[0]: coordinates[0],
-        coordinate_names[1]: coordinates[1],
+        coordinate_names[0]: coordinates[1],
+        coordinate_names[1]: coordinates[0],
     }
     variable_name = [*grid.data_vars.keys()]
-    for i in enumerate(variable_name, 1):
-        variable_arrays.append(
-            grid[i[1]].values.flatten()
-        )  # list of arrays with variable values
+    variable_data = grid.to_array().values
+    variable_arrays = variable_data.reshape(
+        len(variable_name), int(len(variable_data.ravel()) / len(variable_name))
+    )
     var_dict = dict(zip(variable_name, variable_arrays))
     coord_dict.update(var_dict)
     data = pd.DataFrame(coord_dict)
