@@ -227,10 +227,10 @@ def grid_to_table(grid):
     --------
     >>> import xarray as xr
     >>> import numpy as np
-    >>> temperature = xr.DataArray(np.arange(20).reshape(4,5), coords =
-    >>> (np.arange(4), np.arange(5)), dims=['northing', 'easting'])
-    >>> wind_speed = xr.DataArray(np.arange(20,40).reshape(4,5), coords =
-    >>> (np.arange(4), np.arange(5)), dims=['northing', 'easting'])
+    >>> temperature = xr.DataArray(np.arange(20).reshape(4,5), '
+    coords = (np.arange(4), np.arange(5)), dims=['northing', 'easting'])
+    >>> wind_speed = xr.DataArray(np.arange(20,40).reshape(4,5), '
+    coords = (np.arange(4), np.arange(5)), dims=['northing', 'easting'])
     >>> print(temperature)
     <xarray.DataArray (northing: 4, easting: 5)>
     array([[20, 21, 22, 23, 24],
