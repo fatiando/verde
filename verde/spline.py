@@ -152,9 +152,13 @@ class Spline(BaseGridder):
 
         """
         check_is_fitted(self, ["force_"])
-        jac = self.jacobian(coordinates[:2], self.force_coords)
         shape = np.broadcast(*coordinates[:2]).shape
-        return jac.dot(self.force_).reshape(shape)
+        force_east, force_north = n_1d_arrays(self.force_coords, n=2)
+        east, north = n_1d_arrays(coordinates, n=2)
+        predicted = np.empty(east.size, dtype="float64")
+        predict_numba(east, north, force_east, force_north, self.mindist, self.force_,
+                      predicted)
+        return predicted.reshape(shape)
 
     def jacobian(self, coordinates, force_coords, dtype="float64"):
         """
@@ -215,11 +219,27 @@ def warn_weighted_exact_solution(spline, weights):
 
 
 @jit(nopython=True, target="cpu", fastmath=True, parallel=True)
-def jacobian_numba(east, north, force_east, force_north, mindist, jac):
+def predict_numba(east, north, force_east, force_north, mindist, forces, result):
     """
     Calculate the Jacobian matrix using numba to speed things up.
     """
     for i in numba.prange(east.size):  # pylint: disable=not-an-iterable
+        result[i] = 0
+        for j in range(forces.size):
+            distance = np.sqrt(
+                (east[i] - force_east[j]) ** 2 + (north[i] - force_north[j]) ** 2
+            )
+            distance += mindist
+            result[i] += (distance ** 2) * (np.log(distance) - 1) * forces[j]
+    return result
+
+
+@jit(nopython=True, target="cpu", fastmath=True)
+def jacobian_numba(east, north, force_east, force_north, mindist, jac):
+    """
+    Calculate the Jacobian matrix using numba to speed things up.
+    """
+    for i in range(east.size):
         for j in range(force_east.size):
             distance = np.sqrt(
                 (east[i] - force_east[j]) ** 2 + (north[i] - force_north[j]) ** 2
