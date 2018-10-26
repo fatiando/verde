@@ -6,6 +6,7 @@ from sklearn.utils.validation import check_is_fitted
 
 from .base import BaseGridder, check_fit_input, least_squares
 from .coordinates import get_region
+from .utils import n_1d_arrays
 
 
 class Trend(BaseGridder):
@@ -91,8 +92,9 @@ class Trend(BaseGridder):
 
         """
         coordinates, data, weights = check_fit_input(coordinates, data, weights)
-        self.region_ = get_region(coordinates[:2])
-        jac = self.jacobian(coordinates[:2], dtype=data.dtype)
+        easting, northing = n_1d_arrays(coordinates, 2)
+        self.region_ = get_region((easting, northing))
+        jac = self.jacobian((easting, northing), dtype=data.dtype)
         self.coef_ = least_squares(jac, data, weights, damping=None)
         return self
 
@@ -117,9 +119,13 @@ class Trend(BaseGridder):
 
         """
         check_is_fitted(self, ["coef_"])
-        jac = self.jacobian(coordinates[:2])
+        easting, northing = n_1d_arrays(coordinates, 2)
         shape = np.broadcast(*coordinates[:2]).shape
-        return jac.dot(self.coef_).reshape(shape)
+        data = np.zeros(easting.size, dtype=easting.dtype)
+        combinations = polynomial_power_combinations(self.degree)
+        for coef, (i, j) in zip(self.coef_, combinations):
+            data += (easting ** i) * (northing ** j) * coef
+        return data.reshape(shape)
 
     def jacobian(self, coordinates, dtype="float64"):
         """
@@ -162,7 +168,7 @@ class Trend(BaseGridder):
          [ 1  4 -1 16 -4  1]]
 
         """
-        easting, northing = coordinates[:2]
+        easting, northing = n_1d_arrays(coordinates, 2)
         if easting.shape != northing.shape:
             raise ValueError("Coordinate arrays must have the same shape.")
         combinations = polynomial_power_combinations(self.degree)
@@ -170,7 +176,7 @@ class Trend(BaseGridder):
         nparams = len(combinations)
         out = np.empty((ndata, nparams), dtype=dtype)
         for col, (i, j) in enumerate(combinations):
-            out[:, col] = (easting.ravel() ** i) * (northing.ravel() ** j)
+            out[:, col] = (easting ** i) * (northing ** j)
         return out
 
 
