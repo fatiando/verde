@@ -209,73 +209,110 @@ def grid_to_table(grid):
     Convert a grid to a table with the values and coordinates of each point.
 
     Takes a 2D grid as input, extracts the coordinates and runs them through
-    :func:`numpy.meshgrid` to create a 2D table. Works for 2D grids and
-    any number of variables. Use cases includes passing gridded data to
-    functions that expect data in XYZ format such as :class:`verde.BlockReduce`
+    :func:`numpy.meshgrid` to create a 2D table. Works for 2D grids and any number of
+    variables. Use cases includes passing gridded data to functions that expect data in
+    XYZ format, such as :class:`verde.BlockReduce`
 
     Parameters
     ----------
     grid : :class:`xarray.Dataset`
-        A 2D grid with a single data variable.
+        A 2D grid with one or more data variables.
 
     Returns
     -------
     table : :class:`pandas.DataFrame`
-        :class:`pandas.DataFrame` with coordinates and variables.
+        Table with coordinates and variable values for each point in the grid.
 
     Examples
     --------
+
     >>> import xarray as xr
     >>> import numpy as np
-    >>> temperature = xr.DataArray(np.arange(20).reshape(4,5),...
-        coords = (np.arange(4), np.arange(5)), dims=['northing', 'easting'])
-    >>> wind_speed = xr.DataArray(np.arange(20,40).reshape(4,5),...
-        coords = (np.arange(4), np.arange(5)), dims=['northing', 'easting'])
+    >>> # Create a sample grid with a single data variable
+    >>> temperature = xr.DataArray(
+    ...     np.arange(20, dtype=np.int64).reshape((4, 5)),
+    ...     coords=(np.arange(4, dtype=np.int64), np.arange(5, 10, dtype=np.int64)),
+    ...     dims=['northing', 'easting']
+    ... )
     >>> print(temperature)
+    <xarray.DataArray (northing: 4, easting: 5)>
+    array([[ 0,  1,  2,  3,  4],
+           [ 5,  6,  7,  8,  9],
+           [10, 11, 12, 13, 14],
+           [15, 16, 17, 18, 19]])
+    Coordinates:
+      * northing  (northing) int64 0 1 2 3
+      * easting   (easting) int64 5 6 7 8 9
+    >>> grid = xr.Dataset({"temperature": temperature})
+    >>> print(grid_to_table(grid))
+        northing  easting  temperature
+    0          0        5            0
+    1          0        6            1
+    2          0        7            2
+    3          0        8            3
+    4          0        9            4
+    5          1        5            5
+    6          1        6            6
+    7          1        7            7
+    8          1        8            8
+    9          1        9            9
+    10         2        5           10
+    11         2        6           11
+    12         2        7           12
+    13         2        8           13
+    14         2        9           14
+    15         3        5           15
+    16         3        6           16
+    17         3        7           17
+    18         3        8           18
+    19         3        9           19
+    >>> # Grids with multiple data variables will have more columns.
+    >>> wind_speed = xr.DataArray(
+    ...     np.arange(20, 40, dtype=np.int64).reshape((4, 5)),
+    ...     coords=(np.arange(4, dtype=np.int64), np.arange(5, 10, dtype=np.int64)),
+    ...     dims=['northing', 'easting']
+    ... )
+    >>> print(wind_speed)
     <xarray.DataArray (northing: 4, easting: 5)>
     array([[20, 21, 22, 23, 24],
            [25, 26, 27, 28, 29],
            [30, 31, 32, 33, 34],
            [35, 36, 37, 38, 39]])
     Coordinates:
-      * northing  (northing) int32 0 1 2 3
-      * easting   (easting) int32 0 1 2 3 4
-
-    >>> example_dataset = temperature.to_dataset(name = 'temperature')
-    >>> example_dataset['wind_speed'] = wind_speed
-    >>> print(example_dataset)
+      * northing  (northing) int64 0 1 2 3
+      * easting   (easting) int64 5 6 7 8 9
+    >>> grid['wind_speed'] = wind_speed
+    >>> print(grid)
     <xarray.Dataset>
     Dimensions:      (easting: 5, northing: 4)
     Coordinates:
-      * northing     (northing) int32 0 1 2 3
-      * easting      (easting) int32 0 1 2 3 4
+      * northing     (northing) int64 0 1 2 3
+      * easting      (easting) int64 5 6 7 8 9
     Data variables:
-        temperature  (northing, easting) int32 0 1 2 3 4 ... 14 15 16 17 18 19
-        wind_speed   (northing, easting) int32 20 21 22 ... 35 36 37 38 39
-
-    >>> print(grid_to_table(example_dataset))
-    	   northing	easting	temperature	wind_speed
-        0	0         0	       0	      20
-        1	0         1        1	      21
-        2	0	      2	       2	      22
-        3	0	      3        3          23
-        4	0	      4    	   4	      24
-        5	1	      0	       5	      25
-        6	1	      1	       6	      26
-        7	1	      2	       7	      27
-        8	1	      3	       8	      28
-        9	1	      4	       9	      29
-        10	2	      0	       10	      30
-        11	2	      1	       11	      31
-        12	2	      2	       12	      32
-        13	2	      3	       13  	      33
-        14	2	      4	       14	      34
-        15	3         0	       15	      35
-        16	3	      1	       16	      36
-        17	3	      2	       17         37
-        18	3         3	       18	      38
-        19	3	      4	       19	      39
-
+        temperature  (northing, easting) int64 0 1 2 3 4 5 6 ... 14 15 16 17 18 19
+        wind_speed   (northing, easting) int64 20 21 22 23 24 25 ... 35 36 37 38 39
+    >>> print(grid_to_table(grid))
+        northing  easting  temperature  wind_speed
+    0          0        5            0          20
+    1          0        6            1          21
+    2          0        7            2          22
+    3          0        8            3          23
+    4          0        9            4          24
+    5          1        5            5          25
+    6          1        6            6          26
+    7          1        7            7          27
+    8          1        8            8          28
+    9          1        9            9          29
+    10         2        5           10          30
+    11         2        6           11          31
+    12         2        7           12          32
+    13         2        8           13          33
+    14         2        9           14          34
+    15         3        5           15          35
+    16         3        6           16          36
+    17         3        7           17          37
+    18         3        8           18          38
+    19         3        9           19          39
 
     """
     coordinate_names = [*grid.coords.keys()]
