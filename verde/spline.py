@@ -71,9 +71,9 @@ class Spline(BaseGridder):
         then will be set to the data coordinates the first time
         :meth:`~verde.Spline.fit` is called.
     engine : str
-        Computation engine for the Jacobian matrix. Can be ``'auto'``, ``'numba'``, or
-        ``'numpy'``. If ``'auto'``, will use numba if it is installed or numpy
-        otherwise. The numba version is multi-threaded and considerably faster, which
+        Computation engine for the Jacobian matrix and prediction. Can be ``'auto'``,
+        ``'numba'``, or ``'numpy'``. If ``'auto'``, will use numba if it is installed or
+        numpy otherwise. The numba version is multi-threaded and usually faster, which
         makes fitting and predicting faster.
 
     Attributes
@@ -155,10 +155,16 @@ class Spline(BaseGridder):
         shape = np.broadcast(*coordinates[:2]).shape
         force_east, force_north = n_1d_arrays(self.force_coords, n=2)
         east, north = n_1d_arrays(coordinates, n=2)
-        predicted = np.empty(east.size, dtype="float64")
-        predict_numba(east, north, force_east, force_north, self.mindist, self.force_,
-                      predicted)
-        return predicted.reshape(shape)
+        data = np.empty(east.size, dtype=east.dtype)
+        if parse_engine(self.engine) == "numba":
+            data = predict_numba(
+                east, north, force_east, force_north, self.mindist, self.force_, data
+            )
+        else:
+            data = predict_numpy(
+                east, north, force_east, force_north, self.mindist, self.force_, data
+            )
+        return data.reshape(shape)
 
     def jacobian(self, coordinates, force_coords, dtype="float64"):
         """
@@ -187,12 +193,14 @@ class Spline(BaseGridder):
         """
         force_east, force_north = n_1d_arrays(force_coords, n=2)
         east, north = n_1d_arrays(coordinates, n=2)
+        jac = np.empty((east.size, force_east.size), dtype=dtype)
         if parse_engine(self.engine) == "numba":
-            jac = np.empty((east.size, force_east.size), dtype=dtype)
-            jacobian_numba(east, north, force_east, force_north, self.mindist, jac)
+            jac = jacobian_numba(
+                east, north, force_east, force_north, self.mindist, jac
+            )
         else:
             jac = jacobian_numpy(
-                east, north, force_east, force_north, self.mindist, dtype
+                east, north, force_east, force_north, self.mindist, jac
             )
         return jac
 
@@ -220,9 +228,7 @@ def warn_weighted_exact_solution(spline, weights):
 
 @jit(nopython=True, target="cpu", fastmath=True, parallel=True)
 def predict_numba(east, north, force_east, force_north, mindist, forces, result):
-    """
-    Calculate the Jacobian matrix using numba to speed things up.
-    """
+    "Calculate the predicted data using numba to speed things up."
     for i in numba.prange(east.size):  # pylint: disable=not-an-iterable
         result[i] = 0
         for j in range(forces.size):
@@ -231,6 +237,16 @@ def predict_numba(east, north, force_east, force_north, mindist, forces, result)
             )
             distance += mindist
             result[i] += (distance ** 2) * (np.log(distance) - 1) * forces[j]
+    return result
+
+
+def predict_numpy(east, north, force_east, force_north, mindist, forces, result):
+    "Calculate the predicted data using numpy to speed things up."
+    result[:] = 0
+    for j in range(forces.size):
+        distance = np.sqrt((east - force_east[j]) ** 2 + (north - force_north[j]) ** 2)
+        distance += mindist
+        result += (distance ** 2) * (np.log(distance) - 1) * forces[j]
     return result
 
 
@@ -249,7 +265,7 @@ def jacobian_numba(east, north, force_east, force_north, mindist, jac):
     return jac
 
 
-def jacobian_numpy(east, north, force_east, force_north, mindist, dtype):
+def jacobian_numpy(east, north, force_east, force_north, mindist, jac):
     """
     Calculate the Jacobian using numpy broadcasting. Is slightly slower than the numba
     version.
@@ -259,9 +275,9 @@ def jacobian_numpy(east, north, force_east, force_north, mindist, dtype):
     distance = np.hypot(
         east.reshape((east.size, 1)) - force_east,
         north.reshape((north.size, 1)) - force_north,
-        dtype=dtype,
     )
     # The mindist factor helps avoid singular matrices when the force and
     # computation point are too close
     distance += mindist
-    return (distance ** 2) * (np.log(distance) - 1)
+    jac[:] = (distance ** 2) * (np.log(distance) - 1)
+    return jac

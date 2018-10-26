@@ -116,3 +116,14 @@ def test_spline_jacobian_implementations():
     jac_numpy = Spline(engine="numpy").jacobian(coords, coords)
     jac_numba = Spline(engine="numba").jacobian(coords, coords)
     npt.assert_allclose(jac_numpy, jac_numba)
+
+
+@requires_numba
+def test_spline_predict_implementations():
+    "Compare the numba and numpy implementations."
+    size = 500
+    data = CheckerBoard().scatter(size=size, random_state=1)
+    coords = (data.easting, data.northing)
+    pred_numpy = Spline(engine="numpy").fit(coords, data.scalars).predict(coords)
+    pred_numba = Spline(engine="numba").fit(coords, data.scalars).predict(coords)
+    npt.assert_allclose(pred_numpy, pred_numba)
