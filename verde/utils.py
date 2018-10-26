@@ -4,6 +4,7 @@ General utilities.
 import functools
 
 import numpy as np
+import pandas as pd
 
 
 def parse_engine(engine):
@@ -201,3 +202,82 @@ def maxabs(*args):
     arrays = [np.atleast_1d(i) for i in args]
     absolute = [np.abs([i.min(), i.max()]).max() for i in arrays]
     return np.max(absolute)
+
+
+def grid_to_table(grid):
+    """
+    Convert a grid to a table with the values and coordinates of each point.
+
+    Takes a 2D grid as input, extracts the coordinates and runs them through
+    :func:`numpy.meshgrid` to create a 2D table. Works for 2D grids and any number of
+    variables. Use cases includes passing gridded data to functions that expect data in
+    XYZ format, such as :class:`verde.BlockReduce`
+
+    Parameters
+    ----------
+    grid : :class:`xarray.Dataset`
+        A 2D grid with one or more data variables.
+
+    Returns
+    -------
+    table : :class:`pandas.DataFrame`
+        Table with coordinates and variable values for each point in the grid.
+
+    Examples
+    --------
+
+    >>> import xarray as xr
+    >>> import numpy as np
+    >>> # Create a sample grid with a single data variable
+    >>> temperature = xr.DataArray(
+    ...     np.arange(20).reshape((4, 5)),
+    ...     coords=(np.arange(4), np.arange(5, 10)),
+    ...     dims=['northing', 'easting']
+    ... )
+    >>> grid = xr.Dataset({"temperature": temperature})
+    >>> table  = grid_to_table(grid)
+    >>> list(sorted(table.columns))
+    ['easting', 'northing', 'temperature']
+    >>> print(table.northing.values)
+    [0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]
+    >>> print(table.easting.values)
+    [5 6 7 8 9 5 6 7 8 9 5 6 7 8 9 5 6 7 8 9]
+    >>> print(table.temperature.values)
+    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]
+    >>> # Grids with multiple data variables will have more columns.
+    >>> wind_speed = xr.DataArray(
+    ...     np.arange(20, 40).reshape((4, 5)),
+    ...     coords=(np.arange(4), np.arange(5, 10)),
+    ...     dims=['northing', 'easting']
+    ... )
+    >>> grid['wind_speed'] = wind_speed
+    >>> table = grid_to_table(grid)
+    >>> list(sorted(table.columns))
+    ['easting', 'northing', 'temperature', 'wind_speed']
+    >>> print(table.northing.values)
+    [0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]
+    >>> print(table.easting.values)
+    [5 6 7 8 9 5 6 7 8 9 5 6 7 8 9 5 6 7 8 9]
+    >>> print(table.temperature.values)
+    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]
+    >>> print(table.wind_speed.values)
+    [20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39]
+
+    """
+    coordinate_names = [*grid.coords.keys()]
+    coord_north = grid.coords[coordinate_names[0]].values
+    coord_east = grid.coords[coordinate_names[1]].values
+    coordinates = [i.ravel() for i in np.meshgrid(coord_east, coord_north)]
+    coord_dict = {
+        coordinate_names[0]: coordinates[1],
+        coordinate_names[1]: coordinates[0],
+    }
+    variable_name = [*grid.data_vars.keys()]
+    variable_data = grid.to_array().values
+    variable_arrays = variable_data.reshape(
+        len(variable_name), int(len(variable_data.ravel()) / len(variable_name))
+    )
+    var_dict = dict(zip(variable_name, variable_arrays))
+    coord_dict.update(var_dict)
+    data = pd.DataFrame(coord_dict)
+    return data
