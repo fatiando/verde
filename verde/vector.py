@@ -185,14 +185,14 @@ class VectorSpline2D(BaseGridder):
         then will be set to the data coordinates the first time
         :meth:`~verde.VectorSpline2D.fit` is called.
     engine : str
-        Computation engine for the Jacobian matrix. Can be ``'auto'``, ``'numba'``, or
-        ``'numpy'``. If ``'auto'``, will use numba if it is installed or numpy
-        otherwise. The numba version is multi-threaded and considerably faster, which
+        Computation engine for the Jacobian matrix and predictions. Can be ``'auto'``,
+        ``'numba'``, or ``'numpy'``. If ``'auto'``, will use numba if it is installed or
+        numpy otherwise. The numba version is multi-threaded and usually faster, which
         makes fitting and predicting faster.
 
     Attributes
     ----------
-    forces_ : array
+    force_ : array
         The estimated forces that fit the observed data.
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the

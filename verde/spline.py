@@ -78,7 +78,7 @@ class Spline(BaseGridder):
 
     Attributes
     ----------
-    forces_ : array
+    force_ : array
         The estimated forces that fit the observed data.
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
