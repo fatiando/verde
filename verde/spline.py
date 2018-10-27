@@ -241,7 +241,7 @@ def predict_numba(east, north, force_east, force_north, mindist, forces, result)
 
 
 def predict_numpy(east, north, force_east, force_north, mindist, forces, result):
-    "Calculate the predicted data using numpy to speed things up."
+    "Calculate the predicted data using numpy."
     result[:] = 0
     for j in range(forces.size):
         distance = np.sqrt((east - force_east[j]) ** 2 + (north - force_north[j]) ** 2)
