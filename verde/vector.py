@@ -324,24 +324,19 @@ class VectorSpline2D(BaseGridder):
         """
         force_east, force_north = n_1d_arrays(force_coords, n=2)
         east, north = n_1d_arrays(coordinates, n=2)
+        jac = np.empty((east.size * 2, force_east.size * 2), dtype=dtype)
         if parse_engine(self.engine) == "numba":
             jac = jacobian_numba(
-                east,
-                north,
-                force_east,
-                force_north,
-                self.mindist,
-                self.poisson,
-                np.empty((east.size * 2, force_east.size * 2), dtype=dtype),
+                east, north, force_east, force_north, self.mindist, self.poisson, jac
             )
         else:
             jac = jacobian_numpy(
-                east, north, force_east, force_north, self.mindist, self.poisson, dtype
+                east, north, force_east, force_north, self.mindist, self.poisson, jac
             )
         return jac
 
 
-def jacobian_numpy(east, north, force_east, force_north, mindist, poisson, dtype):
+def jacobian_numpy(east, north, force_east, force_north, mindist, poisson, jac):
     """
     Calculate the Jacobian matrix using numpy broadcasting.
     """
@@ -351,14 +346,13 @@ def jacobian_numpy(east, north, force_east, force_north, mindist, poisson, dtype
     # distance matrix between each data point and force.
     east_orig = east.reshape((npoints, 1)) - force_east
     north_orig = north.reshape((npoints, 1)) - force_north
-    distance = np.hypot(east_orig, north_orig, dtype=dtype)
+    distance = np.hypot(east_orig, north_orig)
     # The mindist factor helps avoid singular matrices when the force and
     # computation point are too close
     distance += mindist
     # Pre-compute common terms for the Green's functions of each component
     ln_r = (3 - poisson) * np.log(distance)
     over_r2 = (1 + poisson) / distance ** 2
-    jac = np.empty((npoints * 2, nforces * 2), dtype=dtype)
     jac[:npoints, :nforces] = ln_r + over_r2 * north_orig ** 2  # J_ee
     jac[npoints:, nforces:] = ln_r + over_r2 * east_orig ** 2  # J_nn
     jac[:npoints, nforces:] = -over_r2 * east_orig * north_orig  # J_ne
@@ -366,7 +360,7 @@ def jacobian_numpy(east, north, force_east, force_north, mindist, poisson, dtype
     return jac
 
 
-@jit(nopython=True, target="cpu", fastmath=True, parallel=True)
+@jit(nopython=True, target="cpu", fastmath=True)
 def jacobian_numba(east, north, force_east, force_north, mindist, poisson, jac):
     """
     Calculate the Jacobian matrix using numba to speed things up.
@@ -374,7 +368,7 @@ def jacobian_numba(east, north, force_east, force_north, mindist, poisson, jac):
     # pylint: disable=too-many-locals
     nforces = force_east.size
     npoints = east.size
-    for i in numba.prange(npoints):  # pylint: disable=not-an-iterable
+    for i in range(npoints):
         for j in range(nforces):
             east_orig = east[i] - force_east[j]
             north_orig = north[i] - force_north[j]
