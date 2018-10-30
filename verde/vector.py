@@ -17,6 +17,10 @@ except ImportError:
     from .utils import dummy_jit as jit
 
 
+# Default arguments for numba.jit
+JIT_ARGS = dict(nopython=True, target="cpu", fastmath=True, parallel=True)
+
+
 class Vector(BaseGridder):
     """
     Fit an estimator to each component of multi-component vector data.
@@ -185,14 +189,14 @@ class VectorSpline2D(BaseGridder):
         then will be set to the data coordinates the first time
         :meth:`~verde.VectorSpline2D.fit` is called.
     engine : str
-        Computation engine for the Jacobian matrix. Can be ``'auto'``, ``'numba'``, or
-        ``'numpy'``. If ``'auto'``, will use numba if it is installed or numpy
-        otherwise. The numba version is multi-threaded and considerably faster, which
+        Computation engine for the Jacobian matrix and predictions. Can be ``'auto'``,
+        ``'numba'``, or ``'numpy'``. If ``'auto'``, will use numba if it is installed or
+        numpy otherwise. The numba version is multi-threaded and usually faster, which
         makes fitting and predicting faster.
 
     Attributes
     ----------
-    forces_ : array
+    force_ : array
         The estimated forces that fit the observed data.
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
@@ -285,10 +289,38 @@ class VectorSpline2D(BaseGridder):
 
         """
         check_is_fitted(self, ["force_"])
-        jac = self.jacobian(coordinates[:2], self.force_coords)
+        force_east, force_north = self.force_coords
+        east, north = n_1d_arrays(coordinates, n=2)
         cast = np.broadcast(*coordinates[:2])
         npoints = cast.size
-        components = jac.dot(self.force_).reshape((2, npoints))
+        components = (
+            np.empty(npoints, dtype=east.dtype),
+            np.empty(npoints, dtype=east.dtype),
+        )
+        if parse_engine(self.engine) == "numba":
+            components = predict_2d_numba(
+                east,
+                north,
+                force_east,
+                force_north,
+                self.mindist,
+                self.poisson,
+                self.force_,
+                components[0],
+                components[1],
+            )
+        else:
+            components = predict_2d_numpy(
+                east,
+                north,
+                force_east,
+                force_north,
+                self.mindist,
+                self.poisson,
+                self.force_,
+                components[0],
+                components[1],
+            )
         return tuple(comp.reshape(cast.shape) for comp in components)
 
     def jacobian(self, coordinates, force_coords, dtype="float64"):
@@ -324,67 +356,102 @@ class VectorSpline2D(BaseGridder):
         """
         force_east, force_north = n_1d_arrays(force_coords, n=2)
         east, north = n_1d_arrays(coordinates, n=2)
+        jac = np.empty((east.size * 2, force_east.size * 2), dtype=dtype)
         if parse_engine(self.engine) == "numba":
-            jac = jacobian_numba(
-                east,
-                north,
-                force_east,
-                force_north,
-                self.mindist,
-                self.poisson,
-                np.empty((east.size * 2, force_east.size * 2), dtype=dtype),
+            jac = jacobian_2d_numba(
+                east, north, force_east, force_north, self.mindist, self.poisson, jac
             )
         else:
-            jac = jacobian_numpy(
-                east, north, force_east, force_north, self.mindist, self.poisson, dtype
+            jac = jacobian_2d_numpy(
+                east, north, force_east, force_north, self.mindist, self.poisson, jac
             )
         return jac
 
 
-def jacobian_numpy(east, north, force_east, force_north, mindist, poisson, dtype):
-    """
-    Calculate the Jacobian matrix using numpy broadcasting.
-    """
-    npoints = east.size
-    nforces = force_east.size
-    # Reshaping the data coordinates to a column vector will automatically build a
-    # distance matrix between each data point and force.
-    east_orig = east.reshape((npoints, 1)) - force_east
-    north_orig = north.reshape((npoints, 1)) - force_north
-    distance = np.hypot(east_orig, north_orig, dtype=dtype)
+def greens_func_2d(east, north, mindist, poisson):
+    "Calculate the Green's functions for the 2D elastic case."
+    distance = np.sqrt(east ** 2 + north ** 2)
     # The mindist factor helps avoid singular matrices when the force and
     # computation point are too close
     distance += mindist
     # Pre-compute common terms for the Green's functions of each component
     ln_r = (3 - poisson) * np.log(distance)
     over_r2 = (1 + poisson) / distance ** 2
-    jac = np.empty((npoints * 2, nforces * 2), dtype=dtype)
-    jac[:npoints, :nforces] = ln_r + over_r2 * north_orig ** 2  # J_ee
-    jac[npoints:, nforces:] = ln_r + over_r2 * east_orig ** 2  # J_nn
-    jac[:npoints, nforces:] = -over_r2 * east_orig * north_orig  # J_ne
-    jac[npoints:, :nforces] = jac[:npoints, nforces:]  # J is symmetric
+    green_ee = ln_r + over_r2 * north ** 2
+    green_nn = ln_r + over_r2 * east ** 2
+    green_ne = -over_r2 * east * north
+    return green_ee, green_nn, green_ne
+
+
+def predict_2d_numpy(
+    east, north, force_east, force_north, mindist, poisson, forces, vec_east, vec_north
+):
+    "Calculate the predicted data using numpy."
+    vec_east[:] = 0
+    vec_north[:] = 0
+    nforces = forces.size // 2
+    for j in range(nforces):
+        green_ee, green_nn, green_ne = greens_func_2d(
+            east - force_east[j], north - force_north[j], mindist, poisson
+        )
+        vec_east += green_ee * forces[j] + green_ne * forces[j + nforces]
+        vec_north += green_ne * forces[j] + green_nn * forces[j + nforces]
+    return vec_east, vec_north
+
+
+def jacobian_2d_numpy(east, north, force_east, force_north, mindist, poisson, jac):
+    "Calculate the Jacobian matrix using numpy broadcasting."
+    npoints = east.size
+    nforces = force_east.size
+    # Reshaping the data coordinates to a column vector will automatically build a
+    # Green's functions matrix between each data point and force.
+    green_ee, green_nn, green_ne = greens_func_2d(
+        east.reshape((npoints, 1)) - force_east,
+        north.reshape((npoints, 1)) - force_north,
+        mindist,
+        poisson,
+    )
+    jac[:npoints, :nforces] = green_ee
+    jac[npoints:, nforces:] = green_nn
+    jac[:npoints, nforces:] = green_ne
+    jac[npoints:, :nforces] = green_ne  # J is symmetric
     return jac
 
 
-@jit(nopython=True, target="cpu", fastmath=True, parallel=True)
-def jacobian_numba(east, north, force_east, force_north, mindist, poisson, jac):
-    """
-    Calculate the Jacobian matrix using numba to speed things up.
-    """
-    # pylint: disable=too-many-locals
+@jit(**JIT_ARGS)
+def predict_2d_numba(
+    east, north, force_east, force_north, mindist, poisson, forces, vec_east, vec_north
+):
+    "Calculate the predicted data using numba to speed things up."
+    nforces = forces.size // 2
+    for i in numba.prange(east.size):  # pylint: disable=not-an-iterable
+        vec_east[i] = 0
+        vec_north[i] = 0
+        for j in range(nforces):
+            green_ee, green_nn, green_ne = GREENS_FUNC_2D_JIT(
+                east[i] - force_east[j], north[i] - force_north[j], mindist, poisson
+            )
+            vec_east[i] += green_ee * forces[j] + green_ne * forces[j + nforces]
+            vec_north[i] += green_ne * forces[j] + green_nn * forces[j + nforces]
+    return vec_east, vec_north
+
+
+@jit(**JIT_ARGS)
+def jacobian_2d_numba(east, north, force_east, force_north, mindist, poisson, jac):
+    "Calculate the Jacobian matrix using numba to speed things up."
     nforces = force_east.size
     npoints = east.size
     for i in numba.prange(npoints):  # pylint: disable=not-an-iterable
         for j in range(nforces):
-            east_orig = east[i] - force_east[j]
-            north_orig = north[i] - force_north[j]
-            distance = np.sqrt(east_orig ** 2 + north_orig ** 2)
-            distance += mindist
-            # Pre-compute common terms for the Green's functions of each component
-            ln_r = (3 - poisson) * np.log(distance)
-            over_r2 = (1 + poisson) / distance ** 2
-            jac[i, j] = ln_r + over_r2 * north_orig ** 2  # J_ee
-            jac[i + npoints, j + nforces] = ln_r + over_r2 * east_orig ** 2  # J_nn
-            jac[i, j + nforces] = -over_r2 * east_orig * north_orig  # J_ne
-            jac[i + npoints, j] = jac[i, j + nforces]  # J is symmetric
+            green_ee, green_nn, green_ne = GREENS_FUNC_2D_JIT(
+                east[i] - force_east[j], north[i] - force_north[j], mindist, poisson
+            )
+            jac[i, j] = green_ee
+            jac[i + npoints, j + nforces] = green_nn
+            jac[i, j + nforces] = green_ne
+            jac[i + npoints, j] = green_ne  # J is symmetric
     return jac
+
+
+# JIT compile the Greens functions for use in numba functions
+GREENS_FUNC_2D_JIT = jit(**JIT_ARGS)(greens_func_2d)

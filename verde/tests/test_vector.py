@@ -18,7 +18,7 @@ from ..vector import VectorSpline2D, Vector
 def data2d():
     "Make 2 component vector data"
     synth = CheckerBoard()
-    coordinates = grid_coordinates(synth.region, shape=(30, 25))
+    coordinates = grid_coordinates(synth.region, shape=(15, 20))
     data = tuple(synth.predict(coordinates).ravel() for i in range(2))
     return tuple(i.ravel() for i in coordinates), data
 
@@ -38,7 +38,7 @@ def test_vector2d(data2d):
 def test_vector2d_weights(data2d):
     "Use unit weights and a regular grid solution"
     coords, data = data2d
-    outlier = 100
+    outlier = 10
     outlier_value = 100000
     data_outlier = tuple(i.copy() for i in data)
     data_outlier[0][outlier] += outlier_value
@@ -68,6 +68,15 @@ def test_vector2d_jacobian_implementations(data2d):
     jac_numpy = VectorSpline2D(engine="numpy").jacobian(coords, coords)
     jac_numba = VectorSpline2D(engine="numba").jacobian(coords, coords)
     npt.assert_allclose(jac_numpy, jac_numba)
+
+
+@requires_numba
+def test_vector2d_predict_implementations(data2d):
+    "Compare the numba and numpy implementations."
+    coords, data = data2d
+    pred_numpy = VectorSpline2D(engine="numpy").fit(coords, data).predict(coords)
+    pred_numba = VectorSpline2D(engine="numba").fit(coords, data).predict(coords)
+    npt.assert_allclose(pred_numpy, pred_numba, atol=1e-4)
 
 
 ########################################################################################

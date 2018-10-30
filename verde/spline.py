@@ -18,6 +18,10 @@ except ImportError:
     from .utils import dummy_jit as jit
 
 
+# Default arguments for numba.jit
+JIT_ARGS = dict(nopython=True, target="cpu", fastmath=True, parallel=True)
+
+
 class Spline(BaseGridder):
     r"""
     Biharmonic spline interpolation using Green's functions.
@@ -71,14 +75,14 @@ class Spline(BaseGridder):
         then will be set to the data coordinates the first time
         :meth:`~verde.Spline.fit` is called.
     engine : str
-        Computation engine for the Jacobian matrix. Can be ``'auto'``, ``'numba'``, or
-        ``'numpy'``. If ``'auto'``, will use numba if it is installed or numpy
-        otherwise. The numba version is multi-threaded and considerably faster, which
+        Computation engine for the Jacobian matrix and prediction. Can be ``'auto'``,
+        ``'numba'``, or ``'numpy'``. If ``'auto'``, will use numba if it is installed or
+        numpy otherwise. The numba version is multi-threaded and usually faster, which
         makes fitting and predicting faster.
 
     Attributes
     ----------
-    forces_ : array
+    force_ : array
         The estimated forces that fit the observed data.
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
@@ -152,9 +156,19 @@ class Spline(BaseGridder):
 
         """
         check_is_fitted(self, ["force_"])
-        jac = self.jacobian(coordinates[:2], self.force_coords)
         shape = np.broadcast(*coordinates[:2]).shape
-        return jac.dot(self.force_).reshape(shape)
+        force_east, force_north = n_1d_arrays(self.force_coords, n=2)
+        east, north = n_1d_arrays(coordinates, n=2)
+        data = np.empty(east.size, dtype=east.dtype)
+        if parse_engine(self.engine) == "numba":
+            data = predict_numba(
+                east, north, force_east, force_north, self.mindist, self.force_, data
+            )
+        else:
+            data = predict_numpy(
+                east, north, force_east, force_north, self.mindist, self.force_, data
+            )
+        return data.reshape(shape)
 
     def jacobian(self, coordinates, force_coords, dtype="float64"):
         """
@@ -183,12 +197,14 @@ class Spline(BaseGridder):
         """
         force_east, force_north = n_1d_arrays(force_coords, n=2)
         east, north = n_1d_arrays(coordinates, n=2)
+        jac = np.empty((east.size, force_east.size), dtype=dtype)
         if parse_engine(self.engine) == "numba":
-            jac = np.empty((east.size, force_east.size), dtype=dtype)
-            jacobian_numba(east, north, force_east, force_north, self.mindist, jac)
+            jac = jacobian_numba(
+                east, north, force_east, force_north, self.mindist, jac
+            )
         else:
             jac = jacobian_numpy(
-                east, north, force_east, force_north, self.mindist, dtype
+                east, north, force_east, force_north, self.mindist, jac
             )
         return jac
 
@@ -214,34 +230,59 @@ def warn_weighted_exact_solution(spline, weights):
         )
 
 
-@jit(nopython=True, target="cpu", fastmath=True, parallel=True)
-def jacobian_numba(east, north, force_east, force_north, mindist, jac):
-    """
-    Calculate the Jacobian matrix using numba to speed things up.
-    """
-    for i in numba.prange(east.size):  # pylint: disable=not-an-iterable
-        for j in range(force_east.size):
-            distance = np.sqrt(
-                (east[i] - force_east[j]) ** 2 + (north[i] - force_north[j]) ** 2
-            )
-            distance += mindist
-            jac[i, j] = (distance ** 2) * (np.log(distance) - 1)
-    return jac
-
-
-def jacobian_numpy(east, north, force_east, force_north, mindist, dtype):
-    """
-    Calculate the Jacobian using numpy broadcasting. Is slightly slower than the numba
-    version.
-    """
-    # Reshaping the data to a column vector will automatically build a
-    # distance matrix between each data point and force.
-    distance = np.hypot(
-        east.reshape((east.size, 1)) - force_east,
-        north.reshape((north.size, 1)) - force_north,
-        dtype=dtype,
-    )
+def greens_func(east, north, mindist):
+    "Calculate the Green's function for the Bi-Harmonic Spline"
+    distance = np.sqrt(east ** 2 + north ** 2)
     # The mindist factor helps avoid singular matrices when the force and
     # computation point are too close
     distance += mindist
     return (distance ** 2) * (np.log(distance) - 1)
+
+
+def predict_numpy(east, north, force_east, force_north, mindist, forces, result):
+    "Calculate the predicted data using numpy."
+    result[:] = 0
+    for j in range(forces.size):
+        green = greens_func(east - force_east[j], north - force_north[j], mindist)
+        result += green * forces[j]
+    return result
+
+
+def jacobian_numpy(east, north, force_east, force_north, mindist, jac):
+    "Calculate the Jacobian using numpy broadcasting."
+    # Reshaping the data to a column vector will automatically build a distance matrix
+    # between each data point and force.
+    jac[:] = greens_func(
+        east.reshape((east.size, 1)) - force_east,
+        north.reshape((north.size, 1)) - force_north,
+        mindist,
+    )
+    return jac
+
+
+@jit(**JIT_ARGS)
+def predict_numba(east, north, force_east, force_north, mindist, forces, result):
+    "Calculate the predicted data using numba to speed things up."
+    for i in numba.prange(east.size):  # pylint: disable=not-an-iterable
+        result[i] = 0
+        for j in range(forces.size):
+            green = GREENS_FUNC_JIT(
+                east[i] - force_east[j], north[i] - force_north[j], mindist
+            )
+            result[i] += green * forces[j]
+    return result
+
+
+@jit(**JIT_ARGS)
+def jacobian_numba(east, north, force_east, force_north, mindist, jac):
+    "Calculate the Jacobian matrix using numba to speed things up."
+    for i in range(east.size):
+        for j in range(force_east.size):
+            jac[i, j] = GREENS_FUNC_JIT(
+                east[i] - force_east[j], north[i] - force_north[j], mindist
+            )
+    return jac
+
+
+# Jit compile the Green's functions for use in the numba functions
+GREENS_FUNC_JIT = jit(**JIT_ARGS)(greens_func)
