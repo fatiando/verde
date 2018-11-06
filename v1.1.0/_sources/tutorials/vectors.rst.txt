@@ -1,0 +1,617 @@
+.. note::
+    :class: sphx-glr-download-link-note
+
+    Click :ref:`here <sphx_glr_download_tutorials_vectors.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
+
+.. _sphx_glr_tutorials_vectors.py:
+
+
+Vector Data
+===========
+
+Some datasets have multiple vector components measured for each location, like the East
+and West components of wind speed or GPS velocities. For example, let's look at our
+sample GPS velocity data from the U.S. West coast.
+
+
+
+.. code-block:: python
+
+    import matplotlib.pyplot as plt
+    import cartopy.crs as ccrs
+    import pyproj
+    import verde as vd
+
+    data = vd.datasets.fetch_california_gps()
+
+    # We'll need to project the geographic coordinates to work with our Cartesian
+    # classes/functions
+    projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
+    proj_coords = projection(data.longitude.values, data.latitude.values)
+    # This will be our desired grid spacing in degrees
+    spacing = 12 / 60
+
+    plt.figure(figsize=(6, 8))
+    ax = plt.axes(projection=ccrs.Mercator())
+    crs = ccrs.PlateCarree()
+    tmp = ax.quiver(
+        data.longitude.values,
+        data.latitude.values,
+        data.velocity_east.values,
+        data.velocity_north.values,
+        scale=0.3,
+        transform=crs,
+        width=0.002,
+    )
+    ax.quiverkey(tmp, 0.2, 0.15, 0.05, label="0.05 m/yr", coordinates="figure")
+    ax.set_title("GPS horizontal velocities")
+    vd.datasets.setup_california_gps_map(ax)
+    plt.tight_layout()
+    plt.show()
+
+
+
+
+
+.. image:: /tutorials/images/sphx_glr_vectors_001.png
+    :class: sphx-glr-single-img
+
+
+
+
+Verde classes and functions are equipped to deal with vector data natively or through
+the use of the :class:`verde.Vector` class. Function and classes that can take vector
+data as input will accept tuples as the ``data`` and ``weights`` arguments. Each
+element of the tuple must be an array with the data values for a component of the
+vector data. As with ``coordinates``, **the order of components must be**
+``(east_component, north_component, up_component)``.
+
+
+Blocked reductions
+------------------
+
+Operations with :class:`verde.BlockReduce` and :class:`verde.BlockMean` can handle
+multi-component data automatically. The reduction operation is applied to each data
+component separately. The blocked data and weights will be returned in tuples as well
+following the same ordering as the inputs. This will work for an arbitrary number of
+components.
+
+
+
+.. code-block:: python
+
+
+    # Use a blocked mean with uncertainty type weights
+    reducer = vd.BlockMean(spacing=spacing * 111e3, uncertainty=True)
+    block_coords, block_data, block_weights = reducer.filter(
+        coordinates=proj_coords,
+        data=(data.velocity_east, data.velocity_north),
+        weights=(1 / data.std_east ** 2, 1 / data.std_north ** 2),
+    )
+    print(len(block_data), len(block_weights))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    2 2
+
+
+We can convert the blocked coordinates back to longitude and latitude to plot with
+Cartopy.
+
+
+
+.. code-block:: python
+
+
+    block_lon, block_lat = projection(*block_coords, inverse=True)
+
+    plt.figure(figsize=(6, 8))
+    ax = plt.axes(projection=ccrs.Mercator())
+    crs = ccrs.PlateCarree()
+    tmp = ax.quiver(
+        block_lon,
+        block_lat,
+        block_data[0],
+        block_data[1],
+        scale=0.3,
+        transform=crs,
+        width=0.002,
+    )
+    ax.quiverkey(tmp, 0.2, 0.15, 0.05, label="0.05 m/yr", coordinates="figure")
+    ax.set_title("Block mean velocities")
+    vd.datasets.setup_california_gps_map(ax)
+    plt.tight_layout()
+    plt.show()
+
+
+
+
+.. image:: /tutorials/images/sphx_glr_vectors_002.png
+    :class: sphx-glr-single-img
+
+
+
+
+Trends
+------
+
+Trends can't handle vector data automatically, so you can't pass
+``data=(data.velocity_east, data.velocity_north)`` to :meth:`verde.Trend.fit`. To get
+around that, you can use the :class:`verde.Vector` class to create multi-component
+estimators and gridders from single component ones.
+
+:class:`~verde.Vector` takes an estimator/gridder for each data component and
+implements the :ref:`gridder interface <gridder_interface>` for vector data, fitting
+each estimator/gridder given to a different component of the data.
+
+For example, to fit a trend to our GPS velocities, we need to make a 2-component
+vector trend:
+
+
+
+.. code-block:: python
+
+
+    trend = vd.Vector([vd.Trend(4), vd.Trend(1)])
+    print(trend)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Vector(components=[Trend(degree=4), Trend(degree=1)])
+
+
+We can use the ``trend`` as if it were a regular :class:`verde.Trend` but passing in
+2-component data to fit. This will fit each data component to a different
+:class:`verde.Trend`.
+
+
+
+.. code-block:: python
+
+
+    trend.fit(
+        coordinates=proj_coords,
+        data=(data.velocity_east, data.velocity_north),
+        weights=(1 / data.std_east ** 2, 1 / data.std_north ** 2),
+    )
+
+
+
+
+
+
+
+Each estimator can be accessed through the ``components`` attribute:
+
+
+
+.. code-block:: python
+
+
+    print(trend.components)
+    print("East trend coefficients:", trend.components[0].coef_)
+    print("North trend coefficients:", trend.components[1].coef_)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    [Trend(degree=4), Trend(degree=1)]
+    East trend coefficients: [-3.31743842e+03 -1.61368024e-03 -1.08568612e-03 -2.77735425e-10
+     -2.99424188e-10  7.38718814e-12 -2.03916793e-17 -2.68710016e-17
+      3.36222189e-18  2.00921241e-18 -5.43959103e-25 -7.79030547e-25
+      2.71546631e-25  2.44086928e-25  5.03611062e-26]
+    North trend coefficients: [-3.35415183e-01 -4.50275691e-08 -3.75590521e-08]
+
+
+When we call :meth:`verde.Vector.predict` or :meth:`verde.Vector.grid`, we'll get back
+predictions for two components instead of just one. Each prediction comes from a
+different :class:`verde.Trend`.
+
+
+
+.. code-block:: python
+
+
+    pred_east, pred_north = trend.predict(proj_coords)
+
+    # Make histograms of the residuals
+    plt.figure(figsize=(6, 5))
+    ax = plt.axes()
+    ax.set_title("Trend residuals")
+    ax.hist(data.velocity_north - pred_north, bins="auto", label="North", alpha=0.7)
+    ax.hist(data.velocity_east - pred_east, bins="auto", label="East", alpha=0.7)
+    ax.legend()
+    ax.set_xlabel("Velocity (m/yr)")
+    plt.tight_layout()
+    plt.show()
+
+
+
+
+.. image:: /tutorials/images/sphx_glr_vectors_003.png
+    :class: sphx-glr-single-img
+
+
+
+
+As expected, the residuals are higher for the North component because of the lower
+degree polynomial.
+
+Let's make geographic grids of these trends.
+
+
+
+.. code-block:: python
+
+
+    region = vd.get_region((data.longitude, data.latitude))
+
+    grid = trend.grid(
+        region=region,
+        spacing=spacing,
+        projection=projection,
+        dims=["latitude", "longitude"],
+    )
+    print(grid)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    <xarray.Dataset>
+    Dimensions:          (latitude: 49, longitude: 47)
+    Coordinates:
+      * longitude        (longitude) float64 235.7 235.9 236.1 ... 244.6 244.8 245.0
+      * latitude         (latitude) float64 32.29 32.49 32.69 ... 41.5 41.7 41.9
+    Data variables:
+        east_component   (latitude, longitude) float64 -0.1983 -0.1853 ... 0.01365
+        north_component  (latitude, longitude) float64 0.0541 0.05328 ... -0.02427
+    Attributes:
+        metadata:  Generated by Vector(components=[Trend(degree=4), Trend(degree=...
+
+
+By default, the names of the data components in the :class:`xarray.Dataset` are
+``east_component`` and ``north_component``. This can be customized using the
+``data_names`` argument.
+
+Now we can map the trends.
+
+
+
+.. code-block:: python
+
+
+    fig, axes = plt.subplots(
+        1, 2, figsize=(9, 7), subplot_kw=dict(projection=ccrs.Mercator())
+    )
+    crs = ccrs.PlateCarree()
+    titles = ["East component trend", "North component trend"]
+    components = [grid.east_component, grid.north_component]
+    for ax, component, title in zip(axes, components, titles):
+        ax.set_title(title)
+        maxabs = vd.maxabs(component)
+        tmp = component.plot.pcolormesh(
+            ax=ax,
+            vmin=-maxabs,
+            vmax=maxabs,
+            cmap="bwr",
+            transform=crs,
+            add_colorbar=False,
+            add_labels=False,
+        )
+        cb = plt.colorbar(tmp, ax=ax, orientation="horizontal", pad=0.05)
+        cb.set_label("meters/year")
+        vd.datasets.setup_california_gps_map(ax, land=None, ocean=None)
+        ax.coastlines(color="white")
+    plt.tight_layout()
+    plt.show()
+
+
+
+
+.. image:: /tutorials/images/sphx_glr_vectors_004.png
+    :class: sphx-glr-single-img
+
+
+
+
+Gridding
+--------
+
+You can use :class:`verde.Vector` to create multi-component gridders out of
+:class:`verde.Spline` the same way as we did for trends. In this case, each component
+is treated separately.
+
+We can start by splitting the data into training and testing sets (see
+:ref:`model_selection`). Notice that :func:`verde.train_test_split` work for
+multicomponent data automatically.
+
+
+
+.. code-block:: python
+
+
+    train, test = vd.train_test_split(
+        coordinates=proj_coords,
+        data=(data.velocity_east, data.velocity_north),
+        weights=(1 / data.std_east ** 2, 1 / data.std_north ** 2),
+        random_state=1,
+    )
+
+
+
+
+
+
+
+Now we can make a 2-component spline. Since :class:`verde.Vector` implements
+``fit``, ``predict``, and ``filter``, we can use it in a :class:`verde.Chain` to build
+a pipeline.
+
+We need to use a bit of damping so that the weights can be taken into account. Splines
+without damping provide a perfect fit to the data and ignore the weights as a
+consequence.
+
+
+
+.. code-block:: python
+
+
+    chain = vd.Chain(
+        [
+            ("mean", vd.BlockMean(spacing=spacing * 111e3, uncertainty=True)),
+            ("trend", vd.Vector([vd.Trend(1), vd.Trend(1)])),
+            ("spline", vd.Vector([vd.Spline(damping=1e-10), vd.Spline(damping=1e-10)])),
+        ]
+    )
+    print(chain)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Chain(steps=[('mean', BlockMean(adjust='spacing', center_coordinates=False, region=None,
+         spacing=22200.0, uncertainty=True)), ('trend', Vector(components=[Trend(degree=1), Trend(degree=1)])), ('spline', Vector(components=[Spline(damping=1e-10, engine='auto', force_coords=None, mindist=1e-05), Spline(damping=1e-10, engine='auto', force_coords=None, mindist=1e-05)]))])
+
+
+.. warning::
+
+    Never generate the component gridders with ``[vd.Spline()]*2``. This will result
+    in each component being a represented by **the same Spline object**, causing
+    problems when trying to fit it to different components.
+
+Fitting the spline and gridding is exactly the same as what we've done before.
+
+
+
+.. code-block:: python
+
+
+    chain.fit(*train)
+
+    # Score on the test data
+    print(chain.score(*test))
+
+    grid = chain.grid(
+        region=region,
+        spacing=spacing,
+        projection=projection,
+        dims=["latitude", "longitude"],
+    )
+    print(grid)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    0.9926769042771435
+    <xarray.Dataset>
+    Dimensions:          (latitude: 49, longitude: 47)
+    Coordinates:
+      * longitude        (longitude) float64 235.7 235.9 236.1 ... 244.6 244.8 245.0
+      * latitude         (latitude) float64 32.29 32.49 32.69 ... 41.5 41.7 41.9
+    Data variables:
+        east_component   (latitude, longitude) float64 -0.04659 ... -0.0006166
+        north_component  (latitude, longitude) float64 0.08792 ... -0.0006041
+    Attributes:
+        metadata:  Generated by Chain(steps=[('mean', BlockMean(adjust='spacing',...
+
+
+Mask out the points too far from data and plot the gridded vectors.
+
+
+
+.. code-block:: python
+
+
+    grid = vd.distance_mask(
+        (data.longitude, data.latitude),
+        maxdist=spacing * 2 * 111e3,
+        grid=grid,
+        projection=projection,
+    )
+
+    plt.figure(figsize=(6, 8))
+    ax = plt.axes(projection=ccrs.Mercator())
+    tmp = ax.quiver(
+        grid.longitude.values,
+        grid.latitude.values,
+        grid.east_component.values,
+        grid.north_component.values,
+        scale=0.3,
+        transform=crs,
+        width=0.002,
+    )
+    ax.quiverkey(tmp, 0.2, 0.15, 0.05, label="0.05 m/yr", coordinates="figure")
+    ax.set_title("Gridded velocities")
+    vd.datasets.setup_california_gps_map(ax)
+    plt.tight_layout()
+    plt.show()
+
+
+
+
+.. image:: /tutorials/images/sphx_glr_vectors_005.png
+    :class: sphx-glr-single-img
+
+
+
+
+Another way of gridding 2-component vector data is using
+:class:`verde.VectorSpline2D`. This gridder uses linear elasticity theory to couple
+the two vector components. The degree of coupling can be controlled through the
+``poisson`` parameter which sets the `Poisson's ratio
+<https://en.wikipedia.org/wiki/Poisson%27s_ratio>`__ of the elastic medium.
+
+
+
+.. code-block:: python
+
+
+    chain_coupled = vd.Chain(
+        [
+            ("mean", vd.BlockMean(spacing=spacing * 111e3, uncertainty=True)),
+            ("trend", vd.Vector([vd.Trend(1), vd.Trend(1)])),
+            ("spline", vd.VectorSpline2D(poisson=0.5, damping=1e-10)),
+        ]
+    )
+    chain_coupled.fit(*train)
+    print(chain_coupled.score(*test))
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    0.9906070698504343
+
+
+:class:`~verde.VectorSpline2D` generally gives better results when gridding GPS
+velocities, particularly for higher density grids and areas with sharp changes in
+velocity [SandwellWessel2016]_. Here, we won't see a big difference because of the
+low-density grid that we're making.
+
+
+
+.. code-block:: python
+
+
+    grid_coupled = chain_coupled.grid(
+        region=region,
+        spacing=spacing,
+        projection=projection,
+        dims=["latitude", "longitude"],
+    )
+    grid_coupled = vd.distance_mask(
+        (data.longitude, data.latitude),
+        maxdist=spacing * 2 * 111e3,
+        grid=grid_coupled,
+        projection=projection,
+    )
+
+    fig, axes = plt.subplots(
+        1, 2, figsize=(9, 6.5), subplot_kw=dict(projection=ccrs.Mercator())
+    )
+    crs = ccrs.PlateCarree()
+    titles = ["Gridded velocity (uncoupled)", "Gridded velocity (coupled)"]
+    grids = [grid, grid_coupled]
+    for ax, grd, title in zip(axes, grids, titles):
+        ax.set_title(title)
+        tmp = ax.quiver(
+            grd.longitude.values,
+            grd.latitude.values,
+            grd.east_component.values,
+            grd.north_component.values,
+            scale=0.3,
+            transform=crs,
+            width=0.002,
+        )
+        vd.datasets.setup_california_gps_map(ax)
+    ax.quiverkey(tmp, 0.15, 0.15, 0.05, label="0.05 m/yr", coordinates="figure")
+    plt.tight_layout()
+    plt.show()
+
+
+
+.. image:: /tutorials/images/sphx_glr_vectors_006.png
+    :class: sphx-glr-single-img
+
+
+
+
+**Total running time of the script:** ( 0 minutes  5.344 seconds)
+
+
+.. _sphx_glr_download_tutorials_vectors.py:
+
+
+.. only :: html
+
+ .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
+
+
+  .. container:: sphx-glr-download
+
+     :download:`Download Python source code: vectors.py <vectors.py>`
+
+
+
+  .. container:: sphx-glr-download
+
+     :download:`Download Jupyter notebook: vectors.ipynb <vectors.ipynb>`
+
+
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.readthedocs.io>`_

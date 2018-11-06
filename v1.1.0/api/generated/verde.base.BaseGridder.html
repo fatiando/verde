@@ -1,0 +1,821 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    
+        <title>verde.base.BaseGridder &mdash; Verde</title>
+    
+
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.png"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Changelog" href="../../changes.html" />
+    <link rel="prev" title="verde.datasets.setup_rio_magnetic_map" href="verde.datasets.setup_rio_magnetic_map.html" />
+    
+    <script src="../../_static/require.js"></script>
+
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/verde-logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Verde</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#interpolators">Interpolators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#data-processing">Data Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#composite-estimators">Composite Estimators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#model-selection">Model Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#coordinate-manipulation">Coordinate Manipulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#utilities">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#datasets">Datasets</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#base-classes">Base Classes</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">verde.base.BaseGridder</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+
+    
+        <p class="caption">
+            <span class="caption-text">
+            
+                Getting help and contributing
+            
+            </span>
+        </p>
+        <ul>
+            
+                <li class="toctree-l1"><a href="https://www.fatiando.org"><i class="fa fa-external-link-square fa-fw"></i> Fatiando a Terra</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md"><i class="fa fa-users fa-fw"></i> Contributing</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
+            
+                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
+            
+        </ul>
+    
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Verde</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+      <li>verde.base.BaseGridder</li>
+    
+    
+    <li class="source-link">
+        
+            
+                
+                
+                <a href="https://github.com/fatiando/verde/issues/new?title=Suggested%20improvement%20for%20api/generated/verde.base.BaseGridder&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                   class="fa fa-github"> Improve this page</a>
+            
+        
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="verde-base-basegridder">
+<h1>verde.base.BaseGridder<a class="headerlink" href="#verde-base-basegridder" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="verde.base.BaseGridder">
+<em class="property">class </em><code class="descclassname">verde.base.</code><code class="descname">BaseGridder</code><a class="reference internal" href="../../_modules/verde/base.html#BaseGridder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.base.BaseGridder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for gridders.</p>
+<p>Most methods of this class requires the implementation of a
+<a class="reference internal" href="#verde.base.BaseGridder.predict" title="verde.base.BaseGridder.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict</span></code></a> method. The data returned by it should
+be a 1d or 2d numpy array for scalar data or a tuple with 1d or 2d numpy
+arrays for each component of vector data.</p>
+<p>The <a class="reference internal" href="#verde.base.BaseGridder.filter" title="verde.base.BaseGridder.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter</span></code></a> method requires the implementation of
+a <a class="reference internal" href="#verde.base.BaseGridder.fit" title="verde.base.BaseGridder.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a> method to fit the gridder model to data.</p>
+<p>Doesn’t define any new attributes.</p>
+<p>This is a subclass of <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.base.BaseEstimator.html#sklearn.base.BaseEstimator" title="(in scikit-learn v0.20.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code></a> and must abide by
+the same rules of the scikit-learn classes. Mainly:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">__init__</span></code> must <strong>only</strong> assign values to attributes based on the
+parameters it receives. All parameters must have default values.
+Parameter checking should be done in <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</li>
+<li>Estimated parameters should be stored as attributes with names ending in
+<code class="docutils literal notranslate"><span class="pre">_</span></code>.</li>
+</ul>
+<p class="rubric">Examples</p>
+<p>Let’s create a class that interpolates by attributing the mean value of the
+data to every single point (it’s not a very good interpolator).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="k">import</span> <span class="n">check_is_fitted</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MeanGridder</span><span class="p">(</span><span class="n">vd</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">BaseGridder</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="s2">&quot;Gridder that always produces the mean of all data values&quot;</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="c1"># Init should only assign the parameters to attributes</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">multiplier</span> <span class="o">=</span> <span class="n">multiplier</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordiantes</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="c1"># Argument checking should be done in fit</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">multiplier</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid multiplier </span><span class="si">{}</span><span class="s1">&#39;</span>
+<span class="gp">... </span>                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">multiplier</span><span class="p">))</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">mean_</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">multiplier</span>
+<span class="gp">... </span>        <span class="c1"># fit should return self so that we can chain operations</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="bp">self</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="c1"># We know the gridder has been fitted if it has the mean</span>
+<span class="gp">... </span>        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;mean_&#39;</span><span class="p">])</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Try it on some synthetic data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">synthetic</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">CheckerBoard</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">synthetic</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">scalars</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+<span class="go">-32.2182</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Fit the gridder to our synthetic data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grd</span> <span class="o">=</span> <span class="n">MeanGridder</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">easting</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">northing</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">scalars</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grd</span>
+<span class="go">MeanGridder(multiplier=1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Interpolate on a regular grid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">grd</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+<span class="go">&lt;class &#39;xarray.core.dataset.Dataset&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">scalars</span><span class="p">,</span> <span class="o">-</span><span class="mf">32.2182</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Interpolate along a profile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">profile</span> <span class="o">=</span> <span class="n">grd</span><span class="o">.</span><span class="n">profile</span><span class="p">(</span><span class="n">point1</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">),</span> <span class="n">point2</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">profile</span><span class="p">)</span>
+<span class="go">&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">profile</span><span class="o">.</span><span class="n">distance</span><span class="p">]))</span>
+<span class="go">0.00, 0.60, 1.20, 1.80, 2.39, 2.99, 3.59, 4.19, 4.79, 5.39</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{:.1f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">profile</span><span class="o">.</span><span class="n">scalars</span><span class="p">]))</span>
+<span class="go">-32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2</span>
+</pre></div>
+</div>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#verde.base.BaseGridder.filter" title="verde.base.BaseGridder.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span></code></a>(coordinates,&nbsp;data[,&nbsp;weights])</td>
+<td>Filter the data through the gridder and produce residuals.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#verde.base.BaseGridder.fit" title="verde.base.BaseGridder.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(coordinates,&nbsp;data[,&nbsp;weights])</td>
+<td>Fit the gridder to observed data.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#verde.base.BaseGridder.get_params" title="verde.base.BaseGridder.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</td>
+<td>Get parameters for this estimator.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#verde.base.BaseGridder.grid" title="verde.base.BaseGridder.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid</span></code></a>([region,&nbsp;shape,&nbsp;spacing,&nbsp;dims,&nbsp;…])</td>
+<td>Interpolate the data onto a regular grid.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#verde.base.BaseGridder.predict" title="verde.base.BaseGridder.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(coordinates)</td>
+<td>Predict data on the given coordinate values.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#verde.base.BaseGridder.profile" title="verde.base.BaseGridder.profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">profile</span></code></a>(point1,&nbsp;point2,&nbsp;size[,&nbsp;dims,&nbsp;…])</td>
+<td>Interpolate data along a profile between two points.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#verde.base.BaseGridder.scatter" title="verde.base.BaseGridder.scatter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scatter</span></code></a>([region,&nbsp;size,&nbsp;random_state,&nbsp;dims,&nbsp;…])</td>
+<td>Interpolate values onto a random scatter of points.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#verde.base.BaseGridder.score" title="verde.base.BaseGridder.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(coordinates,&nbsp;data[,&nbsp;weights])</td>
+<td>Score the gridder predictions against the given data.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#verde.base.BaseGridder.set_params" title="verde.base.BaseGridder.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</td>
+<td>Set the parameters of this estimator.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div><dl class="method">
+<dt id="verde.base.BaseGridder.filter">
+<code class="descclassname">BaseGridder.</code><code class="descname">filter</code><span class="sig-paren">(</span><em>coordinates</em>, <em>data</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/base.html#BaseGridder.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.base.BaseGridder.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter the data through the gridder and produce residuals.</p>
+<p>Calls <code class="docutils literal notranslate"><span class="pre">fit</span></code> on the data, evaluates the residuals (data - predicted
+data), and returns the coordinates, residuals, and weights.</p>
+<p>No very useful by itself but this interface makes gridders compatible
+with other processing operations and is used by <a class="reference internal" href="verde.Chain.html#verde.Chain" title="verde.Chain"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Chain</span></code></a> to
+join them together (for example, so you can fit a spline on the
+residuals of a trend).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>coordinates</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of arrays</span></dt>
+<dd><p class="first last">Arrays with the coordinates of each data point. Should be in the
+following order: (easting, northing, vertical, …).</p>
+</dd>
+<dt><strong>data</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array or tuple of arrays</span></dt>
+<dd><p class="first last">The data values of each data point. If the data has more than one
+component, <em>data</em> must be a tuple of arrays (one for each
+component).</p>
+</dd>
+<dt><strong>weights</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None or array or tuple of arrays</span></dt>
+<dd><p class="first last">If not None, then the weights assigned to each data point. If more
+than one data component is provided, you must provide a weights
+array for each data component (if not None).</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>coordinates, residuals, weights</strong></dt>
+<dd><p class="first last">The coordinates and weights are same as the input. Residuals are
+the input data minus the predicted data.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="verde.base.BaseGridder.fit">
+<code class="descclassname">BaseGridder.</code><code class="descname">fit</code><span class="sig-paren">(</span><em>coordinates</em>, <em>data</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/base.html#BaseGridder.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.base.BaseGridder.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the gridder to observed data. NOT IMPLEMENTED.</p>
+<p>This is a dummy placeholder for an actual method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>coordinates</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of arrays</span></dt>
+<dd><p class="first last">Arrays with the coordinates of each data point. Should be in the
+following order: (easting, northing, vertical, …).</p>
+</dd>
+<dt><strong>data</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array or tuple of arrays</span></dt>
+<dd><p class="first last">The data values of each data point. If the data has more than one
+component, <em>data</em> must be a tuple of arrays (one for each
+component).</p>
+</dd>
+<dt><strong>weights</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None or array or tuple of arrays</span></dt>
+<dd><p class="first last">If not None, then the weights assigned to each data point. If more
+than one data component is provided, you must provide a weights
+array for each data component (if not None).</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>self</strong></dt>
+<dd><p class="first last">This instance of the gridder. Useful to chain operations.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="verde.base.BaseGridder.get_params">
+<code class="descclassname">BaseGridder.</code><code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.base.BaseGridder.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parameters for this estimator.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>deep</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
+<dd><p class="first last">If True, will return the parameters for this estimator and
+contained subobjects that are estimators.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>params</strong> <span class="classifier-delimiter">:</span> <span class="classifier">mapping of string to any</span></dt>
+<dd><p class="first last">Parameter names mapped to their values.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="verde.base.BaseGridder.grid">
+<code class="descclassname">BaseGridder.</code><code class="descname">grid</code><span class="sig-paren">(</span><em>region=None</em>, <em>shape=None</em>, <em>spacing=None</em>, <em>dims=None</em>, <em>data_names=None</em>, <em>projection=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/base.html#BaseGridder.grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.base.BaseGridder.grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolate the data onto a regular grid.</p>
+<p>The grid can be specified by either the number of points in each dimension (the
+<em>shape</em>) or by the grid node spacing. See <a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> for
+details. Other arguments for <a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> can be passed as
+extra keyword arguments (<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this method.</p>
+<p>If the interpolator collected the input data region, then it will be used if
+<code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
+<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the dimensions
+and the data field(s) in the output <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.10.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>. Default names will
+be provided if none are given.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>region</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list = [W, E, S, N]</span></dt>
+<dd><p class="first last">The boundaries of a given region in Cartesian or geographic coordinates.</p>
+</dd>
+<dt><strong>shape</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple = (n_north, n_east) or None</span></dt>
+<dd><p class="first last">The number of points in the South-North and West-East directions,
+respectively.</p>
+</dd>
+<dt><strong>spacing</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple = (s_north, s_east) or None</span></dt>
+<dd><p class="first last">The grid spacing in the South-North and West-East directions, respectively.</p>
+</dd>
+<dt><strong>dims</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list or None</span></dt>
+<dd><p class="first last">The names of the northing and easting data dimensions, respectively, in the
+output grid. Defaults to <code class="docutils literal notranslate"><span class="pre">['northing',</span> <span class="pre">'easting']</span></code>. <strong>NOTE: This is an
+exception to the “easting” then “northing” pattern but is required for
+compatibility with xarray.</strong></p>
+</dd>
+<dt><strong>data_names</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of None</span></dt>
+<dd><p class="first last">The name(s) of the data variables in the output grid. Defaults to
+<code class="docutils literal notranslate"><span class="pre">['scalars']</span></code> for scalar data,
+<code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component']</span></code> for 2D vector data, and
+<code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component',</span> <span class="pre">'vertical_component']</span></code> for
+3D vector data.</p>
+</dd>
+<dt><strong>projection</strong> <span class="classifier-delimiter">:</span> <span class="classifier">callable or None</span></dt>
+<dd><p class="first last">If not None, then should be a callable object
+<code class="docutils literal notranslate"><span class="pre">projection(easting,</span> <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code>
+that takes in easting and northing coordinate arrays and returns
+projected northing and easting coordinate arrays. This function
+will be used to project the generated grid coordinates before
+passing them into <code class="docutils literal notranslate"><span class="pre">predict</span></code>. For example, you can use this to
+generate a geographic grid from a Cartesian gridder.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>grid</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray.Dataset</span></dt>
+<dd><p class="first last">The interpolated grid. Metadata about the interpolator is written to the
+<code class="docutils literal notranslate"><span class="pre">attrs</span></code> attribute.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a></dt>
+<dd>Generate the coordinate values for the grid.</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="verde.base.BaseGridder.predict">
+<code class="descclassname">BaseGridder.</code><code class="descname">predict</code><span class="sig-paren">(</span><em>coordinates</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/base.html#BaseGridder.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.base.BaseGridder.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predict data on the given coordinate values. NOT IMPLEMENTED.</p>
+<p>This is a dummy placeholder for an actual method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>coordinates</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of arrays</span></dt>
+<dd><p class="first last">Arrays with the coordinates of each data point. Should be in the
+following order: (easting, northing, vertical, …).</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>data</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array</span></dt>
+<dd><p class="first last">The data predicted at the give coordinates.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="verde.base.BaseGridder.profile">
+<code class="descclassname">BaseGridder.</code><code class="descname">profile</code><span class="sig-paren">(</span><em>point1</em>, <em>point2</em>, <em>size</em>, <em>dims=None</em>, <em>data_names=None</em>, <em>projection=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/base.html#BaseGridder.profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.base.BaseGridder.profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolate data along a profile between two points.</p>
+<p>Generates the profile along a straight line assuming Cartesian distances. Point
+coordinates are generated by <a class="reference internal" href="verde.profile_coordinates.html#verde.profile_coordinates" title="verde.profile_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.profile_coordinates</span></code></a>. Other arguments
+for this function can be passed as extra keyword arguments (<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this
+method.</p>
+<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the dimensions
+and the data field(s) in the output <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are
+provided.</p>
+<p>Includes the calculated Cartesian distance from <em>point1</em> for each data point in
+the profile.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>point1</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple</span></dt>
+<dd><p class="first last">The easting and northing coordinates, respectively, of the first point.</p>
+</dd>
+<dt><strong>point2</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple</span></dt>
+<dd><p class="first last">The easting and northing coordinates, respectively, of the second point.</p>
+</dd>
+<dt><strong>size</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">The number of points to generate.</p>
+</dd>
+<dt><strong>dims</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list or None</span></dt>
+<dd><p class="first last">The names of the northing and easting data dimensions, respectively, in the
+output dataframe. Defaults to <code class="docutils literal notranslate"><span class="pre">['northing',</span> <span class="pre">'easting']</span></code>. <strong>NOTE: This
+is an exception to the “easting” then “northing” pattern but is required for
+compatibility with xarray.</strong></p>
+</dd>
+<dt><strong>data_names</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of None</span></dt>
+<dd><p class="first last">The name(s) of the data variables in the output dataframe. Defaults
+to <code class="docutils literal notranslate"><span class="pre">['scalars']</span></code> for scalar data,
+<code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component']</span></code> for 2D vector data, and
+<code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component',</span> <span class="pre">'vertical_component']</span></code> for
+3D vector data.</p>
+</dd>
+<dt><strong>projection</strong> <span class="classifier-delimiter">:</span> <span class="classifier">callable or None</span></dt>
+<dd><p class="first last">If not None, then should be a callable object
+<code class="docutils literal notranslate"><span class="pre">projection(easting,</span> <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code>
+that takes in easting and northing coordinate arrays and returns
+projected northing and easting coordinate arrays. This function
+will be used to project the generated profile coordinates before
+passing them into <code class="docutils literal notranslate"><span class="pre">predict</span></code>. For example, you can use this to
+generate a geographic profile from a Cartesian gridder.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>table</strong> <span class="classifier-delimiter">:</span> <span class="classifier">pandas.DataFrame</span></dt>
+<dd><p class="first last">The interpolated values along the profile.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="verde.base.BaseGridder.scatter">
+<code class="descclassname">BaseGridder.</code><code class="descname">scatter</code><span class="sig-paren">(</span><em>region=None</em>, <em>size=300</em>, <em>random_state=0</em>, <em>dims=None</em>, <em>data_names=None</em>, <em>projection=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/base.html#BaseGridder.scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.base.BaseGridder.scatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolate values onto a random scatter of points.</p>
+<p>Point coordinates are generated by <a class="reference internal" href="verde.scatter_points.html#verde.scatter_points" title="verde.scatter_points"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.scatter_points</span></code></a>. Other arguments
+for this function can be passed as extra keyword arguments (<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this
+method.</p>
+<p>If the interpolator collected the input data region, then it will be used if
+<code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
+<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the dimensions
+and the data field(s) in the output <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are
+provided.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>region</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list = [W, E, S, N]</span></dt>
+<dd><p class="first last">The boundaries of a given region in Cartesian or geographic
+coordinates.</p>
+</dd>
+<dt><strong>size</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd><p class="first last">The number of points to generate.</p>
+</dd>
+<dt><strong>random_state</strong> <span class="classifier-delimiter">:</span> <span class="classifier">numpy.random.RandomState or an int seed</span></dt>
+<dd><p class="first last">A random number generator used to define the state of the random
+permutations. Use a fixed seed to make sure computations are
+reproducible. Use <code class="docutils literal notranslate"><span class="pre">None</span></code> to choose a seed automatically
+(resulting in different numbers with each run).</p>
+</dd>
+<dt><strong>dims</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list or None</span></dt>
+<dd><p class="first last">The names of the northing and easting data dimensions, respectively, in the
+output dataframe. Defaults to <code class="docutils literal notranslate"><span class="pre">['northing',</span> <span class="pre">'easting']</span></code>. <strong>NOTE: This
+is an exception to the “easting” then “northing” pattern but is required for
+compatibility with xarray.</strong></p>
+</dd>
+<dt><strong>data_names</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of None</span></dt>
+<dd><p class="first last">The name(s) of the data variables in the output dataframe. Defaults
+to <code class="docutils literal notranslate"><span class="pre">['scalars']</span></code> for scalar data,
+<code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component']</span></code> for 2D vector data, and
+<code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component',</span> <span class="pre">'vertical_component']</span></code> for
+3D vector data.</p>
+</dd>
+<dt><strong>projection</strong> <span class="classifier-delimiter">:</span> <span class="classifier">callable or None</span></dt>
+<dd><p class="first last">If not None, then should be a callable object
+<code class="docutils literal notranslate"><span class="pre">projection(easting,</span> <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code>
+that takes in easting and northing coordinate arrays and returns
+projected northing and easting coordinate arrays. This function
+will be used to project the generated scatter coordinates before
+passing them into <code class="docutils literal notranslate"><span class="pre">predict</span></code>. For example, you can use this to
+generate a geographic scatter from a Cartesian gridder.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>table</strong> <span class="classifier-delimiter">:</span> <span class="classifier">pandas.DataFrame</span></dt>
+<dd><p class="first last">The interpolated values on a random set of points.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="verde.base.BaseGridder.score">
+<code class="descclassname">BaseGridder.</code><code class="descname">score</code><span class="sig-paren">(</span><em>coordinates</em>, <em>data</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/base.html#BaseGridder.score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.base.BaseGridder.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Score the gridder predictions against the given data.</p>
+<p>Calculates the R^2 coefficient of determination of between the
+predicted values and the given data values. A maximum score of 1 means
+a perfect fit. The score can be negative.</p>
+<p>If the data has more than 1 component, the scores of each component
+will be averaged.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>coordinates</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of arrays</span></dt>
+<dd><p class="first last">Arrays with the coordinates of each data point. Should be in the
+following order: (easting, northing, vertical, …).</p>
+</dd>
+<dt><strong>data</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array or tuple of arrays</span></dt>
+<dd><p class="first last">The data values of each data point. If the data has more than one
+component, <em>data</em> must be a tuple of arrays (one for each
+component).</p>
+</dd>
+<dt><strong>weights</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None or array or tuple of arrays</span></dt>
+<dd><p class="first last">If not None, then the weights assigned to each data point. If more
+than one data component is provided, you must provide a weights
+array for each data component (if not None).</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>score</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">The R^2 score</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="verde.base.BaseGridder.set_params">
+<code class="descclassname">BaseGridder.</code><code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.base.BaseGridder.set_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the parameters of this estimator.</p>
+<p>The method works on simple estimators as well as on nested objects
+(such as pipelines). The latter have parameters of the form
+<code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s possible to update each
+component of a nested object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>self</strong></dt>
+<dd></dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div style='clear:both'></div></div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../changes.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="verde.datasets.setup_rio_magnetic_map.html" class="btn btn-neutral" title="verde.datasets.setup_rio_magnetic_map" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2018, Leonardo Uieda
+      Last updated on Nov 06, 2018.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
