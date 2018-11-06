@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                v1.0.1
+                dev
               </div>
             
           
@@ -260,51 +260,53 @@
 <h1>verde.grid_coordinates<a class="headerlink" href="#verde-grid-coordinates" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="verde.grid_coordinates">
-<code class="descclassname">verde.</code><code class="descname">grid_coordinates</code><span class="sig-paren">(</span><em>region</em>, <em>shape=None</em>, <em>spacing=None</em>, <em>adjust='spacing'</em>, <em>pixel_register=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/coordinates.html#grid_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.grid_coordinates" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">verde.</code><code class="descname">grid_coordinates</code><span class="sig-paren">(</span><em>region</em>, <em>shape=None</em>, <em>spacing=None</em>, <em>adjust='spacing'</em>, <em>pixel_register=False</em>, <em>extra_coords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/coordinates.html#grid_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.grid_coordinates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the coordinates for each point on a regular grid.</p>
-<p>The grid can be specified by either the number of points in each dimension
-(the <em>shape</em>) or by the grid node spacing.</p>
-<p>If the given region is not divisible by the desired spacing, either the
-region or the spacing will have to be adjusted. By default, the spacing
-will be rounded to the nearest multiple. Optionally, the East and North
-boundaries of the region can be adjusted to fit the exact spacing given.
-See the examples below.</p>
+<p>The grid can be specified by either the number of points in each dimension (the
+<em>shape</em>) or by the grid node spacing.</p>
+<p>If the given region is not divisible by the desired spacing, either the region or
+the spacing will have to be adjusted. By default, the spacing will be rounded to the
+nearest multiple. Optionally, the East and North boundaries of the region can be
+adjusted to fit the exact spacing given. See the examples below.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt><strong>region</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list = [W, E, S, N]</span></dt>
-<dd><p class="first last">The boundaries of a given region in Cartesian or geographic
-coordinates.</p>
+<dd><p class="first last">The boundaries of a given region in Cartesian or geographic coordinates.</p>
 </dd>
 <dt><strong>shape</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple = (n_north, n_east) or None</span></dt>
-<dd><p class="first last">The number of points in the South-North and West-East directions,
-respectively.</p>
+<dd><p class="first last">The number of points in the South-North and West-East directions, respectively.</p>
 </dd>
 <dt><strong>spacing</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, tuple = (s_north, s_east), or None</span></dt>
-<dd><p class="first last">The grid spacing in the South-North and West-East directions,
-respectively. A single value means that the spacing is equal in both
-directions.</p>
+<dd><p class="first last">The grid spacing in the South-North and West-East directions, respectively. A
+single value means that the spacing is equal in both directions.</p>
 </dd>
 <dt><strong>adjust</strong> <span class="classifier-delimiter">:</span> <span class="classifier">{‘spacing’, ‘region’}</span></dt>
-<dd><p class="first last">Whether to adjust the spacing or the region if required. Ignored if
-<em>shape</em> is given instead of <em>spacing</em>. Defaults to adjusting the
-spacing.</p>
+<dd><p class="first last">Whether to adjust the spacing or the region if required. Ignored if <em>shape</em> is
+given instead of <em>spacing</em>. Defaults to adjusting the spacing.</p>
 </dd>
 <dt><strong>pixel_register</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd><p class="first last">If True, the coordinates will refer to the center of each grid pixel
-instead of the grid lines. In practice, this means that there will be
-one less element per dimension of the grid when compared to grid line
-registered. Default is False.</p>
+<dd><p class="first last">If True, the coordinates will refer to the center of each grid pixel instead of
+the grid lines. In practice, this means that there will be one less element per
+dimension of the grid when compared to grid line registered. Default is False.</p>
+</dd>
+<dt><strong>extra_coords</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None, scalar, or list</span></dt>
+<dd><p class="first last">If not None, then value(s) of extra coordinate arrays to be generated. These
+extra arrays will have the same <em>shape</em> as the others but will contain a
+constant value. Will generate an extra array per value given in <em>extra_coords</em>.
+Use this to generate arrays of constant heights or times, for example, that
+might be needed to evaluate a gridder.</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>easting, northing</strong> <span class="classifier-delimiter">:</span> <span class="classifier">2d arrays</span></dt>
-<dd><p class="first last">The West-East and South-North coordinates of each point in the grid.
-The arrays have the specified <em>shape</em>.</p>
+<dt><strong>coordinates</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of arrays</span></dt>
+<dd><p class="first last">Arrays with coordinates of each point in the grid. Each array contains values
+for a dimension in the order: easting, northing, vertical, and any extra
+dimensions given in <em>extra_coords</em>. All arrays will have the specified <em>shape</em>.</p>
 </dd>
 </dl>
 </td>
@@ -355,6 +357,33 @@ The arrays have the specified <em>shape</em>.</p>
 <span class="go"> [ 5.   5.   5. ]</span>
 <span class="go"> [ 7.5  7.5  7.5]</span>
 <span class="go"> [10.  10.  10. ]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Generate arrays for other coordinates that have a constant value.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
+<span class="gp">... </span>                                       <span class="n">extra_coords</span><span class="o">=</span><span class="mi">57</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">north</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">height</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">(5, 3) (5, 3) (5, 3)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
+<span class="go">[[57. 57. 57.]</span>
+<span class="go"> [57. 57. 57.]</span>
+<span class="go"> [57. 57. 57.]</span>
+<span class="go"> [57. 57. 57.]</span>
+<span class="go"> [57. 57. 57.]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">time</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
+<span class="gp">... </span>                                             <span class="n">extra_coords</span><span class="o">=</span><span class="p">[</span><span class="mi">57</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">north</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">height</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">(5, 3) (5, 3) (5, 3) (5, 3)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
+<span class="go">[[57. 57. 57.]</span>
+<span class="go"> [57. 57. 57.]</span>
+<span class="go"> [57. 57. 57.]</span>
+<span class="go"> [57. 57. 57.]</span>
+<span class="go"> [57. 57. 57.]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+<span class="go">[[0.1 0.1 0.1]</span>
+<span class="go"> [0.1 0.1 0.1]</span>
+<span class="go"> [0.1 0.1 0.1]</span>
+<span class="go"> [0.1 0.1 0.1]</span>
+<span class="go"> [0.1 0.1 0.1]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># The spacing can be different for northing and easting, respectively</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">east</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">north</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -481,7 +510,7 @@ The arrays have the specified <em>shape</em>.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Oct 11, 2018.
+      Last updated on Nov 06, 2018.
 
     </p>
   </div>

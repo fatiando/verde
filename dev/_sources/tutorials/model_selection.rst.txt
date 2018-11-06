@@ -310,12 +310,12 @@ that are too far from any given data point.
     plt.figure(figsize=(8, 6))
     ax = plt.axes(projection=ccrs.Mercator())
     ax.set_title("Gridded temperature")
-    pc = ax.pcolormesh(
-        grid.longitude,
-        grid.latitude,
-        grid.temperature,
+    pc = grid.temperature.plot.pcolormesh(
+        ax=ax,
         cmap="plasma",
         transform=ccrs.PlateCarree(),
+        add_colorbar=False,
+        add_labels=False,
     )
     plt.colorbar(pc).set_label("C")
     ax.plot(data.longitude, data.latitude, ".k", markersize=1, transform=ccrs.PlateCarree())
@@ -359,7 +359,7 @@ meaning a perfect prediction, but has no lower bound.
 
  .. code-block:: none
 
-    R² score: 0.8455402431159149
+    R² score: 0.8455402431145147
 
 
 That's a good score meaning that our gridder is able to accurately predict data that
@@ -429,7 +429,7 @@ Now we can loop over the combinations and collect the scores for each parameter 
 
  .. code-block:: none
 
-    [0.7238830882947062, 0.7070997586193799, 0.7116974741128288, 0.8355207134557427, 0.8625010250415266, 0.8595635581413738, 0.8684356255592811, 0.7631365452241242, 0.8615410794928423, 0.8586131408040516, 0.8673084289960357, 0.7607537665584987, 0.7373990722551209, 0.7232205306525006, 0.727299665943367, 0.8314180120026677, 0.862501007777039, 0.8595634396278273, 0.8684355655474266, 0.7631370161800535, 0.8615410770291272, 0.8586131345908206, 0.8673084255284418, 0.76075378587685, 0.827682619687416, 0.8292355572539247, 0.8305543665058613, 0.7111394283333616, 0.8624996340091982, 0.8595521447764479, 0.8684300027698172, 0.763183252203994, 0.8615408365168034, 0.8586125231165259, 0.8673080855615971, 0.7607556992123854]
+    [0.7238830882948778, 0.7070997586206689, 0.7116974741133548, 0.835520713633455, 0.8625010250415488, 0.8595635581413851, 0.8684356255592645, 0.7631365453481721, 0.8615410794928415, 0.8586131408040465, 0.8673084289960231, 0.7607537666919757, 0.7373989600869302, 0.7232203900028109, 0.7272994871275096, 0.8314180171256178, 0.8625010077531293, 0.859563439599696, 0.8684355655218092, 0.7631370162897471, 0.86154107703677, 0.8586131345966481, 0.867308425535158, 0.7607537860409452, 0.8276826542755779, 0.829235588378251, 0.8305543978203218, 0.7111395294785402, 0.8624996340299229, 0.8595521447989407, 0.8684300027906402, 0.7631832523172081, 0.8615408365379406, 0.858612523140056, 0.8673080855836129, 0.7607556993413502]
 
 
 The largest score will yield the best parameter combination.
@@ -453,7 +453,7 @@ The largest score will yield the best parameter combination.
 
  .. code-block:: none
 
-    Best score: 0.8684356255592811
+    Best score: 0.8684356255592645
     Best damping, mindist, and degree: (None, 100000.0, 3)
 
 
@@ -500,14 +500,14 @@ previous result.
     for i, title, grd in zip(range(2), ["Defaults", "Tuned"], [grid, grid_best]):
         ax = plt.subplot(1, 2, i + 1, projection=ccrs.Mercator())
         ax.set_title(title)
-        pc = ax.pcolormesh(
-            grd.longitude,
-            grd.latitude,
-            grd.temperature,
+        pc = grd.temperature.plot.pcolormesh(
+            ax=ax,
             cmap="plasma",
             transform=ccrs.PlateCarree(),
             vmin=data.air_temperature_c.min(),
             vmax=data.air_temperature_c.max(),
+            add_colorbar=False,
+            add_labels=False,
         )
         plt.colorbar(pc, orientation="horizontal", aspect=50, pad=0.05).set_label("C")
         ax.plot(
@@ -531,7 +531,7 @@ This is a sign that you should probably not trust many of the short wavelength
 features that we get from the defaults.
 
 
-**Total running time of the script:** ( 0 minutes  24.121 seconds)
+**Total running time of the script:** ( 0 minutes  10.968 seconds)
 
 
 .. _sphx_glr_download_tutorials_model_selection.py:

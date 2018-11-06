@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                v1.0.1
+                dev
               </div>
             
           
@@ -372,9 +372,9 @@ vector trend:</p>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[Trend(degree=4), Trend(degree=1)]
 East trend coefficients: [-3.31743842e+03 -1.61368024e-03 -1.08568612e-03 -2.77735425e-10
- -2.99424188e-10  7.38718818e-12 -2.03916793e-17 -2.68710016e-17
-  3.36222190e-18  2.00921241e-18 -5.43959103e-25 -7.79030546e-25
-  2.71546631e-25  2.44086928e-25  5.03611061e-26]
+ -2.99424188e-10  7.38718814e-12 -2.03916793e-17 -2.68710016e-17
+  3.36222189e-18  2.00921241e-18 -5.43959103e-25 -7.79030547e-25
+  2.71546631e-25  2.44086928e-25  5.03611062e-26]
 North trend coefficients: [-3.35415183e-01 -4.50275691e-08 -3.75590521e-08]
 </pre></div>
 </div>
@@ -436,14 +436,14 @@ Attributes:
 <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">component</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">titles</span><span class="p">):</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
     <span class="n">maxabs</span> <span class="o">=</span> <a href="../api/generated/verde.maxabs.html#verde.maxabs" title="View documentation for verde.maxabs"><span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span></a><span class="p">(</span><span class="n">component</span><span class="p">)</span>
-    <span class="n">tmp</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
-        <span class="n">component</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
-        <span class="n">component</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
-        <span class="n">component</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">component</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
         <span class="n">vmin</span><span class="o">=-</span><span class="n">maxabs</span><span class="p">,</span>
         <span class="n">vmax</span><span class="o">=</span><span class="n">maxabs</span><span class="p">,</span>
         <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;bwr&quot;</span><span class="p">,</span>
         <span class="n">transform</span><span class="o">=</span><span class="n">crs</span><span class="p">,</span>
+        <span class="n">add_colorbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">add_labels</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">cb</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
     <span class="n">cb</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;meters/year&quot;</span><span class="p">)</span>
@@ -514,15 +514,15 @@ problems when trying to fit it to different components.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9926762989961765
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9926769042771435
 &lt;xarray.Dataset&gt;
 Dimensions:          (latitude: 49, longitude: 47)
 Coordinates:
   * longitude        (longitude) float64 235.7 235.9 236.1 ... 244.6 244.8 245.0
   * latitude         (latitude) float64 32.29 32.49 32.69 ... 41.5 41.7 41.9
 Data variables:
-    east_component   (latitude, longitude) float64 -0.04658 ... -0.000616
-    north_component  (latitude, longitude) float64 0.08793 ... -0.0006038
+    east_component   (latitude, longitude) float64 -0.04659 ... -0.0006166
+    north_component  (latitude, longitude) float64 0.08792 ... -0.0006041
 Attributes:
     metadata:  Generated by Chain(steps=[(&#39;mean&#39;, BlockMean(adjust=&#39;spacing&#39;,...
 </pre></div>
@@ -570,7 +570,7 @@ the two vector components. The degree of coupling can be controlled through the
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9906070698524334
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9906070698504343
 </pre></div>
 </div>
 <p><a class="reference internal" href="../api/generated/verde.VectorSpline2D.html#verde.VectorSpline2D" title="verde.VectorSpline2D"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorSpline2D</span></code></a> generally gives better results when gridding GPS
@@ -614,7 +614,7 @@ low-density grid that we’re making.</p>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_vectors_006.png" class="sphx-glr-single-img" src="../_images/sphx_glr_vectors_006.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  11.363 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  5.921 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-vectors-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/abae59518e5febfe7f6fe58366edc6f5/vectors.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">vectors.py</span></code></a></div>
@@ -646,7 +646,7 @@ low-density grid that we’re making.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Oct 11, 2018.
+      Last updated on Nov 06, 2018.
 
     </p>
   </div>

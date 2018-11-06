@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                v1.0.1
+                dev
               </div>
             
           
@@ -257,7 +257,7 @@
 <h1>verde.scatter_points<a class="headerlink" href="#verde-scatter-points" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="verde.scatter_points">
-<code class="descclassname">verde.</code><code class="descname">scatter_points</code><span class="sig-paren">(</span><em>region</em>, <em>size</em>, <em>random_state=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/coordinates.html#scatter_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.scatter_points" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">verde.</code><code class="descname">scatter_points</code><span class="sig-paren">(</span><em>region</em>, <em>size</em>, <em>random_state=None</em>, <em>extra_coords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/coordinates.html#scatter_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.scatter_points" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the coordinates for a random scatter of points.</p>
 <p>The points are drawn from a uniform distribution.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -278,12 +278,21 @@ permutations. Use a fixed seed to make sure computations are
 reproducible. Use <code class="docutils literal notranslate"><span class="pre">None</span></code> to choose a seed automatically (resulting in
 different numbers with each run).</p>
 </dd>
+<dt><strong>extra_coords</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None, scalar, or list</span></dt>
+<dd><p class="first last">If not None, then value(s) of extra coordinate arrays to be generated. These
+extra arrays will have the same <em>size</em> as the others but will contain a
+constant value. Will generate an extra array per value given in <em>extra_coords</em>.
+Use this to generate arrays of constant heights or times, for example, that
+might be needed to evaluate a gridder.</p>
+</dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>easting, northing</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d arrays</span></dt>
-<dd><p class="first last">The West-East and South-North coordinates of each point.</p>
+<dt><strong>coordinates</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of arrays</span></dt>
+<dd><p class="first last">Arrays with coordinates of each point in the grid. Each array contains values
+for a dimension in the order: easting, northing, vertical, and any extra
+dimensions given in <em>extra_coords</em>. All arrays will have the specified <em>size</em>.</p>
 </dd>
 </dl>
 </td>
@@ -307,6 +316,16 @@ different numbers with each run).</p>
 <span class="go">5.4881, 7.1519, 6.0276, 5.4488</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{:.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">northing</span><span class="p">]))</span>
 <span class="go">-1.5763, -1.3541, -1.5624, -1.1082</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">scatter_points</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>                                           <span class="n">extra_coords</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
+<span class="go">[12. 12. 12. 12.]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">time</span> <span class="o">=</span> <span class="n">scatter_points</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">extra_coords</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">1986</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
+<span class="go">[12. 12. 12. 12.]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+<span class="go">[1986. 1986. 1986. 1986.]</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -334,7 +353,7 @@ different numbers with each run).</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Oct 11, 2018.
+      Last updated on Nov 06, 2018.
 
     </p>
   </div>

@@ -106,14 +106,14 @@ chaining it with a vector interpolator using :class:`verde.Chain`.
         ax.set_title(title)
         # Plot the trend in pseudo color
         maxabs = vd.maxabs(component)
-        tmp = ax.pcolormesh(
-            component.longitude,
-            component.latitude,
-            component.values,
+        tmp = component.plot.pcolormesh(
+            ax=ax,
             vmin=-maxabs,
             vmax=maxabs,
             cmap="seismic",
             transform=crs,
+            add_colorbar=False,
+            add_labels=False,
         )
         cb = plt.colorbar(tmp, ax=ax, orientation="horizontal", pad=0.05)
         cb.set_label("meters/year")
@@ -138,7 +138,7 @@ chaining it with a vector interpolator using :class:`verde.Chain`.
     plt.tight_layout()
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  0.776 seconds)
+**Total running time of the script:** ( 0 minutes  0.268 seconds)
 
 
 .. _sphx_glr_download_gallery_vector_trend.py:

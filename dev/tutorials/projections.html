@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                v1.0.1
+                dev
               </div>
             
           
@@ -328,8 +328,8 @@ solutions far away from the data points.</p>
 
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s2">&quot;Gridded bathymetry in Cartesian coordinates&quot;</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.pcolormesh.html#matplotlib.pyplot.pcolormesh" title="View documentation for matplotlib.pyplot.pcolormesh"><span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span></a><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">easting</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">northing</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">bathymetry</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">()</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;bathymetry (m)&quot;</span><span class="p">)</span>
+<span class="n">pc</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">bathymetry</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">pc</span><span class="p">)</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;bathymetry (m)&quot;</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">filter_coords</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">filter_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;.k&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s2">&quot;Easting (m)&quot;</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s2">&quot;Northing (m)&quot;</span><span class="p">)</span>
@@ -393,13 +393,8 @@ will project the coordinates before calculating distances.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="View documentation for matplotlib.pyplot.axes"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">(</span><span class="n">projection</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.Mercator" title="View documentation for cartopy.crs.Mercator"><span class="n">ccrs</span><span class="o">.</span><span class="n">Mercator</span></a><span class="p">())</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Geographic grid of bathymetry&quot;</span><span class="p">)</span>
-<span class="n">pc</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
-    <span class="n">grid_geo</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
-    <span class="n">grid_geo</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
-    <span class="n">grid_geo</span><span class="o">.</span><span class="n">bathymetry</span><span class="p">,</span>
-    <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">(),</span>
-    <span class="n">vmax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+<span class="n">pc</span> <span class="o">=</span> <span class="n">grid_geo</span><span class="o">.</span><span class="n">bathymetry</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">(),</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="bp">False</span>
 <span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">pc</span><span class="p">)</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;meters&quot;</span><span class="p">)</span>
 <a href="../api/generated/verde.datasets.setup_baja_bathymetry_map.html#verde.datasets.setup_baja_bathymetry_map" title="View documentation for verde.datasets.setup_baja_bathymetry_map"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">setup_baja_bathymetry_map</span></a><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">land</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
@@ -408,7 +403,7 @@ will project the coordinates before calculating distances.</p>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_projections_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_projections_003.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  17.738 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  9.046 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-projections-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/680e7439fa959628c9df2e49690f043f/projections.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">projections.py</span></code></a></div>
@@ -440,7 +435,7 @@ will project the coordinates before calculating distances.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Oct 11, 2018.
+      Last updated on Nov 06, 2018.
 
     </p>
   </div>

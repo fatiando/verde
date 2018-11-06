@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                v1.0.1
+                dev
               </div>
             
           
@@ -257,10 +257,8 @@
 <h1>verde.profile_coordinates<a class="headerlink" href="#verde-profile-coordinates" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="verde.profile_coordinates">
-<code class="descclassname">verde.</code><code class="descname">profile_coordinates</code><span class="sig-paren">(</span><em>point1</em>, <em>point2</em>, <em>size</em>, <em>coordinate_system='cartesian'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/coordinates.html#profile_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.profile_coordinates" title="Permalink to this definition">¶</a></dt>
-<dd><p>Coordinates for a profile along a line between two points.</p>
-<p>If on a geographic coordinate system, will calculate along a great circle.
-Otherwise, will use a straight line.</p>
+<code class="descclassname">verde.</code><code class="descname">profile_coordinates</code><span class="sig-paren">(</span><em>point1</em>, <em>point2</em>, <em>size</em>, <em>extra_coords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/coordinates.html#profile_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.profile_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Coordinates for a profile along a straight line between two points.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -277,17 +275,20 @@ second point, respectively.</p>
 <dt><strong>size</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
 <dd><p class="first last">Number of points to sample along the line.</p>
 </dd>
-<dt><strong>coordinate_system</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">The coordinate system used to define the points and the line. Either
-<code class="docutils literal notranslate"><span class="pre">'cartesian'</span></code> or <code class="docutils literal notranslate"><span class="pre">'geographic'</span></code>.</p>
+<dt><strong>extra_coords</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None, scalar, or list</span></dt>
+<dd><p class="first last">If not None, then value(s) of extra coordinate arrays to be generated. These
+extra arrays will have the same <em>size</em> as the others but will contain a
+constant value. Will generate an extra array per value given in <em>extra_coords</em>.
+Use this to generate arrays of constant heights or times, for example, that
+might be needed to evaluate a gridder.</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>easting, northing, distances</strong> <span class="classifier-delimiter">:</span> <span class="classifier">1d arrays</span></dt>
-<dd><p class="first last">The easting and northing coordinates of points along the straight line
-and the distances from the first point.</p>
+<dt><strong>coordinates, distances</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple and 1d array</span></dt>
+<dd><p class="first last">The coordinates of points along the straight line and the distances from the
+first point.</p>
 </dd>
 </dl>
 </td>
@@ -304,13 +305,23 @@ and the distances from the first point.</p>
 </dl>
 </div>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">dist</span> <span class="o">=</span> <span class="n">profile_coordinates</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">),</span> <span class="n">dist</span> <span class="o">=</span> <span class="n">profile_coordinates</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;easting:&#39;</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:.1f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">east</span><span class="p">))</span>
 <span class="go">easting: 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;northing:&#39;</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:.1f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">north</span><span class="p">))</span>
 <span class="go">northing: 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;distance:&#39;</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:.1f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dist</span><span class="p">))</span>
 <span class="go">distance: 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">height</span><span class="p">),</span> <span class="n">dist</span> <span class="o">=</span> <span class="n">profile_coordinates</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">extra_coords</span><span class="o">=</span><span class="mi">35</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
+<span class="go">[35. 35. 35. 35. 35. 35. 35. 35. 35. 35. 35.]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">time</span><span class="p">),</span> <span class="n">dist</span> <span class="o">=</span> <span class="n">profile_coordinates</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">extra_coords</span><span class="o">=</span><span class="p">[</span><span class="mi">35</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
+<span class="go">[35. 35. 35. 35. 35. 35. 35. 35. 35. 35. 35.]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+<span class="go">[0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1]</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -338,7 +349,7 @@ and the distances from the first point.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Oct 11, 2018.
+      Last updated on Nov 06, 2018.
 
     </p>
   </div>

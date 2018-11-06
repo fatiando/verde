@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                v1.0.1
+                dev
               </div>
             
           
@@ -354,7 +354,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">east</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">north</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">north</span><span class="o">.</span><span class="n">max</span><span class="p">())</span></div>
 
 
-<div class="viewcode-block" id="scatter_points"><a class="viewcode-back" href="../../api/generated/verde.scatter_points.html#verde.scatter_points">[docs]</a><span class="k">def</span> <span class="nf">scatter_points</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="scatter_points"><a class="viewcode-back" href="../../api/generated/verde.scatter_points.html#verde.scatter_points">[docs]</a><span class="k">def</span> <span class="nf">scatter_points</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_coords</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate the coordinates for a random scatter of points.</span>
 
@@ -372,11 +372,19 @@
 <span class="sd">        permutations. Use a fixed seed to make sure computations are</span>
 <span class="sd">        reproducible. Use ``None`` to choose a seed automatically (resulting in</span>
 <span class="sd">        different numbers with each run).</span>
+<span class="sd">    extra_coords : None, scalar, or list</span>
+<span class="sd">        If not None, then value(s) of extra coordinate arrays to be generated. These</span>
+<span class="sd">        extra arrays will have the same *size* as the others but will contain a</span>
+<span class="sd">        constant value. Will generate an extra array per value given in *extra_coords*.</span>
+<span class="sd">        Use this to generate arrays of constant heights or times, for example, that</span>
+<span class="sd">        might be needed to evaluate a gridder.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    easting, northing : 1d arrays</span>
-<span class="sd">        The West-East and South-North coordinates of each point.</span>
+<span class="sd">    coordinates : tuple of arrays</span>
+<span class="sd">        Arrays with coordinates of each point in the grid. Each array contains values</span>
+<span class="sd">        for a dimension in the order: easting, northing, vertical, and any extra</span>
+<span class="sd">        dimensions given in *extra_coords*. All arrays will have the specified *size*.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -388,6 +396,16 @@
 <span class="sd">    5.4881, 7.1519, 6.0276, 5.4488</span>
 <span class="sd">    &gt;&gt;&gt; print(&#39;, &#39;.join([&#39;{:.4f}&#39;.format(i) for i in northing]))</span>
 <span class="sd">    -1.5763, -1.3541, -1.5624, -1.1082</span>
+<span class="sd">    &gt;&gt;&gt; easting, northing, height = scatter_points((0, 10, -2, -1), 4, random_state=0,</span>
+<span class="sd">    ...                                            extra_coords=12)</span>
+<span class="sd">    &gt;&gt;&gt; print(height)</span>
+<span class="sd">    [12. 12. 12. 12.]</span>
+<span class="sd">    &gt;&gt;&gt; easting, northing, height, time = scatter_points(</span>
+<span class="sd">    ...     (0, 10, -2, -1), 4, random_state=0, extra_coords=[12, 1986])</span>
+<span class="sd">    &gt;&gt;&gt; print(height)</span>
+<span class="sd">    [12. 12. 12. 12.]</span>
+<span class="sd">    &gt;&gt;&gt; print(time)</span>
+<span class="sd">    [1986. 1986. 1986. 1986.]</span>
 
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
@@ -397,54 +415,63 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">check_region</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
     <span class="n">random</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
-    <span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">region</span>
-    <span class="n">easting</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
-    <span class="n">northing</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span></div>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">region</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">region</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)):</span>
+        <span class="n">coordinates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">extra_coords</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">extra_coords</span><span class="p">):</span>
+            <span class="n">coordinates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="grid_coordinates"><a class="viewcode-back" href="../../api/generated/verde.grid_coordinates.html#verde.grid_coordinates">[docs]</a><span class="k">def</span> <span class="nf">grid_coordinates</span><span class="p">(</span>
-    <span class="n">region</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">adjust</span><span class="o">=</span><span class="s2">&quot;spacing&quot;</span><span class="p">,</span> <span class="n">pixel_register</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">region</span><span class="p">,</span>
+    <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">adjust</span><span class="o">=</span><span class="s2">&quot;spacing&quot;</span><span class="p">,</span>
+    <span class="n">pixel_register</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">extra_coords</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate the coordinates for each point on a regular grid.</span>
 
-<span class="sd">    The grid can be specified by either the number of points in each dimension</span>
-<span class="sd">    (the *shape*) or by the grid node spacing.</span>
+<span class="sd">    The grid can be specified by either the number of points in each dimension (the</span>
+<span class="sd">    *shape*) or by the grid node spacing.</span>
 
-<span class="sd">    If the given region is not divisible by the desired spacing, either the</span>
-<span class="sd">    region or the spacing will have to be adjusted. By default, the spacing</span>
-<span class="sd">    will be rounded to the nearest multiple. Optionally, the East and North</span>
-<span class="sd">    boundaries of the region can be adjusted to fit the exact spacing given.</span>
-<span class="sd">    See the examples below.</span>
+<span class="sd">    If the given region is not divisible by the desired spacing, either the region or</span>
+<span class="sd">    the spacing will have to be adjusted. By default, the spacing will be rounded to the</span>
+<span class="sd">    nearest multiple. Optionally, the East and North boundaries of the region can be</span>
+<span class="sd">    adjusted to fit the exact spacing given. See the examples below.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    region : list = [W, E, S, N]</span>
-<span class="sd">        The boundaries of a given region in Cartesian or geographic</span>
-<span class="sd">        coordinates.</span>
+<span class="sd">        The boundaries of a given region in Cartesian or geographic coordinates.</span>
 <span class="sd">    shape : tuple = (n_north, n_east) or None</span>
-<span class="sd">        The number of points in the South-North and West-East directions,</span>
-<span class="sd">        respectively.</span>
+<span class="sd">        The number of points in the South-North and West-East directions, respectively.</span>
 <span class="sd">    spacing : float, tuple = (s_north, s_east), or None</span>
-<span class="sd">        The grid spacing in the South-North and West-East directions,</span>
-<span class="sd">        respectively. A single value means that the spacing is equal in both</span>
-<span class="sd">        directions.</span>
+<span class="sd">        The grid spacing in the South-North and West-East directions, respectively. A</span>
+<span class="sd">        single value means that the spacing is equal in both directions.</span>
 <span class="sd">    adjust : {&#39;spacing&#39;, &#39;region&#39;}</span>
-<span class="sd">        Whether to adjust the spacing or the region if required. Ignored if</span>
-<span class="sd">        *shape* is given instead of *spacing*. Defaults to adjusting the</span>
-<span class="sd">        spacing.</span>
+<span class="sd">        Whether to adjust the spacing or the region if required. Ignored if *shape* is</span>
+<span class="sd">        given instead of *spacing*. Defaults to adjusting the spacing.</span>
 <span class="sd">    pixel_register : bool</span>
-<span class="sd">        If True, the coordinates will refer to the center of each grid pixel</span>
-<span class="sd">        instead of the grid lines. In practice, this means that there will be</span>
-<span class="sd">        one less element per dimension of the grid when compared to grid line</span>
-<span class="sd">        registered. Default is False.</span>
+<span class="sd">        If True, the coordinates will refer to the center of each grid pixel instead of</span>
+<span class="sd">        the grid lines. In practice, this means that there will be one less element per</span>
+<span class="sd">        dimension of the grid when compared to grid line registered. Default is False.</span>
+<span class="sd">    extra_coords : None, scalar, or list</span>
+<span class="sd">        If not None, then value(s) of extra coordinate arrays to be generated. These</span>
+<span class="sd">        extra arrays will have the same *shape* as the others but will contain a</span>
+<span class="sd">        constant value. Will generate an extra array per value given in *extra_coords*.</span>
+<span class="sd">        Use this to generate arrays of constant heights or times, for example, that</span>
+<span class="sd">        might be needed to evaluate a gridder.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    easting, northing : 2d arrays</span>
-<span class="sd">        The West-East and South-North coordinates of each point in the grid.</span>
-<span class="sd">        The arrays have the specified *shape*.</span>
+<span class="sd">    coordinates : tuple of arrays</span>
+<span class="sd">        Arrays with coordinates of each point in the grid. Each array contains values</span>
+<span class="sd">        for a dimension in the order: easting, northing, vertical, and any extra</span>
+<span class="sd">        dimensions given in *extra_coords*. All arrays will have the specified *shape*.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -483,6 +510,33 @@
 <span class="sd">     [ 5.   5.   5. ]</span>
 <span class="sd">     [ 7.5  7.5  7.5]</span>
 <span class="sd">     [10.  10.  10. ]]</span>
+<span class="sd">    &gt;&gt;&gt; # Generate arrays for other coordinates that have a constant value.</span>
+<span class="sd">    &gt;&gt;&gt; east, north, height = grid_coordinates(region=(0, 5, 0, 10), spacing=2.5,</span>
+<span class="sd">    ...                                        extra_coords=57)</span>
+<span class="sd">    &gt;&gt;&gt; print(east.shape, north.shape, height.shape)</span>
+<span class="sd">    (5, 3) (5, 3) (5, 3)</span>
+<span class="sd">    &gt;&gt;&gt; print(height)</span>
+<span class="sd">    [[57. 57. 57.]</span>
+<span class="sd">     [57. 57. 57.]</span>
+<span class="sd">     [57. 57. 57.]</span>
+<span class="sd">     [57. 57. 57.]</span>
+<span class="sd">     [57. 57. 57.]]</span>
+<span class="sd">    &gt;&gt;&gt; east, north, height, time = grid_coordinates(region=(0, 5, 0, 10), spacing=2.5,</span>
+<span class="sd">    ...                                              extra_coords=[57, 0.1])</span>
+<span class="sd">    &gt;&gt;&gt; print(east.shape, north.shape, height.shape, time.shape)</span>
+<span class="sd">    (5, 3) (5, 3) (5, 3) (5, 3)</span>
+<span class="sd">    &gt;&gt;&gt; print(height)</span>
+<span class="sd">    [[57. 57. 57.]</span>
+<span class="sd">     [57. 57. 57.]</span>
+<span class="sd">     [57. 57. 57.]</span>
+<span class="sd">     [57. 57. 57.]</span>
+<span class="sd">     [57. 57. 57.]]</span>
+<span class="sd">    &gt;&gt;&gt; print(time)</span>
+<span class="sd">    [[0.1 0.1 0.1]</span>
+<span class="sd">     [0.1 0.1 0.1]</span>
+<span class="sd">     [0.1 0.1 0.1]</span>
+<span class="sd">     [0.1 0.1 0.1]</span>
+<span class="sd">     [0.1 0.1 0.1]]</span>
 <span class="sd">    &gt;&gt;&gt; # The spacing can be different for northing and easting, respectively</span>
 <span class="sd">    &gt;&gt;&gt; east, north = grid_coordinates(region=(-5, 1, 0, 10), spacing=(2.5, 1))</span>
 <span class="sd">    &gt;&gt;&gt; print(east.shape, north.shape)</span>
@@ -581,15 +635,16 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either a grid shape or a spacing must be provided.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">spacing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">shape</span><span class="p">,</span> <span class="n">region</span> <span class="o">=</span> <span class="n">spacing_to_shape</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">adjust</span><span class="p">)</span>
-    <span class="n">nnorth</span><span class="p">,</span> <span class="n">neast</span> <span class="o">=</span> <span class="n">shape</span>
-    <span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">region</span>
-    <span class="n">east_lines</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">neast</span><span class="p">)</span>
-    <span class="n">north_lines</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">nnorth</span><span class="p">)</span>
+    <span class="n">east_lines</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">north_lines</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">region</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">region</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">pixel_register</span><span class="p">:</span>
         <span class="n">east_lines</span> <span class="o">=</span> <span class="n">east_lines</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">east_lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">east_lines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
         <span class="n">north_lines</span> <span class="o">=</span> <span class="n">north_lines</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">north_lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">north_lines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
-    <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">east_lines</span><span class="p">,</span> <span class="n">north_lines</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span></div>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">east_lines</span><span class="p">,</span> <span class="n">north_lines</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">extra_coords</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">extra_coords</span><span class="p">):</span>
+            <span class="n">coordinates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">spacing_to_shape</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">adjust</span><span class="p">):</span>
@@ -649,12 +704,9 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">nnorth</span><span class="p">,</span> <span class="n">neast</span><span class="p">),</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="profile_coordinates"><a class="viewcode-back" href="../../api/generated/verde.profile_coordinates.html#verde.profile_coordinates">[docs]</a><span class="k">def</span> <span class="nf">profile_coordinates</span><span class="p">(</span><span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">coordinate_system</span><span class="o">=</span><span class="s2">&quot;cartesian&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="profile_coordinates"><a class="viewcode-back" href="../../api/generated/verde.profile_coordinates.html#verde.profile_coordinates">[docs]</a><span class="k">def</span> <span class="nf">profile_coordinates</span><span class="p">(</span><span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">extra_coords</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Coordinates for a profile along a line between two points.</span>
-
-<span class="sd">    If on a geographic coordinate system, will calculate along a great circle.</span>
-<span class="sd">    Otherwise, will use a straight line.</span>
+<span class="sd">    Coordinates for a profile along a straight line between two points.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -666,26 +718,39 @@
 <span class="sd">        second point, respectively.</span>
 <span class="sd">    size : int</span>
 <span class="sd">        Number of points to sample along the line.</span>
-<span class="sd">    coordinate_system : str</span>
-<span class="sd">        The coordinate system used to define the points and the line. Either</span>
-<span class="sd">        ``&#39;cartesian&#39;`` or ``&#39;geographic&#39;``.</span>
+<span class="sd">    extra_coords : None, scalar, or list</span>
+<span class="sd">        If not None, then value(s) of extra coordinate arrays to be generated. These</span>
+<span class="sd">        extra arrays will have the same *size* as the others but will contain a</span>
+<span class="sd">        constant value. Will generate an extra array per value given in *extra_coords*.</span>
+<span class="sd">        Use this to generate arrays of constant heights or times, for example, that</span>
+<span class="sd">        might be needed to evaluate a gridder.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    easting, northing, distances : 1d arrays</span>
-<span class="sd">        The easting and northing coordinates of points along the straight line</span>
-<span class="sd">        and the distances from the first point.</span>
+<span class="sd">    coordinates, distances : tuple and 1d array</span>
+<span class="sd">        The coordinates of points along the straight line and the distances from the</span>
+<span class="sd">        first point.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; east, north, dist = profile_coordinates((1, 10), (1, 20), size=11)</span>
+<span class="sd">    &gt;&gt;&gt; (east, north), dist = profile_coordinates((1, 10), (1, 20), size=11)</span>
 <span class="sd">    &gt;&gt;&gt; print(&#39;easting:&#39;, &#39;, &#39;.join(&#39;{:.1f}&#39;.format(i) for i in east))</span>
 <span class="sd">    easting: 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0</span>
 <span class="sd">    &gt;&gt;&gt; print(&#39;northing:&#39;, &#39;, &#39;.join(&#39;{:.1f}&#39;.format(i) for i in north))</span>
 <span class="sd">    northing: 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0</span>
 <span class="sd">    &gt;&gt;&gt; print(&#39;distance:&#39;, &#39;, &#39;.join(&#39;{:.1f}&#39;.format(i) for i in dist))</span>
 <span class="sd">    distance: 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0</span>
+<span class="sd">    &gt;&gt;&gt; (east, north, height), dist = profile_coordinates(</span>
+<span class="sd">    ...     (1, 10), (1, 20), size=11, extra_coords=35)</span>
+<span class="sd">    &gt;&gt;&gt; print(height)</span>
+<span class="sd">    [35. 35. 35. 35. 35. 35. 35. 35. 35. 35. 35.]</span>
+<span class="sd">    &gt;&gt;&gt; (east, north, height, time), dist = profile_coordinates(</span>
+<span class="sd">    ...     (1, 10), (1, 20), size=11, extra_coords=[35, 0.1])</span>
+<span class="sd">    &gt;&gt;&gt; print(height)</span>
+<span class="sd">    [35. 35. 35. 35. 35. 35. 35. 35. 35. 35. 35.]</span>
+<span class="sd">    &gt;&gt;&gt; print(time)</span>
+<span class="sd">    [0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1]</span>
 
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
@@ -693,29 +758,23 @@
 <span class="sd">    grid_coordinates : Generate coordinates for each point on a regular grid</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">valid_coordinate_systems</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cartesian&quot;</span><span class="p">,</span> <span class="s2">&quot;geographic&quot;</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">coordinate_system</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_coordinate_systems</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Invalid coordinate system &#39;</span><span class="si">{}</span><span class="s2">&#39;. Must be one of </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">coordinate_system</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">valid_coordinate_systems</span><span class="p">)</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
     <span class="k">if</span> <span class="n">size</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid profile size &#39;</span><span class="si">{}</span><span class="s2">&#39;. Must be &gt; 0.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">coordinate_system</span> <span class="o">==</span> <span class="s2">&quot;geographic&quot;</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
-    <span class="k">elif</span> <span class="n">coordinate_system</span> <span class="o">==</span> <span class="s2">&quot;cartesian&quot;</span><span class="p">:</span>
-        <span class="n">east1</span><span class="p">,</span> <span class="n">north1</span> <span class="o">=</span> <span class="n">point1</span>
-        <span class="n">east2</span><span class="p">,</span> <span class="n">north2</span> <span class="o">=</span> <span class="n">point2</span>
-        <span class="n">separation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">east1</span> <span class="o">-</span> <span class="n">east2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">north1</span> <span class="o">-</span> <span class="n">north2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">separation</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
-        <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">north2</span> <span class="o">-</span> <span class="n">north1</span><span class="p">,</span> <span class="n">east2</span> <span class="o">-</span> <span class="n">east1</span><span class="p">)</span>
-        <span class="n">easting</span> <span class="o">=</span> <span class="n">east1</span> <span class="o">+</span> <span class="n">distances</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
-        <span class="n">northing</span> <span class="o">=</span> <span class="n">north1</span> <span class="o">+</span> <span class="n">distances</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">distances</span></div>
+    <span class="n">diffs</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">point2</span><span class="p">,</span> <span class="n">point1</span><span class="p">)]</span>
+    <span class="n">separation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="o">*</span><span class="n">diffs</span><span class="p">)</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">separation</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="o">*</span><span class="nb">reversed</span><span class="p">(</span><span class="n">diffs</span><span class="p">))</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">point1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">distances</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">),</span>
+        <span class="n">point1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">distances</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">),</span>
+    <span class="p">]</span>
+    <span class="k">if</span> <span class="n">extra_coords</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">extra_coords</span><span class="p">):</span>
+            <span class="n">coordinates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">coordinates</span><span class="p">),</span> <span class="n">distances</span></div>
 
 
-<div class="viewcode-block" id="inside"><a class="viewcode-back" href="../../api/generated/verde.inside.html#verde.inside">[docs]</a><span class="k">def</span> <span class="nf">inside</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tmp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="inside"><a class="viewcode-back" href="../../api/generated/verde.inside.html#verde.inside">[docs]</a><span class="k">def</span> <span class="nf">inside</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">region</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine which points fall inside a given region.</span>
 
@@ -730,15 +789,6 @@
 <span class="sd">    region : list = [W, E, S, N]</span>
 <span class="sd">        The boundaries of a given region in Cartesian or geographic</span>
 <span class="sd">        coordinates.</span>
-<span class="sd">    out : None or array of booleans</span>
-<span class="sd">        Numpy array to be used as output. The contents will be overwritten and</span>
-<span class="sd">        the same array will be returned.</span>
-<span class="sd">    tmp : None or tuple</span>
-<span class="sd">        Numpy arrays used to store the outputs of temporary logical operations.</span>
-<span class="sd">        Passing in pre-allocated arrays avoids the overhead of allocation when</span>
-<span class="sd">        calling this function repeatedly. If not None, then should be a tuple</span>
-<span class="sd">        of 4 numpy arrays of boolean type and a shape equal to or broadcast</span>
-<span class="sd">        from the input coordinates.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -774,10 +824,8 @@
     <span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">region</span>
     <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
     <span class="c1"># Allocate temporary arrays to minimize memory allocation overhead</span>
-    <span class="k">if</span> <span class="n">out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">easting</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">tmp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">tmp</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">easting</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">easting</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">easting</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
     <span class="c1"># Using the logical functions is a lot faster than &amp; &gt; &lt; for some reason</span>
     <span class="c1"># Plus, this way avoids repeated allocation of intermediate arrays</span>
     <span class="n">in_we</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span>
@@ -881,7 +929,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Oct 11, 2018.
+      Last updated on Nov 06, 2018.
 
     </p>
   </div>

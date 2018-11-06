@@ -57,14 +57,14 @@ for ax, component, title in zip(axes, components, titles):
     ax.set_title(title)
     # Plot the trend in pseudo color
     maxabs = vd.maxabs(component)
-    tmp = ax.pcolormesh(
-        component.longitude,
-        component.latitude,
-        component.values,
+    tmp = component.plot.pcolormesh(
+        ax=ax,
         vmin=-maxabs,
         vmax=maxabs,
         cmap="seismic",
         transform=crs,
+        add_colorbar=False,
+        add_labels=False,
     )
     cb = plt.colorbar(tmp, ax=ax, orientation="horizontal", pad=0.05)
     cb.set_label("meters/year")

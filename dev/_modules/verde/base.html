@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                v1.0.1
+                dev
               </div>
             
           
@@ -247,13 +247,6 @@
 <span class="sd">      Parameter checking should be done in ``fit``.</span>
 <span class="sd">    * Estimated parameters should be stored as attributes with names ending in</span>
 <span class="sd">      ``_``.</span>
-
-<span class="sd">    The child class can define the following attributes to control the names of</span>
-<span class="sd">    coordinates and how distances are calculated:</span>
-
-<span class="sd">    * ``coordinate_system``: either ``&#39;cartesian&#39;`` or ``&#39;geographic&#39;``. Will</span>
-<span class="sd">      influence dimension names and distance calculations. Defaults to</span>
-<span class="sd">      ``&#39;cartesian&#39;``.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -446,50 +439,38 @@
         <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">adjust</span><span class="o">=</span><span class="s2">&quot;spacing&quot;</span><span class="p">,</span>
         <span class="n">dims</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">data_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Interpolate the data onto a regular grid.</span>
 
-<span class="sd">        The grid can be specified by either the number of points in each</span>
-<span class="sd">        dimension (the *shape*) or by the grid node spacing.</span>
+<span class="sd">        The grid can be specified by either the number of points in each dimension (the</span>
+<span class="sd">        *shape*) or by the grid node spacing. See :func:`verde.grid_coordinates` for</span>
+<span class="sd">        details. Other arguments for :func:`verde.grid_coordinates` can be passed as</span>
+<span class="sd">        extra keyword arguments (``kwargs``) to this method.</span>
 
-<span class="sd">        If the given region is not divisible by the desired spacing, either the</span>
-<span class="sd">        region or the spacing will have to be adjusted. By default, the spacing</span>
-<span class="sd">        will be rounded to the nearest multiple. Optionally, the East and North</span>
-<span class="sd">        boundaries of the region can be adjusted to fit the exact spacing</span>
-<span class="sd">        given. See :func:`verde.grid_coordinates` for more details.</span>
+<span class="sd">        If the interpolator collected the input data region, then it will be used if</span>
+<span class="sd">        ``region=None``. Otherwise, you must specify the grid region.</span>
 
-<span class="sd">        If the interpolator collected the input data region, then it will be</span>
-<span class="sd">        used if ``region=None``. Otherwise, you must specify the grid region.</span>
-
-<span class="sd">        Use the *dims* and *data_names* arguments to set custom names for the</span>
-<span class="sd">        dimensions and the data field(s) in the output :class:`xarray.Dataset`.</span>
-<span class="sd">        Default names are provided.</span>
+<span class="sd">        Use the *dims* and *data_names* arguments to set custom names for the dimensions</span>
+<span class="sd">        and the data field(s) in the output :class:`xarray.Dataset`. Default names will</span>
+<span class="sd">        be provided if none are given.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        region : list = [W, E, S, N]</span>
-<span class="sd">            The boundaries of a given region in Cartesian or geographic</span>
-<span class="sd">            coordinates.</span>
+<span class="sd">            The boundaries of a given region in Cartesian or geographic coordinates.</span>
 <span class="sd">        shape : tuple = (n_north, n_east) or None</span>
 <span class="sd">            The number of points in the South-North and West-East directions,</span>
-<span class="sd">            respectively. If *None* and *spacing* is not given, defaults to</span>
-<span class="sd">            ``(101, 101)``.</span>
-<span class="sd">        spacing : tuple = (s_north, s_east) or None</span>
-<span class="sd">            The grid spacing in the South-North and West-East directions,</span>
 <span class="sd">            respectively.</span>
-<span class="sd">        adjust : {&#39;spacing&#39;, &#39;region&#39;}</span>
-<span class="sd">            Whether to adjust the spacing or the region if required. Ignored if</span>
-<span class="sd">            *shape* is given instead of *spacing*. Defaults to adjusting the</span>
-<span class="sd">            spacing.</span>
+<span class="sd">        spacing : tuple = (s_north, s_east) or None</span>
+<span class="sd">            The grid spacing in the South-North and West-East directions, respectively.</span>
 <span class="sd">        dims : list or None</span>
 <span class="sd">            The names of the northing and easting data dimensions, respectively, in the</span>
-<span class="sd">            output grid. Defaults to ``[&#39;northing&#39;, &#39;easting&#39;]`` for Cartesian grids and</span>
-<span class="sd">            ``[&#39;latitude&#39;, &#39;longitude&#39;]`` for geographic grids. **NOTE: This is an</span>
+<span class="sd">            output grid. Defaults to ``[&#39;northing&#39;, &#39;easting&#39;]``. **NOTE: This is an</span>
 <span class="sd">            exception to the &quot;easting&quot; then &quot;northing&quot; pattern but is required for</span>
 <span class="sd">            compatibility with xarray.**</span>
 <span class="sd">        data_names : list of None</span>
@@ -510,19 +491,17 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        grid : xarray.Dataset</span>
-<span class="sd">            The interpolated grid. Metadata about the interpolator is written</span>
-<span class="sd">            to the ``attrs`` attribute.</span>
+<span class="sd">            The interpolated grid. Metadata about the interpolator is written to the</span>
+<span class="sd">            ``attrs`` attribute.</span>
 
 <span class="sd">        See also</span>
 <span class="sd">        --------</span>
 <span class="sd">        verde.grid_coordinates : Generate the coordinate values for the grid.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">dims</span> <span class="o">=</span> <span class="n">get_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dims</span><span class="p">)</span>
+        <span class="n">dims</span> <span class="o">=</span> <span class="n">get_dims</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span>
         <span class="n">region</span> <span class="o">=</span> <span class="n">get_instance_region</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region</span><span class="p">)</span>
-        <span class="n">coordinates</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span>
-            <span class="n">region</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">adjust</span><span class="o">=</span><span class="n">adjust</span>
-        <span class="p">)</span>
+        <span class="n">coordinates</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">projection</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
@@ -543,16 +522,21 @@
         <span class="n">dims</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">data_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Interpolate values onto a random scatter of points.</span>
 
-<span class="sd">        If the interpolator collected the input data region, then it will be</span>
-<span class="sd">        used if ``region=None``. Otherwise, you must specify the grid region.</span>
+<span class="sd">        Point coordinates are generated by :func:`verde.scatter_points`. Other arguments</span>
+<span class="sd">        for this function can be passed as extra keyword arguments (``kwargs``) to this</span>
+<span class="sd">        method.</span>
 
-<span class="sd">        Use the *dims* and *data_names* arguments to set custom names for the</span>
-<span class="sd">        dimensions and the data field(s) in the output</span>
-<span class="sd">        :class:`pandas.DataFrame`. Default names are provided.</span>
+<span class="sd">        If the interpolator collected the input data region, then it will be used if</span>
+<span class="sd">        ``region=None``. Otherwise, you must specify the grid region.</span>
+
+<span class="sd">        Use the *dims* and *data_names* arguments to set custom names for the dimensions</span>
+<span class="sd">        and the data field(s) in the output :class:`pandas.DataFrame`. Default names are</span>
+<span class="sd">        provided.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -568,8 +552,7 @@
 <span class="sd">            (resulting in different numbers with each run).</span>
 <span class="sd">        dims : list or None</span>
 <span class="sd">            The names of the northing and easting data dimensions, respectively, in the</span>
-<span class="sd">            output dataframe. Defaults to ``[&#39;northing&#39;, &#39;easting&#39;]`` for Cartesian</span>
-<span class="sd">            grids and ``[&#39;latitude&#39;, &#39;longitude&#39;]`` for geographic grids. **NOTE: This</span>
+<span class="sd">            output dataframe. Defaults to ``[&#39;northing&#39;, &#39;easting&#39;]``. **NOTE: This</span>
 <span class="sd">            is an exception to the &quot;easting&quot; then &quot;northing&quot; pattern but is required for</span>
 <span class="sd">            compatibility with xarray.**</span>
 <span class="sd">        data_names : list of None</span>
@@ -593,9 +576,9 @@
 <span class="sd">            The interpolated values on a random set of points.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">dims</span> <span class="o">=</span> <span class="n">get_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dims</span><span class="p">)</span>
+        <span class="n">dims</span> <span class="o">=</span> <span class="n">get_dims</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span>
         <span class="n">region</span> <span class="o">=</span> <span class="n">get_instance_region</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region</span><span class="p">)</span>
-        <span class="n">coordinates</span> <span class="o">=</span> <span class="n">scatter_points</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">random_state</span><span class="p">)</span>
+        <span class="n">coordinates</span> <span class="o">=</span> <span class="n">scatter_points</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">projection</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
@@ -606,35 +589,41 @@
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">columns</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="BaseGridder.profile"><a class="viewcode-back" href="../../api/generated/verde.base.BaseGridder.html#verde.BaseGridder.profile">[docs]</a>    <span class="k">def</span> <span class="nf">profile</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">point1</span><span class="p">,</span>
+        <span class="n">point2</span><span class="p">,</span>
+        <span class="n">size</span><span class="p">,</span>
+        <span class="n">dims</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">data_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Interpolate data along a profile between two points.</span>
 
-<span class="sd">        Generates the profile using a straight line if the interpolator assumes</span>
-<span class="sd">        Cartesian data or a great circle if geographic data.</span>
+<span class="sd">        Generates the profile along a straight line assuming Cartesian distances. Point</span>
+<span class="sd">        coordinates are generated by :func:`verde.profile_coordinates`. Other arguments</span>
+<span class="sd">        for this function can be passed as extra keyword arguments (``kwargs``) to this</span>
+<span class="sd">        method.</span>
 
-<span class="sd">        Use the *dims* and *data_names* arguments to set custom names for the</span>
-<span class="sd">        dimensions and the data field(s) in the output</span>
-<span class="sd">        :class:`pandas.DataFrame`. Default names are provided.</span>
+<span class="sd">        Use the *dims* and *data_names* arguments to set custom names for the dimensions</span>
+<span class="sd">        and the data field(s) in the output :class:`pandas.DataFrame`. Default names are</span>
+<span class="sd">        provided.</span>
 
-<span class="sd">        Includes the calculated distance to *point1* for each data point in the</span>
-<span class="sd">        profile.</span>
+<span class="sd">        Includes the calculated Cartesian distance from *point1* for each data point in</span>
+<span class="sd">        the profile.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        point1 : tuple</span>
-<span class="sd">            The easting and northing coordinates, respectively, of the first</span>
-<span class="sd">            point.</span>
+<span class="sd">            The easting and northing coordinates, respectively, of the first point.</span>
 <span class="sd">        point2 : tuple</span>
-<span class="sd">            The easting and northing coordinates, respectively, of the second</span>
-<span class="sd">            point.</span>
+<span class="sd">            The easting and northing coordinates, respectively, of the second point.</span>
 <span class="sd">        size : int</span>
 <span class="sd">            The number of points to generate.</span>
 <span class="sd">        dims : list or None</span>
 <span class="sd">            The names of the northing and easting data dimensions, respectively, in the</span>
-<span class="sd">            output dataframe. Defaults to ``[&#39;northing&#39;, &#39;easting&#39;]`` for Cartesian</span>
-<span class="sd">            grids and ``[&#39;latitude&#39;, &#39;longitude&#39;]`` for geographic grids. **NOTE: This</span>
+<span class="sd">            output dataframe. Defaults to ``[&#39;northing&#39;, &#39;easting&#39;]``. **NOTE: This</span>
 <span class="sd">            is an exception to the &quot;easting&quot; then &quot;northing&quot; pattern but is required for</span>
 <span class="sd">            compatibility with xarray.**</span>
 <span class="sd">        data_names : list of None</span>
@@ -658,51 +647,37 @@
 <span class="sd">            The interpolated values along the profile.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">coordsys</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;coordinate_system&quot;</span><span class="p">,</span> <span class="s2">&quot;cartesian&quot;</span><span class="p">)</span>
-        <span class="n">dims</span> <span class="o">=</span> <span class="n">get_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dims</span><span class="p">)</span>
-        <span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">distances</span> <span class="o">=</span> <span class="n">profile_coordinates</span><span class="p">(</span>
-            <span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">coordinate_system</span><span class="o">=</span><span class="n">coordsys</span>
-        <span class="p">)</span>
+        <span class="n">dims</span> <span class="o">=</span> <span class="n">get_dims</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span>
+        <span class="n">coordinates</span><span class="p">,</span> <span class="n">distances</span> <span class="o">=</span> <span class="n">profile_coordinates</span><span class="p">(</span><span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">projection</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">((</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">)))</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">projection</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">)))</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">projection</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">)))</span>
         <span class="n">data_names</span> <span class="o">=</span> <span class="n">get_data_names</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_names</span><span class="p">)</span>
-        <span class="n">columns</span> <span class="o">=</span> <span class="p">[(</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">north</span><span class="p">),</span> <span class="p">(</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">east</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;distance&quot;</span><span class="p">,</span> <span class="n">distances</span><span class="p">)]</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="p">(</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="p">(</span><span class="s2">&quot;distance&quot;</span><span class="p">,</span> <span class="n">distances</span><span class="p">),</span>
+        <span class="p">]</span>
         <span class="n">columns</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">data_names</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">columns</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">])</span></div></div>
 
 
-<span class="k">def</span> <span class="nf">get_dims</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">dims</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_dims</span><span class="p">(</span><span class="n">dims</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get default dimension names for an instance if not given as arguments.</span>
+<span class="sd">    Get default dimension names.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; grd = BaseGridder()</span>
-<span class="sd">    &gt;&gt;&gt; get_dims(grd, dims=None)</span>
+<span class="sd">    &gt;&gt;&gt; get_dims(dims=None)</span>
 <span class="sd">    (&#39;northing&#39;, &#39;easting&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; grd.coordinate_system = &#39;geographic&#39;</span>
-<span class="sd">    &gt;&gt;&gt; get_dims(grd, dims=None)</span>
-<span class="sd">    (&#39;latitude&#39;, &#39;longitude&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; grd.coordinate_system = &#39;cartesian&#39;</span>
-<span class="sd">    &gt;&gt;&gt; get_dims(grd, dims=(&#39;john&#39;, &#39;paul&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; get_dims(dims=(&#39;john&#39;, &#39;paul&#39;))</span>
 <span class="sd">    (&#39;john&#39;, &#39;paul&#39;)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">dims</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">dims</span>
-    <span class="n">valid_coords</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cartesian&quot;</span><span class="p">,</span> <span class="s2">&quot;geographic&quot;</span><span class="p">]</span>
-    <span class="n">coords</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="s2">&quot;coordinate_system&quot;</span><span class="p">,</span> <span class="s2">&quot;cartesian&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">coords</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_coords</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Invalid coordinate system for </span><span class="si">{}</span><span class="s2">: &#39;</span><span class="si">{}</span><span class="s2">&#39;. Must be one of </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">instance</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">valid_coords</span><span class="p">)</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-    <span class="k">if</span> <span class="n">coords</span> <span class="o">==</span> <span class="s2">&quot;geographic&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;northing&quot;</span><span class="p">,</span> <span class="s2">&quot;easting&quot;</span><span class="p">)</span>
 
 
@@ -851,7 +826,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Oct 11, 2018.
+      Last updated on Nov 06, 2018.
 
     </p>
   </div>

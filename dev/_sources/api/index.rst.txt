@@ -70,7 +70,8 @@ Utilities
     maxabs
     variance_to_weights
     test
-
+    grid_to_table
+    
 .. automodule:: verde.datasets
 
 .. currentmodule:: verde

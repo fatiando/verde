@@ -69,7 +69,7 @@
             
             
               <div class="version">
-                v1.0.1
+                dev
               </div>
             
           
@@ -225,6 +225,10 @@
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">numba</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">dummy_jit</span> <span class="k">as</span> <span class="n">jit</span>
+
+
+<span class="c1"># Default arguments for numba.jit</span>
+<span class="n">JIT_ARGS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Vector"><a class="viewcode-back" href="../../api/generated/verde.Vector.html#verde.Vector">[docs]</a><span class="k">class</span> <span class="nc">Vector</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
@@ -395,14 +399,14 @@
 <span class="sd">        then will be set to the data coordinates the first time</span>
 <span class="sd">        :meth:`~verde.VectorSpline2D.fit` is called.</span>
 <span class="sd">    engine : str</span>
-<span class="sd">        Computation engine for the Jacobian matrix. Can be ``&#39;auto&#39;``, ``&#39;numba&#39;``, or</span>
-<span class="sd">        ``&#39;numpy&#39;``. If ``&#39;auto&#39;``, will use numba if it is installed or numpy</span>
-<span class="sd">        otherwise. The numba version is multi-threaded and considerably faster, which</span>
+<span class="sd">        Computation engine for the Jacobian matrix and predictions. Can be ``&#39;auto&#39;``,</span>
+<span class="sd">        ``&#39;numba&#39;``, or ``&#39;numpy&#39;``. If ``&#39;auto&#39;``, will use numba if it is installed or</span>
+<span class="sd">        numpy otherwise. The numba version is multi-threaded and usually faster, which</span>
 <span class="sd">        makes fitting and predicting faster.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    forces_ : array</span>
+<span class="sd">    force_ : array</span>
 <span class="sd">        The estimated forces that fit the observed data.</span>
 <span class="sd">    region_ : tuple</span>
 <span class="sd">        The boundaries (``[W, E, S, N]``) of the data used to fit the</span>
@@ -495,10 +499,38 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;force_&quot;</span><span class="p">])</span>
-        <span class="n">jac</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_coords</span><span class="p">)</span>
+        <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_coords</span>
+        <span class="n">east</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">cast</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
         <span class="n">npoints</span> <span class="o">=</span> <span class="n">cast</span><span class="o">.</span><span class="n">size</span>
-        <span class="n">components</span> <span class="o">=</span> <span class="n">jac</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">force_</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">npoints</span><span class="p">))</span>
+        <span class="n">components</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">npoints</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">east</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">npoints</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">east</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">parse_engine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;numba&quot;</span><span class="p">:</span>
+            <span class="n">components</span> <span class="o">=</span> <span class="n">predict_2d_numba</span><span class="p">(</span>
+                <span class="n">east</span><span class="p">,</span>
+                <span class="n">north</span><span class="p">,</span>
+                <span class="n">force_east</span><span class="p">,</span>
+                <span class="n">force_north</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mindist</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">poisson</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">force_</span><span class="p">,</span>
+                <span class="n">components</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">components</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">components</span> <span class="o">=</span> <span class="n">predict_2d_numpy</span><span class="p">(</span>
+                <span class="n">east</span><span class="p">,</span>
+                <span class="n">north</span><span class="p">,</span>
+                <span class="n">force_east</span><span class="p">,</span>
+                <span class="n">force_north</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mindist</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">poisson</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">force_</span><span class="p">,</span>
+                <span class="n">components</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">components</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">comp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">cast</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="n">components</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VectorSpline2D.jacobian"><a class="viewcode-back" href="../../api/generated/verde.VectorSpline2D.html#verde.VectorSpline2D.jacobian">[docs]</a>    <span class="k">def</span> <span class="nf">jacobian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">force_coords</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">):</span>
@@ -534,70 +566,105 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span> <span class="o">=</span> <span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">force_coords</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">east</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">jac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">east</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">force_east</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">parse_engine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;numba&quot;</span><span class="p">:</span>
-            <span class="n">jac</span> <span class="o">=</span> <span class="n">jacobian_numba</span><span class="p">(</span>
-                <span class="n">east</span><span class="p">,</span>
-                <span class="n">north</span><span class="p">,</span>
-                <span class="n">force_east</span><span class="p">,</span>
-                <span class="n">force_north</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mindist</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">poisson</span><span class="p">,</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">east</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">force_east</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">),</span>
+            <span class="n">jac</span> <span class="o">=</span> <span class="n">jacobian_2d_numba</span><span class="p">(</span>
+                <span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mindist</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">poisson</span><span class="p">,</span> <span class="n">jac</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">jac</span> <span class="o">=</span> <span class="n">jacobian_numpy</span><span class="p">(</span>
-                <span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mindist</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">poisson</span><span class="p">,</span> <span class="n">dtype</span>
+            <span class="n">jac</span> <span class="o">=</span> <span class="n">jacobian_2d_numpy</span><span class="p">(</span>
+                <span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mindist</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">poisson</span><span class="p">,</span> <span class="n">jac</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">jac</span></div></div>
 
 
-<span class="k">def</span> <span class="nf">jacobian_numpy</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">poisson</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the Jacobian matrix using numpy broadcasting.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">npoints</span> <span class="o">=</span> <span class="n">east</span><span class="o">.</span><span class="n">size</span>
-    <span class="n">nforces</span> <span class="o">=</span> <span class="n">force_east</span><span class="o">.</span><span class="n">size</span>
-    <span class="c1"># Reshaping the data coordinates to a column vector will automatically build a</span>
-    <span class="c1"># distance matrix between each data point and force.</span>
-    <span class="n">east_orig</span> <span class="o">=</span> <span class="n">east</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">npoints</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">force_east</span>
-    <span class="n">north_orig</span> <span class="o">=</span> <span class="n">north</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">npoints</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">force_north</span>
-    <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">east_orig</span><span class="p">,</span> <span class="n">north_orig</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">greens_func_2d</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">poisson</span><span class="p">):</span>
+    <span class="s2">&quot;Calculate the Green&#39;s functions for the 2D elastic case.&quot;</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">east</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">north</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
     <span class="c1"># The mindist factor helps avoid singular matrices when the force and</span>
     <span class="c1"># computation point are too close</span>
     <span class="n">distance</span> <span class="o">+=</span> <span class="n">mindist</span>
     <span class="c1"># Pre-compute common terms for the Green&#39;s functions of each component</span>
     <span class="n">ln_r</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span> <span class="o">-</span> <span class="n">poisson</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
     <span class="n">over_r2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">poisson</span><span class="p">)</span> <span class="o">/</span> <span class="n">distance</span> <span class="o">**</span> <span class="mi">2</span>
-    <span class="n">jac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">npoints</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">nforces</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
-    <span class="n">jac</span><span class="p">[:</span><span class="n">npoints</span><span class="p">,</span> <span class="p">:</span><span class="n">nforces</span><span class="p">]</span> <span class="o">=</span> <span class="n">ln_r</span> <span class="o">+</span> <span class="n">over_r2</span> <span class="o">*</span> <span class="n">north_orig</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># J_ee</span>
-    <span class="n">jac</span><span class="p">[</span><span class="n">npoints</span><span class="p">:,</span> <span class="n">nforces</span><span class="p">:]</span> <span class="o">=</span> <span class="n">ln_r</span> <span class="o">+</span> <span class="n">over_r2</span> <span class="o">*</span> <span class="n">east_orig</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># J_nn</span>
-    <span class="n">jac</span><span class="p">[:</span><span class="n">npoints</span><span class="p">,</span> <span class="n">nforces</span><span class="p">:]</span> <span class="o">=</span> <span class="o">-</span><span class="n">over_r2</span> <span class="o">*</span> <span class="n">east_orig</span> <span class="o">*</span> <span class="n">north_orig</span>  <span class="c1"># J_ne</span>
-    <span class="n">jac</span><span class="p">[</span><span class="n">npoints</span><span class="p">:,</span> <span class="p">:</span><span class="n">nforces</span><span class="p">]</span> <span class="o">=</span> <span class="n">jac</span><span class="p">[:</span><span class="n">npoints</span><span class="p">,</span> <span class="n">nforces</span><span class="p">:]</span>  <span class="c1"># J is symmetric</span>
+    <span class="n">green_ee</span> <span class="o">=</span> <span class="n">ln_r</span> <span class="o">+</span> <span class="n">over_r2</span> <span class="o">*</span> <span class="n">north</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">green_nn</span> <span class="o">=</span> <span class="n">ln_r</span> <span class="o">+</span> <span class="n">over_r2</span> <span class="o">*</span> <span class="n">east</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">green_ne</span> <span class="o">=</span> <span class="o">-</span><span class="n">over_r2</span> <span class="o">*</span> <span class="n">east</span> <span class="o">*</span> <span class="n">north</span>
+    <span class="k">return</span> <span class="n">green_ee</span><span class="p">,</span> <span class="n">green_nn</span><span class="p">,</span> <span class="n">green_ne</span>
+
+
+<span class="k">def</span> <span class="nf">predict_2d_numpy</span><span class="p">(</span>
+    <span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">poisson</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">vec_east</span><span class="p">,</span> <span class="n">vec_north</span>
+<span class="p">):</span>
+    <span class="s2">&quot;Calculate the predicted data using numpy.&quot;</span>
+    <span class="n">vec_east</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">vec_north</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">nforces</span> <span class="o">=</span> <span class="n">forces</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nforces</span><span class="p">):</span>
+        <span class="n">green_ee</span><span class="p">,</span> <span class="n">green_nn</span><span class="p">,</span> <span class="n">green_ne</span> <span class="o">=</span> <span class="n">greens_func_2d</span><span class="p">(</span>
+            <span class="n">east</span> <span class="o">-</span> <span class="n">force_east</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">north</span> <span class="o">-</span> <span class="n">force_north</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">poisson</span>
+        <span class="p">)</span>
+        <span class="n">vec_east</span> <span class="o">+=</span> <span class="n">green_ee</span> <span class="o">*</span> <span class="n">forces</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">green_ne</span> <span class="o">*</span> <span class="n">forces</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="n">nforces</span><span class="p">]</span>
+        <span class="n">vec_north</span> <span class="o">+=</span> <span class="n">green_ne</span> <span class="o">*</span> <span class="n">forces</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">green_nn</span> <span class="o">*</span> <span class="n">forces</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="n">nforces</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">vec_east</span><span class="p">,</span> <span class="n">vec_north</span>
+
+
+<span class="k">def</span> <span class="nf">jacobian_2d_numpy</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">poisson</span><span class="p">,</span> <span class="n">jac</span><span class="p">):</span>
+    <span class="s2">&quot;Calculate the Jacobian matrix using numpy broadcasting.&quot;</span>
+    <span class="n">npoints</span> <span class="o">=</span> <span class="n">east</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">nforces</span> <span class="o">=</span> <span class="n">force_east</span><span class="o">.</span><span class="n">size</span>
+    <span class="c1"># Reshaping the data coordinates to a column vector will automatically build a</span>
+    <span class="c1"># Green&#39;s functions matrix between each data point and force.</span>
+    <span class="n">green_ee</span><span class="p">,</span> <span class="n">green_nn</span><span class="p">,</span> <span class="n">green_ne</span> <span class="o">=</span> <span class="n">greens_func_2d</span><span class="p">(</span>
+        <span class="n">east</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">npoints</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">force_east</span><span class="p">,</span>
+        <span class="n">north</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">npoints</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">force_north</span><span class="p">,</span>
+        <span class="n">mindist</span><span class="p">,</span>
+        <span class="n">poisson</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">jac</span><span class="p">[:</span><span class="n">npoints</span><span class="p">,</span> <span class="p">:</span><span class="n">nforces</span><span class="p">]</span> <span class="o">=</span> <span class="n">green_ee</span>
+    <span class="n">jac</span><span class="p">[</span><span class="n">npoints</span><span class="p">:,</span> <span class="n">nforces</span><span class="p">:]</span> <span class="o">=</span> <span class="n">green_nn</span>
+    <span class="n">jac</span><span class="p">[:</span><span class="n">npoints</span><span class="p">,</span> <span class="n">nforces</span><span class="p">:]</span> <span class="o">=</span> <span class="n">green_ne</span>
+    <span class="n">jac</span><span class="p">[</span><span class="n">npoints</span><span class="p">:,</span> <span class="p">:</span><span class="n">nforces</span><span class="p">]</span> <span class="o">=</span> <span class="n">green_ne</span>  <span class="c1"># J is symmetric</span>
     <span class="k">return</span> <span class="n">jac</span>
 
 
-<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">jacobian_numba</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">poisson</span><span class="p">,</span> <span class="n">jac</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate the Jacobian matrix using numba to speed things up.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># pylint: disable=too-many-locals</span>
+<span class="nd">@jit</span><span class="p">(</span><span class="o">**</span><span class="n">JIT_ARGS</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">predict_2d_numba</span><span class="p">(</span>
+    <span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">poisson</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">vec_east</span><span class="p">,</span> <span class="n">vec_north</span>
+<span class="p">):</span>
+    <span class="s2">&quot;Calculate the predicted data using numba to speed things up.&quot;</span>
+    <span class="n">nforces</span> <span class="o">=</span> <span class="n">forces</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">numba</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>  <span class="c1"># pylint: disable=not-an-iterable</span>
+        <span class="n">vec_east</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">vec_north</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nforces</span><span class="p">):</span>
+            <span class="n">green_ee</span><span class="p">,</span> <span class="n">green_nn</span><span class="p">,</span> <span class="n">green_ne</span> <span class="o">=</span> <span class="n">GREENS_FUNC_2D_JIT</span><span class="p">(</span>
+                <span class="n">east</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">force_east</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">north</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">force_north</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">poisson</span>
+            <span class="p">)</span>
+            <span class="n">vec_east</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">green_ee</span> <span class="o">*</span> <span class="n">forces</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">green_ne</span> <span class="o">*</span> <span class="n">forces</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="n">nforces</span><span class="p">]</span>
+            <span class="n">vec_north</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">green_ne</span> <span class="o">*</span> <span class="n">forces</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">green_nn</span> <span class="o">*</span> <span class="n">forces</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="n">nforces</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">vec_east</span><span class="p">,</span> <span class="n">vec_north</span>
+
+
+<span class="nd">@jit</span><span class="p">(</span><span class="o">**</span><span class="n">JIT_ARGS</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">jacobian_2d_numba</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">poisson</span><span class="p">,</span> <span class="n">jac</span><span class="p">):</span>
+    <span class="s2">&quot;Calculate the Jacobian matrix using numba to speed things up.&quot;</span>
     <span class="n">nforces</span> <span class="o">=</span> <span class="n">force_east</span><span class="o">.</span><span class="n">size</span>
     <span class="n">npoints</span> <span class="o">=</span> <span class="n">east</span><span class="o">.</span><span class="n">size</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">numba</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="n">npoints</span><span class="p">):</span>  <span class="c1"># pylint: disable=not-an-iterable</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nforces</span><span class="p">):</span>
-            <span class="n">east_orig</span> <span class="o">=</span> <span class="n">east</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">force_east</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-            <span class="n">north_orig</span> <span class="o">=</span> <span class="n">north</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">force_north</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-            <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">east_orig</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">north_orig</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-            <span class="n">distance</span> <span class="o">+=</span> <span class="n">mindist</span>
-            <span class="c1"># Pre-compute common terms for the Green&#39;s functions of each component</span>
-            <span class="n">ln_r</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span> <span class="o">-</span> <span class="n">poisson</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
-            <span class="n">over_r2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">poisson</span><span class="p">)</span> <span class="o">/</span> <span class="n">distance</span> <span class="o">**</span> <span class="mi">2</span>
-            <span class="n">jac</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">ln_r</span> <span class="o">+</span> <span class="n">over_r2</span> <span class="o">*</span> <span class="n">north_orig</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># J_ee</span>
-            <span class="n">jac</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">npoints</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">nforces</span><span class="p">]</span> <span class="o">=</span> <span class="n">ln_r</span> <span class="o">+</span> <span class="n">over_r2</span> <span class="o">*</span> <span class="n">east_orig</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># J_nn</span>
-            <span class="n">jac</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">nforces</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">over_r2</span> <span class="o">*</span> <span class="n">east_orig</span> <span class="o">*</span> <span class="n">north_orig</span>  <span class="c1"># J_ne</span>
-            <span class="n">jac</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">npoints</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">jac</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">nforces</span><span class="p">]</span>  <span class="c1"># J is symmetric</span>
+            <span class="n">green_ee</span><span class="p">,</span> <span class="n">green_nn</span><span class="p">,</span> <span class="n">green_ne</span> <span class="o">=</span> <span class="n">GREENS_FUNC_2D_JIT</span><span class="p">(</span>
+                <span class="n">east</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">force_east</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">north</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">force_north</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">poisson</span>
+            <span class="p">)</span>
+            <span class="n">jac</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">green_ee</span>
+            <span class="n">jac</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">npoints</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">nforces</span><span class="p">]</span> <span class="o">=</span> <span class="n">green_nn</span>
+            <span class="n">jac</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">nforces</span><span class="p">]</span> <span class="o">=</span> <span class="n">green_ne</span>
+            <span class="n">jac</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">npoints</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">green_ne</span>  <span class="c1"># J is symmetric</span>
     <span class="k">return</span> <span class="n">jac</span>
+
+
+<span class="c1"># JIT compile the Greens functions for use in numba functions</span>
+<span class="n">GREENS_FUNC_2D_JIT</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="o">**</span><span class="n">JIT_ARGS</span><span class="p">)(</span><span class="n">greens_func_2d</span><span class="p">)</span>
 </pre></div>
 
            </div>
@@ -611,7 +678,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Oct 11, 2018.
+      Last updated on Nov 06, 2018.
 
     </p>
   </div>

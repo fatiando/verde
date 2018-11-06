@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                v1.0.1
+                dev
               </div>
             
           
@@ -308,16 +308,16 @@ then will be set to the data coordinates the first time
 <a class="reference internal" href="#verde.VectorSpline2D.fit" title="verde.VectorSpline2D.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a> is called.</p>
 </dd>
 <dt><strong>engine</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Computation engine for the Jacobian matrix. Can be <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>, <code class="docutils literal notranslate"><span class="pre">'numba'</span></code>, or
-<code class="docutils literal notranslate"><span class="pre">'numpy'</span></code>. If <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>, will use numba if it is installed or numpy
-otherwise. The numba version is multi-threaded and considerably faster, which
+<dd><p class="first last">Computation engine for the Jacobian matrix and predictions. Can be <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'numba'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'numpy'</span></code>. If <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>, will use numba if it is installed or
+numpy otherwise. The numba version is multi-threaded and usually faster, which
 makes fitting and predicting faster.</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>forces_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array</span></dt>
+<dt><strong>force_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array</span></dt>
 <dd><p class="first last">The estimated forces that fit the observed data.</p>
 </dd>
 <dt><strong>region_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple</span></dt>
@@ -347,7 +347,7 @@ methods.</p>
 <tr class="row-odd"><td><a class="reference internal" href="#verde.VectorSpline2D.get_params" title="verde.VectorSpline2D.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</td>
 <td>Get parameters for this estimator.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#verde.VectorSpline2D.grid" title="verde.VectorSpline2D.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid</span></code></a>([region,&nbsp;shape,&nbsp;spacing,&nbsp;adjust,&nbsp;dims,&nbsp;…])</td>
+<tr class="row-even"><td><a class="reference internal" href="#verde.VectorSpline2D.grid" title="verde.VectorSpline2D.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid</span></code></a>([region,&nbsp;shape,&nbsp;spacing,&nbsp;dims,&nbsp;…])</td>
 <td>Interpolate the data onto a regular grid.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#verde.VectorSpline2D.jacobian" title="verde.VectorSpline2D.jacobian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacobian</span></code></a>(coordinates,&nbsp;force_coords[,&nbsp;dtype])</td>
@@ -497,47 +497,35 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="verde.VectorSpline2D.grid">
-<code class="descclassname">VectorSpline2D.</code><code class="descname">grid</code><span class="sig-paren">(</span><em>region=None</em>, <em>shape=None</em>, <em>spacing=None</em>, <em>adjust='spacing'</em>, <em>dims=None</em>, <em>data_names=None</em>, <em>projection=None</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.grid" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">VectorSpline2D.</code><code class="descname">grid</code><span class="sig-paren">(</span><em>region=None</em>, <em>shape=None</em>, <em>spacing=None</em>, <em>dims=None</em>, <em>data_names=None</em>, <em>projection=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate the data onto a regular grid.</p>
-<p>The grid can be specified by either the number of points in each
-dimension (the <em>shape</em>) or by the grid node spacing.</p>
-<p>If the given region is not divisible by the desired spacing, either the
-region or the spacing will have to be adjusted. By default, the spacing
-will be rounded to the nearest multiple. Optionally, the East and North
-boundaries of the region can be adjusted to fit the exact spacing
-given. See <a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> for more details.</p>
-<p>If the interpolator collected the input data region, then it will be
-used if <code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
-<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
-dimensions and the data field(s) in the output <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.10.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.
-Default names are provided.</p>
+<p>The grid can be specified by either the number of points in each dimension (the
+<em>shape</em>) or by the grid node spacing. See <a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> for
+details. Other arguments for <a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> can be passed as
+extra keyword arguments (<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this method.</p>
+<p>If the interpolator collected the input data region, then it will be used if
+<code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
+<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the dimensions
+and the data field(s) in the output <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.10.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>. Default names will
+be provided if none are given.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt><strong>region</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list = [W, E, S, N]</span></dt>
-<dd><p class="first last">The boundaries of a given region in Cartesian or geographic
-coordinates.</p>
+<dd><p class="first last">The boundaries of a given region in Cartesian or geographic coordinates.</p>
 </dd>
 <dt><strong>shape</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple = (n_north, n_east) or None</span></dt>
 <dd><p class="first last">The number of points in the South-North and West-East directions,
-respectively. If <em>None</em> and <em>spacing</em> is not given, defaults to
-<code class="docutils literal notranslate"><span class="pre">(101,</span> <span class="pre">101)</span></code>.</p>
-</dd>
-<dt><strong>spacing</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple = (s_north, s_east) or None</span></dt>
-<dd><p class="first last">The grid spacing in the South-North and West-East directions,
 respectively.</p>
 </dd>
-<dt><strong>adjust</strong> <span class="classifier-delimiter">:</span> <span class="classifier">{‘spacing’, ‘region’}</span></dt>
-<dd><p class="first last">Whether to adjust the spacing or the region if required. Ignored if
-<em>shape</em> is given instead of <em>spacing</em>. Defaults to adjusting the
-spacing.</p>
+<dt><strong>spacing</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple = (s_north, s_east) or None</span></dt>
+<dd><p class="first last">The grid spacing in the South-North and West-East directions, respectively.</p>
 </dd>
 <dt><strong>dims</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list or None</span></dt>
 <dd><p class="first last">The names of the northing and easting data dimensions, respectively, in the
-output grid. Defaults to <code class="docutils literal notranslate"><span class="pre">['northing',</span> <span class="pre">'easting']</span></code> for Cartesian grids and
-<code class="docutils literal notranslate"><span class="pre">['latitude',</span> <span class="pre">'longitude']</span></code> for geographic grids. <strong>NOTE: This is an
+output grid. Defaults to <code class="docutils literal notranslate"><span class="pre">['northing',</span> <span class="pre">'easting']</span></code>. <strong>NOTE: This is an
 exception to the “easting” then “northing” pattern but is required for
 compatibility with xarray.</strong></p>
 </dd>
@@ -562,8 +550,8 @@ generate a geographic grid from a Cartesian gridder.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>grid</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray.Dataset</span></dt>
-<dd><p class="first last">The interpolated grid. Metadata about the interpolator is written
-to the <code class="docutils literal notranslate"><span class="pre">attrs</span></code> attribute.</p>
+<dd><p class="first last">The interpolated grid. Metadata about the interpolator is written to the
+<code class="docutils literal notranslate"><span class="pre">attrs</span></code> attribute.</p>
 </dd>
 </dl>
 </td>
@@ -655,35 +643,34 @@ predicted vector data values at each point.</p>
 
 <dl class="method">
 <dt id="verde.VectorSpline2D.profile">
-<code class="descclassname">VectorSpline2D.</code><code class="descname">profile</code><span class="sig-paren">(</span><em>point1</em>, <em>point2</em>, <em>size</em>, <em>dims=None</em>, <em>data_names=None</em>, <em>projection=None</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.profile" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">VectorSpline2D.</code><code class="descname">profile</code><span class="sig-paren">(</span><em>point1</em>, <em>point2</em>, <em>size</em>, <em>dims=None</em>, <em>data_names=None</em>, <em>projection=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.profile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate data along a profile between two points.</p>
-<p>Generates the profile using a straight line if the interpolator assumes
-Cartesian data or a great circle if geographic data.</p>
-<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
-dimensions and the data field(s) in the output
-<a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
-<p>Includes the calculated distance to <em>point1</em> for each data point in the
-profile.</p>
+<p>Generates the profile along a straight line assuming Cartesian distances. Point
+coordinates are generated by <a class="reference internal" href="verde.profile_coordinates.html#verde.profile_coordinates" title="verde.profile_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.profile_coordinates</span></code></a>. Other arguments
+for this function can be passed as extra keyword arguments (<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this
+method.</p>
+<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the dimensions
+and the data field(s) in the output <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are
+provided.</p>
+<p>Includes the calculated Cartesian distance from <em>point1</em> for each data point in
+the profile.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt><strong>point1</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple</span></dt>
-<dd><p class="first last">The easting and northing coordinates, respectively, of the first
-point.</p>
+<dd><p class="first last">The easting and northing coordinates, respectively, of the first point.</p>
 </dd>
 <dt><strong>point2</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple</span></dt>
-<dd><p class="first last">The easting and northing coordinates, respectively, of the second
-point.</p>
+<dd><p class="first last">The easting and northing coordinates, respectively, of the second point.</p>
 </dd>
 <dt><strong>size</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
 <dd><p class="first last">The number of points to generate.</p>
 </dd>
 <dt><strong>dims</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list or None</span></dt>
 <dd><p class="first last">The names of the northing and easting data dimensions, respectively, in the
-output dataframe. Defaults to <code class="docutils literal notranslate"><span class="pre">['northing',</span> <span class="pre">'easting']</span></code> for Cartesian
-grids and <code class="docutils literal notranslate"><span class="pre">['latitude',</span> <span class="pre">'longitude']</span></code> for geographic grids. <strong>NOTE: This
+output dataframe. Defaults to <code class="docutils literal notranslate"><span class="pre">['northing',</span> <span class="pre">'easting']</span></code>. <strong>NOTE: This
 is an exception to the “easting” then “northing” pattern but is required for
 compatibility with xarray.</strong></p>
 </dd>
@@ -719,13 +706,16 @@ generate a geographic profile from a Cartesian gridder.</p>
 
 <dl class="method">
 <dt id="verde.VectorSpline2D.scatter">
-<code class="descclassname">VectorSpline2D.</code><code class="descname">scatter</code><span class="sig-paren">(</span><em>region=None</em>, <em>size=300</em>, <em>random_state=0</em>, <em>dims=None</em>, <em>data_names=None</em>, <em>projection=None</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.scatter" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">VectorSpline2D.</code><code class="descname">scatter</code><span class="sig-paren">(</span><em>region=None</em>, <em>size=300</em>, <em>random_state=0</em>, <em>dims=None</em>, <em>data_names=None</em>, <em>projection=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.scatter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate values onto a random scatter of points.</p>
-<p>If the interpolator collected the input data region, then it will be
-used if <code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
-<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
-dimensions and the data field(s) in the output
-<a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
+<p>Point coordinates are generated by <a class="reference internal" href="verde.scatter_points.html#verde.scatter_points" title="verde.scatter_points"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.scatter_points</span></code></a>. Other arguments
+for this function can be passed as extra keyword arguments (<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this
+method.</p>
+<p>If the interpolator collected the input data region, then it will be used if
+<code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
+<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the dimensions
+and the data field(s) in the output <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are
+provided.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -746,8 +736,7 @@ reproducible. Use <code class="docutils literal notranslate"><span class="pre">N
 </dd>
 <dt><strong>dims</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list or None</span></dt>
 <dd><p class="first last">The names of the northing and easting data dimensions, respectively, in the
-output dataframe. Defaults to <code class="docutils literal notranslate"><span class="pre">['northing',</span> <span class="pre">'easting']</span></code> for Cartesian
-grids and <code class="docutils literal notranslate"><span class="pre">['latitude',</span> <span class="pre">'longitude']</span></code> for geographic grids. <strong>NOTE: This
+output dataframe. Defaults to <code class="docutils literal notranslate"><span class="pre">['northing',</span> <span class="pre">'easting']</span></code>. <strong>NOTE: This
 is an exception to the “easting” then “northing” pattern but is required for
 compatibility with xarray.</strong></p>
 </dd>
@@ -869,7 +858,7 @@ component of a nested object.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Oct 11, 2018.
+      Last updated on Nov 06, 2018.
 
     </p>
   </div>

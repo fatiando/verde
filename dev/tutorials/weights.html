@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                v1.0.1
+                dev
               </div>
             
           
@@ -517,14 +517,14 @@ point forces. Here, we’ll apply a bit of damping.</p>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Spline interpolation with weights&quot;</span><span class="p">)</span>
 <span class="n">maxabs</span> <span class="o">=</span> <a href="../api/generated/verde.maxabs.html#verde.maxabs" title="View documentation for verde.maxabs"><span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">velocity_up</span><span class="p">)</span>
-<span class="n">pc</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
-    <span class="n">grid</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
-    <span class="n">grid</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
-    <span class="n">grid</span><span class="o">.</span><span class="n">velocity</span><span class="p">,</span>
+<span class="n">pc</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
     <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;seismic&quot;</span><span class="p">,</span>
     <span class="n">vmin</span><span class="o">=-</span><span class="n">maxabs</span><span class="p">,</span>
     <span class="n">vmax</span><span class="o">=</span><span class="n">maxabs</span><span class="p">,</span>
     <span class="n">transform</span><span class="o">=</span><span class="n">crs</span><span class="p">,</span>
+    <span class="n">add_colorbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+    <span class="n">add_labels</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
 <span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">pc</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;m/yr&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="s2">&quot;.k&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
@@ -532,14 +532,14 @@ point forces. Here, we’ll apply a bit of damping.</p>
 <a href="../api/generated/verde.datasets.setup_california_gps_map.html#verde.datasets.setup_california_gps_map" title="View documentation for verde.datasets.setup_california_gps_map"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">setup_california_gps_map</span></a><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Spline interpolation without weights&quot;</span><span class="p">)</span>
-<span class="n">pc</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
-    <span class="n">grid_unweighted</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
-    <span class="n">grid_unweighted</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
-    <span class="n">grid_unweighted</span><span class="o">.</span><span class="n">velocity</span><span class="p">,</span>
+<span class="n">pc</span> <span class="o">=</span> <span class="n">grid_unweighted</span><span class="o">.</span><span class="n">velocity</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
     <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;seismic&quot;</span><span class="p">,</span>
     <span class="n">vmin</span><span class="o">=-</span><span class="n">maxabs</span><span class="p">,</span>
     <span class="n">vmax</span><span class="o">=</span><span class="n">maxabs</span><span class="p">,</span>
     <span class="n">transform</span><span class="o">=</span><span class="n">crs</span><span class="p">,</span>
+    <span class="n">add_colorbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+    <span class="n">add_labels</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
 <span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">pc</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;m/yr&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="s2">&quot;.k&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
@@ -550,7 +550,7 @@ point forces. Here, we’ll apply a bit of damping.</p>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_weights_005.png" class="sphx-glr-single-img" src="../_images/sphx_glr_weights_005.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  14.447 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  7.414 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-weights-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/8e59c4ed612021f145f74b62d5b36182/weights.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">weights.py</span></code></a></div>
@@ -582,7 +582,7 @@ point forces. Here, we’ll apply a bit of damping.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Oct 11, 2018.
+      Last updated on Nov 06, 2018.
 
     </p>
   </div>

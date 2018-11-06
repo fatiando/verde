@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                v1.0.1
+                dev
               </div>
             
           
@@ -308,7 +308,7 @@ trend, and then fits a standard gridder to the trend residuals.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Chain(steps=[(&#39;reduce&#39;, BlockReduce(adjust=&#39;spacing&#39;, center_coordinates=False,
-      reduction=&lt;function median at 0x2aacf3f09510&gt;, region=None,
+      reduction=&lt;function median at 0x146020f488c8&gt;, region=None,
       spacing=18500.0)), (&#39;trend&#39;, Trend(degree=1)), (&#39;spline&#39;, Spline(damping=None, engine=&#39;auto&#39;, force_coords=None, mindist=1e-05))])
 </pre></div>
 </div>
@@ -368,13 +368,8 @@ Attributes:
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="View documentation for matplotlib.pyplot.axes"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">(</span><span class="n">projection</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.Mercator" title="View documentation for cartopy.crs.Mercator"><span class="n">ccrs</span><span class="o">.</span><span class="n">Mercator</span></a><span class="p">())</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Gridded result of the chain&quot;</span><span class="p">)</span>
-<span class="n">pc</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
-    <span class="n">grid</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
-    <span class="n">grid</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
-    <span class="n">grid</span><span class="o">.</span><span class="n">bathymetry</span><span class="p">,</span>
-    <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">(),</span>
-    <span class="n">vmax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+<span class="n">pc</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">bathymetry</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">(),</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="bp">False</span>
 <span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">pc</span><span class="p">)</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;meters&quot;</span><span class="p">)</span>
 <a href="../api/generated/verde.datasets.setup_baja_bathymetry_map.html#verde.datasets.setup_baja_bathymetry_map" title="View documentation for verde.datasets.setup_baja_bathymetry_map"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">setup_baja_bathymetry_map</span></a><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
@@ -412,12 +407,8 @@ grids and predictions. For example, we can get a grid of the estimated trend:</p
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="View documentation for matplotlib.pyplot.axes"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">(</span><span class="n">projection</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.Mercator" title="View documentation for cartopy.crs.Mercator"><span class="n">ccrs</span><span class="o">.</span><span class="n">Mercator</span></a><span class="p">())</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Gridded trend&quot;</span><span class="p">)</span>
-<span class="n">pc</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
-    <span class="n">grid_trend</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
-    <span class="n">grid_trend</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
-    <span class="n">grid_trend</span><span class="o">.</span><span class="n">bathymetry</span><span class="p">,</span>
-    <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">(),</span>
-    <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+<span class="n">pc</span> <span class="o">=</span> <span class="n">grid_trend</span><span class="o">.</span><span class="n">bathymetry</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">(),</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="bp">False</span>
 <span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">pc</span><span class="p">)</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;meters&quot;</span><span class="p">)</span>
 <a href="../api/generated/verde.datasets.setup_baja_bathymetry_map.html#verde.datasets.setup_baja_bathymetry_map" title="View documentation for verde.datasets.setup_baja_bathymetry_map"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">setup_baja_bathymetry_map</span></a><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
@@ -438,7 +429,7 @@ Attributes:
     metadata:  Generated by Trend(degree=1)
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  32.511 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  17.083 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-chain-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/1a2cc52b71250d08e9b53208420b66a8/chain.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">chain.py</span></code></a></div>
@@ -469,7 +460,7 @@ Attributes:
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Oct 11, 2018.
+      Last updated on Nov 06, 2018.
 
     </p>
   </div>

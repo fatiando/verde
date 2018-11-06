@@ -71,12 +71,8 @@ plt.figure(figsize=(8, 6))
 ax = plt.axes(projection=ccrs.Mercator())
 ax.set_title("Air temperature gridded with biharmonic spline")
 ax.plot(*coordinates, ".k", markersize=1, transform=ccrs.PlateCarree())
-tmp = ax.pcolormesh(
-    grid.longitude,
-    grid.latitude,
-    grid.temperature,
-    cmap="plasma",
-    transform=ccrs.PlateCarree(),
+tmp = grid.temperature.plot.pcolormesh(
+    ax=ax, cmap="plasma", transform=ccrs.PlateCarree(), add_colorbar=False
 )
 plt.colorbar(tmp).set_label("Air temperature (C)")
 # Use an utility function to add tick labels and land and ocean features to the map.

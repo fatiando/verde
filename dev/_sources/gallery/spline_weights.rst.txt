@@ -127,14 +127,14 @@ and use weights based on the data uncertainty during gridding.
     ax = axes[1]
     ax.set_title("Weighted spline interpolated velocity")
     maxabs = vd.maxabs(data.velocity_up) * 1000
-    pc = ax.pcolormesh(
-        grid.longitude,
-        grid.latitude,
-        grid.velocity * 1000,
+    pc = (grid.velocity * 1000).plot.pcolormesh(
+        ax=ax,
         cmap="seismic",
         vmin=-maxabs,
         vmax=maxabs,
         transform=crs,
+        add_colorbar=False,
+        add_labels=False,
     )
     cb = plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.05)
     cb.set_label("vertical velocity [mm/yr]")
@@ -144,7 +144,7 @@ and use weights based on the data uncertainty during gridding.
     plt.tight_layout()
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  3.475 seconds)
+**Total running time of the script:** ( 0 minutes  2.376 seconds)
 
 
 .. _sphx_glr_download_gallery_spline_weights.py:

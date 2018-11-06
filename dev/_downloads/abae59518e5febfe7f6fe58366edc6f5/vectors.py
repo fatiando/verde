@@ -177,14 +177,14 @@ components = [grid.east_component, grid.north_component]
 for ax, component, title in zip(axes, components, titles):
     ax.set_title(title)
     maxabs = vd.maxabs(component)
-    tmp = ax.pcolormesh(
-        component.longitude,
-        component.latitude,
-        component.values,
+    tmp = component.plot.pcolormesh(
+        ax=ax,
         vmin=-maxabs,
         vmax=maxabs,
         cmap="bwr",
         transform=crs,
+        add_colorbar=False,
+        add_labels=False,
     )
     cb = plt.colorbar(tmp, ax=ax, orientation="horizontal", pad=0.05)
     cb.set_label("meters/year")
