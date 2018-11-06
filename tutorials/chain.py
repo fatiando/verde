@@ -118,13 +118,8 @@ print(grid)
 plt.figure(figsize=(7, 6))
 ax = plt.axes(projection=ccrs.Mercator())
 ax.set_title("Gridded result of the chain")
-pc = ax.pcolormesh(
-    grid.longitude,
-    grid.latitude,
-    grid.bathymetry,
-    transform=ccrs.PlateCarree(),
-    vmax=0,
-    zorder=-1,
+pc = grid.bathymetry.plot.pcolormesh(
+    ax=ax, transform=ccrs.PlateCarree(), vmax=0, zorder=-1, add_colorbar=False
 )
 plt.colorbar(pc).set_label("meters")
 vd.datasets.setup_baja_bathymetry_map(ax)
@@ -155,12 +150,8 @@ print(grid_trend)
 plt.figure(figsize=(7, 6))
 ax = plt.axes(projection=ccrs.Mercator())
 ax.set_title("Gridded trend")
-pc = ax.pcolormesh(
-    grid_trend.longitude,
-    grid_trend.latitude,
-    grid_trend.bathymetry,
-    transform=ccrs.PlateCarree(),
-    zorder=-1,
+pc = grid_trend.bathymetry.plot.pcolormesh(
+    ax=ax, transform=ccrs.PlateCarree(), zorder=-1, add_colorbar=False
 )
 plt.colorbar(pc).set_label("meters")
 vd.datasets.setup_baja_bathymetry_map(ax)
