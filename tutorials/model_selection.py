@@ -99,12 +99,12 @@ grid = chain.grid(
 plt.figure(figsize=(8, 6))
 ax = plt.axes(projection=ccrs.Mercator())
 ax.set_title("Gridded temperature")
-pc = ax.pcolormesh(
-    grid.longitude,
-    grid.latitude,
-    grid.temperature,
+pc = grid.temperature.plot.pcolormesh(
+    ax=ax,
     cmap="plasma",
     transform=ccrs.PlateCarree(),
+    add_colorbar=False,
+    add_labels=False,
 )
 plt.colorbar(pc).set_label("C")
 ax.plot(data.longitude, data.latitude, ".k", markersize=1, transform=ccrs.PlateCarree())
@@ -196,14 +196,14 @@ plt.figure(figsize=(14, 8))
 for i, title, grd in zip(range(2), ["Defaults", "Tuned"], [grid, grid_best]):
     ax = plt.subplot(1, 2, i + 1, projection=ccrs.Mercator())
     ax.set_title(title)
-    pc = ax.pcolormesh(
-        grd.longitude,
-        grd.latitude,
-        grd.temperature,
+    pc = grd.temperature.plot.pcolormesh(
+        ax=ax,
         cmap="plasma",
         transform=ccrs.PlateCarree(),
         vmin=data.air_temperature_c.min(),
         vmax=data.air_temperature_c.max(),
+        add_colorbar=False,
+        add_labels=False,
     )
     plt.colorbar(pc, orientation="horizontal", aspect=50, pad=0.05).set_label("C")
     ax.plot(

@@ -73,8 +73,8 @@ plt.figure(figsize=(7, 6))
 ax = plt.axes(projection=ccrs.Mercator())
 ax.set_title("Gridded Bathymetry Using Scipy")
 # Plot the gridded bathymetry
-pc = ax.pcolormesh(
-    grid.longitude, grid.latitude, grid.bathymetry_m, transform=crs, vmax=0, zorder=-1
+pc = grid.bathymetry_m.plot.pcolormesh(
+    ax=ax, transform=crs, vmax=0, zorder=-1, add_colorbar=False
 )
 plt.colorbar(pc).set_label("meters")
 # Plot the locations of the decimated data
