@@ -93,14 +93,14 @@ vd.datasets.setup_california_gps_map(ax, region=region)
 ax = axes[1]
 ax.set_title("Weighted spline interpolated velocity")
 maxabs = vd.maxabs(data.velocity_up) * 1000
-pc = ax.pcolormesh(
-    grid.longitude,
-    grid.latitude,
-    grid.velocity * 1000,
+pc = (grid.velocity * 1000).plot.pcolormesh(
+    ax=ax,
     cmap="seismic",
     vmin=-maxabs,
     vmax=maxabs,
     transform=crs,
+    add_colorbar=False,
+    add_labels=False,
 )
 cb = plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.05)
 cb.set_label("vertical velocity [mm/yr]")
