@@ -27,7 +27,7 @@ def parse_engine(engine):
         raise ValueError("Invalid engine '{}'. Must be in {}.".format(engine, engines))
     if engine == "auto":
         try:
-            import numba  # pylint: disable=unused-variable
+            import numba  # pylint: disable=unused-variable,unused-import
 
             return "numba"
         except ImportError:
