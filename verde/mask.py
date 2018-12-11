@@ -3,7 +3,7 @@ Mask grid points based on different criteria.
 """
 import numpy as np
 
-from .utils import n_1d_arrays
+from .base import n_1d_arrays
 
 try:
     from pykdtree.kdtree import KDTree

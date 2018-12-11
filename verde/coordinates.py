@@ -9,7 +9,7 @@ try:
 except ImportError:
     from scipy.spatial import cKDTree as KDTree  # pylint: disable=no-name-in-module
 
-from .utils import n_1d_arrays
+from .base.utils import n_1d_arrays
 
 
 def check_region(region):
