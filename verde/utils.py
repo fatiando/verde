@@ -6,6 +6,8 @@ import functools
 import numpy as np
 import pandas as pd
 
+from .base.utils import check_data
+
 
 def parse_engine(engine):
     """
@@ -64,56 +66,6 @@ def dummy_jit(**kwargs):  # pylint: disable=unused-argument
         return dummy_function
 
     return dummy_decorator
-
-
-def n_1d_arrays(arrays, n):
-    """
-    Get the first n elements from a tuple/list, make sure they are arrays, and ravel.
-
-    Parameters
-    ----------
-    arrays : tuple of arrays
-        The arrays. Can be lists or anything that can be converted to a numpy array
-        (including numpy arrays).
-    n : int
-        How many arrays to return.
-
-    Returns
-    -------
-    1darrays : tuple of arrays
-        The converted 1D numpy arrays.
-
-    Examples
-    --------
-
-    >>> import numpy as np
-    >>> arrays = [np.arange(4).reshape(2, 2)]*3
-    >>> n_1d_arrays(arrays, n=2)
-    (array([0, 1, 2, 3]), array([0, 1, 2, 3]))
-
-    """
-    return tuple(np.atleast_1d(i).ravel() for i in arrays[:n])
-
-
-def check_data(data):
-    """
-    Check the *data* argument and make sure it's a tuple.
-    If the data is a single array, return it as a tuple with a single element.
-
-    This is the default format accepted and used by all gridders and processing
-    functions.
-
-    Examples
-    --------
-
-    >>> check_data([1, 2, 3])
-    ([1, 2, 3],)
-    >>> check_data(([1, 2], [3, 4]))
-    ([1, 2], [3, 4])
-    """
-    if not isinstance(data, tuple):
-        data = (data,)
-    return data
 
 
 def variance_to_weights(variance, tol=1e-15, dtype="float64"):
