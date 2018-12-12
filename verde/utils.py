@@ -125,7 +125,7 @@ def variance_to_weights(variance, tol=1e-15, dtype="float64"):
     return tuple(weights)
 
 
-def maxabs(*args):
+def maxabs(*args, nan=True):
     """
     Calculate the maximum absolute value of the given array(s).
 
@@ -150,10 +150,23 @@ def maxabs(*args):
     >>> maxabs((1, -10.5, 25, 2), (0.1, 100, -500), (-200, -300, -0.1, -499))
     500.0
 
+    If the array contains NaNs, we'll use the ``nan`` version of of the numpy functions
+    by default. You can turn this off through the *nan* argument.
+
+    >>> import numpy as np
+    >>> maxabs((1, -10, 25, 2, 3, np.nan))
+    25.0
+    >>> maxabs((1, -10, 25, 2, 3, np.nan), nan=False)
+    nan
+
     """
     arrays = [np.atleast_1d(i) for i in args]
-    absolute = [np.abs([i.min(), i.max()]).max() for i in arrays]
-    return np.max(absolute)
+    if nan:
+        npmin, npmax = np.nanmin, np.nanmax
+    else:
+        npmin, npmax = np.min, np.max
+    absolute = [npmax(np.abs([npmin(i), npmax(i)])) for i in arrays]
+    return npmax(absolute)
 
 
 def grid_to_table(grid):
