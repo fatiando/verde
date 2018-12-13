@@ -146,8 +146,8 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None, client=
 
     Returns
     -------
-    scores : list
-        List of scores for each split of the cross-validation generator. If
+    scores : array
+        Array of scores for each split of the cross-validation generator. If
         *client* is not None, then the scores will be futures.
 
     Examples
@@ -192,7 +192,7 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None, client=
         )
         score = client.submit(fit_score, estimator, train_data, test_data)
         scores.append(score)
-    return scores
+    return np.asarray(scores)
 
 
 def fit_score(estimator, train_data, test_data):
