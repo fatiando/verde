@@ -158,7 +158,7 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None, client=
     >>> data = 10 - coords[0] + 0.5*coords[1]
     >>> # A linear trend should perfectly predict this data
     >>> scores = cross_val_score(Trend(degree=1), coords, data)
-    >>> print('{:.2f}'.format(scores), sep = ", ")
+    >>> print(', '.join(['{:.2f}'.format(score) for score in scores]))
     1.00, 1.00, 1.00, 1.00, 1.00
 
     >>> # To run parallel, we need to create a dask.distributed Client. It will
