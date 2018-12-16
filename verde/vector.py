@@ -4,9 +4,9 @@ Classes for dealing with vector data.
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
-from .base import check_fit_input, least_squares, BaseGridder
+from .base import n_1d_arrays, check_fit_input, least_squares, BaseGridder
 from .spline import warn_weighted_exact_solution
-from .utils import n_1d_arrays, parse_engine
+from .utils import parse_engine
 from .coordinates import get_region
 
 try:

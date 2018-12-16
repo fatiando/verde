@@ -71,7 +71,7 @@ Utilities
     variance_to_weights
     test
     grid_to_table
-    
+
 .. automodule:: verde.datasets
 
 .. currentmodule:: verde
@@ -92,10 +92,13 @@ Datasets
     datasets.fetch_rio_magnetic
     datasets.setup_rio_magnetic_map
 
-Base Classes
-------------
+Base Classes and Functions
+--------------------------
 
 .. autosummary::
    :toctree: generated/
 
     base.BaseGridder
+    base.n_1d_arrays
+    base.check_fit_input
+    base.least_squares

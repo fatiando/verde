@@ -1,18 +1,14 @@
 """
 Base classes for all gridders.
 """
-from warnings import warn
-
 import xarray as xr
 import pandas as pd
 import numpy as np
 from sklearn.base import BaseEstimator
 from sklearn.metrics import r2_score
-from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LinearRegression, Ridge
 
-from .coordinates import grid_coordinates, profile_coordinates, scatter_points
-from .utils import check_data
+from ..coordinates import grid_coordinates, profile_coordinates, scatter_points
+from .utils import check_data, check_fit_input
 
 
 class BaseGridder(BaseEstimator):
@@ -524,82 +520,3 @@ def get_instance_region(instance, region):
             raise ValueError("No default region found. Argument must be supplied.")
         region = getattr(instance, "region_")
     return region
-
-
-def check_fit_input(coordinates, data, weights, unpack=True):
-    """
-    Validate the inputs to the fit method of gridders.
-
-    Checks that the coordinates, data, and weights (if given) all have the same
-    shape. Weights arrays are raveled.
-
-    Parameters
-    ----------
-    coordinates : tuple of arrays
-        Arrays with the coordinates of each data point. Should be in the
-        following order: (easting, northing, vertical, ...).
-    data : array or tuple of arrays
-        The data values of each data point. Data can have more than one
-        component. In such cases, data should be a tuple of arrays.
-    weights : None or array
-        If not None, then the weights assigned to each data point.
-        Typically, this should be 1 over the data uncertainty squared.
-        If the data has multiple components, the weights have the same number
-        of components.
-    unoack : bool
-        If False, data and weights will be tuples always. If they are single
-        arrays, then they will be returned as a 1-element tuple. If True, will
-        unpack the tuples if there is only 1 array in each.
-
-    Returns
-    -------
-    validated_inputs
-        The validated inputs in the same order. If weights are given, will
-        ravel the array before returning.
-
-    """
-    data = check_data(data)
-    weights = check_data(weights)
-    if any(i.shape != j.shape for i in coordinates for j in data):
-        raise ValueError("Coordinate and data arrays must have the same shape.")
-    if any(w is not None for w in weights):
-        if len(weights) != len(data):
-            raise ValueError(
-                "Number of data '{}' and weights '{}' must be equal.".format(
-                    len(data), len(weights)
-                )
-            )
-        if any(i.size != j.size for i in weights for j in data):
-            raise ValueError("Weights must have the same size as the data array.")
-        weights = tuple(i.ravel() for i in weights)
-    else:
-        weights = tuple([None] * len(data))
-    if unpack:
-        if len(weights) == 1:
-            weights = weights[0]
-        if len(data) == 1:
-            data = data[0]
-    return coordinates, data, weights
-
-
-def least_squares(jacobian, data, weights, damping=None):
-    """
-    Estimate forces that fit the data using least-squares. Scales the
-    Jacobian matrix to have unit standard deviation. This helps balance the
-    regularization and the difference between forces.
-    """
-    if jacobian.shape[0] < jacobian.shape[1]:
-        warn(
-            "Under-determined problem detected (ndata, nparams)={}.".format(
-                jacobian.shape
-            )
-        )
-    scaler = StandardScaler(copy=False, with_mean=False, with_std=True)
-    jacobian = scaler.fit_transform(jacobian)
-    if damping is None:
-        regr = LinearRegression(fit_intercept=False, normalize=False)
-    else:
-        regr = Ridge(alpha=damping, fit_intercept=False, normalize=False)
-    regr.fit(jacobian, data.ravel(), sample_weight=weights)
-    params = regr.coef_ / scaler.scale_
-    return params
