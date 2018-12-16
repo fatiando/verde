@@ -6,6 +6,8 @@ import functools
 import numpy as np
 import pandas as pd
 
+from .base.utils import check_data
+
 
 def parse_engine(engine):
     """
@@ -66,56 +68,6 @@ def dummy_jit(**kwargs):  # pylint: disable=unused-argument
     return dummy_decorator
 
 
-def n_1d_arrays(arrays, n):
-    """
-    Get the first n elements from a tuple/list, make sure they are arrays, and ravel.
-
-    Parameters
-    ----------
-    arrays : tuple of arrays
-        The arrays. Can be lists or anything that can be converted to a numpy array
-        (including numpy arrays).
-    n : int
-        How many arrays to return.
-
-    Returns
-    -------
-    1darrays : tuple of arrays
-        The converted 1D numpy arrays.
-
-    Examples
-    --------
-
-    >>> import numpy as np
-    >>> arrays = [np.arange(4).reshape(2, 2)]*3
-    >>> n_1d_arrays(arrays, n=2)
-    (array([0, 1, 2, 3]), array([0, 1, 2, 3]))
-
-    """
-    return tuple(np.atleast_1d(i).ravel() for i in arrays[:n])
-
-
-def check_data(data):
-    """
-    Check the *data* argument and make sure it's a tuple.
-    If the data is a single array, return it as a tuple with a single element.
-
-    This is the default format accepted and used by all gridders and processing
-    functions.
-
-    Examples
-    --------
-
-    >>> check_data([1, 2, 3])
-    ([1, 2, 3],)
-    >>> check_data(([1, 2], [3, 4]))
-    ([1, 2], [3, 4])
-    """
-    if not isinstance(data, tuple):
-        data = (data,)
-    return data
-
-
 def variance_to_weights(variance, tol=1e-15, dtype="float64"):
     """
     Converts data variances to weights for gridding.
@@ -173,7 +125,7 @@ def variance_to_weights(variance, tol=1e-15, dtype="float64"):
     return tuple(weights)
 
 
-def maxabs(*args):
+def maxabs(*args, nan=True):
     """
     Calculate the maximum absolute value of the given array(s).
 
@@ -198,10 +150,23 @@ def maxabs(*args):
     >>> maxabs((1, -10.5, 25, 2), (0.1, 100, -500), (-200, -300, -0.1, -499))
     500.0
 
+    If the array contains NaNs, we'll use the ``nan`` version of of the numpy functions
+    by default. You can turn this off through the *nan* argument.
+
+    >>> import numpy as np
+    >>> maxabs((1, -10, 25, 2, 3, np.nan))
+    25.0
+    >>> maxabs((1, -10, 25, 2, 3, np.nan), nan=False)
+    nan
+
     """
     arrays = [np.atleast_1d(i) for i in args]
-    absolute = [np.abs([i.min(), i.max()]).max() for i in arrays]
-    return np.max(absolute)
+    if nan:
+        npmin, npmax = np.nanmin, np.nanmax
+    else:
+        npmin, npmax = np.min, np.max
+    absolute = [npmax(np.abs([npmin(i), npmax(i)])) for i in arrays]
+    return npmax(absolute)
 
 
 def grid_to_table(grid):
