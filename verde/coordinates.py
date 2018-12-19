@@ -741,17 +741,53 @@ def median_distance(coordinates, k_nearest=1, projection=None):
     -------
     distances : array
         An array with the median distances to the *k* nearest neighbors of each data
-        point. Will have the same shape as the first coordinate array provided.
+        point. The array will have the same shape as the input coordinate arrays.
 
     Examples
     --------
 
     >>> import verde as vd
-    >>> coords = vd.grid_coordinates((0, 10, -20, -15), spacing=1)
+    >>> import numpy as np
+    >>> coords = vd.grid_coordinates((5, 10, -20, -17), spacing=1)
     >>> # The nearest neighbor distance should be the grid spacing
     >>> distance = median_distance(coords, k_nearest=1)
-    >>> print("{:.2f}".format(distance))
-    1.00
+    >>> np.allclose(distance, 1)
+    True
+    >>> # The distance has the same shape as the coordinate arrays
+    >>> print(distance.shape, coords[0].shape)
+    (4, 6) (4, 6)
+    >>> # The 2 nearest points should also all be at a distance of 1
+    >>> distance = median_distance(coords, k_nearest=2)
+    >>> np.allclose(distance, 1)
+    True
+    >>> # The 3 nearest points are at a distance of 1 but on the corners they are
+    >>> # [1, 1, sqrt(2)] away. The median for these points is also 1.
+    >>> distance = median_distance(coords, k_nearest=3)
+    >>> np.allclose(distance, 1)
+    True
+    >>> # The 4 nearest points are at a distance of 1 but on the corners they are
+    >>> # [1, 1, sqrt(2), 2] away.
+    >>> distance = median_distance(coords, k_nearest=4)
+    >>> print("{:.2f}".format(np.median([1, 1, np.sqrt(2), 2])))
+    1.21
+    >>> for line in distance:
+    ...     print(" ".join(["{:.2f}".format(i) for i in line]))
+    1.21 1.00 1.00 1.00 1.00 1.21
+    1.00 1.00 1.00 1.00 1.00 1.00
+    1.00 1.00 1.00 1.00 1.00 1.00
+    1.21 1.00 1.00 1.00 1.00 1.21
 
     """
-    pass
+    if projection is None:
+        points = np.transpose(n_1d_arrays(coordinates, n=2))
+    else:
+        points = np.transpose(projection(*n_1d_arrays(coordinates, n=2)))
+    tree = KDTree(points)
+    # The k=1 nearest point is going to be the point itself (with a distance of zero)
+    # because we don't remove each point from the dataset in turn. We don't care about
+    # that distance so start with the second closest. Only get the first element
+    # returned (the distance) and ignore the rest (the neighbor indices).
+    k_distances = tree.query(points, k=k_nearest + 1)[0][:, 1:]
+    distances = np.median(k_distances, axis=1)
+    shape = np.broadcast(*coordinates[:2]).shape
+    return distances.reshape(shape)
