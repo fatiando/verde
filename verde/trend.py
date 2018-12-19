@@ -9,20 +9,28 @@ from .coordinates import get_region
 
 
 class Trend(BaseGridder):
-    """
+    r"""
     Fit a 2D polynomial trend to spatial data.
 
-    The trend is estimated through weighted least-squares regression.
+    The polynomial of degree :math:`N` is defined as:
 
-    The Jacobian (design, sensitivity, feature, etc) matrix for the regression
-    is normalized using :class:`sklearn.preprocessing.StandardScaler` without
-    centering the mean so that the transformation can be undone in the
-    estimated coefficients.
+    .. math::
+
+        f(e, n) = \sum\limits_{l=0}^{N}\sum\limits_{m=0}^{N - l} e^l n^m
+
+    in which :math:`e` and :math:`n` are the easting and northing coordinates,
+    respectively.
+
+    The trend is estimated through weighted least-squares regression. The Jacobian
+    (design, sensitivity, feature, etc) matrix for the regression is normalized using
+    :class:`sklearn.preprocessing.StandardScaler` without centering the mean so that the
+    transformation can be undone in the estimated coefficients.
 
     Parameters
     ----------
     degree : int
-        The degree of the polynomial. Must be >= 1.
+        The degree of the polynomial. Must be >= 0 (a degree of zero would estimate the
+        mean of the data).
 
     Attributes
     ----------
@@ -37,22 +45,37 @@ class Trend(BaseGridder):
     --------
 
     >>> from verde import grid_coordinates
+    >>> import numpy as np
     >>> coordinates = grid_coordinates((1, 5, -5, -1), shape=(5, 5))
     >>> data = 10 + 2*coordinates[0] - 0.4*coordinates[1]
     >>> trend = Trend(degree=1).fit(coordinates, data)
-    >>> print(', '.join(['{:.1f}'.format(i) for i in trend.coef_]))
-    10.0, 2.0, -0.4
-    >>> import numpy as np
+    >>> print("Coefficients:", ', '.join(['{:.1f}'.format(i) for i in trend.coef_]))
+    Coefficients: 10.0, 2.0, -0.4
     >>> np.allclose(trend.predict(coordinates), data)
     True
-    >>> # Use weights to account for outliers
+
+    A zero degree polynomial estimates the mean of the data:
+
+    >>> mean = Trend(degree=0).fit(coordinates, data)
+    >>> np.allclose(mean.predict(coordinates), data.mean())
+    True
+    >>> print("Data mean:", '{:.2f}'.format(data.mean()))
+    Data mean: 17.20
+    >>> print("Coefficient:", '{:.2f}'.format(mean.coef_[0]))
+    Coefficient: 17.20
+
+    We can use weights to account for outliers or data points with variable
+    uncertainties (see :func:`verde.variance_to_weights`):
+
     >>> data_out = data.copy()
     >>> data_out[2, 2] += 500
     >>> weights = np.ones_like(data)
     >>> weights[2, 2] = 1e-10
     >>> trend_out = Trend(degree=1).fit(coordinates, data_out, weights)
-    >>> print(', '.join(['{:.1f}'.format(i) for i in trend_out.coef_]))
-    10.0, 2.0, -0.4
+    >>> # Still recover the coefficients even with the added outlier
+    >>> print("Coefficients:", ', '.join(['{:.1f}'.format(i) for i in trend_out.coef_]))
+    Coefficients: 10.0, 2.0, -0.4
+    >>> # The residual at the outlier location should be values we added to that point
     >>> residual = data_out - trend_out.predict(coordinates)
     >>> print('{:.2f}'.format(residual[2, 2]))
     500.00
@@ -205,9 +228,12 @@ def polynomial_power_combinations(degree):
     >>> # This is a long polynomial so split it in two lines
     >>> print(" ".join([str(c) for c in polynomial_power_combinations(3)]))
     (0, 0) (1, 0) (0, 1) (2, 0) (1, 1) (0, 2) (3, 0) (2, 1) (1, 2) (0, 3)
+    >>> # A degree zero polynomial would be just the mean
+    >>> print(polynomial_power_combinations(0))
+    ((0, 0),)
 
     """
-    if degree < 1:
-        raise ValueError("Invalid polynomial degree '{}'. Must be >= 1.".format(degree))
+    if degree < 0:
+        raise ValueError("Invalid polynomial degree '{}'. Must be >= 0.".format(degree))
     combinations = ((i, j) for j in range(degree + 1) for i in range(degree + 1 - j))
     return tuple(sorted(combinations, key=sum))
