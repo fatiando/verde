@@ -5,8 +5,14 @@ import functools
 
 import numpy as np
 import pandas as pd
+from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
 
-from .base.utils import check_data
+try:
+    from pykdtree.kdtree import KDTree as pyKDTree
+except ImportError:
+    pyKDTree = None
+
+from .base.utils import check_data, n_1d_arrays
 
 
 def parse_engine(engine):
@@ -246,3 +252,41 @@ def grid_to_table(grid):
     coord_dict.update(var_dict)
     data = pd.DataFrame(coord_dict)
     return data
+
+
+def kdtree(coordinates, use_pykdtree=True, **kwargs):
+    """
+    Create a KD-Tree object with the given coordinate arrays.
+
+    Automatically transposes and flattens the coordinate arrays into a single matrix for
+    use in the KD-Tree classes.
+
+    All other keyword arguments are passed to the KD-Tree class.
+
+    If installed, package ``pykdtree`` will be used instead of
+    :class:`scipy.spatial.cKDTree` for better performance. Not all features are
+    available in ``pykdtree`` so if you require the scipy version set
+    ``use_pykdtee=False``.
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+        Arrays with the coordinates of each data point. Should be in the
+        following order: (easting, northing, vertical, ...). All coordinate arrays are
+        used.
+    use_pykdtree : bool
+        If True, will prefer ``pykdtree`` (if installed) over
+        :class:`scipy.spatial.cKDTree`. Otherwise, always use the scipy version.
+
+    Returns
+    -------
+    tree : :class:`scipy.spatial.cKDTree` or ``pykdtree.kdtree.KDTree``
+        The tree instance initialized with the given coordinates and arguments.
+
+    """
+    points = np.transpose(n_1d_arrays(coordinates, len(coordinates)))
+    if pyKDTree is not None and use_pykdtree:
+        tree = pyKDTree(points, **kwargs)
+    else:
+        tree = cKDTree(points, **kwargs)
+    return tree
