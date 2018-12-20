@@ -3,11 +3,7 @@ Distance calculations between points.
 """
 import numpy as np
 
-try:
-    from pykdtree.kdtree import KDTree
-except ImportError:
-    from scipy.spatial import cKDTree as KDTree  # pylint: disable=no-name-in-module
-
+from .utils import kdtree
 from .base.utils import n_1d_arrays
 
 
@@ -91,16 +87,15 @@ def median_distance(coordinates, k_nearest=1, projection=None):
     1.21 1.00 1.00 1.00 1.00 1.21
 
     """
-    if projection is None:
-        points = np.transpose(n_1d_arrays(coordinates, n=2))
-    else:
-        points = np.transpose(projection(*n_1d_arrays(coordinates, n=2)))
-    tree = KDTree(points)
+    shape = np.broadcast(*coordinates[:2]).shape
+    coords = n_1d_arrays(coordinates, n=2)
+    if projection is not None:
+        coords = projection(*coords)
+    tree = kdtree(coords)
     # The k=1 nearest point is going to be the point itself (with a distance of zero)
     # because we don't remove each point from the dataset in turn. We don't care about
     # that distance so start with the second closest. Only get the first element
     # returned (the distance) and ignore the rest (the neighbor indices).
-    k_distances = tree.query(points, k=k_nearest + 1)[0][:, 1:]
+    k_distances = tree.query(np.transpose(coords), k=k_nearest + 1)[0][:, 1:]
     distances = np.median(k_distances, axis=1)
-    shape = np.broadcast(*coordinates[:2]).shape
     return distances.reshape(shape)
