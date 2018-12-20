@@ -66,11 +66,12 @@ Utilities
 .. autosummary::
    :toctree: generated/
 
-    distance_mask
-    maxabs
-    variance_to_weights
     test
+    maxabs
+    distance_mask
+    variance_to_weights
     grid_to_table
+    median_distance
 
 .. automodule:: verde.datasets
 
