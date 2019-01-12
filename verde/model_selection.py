@@ -163,9 +163,10 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None, client=
 
     >>> # To run parallel, we need to create a dask.distributed Client. It will
     >>> # create a local cluster if no arguments are given so we can run the
-    >>> # scoring on a single machine.
+    >>> # scoring on a single machine. We'll use threads instead of processes for this
+    >>> # example but in most cases you'll want processes.
     >>> from dask.distributed import Client
-    >>> client = Client()
+    >>> client = Client(processes=False)
     >>> # The scoring will now only submit tasks to our local cluster
     >>> scores = cross_val_score(Trend(degree=1), coords, data, client=client)
     >>> # The scores are not the actual values but Futures
