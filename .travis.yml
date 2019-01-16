@@ -43,7 +43,7 @@ matrix:
               - PYTHON=3.6
               - CHECK=true
               # Don't need to install everything just to run the style checks
-              - CONDA_INSTALL_EXTRA="black flake8 pylint"
+              - CONDA_INSTALL_EXTRA="black flake8 pylint=2.2.2"
               - CONDA_REQUIREMENTS=""
               - CONDA_REQUIREMENTS_DEV=""
         # Main build to deploy to PyPI and Github pages
@@ -55,6 +55,7 @@ matrix:
               - BUILD_DOCS=true
               - DEPLOY_DOCS=true
               - DEPLOY_PYPI=true
+              - CONDA_INSTALL_EXTRA="twine"
         - name: "Linux - Python 3.5"
           os: linux
           env:
