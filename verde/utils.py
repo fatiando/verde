@@ -5,6 +5,7 @@ import functools
 
 import numpy as np
 import pandas as pd
+import xarray as xr
 
 
 def parse_engine(engine):
@@ -280,4 +281,65 @@ def grid_to_table(grid):
     var_dict = dict(zip(variable_name, variable_arrays))
     coord_dict.update(var_dict)
     data = pd.DataFrame(coord_dict)
+    return data
+
+
+def load_surfer(fname, dtype='float64'):
+    """
+    Read data from a Surfer ASCII grid file.
+
+    Surfer is a contouring, griding and surface mapping software
+    from GoldenSoftware. The names and logos for Surfer and Golden
+    Software are registered trademarks of Golden Software, Inc.
+
+    http://www.goldensoftware.com/products/surfer
+
+    This feature was ported from Fatiando, but instead of
+    output being a dictionary, in verde the output is a `xarray.DataArray`
+    that contains the easting and northing coordinates, and data values.
+
+    Parameters:
+
+    * fname : str
+        Name of the Surfer grid file
+    * dtype : numpy dtype object or string
+        The type of variable used for the data. Default is numpy.float64. Use
+        numpy.float32 if the data are large and precision is not an issue.
+
+    Returns:
+
+    * data : :class: `xarray.DataArray`
+        A 2D grid with the data variables.
+    """
+    # Surfer ASCII grid structure
+    # DSAA            Surfer ASCII GRD ID
+    # nCols nRows     number of columns and rows
+    # xMin xMax       X min max
+    # yMin yMax       Y min max
+    # zMin zMax       Z min max
+    # z11 z21 z31 ... List of Z values
+    with open(fname) as input_file:
+        # DSAA is a Surfer ASCII GRD ID (discard it for now)
+        input_file.readline()
+        # Read the number of columns (ny) and rows (nx)
+        ydims, xdims = [int(s) for s in input_file.readline().split()]
+        # Our x points North, so the first thing we read is y, not x.
+        ymin, ymax = [float(s) for s in input_file.readline().split()]
+        xmin, xmax = [float(s) for s in input_file.readline().split()]
+        dmin, dmax = [float(s) for s in input_file.readline().split()]
+        field = np.fromiter((float(s)
+                             for line in input_file
+                             for s in line.split()),
+                            dtype=dtype)
+        nans = field >= 1.70141e+38
+        if np.any(nans):
+            field = np.ma.masked_where(nans, field)
+        err_msg = "{} of data ({}) doesn't match one from file ({})."
+        assert np.allclose(dmin, field.min()), err_msg.format('Min', dmin,
+                                                              field.min())
+        assert np.allclose(dmax, field.max()), err_msg.format('Max', dmax,
+                                                              field.max())
+        data = xr.DataArray(field.reshape(ydims, xdims), coords=(np.linspace(
+        ymin, ymax, ydims), np.linspace(xmin, xmax, xdims)), dims=['northing',
+        'easting'])
     return data
