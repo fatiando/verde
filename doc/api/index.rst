@@ -71,7 +71,8 @@ Utilities
     variance_to_weights
     test
     grid_to_table
-    
+    load_surfer
+
 .. automodule:: verde.datasets
 
 .. currentmodule:: verde
