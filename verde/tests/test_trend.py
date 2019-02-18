@@ -23,8 +23,18 @@ def test_trend(simple_model):
     "Test the trend estimation on a simple problem"
     coords, coefs, data = simple_model
     trend = Trend(degree=1).fit(coords, data)
+    assert trend.coef_.size == 3
     npt.assert_allclose(trend.coef_, coefs)
     npt.assert_allclose(trend.predict(coords), data)
+
+
+def test_trend_mean(simple_model):
+    "Test the trend estimation with degree zero (a mean) on a simple problem"
+    coords, _, data = simple_model
+    trend = Trend(degree=0).fit(coords, data)
+    assert trend.coef_.size == 1
+    npt.assert_allclose(trend.coef_, data.mean())
+    npt.assert_allclose(trend.predict(coords), data.mean())
 
 
 def test_trend_weights(simple_model):
@@ -44,13 +54,12 @@ def test_trend_weights(simple_model):
 def test_polynomial_combinations_fails():
     "Test failing conditions for the combinations"
     with pytest.raises(ValueError):
-        polynomial_power_combinations(degree=0)
-    with pytest.raises(ValueError):
         polynomial_power_combinations(degree=-10)
 
 
 def test_trend_jacobian_fails():
     "Test failing conditions for the trend jacobian builder"
+    # Coordinates must have the same number of elements
     east, north = np.arange(50), np.arange(30)
     trend = Trend(degree=1)
     with pytest.raises(ValueError):

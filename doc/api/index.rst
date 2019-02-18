@@ -66,11 +66,12 @@ Utilities
 .. autosummary::
    :toctree: generated/
 
-    distance_mask
-    maxabs
-    variance_to_weights
     test
+    maxabs
+    distance_mask
+    variance_to_weights
     grid_to_table
+    median_distance
     load_surfer
 
 .. automodule:: verde.datasets
@@ -93,10 +94,13 @@ Datasets
     datasets.fetch_rio_magnetic
     datasets.setup_rio_magnetic_map
 
-Base Classes
-------------
+Base Classes and Functions
+--------------------------
 
 .. autosummary::
    :toctree: generated/
 
     base.BaseGridder
+    base.n_1d_arrays
+    base.check_fit_input
+    base.least_squares

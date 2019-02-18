@@ -272,14 +272,14 @@ crs = ccrs.PlateCarree()
 ax = axes[0]
 ax.set_title("Spline interpolation with weights")
 maxabs = vd.maxabs(data.velocity_up)
-pc = ax.pcolormesh(
-    grid.longitude,
-    grid.latitude,
-    grid.velocity,
+pc = grid.velocity.plot.pcolormesh(
+    ax=ax,
     cmap="seismic",
     vmin=-maxabs,
     vmax=maxabs,
     transform=crs,
+    add_colorbar=False,
+    add_labels=False,
 )
 plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.05).set_label("m/yr")
 ax.plot(data.longitude, data.latitude, ".k", markersize=0.1, transform=crs)
@@ -287,14 +287,14 @@ ax.coastlines()
 vd.datasets.setup_california_gps_map(ax)
 ax = axes[1]
 ax.set_title("Spline interpolation without weights")
-pc = ax.pcolormesh(
-    grid_unweighted.longitude,
-    grid_unweighted.latitude,
-    grid_unweighted.velocity,
+pc = grid_unweighted.velocity.plot.pcolormesh(
+    ax=ax,
     cmap="seismic",
     vmin=-maxabs,
     vmax=maxabs,
     transform=crs,
+    add_colorbar=False,
+    add_labels=False,
 )
 plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.05).set_label("m/yr")
 ax.plot(data.longitude, data.latitude, ".k", markersize=0.1, transform=crs)

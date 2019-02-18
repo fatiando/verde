@@ -37,38 +37,62 @@ env:
 matrix:
     include:
         # Code style and quality checks
-        - os: linux
+        - name: "Style checks"
+          os: linux
           env:
               - PYTHON=3.6
               - CHECK=true
               # Don't need to install everything just to run the style checks
-              - CONDA_INSTALL_EXTRA="black flake8 pylint"
+              - CONDA_INSTALL_EXTRA="black flake8 pylint=2.2.2"
               - CONDA_REQUIREMENTS=""
               - CONDA_REQUIREMENTS_DEV=""
         # Main build to deploy to PyPI and Github pages
-        - os: linux
+        - name: "Linux - Python 3.6 (deploy)"
+          os: linux
           env:
               - PYTHON=3.6
               - TEST=true
               - BUILD_DOCS=true
               - DEPLOY_DOCS=true
               - DEPLOY_PYPI=true
-        - os: linux
+              - CONDA_INSTALL_EXTRA="twine"
+        - name: "Linux - Python 3.5"
+          os: linux
           env:
               - PYTHON=3.5
               - TEST=true
               - BUILD_DOCS=true
-        # Check tests pass when using optional dependencies.
-        - os: linux
+        - name: "Linux - Python 3.7"
+          os: linux
           env:
-              - PYTHON=3.6
+              - PYTHON=3.7
               - TEST=true
-              - CONDA_INSTALL_EXTRA="pykdtree numba"
-        - os: osx
+              - BUILD_DOCS=true
+        - name: "Mac - Python 3.5"
+          os: osx
+          env:
+              - PYTHON=3.5
+              - TEST=true
+              - BUILD_DOCS=true
+        - name: "Mac - Python 3.6"
+          os: osx
           env:
               - PYTHON=3.6
               - TEST=true
               - BUILD_DOCS=true
+        - name: "Mac - Python 3.7"
+          os: osx
+          env:
+              - PYTHON=3.7
+              - TEST=true
+              - BUILD_DOCS=true
+        # Check tests pass when using optional dependencies.
+        - name: "Linux - Python 3.6 (optional deps)"
+          os: linux
+          env:
+              - PYTHON=3.6
+              - TEST=true
+              - CONDA_INSTALL_EXTRA="pykdtree numba"
 
 # Setup the build environment
 before_install:

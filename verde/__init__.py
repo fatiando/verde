@@ -14,6 +14,7 @@ from .coordinates import (
 )
 from .mask import distance_mask
 from .utils import variance_to_weights, maxabs, grid_to_table, load_surfer
+from .distances import median_distance
 from .blockreduce import BlockReduce, BlockMean
 from .scipygridder import ScipyGridder
 from .trend import Trend
