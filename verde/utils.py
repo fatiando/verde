@@ -265,21 +265,21 @@ def load_surfer(fname, dtype='float64'):
 
     http://www.goldensoftware.com/products/surfer
 
-    This feature was ported from Fatiando, but instead of
-    output being a dictionary, in verde the output is a `xarray.DataArray`
-    that contains the easting and northing coordinates, and data values.
+    This feature opens a Surfer grid file, masks any NaNs in the data,
+    and outputs a `xarray.DataArray` that contains easting and northing
+    coordinates, data values, and associated file metadata in the
+    DataArray attributes.
 
-    Parameters:
-
-    * fname : str
-        Name of the Surfer grid file
-    * dtype : numpy dtype object or string
-        The type of variable used for the data. Default is numpy.float64. Use
-        numpy.float32 if the data are large and precision is not an issue.
-
-    Returns:
-
-    * data : :class: `xarray.DataArray`
+    Parameters
+    ----------
+    fname : str
+        Name or path of the Surfer grid file
+    dtype : str or numpy dtype
+        The type of variable used for the data. Default is ``float64``. Use
+        ``float32`` if the data are large and precision is not an issue.
+    Returns
+    ----------
+    data : :class:`xarray.DataArray`
         A 2D grid with the data variables.
     """
     # Surfer ASCII grid structure
@@ -291,7 +291,7 @@ def load_surfer(fname, dtype='float64'):
     # z11 z21 z31 ... List of Z values
     with open(fname) as input_file:
         # DSAA is a Surfer ASCII GRD ID (discard it for now)
-        input_file.readline()
+        grd_id = input_file.readline()
         # Read the number of columns (ny) and rows (nx)
         ydims, xdims = [int(s) for s in input_file.readline().split()]
         # Our x points North, so the first thing we read is y, not x.
@@ -306,13 +306,18 @@ def load_surfer(fname, dtype='float64'):
         if np.any(nans):
             field = np.ma.masked_where(nans, field)
         err_msg = "{} of data ({}) doesn't match one from file ({})."
-        assert np.allclose(dmin, field.min()), err_msg.format('Min', dmin,
-                                                              field.min())
-        assert np.allclose(dmax, field.max()), err_msg.format('Max', dmax,
-                                                              field.max())
-        data = xr.DataArray(field.reshape(ydims, xdims), coords=(np.linspace(
-        ymin, ymax, ydims), np.linspace(xmin, xmax, xdims)), dims=['northing',
-        'easting'])
+        if np.allclose(dmin, field.min()) == False:
+            raise IOError(err_msg.format('Min', dmin, field.min()))
+        if np.allclose(dmax, field.max()) == False:
+            raise IOError(err_msg.format('Max', dmax, field.max()))
+        dims = ["northing", "easting"]
+        coords = {
+            "northing": np.linspace(ymin, ymax, ydims),
+            "easting": np.linspace(xmin, xmax, xdims)
+        }
+        field = field.reshape(ydims, xdims)
+        attrs = dict(file=fname, grid_id=grd_id[:-1])
+        data = xr.DataArray(field, coords=coords, dims=dims, attrs=attrs)
     return data
 
 
