@@ -291,7 +291,7 @@ def load_surfer(fname, dtype='float64'):
     # z11 z21 z31 ... List of Z values
     with open(fname) as input_file:
         # DSAA is a Surfer ASCII GRD ID (discard it for now)
-        grd_id = input_file.readline()
+        grd_id = input_file.readline().strip()
         # Read the number of columns (ny) and rows (nx)
         ydims, xdims = [int(s) for s in input_file.readline().split()]
         # Our x points North, so the first thing we read is y, not x.
