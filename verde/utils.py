@@ -266,7 +266,7 @@ def load_surfer(fname, dtype='float64'):
     http://www.goldensoftware.com/products/surfer
 
     This function opens a Surfer grid file, masks any NaNs in the data,
-    and outputs a `xarray.DataArray` that contains easting and northing
+    and outputs a :class:`xarray.DataArray` that contains easting and northing
     coordinates, data values, and associated file metadata in the
     DataArray attributes.
 
