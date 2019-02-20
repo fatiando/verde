@@ -316,7 +316,7 @@ def load_surfer(fname, dtype='float64'):
             "easting": np.linspace(xmin, xmax, xdims)
         }
         field = field.reshape(ydims, xdims)
-        attrs = dict(file=fname, grid_id=grd_id[:-1])
+        attrs = {"file": fname, "DSAA grid ID": grid_id}
         data = xr.DataArray(field, coords=coords, dims=dims, attrs=attrs)
     return data
 
