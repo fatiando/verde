@@ -306,7 +306,7 @@ def load_surfer(fname, dtype='float64'):
         if np.any(nans):
             field = np.ma.masked_where(nans, field)
         err_msg = "{} of data ({}) doesn't match one from file ({})."
-        if np.allclose(dmin, field.min()) == False:
+        if not np.allclose(dmin, field.min()):
             raise IOError(err_msg.format('Min', dmin, field.min()))
         if np.allclose(dmax, field.max()) == False:
             raise IOError(err_msg.format('Max', dmax, field.max()))
