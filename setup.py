@@ -10,9 +10,9 @@ import versioneer
 
 NAME = "verde"
 FULLNAME = "Verde"
-AUTHOR = "Leonardo Uieda"
+AUTHOR = "The Verde Developers"
 AUTHOR_EMAIL = "leouieda@gmail.com"
-MAINTAINER = AUTHOR
+MAINTAINER = "Leonardo Uieda"
 MAINTAINER_EMAIL = AUTHOR_EMAIL
 LICENSE = "BSD License"
 URL = "https://github.com/fatiando/verde"

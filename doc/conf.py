@@ -78,7 +78,7 @@ master_doc = 'index'
 # General information about the project
 year = datetime.date.today().year
 project = 'Verde'
-copyright = '2018-{}, Leonardo Uieda'.format(year)
+copyright = '2017-{}, The Verde Developers'.format(year)
 if len(full_version.split('+')) > 1 or full_version == 'unknown':
     version = 'dev'
 else:
