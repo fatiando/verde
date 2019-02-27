@@ -255,7 +255,7 @@ def grid_to_table(grid):
     return data
 
 
-def load_surfer(fname, dtype='float64'):
+def load_surfer(fname, dtype="float64"):
     """
     Read data from a Surfer ASCII grid file.
 
@@ -290,33 +290,34 @@ def load_surfer(fname, dtype='float64'):
     # zMin zMax       Z min max
     # z11 z21 z31 ... List of Z values
     with open(fname) as input_file:
-        # DSAA is a Surfer ASCII GRD ID (discard it for now)
+        # DSAA is a Surfer ASCII GRD ID
         grd_id = input_file.readline().strip()
         # Read the number of columns (ny) and rows (nx)
         ydims, xdims = [int(s) for s in input_file.readline().split()]
         # Our x points North, so the first thing we read is y, not x.
-        ymin, ymax = [float(s) for s in input_file.readline().split()]
-        xmin, xmax = [float(s) for s in input_file.readline().split()]
+        south, north = [float(s) for s in input_file.readline().split()]
+        west, east = [float(s) for s in input_file.readline().split()]
         dmin, dmax = [float(s) for s in input_file.readline().split()]
-        field = np.fromiter((float(s)
-                             for line in input_file
-                             for s in line.split()),
-                            dtype=dtype)
-        nans = field >= 1.70141e+38
+        field = np.fromiter(
+            (float(s) for line in input_file for s in line.split()), dtype=dtype
+        )
+        nans = field >= 1.70141e38
         if np.any(nans):
             field = np.ma.masked_where(nans, field)
         err_msg = "{} of data ({}) doesn't match one from file ({})."
+        if not np.isclose(len(field), ydims * xdims):
+            raise IOError(err_msg.format("Dimensions", (ydims * xdims), len(field)))
         if not np.allclose(dmin, field.min()):
-            raise IOError(err_msg.format('Min', dmin, field.min()))
-        if np.allclose(dmax, field.max()) == False:
-            raise IOError(err_msg.format('Max', dmax, field.max()))
+            raise IOError(err_msg.format("Min", dmin, field.min()))
+        if not np.allclose(dmax, field.max()):
+            raise IOError(err_msg.format("Max", dmax, field.max()))
         dims = ["northing", "easting"]
         coords = {
-            "northing": np.linspace(ymin, ymax, ydims),
-            "easting": np.linspace(xmin, xmax, xdims)
+            "northing": np.linspace(south, north, ydims),
+            "easting": np.linspace(west, east, xdims),
         }
         field = field.reshape(ydims, xdims)
-        attrs = {"file": fname, "DSAA grid ID": grid_id}
+        attrs = {"file": fname, "DSAA grid ID": grd_id}
         data = xr.DataArray(field, coords=coords, dims=dims, attrs=attrs)
     return data
 
