@@ -114,7 +114,7 @@ def test_surfer_grid_parse():
             nans = field >= 1.70141e38
             if np.any(nans):
                 field = np.ma.masked_where(nans, field)
-        return len(field)
+        return field.size
 
     grid_length = load_surfer_grid(s_grid.getvalue())
 
