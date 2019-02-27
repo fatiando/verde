@@ -305,7 +305,7 @@ def load_surfer(fname, dtype="float64"):
         if np.any(nans):
             field = np.ma.masked_where(nans, field)
         err_msg = "{} of data ({}) doesn't match one from file ({})."
-        if not np.isclose(len(field), ydims * xdims):
+        if field.size != ydims * xdims:
             raise IOError(err_msg.format("Dimensions", (ydims * xdims), len(field)))
         if not np.allclose(dmin, field.min()):
             raise IOError(err_msg.format("Min", dmin, field.min()))
