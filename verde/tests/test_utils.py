@@ -3,6 +3,7 @@ Test the utility functions.
 """
 import sys
 from unittest import mock
+from io import StringIO
 
 import numpy as np
 import numpy.testing as npt
@@ -95,3 +96,29 @@ def test_surfer_header():
         zmin,
         zmax,
     ]
+
+
+def test_surfer_grid_parse():
+    "Loads and parses the fake surfer grid"
+    fake_header = ["DSAA", "100 200", "1.0 1000.0", "2.0 2000.0", "3.0 300.0"]
+    s_grid = StringIO()
+    np.random.seed(2019)
+    fake_grid = np.random.uniform(3.0, 300.0, [100, 200])
+    np.savetxt(s_grid, fake_grid)
+
+    def load_surfer_grid(fname, dtype="float64"):
+        with StringIO(fname) as input_file:
+            field = np.fromiter(
+                (float(s) for line in input_file for s in line.split()), dtype=dtype
+            )
+            nans = field >= 1.70141e38
+            if np.any(nans):
+                field = np.ma.masked_where(nans, field)
+        return len(field)
+
+    grid_length = load_surfer_grid(s_grid.getvalue())
+
+    ydimension = int(fake_header[1].split(" ")[0])
+    xdimension = int(fake_header[1].split(" ")[1])
+
+    assert ydimension * xdimension == grid_length
