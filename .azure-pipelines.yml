@@ -22,13 +22,14 @@ jobs:
 
   variables:
     CONDA_INSTALL_EXTRA: "black flake8 pylint"
-    PYTHON: '3.6'
+    CONDA_EXTRA_CHANNEL: "defaults"
+    PYTHON: '3.7'
 
   steps:
 
   - task: UsePythonVersion@0
     inputs:
-      versionSpec: '3.6'
+      versionSpec: '3.7'
 
   - bash: echo "##vso[task.prependpath]/usr/share/miniconda/bin"
     displayName: Add conda to PATH
