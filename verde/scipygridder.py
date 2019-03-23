@@ -4,12 +4,12 @@ A gridder that uses scipy.interpolate as the backend.
 from warnings import warn
 
 import numpy as np
-from sklearn.utils.validation import check_is_fitted
 from scipy.interpolate import (
     LinearNDInterpolator,
     NearestNDInterpolator,
     CloughTocher2DInterpolator,
 )
+from sklearn.utils.validation import check_is_fitted
 
 from .base import BaseGridder, check_fit_input
 from .coordinates import get_region
@@ -47,6 +47,7 @@ class ScipyGridder(BaseGridder):
     """
 
     def __init__(self, method="cubic", extra_args=None):
+        super().__init__()
         self.method = method
         self.extra_args = extra_args
 

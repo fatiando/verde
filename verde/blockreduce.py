@@ -27,7 +27,7 @@ def attach_weights(reduction, weights):
     return weighted_reduction
 
 
-class BlockReduce(BaseEstimator):
+class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
     """
     Apply a reduction/aggregation operation to the data in blocks/windows.
 
@@ -203,7 +203,7 @@ class BlockReduce(BaseEstimator):
         return grouped.easting.values, grouped.northing.values
 
 
-class BlockMean(BlockReduce):
+class BlockMean(BlockReduce):  # pylint: disable=too-few-public-methods
     """
     Apply a (weighted) mean to the data in blocks/windows.
 

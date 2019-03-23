@@ -48,6 +48,7 @@ class Chain(BaseGridder):
     """
 
     def __init__(self, steps):
+        super().__init__()
         self.steps = steps
 
     @property

@@ -92,6 +92,7 @@ class Spline(BaseGridder):
     """
 
     def __init__(self, mindist=1e-5, damping=None, force_coords=None, engine="auto"):
+        super().__init__()
         self.mindist = mindist
         self.damping = damping
         self.force_coords = force_coords
