@@ -67,6 +67,7 @@ class PolyGridder(BaseGridder):
     "A test gridder"
 
     def __init__(self, degree=1):
+        super().__init__()
         self.degree = degree
 
     def fit(self, coordinates, data, weights=None):

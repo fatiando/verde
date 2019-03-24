@@ -19,7 +19,7 @@ from ..mask import distance_mask
 def test_minimal_integration_2d_gps():
     "Grid the 2D GPS data to make sure things don't break in obvious ways."
     data = fetch_california_gps()
-    projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
+    projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean(), ellps="WGS84")
     proj_coords = projection(data.longitude.values, data.latitude.values)
     spacing = 12 / 60
     train, test = train_test_split(
