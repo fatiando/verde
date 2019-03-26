@@ -10,12 +10,12 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 .. image:: http://img.shields.io/pypi/v/verde.svg?style=flat-square&label=version
     :alt: Latest version on PyPI
     :target: https://pypi.python.org/pypi/verde
-.. image:: http://img.shields.io/travis/fatiando/verde/master.svg?style=flat-square&label=Linux|Mac
+.. image:: http://img.shields.io/travis/fatiando/verde/master.svg?style=flat-square&label=TravisCI
     :alt: TravisCI build status
     :target: https://travis-ci.org/fatiando/verde
-.. image:: http://img.shields.io/appveyor/ci/fatiando/verde/master.svg?style=flat-square&label=Windows
-    :alt: AppVeyor build status
-    :target: https://ci.appveyor.com/project/fatiando/verde
+.. image:: https://img.shields.io/azure-devops/build/fatiando/066f88d8-0495-49ba-bad9-ef7431356ce9/7/master.svg?label=Azure&style=flat-square
+    :alt: Azure Pipelines build status
+    :target: https://dev.azure.com/fatiando/verde/_build
 .. image:: https://img.shields.io/codecov/c/github/fatiando/verde/master.svg?style=flat-square
     :alt: Test coverage status
     :target: https://codecov.io/gh/fatiando/verde

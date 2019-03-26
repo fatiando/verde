@@ -62,6 +62,7 @@ class Vector(BaseGridder):
     """
 
     def __init__(self, components):
+        super().__init__()
         self.components = components
 
     def fit(self, coordinates, data, weights=None):
@@ -209,6 +210,7 @@ class VectorSpline2D(BaseGridder):
     def __init__(
         self, poisson=0.5, mindist=10e3, damping=None, force_coords=None, engine="auto"
     ):
+        super().__init__()
         self.poisson = poisson
         self.mindist = mindist
         self.damping = damping

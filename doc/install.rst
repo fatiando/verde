@@ -6,7 +6,7 @@ Installing
 Which Python?
 -------------
 
-You'll need **Python 3.5 or greater**.
+You'll need **Python 3.6 or greater**.
 
 We recommend using the
 `Anaconda Python distribution <https://www.anaconda.com/download>`__

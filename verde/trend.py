@@ -83,6 +83,7 @@ class Trend(BaseGridder):
     """
 
     def __init__(self, degree):
+        super().__init__()
         self.degree = degree
 
     def fit(self, coordinates, data, weights=None):
