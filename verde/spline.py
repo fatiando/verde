@@ -1,6 +1,7 @@
 """
 Biharmonic splines in 2D.
 """
+import itertools
 from warnings import warn
 
 import numpy as np
@@ -9,6 +10,7 @@ from sklearn.utils.validation import check_is_fitted
 from .base import n_1d_arrays, BaseGridder, check_fit_input, least_squares
 from .coordinates import get_region
 from .utils import parse_engine
+from .model_selection import DummyClient, cross_val_score
 
 try:
     import numba
@@ -20,6 +22,77 @@ except ImportError:
 
 # Default arguments for numba.jit
 JIT_ARGS = dict(nopython=True, target="cpu", fastmath=True, parallel=True)
+
+
+class SplineCV(BaseGridder):
+    r"""
+    Cross-validated biharmonic spline interpolation.
+    """
+
+    def __init__(
+        self,
+        mindists=(1e3, 10e3, 50e3, 100e3),
+        dampings=(None, 1e-10, 1e-7, 1e-4, 1e-1),
+        force_coords=(None,),
+        engine="auto",
+        cv=None,
+        client=None,
+    ):
+        self.dampings = dampings
+        self.mindists = mindists
+        self.force_coords = force_coords
+        self.engine = engine
+        self.cv = cv
+        self.client = client
+
+    def fit(self, coordinates, data, weights=None):
+        """
+        Fit the gridder to the given data.
+
+        Returns
+        -------
+        self
+            Returns this estimator instance for chaining operations.
+
+        """
+        if self.client is None:
+            client = DummyClient()
+        # If this is a parallel client, scattering the data makes sure each worker has a
+        # copy of the data so we minimize transfer.
+        futures = tuple(client.scatter(i) for i in (coordinates, data, weights))
+        parameter_sets = [
+            dict(mindist=combo[0], damping=combo[1], force_coords=combo[2])
+            for combo in itertools.product(
+                self.mindists, self.dampings, self.force_coords
+            )
+        ]
+        scores = []
+        for params in parameter_sets:
+            spline = Spline(engine=self.engine, **params)
+            scores.append(
+                client.submit(
+                    cross_val_score,
+                    spline,
+                    coordinates=futures[0],
+                    data=futures[1],
+                    weights=futures[2],
+                    cv=self.cv,
+                )
+            )
+        if self.client is not None:
+            scores = [score.result() for score in scores]
+        self.scores_ = np.mean(scores, axis=1)
+        best = np.argmax(self.scores_)
+        self.best_ = Spline(engine=self.engine, **parameter_sets[best])
+        self.best_.fit(coordinates, data, weights=weights)
+        return self
+
+    def predict(self, coordinates):
+        """
+        Evaluate the fitted gridder on the given set of points.
+        """
+        check_is_fitted(self, ["best_"])
+        return self.best_.predict(coordinates)
 
 
 class Spline(BaseGridder):
