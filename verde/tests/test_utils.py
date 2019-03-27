@@ -11,7 +11,14 @@ from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
 import pytest
 
 from ..coordinates import grid_coordinates
-from ..utils import parse_engine, dummy_jit, kdtree
+from ..utils import (
+    parse_engine,
+    dummy_jit,
+    kdtree,
+    _read_surfer_header,
+    _create_surfer_field,
+    _check_surfer_integrity,
+)
 
 
 def test_parse_engine():
@@ -56,69 +63,89 @@ def test_kdtree():
 
 
 def test_surfer_header():
-    "Loads and parses the fake surfer header"
-    fake_header = ["DSAA", "100 200", "1.0 1000.0", "2.0 2000.0", "3.0 300.0"]
-
-    def load_surfer_header(fname):
-        with StringIO(fname) as input_file:
-            # DSAA is a Surfer ASCII GRD ID
-            grd_id = input_file.readline().strip()
-            # Read the number of columns (ny) and rows (nx)
-            ydims, xdims = [int(s) for s in input_file.readline().split()]
-            # Our x points North, so the first thing we read is y, not x.
-            south, north = [float(s) for s in input_file.readline().split()]
-            west, east = [float(s) for s in input_file.readline().split()]
-            dmin, dmax = [float(s) for s in input_file.readline().split()]
-
-        return [grd_id, ydims, xdims, south, north, west, east, dmin, dmax]
-
-    test_header = "\n".join(fake_header)
-    grid_id_name = fake_header[0]
-    ydimension = int(fake_header[1].split(" ")[0])
-    xdimension = int(fake_header[1].split(" ")[1])
-    southmin = float(fake_header[2].split(" ")[0])
-    northmax = float(fake_header[2].split(" ")[1])
-    westmin = float(fake_header[3].split(" ")[0])
-    eastmax = float(fake_header[3].split(" ")[1])
-    zmin = float(fake_header[4].split(" ")[0])
-    zmax = float(fake_header[4].split(" ")[1])
-
-    surfer_grd = load_surfer_header(test_header)
-
-    assert surfer_grd == [
-        grid_id_name,
-        ydimension,
-        xdimension,
-        southmin,
-        northmax,
-        westmin,
-        eastmax,
-        zmin,
-        zmax,
-    ]
+    "Tests the surfer header parser"
+    test_header = StringIO(
+        "DSAA\n 2 6\n 1.0 1000.0\n 2.0 2000.0\n 11 61\n"
+        "11 21 31 41 51 61\n 12 22 32 42 52 1.70141e38"
+    )
+    (
+        grid_id,
+        ydims,
+        xdims,
+        south,
+        north,
+        west,
+        east,
+        dmin,
+        dmax,
+    ) = _read_surfer_header(test_header)
+    grd_id = "DSAA"
+    ydimensions, xdimensions = 2, 6
+    southmin, northmax = 1.0, 1000.0
+    westmin, eastmax = 2.0, 2000.0
+    zmin, zmax = 11, 61
+    assert grid_id == grd_id
+    assert ydims == ydimensions
+    assert xdims == xdimensions
+    assert south == southmin
+    assert north == northmax
+    assert west == westmin
+    assert east == eastmax
+    assert dmin == zmin
+    assert dmax == zmax
 
 
-def test_surfer_grid_parse():
-    "Loads and parses the fake surfer grid"
-    fake_header = ["DSAA", "100 200", "1.0 1000.0", "2.0 2000.0", "3.0 300.0"]
-    s_grid = StringIO()
-    np.random.seed(2019)
-    fake_grid = np.random.uniform(3.0, 300.0, [100, 200])
-    np.savetxt(s_grid, fake_grid)
+def test_surfer_field():
+    "Tests the surfer field creation function"
+    test_header = StringIO(
+        "DSAA\n 2 6\n 1.0 1000.0\n 2.0 2000.0\n 11 61\n"
+        "11 21 31 41 51 61\n 12 22 32 42 52 1.70141e38"
+    )
+    (
+        grid_id,
+        ydims,
+        xdims,
+        south,
+        north,
+        west,
+        east,
+        dmin,
+        dmax,
+    ) = _read_surfer_header(test_header)
+    field, dims, coords = _create_surfer_field(
+        test_header, south, north, west, east, ydims, xdims
+    )
 
-    def load_surfer_grid(fname, dtype="float64"):
-        with StringIO(fname) as input_file:
-            field = np.fromiter(
-                (float(s) for line in input_file for s in line.split()), dtype=dtype
-            )
-            nans = field >= 1.70141e38
-            if np.any(nans):
-                field = np.ma.masked_where(nans, field)
-        return field.size
+    fld = np.asarray([[11, 21, 31, 41, 51, 61],
+     [12, 22, 32, 42, 52, 1.70141e38]])
+    dimensions = ["northing", "easting"]
+    northing = np.linspace(south, north, ydims)
+    easting = np.linspace(west, east, xdims)
 
-    grid_length = load_surfer_grid(s_grid.getvalue())
+    assert dims == dimensions
+    npt.assert_array_equal(field, fld)
+    npt.assert_array_equal(coords["northing"], northing)
+    npt.assert_array_equal(coords["easting"], easting)
 
-    ydimension = int(fake_header[1].split(" ")[0])
-    xdimension = int(fake_header[1].split(" ")[1])
 
-    assert ydimension * xdimension == grid_length
+def test_surfer_integrity():
+    "Tests the surfer integrity check function"
+    test_header = StringIO(
+        "DSAA\n 2 6\n 1.0 1000.0\n 2.0 2000.0\n 11 61\n"
+        "11 21 31 41 51 61\n 12 22 32 42 52 1.70141e38"
+    )
+    (
+        grid_id,
+        ydims,
+        xdims,
+        south,
+        north,
+        west,
+        east,
+        dmin,
+        dmax,
+    ) = _read_surfer_header(test_header)
+    field, dims, coords = _create_surfer_field(
+        test_header, south, north, west, east, ydims, xdims
+    )
+    _check_surfer_integrity(field, ydims, xdims, dmin, dmax)
