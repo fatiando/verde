@@ -18,12 +18,18 @@ class DummyClient:  # pylint: disable=no-self-use,too-few-public-methods
     >>> client = DummyClient()
     >>> client.submit(sum, (1, 2, 3))
     6
+    >>> print(client.scatter("bla"))
+    bla
 
     """
 
     def submit(self, function, *args, **kwargs):
         "Execute function with the given arguments and return its output"
         return function(*args, **kwargs)
+
+    def scatter(self, value):
+        "Does nothing but return the input"
+        return value
 
 
 def train_test_split(coordinates, data, weights=None, **kwargs):
