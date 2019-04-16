@@ -1,6 +1,7 @@
 """
 Test the coordinate generation functions
 """
+import numpy as np
 import numpy.testing as npt
 import pytest
 
@@ -9,6 +10,7 @@ from ..coordinates import (
     spacing_to_shape,
     profile_coordinates,
     grid_coordinates,
+    inside,
 )
 
 
@@ -92,3 +94,75 @@ def test_profile_coordiantes_fails():
         profile_coordinates((0, 1), (1, 2), size=0)
     with pytest.raises(ValueError):
         profile_coordinates((0, 1), (1, 2), size=-10)
+
+
+def test_inside_latlon_0_360():
+    "Check if inside gets points properly with geographic coordinates on [0, 360]"
+    # Define longitude coordinates on 0, 360
+    longitude = np.linspace(0, 350, 36)
+    latitude = np.linspace(-90, 90, 19)
+    longitude, latitude = np.meshgrid(longitude, latitude)
+    # Check region longitudes in 0, 360
+    region = 20, 40, -10, 10
+    are_inside = inside([longitude, latitude], region, latlon=True)
+    longitude_cut, latitude_cut = longitude[are_inside], latitude[are_inside]
+    assert longitude_cut.size == 9
+    assert latitude_cut.size == 9
+    assert set(longitude_cut) == set([20, 30, 40])
+    assert set(latitude_cut) == set([-10, 0, 10])
+    # Check region longitudes in -180, 180
+    region = 170, -170, -10, 10
+    are_inside = inside([longitude, latitude], region, latlon=True)
+    longitude_cut, latitude_cut = longitude[are_inside], latitude[are_inside]
+    assert longitude_cut.size == 9
+    assert latitude_cut.size == 9
+    assert set(longitude_cut) == set([170, 180, 190])
+    assert set(latitude_cut) == set([-10, 0, 10])
+    # Check region longitudes greater than 360
+    region = 380, 400, -10, 10
+    are_inside = inside([longitude, latitude], region, latlon=True)
+    longitude_cut, latitude_cut = longitude[are_inside], latitude[are_inside]
+    assert longitude_cut.size == 9
+    assert latitude_cut.size == 9
+    assert set(longitude_cut) == set([20, 30, 40])
+    assert set(latitude_cut) == set([-10, 0, 10])
+
+
+def test_inside_latlon_180_180():
+    "Check if inside gets points properly with geographic coordinates on [-180, 180]"
+    # Define longitude coordinates on -180, 180
+    longitude = np.linspace(-170, 180, 36)
+    latitude = np.linspace(-90, 90, 19)
+    longitude, latitude = np.meshgrid(longitude, latitude)
+    # Check region longitudes in 0, 360
+    region = 20, 40, -10, 10
+    are_inside = inside([longitude, latitude], region, latlon=True)
+    longitude_cut, latitude_cut = longitude[are_inside], latitude[are_inside]
+    assert longitude_cut.size == 9
+    assert latitude_cut.size == 9
+    assert set(longitude_cut) == set([20, 30, 40])
+    assert set(latitude_cut) == set([-10, 0, 10])
+    # Check region longitudes in 0, 360 around 180
+    region = 170, 190, -10, 10
+    are_inside = inside([longitude, latitude], region, latlon=True)
+    longitude_cut, latitude_cut = longitude[are_inside], latitude[are_inside]
+    assert longitude_cut.size == 9
+    assert latitude_cut.size == 9
+    assert set(longitude_cut) == set([170, 180, -170])
+    assert set(latitude_cut) == set([-10, 0, 10])
+    # Check region longitudes in -180, 180
+    region = 170, -170, -10, 10
+    are_inside = inside([longitude, latitude], region, latlon=True)
+    longitude_cut, latitude_cut = longitude[are_inside], latitude[are_inside]
+    assert longitude_cut.size == 9
+    assert latitude_cut.size == 9
+    assert set(longitude_cut) == set([170, 180, -170])
+    assert set(latitude_cut) == set([-10, 0, 10])
+    # Check region longitudes greater than 360
+    region = 380, 400, -10, 10
+    are_inside = inside([longitude, latitude], region, latlon=True)
+    longitude_cut, latitude_cut = longitude[are_inside], latitude[are_inside]
+    assert longitude_cut.size == 9
+    assert latitude_cut.size == 9
+    assert set(longitude_cut) == set([20, 30, 40])
+    assert set(latitude_cut) == set([-10, 0, 10])

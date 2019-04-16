@@ -40,6 +40,38 @@ def check_region(region):
         )
 
 
+def latlon_continuity(region, easting):
+    """
+    Modify geographic coordinates to ensure continuity around the globe.
+
+    The longitude coordinates of `region` and `easting` will be modified either to the
+    [0, 360] degrees interval or to the [0, 180] as convenient in order to ensure the
+    west coordinate of the region is lower than the east one with unwrapped phases.
+
+    Parameters
+    ----------
+    region: list = [W, E, S, N]
+        The boundaries of a given geographic coordinates in degrees.
+    easting : array
+        Array with the longitude coordinates in degrees.
+    """
+    w, e, s, n = region[:]
+    # Unwrap phases from region and easting coordinates
+    w, e = np.degrees(np.unwrap(np.radians([w, e])))
+    easting = np.degrees(np.unwrap(np.radians(easting)))
+    # Move region and easting coordinates to [0, 360]
+    w %= 360
+    e %= 360
+    easting %= 360
+    # Check if region boundaries are around the zero meridian (e.g. [350, 0])
+    if w > e:
+        w = ((w + 180) % 360) - 180
+        e = ((w + 180) % 360) - 180
+        easting = ((easting + 180) % 360) - 180
+    region = [w, e, s, n]
+    return region, easting
+
+
 def get_region(coordinates):
     """
     Get the bounding region of the given coordinates.
@@ -560,7 +592,7 @@ def profile_coordinates(point1, point2, size, extra_coords=None):
     return tuple(coordinates), distances
 
 
-def inside(coordinates, region):
+def inside(coordinates, region, latlon=False):
     """
     Determine which points fall inside a given region.
 
@@ -575,6 +607,9 @@ def inside(coordinates, region):
     region : list = [W, E, S, N]
         The boundaries of a given region in Cartesian or geographic
         coordinates.
+    latlon : bool (optional)
+        If True both `region` and `coordinates` will be assumed to be geographic
+        coordinates in degrees.
 
     Returns
     -------
@@ -606,9 +641,11 @@ def inside(coordinates, region):
      [False False False]]
 
     """
+    easting, northing = coordinates[:2]
+    if latlon:
+        region, easting = latlon_continuity(region, easting)
     check_region(region)
     w, e, s, n = region
-    easting, northing = coordinates[:2]
     # Allocate temporary arrays to minimize memory allocation overhead
     out = np.empty_like(easting, dtype=np.bool)
     tmp = tuple(np.empty_like(easting, dtype=np.bool) for i in range(4))
