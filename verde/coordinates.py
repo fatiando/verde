@@ -56,13 +56,10 @@ def latlon_continuity(region, easting):
         Array with the longitude coordinates in degrees.
     """
     w, e, s, n = region[:]
-    # Unwrap phases from region and easting coordinates
-    w, e = np.degrees(np.unwrap(np.radians([w, e])))
-    easting = np.degrees(np.unwrap(np.radians(easting)))
     # Move region and easting coordinates to [0, 360]
-    w %= 360
-    e %= 360
-    easting %= 360
+    w = w % 360
+    e = e % 360
+    easting = easting % 360
     # Check if region boundaries are around the zero meridian (e.g. [350, 0])
     if w > e:
         w = ((w + 180) % 360) - 180
