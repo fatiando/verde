@@ -40,33 +40,36 @@ def check_region(region):
         )
 
 
-def latlon_continuity(region, easting):
+def latlon_continuity(longitude, extra_coords=None):
     """
-    Modify geographic coordinates to ensure continuity around the globe.
+    Modify longitudinal geographic coordinates to ensure continuity around the globe.
 
-    The longitude coordinates of `region` and `easting` will be modified either to the
-    [0, 360] degrees interval or to the [0, 180] as convenient in order to ensure the
-    west coordinate of the region is lower than the east one with unwrapped phases.
+    The longitude coordinates of  will be modified either to the [0, 360] degrees
+    interval or to the [-180, 180] as convenient.
+    If `extra_coordinates` are passed, they will be modified but not taken into account
+    when deciding the best interval.
 
     Parameters
     ----------
-    region: list = [W, E, S, N]
-        The boundaries of a given geographic coordinates in degrees.
-    easting : array
-        Array with the longitude coordinates in degrees.
+    longitude : array
+        Longitudinal coordinates that will be put on the same degrees interval.
+    extra_coords : array (optional)
+        Additional longitudinal coordinates that will be modified but not taken into
+        account to decide the best interval.
     """
-    w, e, s, n = region[:]
-    # Move region and easting coordinates to [0, 360]
-    w = w % 360
-    e = e % 360
-    easting = easting % 360
-    # Check if region boundaries are around the zero meridian (e.g. [350, 0])
-    if w > e:
-        w = ((w + 180) % 360) - 180
-        e = ((e + 180) % 360) - 180
-        easting = ((easting + 180) % 360) - 180
-    region = [w, e, s, n]
-    return region, easting
+    # Move coordinates to [0, 360]
+    longitude = longitude % 360
+    # Check if the [-180, 180] interval is better suited
+    change_interval = longitude.max() - longitude.min() > 180
+    if change_interval:
+        longitude = ((longitude + 180) % 360) - 180
+    # Perform the same tasks in case of extra_coordinates are defined
+    if extra_coords is not None:
+        extra_coords = extra_coords % 360
+        if change_interval:
+            extra_coords = ((extra_coords + 180) % 360) - 180
+        return longitude, extra_coords
+    return longitude
 
 
 def get_region(coordinates):
@@ -638,11 +641,12 @@ def inside(coordinates, region, latlon=False):
      [False False False]]
 
     """
+    w, e, s, n = region
     easting, northing = coordinates[:2]
     if latlon:
-        region, easting = latlon_continuity(region, easting)
+        [w, e], easting = latlon_continuity(np.array([w, e]), extra_coords=easting)
+        region = [w, e, s, n]
     check_region(region)
-    w, e, s, n = region
     # Allocate temporary arrays to minimize memory allocation overhead
     out = np.empty_like(easting, dtype=np.bool)
     tmp = tuple(np.empty_like(easting, dtype=np.bool) for i in range(4))
