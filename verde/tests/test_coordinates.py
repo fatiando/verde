@@ -118,6 +118,14 @@ def test_inside_latlon_0_360():
     assert latitude_cut.size == 9
     assert set(longitude_cut) == set([170, 180, 190])
     assert set(latitude_cut) == set([-10, 0, 10])
+    # Check region longitudes around zero meridian
+    region = -10, 10, -10, 10
+    are_inside = inside([longitude, latitude], region, latlon=True)
+    longitude_cut, latitude_cut = longitude[are_inside], latitude[are_inside]
+    assert longitude_cut.size == 9
+    assert latitude_cut.size == 9
+    assert set(longitude_cut) == set([0, 10, 350])
+    assert set(latitude_cut) == set([-10, 0, 10])
     # Check region longitudes greater than 360
     region = 380, 400, -10, 10
     are_inside = inside([longitude, latitude], region, latlon=True)
@@ -157,6 +165,14 @@ def test_inside_latlon_180_180():
     assert longitude_cut.size == 9
     assert latitude_cut.size == 9
     assert set(longitude_cut) == set([170, 180, -170])
+    assert set(latitude_cut) == set([-10, 0, 10])
+    # Check region longitudes around zero meridian
+    region = -10, 10, -10, 10
+    are_inside = inside([longitude, latitude], region, latlon=True)
+    longitude_cut, latitude_cut = longitude[are_inside], latitude[are_inside]
+    assert longitude_cut.size == 9
+    assert latitude_cut.size == 9
+    assert set(longitude_cut) == set([-10, 0, 10])
     assert set(latitude_cut) == set([-10, 0, 10])
     # Check region longitudes greater than 360
     region = 380, 400, -10, 10
