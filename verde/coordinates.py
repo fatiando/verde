@@ -66,7 +66,7 @@ def latlon_continuity(region, easting):
     # Check if region boundaries are around the zero meridian (e.g. [350, 0])
     if w > e:
         w = ((w + 180) % 360) - 180
-        e = ((w + 180) % 360) - 180
+        e = ((e + 180) % 360) - 180
         easting = ((easting + 180) % 360) - 180
     region = [w, e, s, n]
     return region, easting
