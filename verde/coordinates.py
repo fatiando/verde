@@ -44,7 +44,7 @@ def latlon_continuity(longitude, extra_coords=None):
     """
     Modify longitudinal geographic coordinates to ensure continuity around the globe.
 
-    The longitude coordinates of  will be modified either to the [0, 360] degrees
+    The longitude coordinates will be modified either to the [0, 360] degrees
     interval or to the [-180, 180] as convenient.
     If `extra_coordinates` are passed, they will be modified but not taken into account
     when deciding the best interval.
