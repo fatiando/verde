@@ -655,6 +655,14 @@ def inside(coordinates, region, latlon=False):
     [[False  True  True]
      [False  True  True]
      [False False False]]
+    >>> # Geographic coordinates are also supported
+    >>> east, north = grid_coordinates([0, 350, -20, 20], spacing=10)
+    >>> region = [-10, 10, -10, 10]
+    >>> are_inside = inside([east, north], region, latlon=True)
+    >>> print(east[are_inside])
+    [  0.  10. 350.   0.  10. 350.   0.  10. 350.]
+    >>> print(north[are_inside])
+    [-10. -10. -10.   0.   0.   0.  10.  10.  10.]
 
     """
     w, e, s, n = region
