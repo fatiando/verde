@@ -11,6 +11,7 @@ from ..coordinates import (
     profile_coordinates,
     grid_coordinates,
     inside,
+    latlon_continuity,
 )
 
 
@@ -94,6 +95,54 @@ def test_profile_coordiantes_fails():
         profile_coordinates((0, 1), (1, 2), size=0)
     with pytest.raises(ValueError):
         profile_coordinates((0, 1), (1, 2), size=-10)
+
+
+def test_latlon_continuity():
+    "Test continuous boundary conditions in geographic coordinates."
+    # Two longitude coordinates in [0, 360]
+    longitude = np.array([10, 170])
+    npt.assert_allclose(latlon_continuity(longitude), longitude)
+    # Two longitude coordinates in [0, 360] with difference > 180 degrees
+    longitude = np.array([10, 350])
+    expected_longitude = np.array([10, -10])
+    npt.assert_allclose(latlon_continuity(longitude), expected_longitude)
+    # Two longitude coordinates in [-180, 180]
+    longitude = np.array([-50, 50])
+    npt.assert_allclose(latlon_continuity(longitude), longitude)
+    # Two longitude coordinates in [-180, 180] with difference > 180 degrees
+    longitude = np.array([170, -170])
+    expected_longitude = np.array([170, 190])
+    npt.assert_allclose(latlon_continuity(longitude), expected_longitude)
+    # Extra coordinates in [0, 360]
+    longitude = np.array([10, 170])
+    extra = np.linspace(0, 350, 36)
+    for result, expected in zip(
+        latlon_continuity(longitude, extra_coords=extra), [longitude, extra]
+    ):
+        npt.assert_allclose(result, expected)
+    # Extra coordinates in [0, 360] with difference > 180 degrees
+    longitude = np.array([10, 350])
+    extra = np.linspace(0, 350, 36)
+    expected_arrays = [np.array([10, -10]), np.hstack((extra[:18], extra[18:] - 360))]
+    for result, expected in zip(
+        latlon_continuity(longitude, extra_coords=extra), expected_arrays
+    ):
+        npt.assert_allclose(result, expected)
+    # Extra coordinates in [-180, 180]
+    longitude = np.array([-50, 50])
+    extra = np.linspace(-180, 170, 36)
+    for result, expected in zip(
+        latlon_continuity(longitude, extra_coords=extra), [longitude, extra]
+    ):
+        npt.assert_allclose(result, expected)
+    # Extra coordinates in [-180, 180] with difference > 180 degrees
+    longitude = np.array([170, -170])
+    extra = np.linspace(-180, 170, 36)
+    expected_arrays = [np.array([170, 190]), np.hstack((extra[:18] + 360, extra[18:]))]
+    for result, expected in zip(
+        latlon_continuity(longitude, extra_coords=extra), expected_arrays
+    ):
+        npt.assert_allclose(result, expected)
 
 
 def test_inside_latlon_0_360():
