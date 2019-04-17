@@ -64,6 +64,14 @@ def latlon_continuity(longitude, extra_coords=None):
     extra_coords : array (optional)
         Additional longitudinal coordinates moved to the best suited degrees interval.
         It is returned only if `extra_coords` argument is passed.
+
+    Examples
+    --------
+
+    >>> longitude = np.array([0, 10, 340, 350])
+    >>> print(latlon_continuity(longitude))
+    [  0  10 -20 -10]
+
     """
     # Move coordinates to [0, 360]
     longitude = longitude % 360
