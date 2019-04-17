@@ -59,6 +59,7 @@ Coordinate Manipulation
     project_region
     inside
     block_split
+    latlon_continuity
 
 Utilities
 ---------
