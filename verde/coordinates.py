@@ -56,6 +56,14 @@ def latlon_continuity(longitude, extra_coords=None):
     extra_coords : array (optional)
         Additional longitudinal coordinates that will be modified but not taken into
         account to decide the best interval.
+
+    Returns
+    -------
+    longitude : array
+        Longitudinal coordinates moved to the best suited degrees interval.
+    extra_coords : array (optional)
+        Additional longitudinal coordinates moved to the best suited degrees interval.
+        It is returned only if `extra_coords` argument is passed.
     """
     # Move coordinates to [0, 360]
     longitude = longitude % 360
