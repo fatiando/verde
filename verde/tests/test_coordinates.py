@@ -237,3 +237,50 @@ def test_inside_latlon_180_180():
     assert latitude_cut.size == 9
     assert set(longitude_cut) == set([20, 30, 40])
     assert set(latitude_cut) == set([-10, 0, 10])
+
+
+def test_inside_latlon_around_poles():
+    "Test inside function when region is around the poles"
+    longitude, latitude = grid_coordinates([0, 350, -90, 90], spacing=10.0)
+    # North Pole all around the globe
+    regions = [[0, 360, 70, 90], [-180, 180, 70, 90]]
+    for region in regions:
+        are_inside = inside([longitude, latitude], region, latlon=True)
+        assert longitude[are_inside].size == 3 * 36
+        assert latitude[are_inside].size == 3 * 36
+        assert set(longitude[are_inside]) == set(np.unique(longitude))
+        assert set(latitude[are_inside]) == set([70, 80, 90])
+    # South Pole all around the globe
+    regions = [[0, 360, -90, -70], [-180, 180, -90, -70]]
+    for region in regions:
+        are_inside = inside([longitude, latitude], region, latlon=True)
+        assert longitude[are_inside].size == 3 * 36
+        assert latitude[are_inside].size == 3 * 36
+        assert set(longitude[are_inside]) == set(np.unique(longitude))
+        assert set(latitude[are_inside]) == set([-90, -80, -70])
+    # Section at the North Pole
+    region = [40, 90, 70, 90]
+    are_inside = inside([longitude, latitude], region, latlon=True)
+    assert longitude[are_inside].size == 3 * 6
+    assert latitude[are_inside].size == 3 * 6
+    assert set(longitude[are_inside]) == set([40, 50, 60, 70, 80, 90])
+    assert set(latitude[are_inside]) == set([70, 80, 90])
+    region = [-90, -40, 70, 90]
+    are_inside = inside([longitude, latitude], region, latlon=True)
+    assert longitude[are_inside].size == 3 * 6
+    assert latitude[are_inside].size == 3 * 6
+    assert set(longitude[are_inside]) == set([270, 280, 290, 300, 310, 320])
+    assert set(latitude[are_inside]) == set([70, 80, 90])
+    # Section at the South Pole
+    region = [40, 90, -90, -70]
+    are_inside = inside([longitude, latitude], region, latlon=True)
+    assert longitude[are_inside].size == 3 * 6
+    assert latitude[are_inside].size == 3 * 6
+    assert set(longitude[are_inside]) == set([40, 50, 60, 70, 80, 90])
+    assert set(latitude[are_inside]) == set([-90, -80, -70])
+    region = [-90, -40, -90, -70]
+    are_inside = inside([longitude, latitude], region, latlon=True)
+    assert longitude[are_inside].size == 3 * 6
+    assert latitude[are_inside].size == 3 * 6
+    assert set(longitude[are_inside]) == set([270, 280, 290, 300, 310, 320])
+    assert set(latitude[are_inside]) == set([-90, -80, -70])
