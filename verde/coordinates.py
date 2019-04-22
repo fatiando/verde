@@ -40,54 +40,6 @@ def check_region(region):
         )
 
 
-def latlon_continuity(longitude, extra_coords=None):
-    """
-    Modify longitudinal geographic coordinates to ensure continuity around the globe.
-
-    The longitude coordinates will be modified either to the [0, 360] degrees
-    interval or to the [-180, 180] as convenient.
-    If `extra_coordinates` are passed, they will be modified but not taken into account
-    when deciding the best interval.
-
-    Parameters
-    ----------
-    longitude : array
-        Longitudinal coordinates that will be put on the same degrees interval.
-    extra_coords : array (optional)
-        Additional longitudinal coordinates that will be modified but not taken into
-        account to decide the best interval.
-
-    Returns
-    -------
-    longitude : array
-        Longitudinal coordinates moved to the best suited degrees interval.
-    extra_coords : array (optional)
-        Additional longitudinal coordinates moved to the best suited degrees interval.
-        It is returned only if `extra_coords` argument is passed.
-
-    Examples
-    --------
-
-    >>> longitude = np.array([0, 10, 340, 350])
-    >>> print(latlon_continuity(longitude))
-    [  0  10 -20 -10]
-
-    """
-    # Move coordinates to [0, 360]
-    longitude = longitude % 360
-    # Check if the [-180, 180] interval is better suited
-    change_interval = longitude.max() - longitude.min() > 180
-    if change_interval:
-        longitude = ((longitude + 180) % 360) - 180
-    # Perform the same tasks in case of extra_coordinates are defined
-    if extra_coords is not None:
-        extra_coords = extra_coords % 360
-        if change_interval:
-            extra_coords = ((extra_coords + 180) % 360) - 180
-        return longitude, extra_coords
-    return longitude
-
-
 def get_region(coordinates):
     """
     Get the bounding region of the given coordinates.
@@ -668,7 +620,7 @@ def inside(coordinates, region, latlon=False):
     w, e, s, n = region
     easting, northing = coordinates[:2]
     if latlon:
-        [w, e], easting = latlon_continuity(np.array([w, e]), extra_coords=easting)
+        [w, e], easting = _latlon_continuity(np.array([w, e]), extra_coords=easting)
         region = [w, e, s, n]
     check_region(region)
     # Allocate temporary arrays to minimize memory allocation overhead
@@ -764,3 +716,43 @@ def block_split(coordinates, spacing, adjust="spacing", region=None):
     tree = kdtree(block_coords)
     labels = tree.query(np.transpose(n_1d_arrays(coordinates, 2)))[1]
     return block_coords, labels
+
+
+def _latlon_continuity(longitude, extra_coords=None):
+    """
+    Modify longitudinal geographic coordinates to ensure continuity around the globe.
+
+    The longitude coordinates will be modified either to the [0, 360] degrees
+    interval or to the [-180, 180] as convenient.
+    If `extra_coordinates` are passed, they will be modified but not taken into account
+    when deciding the best interval.
+
+    Parameters
+    ----------
+    longitude : array
+        Longitudinal coordinates that will be put on the same degrees interval.
+    extra_coords : array (optional)
+        Additional longitudinal coordinates that will be modified but not taken into
+        account to decide the best interval.
+
+    Returns
+    -------
+    longitude : array
+        Longitudinal coordinates moved to the best suited degrees interval.
+    extra_coords : array (optional)
+        Additional longitudinal coordinates moved to the best suited degrees interval.
+        It is returned only if `extra_coords` argument is passed.
+    """
+    # Move coordinates to [0, 360]
+    longitude = longitude % 360
+    # Check if the [-180, 180] interval is better suited
+    change_interval = longitude.max() - longitude.min() > 180
+    if change_interval:
+        longitude = ((longitude + 180) % 360) - 180
+    # Perform the same tasks in case of extra_coordinates are defined
+    if extra_coords is not None:
+        extra_coords = extra_coords % 360
+        if change_interval:
+            extra_coords = ((extra_coords + 180) % 360) - 180
+        return longitude, extra_coords
+    return longitude
