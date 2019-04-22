@@ -116,6 +116,13 @@ def test_latlon_continuity():
         assert w_new == -20
         assert e_new == 20
         npt.assert_allclose(longitude_new, longitude_180)
+    # Check region around the globe
+    w, e = 20, 380
+    for longitude in [longitude_360, longitude_180]:
+        w_new, e_new, longitude_new = _latlon_continuity(w, e, longitude)
+        assert w_new == 0
+        assert e_new == 360
+        npt.assert_allclose(longitude_new, longitude_360)
     # Check angle greater than 180
     w, e = 0, 200
     for longitude in [longitude_360, longitude_180]:
