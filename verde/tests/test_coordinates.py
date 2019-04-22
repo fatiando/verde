@@ -99,50 +99,49 @@ def test_profile_coordiantes_fails():
 
 def test_latlon_continuity():
     "Test continuous boundary conditions in geographic coordinates."
-    # Two longitude coordinates in [0, 360]
-    longitude = np.array([10, 170])
-    npt.assert_allclose(_latlon_continuity(longitude), longitude)
-    # Two longitude coordinates in [0, 360] with difference > 180 degrees
-    longitude = np.array([10, 350])
-    expected_longitude = np.array([10, -10])
-    npt.assert_allclose(_latlon_continuity(longitude), expected_longitude)
-    # Two longitude coordinates in [-180, 180]
-    longitude = np.array([-50, 50])
-    npt.assert_allclose(_latlon_continuity(longitude), longitude)
-    # Two longitude coordinates in [-180, 180] with difference > 180 degrees
-    longitude = np.array([170, -170])
-    expected_longitude = np.array([170, 190])
-    npt.assert_allclose(_latlon_continuity(longitude), expected_longitude)
-    # Extra coordinates in [0, 360]
-    longitude = np.array([10, 170])
-    extra = np.linspace(0, 350, 36)
-    for result, expected in zip(
-        _latlon_continuity(longitude, extra_coords=extra), [longitude, extra]
-    ):
-        npt.assert_allclose(result, expected)
-    # Extra coordinates in [0, 360] with difference > 180 degrees
-    longitude = np.array([10, 350])
-    extra = np.linspace(0, 350, 36)
-    expected_arrays = [np.array([10, -10]), np.hstack((extra[:18], extra[18:] - 360))]
-    for result, expected in zip(
-        _latlon_continuity(longitude, extra_coords=extra), expected_arrays
-    ):
-        npt.assert_allclose(result, expected)
-    # Extra coordinates in [-180, 180]
-    longitude = np.array([-50, 50])
-    extra = np.linspace(-180, 170, 36)
-    for result, expected in zip(
-        _latlon_continuity(longitude, extra_coords=extra), [longitude, extra]
-    ):
-        npt.assert_allclose(result, expected)
-    # Extra coordinates in [-180, 180] with difference > 180 degrees
-    longitude = np.array([170, -170])
-    extra = np.linspace(-180, 170, 36)
-    expected_arrays = [np.array([170, 190]), np.hstack((extra[:18] + 360, extra[18:]))]
-    for result, expected in zip(
-        _latlon_continuity(longitude, extra_coords=extra), expected_arrays
-    ):
-        npt.assert_allclose(result, expected)
+    # Define longitude coordinates around the globe for [0, 360) and [-180, 180)
+    longitude_360 = np.linspace(0, 350, 36)
+    longitude_180 = np.hstack((longitude_360[:18], longitude_360[18:] - 360))
+    # Check w, e in [0, 360)
+    w, e = 10, 20
+    for longitude in [longitude_360, longitude_180]:
+        w_new, e_new, longitude_new = _latlon_continuity(w, e, longitude)
+        assert w_new == 10
+        assert e_new == 20
+        npt.assert_allclose(longitude_new, longitude_360)
+    # Check w, e in [-180, 180)
+    w, e = -20, 20
+    for longitude in [longitude_360, longitude_180]:
+        w_new, e_new, longitude_new = _latlon_continuity(w, e, longitude)
+        assert w_new == -20
+        assert e_new == 20
+        npt.assert_allclose(longitude_new, longitude_180)
+    # Check angle greater than 180
+    w, e = 0, 200
+    for longitude in [longitude_360, longitude_180]:
+        w_new, e_new, longitude_new = _latlon_continuity(w, e, longitude)
+        assert w_new == 0
+        assert e_new == 200
+        npt.assert_allclose(longitude_new, longitude_360)
+    w, e = -160, 160
+    for longitude in [longitude_360, longitude_180]:
+        w_new, e_new, longitude_new = _latlon_continuity(w, e, longitude)
+        assert w_new == -160
+        assert e_new == 160
+        npt.assert_allclose(longitude_new, longitude_180)
+    # Check overlapping regions
+    w, e = -200, 200
+    for longitude in [longitude_360, longitude_180]:
+        w_new, e_new, longitude_new = _latlon_continuity(w, e, longitude)
+        assert w_new == 160
+        assert e_new == 200
+        npt.assert_allclose(longitude_new, longitude_360)
+    w, e = 200, -200
+    for longitude in [longitude_360, longitude_180]:
+        w_new, e_new, longitude_new = _latlon_continuity(w, e, longitude)
+        assert w_new == -160
+        assert e_new == 160
+        npt.assert_allclose(longitude_new, longitude_180)
 
 
 def test_inside_latlon_0_360():
