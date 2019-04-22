@@ -11,7 +11,6 @@ from .coordinates import (
     get_region,
     pad_region,
     project_region,
-    _latlon_continuity,
 )
 from .mask import distance_mask
 from .utils import variance_to_weights, maxabs, grid_to_table
