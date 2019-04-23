@@ -723,17 +723,17 @@ def _latlon_continuity(west, east, longitude_coords):
     Modify longitudinal geographic coordinates to ensure continuity around the globe.
     """
     # Check if region is defined all around the globe
-    all_globe = bool(east - west == 360)
+    all_globe = bool((east - west) % 360 == 0 and east != west)
     # Move coordinates to [0, 360]
     west = west % 360
     east = east % 360
     longitude_coords = longitude_coords % 360
+    # Move west=0 and east=360 if region longitudes goes all around the globe
+    if all_globe:
+        west, east = 0, 360
     # Check if the [-180, 180] interval is better suited
     if west > east:
         east = ((east + 180) % 360) - 180
         west = ((west + 180) % 360) - 180
         longitude_coords = ((longitude_coords + 180) % 360) - 180
-    # Move west=0 and east=360 if region longitudes goes all around the globe
-    if all_globe:
-        west, east = 0, 360
     return west, east, longitude_coords
