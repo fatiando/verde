@@ -8,7 +8,7 @@ from .base.utils import n_1d_arrays
 from .utils import kdtree
 
 
-def check_region(region):
+def check_region(region, latlon=False):
     """
     Check that the given region dimensions are valid.
 
@@ -30,14 +30,30 @@ def check_region(region):
     if len(region) != 4:
         raise ValueError("Invalid region '{}'. Only 4 values allowed.".format(region))
     w, e, s, n = region
-    if w > e:
-        raise ValueError(
-            "Invalid region '{}' (W, E, S, N). Must have W =< E.".format(region)
-        )
-    if s > n:
-        raise ValueError(
-            "Invalid region '{}' (W, E, S, N). Must have S =< N.".format(region)
-        )
+    if latlon:
+        for lon in (w, e):
+            if lon > 360 or lon < -180:
+                raise ValueError(
+                    "Invalid longitude coordinate '{}'. ".format(lon)
+                    + "Longitudes must be > -180 degrees and < 360 degrees."
+                )
+        for lat in (s, n):
+            if lat > 90 or lat < -90:
+                raise ValueError(
+                    "Invalid latitude coordinate '{}'. ".format(lat)
+                    + "Latitudes must be > -90 degrees and < 90 degrees."
+                )
+    else:
+        if w > e:
+            raise ValueError(
+                "Invalid region '{}' (W, E, S, N).Must have W =< E.".format(region)
+                + "If working with geographic coordinates, don't forget to add the "
+                + "latlon=True argument."
+            )
+        if s > n:
+            raise ValueError(
+                "Invalid region '{}' (W, E, S, N). Must have S =< N.".format(region)
+            )
 
 
 def get_region(coordinates):
@@ -622,7 +638,7 @@ def inside(coordinates, region, latlon=False):
     if latlon:
         w, e, easting = _latlon_continuity(w, e, easting)
         region = [w, e, s, n]
-    check_region(region)
+    check_region(region, latlon=latlon)
     # Allocate temporary arrays to minimize memory allocation overhead
     out = np.empty_like(easting, dtype=np.bool)
     tmp = tuple(np.empty_like(easting, dtype=np.bool) for i in range(4))
