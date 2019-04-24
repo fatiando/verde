@@ -31,18 +31,22 @@ def check_region(region, latlon=False):
         raise ValueError("Invalid region '{}'. Only 4 values allowed.".format(region))
     w, e, s, n = region
     if latlon:
-        for lon in (w, e):
-            if lon > 360 or lon < -180:
-                raise ValueError(
-                    "Invalid longitude coordinate '{}'. ".format(lon)
-                    + "Longitudes must be > -180 degrees and < 360 degrees."
-                )
-        for lat in (s, n):
-            if lat > 90 or lat < -90:
-                raise ValueError(
-                    "Invalid latitude coordinate '{}'. ".format(lat)
-                    + "Latitudes must be > -90 degrees and < 90 degrees."
-                )
+        if w > 360 or w < -180 or e > 360 or e < -180:
+            raise ValueError(
+                "Invalid region '{}'. ".format(region)
+                + "Longitudes must be > -180 degrees and < 360 degrees."
+            )
+        if s > 90 or s < -90 or n > 90 or n < -90:
+            raise ValueError(
+                "Invalid region '{}'. ".format(region)
+                + "Latitudes must be > -90 degrees and < 90 degrees."
+            )
+        if abs(e - w) > 360:
+            raise ValueError(
+                "Invalid region '{}' (W, E, S, N). ".format(region)
+                + "East and West boundaries must not be separated by an angle greater"
+                + "than 360 degrees."
+            )
     else:
         if w > e:
             raise ValueError(
