@@ -31,16 +31,7 @@ def check_region(region, latlon=False):
         raise ValueError("Invalid region '{}'. Only 4 values allowed.".format(region))
     w, e, s, n = region
     if latlon:
-        if w > 360 or w < -180 or e > 360 or e < -180:
-            raise ValueError(
-                "Invalid region '{}'. ".format(region)
-                + "Longitudes must be > -180 degrees and < 360 degrees."
-            )
-        if s > 90 or s < -90 or n > 90 or n < -90:
-            raise ValueError(
-                "Invalid region '{}'. ".format(region)
-                + "Latitudes must be > -90 degrees and < 90 degrees."
-            )
+        _check_geographic_coordinates([np.array([w, e]), np.array([s, n])])
         if abs(e - w) > 360:
             raise ValueError(
                 "Invalid region '{}' (W, E, S, N). ".format(region)
@@ -757,3 +748,16 @@ def _latlon_continuity(west, east, longitude_coords):
         west = ((west + 180) % 360) - 180
         longitude_coords = ((longitude_coords + 180) % 360) - 180
     return west, east, longitude_coords
+
+
+def _check_geographic_coordinates(coordinates):
+    "Check if geographic coordinates are within accepted degrees intervals"
+    longitude, latitude = coordinates[:2]
+    if (longitude > 360).all() or (longitude < -180).all():
+        raise ValueError(
+            "Invalid longitude coordinates. They should be < 360 and > -180 degrees"
+        )
+    if (latitude > 90).all() or (latitude < -90).all():
+        raise ValueError(
+            "Invalid latitude coordinates. They should be < 90 and > -9 degrees"
+        )
