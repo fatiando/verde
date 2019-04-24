@@ -20,6 +20,8 @@ def check_region(region, latlon=False):
     region : list = [W, E, S, N]
         The boundaries of a given region in Cartesian or geographic
         coordinates.
+    latlon : bool (optional)
+        If True the `region` will be assumed to be geographic coordinates in degrees.
 
     Raises
     ------
