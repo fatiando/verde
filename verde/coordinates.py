@@ -47,10 +47,10 @@ def check_region(region, latlon=False):
                 + "If working with geographic coordinates, don't forget to add the "
                 + "latlon=True argument."
             )
-        if s > n:
-            raise ValueError(
-                "Invalid region '{}' (W, E, S, N). Must have S =< N.".format(region)
-            )
+    if s > n:
+        raise ValueError(
+            "Invalid region '{}' (W, E, S, N). Must have S =< N.".format(region)
+        )
 
 
 def get_region(coordinates):
