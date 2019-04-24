@@ -101,7 +101,7 @@ def test_check_region():
     with pytest.raises(ValueError):
         check_region([-45, 45, 0, 100], latlon=True)
     with pytest.raises(ValueError):
-        check_region([0, 360.5, -30, 30], latlon=True)
+        check_region([-100, 260.5, -30, 30], latlon=True)
 
 
 def test_profile_coordiantes_fails():
