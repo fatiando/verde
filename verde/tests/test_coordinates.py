@@ -117,57 +117,82 @@ def test_latlon_continuity():
     # Define longitude coordinates around the globe for [0, 360) and [-180, 180)
     longitude_360 = np.linspace(0, 350, 36)
     longitude_180 = np.hstack((longitude_360[:18], longitude_360[18:] - 360))
+    latitude = np.linspace(-90, 90, 36)
+    s, n = -90, 90
     # Check w, e in [0, 360)
-    w, e = 10, 20
+    w, e = 10.5, 20.3
     for longitude in [longitude_360, longitude_180]:
-        w_new, e_new, longitude_new = _latlon_continuity(w, e, longitude)
-        assert w_new == 10
-        assert e_new == 20
+        coordinates = [longitude, latitude]
+        region = (w, e, s, n)
+        coordinates_new, region_new = _latlon_continuity(coordinates, region)
+        longitude_new, latitude_new = coordinates_new[:]
+        w_new, e_new, s_new, n_new = region_new[:]
+        assert s_new == s
+        assert n_new == n
+        assert w_new == w
+        assert e_new == e
         npt.assert_allclose(longitude_new, longitude_360)
     # Check w, e in [-180, 180)
     w, e = -20, 20
     for longitude in [longitude_360, longitude_180]:
-        w_new, e_new, longitude_new = _latlon_continuity(w, e, longitude)
+        coordinates = [longitude, latitude]
+        region = (w, e, s, n)
+        coordinates_new, region_new = _latlon_continuity(coordinates, region)
+        longitude_new, latitude_new = coordinates_new[:]
+        w_new, e_new, s_new, n_new = region_new[:]
+        assert s_new == s
+        assert n_new == n
         assert w_new == -20
         assert e_new == 20
         npt.assert_allclose(longitude_new, longitude_180)
     # Check region around the globe
-    for w, e in [[0, 360], [-180, 180], [20, 380], [0, 360 * 2]]:
+    for w, e in [[0, 360], [-180, 180], [-20, 340]]:
         for longitude in [longitude_360, longitude_180]:
-            w_new, e_new, longitude_new = _latlon_continuity(w, e, longitude)
+            coordinates = [longitude, latitude]
+            region = (w, e, s, n)
+            coordinates_new, region_new = _latlon_continuity(coordinates, region)
+            longitude_new, latitude_new = coordinates_new[:]
+            w_new, e_new, s_new, n_new = region_new[:]
+            assert s_new == s
+            assert n_new == n
             assert w_new == 0
             assert e_new == 360
             npt.assert_allclose(longitude_new, longitude_360)
     # Check w == e
     w, e = 20, 20
     for longitude in [longitude_360, longitude_180]:
-        w_new, e_new, longitude_new = _latlon_continuity(w, e, longitude)
+        coordinates = [longitude, latitude]
+        region = (w, e, s, n)
+        coordinates_new, region_new = _latlon_continuity(coordinates, region)
+        longitude_new, latitude_new = coordinates_new[:]
+        w_new, e_new, s_new, n_new = region_new[:]
+        assert s_new == s
+        assert n_new == n
         assert w_new == 20
         assert e_new == 20
         npt.assert_allclose(longitude_new, longitude_360)
     # Check angle greater than 180
     w, e = 0, 200
     for longitude in [longitude_360, longitude_180]:
-        w_new, e_new, longitude_new = _latlon_continuity(w, e, longitude)
+        coordinates = [longitude, latitude]
+        region = (w, e, s, n)
+        coordinates_new, region_new = _latlon_continuity(coordinates, region)
+        longitude_new, latitude_new = coordinates_new[:]
+        w_new, e_new, s_new, n_new = region_new[:]
+        assert s_new == s
+        assert n_new == n
         assert w_new == 0
         assert e_new == 200
         npt.assert_allclose(longitude_new, longitude_360)
     w, e = -160, 160
     for longitude in [longitude_360, longitude_180]:
-        w_new, e_new, longitude_new = _latlon_continuity(w, e, longitude)
-        assert w_new == -160
-        assert e_new == 160
-        npt.assert_allclose(longitude_new, longitude_180)
-    # Check overlapping regions
-    w, e = -200, 200
-    for longitude in [longitude_360, longitude_180]:
-        w_new, e_new, longitude_new = _latlon_continuity(w, e, longitude)
-        assert w_new == 160
-        assert e_new == 200
-        npt.assert_allclose(longitude_new, longitude_360)
-    w, e = 200, -200
-    for longitude in [longitude_360, longitude_180]:
-        w_new, e_new, longitude_new = _latlon_continuity(w, e, longitude)
+        coordinates = [longitude, latitude]
+        region = (w, e, s, n)
+        coordinates_new, region_new = _latlon_continuity(coordinates, region)
+        longitude_new, latitude_new = coordinates_new[:]
+        w_new, e_new, s_new, n_new = region_new[:]
+        assert s_new == s
+        assert n_new == n
         assert w_new == -160
         assert e_new == 160
         npt.assert_allclose(longitude_new, longitude_180)
@@ -202,14 +227,6 @@ def test_inside_latlon_0_360():
     assert longitude_cut.size == 9
     assert latitude_cut.size == 9
     assert set(longitude_cut) == set([0, 10, 350])
-    assert set(latitude_cut) == set([-10, 0, 10])
-    # Check region longitudes greater than 360
-    region = 380, 400, -10, 10
-    are_inside = inside([longitude, latitude], region, latlon=True)
-    longitude_cut, latitude_cut = longitude[are_inside], latitude[are_inside]
-    assert longitude_cut.size == 9
-    assert latitude_cut.size == 9
-    assert set(longitude_cut) == set([20, 30, 40])
     assert set(latitude_cut) == set([-10, 0, 10])
 
 
@@ -250,14 +267,6 @@ def test_inside_latlon_180_180():
     assert longitude_cut.size == 9
     assert latitude_cut.size == 9
     assert set(longitude_cut) == set([-10, 0, 10])
-    assert set(latitude_cut) == set([-10, 0, 10])
-    # Check region longitudes greater than 360
-    region = 380, 400, -10, 10
-    are_inside = inside([longitude, latitude], region, latlon=True)
-    longitude_cut, latitude_cut = longitude[are_inside], latitude[are_inside]
-    assert longitude_cut.size == 9
-    assert latitude_cut.size == 9
-    assert set(longitude_cut) == set([20, 30, 40])
     assert set(latitude_cut) == set([-10, 0, 10])
 
 
