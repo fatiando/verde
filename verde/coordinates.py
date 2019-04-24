@@ -753,11 +753,11 @@ def _latlon_continuity(west, east, longitude_coords):
 def _check_geographic_coordinates(coordinates):
     "Check if geographic coordinates are within accepted degrees intervals"
     longitude, latitude = coordinates[:2]
-    if (longitude > 360).all() or (longitude < -180).all():
+    if (longitude > 360).any() or (longitude < -180).any():
         raise ValueError(
-            "Invalid longitude coordinates. They should be < 360 and > -180 degrees"
+            "Invalid longitude coordinates. They should be < 360 and > -180 degrees."
         )
-    if (latitude > 90).all() or (latitude < -90).all():
+    if (latitude > 90).any() or (latitude < -90).any():
         raise ValueError(
-            "Invalid latitude coordinates. They should be < 90 and > -9 degrees"
+            "Invalid latitude coordinates. They should be < 90 and > -90 degrees."
         )
