@@ -628,12 +628,12 @@ def inside(coordinates, region, latlon=False):
     [-10. -10. -10.   0.   0.   0.  10.  10.  10.]
 
     """
+    check_region(region, latlon=latlon)
+    if latlon:
+        _check_geographic_coordinates(coordinates)
+        coordinates, region = _latlon_continuity(coordinates, region)
     w, e, s, n = region
     easting, northing = coordinates[:2]
-    if latlon:
-        w, e, easting = _latlon_continuity(w, e, easting)
-        region = [w, e, s, n]
-    check_region(region, latlon=latlon)
     # Allocate temporary arrays to minimize memory allocation overhead
     out = np.empty_like(easting, dtype=np.bool)
     tmp = tuple(np.empty_like(easting, dtype=np.bool) for i in range(4))
@@ -729,25 +729,29 @@ def block_split(coordinates, spacing, adjust="spacing", region=None):
     return block_coords, labels
 
 
-def _latlon_continuity(west, east, longitude_coords):
+def _latlon_continuity(coordinates, region):
     """
     Modify longitudinal geographic coordinates to ensure continuity around the globe.
     """
+    w, e, s, n = region[:]
+    longitude, latitude = coordinates[:2]
     # Check if region is defined all around the globe
-    all_globe = bool((east - west) % 360 == 0 and east != west)
-    # Move coordinates to [0, 360]
-    west = west % 360
-    east = east % 360
-    longitude_coords = longitude_coords % 360
+    all_globe = np.allclose(abs(e - w), 360)
+    # Move coordinates to [0, 360)
+    w = w % 360
+    e = e % 360
+    longitude = longitude % 360
     # Move west=0 and east=360 if region longitudes goes all around the globe
     if all_globe:
-        west, east = 0, 360
-    # Check if the [-180, 180] interval is better suited
-    if west > east:
-        east = ((east + 180) % 360) - 180
-        west = ((west + 180) % 360) - 180
-        longitude_coords = ((longitude_coords + 180) % 360) - 180
-    return west, east, longitude_coords
+        w, e = 0, 360
+    # Check if the [-180, 180) interval is better suited
+    if w > e:
+        e = ((e + 180) % 360) - 180
+        w = ((w + 180) % 360) - 180
+        longitude = ((longitude + 180) % 360) - 180
+    region = [w, e, s, n]
+    coordinates = [longitude, latitude]
+    return coordinates, region
 
 
 def _check_geographic_coordinates(coordinates):
