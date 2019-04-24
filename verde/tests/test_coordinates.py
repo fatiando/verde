@@ -87,6 +87,21 @@ def test_check_region():
         check_region([-1, -2, -4, -3])
     with pytest.raises(ValueError):
         check_region([-2, -1, -2, -3])
+    check_region([0, 360, -90, 90], latlon=True)
+    with pytest.raises(ValueError):
+        check_region([-200, 0, -10, 10], latlon=True)
+    with pytest.raises(ValueError):
+        check_region([0, 400, -10, 10], latlon=True)
+    with pytest.raises(ValueError):
+        check_region([-200, -190, -10, 10], latlon=True)
+    with pytest.raises(ValueError):
+        check_region([-45, 45, -100, 0], latlon=True)
+    with pytest.raises(ValueError):
+        check_region([-45, 45, -100, 0], latlon=True)
+    with pytest.raises(ValueError):
+        check_region([-45, 45, 0, 100], latlon=True)
+    with pytest.raises(ValueError):
+        check_region([0, 360.5, -30, 30], latlon=True)
 
 
 def test_profile_coordiantes_fails():
