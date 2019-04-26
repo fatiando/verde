@@ -5,7 +5,6 @@ import functools
 
 import numpy as np
 import pandas as pd
-import xarray as xr
 from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
 
 try:
@@ -253,103 +252,6 @@ def grid_to_table(grid):
     coord_dict.update(var_dict)
     data = pd.DataFrame(coord_dict)
     return data
-
-
-def load_surfer(fname):
-    """
-    Read data from a Surfer ASCII grid file.
-
-    Surfer is a contouring, griding and surface mapping software
-    from GoldenSoftware. The names and logos for Surfer and Golden
-    Software are registered trademarks of Golden Software, Inc.
-
-    http://www.goldensoftware.com/products/surfer
-
-    This function opens a Surfer grid file, masks any NaNs in the data,
-    and outputs a :class:`xarray.DataArray` that contains easting and northing
-    coordinates, data values, and associated file metadata in the
-    DataArray attributes.
-
-    Parameters
-    ----------
-    fname : str
-        Name or path of the Surfer grid file
-    dtype : str or numpy dtype
-        The type of variable used for the data. Default is ``float64``. Use
-        ``float32`` if the data are large and precision is not an issue.
-    Returns
-    ----------
-    data : :class:`xarray.DataArray`
-        A 2D grid with the data variables.
-    """
-    # Surfer ASCII grid structure
-    # DSAA            Surfer ASCII GRD ID
-    # nCols nRows     number of columns and rows
-    # xMin xMax       X min max
-    # yMin yMax       Y min max
-    # zMin zMax       Z min max
-    # z11 z21 z31 ... List of Z values
-    with open(fname) as input_file:
-        (
-            grid_id,
-            ydims,
-            xdims,
-            south,
-            north,
-            west,
-            east,
-            dmin,
-            dmax,
-        ) = _read_surfer_header(input_file)
-        field, dims, coords = _create_surfer_field(
-            input_file, south, north, west, east, ydims, xdims
-        )
-        _check_surfer_integrity(field, ydims, xdims, dmin, dmax)
-        attrs = {"file": fname, "DSAA grid ID": grid_id}
-        data = xr.DataArray(field, coords=coords, dims=dims, attrs=attrs)
-    return data
-
-
-def _read_surfer_header(input_file):
-    # DSAA is a Surfer ASCII GRD ID
-    grid_id = input_file.readline().strip()
-    # Read the number of columns (ny) and rows (nx)
-    ydims, xdims = [int(s) for s in input_file.readline().split()]
-    # Our x points North, so the first thing we read is y, not x.
-    south, north = [float(s) for s in input_file.readline().split()]
-    west, east = [float(s) for s in input_file.readline().split()]
-    dmin, dmax = [float(s) for s in input_file.readline().split()]
-    return grid_id, ydims, xdims, south, north, west, east, dmin, dmax
-
-
-def _create_surfer_field(
-    input_file, south, north, west, east, ydims, xdims, dtype="float64"
-):
-
-    field = np.fromiter(
-        (float(s) for line in input_file for s in line.split()), dtype=dtype
-    )
-    nans = field >= 1.70141e38
-    if np.any(nans):
-        field = np.ma.masked_where(nans, field)
-
-    dims = ["northing", "easting"]
-    coords = {
-        "northing": np.linspace(south, north, ydims),
-        "easting": np.linspace(west, east, xdims),
-    }
-    field = field.reshape(ydims, xdims)
-    return field, dims, coords
-
-
-def _check_surfer_integrity(field, ydims, xdims, dmin, dmax):
-    err_msg = "{} of data ({}) doesn't match one from file ({})."
-    if field.size != ydims * xdims:
-        raise IOError(err_msg.format("Dimensions", (ydims * xdims), len(field)))
-    if not np.allclose(dmin, field.min()):
-        raise IOError(err_msg.format("Min", dmin, field.min()))
-    if not np.allclose(dmax, field.max()):
-        raise IOError(err_msg.format("Max", dmax, field.max()))
 
 
 def kdtree(coordinates, use_pykdtree=True, **kwargs):

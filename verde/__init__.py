@@ -13,7 +13,8 @@ from .coordinates import (
     project_region,
 )
 from .mask import distance_mask
-from .utils import variance_to_weights, maxabs, grid_to_table, load_surfer
+from .utils import variance_to_weights, maxabs, grid_to_table
+from .io import load_surfer
 from .distances import median_distance
 from .blockreduce import BlockReduce, BlockMean
 from .scipygridder import ScipyGridder
