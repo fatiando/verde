@@ -72,7 +72,15 @@ Utilities
     variance_to_weights
     grid_to_table
     median_distance
+
+Input/Output
+------------
+
+.. autosummary::
+   :toctree: generated/
+
     load_surfer
+
 
 .. automodule:: verde.datasets
 
