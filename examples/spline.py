@@ -6,7 +6,14 @@ Biharmonic spline interpolation is based on estimating vertical forces acting on
 elastic sheet that yield deformations in the sheet equal to the observed data. The
 results are similar to using :class:`verde.ScipyGridder` with ``method='cubic'`` but
 the interpolation is usually a bit slower. However, the advantage of using
-:class:`verde.Spline` is that we can assign weights to the data and do model selection.
+:class:`verde.Spline` is that we can assign weights to the data and do model evaluation.
+
+.. note::
+
+    Scoring on a single split of the data can be highly dependent on the
+    ``random_state``. See :ref:`model_selection` for more information and a better
+    approach.
+
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
@@ -71,12 +78,8 @@ plt.figure(figsize=(8, 6))
 ax = plt.axes(projection=ccrs.Mercator())
 ax.set_title("Air temperature gridded with biharmonic spline")
 ax.plot(*coordinates, ".k", markersize=1, transform=ccrs.PlateCarree())
-tmp = ax.pcolormesh(
-    grid.longitude,
-    grid.latitude,
-    grid.temperature,
-    cmap="plasma",
-    transform=ccrs.PlateCarree(),
+tmp = grid.temperature.plot.pcolormesh(
+    ax=ax, cmap="plasma", transform=ccrs.PlateCarree(), add_colorbar=False
 )
 plt.colorbar(tmp).set_label("Air temperature (C)")
 # Use an utility function to add tick labels and land and ocean features to the map.

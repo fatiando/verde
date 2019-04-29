@@ -3,12 +3,8 @@ Mask grid points based on different criteria.
 """
 import numpy as np
 
-from .utils import n_1d_arrays
-
-try:
-    from pykdtree.kdtree import KDTree
-except ImportError:
-    from scipy.spatial import cKDTree as KDTree  # pylint: disable=no-name-in-module
+from .base import n_1d_arrays
+from .utils import kdtree
 
 
 def distance_mask(
@@ -104,7 +100,7 @@ def distance_mask(
     if projection is not None:
         data_coordinates = projection(*n_1d_arrays(data_coordinates, 2))
         coordinates = projection(*n_1d_arrays(coordinates, 2))
-    tree = KDTree(np.transpose(n_1d_arrays(data_coordinates, 2)))
+    tree = kdtree(data_coordinates[:2])
     distance = tree.query(np.transpose(n_1d_arrays(coordinates, 2)))[0].reshape(shape)
     mask = distance <= maxdist
     if grid is not None:

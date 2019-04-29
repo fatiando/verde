@@ -1,9 +1,9 @@
-# Project Contributors
+# Project Authors
 
-This project was initially created by
-[Leonardo Uieda](http://www.leouieda.com/).
+This project was started by [Leonardo Uieda](http://www.leouieda.com/). The following
+people have made contributions to the project (in alphabetical order by last name) and
+are considered "The Verde Developers":
 
-The following people have made contributions to the project:
-
-* [Leonardo Uieda](http://www.leouieda.com/)
 * [David Hoese](https://github.com/djhoese)
+* [Jesse Pisel](https://github.com/jessepisel)
+* [Leonardo Uieda](https://github.com/leouieda)

@@ -10,9 +10,9 @@ import versioneer
 
 NAME = "verde"
 FULLNAME = "Verde"
-AUTHOR = "Leonardo Uieda"
+AUTHOR = "The Verde Developers"
 AUTHOR_EMAIL = "leouieda@gmail.com"
-MAINTAINER = AUTHOR
+MAINTAINER = "Leonardo Uieda"
 MAINTAINER_EMAIL = AUTHOR_EMAIL
 LICENSE = "BSD License"
 URL = "https://github.com/fatiando/verde"
@@ -29,8 +29,8 @@ CLASSIFIERS = [
     "Intended Audience :: Education",
     "Topic :: Scientific/Engineering",
     "Topic :: Software Development :: Libraries",
-    "Programming Language :: Python :: 3.5",
     "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
     "License :: OSI Approved :: {}".format(LICENSE),
 ]
 PLATFORMS = "Any"
@@ -41,7 +41,7 @@ PACKAGE_DATA = {
     "verde.tests": ["data/*", "baseline/*"],
 }
 INSTALL_REQUIRES = ["numpy", "scipy", "pandas", "xarray", "scikit-learn", "pooch"]
-PYTHON_REQUIRES = ">=3.5"
+PYTHON_REQUIRES = ">=3.6"
 
 if __name__ == "__main__":
     setup(

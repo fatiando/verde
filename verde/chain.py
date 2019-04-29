@@ -4,7 +4,7 @@ Class for chaining gridders.
 from sklearn.utils.validation import check_is_fitted
 
 from .base import BaseGridder
-from .utils import check_data
+from .base.utils import check_data
 from .coordinates import get_region
 
 
@@ -48,6 +48,7 @@ class Chain(BaseGridder):
     """
 
     def __init__(self, steps):
+        super().__init__()
         self.steps = steps
 
     @property

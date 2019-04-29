@@ -10,12 +10,12 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 .. image:: http://img.shields.io/pypi/v/verde.svg?style=flat-square&label=version
     :alt: Latest version on PyPI
     :target: https://pypi.python.org/pypi/verde
-.. image:: http://img.shields.io/travis/fatiando/verde/master.svg?style=flat-square&label=Linux|Mac
+.. image:: http://img.shields.io/travis/fatiando/verde/master.svg?style=flat-square&label=TravisCI
     :alt: TravisCI build status
     :target: https://travis-ci.org/fatiando/verde
-.. image:: http://img.shields.io/appveyor/ci/fatiando/verde/master.svg?style=flat-square&label=Windows
-    :alt: AppVeyor build status
-    :target: https://ci.appveyor.com/project/fatiando/verde
+.. image:: https://img.shields.io/azure-devops/build/fatiando/066f88d8-0495-49ba-bad9-ef7431356ce9/7/master.svg?label=Azure&style=flat-square
+    :alt: Azure Pipelines build status
+    :target: https://dev.azure.com/fatiando/verde/_build
 .. image:: https://img.shields.io/codecov/c/github/fatiando/verde/master.svg?style=flat-square
     :alt: Test coverage status
     :target: https://codecov.io/gh/fatiando/verde
@@ -95,9 +95,10 @@ Contacting us
 Citing Verde
 ------------
 
-This is research software **made by scientists**. Citations help us justify the effort
-that goes into building and maintaining this project. If you used Verde for your
-research, please consider citing us.
+This is research software **made by scientists** (see
+`AUTHORS.md <https://github.com/fatiando/verde/blob/master/AUTHORS.md>`__). Citations
+help us justify the effort that goes into building and maintaining this project. If you
+used Verde for your research, please consider citing us.
 
 See our `CITATION.rst file <https://github.com/fatiando/verde/blob/master/CITATION.rst>`__
 to find out more.
@@ -162,5 +163,6 @@ Documentation for other versions
 * `Development <http://www.fatiando.org/verde/dev>`__ (reflects the *master* branch on
   Github)
 * `Latest release <http://www.fatiando.org/verde/latest>`__
+* `v1.1.0 <http://www.fatiando.org/verde/v1.1.0>`__
 * `v1.0.1 <http://www.fatiando.org/verde/v1.0.1>`__
 * `v1.0.0 <http://www.fatiando.org/verde/v1.0.0>`__

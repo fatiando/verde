@@ -4,9 +4,13 @@ Test the utility functions.
 import sys
 from unittest import mock
 
+import numpy as np
+import numpy.testing as npt
+from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
 import pytest
 
-from ..utils import parse_engine, dummy_jit
+from ..coordinates import grid_coordinates
+from ..utils import parse_engine, dummy_jit, kdtree
 
 
 def test_parse_engine():
@@ -35,3 +39,16 @@ def test_dummy_jit():
 
     with pytest.raises(RuntimeError):
         function()
+
+
+def test_kdtree():
+    "Test that the kdtree returned works for query"
+    coords = grid_coordinates((-10, 0, 0, 20), spacing=1)
+    for use_pykdtree in [True, False]:
+        tree = kdtree(coords, use_pykdtree=use_pykdtree)
+        dist, labels = tree.query(np.array([[-10, 0.1]]))
+        assert labels.size == 1
+        assert labels[0] == 0
+        npt.assert_allclose(dist, 0.1)
+        if not use_pykdtree:
+            assert isinstance(tree, cKDTree)

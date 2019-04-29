@@ -6,9 +6,9 @@ from warnings import warn
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
-from .base import BaseGridder, check_fit_input, least_squares
+from .base import n_1d_arrays, BaseGridder, check_fit_input, least_squares
 from .coordinates import get_region
-from .utils import n_1d_arrays, parse_engine
+from .utils import parse_engine
 
 try:
     import numba
@@ -92,6 +92,7 @@ class Spline(BaseGridder):
     """
 
     def __init__(self, mindist=1e-5, damping=None, force_coords=None, engine="auto"):
+        super().__init__()
         self.mindist = mindist
         self.damping = damping
         self.force_coords = force_coords

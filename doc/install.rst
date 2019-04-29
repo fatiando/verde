@@ -6,7 +6,7 @@ Installing
 Which Python?
 -------------
 
-You'll need **Python 3.5 or greater**.
+You'll need **Python 3.6 or greater**.
 
 We recommend using the
 `Anaconda Python distribution <https://www.anaconda.com/download>`__
@@ -29,11 +29,12 @@ Dependencies
 The following are optional dependencies that can make some parts of the code faster if
 they are installed:
 
+* `numba <https://numba.pydata.org/>`__: replaces numpy calculations of predictions and
+  Jacobian matrices in splines with faster and more memory efficient multi-threaded
+  versions.
 * `pykdtree <https://github.com/storpipfugl/pykdtree>`__: replaces
-  :class:`scipy.spatial.cKDTree` in :class:`verde.BlockReduce` and
-  :func:`verde.distance_mask` for better performance.
-* `numba <https://numba.pydata.org/>`__: replaces numpy calculations of Jacobian
-  matrices in splines with multi-threaded versions.
+  :class:`scipy.spatial.cKDTree` for better performance in near neighbor calculations
+  used in blocked operations, distance masking, etc.
 
 Most of the examples in the :ref:`gallery` and :ref:`tutorials` also use:
 

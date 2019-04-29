@@ -4,12 +4,8 @@ Functions for generating and manipulating coordinates.
 import numpy as np
 from sklearn.utils import check_random_state
 
-try:
-    from pykdtree.kdtree import KDTree
-except ImportError:
-    from scipy.spatial import cKDTree as KDTree  # pylint: disable=no-name-in-module
-
-from .utils import n_1d_arrays
+from .base.utils import n_1d_arrays
+from .utils import kdtree
 
 
 def check_region(region):
@@ -703,6 +699,6 @@ def block_split(coordinates, spacing, adjust="spacing", region=None):
             region, spacing=spacing, adjust=adjust, pixel_register=True
         )
     )
-    tree = KDTree(np.transpose(block_coords))
+    tree = kdtree(block_coords)
     labels = tree.query(np.transpose(n_1d_arrays(coordinates, 2)))[1]
     return block_coords, labels

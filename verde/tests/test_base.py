@@ -6,12 +6,12 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from ..base import (
+from ..base.utils import check_fit_input
+from ..base.base_classes import (
+    BaseGridder,
     get_dims,
     get_data_names,
     get_instance_region,
-    BaseGridder,
-    check_fit_input,
 )
 from ..coordinates import grid_coordinates, scatter_points
 
@@ -67,6 +67,7 @@ class PolyGridder(BaseGridder):
     "A test gridder"
 
     def __init__(self, degree=1):
+        super().__init__()
         self.degree = degree
 
     def fit(self, coordinates, data, weights=None):

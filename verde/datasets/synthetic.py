@@ -61,6 +61,7 @@ class CheckerBoard(BaseGridder):
     def __init__(
         self, amplitude=1000, region=(0, 5000, -5000, 0), w_east=None, w_north=None
     ):
+        super().__init__()
         self.amplitude = amplitude
         self.w_east = w_east
         self.w_north = w_north

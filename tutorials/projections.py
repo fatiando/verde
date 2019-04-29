@@ -71,8 +71,8 @@ grid = vd.distance_mask(proj_coords, maxdist=30e3, grid=grid)
 
 plt.figure(figsize=(7, 6))
 plt.title("Gridded bathymetry in Cartesian coordinates")
-plt.pcolormesh(grid.easting, grid.northing, grid.bathymetry, cmap="viridis", vmax=0)
-plt.colorbar().set_label("bathymetry (m)")
+pc = grid.bathymetry.plot.pcolormesh(cmap="viridis", vmax=0, add_colorbar=False)
+plt.colorbar(pc).set_label("bathymetry (m)")
 plt.plot(filter_coords[0], filter_coords[1], ".k", markersize=0.5)
 plt.xlabel("Easting (m)")
 plt.ylabel("Northing (m)")
@@ -127,13 +127,8 @@ grid_geo = vd.distance_mask(
 plt.figure(figsize=(7, 6))
 ax = plt.axes(projection=ccrs.Mercator())
 ax.set_title("Geographic grid of bathymetry")
-pc = ax.pcolormesh(
-    grid_geo.longitude,
-    grid_geo.latitude,
-    grid_geo.bathymetry,
-    transform=ccrs.PlateCarree(),
-    vmax=0,
-    zorder=-1,
+pc = grid_geo.bathymetry.plot.pcolormesh(
+    ax=ax, transform=ccrs.PlateCarree(), vmax=0, zorder=-1, add_colorbar=False
 )
 plt.colorbar(pc).set_label("meters")
 vd.datasets.setup_baja_bathymetry_map(ax, land=None)
