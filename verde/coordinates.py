@@ -632,7 +632,6 @@ def inside(coordinates, region, latlon=False):
     """
     check_region(region, latlon=latlon)
     if latlon:
-        _check_geographic_coordinates(coordinates)
         region, coordinates = latlon_continuity(region, coordinates=coordinates)
     w, e, s, n = region
     easting, northing = coordinates[:2]
@@ -781,8 +780,9 @@ def latlon_continuity(region, coordinates=None):
     >>> print(longitude.min(), longitude.max())
     -180.0 170.0
     """
-    # Get longitudinal boundaries
-    w, e, = region[:2]
+    # Get longitudinal boundaries and check region
+    w, e, s, n = region[:4]
+    check_region([w, e, s, n], latlon=True)
     # Check if region is defined all around the globe
     all_globe = np.allclose(abs(e - w), 360)
     # Move coordinates to [0, 360)
@@ -801,6 +801,7 @@ def latlon_continuity(region, coordinates=None):
     region[:2] = w, e
     # Modify extra coordinates if passed
     if coordinates:
+        _check_geographic_coordinates(coordinates)
         longitude = coordinates[0]
         if interval_360:
             longitude = longitude % 360
