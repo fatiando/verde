@@ -786,28 +786,30 @@ def latlon_continuity(region, coordinates=None):
     # Check if region is defined all around the globe
     all_globe = np.allclose(abs(e - w), 360)
     # Move coordinates to [0, 360)
+    interval_360 = True
     w = w % 360
     e = e % 360
-    if coordinates:
-        longitude = coordinates[0]
-        longitude = longitude % 360
     # Move west=0 and east=360 if region longitudes goes all around the globe
     if all_globe:
         w, e = 0, 360
     # Check if the [-180, 180) interval is better suited
     if w > e:
+        interval_360 = False
         e = ((e + 180) % 360) - 180
         w = ((w + 180) % 360) - 180
-        if coordinates:
-            longitude = ((longitude + 180) % 360) - 180
     region = np.array(region)
     region[:2] = w, e
+    # Modify extra coordinates if passed
     if coordinates:
+        longitude = coordinates[0]
+        if interval_360:
+            longitude = longitude % 360
+        else:
+            longitude = ((longitude + 180) % 360) - 180
         coordinates = np.array(coordinates)
         coordinates[0] = longitude
         return region, coordinates
-    else:
-        return region
+    return region
 
 
 def _check_geographic_coordinates(coordinates):
