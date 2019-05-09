@@ -816,11 +816,11 @@ def latlon_continuity(region, coordinates=None):
 def _check_geographic_coordinates(coordinates):
     "Check if geographic coordinates are within accepted degrees intervals"
     longitude, latitude = coordinates[:2]
-    if (longitude > 360).any() or (longitude < -180).any():
+    if np.any(longitude > 360) or np.any(longitude < -180):
         raise ValueError(
             "Invalid longitude coordinates. They should be < 360 and > -180 degrees."
         )
-    if (latitude > 90).any() or (latitude < -90).any():
+    if np.any(latitude > 90) or np.any(latitude < -90):
         raise ValueError(
             "Invalid latitude coordinates. They should be < 90 and > -90 degrees."
         )
