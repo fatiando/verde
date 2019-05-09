@@ -11,7 +11,7 @@ from ..coordinates import (
     profile_coordinates,
     grid_coordinates,
     inside,
-    _latlon_continuity,
+    latlon_continuity,
 )
 
 
@@ -123,7 +123,9 @@ def test_latlon_continuity():
     w, e = 10.5, 20.3
     for longitude in [longitude_360, longitude_180]:
         coordinates = [longitude, latitude]
-        coordinates_new, region_new = _latlon_continuity(coordinates, (w, e, s, n))
+        region_new, coordinates_new = latlon_continuity(
+            (w, e, s, n), coordinates=coordinates
+        )
         w_new, e_new = region_new[:2]
         assert w_new == w
         assert e_new == e
@@ -132,7 +134,9 @@ def test_latlon_continuity():
     w, e = -20, 20
     for longitude in [longitude_360, longitude_180]:
         coordinates = [longitude, latitude]
-        coordinates_new, region_new = _latlon_continuity(coordinates, (w, e, s, n))
+        region_new, coordinates_new = latlon_continuity(
+            (w, e, s, n), coordinates=coordinates
+        )
         w_new, e_new = region_new[:2]
         assert w_new == -20
         assert e_new == 20
@@ -141,7 +145,9 @@ def test_latlon_continuity():
     for w, e in [[0, 360], [-180, 180], [-20, 340]]:
         for longitude in [longitude_360, longitude_180]:
             coordinates = [longitude, latitude]
-            coordinates_new, region_new = _latlon_continuity(coordinates, (w, e, s, n))
+            region_new, coordinates_new = latlon_continuity(
+                (w, e, s, n), coordinates=coordinates
+            )
             w_new, e_new = region_new[:2]
             assert w_new == 0
             assert e_new == 360
@@ -150,7 +156,9 @@ def test_latlon_continuity():
     w, e = 20, 20
     for longitude in [longitude_360, longitude_180]:
         coordinates = [longitude, latitude]
-        coordinates_new, region_new = _latlon_continuity(coordinates, (w, e, s, n))
+        region_new, coordinates_new = latlon_continuity(
+            (w, e, s, n), coordinates=coordinates
+        )
         w_new, e_new = region_new[:2]
         assert w_new == 20
         assert e_new == 20
@@ -159,7 +167,9 @@ def test_latlon_continuity():
     w, e = 0, 200
     for longitude in [longitude_360, longitude_180]:
         coordinates = [longitude, latitude]
-        coordinates_new, region_new = _latlon_continuity(coordinates, (w, e, s, n))
+        region_new, coordinates_new = latlon_continuity(
+            (w, e, s, n), coordinates=coordinates
+        )
         w_new, e_new = region_new[:2]
         assert w_new == 0
         assert e_new == 200
@@ -167,7 +177,9 @@ def test_latlon_continuity():
     w, e = -160, 160
     for longitude in [longitude_360, longitude_180]:
         coordinates = [longitude, latitude]
-        coordinates_new, region_new = _latlon_continuity(coordinates, (w, e, s, n))
+        region_new, coordinates_new = latlon_continuity(
+            (w, e, s, n), coordinates=coordinates
+        )
         w_new, e_new = region_new[:2]
         assert w_new == -160
         assert e_new == 160

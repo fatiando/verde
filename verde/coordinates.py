@@ -633,7 +633,7 @@ def inside(coordinates, region, latlon=False):
     check_region(region, latlon=latlon)
     if latlon:
         _check_geographic_coordinates(coordinates)
-        coordinates, region = _latlon_continuity(coordinates, region)
+        region, coordinates = latlon_continuity(region, coordinates=coordinates)
     w, e, s, n = region
     easting, northing = coordinates[:2]
     # Allocate temporary arrays to minimize memory allocation overhead
@@ -731,18 +731,66 @@ def block_split(coordinates, spacing, adjust="spacing", region=None):
     return block_coords, labels
 
 
-def _latlon_continuity(coordinates, region):
+def latlon_continuity(region, coordinates=None):
     """
-    Modify longitudinal geographic coordinates to ensure continuity around the globe.
+    Modify geographic region boundaries to ensure continuity around the globe.
+
+    Longitudinal boundaries of the region are moved to the `[0, 360)` or `[-180, 180)`
+    degrees interval depending which one is better suited for that specific region.
+
+    Parameters
+    ----------
+    region : list or array
+        List or array containing the boundary coordinates `w, `e`, `s`, `n` of the
+        region in degrees.
+    coordinates : list or array (optional)
+        Extra set of geographic coordinates that will be moved to the same degrees
+        interval as the one of the modified region.
+
+    Returns
+    -------
+    modified_region : array
+        List containing the modified boundary coordinates `w, `e`, `s`, `n` of the
+        region.
+    modified_coordinates : array (optional)
+        Modified set of extra geographic coordinates.
+
+    Examples
+    --------
+
+    >>> from verde import latlon_continuity
+    >>> # Modify region with west > east
+    >>> w, e, s, n = 350, 10, -10, 10
+    >>> print(latlon_continuity([w, e, s, n]))
+    [-10  10 -10  10]
+    >>> # Modify region and extra coordinates
+    >>> from verde import grid_coordinates
+    >>> region = [-70, -60, -40, -30]
+    >>> coordinates = grid_coordinates([270, 320, -50, -20], spacing=5)
+    >>> region, [longitude, latitude] = latlon_continuity(region, coordinates)
+    >>> print(region)
+    [290 300 -40 -30]
+    >>> print(longitude.min(), longitude.max())
+    270.0 320.0
+    >>> # Another example
+    >>> region = [-20, 20, -20, 20]
+    >>> coordinates = grid_coordinates([0, 350, -90, 90], spacing=10)
+    >>> region, [longitude, latitude] = latlon_continuity(region, coordinates)
+    >>> print(region)
+    [-20  20 -20  20]
+    >>> print(longitude.min(), longitude.max())
+    -180.0 170.0
     """
-    w, e, s, n = region[:]
-    longitude, latitude = coordinates[:2]
+    # Get longitudinal boundaries
+    w, e, = region[:2]
     # Check if region is defined all around the globe
     all_globe = np.allclose(abs(e - w), 360)
     # Move coordinates to [0, 360)
     w = w % 360
     e = e % 360
-    longitude = longitude % 360
+    if coordinates:
+        longitude = coordinates[0]
+        longitude = longitude % 360
     # Move west=0 and east=360 if region longitudes goes all around the globe
     if all_globe:
         w, e = 0, 360
@@ -750,10 +798,16 @@ def _latlon_continuity(coordinates, region):
     if w > e:
         e = ((e + 180) % 360) - 180
         w = ((w + 180) % 360) - 180
-        longitude = ((longitude + 180) % 360) - 180
-    region = [w, e, s, n]
-    coordinates = [longitude, latitude]
-    return coordinates, region
+        if coordinates:
+            longitude = ((longitude + 180) % 360) - 180
+    region = np.array(region)
+    region[:2] = w, e
+    if coordinates:
+        coordinates = np.array(coordinates)
+        coordinates[0] = longitude
+        return region, coordinates
+    else:
+        return region
 
 
 def _check_geographic_coordinates(coordinates):
