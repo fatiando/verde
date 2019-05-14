@@ -18,12 +18,18 @@ class DummyClient:  # pylint: disable=no-self-use,too-few-public-methods
     >>> client = DummyClient()
     >>> client.submit(sum, (1, 2, 3))
     6
+    >>> print(client.scatter("bla"))
+    bla
 
     """
 
     def submit(self, function, *args, **kwargs):
         "Execute function with the given arguments and return its output"
         return function(*args, **kwargs)
+
+    def scatter(self, value):
+        "Does nothing but return the input"
+        return value
 
 
 def train_test_split(coordinates, data, weights=None, **kwargs):
@@ -161,10 +167,11 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None, client=
     >>> print(', '.join(['{:.2f}'.format(score) for score in scores]))
     1.00, 1.00, 1.00, 1.00, 1.00
 
-    >>> # To run parallel, we need to create a dask.distributed Client. It will
-    >>> # create a local cluster if no arguments are given so we can run the
-    >>> # scoring on a single machine. We'll use threads instead of processes for this
-    >>> # example but in most cases you'll want processes.
+    To run parallel, we need to create a :class:`dask.distributed.Client`. It will
+    create a local cluster if no arguments are given so we can run the scoring on a
+    single machine. We'll use threads instead of processes for this example but in most
+    cases you'll want processes.
+
     >>> from dask.distributed import Client
     >>> client = Client(processes=False)
     >>> # The scoring will now only submit tasks to our local cluster
@@ -175,6 +182,8 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None, client=
     >>> # We need to call .result() to get back the actual value
     >>> print('{:.2f}'.format(scores[0].result()))
     1.00
+    >>> # Close the client and shutdown the local cluster
+    >>> client.close()
 
     """
     coordinates, data, weights = check_fit_input(
