@@ -658,12 +658,16 @@ def inside(coordinates, region):
     return are_inside
 
 
-def block_split(coordinates, spacing, adjust="spacing", region=None):
+def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=None):
     """
     Split a region into blocks and label points according to where they fall.
 
-    The labels are integers corresponding to the index of the block. The same
-    index is used for the coordinates of each block.
+    The labels are integers corresponding to the index of the block. Also returns the
+    coordinates of the center of each block (following the same index as the labels).
+
+    The size of the blocks can be specified by the *spacing* parameter. Alternatively,
+    the number of blocks in the South-North and West-East directions can be specified
+    using the *shape* parameter.
 
     .. note::
 
@@ -676,6 +680,8 @@ def block_split(coordinates, spacing, adjust="spacing", region=None):
         Arrays with the coordinates of each data point. Should be in the
         following order: (easting, northing, vertical, ...). Only easting and
         northing will be used, all subsequent coordinates will be ignored.
+    shape : tuple = (n_north, n_east) or None
+        The number of blocks in the South-North and West-East directions, respectively.
     spacing : float, tuple = (s_north, s_east), or None
         The block size in the South-North and West-East directions,
         respectively. A single value means that the size is equal in both
@@ -719,6 +725,19 @@ def block_split(coordinates, spacing, adjust="spacing", region=None):
      [2 2 2 3 3 3]
      [2 2 2 3 3 3]
      [2 2 2 3 3 3]]
+    >>> # Use the shape instead of the block size
+    >>> block_coords, labels = block_split(coords, shape=(4, 2))
+    >>> for coord in block_coords:
+    ...     print(', '.join(['{:.3f}'.format(i) for i in coord]))
+    -3.750, -1.250, -3.750, -1.250, -3.750, -1.250, -3.750, -1.250
+    5.625, 5.625, 6.875, 6.875, 8.125, 8.125, 9.375, 9.375
+    >>> print(labels.reshape(coords[0].shape))
+    [[0 0 0 1 1 1]
+     [0 0 0 1 1 1]
+     [2 2 2 3 3 3]
+     [4 4 4 5 5 5]
+     [6 6 6 7 7 7]
+     [6 6 6 7 7 7]]
 
     """
     if region is None:
@@ -726,7 +745,7 @@ def block_split(coordinates, spacing, adjust="spacing", region=None):
     block_coords = tuple(
         i.ravel()
         for i in grid_coordinates(
-            region, spacing=spacing, adjust=adjust, pixel_register=True
+            region, spacing=spacing, shape=shape, adjust=adjust, pixel_register=True
         )
     )
     tree = kdtree(block_coords)
