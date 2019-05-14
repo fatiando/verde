@@ -58,14 +58,16 @@ def test_spline_cv_parallel():
     synth = CheckerBoard(region=region)
     data = synth.scatter(size=1500, random_state=1)
     coords = (data.easting, data.northing)
+    client = Client(processes=False)
     # Can't test on many configurations because it takes too long for regular testing
     # Use ShuffleSplit instead of KFold to test it out and make this run faster
     spline = SplineCV(
         dampings=[None],
         mindists=[1e-5, 1e-3],
-        client=Client(processes=False),
+        client=client,
         cv=ShuffleSplit(n_splits=1, random_state=0),
     ).fit(coords, data.scalars)
+    client.close()
     # The interpolation should be perfect on top of the data points
     npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-5)
     npt.assert_allclose(spline.score(coords, data.scalars), 1)

@@ -167,10 +167,11 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None, client=
     >>> print(', '.join(['{:.2f}'.format(score) for score in scores]))
     1.00, 1.00, 1.00, 1.00, 1.00
 
-    >>> # To run parallel, we need to create a dask.distributed Client. It will
-    >>> # create a local cluster if no arguments are given so we can run the
-    >>> # scoring on a single machine. We'll use threads instead of processes for this
-    >>> # example but in most cases you'll want processes.
+    To run parallel, we need to create a :class:`dask.distributed.Client`. It will
+    create a local cluster if no arguments are given so we can run the scoring on a
+    single machine. We'll use threads instead of processes for this example but in most
+    cases you'll want processes.
+
     >>> from dask.distributed import Client
     >>> client = Client(processes=False)
     >>> # The scoring will now only submit tasks to our local cluster
@@ -181,6 +182,8 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None, client=
     >>> # We need to call .result() to get back the actual value
     >>> print('{:.2f}'.format(scores[0].result()))
     1.00
+    >>> # Close the client and shutdown the local cluster
+    >>> client.close()
 
     """
     coordinates, data, weights = check_fit_input(
