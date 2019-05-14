@@ -27,12 +27,74 @@ JIT_ARGS = dict(nopython=True, target="cpu", fastmath=True, parallel=True)
 class SplineCV(BaseGridder):
     r"""
     Cross-validated biharmonic spline interpolation.
+
+    Similar to :class:`verde.Spline` but automatically chooses the best *damping* and
+    *mindist* parameters using cross-validation. Tests all combinations of the given
+    *dampings* and *mindists* and selects the maximum (or minimum) mean cross-validation
+    score (i.e., a grid search).
+
+    The grid search can optionally run in parallel using :mod:`dask`. To do this, pass
+    in a :class:`dask.distributed.Client` as the *client* argument. The client can
+    manage a process or thread pool in your local computer or a remote cluster.
+
+    Other cross-validation generators from :mod:`sklearn.model_selection` can be used by
+    passing them through the *cv* argument.
+
+    Parameters
+    ----------
+    mindists : iterable or 1d array
+        List (or other iterable) of *mindist* parameter values to try. Can be considered
+        a minimum distance between the point forces and data points. Needed because the
+        Green's functions are singular when forces and data points coincide. Acts as a
+        fudge factor.
+    dampings : iterable or 1d array
+        List (or other iterable) of *damping* parameter values to try. Is the positive
+        damping regularization parameter. Controls how much smoothness is imposed on the
+        estimated forces. If None, no regularization is used.
+    force_coords : None or tuple of arrays
+        The easting and northing coordinates of the point forces. If None (default),
+        then will be set to the data coordinates the first time
+        :meth:`~verde.SplineCV.fit` is called.
+    engine : str
+        Computation engine for the Jacobian matrix and prediction. Can be ``'auto'``,
+        ``'numba'``, or ``'numpy'``. If ``'auto'``, will use numba if it is installed or
+        numpy otherwise. The numba version is multi-threaded and usually faster, which
+        makes fitting and predicting faster.
+    cv : None or cross-validation generator
+        Any scikit-learn cross-validation generator. If not given, will use the default
+        set by :func:`verde.cross_val_score`.
+    client : None or dask.distributed.Client
+        If None, then computations are run serially. Otherwise, should be a
+        dask ``Client`` object. It will be used to dispatch computations to the
+        dask cluster.
+
+
+    Attributes
+    ----------
+    force_ : array
+        The estimated forces that fit the observed data.
+    region_ : tuple
+        The boundaries (``[W, E, S, N]``) of the data used to fit the
+        interpolator. Used as the default region for the
+        :meth:`~verde.SplineCV.grid` and :meth:`~verde.SplineCV.scatter` methods.
+    scores_ : array
+        The mean cross-validation score for each parameter combination.
+    mindist_ : float
+        The optimal value for the *mindist* parameter.
+    damping_ : float
+        The optimal value for the *damping* parameter.
+
+    See also
+    --------
+    Spline : The bi-harmonic spline
+    cross_val_score : Score an estimator/gridder using cross-validation
+
     """
 
     def __init__(
         self,
-        mindists=(1e3, 10e3, 50e3, 100e3),
-        dampings=(None, 1e-10, 1e-7, 1e-4, 1e-1),
+        mindists=(1e3, 10e3, 100e3),
+        dampings=(1e-10, 1e-5, 1e-1),
         force_coords=None,
         engine="auto",
         cv=None,
@@ -47,7 +109,30 @@ class SplineCV(BaseGridder):
 
     def fit(self, coordinates, data, weights=None):
         """
-        Fit the gridder to the given data.
+        Fit the biharmonic spline to the given data and automatically tune parameters.
+
+        For each combination of the parameters given, computes the mean cross validation
+        score using :func:`verde.cross_val_score` and the given CV splitting class (the
+        *cv* parameter of this class). The configuration with the best score is then
+        chosen and used to fit the entire dataset.
+
+        The data region is captured and used as default for the
+        :meth:`~verde.SplineCV.grid` and :meth:`~verde.SplineCV.scatter` methods.
+
+        All input arrays must have the same shape.
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...). Only easting
+            and northing will be used, all subsequent coordinates will be
+            ignored.
+        data : array
+            The data values of each data point.
+        weights : None or array
+            If not None, then the weights assigned to each data point.
+            Typically, this should be 1 over the data uncertainty squared.
 
         Returns
         -------
@@ -63,14 +148,17 @@ class SplineCV(BaseGridder):
         # copy of the data so we minimize transfer.
         futures = tuple(client.scatter(i) for i in (coordinates, data, weights))
         parameter_sets = [
-            dict(mindist=combo[0], damping=combo[1])
+            dict(
+                mindist=combo[0],
+                damping=combo[1],
+                engine=self.engine,
+                force_coords=self.force_coords,
+            )
             for combo in itertools.product(self.mindists, self.dampings)
         ]
         scores = []
         for params in parameter_sets:
-            spline = Spline(
-                engine=self.engine, force_coords=self.force_coords, **params
-            )
+            spline = Spline(**params)
             scores.append(
                 client.submit(
                     cross_val_score,
@@ -85,16 +173,50 @@ class SplineCV(BaseGridder):
             scores = [score.result() for score in scores]
         self.scores_ = np.mean(scores, axis=1)
         best = np.argmax(self.scores_)
-        self._best = Spline(engine=self.engine, **parameter_sets[best])
+        self._best = Spline(**parameter_sets[best])
         self._best.fit(coordinates, data, weights=weights)
-        self.damping_ = self._best.damping
-        self.mindist_ = self._best.mindist
-        self.force_ = self._best.force_
+        self.force_coords = self._best.force_coords
         return self
+
+    @property
+    def force_(self):
+        "The estimated forces that fit the data."
+        return self._best.force_
+
+    @property
+    def region_(self):
+        "The bounding region of the data used to fit the spline"
+        return self._best.region_
+
+    @property
+    def damping_(self):
+        "The optimal damping parameter"
+        return self._best.damping
+
+    @property
+    def mindist_(self):
+        "The optimal mindist parameter"
+        return self._best.mindist
 
     def predict(self, coordinates):
         """
-        Evaluate the fitted gridder on the given set of points.
+        Evaluate the best estimated spline on the given set of points.
+
+        Requires a fitted estimator (see :meth:`~verde.SplineCV.fit`).
+
+        Parameters
+        ----------
+        coordinates : tuple of arrays
+            Arrays with the coordinates of each data point. Should be in the
+            following order: (easting, northing, vertical, ...). Only easting
+            and northing will be used, all subsequent coordinates will be
+            ignored.
+
+        Returns
+        -------
+        data : array
+            The data values evaluated on the given points.
+
         """
         check_is_fitted(self, ["_best"])
         return self._best.predict(coordinates)
@@ -166,6 +288,10 @@ class Spline(BaseGridder):
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
         :meth:`~verde.Spline.grid` and :meth:`~verde.Spline.scatter` methods.
+
+    See also
+    --------
+    SplineCV : Cross-validated version of the bi-harmonic spline
 
     """
 

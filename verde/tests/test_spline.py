@@ -26,6 +26,18 @@ def test_spline_cv():
     npt.assert_allclose(spline.score(coords, data.scalars), 1)
     assert spline.mindist_ == 1e-3
     assert spline.damping_ is None
+    npt.assert_allclose(spline.force_coords, coords)
+    # There should be 1 force per data point
+    assert data.scalars.size == spline.force_.size
+    npt.assert_allclose(
+        spline.region_,
+        (
+            data.easting.min(),
+            data.easting.max(),
+            data.northing.min(),
+            data.northing.max(),
+        ),
+    )
     shape = (5, 5)
     region = (270, 320, -770, -720)
     # Tolerance needs to be kind of high to allow for error due to small
