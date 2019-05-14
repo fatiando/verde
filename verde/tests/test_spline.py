@@ -20,7 +20,11 @@ def test_spline_cv():
     data = synth.scatter(size=1500, random_state=1)
     coords = (data.easting, data.northing)
     # Can't test on many configurations because it takes too long for regular testing
-    spline = SplineCV(dampings=[None], mindists=[1e-5, 1e-3]).fit(coords, data.scalars)
+    spline = SplineCV(
+        dampings=[None],
+        mindists=[1e-5, 1e-3],
+        cv=ShuffleSplit(n_splits=2, random_state=0),
+    ).fit(coords, data.scalars)
     # The interpolation should be perfect on top of the data points
     npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-5)
     npt.assert_allclose(spline.score(coords, data.scalars), 1)
