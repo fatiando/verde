@@ -100,6 +100,7 @@ class SplineCV(BaseGridder):
         cv=None,
         client=None,
     ):
+        super().__init__()
         self.dampings = dampings
         self.mindists = mindists
         self.force_coords = force_coords
