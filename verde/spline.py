@@ -33,7 +33,7 @@ class SplineCV(BaseGridder):
         self,
         mindists=(1e3, 10e3, 50e3, 100e3),
         dampings=(None, 1e-10, 1e-7, 1e-4, 1e-1),
-        force_coords=(None,),
+        force_coords=None,
         engine="auto",
         cv=None,
         client=None,
@@ -61,14 +61,14 @@ class SplineCV(BaseGridder):
         # copy of the data so we minimize transfer.
         futures = tuple(client.scatter(i) for i in (coordinates, data, weights))
         parameter_sets = [
-            dict(mindist=combo[0], damping=combo[1], force_coords=combo[2])
+            dict(mindist=combo[0], damping=combo[1])
             for combo in itertools.product(
-                self.mindists, self.dampings, self.force_coords
+                self.mindists, self.dampings
             )
         ]
         scores = []
         for params in parameter_sets:
-            spline = Spline(engine=self.engine, **params)
+            spline = Spline(engine=self.engine, force_coords=self.force_coords, **params)
             scores.append(
                 client.submit(
                     cross_val_score,
@@ -83,16 +83,18 @@ class SplineCV(BaseGridder):
             scores = [score.result() for score in scores]
         self.scores_ = np.mean(scores, axis=1)
         best = np.argmax(self.scores_)
-        self.best_ = Spline(engine=self.engine, **parameter_sets[best])
-        self.best_.fit(coordinates, data, weights=weights)
+        self._best = Spline(engine=self.engine, **parameter_sets[best])
+        self._best.fit(coordinates, data, weights=weights)
+        self.damping_ = self._best.damping
+        self.mindist_ = self._best.mindist
         return self
 
     def predict(self, coordinates):
         """
         Evaluate the fitted gridder on the given set of points.
         """
-        check_is_fitted(self, ["best_"])
-        return self.best_.predict(coordinates)
+        check_is_fitted(self, ["_best"])
+        return self._best.predict(coordinates)
 
 
 class Spline(BaseGridder):

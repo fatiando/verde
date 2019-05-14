@@ -49,7 +49,8 @@ print("\nScore: {:.3f}".format(spline.scores_.max()))
 
 # And then the best spline parameters that produced this high score.
 print("\nBest spline configuration:")
-print(spline.best_)
+print("  mindist:", spline.mindist_)
+print("  damping:", spline.damping_)
 
 # Now we can create a geographic grid of air temperature by providing a projection
 # function to the grid method and mask points that are too far from the observations
