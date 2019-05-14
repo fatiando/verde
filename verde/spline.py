@@ -57,18 +57,20 @@ class SplineCV(BaseGridder):
         """
         if self.client is None:
             client = DummyClient()
+        else:
+            client = self.client
         # If this is a parallel client, scattering the data makes sure each worker has a
         # copy of the data so we minimize transfer.
         futures = tuple(client.scatter(i) for i in (coordinates, data, weights))
         parameter_sets = [
             dict(mindist=combo[0], damping=combo[1])
-            for combo in itertools.product(
-                self.mindists, self.dampings
-            )
+            for combo in itertools.product(self.mindists, self.dampings)
         ]
         scores = []
         for params in parameter_sets:
-            spline = Spline(engine=self.engine, force_coords=self.force_coords, **params)
+            spline = Spline(
+                engine=self.engine, force_coords=self.force_coords, **params
+            )
             scores.append(
                 client.submit(
                     cross_val_score,
@@ -87,6 +89,7 @@ class SplineCV(BaseGridder):
         self._best.fit(coordinates, data, weights=weights)
         self.damping_ = self._best.damping
         self.mindist_ = self._best.mindist
+        self.force_ = self._best.force_
         return self
 
     def predict(self, coordinates):
