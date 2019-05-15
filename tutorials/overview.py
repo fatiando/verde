@@ -25,17 +25,15 @@ Before we get started, here are a few of the conventions we use across Verde:
 * The term "region" means the bounding box of the data. It is ordered west, east, south,
   north.
 
+The library
+-----------
+
+Most classes and functions are available through the :mod:`verde` top level package.
+The only exceptions are the functions related to loading sample data, which are in
+:mod:`verde.datasets`. Throughout the documentation we'll use ``vd`` as the alias for
+:mod:`verde`.
+
 """
-
-########################################################################################
-# The library
-# -----------
-#
-# Most classes and functions are available through the :mod:`verde` top level package.
-# The only exceptions are the functions related to loading sample data, which are in
-# :mod:`verde.datasets`. Throughout the documentation we'll use ``vd`` as the alias for
-# :mod:`verde`.
-
 import verde as vd
 
 ########################################################################################

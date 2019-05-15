@@ -257,7 +257,8 @@ def grid_coordinates(
     pixel_register : bool
         If True, the coordinates will refer to the center of each grid pixel instead of
         the grid lines. In practice, this means that there will be one less element per
-        dimension of the grid when compared to grid line registered. Default is False.
+        dimension of the grid when compared to grid line registered (only if given
+        *spacing* and not *shape*). Default is False.
     extra_coords : None, scalar, or list
         If not None, then value(s) of extra coordinate arrays to be generated. These
         extra arrays will have the same *shape* as the others but will contain a
@@ -292,8 +293,10 @@ def grid_coordinates(
      [ 5.   5.   5. ]
      [ 7.5  7.5  7.5]
      [10.  10.  10. ]]
-    >>> # The grid can also be specified using the spacing between points
-    >>> # instead of the shape.
+
+    The grid can also be specified using the spacing between points instead of the
+    shape:
+
     >>> east, north = grid_coordinates(region=(0, 5, 0, 10), spacing=2.5)
     >>> print(east.shape, north.shape)
     (5, 3) (5, 3)
@@ -309,7 +312,113 @@ def grid_coordinates(
      [ 5.   5.   5. ]
      [ 7.5  7.5  7.5]
      [10.  10.  10. ]]
-    >>> # Generate arrays for other coordinates that have a constant value.
+
+    The spacing can be different for northing and easting, respectively:
+
+    >>> east, north = grid_coordinates(region=(-5, 1, 0, 10), spacing=(2.5, 1))
+    >>> print(east.shape, north.shape)
+    (5, 7) (5, 7)
+    >>> print(east)
+    [[-5. -4. -3. -2. -1.  0.  1.]
+     [-5. -4. -3. -2. -1.  0.  1.]
+     [-5. -4. -3. -2. -1.  0.  1.]
+     [-5. -4. -3. -2. -1.  0.  1.]
+     [-5. -4. -3. -2. -1.  0.  1.]]
+    >>> print(north)
+    [[ 0.   0.   0.   0.   0.   0.   0. ]
+     [ 2.5  2.5  2.5  2.5  2.5  2.5  2.5]
+     [ 5.   5.   5.   5.   5.   5.   5. ]
+     [ 7.5  7.5  7.5  7.5  7.5  7.5  7.5]
+     [10.  10.  10.  10.  10.  10.  10. ]]
+
+    If the region can't be divided into the desired spacing, the spacing will be
+    adjusted to conform to the region:
+
+    >>> east, north = grid_coordinates(region=(-5, 0, 0, 5), spacing=2.6)
+    >>> print(east.shape, north.shape)
+    (3, 3) (3, 3)
+    >>> print(east)
+    [[-5.  -2.5  0. ]
+     [-5.  -2.5  0. ]
+     [-5.  -2.5  0. ]]
+    >>> print(north)
+    [[0.  0.  0. ]
+     [2.5 2.5 2.5]
+     [5.  5.  5. ]]
+    >>> east, north = grid_coordinates(region=(-5, 0, 0, 5), spacing=2.4)
+    >>> print(east.shape, north.shape)
+    (3, 3) (3, 3)
+    >>> print(east)
+    [[-5.  -2.5  0. ]
+     [-5.  -2.5  0. ]
+     [-5.  -2.5  0. ]]
+    >>> print(north)
+    [[0.  0.  0. ]
+     [2.5 2.5 2.5]
+     [5.  5.  5. ]]
+
+    You can choose to adjust the East and North boundaries of the region instead:
+
+    >>> east, north = grid_coordinates(region=(-5, 0, 0, 5), spacing=2.6,
+    ...                                adjust='region')
+    >>> print(east.shape, north.shape)
+    (3, 3) (3, 3)
+    >>> print(east)
+    [[-5.  -2.4  0.2]
+     [-5.  -2.4  0.2]
+     [-5.  -2.4  0.2]]
+    >>> print(north)
+    [[0.  0.  0. ]
+     [2.6 2.6 2.6]
+     [5.2 5.2 5.2]]
+    >>> east, north = grid_coordinates(region=(-5, 0, 0, 5), spacing=2.4,
+    ...                                adjust='region')
+    >>> print(east.shape, north.shape)
+    (3, 3) (3, 3)
+    >>> print(east)
+    [[-5.  -2.6 -0.2]
+     [-5.  -2.6 -0.2]
+     [-5.  -2.6 -0.2]]
+    >>> print(north)
+    [[0.  0.  0. ]
+     [2.4 2.4 2.4]
+     [4.8 4.8 4.8]]
+
+    We can optionally generate coordinates for the center of each grid pixel instead of
+    the corner (default):
+
+    >>> east, north = grid_coordinates(region=(0, 5, 0, 10), spacing=2.5,
+    ...                                pixel_register=True)
+    >>> # Raise the printing precision for this example
+    >>> np.set_printoptions(precision=2, suppress=True)
+    >>> # Notice that the shape is 1 less than when pixel_register=False
+    >>> print(east.shape, north.shape)
+    (4, 2) (4, 2)
+    >>> print(east)
+    [[1.25 3.75]
+     [1.25 3.75]
+     [1.25 3.75]
+     [1.25 3.75]]
+    >>> print(north)
+    [[1.25 1.25]
+     [3.75 3.75]
+     [6.25 6.25]
+     [8.75 8.75]]
+    >>> east, north = grid_coordinates(region=(0, 5, 0, 10), shape=(4, 2),
+    ...                                pixel_register=True)
+    >>> print(east)
+    [[1.25 3.75]
+     [1.25 3.75]
+     [1.25 3.75]
+     [1.25 3.75]]
+    >>> print(north)
+    [[1.25 1.25]
+     [3.75 3.75]
+     [6.25 6.25]
+     [8.75 8.75]]
+
+    Generate arrays for other coordinates that have a constant value:
+
     >>> east, north, height = grid_coordinates(region=(0, 5, 0, 10), spacing=2.5,
     ...                                        extra_coords=57)
     >>> print(east.shape, north.shape, height.shape)
@@ -336,90 +445,6 @@ def grid_coordinates(
      [0.1 0.1 0.1]
      [0.1 0.1 0.1]
      [0.1 0.1 0.1]]
-    >>> # The spacing can be different for northing and easting, respectively
-    >>> east, north = grid_coordinates(region=(-5, 1, 0, 10), spacing=(2.5, 1))
-    >>> print(east.shape, north.shape)
-    (5, 7) (5, 7)
-    >>> print(east)
-    [[-5. -4. -3. -2. -1.  0.  1.]
-     [-5. -4. -3. -2. -1.  0.  1.]
-     [-5. -4. -3. -2. -1.  0.  1.]
-     [-5. -4. -3. -2. -1.  0.  1.]
-     [-5. -4. -3. -2. -1.  0.  1.]]
-    >>> print(north)
-    [[ 0.   0.   0.   0.   0.   0.   0. ]
-     [ 2.5  2.5  2.5  2.5  2.5  2.5  2.5]
-     [ 5.   5.   5.   5.   5.   5.   5. ]
-     [ 7.5  7.5  7.5  7.5  7.5  7.5  7.5]
-     [10.  10.  10.  10.  10.  10.  10. ]]
-    >>> # If the region can't be divided into the desired spacing, the spacing
-    >>> # will be adjusted to conform to the region
-    >>> east, north = grid_coordinates(region=(-5, 0, 0, 5), spacing=2.6)
-    >>> print(east.shape, north.shape)
-    (3, 3) (3, 3)
-    >>> print(east)
-    [[-5.  -2.5  0. ]
-     [-5.  -2.5  0. ]
-     [-5.  -2.5  0. ]]
-    >>> print(north)
-    [[0.  0.  0. ]
-     [2.5 2.5 2.5]
-     [5.  5.  5. ]]
-    >>> east, north = grid_coordinates(region=(-5, 0, 0, 5), spacing=2.4)
-    >>> print(east.shape, north.shape)
-    (3, 3) (3, 3)
-    >>> print(east)
-    [[-5.  -2.5  0. ]
-     [-5.  -2.5  0. ]
-     [-5.  -2.5  0. ]]
-    >>> print(north)
-    [[0.  0.  0. ]
-     [2.5 2.5 2.5]
-     [5.  5.  5. ]]
-    >>> # You can also choose to adjust the East and North boundaries of the
-    >>> # region instead.
-    >>> east, north = grid_coordinates(region=(-5, 0, 0, 5), spacing=2.6,
-    ...                                adjust='region')
-    >>> print(east.shape, north.shape)
-    (3, 3) (3, 3)
-    >>> print(east)
-    [[-5.  -2.4  0.2]
-     [-5.  -2.4  0.2]
-     [-5.  -2.4  0.2]]
-    >>> print(north)
-    [[0.  0.  0. ]
-     [2.6 2.6 2.6]
-     [5.2 5.2 5.2]]
-    >>> east, north = grid_coordinates(region=(-5, 0, 0, 5), spacing=2.4,
-    ...                                adjust='region')
-    >>> print(east.shape, north.shape)
-    (3, 3) (3, 3)
-    >>> print(east)
-    [[-5.  -2.6 -0.2]
-     [-5.  -2.6 -0.2]
-     [-5.  -2.6 -0.2]]
-    >>> print(north)
-    [[0.  0.  0. ]
-     [2.4 2.4 2.4]
-     [4.8 4.8 4.8]]
-    >>> # We can optionally generate coordinates for the center of each grid
-    >>> # pixel instead of the corner (default)
-    >>> east, north = grid_coordinates(region=(0, 5, 0, 10), spacing=2.5,
-    ...                                pixel_register=True)
-    >>> # Lower printing precision to shorten this example
-    >>> import numpy as np; np.set_printoptions(precision=2, suppress=True)
-    >>> print(east.shape, north.shape)
-    (4, 2) (4, 2)
-    >>> print(east)
-    [[1.25 3.75]
-     [1.25 3.75]
-     [1.25 3.75]
-     [1.25 3.75]]
-    >>> print(north)
-    [[1.25 1.25]
-     [3.75 3.75]
-     [6.25 6.25]
-     [8.75 8.75]]
 
     See also
     --------
@@ -434,6 +459,11 @@ def grid_coordinates(
         raise ValueError("Either a grid shape or a spacing must be provided.")
     if spacing is not None:
         shape, region = spacing_to_shape(region, spacing, adjust)
+    elif pixel_register:
+        # Starts by generating grid-line registered coordinates and shifting them to the
+        # center of the pixel. Need 1 more point if given a shape so that we can do
+        # that because we discard the last point when shifting the coordinates.
+        shape = tuple(i + 1 for i in shape)
     east_lines = np.linspace(region[0], region[1], shape[1])
     north_lines = np.linspace(region[2], region[3], shape[0])
     if pixel_register:
@@ -654,12 +684,16 @@ def inside(coordinates, region, latlon=False):
     return are_inside
 
 
-def block_split(coordinates, spacing, adjust="spacing", region=None):
+def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=None):
     """
     Split a region into blocks and label points according to where they fall.
 
-    The labels are integers corresponding to the index of the block. The same
-    index is used for the coordinates of each block.
+    The labels are integers corresponding to the index of the block. Also returns the
+    coordinates of the center of each block (following the same index as the labels).
+
+    The size of the blocks can be specified by the *spacing* parameter. Alternatively,
+    the number of blocks in the South-North and West-East directions can be specified
+    using the *shape* parameter.
 
     .. note::
 
@@ -672,6 +706,8 @@ def block_split(coordinates, spacing, adjust="spacing", region=None):
         Arrays with the coordinates of each data point. Should be in the
         following order: (easting, northing, vertical, ...). Only easting and
         northing will be used, all subsequent coordinates will be ignored.
+    shape : tuple = (n_north, n_east) or None
+        The number of blocks in the South-North and West-East directions, respectively.
     spacing : float, tuple = (s_north, s_east), or None
         The block size in the South-North and West-East directions,
         respectively. A single value means that the size is equal in both
@@ -715,6 +751,19 @@ def block_split(coordinates, spacing, adjust="spacing", region=None):
      [2 2 2 3 3 3]
      [2 2 2 3 3 3]
      [2 2 2 3 3 3]]
+    >>> # Use the shape instead of the block size
+    >>> block_coords, labels = block_split(coords, shape=(4, 2))
+    >>> for coord in block_coords:
+    ...     print(', '.join(['{:.3f}'.format(i) for i in coord]))
+    -3.750, -1.250, -3.750, -1.250, -3.750, -1.250, -3.750, -1.250
+    5.625, 5.625, 6.875, 6.875, 8.125, 8.125, 9.375, 9.375
+    >>> print(labels.reshape(coords[0].shape))
+    [[0 0 0 1 1 1]
+     [0 0 0 1 1 1]
+     [2 2 2 3 3 3]
+     [4 4 4 5 5 5]
+     [6 6 6 7 7 7]
+     [6 6 6 7 7 7]]
 
     """
     if region is None:
@@ -722,7 +771,7 @@ def block_split(coordinates, spacing, adjust="spacing", region=None):
     block_coords = tuple(
         i.ravel()
         for i in grid_coordinates(
-            region, spacing=spacing, adjust=adjust, pixel_register=True
+            region, spacing=spacing, shape=shape, adjust=adjust, pixel_register=True
         )
     )
     tree = kdtree(block_coords)
