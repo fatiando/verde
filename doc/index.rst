@@ -33,6 +33,7 @@
     tutorials/decimation.rst
     tutorials/projections.rst
     tutorials/chain.rst
+    tutorials/model_evaluation.rst
     tutorials/model_selection.rst
     tutorials/weights.rst
     tutorials/vectors.rst
