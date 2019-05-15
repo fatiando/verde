@@ -11,7 +11,7 @@ from ..coordinates import (
     profile_coordinates,
     grid_coordinates,
     inside,
-    latlon_continuity,
+    longitude_continuity,
 )
 
 
@@ -112,7 +112,7 @@ def test_profile_coordiantes_fails():
         profile_coordinates((0, 1), (1, 2), size=-10)
 
 
-def test_latlon_continuity():
+def test_longitude_continuity():
     "Test continuous boundary conditions in geographic coordinates."
     # Define longitude coordinates around the globe for [0, 360) and [-180, 180)
     longitude_360 = np.linspace(0, 350, 36)
@@ -123,7 +123,7 @@ def test_latlon_continuity():
     w, e = 10.5, 20.3
     for longitude in [longitude_360, longitude_180]:
         coordinates = [longitude, latitude]
-        region_new, coordinates_new = latlon_continuity(
+        region_new, coordinates_new = longitude_continuity(
             (w, e, s, n), coordinates=coordinates
         )
         w_new, e_new = region_new[:2]
@@ -134,7 +134,7 @@ def test_latlon_continuity():
     w, e = -20, 20
     for longitude in [longitude_360, longitude_180]:
         coordinates = [longitude, latitude]
-        region_new, coordinates_new = latlon_continuity(
+        region_new, coordinates_new = longitude_continuity(
             (w, e, s, n), coordinates=coordinates
         )
         w_new, e_new = region_new[:2]
@@ -145,7 +145,7 @@ def test_latlon_continuity():
     for w, e in [[0, 360], [-180, 180], [-20, 340]]:
         for longitude in [longitude_360, longitude_180]:
             coordinates = [longitude, latitude]
-            region_new, coordinates_new = latlon_continuity(
+            region_new, coordinates_new = longitude_continuity(
                 (w, e, s, n), coordinates=coordinates
             )
             w_new, e_new = region_new[:2]
@@ -156,7 +156,7 @@ def test_latlon_continuity():
     w, e = 20, 20
     for longitude in [longitude_360, longitude_180]:
         coordinates = [longitude, latitude]
-        region_new, coordinates_new = latlon_continuity(
+        region_new, coordinates_new = longitude_continuity(
             (w, e, s, n), coordinates=coordinates
         )
         w_new, e_new = region_new[:2]
@@ -167,7 +167,7 @@ def test_latlon_continuity():
     w, e = 0, 200
     for longitude in [longitude_360, longitude_180]:
         coordinates = [longitude, latitude]
-        region_new, coordinates_new = latlon_continuity(
+        region_new, coordinates_new = longitude_continuity(
             (w, e, s, n), coordinates=coordinates
         )
         w_new, e_new = region_new[:2]
@@ -177,7 +177,7 @@ def test_latlon_continuity():
     w, e = -160, 160
     for longitude in [longitude_360, longitude_180]:
         coordinates = [longitude, latitude]
-        region_new, coordinates_new = latlon_continuity(
+        region_new, coordinates_new = longitude_continuity(
             (w, e, s, n), coordinates=coordinates
         )
         w_new, e_new = region_new[:2]

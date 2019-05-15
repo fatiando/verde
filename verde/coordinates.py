@@ -662,7 +662,7 @@ def inside(coordinates, region, latlon=False):
     """
     check_region(region, latlon=latlon)
     if latlon:
-        region, coordinates = latlon_continuity(region, coordinates=coordinates)
+        region, coordinates = longitude_continuity(region, coordinates=coordinates)
     w, e, s, n = region
     easting, northing = coordinates[:2]
     # Allocate temporary arrays to minimize memory allocation overhead
@@ -779,7 +779,7 @@ def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=
     return block_coords, labels
 
 
-def latlon_continuity(region, coordinates=None):
+def longitude_continuity(region, coordinates=None):
     """
     Modify geographic region boundaries to ensure continuity around the globe.
 
@@ -806,16 +806,16 @@ def latlon_continuity(region, coordinates=None):
     Examples
     --------
 
-    >>> from verde import latlon_continuity
+    >>> from verde import longitude_continuity
     >>> # Modify region with west > east
     >>> w, e, s, n = 350, 10, -10, 10
-    >>> print(latlon_continuity([w, e, s, n]))
+    >>> print(longitude_continuity([w, e, s, n]))
     [-10  10 -10  10]
     >>> # Modify region and extra coordinates
     >>> from verde import grid_coordinates
     >>> region = [-70, -60, -40, -30]
     >>> coordinates = grid_coordinates([270, 320, -50, -20], spacing=5)
-    >>> region, [longitude, latitude] = latlon_continuity(region, coordinates)
+    >>> region, [longitude, latitude] = longitude_continuity(region, coordinates)
     >>> print(region)
     [290 300 -40 -30]
     >>> print(longitude.min(), longitude.max())
@@ -823,7 +823,7 @@ def latlon_continuity(region, coordinates=None):
     >>> # Another example
     >>> region = [-20, 20, -20, 20]
     >>> coordinates = grid_coordinates([0, 350, -90, 90], spacing=10)
-    >>> region, [longitude, latitude] = latlon_continuity(region, coordinates)
+    >>> region, [longitude, latitude] = longitude_continuity(region, coordinates)
     >>> print(region)
     [-20  20 -20  20]
     >>> print(longitude.min(), longitude.max())
