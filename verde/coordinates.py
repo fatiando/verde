@@ -8,7 +8,7 @@ from .base.utils import n_1d_arrays
 from .utils import kdtree
 
 
-def check_region(region, latlon=False):
+def check_region(region, geographic=False):
     """
     Check that the given region dimensions are valid.
 
@@ -20,7 +20,7 @@ def check_region(region, latlon=False):
     region : list = [W, E, S, N]
         The boundaries of a given region in Cartesian or geographic
         coordinates.
-    latlon : bool (optional)
+    geographic : bool (optional)
         If True the `region` will be assumed to be geographic coordinates in degrees.
 
     Raises
@@ -32,7 +32,7 @@ def check_region(region, latlon=False):
     if len(region) != 4:
         raise ValueError("Invalid region '{}'. Only 4 values allowed.".format(region))
     w, e, s, n = region
-    if latlon:
+    if geographic:
         _check_geographic_coordinates([np.array([w, e]), np.array([s, n])])
         if abs(e - w) > 360:
             raise ValueError(
@@ -45,7 +45,7 @@ def check_region(region, latlon=False):
             raise ValueError(
                 "Invalid region '{}' (W, E, S, N).Must have W =< E.".format(region)
                 + "If working with geographic coordinates, don't forget to add the "
-                + "latlon=True argument."
+                + "geographic=True argument."
             )
     if s > n:
         raise ValueError(
@@ -603,7 +603,7 @@ def profile_coordinates(point1, point2, size, extra_coords=None):
     return tuple(coordinates), distances
 
 
-def inside(coordinates, region, latlon=False):
+def inside(coordinates, region, geographic=False):
     """
     Determine which points fall inside a given region.
 
@@ -618,7 +618,7 @@ def inside(coordinates, region, latlon=False):
     region : list = [W, E, S, N]
         The boundaries of a given region in Cartesian or geographic
         coordinates.
-    latlon : bool (optional)
+    geographic : bool (optional)
         If True both `region` and `coordinates` will be assumed to be geographic
         coordinates in degrees.
 
@@ -653,15 +653,15 @@ def inside(coordinates, region, latlon=False):
     >>> # Geographic coordinates are also supported
     >>> east, north = grid_coordinates([0, 350, -20, 20], spacing=10)
     >>> region = [-10, 10, -10, 10]
-    >>> are_inside = inside([east, north], region, latlon=True)
+    >>> are_inside = inside([east, north], region, geographic=True)
     >>> print(east[are_inside])
     [  0.  10. 350.   0.  10. 350.   0.  10. 350.]
     >>> print(north[are_inside])
     [-10. -10. -10.   0.   0.   0.  10.  10.  10.]
 
     """
-    check_region(region, latlon=latlon)
-    if latlon:
+    check_region(region, geographic=geographic)
+    if geographic:
         region, coordinates = longitude_continuity(region, coordinates=coordinates)
     w, e, s, n = region
     easting, northing = coordinates[:2]
@@ -831,7 +831,7 @@ def longitude_continuity(region, coordinates=None):
     """
     # Get longitudinal boundaries and check region
     w, e, s, n = region[:4]
-    check_region([w, e, s, n], latlon=True)
+    check_region([w, e, s, n], geographic=True)
     # Check if region is defined all around the globe
     all_globe = np.allclose(abs(e - w), 360)
     # Move coordinates to [0, 360)

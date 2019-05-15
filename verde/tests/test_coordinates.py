@@ -87,21 +87,21 @@ def test_check_region():
         check_region([-1, -2, -4, -3])
     with pytest.raises(ValueError):
         check_region([-2, -1, -2, -3])
-    check_region([0, 360, -90, 90], latlon=True)
+    check_region([0, 360, -90, 90], geographic=True)
     with pytest.raises(ValueError):
-        check_region([-200, 0, -10, 10], latlon=True)
+        check_region([-200, 0, -10, 10], geographic=True)
     with pytest.raises(ValueError):
-        check_region([0, 400, -10, 10], latlon=True)
+        check_region([0, 400, -10, 10], geographic=True)
     with pytest.raises(ValueError):
-        check_region([-200, -190, -10, 10], latlon=True)
+        check_region([-200, -190, -10, 10], geographic=True)
     with pytest.raises(ValueError):
-        check_region([-45, 45, -100, 0], latlon=True)
+        check_region([-45, 45, -100, 0], geographic=True)
     with pytest.raises(ValueError):
-        check_region([-45, 45, -100, 0], latlon=True)
+        check_region([-45, 45, -100, 0], geographic=True)
     with pytest.raises(ValueError):
-        check_region([-45, 45, 0, 100], latlon=True)
+        check_region([-45, 45, 0, 100], geographic=True)
     with pytest.raises(ValueError):
-        check_region([-100, 260.5, -30, 30], latlon=True)
+        check_region([-100, 260.5, -30, 30], geographic=True)
 
 
 def test_profile_coordiantes_fails():
@@ -186,7 +186,7 @@ def test_longitude_continuity():
         npt.assert_allclose(coordinates_new[0], longitude_180)
 
 
-def test_inside_latlon_0_360():
+def test_inside_geographic_0_360():
     "Check if inside gets points properly with geographic coordinates on [0, 360]"
     # Define longitude coordinates on 0, 360
     longitude = np.linspace(0, 350, 36)
@@ -194,7 +194,7 @@ def test_inside_latlon_0_360():
     longitude, latitude = np.meshgrid(longitude, latitude)
     # Check region longitudes in 0, 360
     region = 20, 40, -10, 10
-    are_inside = inside([longitude, latitude], region, latlon=True)
+    are_inside = inside([longitude, latitude], region, geographic=True)
     longitude_cut, latitude_cut = longitude[are_inside], latitude[are_inside]
     assert longitude_cut.size == 9
     assert latitude_cut.size == 9
@@ -202,7 +202,7 @@ def test_inside_latlon_0_360():
     assert set(latitude_cut) == set([-10, 0, 10])
     # Check region longitudes in -180, 180
     region = 170, -170, -10, 10
-    are_inside = inside([longitude, latitude], region, latlon=True)
+    are_inside = inside([longitude, latitude], region, geographic=True)
     longitude_cut, latitude_cut = longitude[are_inside], latitude[are_inside]
     assert longitude_cut.size == 9
     assert latitude_cut.size == 9
@@ -210,7 +210,7 @@ def test_inside_latlon_0_360():
     assert set(latitude_cut) == set([-10, 0, 10])
     # Check region longitudes around zero meridian
     region = -10, 10, -10, 10
-    are_inside = inside([longitude, latitude], region, latlon=True)
+    are_inside = inside([longitude, latitude], region, geographic=True)
     longitude_cut, latitude_cut = longitude[are_inside], latitude[are_inside]
     assert longitude_cut.size == 9
     assert latitude_cut.size == 9
@@ -218,7 +218,7 @@ def test_inside_latlon_0_360():
     assert set(latitude_cut) == set([-10, 0, 10])
 
 
-def test_inside_latlon_180_180():
+def test_inside_geographic_180_180():
     "Check if inside gets points properly with geographic coordinates on [-180, 180]"
     # Define longitude coordinates on -180, 180
     longitude = np.linspace(-170, 180, 36)
@@ -226,7 +226,7 @@ def test_inside_latlon_180_180():
     longitude, latitude = np.meshgrid(longitude, latitude)
     # Check region longitudes in 0, 360
     region = 20, 40, -10, 10
-    are_inside = inside([longitude, latitude], region, latlon=True)
+    are_inside = inside([longitude, latitude], region, geographic=True)
     longitude_cut, latitude_cut = longitude[are_inside], latitude[are_inside]
     assert longitude_cut.size == 9
     assert latitude_cut.size == 9
@@ -234,7 +234,7 @@ def test_inside_latlon_180_180():
     assert set(latitude_cut) == set([-10, 0, 10])
     # Check region longitudes in 0, 360 around 180
     region = 170, 190, -10, 10
-    are_inside = inside([longitude, latitude], region, latlon=True)
+    are_inside = inside([longitude, latitude], region, geographic=True)
     longitude_cut, latitude_cut = longitude[are_inside], latitude[are_inside]
     assert longitude_cut.size == 9
     assert latitude_cut.size == 9
@@ -242,7 +242,7 @@ def test_inside_latlon_180_180():
     assert set(latitude_cut) == set([-10, 0, 10])
     # Check region longitudes in -180, 180
     region = 170, -170, -10, 10
-    are_inside = inside([longitude, latitude], region, latlon=True)
+    are_inside = inside([longitude, latitude], region, geographic=True)
     longitude_cut, latitude_cut = longitude[are_inside], latitude[are_inside]
     assert longitude_cut.size == 9
     assert latitude_cut.size == 9
@@ -250,7 +250,7 @@ def test_inside_latlon_180_180():
     assert set(latitude_cut) == set([-10, 0, 10])
     # Check region longitudes around zero meridian
     region = -10, 10, -10, 10
-    are_inside = inside([longitude, latitude], region, latlon=True)
+    are_inside = inside([longitude, latitude], region, geographic=True)
     longitude_cut, latitude_cut = longitude[are_inside], latitude[are_inside]
     assert longitude_cut.size == 9
     assert latitude_cut.size == 9
@@ -258,13 +258,13 @@ def test_inside_latlon_180_180():
     assert set(latitude_cut) == set([-10, 0, 10])
 
 
-def test_inside_latlon_around_poles():
+def test_inside_geographic_around_poles():
     "Test inside function when region is around the poles"
     longitude, latitude = grid_coordinates([0, 350, -90, 90], spacing=10.0)
     # North Pole all around the globe
     regions = [[0, 360, 70, 90], [-180, 180, 70, 90]]
     for region in regions:
-        are_inside = inside([longitude, latitude], region, latlon=True)
+        are_inside = inside([longitude, latitude], region, geographic=True)
         assert longitude[are_inside].size == 3 * 36
         assert latitude[are_inside].size == 3 * 36
         assert set(longitude[are_inside]) == set(np.unique(longitude))
@@ -272,33 +272,33 @@ def test_inside_latlon_around_poles():
     # South Pole all around the globe
     regions = [[0, 360, -90, -70], [-180, 180, -90, -70]]
     for region in regions:
-        are_inside = inside([longitude, latitude], region, latlon=True)
+        are_inside = inside([longitude, latitude], region, geographic=True)
         assert longitude[are_inside].size == 3 * 36
         assert latitude[are_inside].size == 3 * 36
         assert set(longitude[are_inside]) == set(np.unique(longitude))
         assert set(latitude[are_inside]) == set([-90, -80, -70])
     # Section at the North Pole
     region = [40, 90, 70, 90]
-    are_inside = inside([longitude, latitude], region, latlon=True)
+    are_inside = inside([longitude, latitude], region, geographic=True)
     assert longitude[are_inside].size == 3 * 6
     assert latitude[are_inside].size == 3 * 6
     assert set(longitude[are_inside]) == set([40, 50, 60, 70, 80, 90])
     assert set(latitude[are_inside]) == set([70, 80, 90])
     region = [-90, -40, 70, 90]
-    are_inside = inside([longitude, latitude], region, latlon=True)
+    are_inside = inside([longitude, latitude], region, geographic=True)
     assert longitude[are_inside].size == 3 * 6
     assert latitude[are_inside].size == 3 * 6
     assert set(longitude[are_inside]) == set([270, 280, 290, 300, 310, 320])
     assert set(latitude[are_inside]) == set([70, 80, 90])
     # Section at the South Pole
     region = [40, 90, -90, -70]
-    are_inside = inside([longitude, latitude], region, latlon=True)
+    are_inside = inside([longitude, latitude], region, geographic=True)
     assert longitude[are_inside].size == 3 * 6
     assert latitude[are_inside].size == 3 * 6
     assert set(longitude[are_inside]) == set([40, 50, 60, 70, 80, 90])
     assert set(latitude[are_inside]) == set([-90, -80, -70])
     region = [-90, -40, -90, -70]
-    are_inside = inside([longitude, latitude], region, latlon=True)
+    are_inside = inside([longitude, latitude], region, geographic=True)
     assert longitude[are_inside].size == 3 * 6
     assert latitude[are_inside].size == 3 * 6
     assert set(longitude[are_inside]) == set([270, 280, 290, 300, 310, 320])
