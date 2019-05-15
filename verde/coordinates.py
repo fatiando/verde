@@ -8,7 +8,7 @@ from .base.utils import n_1d_arrays
 from .utils import kdtree
 
 
-def check_region(region, geographic=False):
+def check_region(region):
     """
     Check that the given region dimensions are valid.
 
@@ -20,8 +20,6 @@ def check_region(region, geographic=False):
     region : list = [W, E, S, N]
         The boundaries of a given region in Cartesian or geographic
         coordinates.
-    geographic : bool (optional)
-        If True the `region` will be assumed to be geographic coordinates in degrees.
 
     Raises
     ------
@@ -32,21 +30,12 @@ def check_region(region, geographic=False):
     if len(region) != 4:
         raise ValueError("Invalid region '{}'. Only 4 values allowed.".format(region))
     w, e, s, n = region
-    if geographic:
-        _check_geographic_coordinates([np.array([w, e]), np.array([s, n])])
-        if abs(e - w) > 360:
-            raise ValueError(
-                "Invalid region '{}' (W, E, S, N). ".format(region)
-                + "East and West boundaries must not be separated by an angle greater"
-                + "than 360 degrees."
-            )
-    else:
-        if w > e:
-            raise ValueError(
-                "Invalid region '{}' (W, E, S, N).Must have W =< E.".format(region)
-                + "If working with geographic coordinates, don't forget to add the "
-                + "geographic=True argument."
-            )
+    if w > e:
+        raise ValueError(
+            "Invalid region '{}' (W, E, S, N). Must have W =< E. ".format(region)
+            + "If working with geographic coordinates, don't forget to match geographic"
+            + " region with coordinates using `longitude_continuity` function."
+        )
     if s > n:
         raise ValueError(
             "Invalid region '{}' (W, E, S, N). Must have S =< N.".format(region)
@@ -603,7 +592,7 @@ def profile_coordinates(point1, point2, size, extra_coords=None):
     return tuple(coordinates), distances
 
 
-def inside(coordinates, region, geographic=False):
+def inside(coordinates, region):
     """
     Determine which points fall inside a given region.
 
@@ -618,9 +607,6 @@ def inside(coordinates, region, geographic=False):
     region : list = [W, E, S, N]
         The boundaries of a given region in Cartesian or geographic
         coordinates.
-    geographic : bool (optional)
-        If True both `region` and `coordinates` will be assumed to be geographic
-        coordinates in degrees.
 
     Returns
     -------
@@ -651,18 +637,17 @@ def inside(coordinates, region, geographic=False):
      [False  True  True]
      [False False False]]
     >>> # Geographic coordinates are also supported
+    >>> from verde import longitude_continuity
     >>> east, north = grid_coordinates([0, 350, -20, 20], spacing=10)
     >>> region = [-10, 10, -10, 10]
-    >>> are_inside = inside([east, north], region, geographic=True)
+    >>> are_inside = inside(*longitude_continuity([east, north], region))
     >>> print(east[are_inside])
     [  0.  10. 350.   0.  10. 350.   0.  10. 350.]
     >>> print(north[are_inside])
     [-10. -10. -10.   0.   0.   0.  10.  10.  10.]
 
     """
-    check_region(region, geographic=geographic)
-    if geographic:
-        region, coordinates = longitude_continuity(region, coordinates=coordinates)
+    check_region(region)
     w, e, s, n = region
     easting, northing = coordinates[:2]
     # Allocate temporary arrays to minimize memory allocation overhead
@@ -779,7 +764,7 @@ def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=
     return block_coords, labels
 
 
-def longitude_continuity(region, coordinates=None):
+def longitude_continuity(coordinates, region):
     """
     Modify geographic region boundaries to ensure continuity around the globe.
 
@@ -788,12 +773,12 @@ def longitude_continuity(region, coordinates=None):
 
     Parameters
     ----------
+    coordinates : list or array
+        Set of geographic coordinates that will be moved to the same degrees
+        interval as the one of the modified region.
     region : list or array
         List or array containing the boundary coordinates `w, `e`, `s`, `n` of the
         region in degrees.
-    coordinates : list or array (optional)
-        Extra set of geographic coordinates that will be moved to the same degrees
-        interval as the one of the modified region.
 
     Returns
     -------
@@ -806,16 +791,15 @@ def longitude_continuity(region, coordinates=None):
     Examples
     --------
 
-    >>> from verde import longitude_continuity
     >>> # Modify region with west > east
     >>> w, e, s, n = 350, 10, -10, 10
-    >>> print(longitude_continuity([w, e, s, n]))
+    >>> print(longitude_continuity(coordinates=None, region=[w, e, s, n]))
     [-10  10 -10  10]
     >>> # Modify region and extra coordinates
     >>> from verde import grid_coordinates
     >>> region = [-70, -60, -40, -30]
     >>> coordinates = grid_coordinates([270, 320, -50, -20], spacing=5)
-    >>> region, [longitude, latitude] = longitude_continuity(region, coordinates)
+    >>> [longitude, latitude], region = longitude_continuity(coordinates, region)
     >>> print(region)
     [290 300 -40 -30]
     >>> print(longitude.min(), longitude.max())
@@ -823,7 +807,7 @@ def longitude_continuity(region, coordinates=None):
     >>> # Another example
     >>> region = [-20, 20, -20, 20]
     >>> coordinates = grid_coordinates([0, 350, -90, 90], spacing=10)
-    >>> region, [longitude, latitude] = longitude_continuity(region, coordinates)
+    >>> [longitude, latitude], region = longitude_continuity(coordinates, region)
     >>> print(region)
     [-20  20 -20  20]
     >>> print(longitude.min(), longitude.max())
@@ -831,7 +815,8 @@ def longitude_continuity(region, coordinates=None):
     """
     # Get longitudinal boundaries and check region
     w, e, s, n = region[:4]
-    check_region([w, e, s, n], geographic=True)
+    # Run sanity checks for region
+    _check_geographic_region([w, e, s, n])
     # Check if region is defined all around the globe
     all_globe = np.allclose(abs(e - w), 360)
     # Move coordinates to [0, 360)
@@ -850,6 +835,7 @@ def longitude_continuity(region, coordinates=None):
     region[:2] = w, e
     # Modify extra coordinates if passed
     if coordinates:
+        # Run sanity checks for coordinates
         _check_geographic_coordinates(coordinates)
         longitude = coordinates[0]
         if interval_360:
@@ -858,7 +844,7 @@ def longitude_continuity(region, coordinates=None):
             longitude = ((longitude + 180) % 360) - 180
         coordinates = np.array(coordinates)
         coordinates[0] = longitude
-        return region, coordinates
+        return coordinates, region
     return region
 
 
@@ -872,4 +858,27 @@ def _check_geographic_coordinates(coordinates):
     if np.any(latitude > 90) or np.any(latitude < -90):
         raise ValueError(
             "Invalid latitude coordinates. They should be < 90 and > -90 degrees."
+        )
+
+
+def _check_geographic_region(region):
+    "Check if region in geographic coordinates are within accepted degree intervals"
+    w, e, s, n = region[:4]
+    # Check if coordinates are within accepted degrees intervals
+    if np.any(np.array([w, e]) > 360) or np.any(np.array([w, e]) < -180):
+        raise ValueError(
+            "Invalid region '{}' (W, E, S, N). ".format(region)
+            + "Longitudinal coordinates should be < 360 and > -180 degrees."
+        )
+    if np.any(np.array([s, n]) > 90) or np.any(np.array([s, n]) < -90):
+        raise ValueError(
+            "Invalid region '{}' (W, E, S, N). ".format(region)
+            + "Latitudinal coordinates should be < 90 and > -90 degrees."
+        )
+    # Check if longitude boundaries do not involve more than one spin around the globe
+    if abs(e - w) > 360:
+        raise ValueError(
+            "Invalid region '{}' (W, E, S, N). ".format(region)
+            + "East and West boundaries must not be separated by an angle greater "
+            + "than 360 degrees."
         )
