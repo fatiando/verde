@@ -782,11 +782,11 @@ def longitude_continuity(coordinates, region):
 
     Returns
     -------
+    modified_coordinates : array
+        Modified set of extra geographic coordinates.
     modified_region : array
         List containing the modified boundary coordinates `w, `e`, `s`, `n` of the
         region.
-    modified_coordinates : array (optional)
-        Modified set of extra geographic coordinates.
 
     Examples
     --------
