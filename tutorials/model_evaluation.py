@@ -177,7 +177,9 @@ from sklearn.model_selection import ShuffleSplit
 
 shuffle = ShuffleSplit(n_splits=10, test_size=0.3, random_state=0)
 
-scores = vd.cross_val_score(vd.Spline(), proj_coords, data.air_temperature_c, cv=shuffle)
+scores = vd.cross_val_score(
+    vd.Spline(), proj_coords, data.air_temperature_c, cv=shuffle
+)
 print("shuffle scores:", scores)
 print("Mean score:", np.mean(scores))
 
