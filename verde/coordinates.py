@@ -768,7 +768,7 @@ def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=
 
 def longitude_continuity(coordinates, region):
     """
-    Modify geographic region boundaries to ensure continuity around the globe.
+    Modify coordinates and region boundaries to ensure longitude continuity.
 
     Longitudinal boundaries of the region are moved to the `[0, 360)` or `[-180, 180)`
     degrees interval depending which one is better suited for that specific region.
