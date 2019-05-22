@@ -34,7 +34,7 @@ def check_region(region):
         raise ValueError(
             "Invalid region '{}' (W, E, S, N). Must have W =< E. ".format(region)
             + "If working with geographic coordinates, don't forget to match geographic"
-            + " region with coordinates using `longitude_continuity` function."
+            + " region with coordinates using 'verde.longitude_continuity'."
         )
     if s > n:
         raise ValueError(
