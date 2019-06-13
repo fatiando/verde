@@ -9,8 +9,8 @@ from sklearn.utils.validation import check_is_fitted
 
 from .base import n_1d_arrays, BaseGridder, check_fit_input, least_squares
 from .coordinates import get_region
-from .utils import parse_engine
-from .model_selection import DummyClient, cross_val_score
+from .utils import DummyClient, parse_engine
+from .model_selection import cross_val_score
 
 try:
     import numba

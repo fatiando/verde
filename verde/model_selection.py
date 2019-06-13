@@ -8,28 +8,7 @@ import numpy as np
 from sklearn.model_selection import KFold, ShuffleSplit
 
 from .base import check_fit_input
-
-
-class DummyClient:  # pylint: disable=no-self-use,too-few-public-methods
-    """
-    Dummy client to mimic a dask.distributed.Client for immediate local
-    execution.
-
-    >>> client = DummyClient()
-    >>> client.submit(sum, (1, 2, 3))
-    6
-    >>> print(client.scatter("bla"))
-    bla
-
-    """
-
-    def submit(self, function, *args, **kwargs):
-        "Execute function with the given arguments and return its output"
-        return function(*args, **kwargs)
-
-    def scatter(self, value):
-        "Does nothing but return the input"
-        return value
+from .utils import DummyClient
 
 
 def train_test_split(coordinates, data, weights=None, **kwargs):
