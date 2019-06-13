@@ -22,15 +22,15 @@ def test_spline_cv():
     # Can't test on many configurations because it takes too long for regular testing
     spline = SplineCV(
         dampings=[None],
-        mindists=[1e-5, 1e-3],
+        mindists=[1e-7, 1e-5],
         cv=ShuffleSplit(n_splits=2, random_state=0),
     ).fit(coords, data.scalars)
     # The interpolation should be perfect on top of the data points
     npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-5)
     npt.assert_allclose(spline.score(coords, data.scalars), 1)
-    assert spline.mindist_ == 1e-3
+    npt.assert_allclose(spline.force_coords_, coords)
+    assert spline.mindist_ == 1e-7
     assert spline.damping_ is None
-    npt.assert_allclose(spline.force_coords, coords)
     # There should be 1 force per data point
     assert data.scalars.size == spline.force_.size
     npt.assert_allclose(
@@ -66,8 +66,8 @@ def test_spline_cv_parallel():
     # Can't test on many configurations because it takes too long for regular testing
     # Use ShuffleSplit instead of KFold to test it out and make this run faster
     spline = SplineCV(
-        dampings=[None],
-        mindists=[1e-5, 1e-3],
+        dampings=[None, 1e-8],
+        mindists=[1e-7, 1e-5],
         client=client,
         cv=ShuffleSplit(n_splits=1, random_state=0),
     ).fit(coords, data.scalars)
@@ -75,7 +75,8 @@ def test_spline_cv_parallel():
     # The interpolation should be perfect on top of the data points
     npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-5)
     npt.assert_allclose(spline.score(coords, data.scalars), 1)
-    assert spline.mindist_ == 1e-5
+    npt.assert_allclose(spline.force_coords_, coords)
+    assert spline.mindist_ == 1e-7
     assert spline.damping_ is None
     shape = (5, 5)
     region = (270, 320, -770, -720)
@@ -100,7 +101,7 @@ def test_spline():
     npt.assert_allclose(spline.score(coords, data.scalars), 1)
     # There should be 1 force per data point
     assert data.scalars.size == spline.force_.size
-    npt.assert_allclose(spline.force_coords, coords)
+    npt.assert_allclose(spline.force_coords_, coords)
     shape = (5, 5)
     region = (270, 320, -770, -720)
     # Tolerance needs to be kind of high to allow for error due to small
