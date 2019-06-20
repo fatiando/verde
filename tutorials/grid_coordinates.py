@@ -108,16 +108,30 @@ print(spacingnorth)
 # adjusted spacing grid nodes keep the original region, while the adjusted
 # region grid nodes on the north and east side of the region have moved.
 
-plt.figure(figsize=(6,6))
+plt.figure(figsize=(6, 6))
 currentAxis = plt.gca()
-currentAxis.add_patch(plt.Rectangle((west, south), east, north, fill=None, label='Region Bounds'))
-plt.scatter(regioneast, regionnorth, label='Adjusted Region Grid Nodes', marker='>', color='blue')
-plt.scatter(spacingeast, spacingnorth, label='Adjusted Spacing Grid Nodes', marker='>', color='orange')
-plt.ylim(-50,1600)
-plt.xlim(-50,1600)
-plt.xlabel('Easting')
-plt.ylabel('Northing')
-plt.legend(loc='upper center')
+currentAxis.add_patch(
+    plt.Rectangle((west, south), east, north, fill=None, label="Region Bounds")
+)
+plt.scatter(
+    regioneast,
+    regionnorth,
+    label="Adjusted Region Grid Nodes",
+    marker=">",
+    color="blue",
+)
+plt.scatter(
+    spacingeast,
+    spacingnorth,
+    label="Adjusted Spacing Grid Nodes",
+    marker=">",
+    color="orange",
+)
+plt.ylim(-50, 1600)
+plt.xlim(-50, 1600)
+plt.xlabel("Easting")
+plt.ylabel("Northing")
+plt.legend(loc="upper center")
 plt.show()
 
 ######################################################################################
@@ -126,13 +140,15 @@ plt.show()
 # Pixel registration locates the grid points in the middle of the grid segments
 # rather than in the corner of each grid.
 # First, let's take the same region and grid, and set the `adjust` parameter to
-#``region`` so that the function will adjust the region, and set
+# ``region`` so that the function will adjust the region, and set
 # ``pixel_register`` parameter to `true`. Without piexel registration our grid
 # had dimensions of 3x4, with pixel registration we expect the dimensions of
 # the grid to be the dimensions of the non-registered grid minus one or equal to
 # the number of segments between the grid points in the non-registered grid.
 
-regioneastpixel, regionnorthpixel = vd.grid_coordinates(region=region, spacing=spacing, adjust='region', pixel_register=True)
+regioneastpixel, regionnorthpixel = vd.grid_coordinates(
+    region=region, spacing=spacing, adjust="region", pixel_register=True
+)
 print(regioneastpixel.shape, regionnorthpixel.shape)
 
 ######################################################################################
@@ -145,7 +161,9 @@ print(regionnorthpixel)
 # If we set the ``adjust`` parameter to ``spacing`` the function will return
 # the same dimensions as when ``adjust`` is set to ``region``.
 
-spacingeastpixel, spacingnorthpixel = vd.grid_coordinates(region=region, spacing=500, adjust='spacing', pixel_register=True)
+spacingeastpixel, spacingnorthpixel = vd.grid_coordinates(
+    region=region, spacing=500, adjust="spacing", pixel_register=True
+)
 print(spacingeastpixel.shape, spacingnorthpixel.shape)
 
 ######################################################################################
@@ -156,16 +174,30 @@ print(spacingnorthpixel)
 
 ######################################################################################
 # Lastly, we can plot up the pixel-registered grid points to see where they fall
-# within the original region bounds. 
+# within the original region bounds.
 
-plt.figure(figsize=(6,6))
+plt.figure(figsize=(6, 6))
 currentAxis = plt.gca()
-currentAxis.add_patch(plt.Rectangle((west, south), east, north, fill=None, label='Region Bounds'))
-plt.scatter(regioneastpixel, regionnorthpixel, label='Adjust Region Grid Nodes', marker='o', color='blue')
-plt.scatter(spacingeastpixel, spacingnorthpixel, label='Adjust Spacing Grid Nodes', marker='o', color='orange')
-plt.ylim(-50,1600)
-plt.xlim(-50,1600)
-plt.xlabel('Easting')
-plt.ylabel('Northing')
-plt.legend(loc='upper center')
+currentAxis.add_patch(
+    plt.Rectangle((west, south), east, north, fill=None, label="Region Bounds")
+)
+plt.scatter(
+    regioneastpixel,
+    regionnorthpixel,
+    label="Adjust Region Grid Nodes",
+    marker="o",
+    color="blue",
+)
+plt.scatter(
+    spacingeastpixel,
+    spacingnorthpixel,
+    label="Adjust Spacing Grid Nodes",
+    marker="o",
+    color="orange",
+)
+plt.ylim(-50, 1600)
+plt.xlim(-50, 1600)
+plt.xlabel("Easting")
+plt.ylabel("Northing")
+plt.legend(loc="upper center")
 plt.show()
