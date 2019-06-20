@@ -53,7 +53,7 @@ region = (west, east, south, north)
 # With a region and spacing defined, grid_coordinates can now create a regular
 # grid. First let's pass a set shape to :func:`verde.grid_coordinates` to
 # confirm that it is creating 4 west-east grid points and 3 south-north grid
-# points, and set the adjust parameter to `region`
+# points, and set the adjust parameter to ``region``
 
 regioneast, regionnorth = vd.grid_coordinates(
     region=region, spacing=spacing, adjust="region"
@@ -74,13 +74,13 @@ print(regioneast)
 print(regionnorth)
 
 ######################################################################################
-# By default if adjust is not assigned to `region` or `spacing`,
+# By default if adjust is not assigned to ``region`` or ``spacing``,
 # :func:`verde.grid_coordinates` will adjust the spacing. With the adjust
-# parameter set to `spacing` :func:`verde.grid_coordinates` creates grid nodes
+# parameter set to ``spacing`` :func:`verde.grid_coordinates` creates grid nodes
 # in a similar manner as when it adjusts the region. However, it doesn't readjust
 # the region so that it is divisble by the spacing before creating the grid.
 # This means the grid will have the same number of grid points no matter if
-# `region` or `spacing` are set to the adjust parameter.
+# ``region`` or ``spacing`` are set to the adjust parameter.
 
 ########################################################################################
 # Create the grid with adjust spacing
