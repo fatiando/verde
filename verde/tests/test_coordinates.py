@@ -159,3 +159,21 @@ def test_longitude_continuity():
         assert w_new == -160
         assert e_new == 160
         npt.assert_allclose(coordinates_new[0], longitude_180)
+
+
+def test_invalid_geographic_region():
+    "Check if passing invalid region to longitude_continuity raises a ValueError"
+    # Region with latitude over boundaries
+    w, e = -10, 10
+    for s, n in [[-200, 90], [-90, 200]]:
+        with pytest.raises(ValueError):
+            longitude_continuity(None, [w, e, s, n])
+    # Region with longitude over boundaries
+    s, n = -10, 10
+    for w, e in [[-200, 0], [0, 380]]:
+        with pytest.raises(ValueError):
+            longitude_continuity(None, [w, e, s, n])
+    # Region with longitudinal difference greater than 360
+    w, e, s, n = -180, 200, -10, 10
+    with pytest.raises(ValueError):
+        longitude_continuity(None, [w, e, s, n])
