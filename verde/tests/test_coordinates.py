@@ -10,7 +10,6 @@ from ..coordinates import (
     spacing_to_shape,
     profile_coordinates,
     grid_coordinates,
-    inside,
     longitude_continuity,
 )
 
