@@ -779,7 +779,7 @@ def longitude_continuity(coordinates, region):
         Set of geographic coordinates that will be moved to the same degrees
         interval as the one of the modified region.
     region : list or array
-        List or array containing the boundary coordinates `w, `e`, `s`, `n` of the
+        List or array containing the boundary coordinates `w`, `e`, `s`, `n` of the
         region in degrees.
 
     Returns
