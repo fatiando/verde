@@ -177,3 +177,26 @@ def test_invalid_geographic_region():
     w, e, s, n = -180, 200, -10, 10
     with pytest.raises(ValueError):
         longitude_continuity(None, [w, e, s, n])
+
+
+def test_invalid_geographic_coordinates():
+    "Check if passing invalid coordinates to longitude_continuity raises a ValueError"
+    boundaries = [0, 360, -90, 90]
+    spacing = 10
+    region = [-20, 20, -20, 20]
+    # Region with longitude point over boundaries
+    longitude, latitude = grid_coordinates(boundaries, spacing=spacing)
+    longitude[0] = -200
+    with pytest.raises(ValueError):
+        longitude_continuity([longitude, latitude], region)
+    longitude[0] = 400
+    with pytest.raises(ValueError):
+        longitude_continuity([longitude, latitude], region)
+    # Region with latitude point over boundaries
+    longitude, latitude = grid_coordinates(boundaries, spacing=spacing)
+    latitude[0] = -100
+    with pytest.raises(ValueError):
+        longitude_continuity([longitude, latitude], region)
+    latitude[0] = 100
+    with pytest.raises(ValueError):
+        longitude_continuity([longitude, latitude], region)
