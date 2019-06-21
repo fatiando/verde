@@ -9,8 +9,8 @@ from sklearn.utils.validation import check_is_fitted
 
 from .base import n_1d_arrays, BaseGridder, check_fit_input, least_squares
 from .coordinates import get_region
-from .utils import parse_engine
-from .model_selection import DummyClient, cross_val_score
+from .utils import DummyClient, parse_engine
+from .model_selection import cross_val_score
 
 try:
     import numba
@@ -73,6 +73,9 @@ class SplineCV(BaseGridder):
     ----------
     force_ : array
         The estimated forces that fit the observed data.
+    force_coords_ : tuple of arrays
+        The easting and northing coordinates of the point forces. Same as *force_coords*
+        if it is not None. Otherwise, same as the data locations used to fit the spline.
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
@@ -176,7 +179,6 @@ class SplineCV(BaseGridder):
         best = np.argmax(self.scores_)
         self._best = Spline(**parameter_sets[best])
         self._best.fit(coordinates, data, weights=weights)
-        self.force_coords = self._best.force_coords
         return self
 
     @property
@@ -198,6 +200,11 @@ class SplineCV(BaseGridder):
     def mindist_(self):
         "The optimal mindist parameter"
         return self._best.mindist
+
+    @property
+    def force_coords_(self):
+        "The optimal force locations"
+        return self._best.force_coords_
 
     def predict(self, coordinates):
         """
@@ -273,8 +280,7 @@ class Spline(BaseGridder):
         imposed on the estimated forces. If None, no regularization is used.
     force_coords : None or tuple of arrays
         The easting and northing coordinates of the point forces. If None (default),
-        then will be set to the data coordinates the first time
-        :meth:`~verde.Spline.fit` is called.
+        then will be set to the data coordinates used to fit the spline.
     engine : str
         Computation engine for the Jacobian matrix and prediction. Can be ``'auto'``,
         ``'numba'``, or ``'numpy'``. If ``'auto'``, will use numba if it is installed or
@@ -285,6 +291,9 @@ class Spline(BaseGridder):
     ----------
     force_ : array
         The estimated forces that fit the observed data.
+    force_coords_ : tuple of arrays
+        The easting and northing coordinates of the point forces. Same as *force_coords*
+        if it is not None. Otherwise, same as the data locations used to fit the spline.
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
@@ -336,8 +345,10 @@ class Spline(BaseGridder):
         # Capture the data region to use as a default when gridding.
         self.region_ = get_region(coordinates[:2])
         if self.force_coords is None:
-            self.force_coords = tuple(i.copy() for i in n_1d_arrays(coordinates, n=2))
-        jacobian = self.jacobian(coordinates[:2], self.force_coords)
+            self.force_coords_ = tuple(i.copy() for i in n_1d_arrays(coordinates, n=2))
+        else:
+            self.force_coords_ = self.force_coords
+        jacobian = self.jacobian(coordinates[:2], self.force_coords_)
         self.force_ = least_squares(jacobian, data, weights, self.damping)
         return self
 
@@ -363,7 +374,7 @@ class Spline(BaseGridder):
         """
         check_is_fitted(self, ["force_"])
         shape = np.broadcast(*coordinates[:2]).shape
-        force_east, force_north = n_1d_arrays(self.force_coords, n=2)
+        force_east, force_north = n_1d_arrays(self.force_coords_, n=2)
         east, north = n_1d_arrays(coordinates, n=2)
         data = np.empty(east.size, dtype=east.dtype)
         if parse_engine(self.engine) == "numba":
