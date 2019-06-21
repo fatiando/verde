@@ -638,7 +638,7 @@ def inside(coordinates, region):
      [False False False]]
 
     Geographic coordinates are also supported using :func:`verde.longitude_continuity`:
-    
+
     >>> from verde import longitude_continuity
     >>> east, north = grid_coordinates([0, 350, -20, 20], spacing=10)
     >>> region = [-10, 10, -10, 10]
