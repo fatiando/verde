@@ -770,7 +770,7 @@ def longitude_continuity(coordinates, region):
     """
     Modify coordinates and region boundaries to ensure longitude continuity.
 
-    Longitudinal boundaries of the region are moved to the `[0, 360)` or `[-180, 180)`
+    Longitudinal boundaries of the region are moved to the ``[0, 360)`` or ``[-180, 180)``
     degrees interval depending which one is better suited for that specific region.
 
     Parameters
