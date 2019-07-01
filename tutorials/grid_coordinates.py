@@ -5,11 +5,11 @@ Gridding coordinates
 ====================
 
 Grid coordinates in Verde are used to create points on a regularly spaced grid
-that are  then used in the spline method to interpolate between sample data
+that are then used in the spline method to interpolate between sample data
 points. The grid can be specified either by the number of points in each
 dimension (the *shape*) or by the grid node spacing.
 
-Creating regular grids in Verde is done using the :func:`verde.grid-coordinates`
+Creating regular grids in Verde is done using the :func:`verde.grid_coordinates`
 function. The function uses :func:`numpy.linspace` and
 :func:`numpy.meshgrid` to interpolate between points in both the west-east and
 south-north directions to create a two-dimensional spatial grid. To this
@@ -36,7 +36,7 @@ region = (west, east, south, north)
 ########################################################################################
 # How Grid Coordinates works
 # --------------------------
-# When we choose to adjust the region the function takes the original region, and
+# When we choose to adjust the region, the function takes the original region and
 # divides the south-north and west-east extents of the region by the spacing to
 # get the number of grid points in both directions. This value is then
 # rounded and converted to an integer. The function then adds one to the integer
@@ -47,7 +47,7 @@ region = (west, east, south, north)
 # expect the west-east dimension to contain 4 grid points (1555/500 is 3.11 which
 # is rounded to 3 segments and 4 nodes), and the south-north dimensions to
 # contain 3 grid points (1250/500 is 2.5 which is rounded to 2 segments and 3
-# nodes. After :func:`verde.grid-coordinates` calculates the number of grid
+# nodes. After :func:`verde.grid_coordinates` calculates the number of grid
 # points it then multiplies the number of grid points by the spacing and adds the
 # minimum values so that the points are spatially located.
 
@@ -55,8 +55,8 @@ region = (west, east, south, north)
 # Create the grid with adjust region
 # ----------------------------------
 #
-# With a region and spacing defined, grid_coordinates can now create a regular
-# grid. First let's pass a our data to :func:`verde.grid_coordinates` to
+# With a region and spacing defined, :func:`verde.grid_coordinates` can now create a regular
+# grid. First let's pass our data to :func:`verde.grid_coordinates` to
 # confirm that it is creating 4 west-east grid points and 3 south-north grid
 # points, and set the adjust parameter to ``region``
 
@@ -72,7 +72,7 @@ print(regioneast.shape, regionnorth.shape)
 # easting values are divisible by the spacing. In this example, the easting has
 # 3 segments (4 nodes) that are each 500 units long, meaning the easting spans
 # from 0 to 1500. The northing has 2 segments (3 nodes) that are each 500 units
-# long, meaning the northing spans from 0 to 1000. Both dimensions are divisble
+# long, meaning the northing spans from 0 to 1000. Both dimensions are divisible
 # by 500.
 
 print(regioneast)
@@ -146,7 +146,7 @@ plt.show()
 # rather than in the corner of each grid.
 # First, let's take the same region and grid, and set the `adjust` parameter to
 # ``region`` so that the function will adjust the region, and set
-# ``pixel_register`` parameter to `true`. Without piexel registration our grid
+# ``pixel_register`` parameter to `True`. Without pixel registration our grid
 # had dimensions of 3x4, with pixel registration we expect the dimensions of
 # the grid to be the dimensions of the non-registered grid minus one or equal to
 # the number of segments between the grid points in the non-registered grid.
