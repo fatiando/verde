@@ -10,15 +10,11 @@ points. The grid can be specified either by the number of points in each
 dimension (the *shape*) or by the grid node spacing.
 
 Creating regular grids in Verde is done using the :func:`verde.grid_coordinates`
-function. The function uses :func:`numpy.linspace` and
-:func:`numpy.meshgrid` to create a set of regulary spaced points in both the
-west-east and south-north directions to create a two-dimensional spatial grid.
-To this end, the function will adjust either the region bounds or the spacing
-between grid nodes.
+function. It creates a set of regularly spaced points in both the west-east and
+south-north directions, i.e. a two-dimensional spatial grid.
 
 First let's create a region that is 1000 units west-east and 1000 units south-
-north, and we will set an initial spacing to 100 units. This should create a
-square grid with no adjustment of the region, or the spacing.
+north, and we will set an initial spacing to 100 units.
 """
 
 import numpy as np
@@ -82,8 +78,8 @@ plt.legend(loc="upper center", bbox_to_anchor=(0.5, 1.15))
 plt.show()
 
 ########################################################################################
-# How Grid Coordinates works
-# --------------------------
+# Adjusting region boundaries when creating the grid
+# --------------------------------------------------
 # Now let's create a region that is 1555 units west-east, and 1250 units south-north
 # with a spacing of 500 units. Because the range of the west-east and south-north
 # boundaries are not multiples of 500, we must choose to change either:
@@ -94,13 +90,8 @@ spacing = 500
 west, east, south, north = 0, 1555, 0, 1250
 region = (west, east, south, north)
 
-########################################################################################
-# Create the grid with adjust region
-# ----------------------------------
-# With a region and spacing defined, :func:`verde.grid_coordinates` can now create a regular
-# grid. First let's pass our data to :func:`verde.grid_coordinates` to
-# confirm that it is creating 4 west-east grid points and 3 south-north grid
-# points, and set the adjust parameter to ``region``
+# We could tell :func:`verde.grid_coordinates` to adjust the region boundaries by
+# passing `adjust="region"`.
 
 region_east, region_north = vd.grid_coordinates(
     region=region, spacing=spacing, adjust="region"
@@ -109,7 +100,7 @@ print(region_east.shape, region_north.shape)
 
 ########################################################################################
 # With the spacing set at 500 units and a 3 by 4 grid of regular dimensions,
-# :func:`verde.grid_coordinates` then calculates the spatial location of each
+# :func:`verde.grid_coordinates` calculates the spatial location of each
 # grid point and adjusts the region so that the maximum northing and maximum
 # easting values are divisible by the spacing. In this example, the easting has
 # 3 segments (4 nodes) that are each 500 units long, meaning the easting spans
@@ -130,11 +121,11 @@ print(region_north)
 # the adjust parameter is set to ``region`` or ``spacing``.
 
 ########################################################################################
-# Create the grid with adjust spacing
-# -----------------------------------
+# Adjusting spacing when creating the grid
+# ----------------------------------------
 #
-# Now let's adjust the spacing of the grid points. Note that the number of grid
-# points is still the same as above.
+# Now let's adjust the spacing of the grid points by passing `adjust="spacing"` to
+# :func:`verde.grid_coordinates`.
 
 spacing_east, spacing_north = vd.grid_coordinates(
     region=region, spacing=500, adjust="spacing"
@@ -322,3 +313,34 @@ plt.xlabel("Easting")
 plt.ylabel("Northing")
 plt.legend(loc="upper center", bbox_to_anchor=(0.5, 1.18))
 plt.show()
+
+######################################################################################
+# Extra Coordinates
+# -----------------
+# In some cases, you might need an additional coordinate such as a height or a time
+# that is associated with your west-east and south-north grid. The ``extra_coords``
+# parameter in :func:`verde.grid_coordinates` creates an extra coordinate array that
+# is the same shape as the grid, but contains a constant value. For example, let's
+# create a square grid that is 1000x1000 units with a spacing of 100 units, and has a
+# constant height of 1000 units and time of 1.
+
+spacing = 100
+west, east, south, north = 0, 1000, 0, 1000
+region = (west, east, south, north)
+
+# create the grid
+extra_east, extra_north, extra_height, extra_time = vd.grid_coordinates(
+    region=region, spacing=spacing, extra_coords=[1000, 1]
+)
+
+print(extra_east.shape, extra_north.shape, extra_height.shape, extra_time)
+
+########################################################################################
+# And we can print the height array to verify that it is correct
+
+print(extra_height)
+
+########################################################################################
+# And we can print the time array as well
+
+print(extra_time)
