@@ -170,9 +170,8 @@ def test_spline_warns_weights():
     msg = "Weights might have no effect if no regularization is used"
     with warnings.catch_warnings(record=True) as warn:
         grd.fit((data.easting, data.northing), data.scalars, weights=weights)
-        assert len(warn) == 1
-        assert issubclass(warn[-1].category, UserWarning)
-        assert str(warn[-1].message).split(".")[0] == msg
+        assert len(warn) >= 1
+        assert any(str(w.message).split(".")[0] == msg for w in warn)
 
 
 def test_spline_warns_underdetermined():
@@ -181,9 +180,8 @@ def test_spline_warns_underdetermined():
     grd = Spline(force_coords=(np.arange(60), np.arange(60)))
     with warnings.catch_warnings(record=True) as warn:
         grd.fit((data.easting, data.northing), data.scalars)
-        assert len(warn) == 1
-        assert issubclass(warn[-1].category, UserWarning)
-        assert str(warn[-1].message).startswith("Under-determined problem")
+        assert len(warn) >= 1
+        assert any(str(w.message).startswith("Under-determined problem") for w in warn)
 
 
 @requires_numba
