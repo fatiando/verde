@@ -1,6 +1,7 @@
 """
 Test the coordinate generation functions
 """
+import numpy as np
 import numpy.testing as npt
 import pytest
 
@@ -9,6 +10,7 @@ from ..coordinates import (
     spacing_to_shape,
     profile_coordinates,
     grid_coordinates,
+    longitude_continuity,
 )
 
 
@@ -92,3 +94,108 @@ def test_profile_coordiantes_fails():
         profile_coordinates((0, 1), (1, 2), size=0)
     with pytest.raises(ValueError):
         profile_coordinates((0, 1), (1, 2), size=-10)
+
+
+def test_longitude_continuity():
+    "Test continuous boundary conditions in geographic coordinates."
+    # Define longitude coordinates around the globe for [0, 360) and [-180, 180)
+    longitude_360 = np.linspace(0, 350, 36)
+    longitude_180 = np.hstack((longitude_360[:18], longitude_360[18:] - 360))
+    latitude = np.linspace(-90, 90, 36)
+    s, n = -90, 90
+    # Check w, e in [0, 360)
+    w, e = 10.5, 20.3
+    for longitude in [longitude_360, longitude_180]:
+        coordinates = [longitude, latitude]
+        coordinates_new, region_new = longitude_continuity(coordinates, (w, e, s, n))
+        w_new, e_new = region_new[:2]
+        assert w_new == w
+        assert e_new == e
+        npt.assert_allclose(coordinates_new[0], longitude_360)
+    # Check w, e in [-180, 180)
+    w, e = -20, 20
+    for longitude in [longitude_360, longitude_180]:
+        coordinates = [longitude, latitude]
+        coordinates_new, region_new = longitude_continuity(coordinates, (w, e, s, n))
+        w_new, e_new = region_new[:2]
+        assert w_new == -20
+        assert e_new == 20
+        npt.assert_allclose(coordinates_new[0], longitude_180)
+    # Check region around the globe
+    for w, e in [[0, 360], [-180, 180], [-20, 340]]:
+        for longitude in [longitude_360, longitude_180]:
+            coordinates = [longitude, latitude]
+            coordinates_new, region_new = longitude_continuity(
+                coordinates, (w, e, s, n)
+            )
+            w_new, e_new = region_new[:2]
+            assert w_new == 0
+            assert e_new == 360
+            npt.assert_allclose(coordinates_new[0], longitude_360)
+    # Check w == e
+    w, e = 20, 20
+    for longitude in [longitude_360, longitude_180]:
+        coordinates = [longitude, latitude]
+        coordinates_new, region_new = longitude_continuity(coordinates, (w, e, s, n))
+        w_new, e_new = region_new[:2]
+        assert w_new == 20
+        assert e_new == 20
+        npt.assert_allclose(coordinates_new[0], longitude_360)
+    # Check angle greater than 180
+    w, e = 0, 200
+    for longitude in [longitude_360, longitude_180]:
+        coordinates = [longitude, latitude]
+        coordinates_new, region_new = longitude_continuity(coordinates, (w, e, s, n))
+        w_new, e_new = region_new[:2]
+        assert w_new == 0
+        assert e_new == 200
+        npt.assert_allclose(coordinates_new[0], longitude_360)
+    w, e = -160, 160
+    for longitude in [longitude_360, longitude_180]:
+        coordinates = [longitude, latitude]
+        coordinates_new, region_new = longitude_continuity(coordinates, (w, e, s, n))
+        w_new, e_new = region_new[:2]
+        assert w_new == -160
+        assert e_new == 160
+        npt.assert_allclose(coordinates_new[0], longitude_180)
+
+
+def test_invalid_geographic_region():
+    "Check if passing invalid region to longitude_continuity raises a ValueError"
+    # Region with latitude over boundaries
+    w, e = -10, 10
+    for s, n in [[-200, 90], [-90, 200]]:
+        with pytest.raises(ValueError):
+            longitude_continuity(None, [w, e, s, n])
+    # Region with longitude over boundaries
+    s, n = -10, 10
+    for w, e in [[-200, 0], [0, 380]]:
+        with pytest.raises(ValueError):
+            longitude_continuity(None, [w, e, s, n])
+    # Region with longitudinal difference greater than 360
+    w, e, s, n = -180, 200, -10, 10
+    with pytest.raises(ValueError):
+        longitude_continuity(None, [w, e, s, n])
+
+
+def test_invalid_geographic_coordinates():
+    "Check if passing invalid coordinates to longitude_continuity raises a ValueError"
+    boundaries = [0, 360, -90, 90]
+    spacing = 10
+    region = [-20, 20, -20, 20]
+    # Region with longitude point over boundaries
+    longitude, latitude = grid_coordinates(boundaries, spacing=spacing)
+    longitude[0] = -200
+    with pytest.raises(ValueError):
+        longitude_continuity([longitude, latitude], region)
+    longitude[0] = 400
+    with pytest.raises(ValueError):
+        longitude_continuity([longitude, latitude], region)
+    # Region with latitude point over boundaries
+    longitude, latitude = grid_coordinates(boundaries, spacing=spacing)
+    latitude[0] = -100
+    with pytest.raises(ValueError):
+        longitude_continuity([longitude, latitude], region)
+    latitude[0] = 100
+    with pytest.raises(ValueError):
+        longitude_continuity([longitude, latitude], region)
