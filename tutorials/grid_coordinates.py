@@ -99,10 +99,10 @@ plt.show()
 #
 # Now let's change our spacing to 300 units. Because the range of the west-east and
 # south-north boundaries are not multiples of 300, we must choose to change either:
-# 
+#
 # - the boundaries of the region in order to fit the spacing, or
 # - the spacing in order to fit the region boundaries.
-# 
+#
 # We could tell :func:`verde.grid_coordinates` to adjust the region boundaries by
 # passing `adjust="region"`.
 
@@ -113,7 +113,7 @@ region_easting, region_northing = vd.grid_coordinates(
 print(region_easting.shape, region_northing.shape)
 
 ########################################################################################
-# With the spacing set at 300 units and a 4 by 4 grid of regular dimensions, 
+# With the spacing set at 300 units and a 4 by 4 grid of regular dimensions,
 # :func:`verde.grid_coordinates` calculates the spatial location of each
 # grid point and adjusts the region so that the maximum northing and maximum
 # easting values are divisible by the spacing. In this example, both the  easting and
