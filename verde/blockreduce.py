@@ -39,6 +39,10 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
     bounding region of the data. When using this class to decimate data before
     gridding, it's best to use the same region and spacing as the desired grid.
 
+    The size of the blocks can be specified by the *spacing* parameter. Alternatively,
+    the number of blocks in the South-North and West-East directions can be specified
+    using the *shape* parameter.
+
     If the given region is not divisible by the spacing (block size), either
     the region or the spacing will have to be adjusted. By default, the spacing
     will be rounded to the nearest multiple. Optionally, the East and North
@@ -55,6 +59,8 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
     reduction : function
         A reduction function that takes an array and returns a single value
         (e.g., ``np.mean``, ``np.median``, etc).
+    shape : tuple = (n_north, n_east) or None
+        The number of blocks in the South-North and West-East directions, respectively.
     spacing : float, tuple = (s_north, s_east), or None
         The block size in the South-North and West-East directions,
         respectively. A single value means that the size is equal in both
@@ -82,12 +88,14 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
     def __init__(
         self,
         reduction,
-        spacing,
+        spacing=None,
         region=None,
         adjust="spacing",
         center_coordinates=False,
+        shape=None,
     ):
         self.reduction = reduction
+        self.shape = shape
         self.spacing = spacing
         self.region = region
         self.adjust = adjust
@@ -136,7 +144,11 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
             coordinates, data, weights, unpack=False
         )
         blocks, labels = block_split(
-            coordinates, self.spacing, self.adjust, self.region
+            coordinates,
+            spacing=self.spacing,
+            shape=self.shape,
+            adjust=self.adjust,
+            region=self.region,
         )
         if any(w is None for w in weights):
             reduction = self.reduction
@@ -241,6 +253,10 @@ class BlockMean(BlockReduce):  # pylint: disable=too-few-public-methods
     bounding region of the data. When using this class to decimate data before
     gridding, it's best to use the same region and spacing as the desired grid.
 
+    The size of the blocks can be specified by the *spacing* parameter. Alternatively,
+    the number of blocks in the South-North and West-East directions can be specified
+    using the *shape* parameter.
+
     If the given region is not divisible by the spacing (block size), either
     the region or the spacing will have to be adjusted. By default, the spacing
     will be rounded to the nearest multiple. Optionally, the East and North
@@ -254,6 +270,8 @@ class BlockMean(BlockReduce):  # pylint: disable=too-few-public-methods
 
     Parameters
     ----------
+    shape : tuple = (n_north, n_east) or None
+        The number of blocks in the South-North and West-East directions, respectively.
     spacing : float, tuple = (s_north, s_east), or None
         The block size in the South-North and West-East directions,
         respectively. A single value means that the size is equal in both
@@ -287,13 +305,21 @@ class BlockMean(BlockReduce):  # pylint: disable=too-few-public-methods
 
     def __init__(
         self,
-        spacing,
+        spacing=None,
         region=None,
         adjust="spacing",
         center_coordinates=False,
         uncertainty=False,
+        shape=None,
     ):
-        super().__init__(np.average, spacing, region, adjust, center_coordinates)
+        super().__init__(
+            reduction=np.average,
+            shape=shape,
+            spacing=spacing,
+            region=region,
+            adjust=adjust,
+            center_coordinates=center_coordinates,
+        )
         self.uncertainty = uncertainty
 
     def filter(self, coordinates, data, weights=None):
@@ -342,7 +368,11 @@ class BlockMean(BlockReduce):  # pylint: disable=too-few-public-methods
                 "'uncertainty=False' to produce variance weights instead."
             )
         blocks, labels = block_split(
-            coordinates, self.spacing, self.adjust, self.region
+            coordinates,
+            spacing=self.spacing,
+            shape=self.shape,
+            adjust=self.adjust,
+            region=self.region,
         )
         ncomps = len(data)
         columns = {"data{}".format(i): comp.ravel() for i, comp in enumerate(data)}

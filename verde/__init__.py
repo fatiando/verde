@@ -11,6 +11,7 @@ from .coordinates import (
     get_region,
     pad_region,
     project_region,
+    longitude_continuity,
 )
 from .mask import distance_mask
 from .utils import variance_to_weights, maxabs, grid_to_table
@@ -20,7 +21,7 @@ from .blockreduce import BlockReduce, BlockMean
 from .scipygridder import ScipyGridder
 from .trend import Trend
 from .chain import Chain
-from .spline import Spline
+from .spline import Spline, SplineCV
 from .model_selection import cross_val_score, train_test_split
 from .vector import Vector, VectorSpline2D
 
