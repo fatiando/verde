@@ -71,14 +71,10 @@ class BaseGridder(BaseEstimator):
     MeanGridder(multiplier=1)
     >>> # Interpolate on a regular grid
     >>> grid = grd.grid(region=(0, 5, -10, -8), shape=(30, 20))
-    >>> type(grid)
-    <class 'xarray.core.dataset.Dataset'>
     >>> np.allclose(grid.scalars, -32.2182)
     True
     >>> # Interpolate along a profile
     >>> profile = grd.profile(point1=(0, -10), point2=(5, -8), size=10)
-    >>> type(profile)
-    <class 'pandas.core.frame.DataFrame'>
     >>> print(', '.join(['{:.2f}'.format(i) for i in profile.distance]))
     0.00, 0.60, 1.20, 1.80, 2.39, 2.99, 3.59, 4.19, 4.79, 5.39
     >>> print(', '.join(['{:.1f}'.format(i) for i in profile.scalars]))

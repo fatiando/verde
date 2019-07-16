@@ -40,14 +40,13 @@ class CheckerBoard(BaseGridder):
 
     Examples
     --------
+
     >>> synth = CheckerBoard()
     >>> # Default values for the wavelengths are selected automatically
     >>> print(synth.w_east_, synth.w_north_)
     2500.0 2500.0
     >>> # Checkerboard.grid produces an xarray.Dataset with data on a regular grid
     >>> grid = synth.grid(shape=(11, 6))
-    >>> type(grid)
-    <class 'xarray.core.dataset.Dataset'>
     >>> # scatter and profile generate pandas.DataFrame objects
     >>> table = synth.scatter()
     >>> print(sorted(table.columns))
