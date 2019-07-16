@@ -42,8 +42,6 @@ class BaseGridder(BaseEstimator):
 
     >>> import verde as vd
     >>> import numpy as np
-    >>> import xarray as xr
-    >>> import pandas as pd
     >>> from sklearn.utils.validation import check_is_fitted
     >>> class MeanGridder(vd.base.BaseGridder):
     ...     "Gridder that always produces the mean of all data values"
@@ -73,14 +71,10 @@ class BaseGridder(BaseEstimator):
     MeanGridder(multiplier=1)
     >>> # Interpolate on a regular grid
     >>> grid = grd.grid(region=(0, 5, -10, -8), shape=(30, 20))
-    >>> isinstance(grid, xr.Dataset)
-    True
     >>> np.allclose(grid.scalars, -32.2182)
     True
     >>> # Interpolate along a profile
     >>> profile = grd.profile(point1=(0, -10), point2=(5, -8), size=10)
-    >>> isinstance(profile, pd.DataFrame)
-    True
     >>> print(', '.join(['{:.2f}'.format(i) for i in profile.distance]))
     0.00, 0.60, 1.20, 1.80, 2.39, 2.99, 3.59, 4.19, 4.79, 5.39
     >>> print(', '.join(['{:.1f}'.format(i) for i in profile.scalars]))
