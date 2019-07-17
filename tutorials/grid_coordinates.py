@@ -1,17 +1,17 @@
 """
 .. _grid_coordinates:
 
-Grid coordinates
+Grid Coordinates
 ====================
 
-Grid coordinates in Verde are used to create points on a regularly spaced grid
-that are then used in the spline method to interpolate between sample data
-points. The grid can be specified either by the number of points in each
-dimension (the *shape*) or by the grid node spacing.
+Creating the coordinates for regular grids in Verde is done using the 
+:func:`verde.grid_coordinates` function. It creates a set of regularly spaced points in 
+both the west-east and south-north directions, i.e. a two-dimensional spatial grid. These 
+points are then used by the Verde gridders to interpolate between data points. As such, all 
+`.grid` methods (like :meth:`verde.Spline.grid`) take as input the configuration parameters 
+for :func:`verde.grid_coordinates`. The grid can be specified either by the number of points 
+in each dimension (the shape) or by the grid node spacing.
 
-Creating regular grids in Verde is done using the :func:`verde.grid_coordinates`
-function. It creates a set of regularly spaced points in both the west-east and
-south-north directions, i.e. a two-dimensional spatial grid.
 
 """
 
@@ -32,21 +32,22 @@ region = (west, east, south, north)
 easting, northing = vd.grid_coordinates(region=region, spacing=spacing)
 
 ########################################################################################
-# We can check the dimensions of the grid coordinates to confirm that it is 11x11
-
+# We can check the dimensions of the grid coordinates. The region is 1000 units and the
+# spacing is 100 units, so the shape of the segments is 10x10. However, the number of
+# grid nodes in this case is one more than the number of segments. So our grid
+# coordinates have a shape of 11x11.
 print(easting.shape, northing.shape)
 
 ########################################################################################
 # Let's define two functions to visualize the region bounds and grid points
 
 
-def plot_region(ax, region=None):
+def plot_region(ax, region):
     "Plot the region as a solid line."
-    if region is not None:
-        west, east, south, north = region
-        ax.add_patch(
-            plt.Rectangle((west, south), east, north, fill=None, label="Region Bounds")
-        )
+    west, east, south, north = region
+    ax.add_patch(
+        plt.Rectangle((west, south), east, north, fill=None, label="Region Bounds")
+    )
 
 
 def plot_grid(ax, coordinates, linestyles="dotted", region=None, pad=50, **kwargs):
@@ -73,6 +74,7 @@ def plot_grid(ax, coordinates, linestyles="dotted", region=None, pad=50, **kwarg
         plt.ylim(padded[2:])
 
 
+########################################################################################
 # Visualize our region and grid coordinates using our functions
 
 plt.figure(figsize=(6, 6))
