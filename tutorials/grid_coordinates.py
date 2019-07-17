@@ -125,7 +125,7 @@ print(region_easting)
 print(region_northing)
 
 ######################################################################################
-# By default if adjust is not assigned to ``region`` or ``spacing``,
+# By default, if ``adjust`` is not assigned to ``"region"`` or ``"spacing"``,
 # then :func:`verde.grid_coordinates` will adjust the spacing. With the adjust
 # parameter set to ``spacing`` :func:`verde.grid_coordinates` creates grid nodes
 # in a similar manner as when it adjusts the region. However, it doesn't readjust
@@ -137,7 +137,7 @@ print(region_northing)
 # Adjusting spacing when creating the grid
 # ----------------------------------------
 #
-# Now let's adjust the spacing of the grid points by passing `adjust="spacing"`
+# Now let's adjust the spacing of the grid points by passing ``adjust="spacing"``
 # to :func:`verde.grid_coordinates`.
 
 spacing_easting, spacing_northing = vd.grid_coordinates(
@@ -193,10 +193,10 @@ plt.show()
 # ------------------
 #
 # Pixel registration locates the grid points in the middle of the grid segments
-# rather than in the corner of each grid.
+# rather than in the corner of each grid node.
 #
 # First, let's take our 1000x1000 region and use the 100 unit spacing from the first
-# example and set the ``pixel_register`` parameter to `True`. Without pixel
+# example and set the ``pixel_register`` parameter to ``True``. Without pixel
 # registration our grid should have dimensions of 11x11. With pixel registration we
 # expect the dimensions of the grid to be the dimensions of the non-registered grid
 # minus one, or equal to the number of segments between the grid points in the
@@ -216,7 +216,7 @@ print(pixel_northing)
 
 ######################################################################################
 # If we set ``pixel_register`` to ``False`` the function will return the grid
-# with one more grid node in both west-east and south-north directions.
+# coordinates of the nodes instead of pixel centers, resulting in an extra point in each direction.
 
 easting, northing = vd.grid_coordinates(
     region=region, spacing=spacing, pixel_register=False
