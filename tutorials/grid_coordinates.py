@@ -104,7 +104,7 @@ plt.show()
 # - the spacing in order to fit the region boundaries.
 #
 # We could tell :func:`verde.grid_coordinates` to adjust the region boundaries by
-# passing `adjust="region"`.
+# passing ``adjust="region"``.
 
 spacing = 300
 region_easting, region_northing = vd.grid_coordinates(
