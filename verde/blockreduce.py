@@ -120,8 +120,8 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
             following order: (easting, northing, vertical, ...). Only easting
-            and northing will be used, all subsequent coordinates will be
-            ignored.
+            and northing will be used to create the blocks, but all coordinates
+            will be reduced.
         data : array or tuple of arrays
             The data values at each point. If you want to reduce more than one
             data component, pass in multiple arrays as elements of a tuple. All
@@ -134,8 +134,8 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
         Returns
         -------
         blocked_coordinates : tuple of arrays
-            (easting, northing) arrays with the coordinates of each block that
-            contains data.
+            (easting, northing, vertical, ...) arrays with the coordinates of each block
+            that contains data.
         blocked_data : array
             The block reduced data values.
 
@@ -184,9 +184,7 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
-            following order: (easting, northing, vertical, ...). Only easting
-            and northing will be used, all subsequent coordinates will be
-            ignored.
+            following order: (easting, northing, vertical, ...).
         block_coordinates : tuple of arrays
             (easting, northing) arrays with the coordinates of the center of
             each block.
@@ -197,8 +195,8 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
         Returns
         -------
         coordinates : tuple of arrays
-            (easting, northing) arrays with the coordinates assigned to each
-            non-empty block.
+            (easting, northing, vertical, ...) arrays with the coordinates assigned to
+            each non-empty block.
 
         """
         if self.center_coordinates:
@@ -207,12 +205,16 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
         # Doing the coordinates separately from the data because in case of
         # weights the reduction applied to then is different (no weights
         # ever)
-        easting, northing = coordinates[:2]
-        table = pd.DataFrame(
-            dict(easting=easting.ravel(), northing=northing.ravel(), block=labels)
-        )
+        coordinates_dict = {
+            "coordinate{}".format(i): coord.ravel()
+            for i, coord in enumerate(coordinates)
+        }
+        coordinates_dict["block"] = labels
+        table = pd.DataFrame(coordinates_dict)
         grouped = table.groupby("block").aggregate(self.reduction)
-        return grouped.easting.values, grouped.northing.values
+        return tuple(
+            grouped["coordinate{}".format(i)].values for i in range(len(coordinates))
+        )
 
 
 class BlockMean(BlockReduce):  # pylint: disable=too-few-public-methods
