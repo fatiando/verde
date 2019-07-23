@@ -22,13 +22,21 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
@@ -37,12 +45,18 @@
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Geographic Coordinates" href="projections.html" />
     <link rel="prev" title="Trend Estimation" href="trends.html" />
-    
-    <script src="../_static/require.js"></script>
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
 
 </head>
 
@@ -50,11 +64,10 @@
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -106,10 +119,12 @@
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grid_coordinates.html">Grid Coordinates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="trends.html">Trend Estimation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Data Decimation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="projections.html">Geographic Coordinates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_evaluation.html">Evaluating Performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model_selection.html">Model Selection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="weights.html">Using Weights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vectors.html">Vector Data</a></li>
@@ -215,26 +230,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast + .nbinput {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-</style>
-<div class="sphx-glr-download-link-note admonition note">
+  <div class="sphx-glr-download-link-note admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Click <a class="reference internal" href="#sphx-glr-download-tutorials-decimation-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
@@ -242,14 +238,14 @@
 <span id="sphx-glr-tutorials-decimation-py"></span><h1>Data Decimation<a class="headerlink" href="#data-decimation" title="Permalink to this headline">¶</a></h1>
 <p>Often times, raw spatial data can be highly oversampled in a direction. In these cases,
 we need to decimate the data before interpolation to avoid aliasing effects.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="kn">as</span> <span class="nn">ccrs</span>
-<span class="kn">import</span> <span class="nn">verde</span> <span class="kn">as</span> <span class="nn">vd</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
 </pre></div>
 </div>
 <p>For example, our sample shipborne bathymetry data has a higher sampling frequency
 along the tracks than between tracks:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the data as a pandas.DataFrame</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the data as a pandas.DataFrame</span>
 <span class="n">data</span> <span class="o">=</span> <a href="../api/generated/verde.datasets.fetch_baja_bathymetry.html#verde.datasets.fetch_baja_bathymetry" title="View documentation for verde.datasets.fetch_baja_bathymetry"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">fetch_baja_bathymetry</span></a><span class="p">()</span>
 
 <span class="c1"># Plot it using matplotlib and Cartopy</span>
@@ -265,13 +261,18 @@ along the tracks than between tracks:</p>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_decimation_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_decimation_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/build/fatiando/verde/tutorials/decimation.py:27: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
+  plt.tight_layout()
+</pre></div>
+</div>
 <p>Class <a class="reference internal" href="../api/generated/verde.BlockReduce.html#verde.BlockReduce" title="verde.BlockReduce"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.BlockReduce</span></code></a> can be used to apply a reduction/aggregation
 operation (mean, median, standard deviation, etc) to the data in regular blocks. All
 data inside each block will be replaced by their aggregated value.
 <a class="reference internal" href="../api/generated/verde.BlockReduce.html#verde.BlockReduce" title="verde.BlockReduce"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockReduce</span></code></a> takes an aggregation function as input. It can be any
 function that receives a numpy array as input and returns a single scalar value. The
-<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html#numpy.mean" title="(in NumPy v1.15)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.mean</span></code></a> or <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.median.html#numpy.median" title="(in NumPy v1.15)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.median</span></code></a> functions are usually what we want.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html#numpy.mean" title="(in NumPy v1.16)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.mean</span></code></a> or <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.median.html#numpy.median" title="(in NumPy v1.16)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.median</span></code></a> functions are usually what we want.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
 <p>Blocked means and medians are good ways to decimate data for interpolation. Let’s use
@@ -279,18 +280,18 @@ a blocked median on our data to decimate it to our desired grid interval of 5
 arc-minutes. The reason for using a median over a mean is because bathymetry data can
 vary abruptly and a mean would smooth the data too much. For data varies more
 smoothly (like gravity and magnetic data), a mean would be a better option.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reducer</span> <span class="o">=</span> <a href="../api/generated/verde.BlockReduce.html#verde.BlockReduce" title="View documentation for verde.BlockReduce"><span class="n">vd</span><span class="o">.</span><span class="n">BlockReduce</span></a><span class="p">(</span><span class="n">reduction</span><span class="o">=</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.median.html#numpy.median" title="View documentation for numpy.median"><span class="n">np</span><span class="o">.</span><span class="n">median</span></a><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">5</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">reducer</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">reducer</span> <span class="o">=</span> <a href="../api/generated/verde.BlockReduce.html#verde.BlockReduce" title="View documentation for verde.BlockReduce"><span class="n">vd</span><span class="o">.</span><span class="n">BlockReduce</span></a><span class="p">(</span><span class="n">reduction</span><span class="o">=</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.median.html#numpy.median" title="View documentation for numpy.median"><span class="n">np</span><span class="o">.</span><span class="n">median</span></a><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">5</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">reducer</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>BlockReduce(adjust=&#39;spacing&#39;, center_coordinates=False,
-      reduction=&lt;function median at 0x146020f488c8&gt;, region=None,
-      spacing=0.08333333333333333)
+            reduction=&lt;function median at 0x2b50953ab950&gt;, region=None,
+            shape=None, spacing=0.08333333333333333)
 </pre></div>
 </div>
 <p>Use the <a class="reference internal" href="../api/generated/verde.BlockReduce.html#verde.BlockReduce.filter" title="verde.BlockReduce.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter</span></code></a> method to apply the reduction:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">coordinates</span><span class="p">,</span> <span class="n">bathymetry</span> <span class="o">=</span> <span class="n">reducer</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">coordinates</span><span class="p">,</span> <span class="n">bathymetry</span> <span class="o">=</span> <span class="n">reducer</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
     <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">bathymetry_m</span>
 <span class="p">)</span>
 
@@ -305,12 +306,17 @@ smoothly (like gravity and magnetic data), a mean would be a better option.</p>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_decimation_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_decimation_002.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/build/fatiando/verde/tutorials/decimation.py:60: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
+  plt.tight_layout()
+</pre></div>
+</div>
 <p>By default, the coordinates of the decimated data are obtained by applying the same
 reduction operation to the coordinates of the original data. Alternatively, we can
 tell <a class="reference internal" href="../api/generated/verde.BlockReduce.html#verde.BlockReduce" title="verde.BlockReduce"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockReduce</span></code></a> to return the coordinates of the center of each
 block:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">reducer_center</span> <span class="o">=</span> <a href="../api/generated/verde.BlockReduce.html#verde.BlockReduce" title="View documentation for verde.BlockReduce"><span class="n">vd</span><span class="o">.</span><span class="n">BlockReduce</span></a><span class="p">(</span>
-    <span class="n">reduction</span><span class="o">=</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.median.html#numpy.median" title="View documentation for numpy.median"><span class="n">np</span><span class="o">.</span><span class="n">median</span></a><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">5</span> <span class="o">/</span> <span class="mi">60</span><span class="p">,</span> <span class="n">center_coordinates</span><span class="o">=</span><span class="bp">True</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">reducer_center</span> <span class="o">=</span> <a href="../api/generated/verde.BlockReduce.html#verde.BlockReduce" title="View documentation for verde.BlockReduce"><span class="n">vd</span><span class="o">.</span><span class="n">BlockReduce</span></a><span class="p">(</span>
+    <span class="n">reduction</span><span class="o">=</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.median.html#numpy.median" title="View documentation for numpy.median"><span class="n">np</span><span class="o">.</span><span class="n">median</span></a><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">5</span> <span class="o">/</span> <span class="mi">60</span><span class="p">,</span> <span class="n">center_coordinates</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 <span class="n">coordinates_center</span><span class="p">,</span> <span class="n">bathymetry</span> <span class="o">=</span> <span class="n">reducer_center</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
     <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">bathymetry_m</span>
@@ -327,15 +333,20 @@ block:</p>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_decimation_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_decimation_003.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/build/fatiando/verde/tutorials/decimation.py:82: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
+  plt.tight_layout()
+</pre></div>
+</div>
 <p>Now the data are ready for interpolation.</p>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  2.612 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.511 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-decimation-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/512e1057799a1136f3c194e85feeb992/decimation.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">decimation.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/70e83ae905bf839601128624c327ec7c/decimation.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">decimation.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 
 
@@ -349,7 +360,7 @@ block:</p>
         <a href="projections.html" class="btn btn-neutral float-right" title="Geographic Coordinates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="trends.html" class="btn btn-neutral" title="Trend Estimation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="trends.html" class="btn btn-neutral float-left" title="Trend Estimation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -358,8 +369,10 @@ block:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Nov 06, 2018.
+        &copy; Copyright 2017-2019, The Verde Developers
+      <span class="lastupdated">
+        Last updated on Jul 23, 2019.
+      </span>
 
     </p>
   </div>
@@ -376,26 +389,16 @@ block:</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

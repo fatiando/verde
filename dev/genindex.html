@@ -23,25 +23,39 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="_static/style.css" type="text/css" />
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
-    
-    <script src="_static/require.js"></script>
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
 
 </head>
 
@@ -49,11 +63,10 @@
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -105,10 +118,12 @@
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/grid_coordinates.html">Grid Coordinates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/trends.html">Trend Estimation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/decimation.html">Data Decimation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/projections.html">Geographic Coordinates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/model_evaluation.html">Evaluating Performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/model_selection.html">Model Selection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/weights.html">Using Weights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/vectors.html">Vector Data</a></li>
@@ -220,7 +235,9 @@
  | <a href="#G"><strong>G</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#J"><strong>J</strong></a>
+ | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
@@ -247,6 +264,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/verde.Chain.html#verde.Chain">Chain (class in verde)</a>
+</li>
+      <li><a href="api/generated/verde.base.check_fit_input.html#verde.base.check_fit_input">check_fit_input() (in module verde.base)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -289,6 +308,8 @@
 </li>
         <li><a href="api/generated/verde.Spline.html#verde.Spline.filter">(verde.Spline method)</a>
 </li>
+        <li><a href="api/generated/verde.SplineCV.html#verde.SplineCV.filter">(verde.SplineCV method)</a>
+</li>
         <li><a href="api/generated/verde.Trend.html#verde.Trend.filter">(verde.Trend method)</a>
 </li>
         <li><a href="api/generated/verde.Vector.html#verde.Vector.filter">(verde.Vector method)</a>
@@ -308,6 +329,8 @@
         <li><a href="api/generated/verde.ScipyGridder.html#verde.ScipyGridder.fit">(verde.ScipyGridder method)</a>
 </li>
         <li><a href="api/generated/verde.Spline.html#verde.Spline.fit">(verde.Spline method)</a>
+</li>
+        <li><a href="api/generated/verde.SplineCV.html#verde.SplineCV.fit">(verde.SplineCV method)</a>
 </li>
         <li><a href="api/generated/verde.Trend.html#verde.Trend.fit">(verde.Trend method)</a>
 </li>
@@ -337,6 +360,8 @@
 </li>
         <li><a href="api/generated/verde.Spline.html#verde.Spline.get_params">(verde.Spline method)</a>
 </li>
+        <li><a href="api/generated/verde.SplineCV.html#verde.SplineCV.get_params">(verde.SplineCV method)</a>
+</li>
         <li><a href="api/generated/verde.Trend.html#verde.Trend.get_params">(verde.Trend method)</a>
 </li>
         <li><a href="api/generated/verde.Vector.html#verde.Vector.get_params">(verde.Vector method)</a>
@@ -358,6 +383,8 @@
         <li><a href="api/generated/verde.ScipyGridder.html#verde.ScipyGridder.grid">(verde.ScipyGridder method)</a>
 </li>
         <li><a href="api/generated/verde.Spline.html#verde.Spline.grid">(verde.Spline method)</a>
+</li>
+        <li><a href="api/generated/verde.SplineCV.html#verde.SplineCV.grid">(verde.SplineCV method)</a>
 </li>
         <li><a href="api/generated/verde.Trend.html#verde.Trend.grid">(verde.Trend method)</a>
 </li>
@@ -397,10 +424,34 @@
   </ul></td>
 </tr></table>
 
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/verde.base.least_squares.html#verde.base.least_squares">least_squares() (in module verde.base)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/verde.load_surfer.html#verde.load_surfer">load_surfer() (in module verde)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/verde.maxabs.html#verde.maxabs">maxabs() (in module verde)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/verde.median_distance.html#verde.median_distance">median_distance() (in module verde)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/verde.base.n_1d_arrays.html#verde.base.n_1d_arrays">n_1d_arrays() (in module verde.base)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -418,6 +469,8 @@
         <li><a href="api/generated/verde.ScipyGridder.html#verde.ScipyGridder.predict">(verde.ScipyGridder method)</a>
 </li>
         <li><a href="api/generated/verde.Spline.html#verde.Spline.predict">(verde.Spline method)</a>
+</li>
+        <li><a href="api/generated/verde.SplineCV.html#verde.SplineCV.predict">(verde.SplineCV method)</a>
 </li>
         <li><a href="api/generated/verde.Trend.html#verde.Trend.predict">(verde.Trend method)</a>
 </li>
@@ -438,6 +491,8 @@
         <li><a href="api/generated/verde.ScipyGridder.html#verde.ScipyGridder.profile">(verde.ScipyGridder method)</a>
 </li>
         <li><a href="api/generated/verde.Spline.html#verde.Spline.profile">(verde.Spline method)</a>
+</li>
+        <li><a href="api/generated/verde.SplineCV.html#verde.SplineCV.profile">(verde.SplineCV method)</a>
 </li>
         <li><a href="api/generated/verde.Trend.html#verde.Trend.profile">(verde.Trend method)</a>
 </li>
@@ -467,6 +522,8 @@
 </li>
         <li><a href="api/generated/verde.Spline.html#verde.Spline.scatter">(verde.Spline method)</a>
 </li>
+        <li><a href="api/generated/verde.SplineCV.html#verde.SplineCV.scatter">(verde.SplineCV method)</a>
+</li>
         <li><a href="api/generated/verde.Trend.html#verde.Trend.scatter">(verde.Trend method)</a>
 </li>
         <li><a href="api/generated/verde.Vector.html#verde.Vector.scatter">(verde.Vector method)</a>
@@ -488,6 +545,8 @@
         <li><a href="api/generated/verde.ScipyGridder.html#verde.ScipyGridder.score">(verde.ScipyGridder method)</a>
 </li>
         <li><a href="api/generated/verde.Spline.html#verde.Spline.score">(verde.Spline method)</a>
+</li>
+        <li><a href="api/generated/verde.SplineCV.html#verde.SplineCV.score">(verde.SplineCV method)</a>
 </li>
         <li><a href="api/generated/verde.Trend.html#verde.Trend.score">(verde.Trend method)</a>
 </li>
@@ -513,6 +572,8 @@
 </li>
         <li><a href="api/generated/verde.Spline.html#verde.Spline.set_params">(verde.Spline method)</a>
 </li>
+        <li><a href="api/generated/verde.SplineCV.html#verde.SplineCV.set_params">(verde.SplineCV method)</a>
+</li>
         <li><a href="api/generated/verde.Trend.html#verde.Trend.set_params">(verde.Trend method)</a>
 </li>
         <li><a href="api/generated/verde.Vector.html#verde.Vector.set_params">(verde.Vector method)</a>
@@ -531,6 +592,8 @@
       <li><a href="api/generated/verde.datasets.setup_texas_wind_map.html#verde.datasets.setup_texas_wind_map">setup_texas_wind_map() (in module verde.datasets)</a>
 </li>
       <li><a href="api/generated/verde.Spline.html#verde.Spline">Spline (class in verde)</a>
+</li>
+      <li><a href="api/generated/verde.SplineCV.html#verde.SplineCV">SplineCV (class in verde)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -579,8 +642,10 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Nov 06, 2018.
+        &copy; Copyright 2017-2019, The Verde Developers
+      <span class="lastupdated">
+        Last updated on Jul 23, 2019.
+      </span>
 
     </p>
   </div>
@@ -597,26 +662,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

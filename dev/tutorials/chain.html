@@ -22,27 +22,41 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../_static/style.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Model Selection" href="model_selection.html" />
+    <link rel="next" title="Evaluating Performance" href="model_evaluation.html" />
     <link rel="prev" title="Geographic Coordinates" href="projections.html" />
-    
-    <script src="../_static/require.js"></script>
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
 
 </head>
 
@@ -50,11 +64,10 @@
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -106,10 +119,12 @@
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grid_coordinates.html">Grid Coordinates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="trends.html">Trend Estimation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="decimation.html">Data Decimation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="projections.html">Geographic Coordinates</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_evaluation.html">Evaluating Performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model_selection.html">Model Selection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="weights.html">Using Weights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="vectors.html">Vector Data</a></li>
@@ -215,26 +230,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast + .nbinput {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-</style>
-<div class="sphx-glr-download-link-note admonition note">
+  <div class="sphx-glr-download-link-note admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Click <a class="reference internal" href="#sphx-glr-download-tutorials-chain-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
@@ -258,16 +254,16 @@ don’t implement the <a class="reference internal" href="../api/generated/verde
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The <a class="reference internal" href="../api/generated/verde.Chain.html#verde.Chain" title="verde.Chain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Chain</span></code></a> class was inspired by the
-<a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v0.20.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.pipeline.Pipeline</span></code></a> class, which doesn’t serve our purposes because
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.pipeline.Pipeline</span></code></a> class, which doesn’t serve our purposes because
 it only affects the feature matrix, not what we would call <em>data</em> (the target
 vector).</p>
 </div>
 <p>For example, let’s create a pipeline to grid our sample bathymetry data.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="kn">as</span> <span class="nn">ccrs</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
 <span class="kn">import</span> <span class="nn">pyproj</span>
-<span class="kn">import</span> <span class="nn">verde</span> <span class="kn">as</span> <span class="nn">vd</span>
+<span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
 
 <span class="n">data</span> <span class="o">=</span> <a href="../api/generated/verde.datasets.fetch_baja_bathymetry.html#verde.datasets.fetch_baja_bathymetry" title="View documentation for verde.datasets.fetch_baja_bathymetry"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">fetch_baja_bathymetry</span></a><span class="p">()</span>
 <span class="n">region</span> <span class="o">=</span> <a href="../api/generated/verde.get_region.html#verde.get_region" title="View documentation for verde.get_region"><span class="n">vd</span><span class="o">.</span><span class="n">get_region</span></a><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">))</span>
@@ -294,22 +290,32 @@ vector).</p>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_chain_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_chain_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/build/fatiando/verde/tutorials/chain.py:57: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
+  plt.tight_layout()
+</pre></div>
+</div>
 <p>We’ll create a chain that applies a blocked median to the data, fits a polynomial
 trend, and then fits a standard gridder to the trend residuals.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span> <span class="o">=</span> <a href="../api/generated/verde.Chain.html#verde.Chain" title="View documentation for verde.Chain"><span class="n">vd</span><span class="o">.</span><span class="n">Chain</span></a><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span> <span class="o">=</span> <a href="../api/generated/verde.Chain.html#verde.Chain" title="View documentation for verde.Chain"><span class="n">vd</span><span class="o">.</span><span class="n">Chain</span></a><span class="p">(</span>
     <span class="p">[</span>
         <span class="p">(</span><span class="s2">&quot;reduce&quot;</span><span class="p">,</span> <a href="../api/generated/verde.BlockReduce.html#verde.BlockReduce" title="View documentation for verde.BlockReduce"><span class="n">vd</span><span class="o">.</span><span class="n">BlockReduce</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.median.html#numpy.median" title="View documentation for numpy.median"><span class="n">np</span><span class="o">.</span><span class="n">median</span></a><span class="p">,</span> <span class="n">spacing</span> <span class="o">*</span> <span class="mf">111e3</span><span class="p">)),</span>
         <span class="p">(</span><span class="s2">&quot;trend&quot;</span><span class="p">,</span> <a href="../api/generated/verde.Trend.html#verde.Trend" title="View documentation for verde.Trend"><span class="n">vd</span><span class="o">.</span><span class="n">Trend</span></a><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span>
         <span class="p">(</span><span class="s2">&quot;spline&quot;</span><span class="p">,</span> <a href="../api/generated/verde.Spline.html#verde.Spline" title="View documentation for verde.Spline"><span class="n">vd</span><span class="o">.</span><span class="n">Spline</span></a><span class="p">()),</span>
     <span class="p">]</span>
 <span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">chain</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">chain</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Chain(steps=[(&#39;reduce&#39;, BlockReduce(adjust=&#39;spacing&#39;, center_coordinates=False,
-      reduction=&lt;function median at 0x146020f488c8&gt;, region=None,
-      spacing=18500.0)), (&#39;trend&#39;, Trend(degree=1)), (&#39;spline&#39;, Spline(damping=None, engine=&#39;auto&#39;, force_coords=None, mindist=1e-05))])
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Chain(steps=[(&#39;reduce&#39;,
+              BlockReduce(adjust=&#39;spacing&#39;, center_coordinates=False,
+                          reduction=&lt;function median at 0x2b50953ab950&gt;,
+                          region=None, shape=None, spacing=18500.0)),
+             (&#39;trend&#39;, Trend(degree=1)),
+             (&#39;spline&#39;,
+              Spline(damping=None, engine=&#39;auto&#39;, force_coords=None,
+                     mindist=1e-05))])
 </pre></div>
 </div>
 <p>Calling <a class="reference internal" href="../api/generated/verde.Chain.html#verde.Chain.fit" title="verde.Chain.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">verde.Chain.fit</span></code></a> will automatically run the data through the chain:</p>
@@ -318,7 +324,7 @@ trend, and then fits a standard gridder to the trend residuals.</p>
 <li>Fit a trend to the blocked data and output the residuals</li>
 <li>Fit the spline to the trend residuals</li>
 </ol>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">proj_coords</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">bathymetry_m</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chain</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">proj_coords</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">bathymetry_m</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Now that the data has been through the chain, calling <a class="reference internal" href="../api/generated/verde.Chain.html#verde.Chain.predict" title="verde.Chain.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">verde.Chain.predict</span></code></a> will
@@ -327,11 +333,11 @@ that will be only the <a class="reference internal" href="../api/generated/verde
 <p>We can verify the quality of the fit by inspecting a histogram of the residuals with
 respect to the original data. Remember that our spline and trend were fit on decimated
 data, not the original data, so the fit won’t be perfect.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">residuals</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">bathymetry_m</span> <span class="o">-</span> <span class="n">chain</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">proj_coords</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">residuals</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">bathymetry_m</span> <span class="o">-</span> <span class="n">chain</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">proj_coords</span><span class="p">)</span>
 
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s2">&quot;Histogram of fit residuals&quot;</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.hist.html#matplotlib.pyplot.hist" title="View documentation for matplotlib.pyplot.hist"><span class="n">plt</span><span class="o">.</span><span class="n">hist</span></a><span class="p">(</span><span class="n">residuals</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.hist.html#matplotlib.pyplot.hist" title="View documentation for matplotlib.pyplot.hist"><span class="n">plt</span><span class="o">.</span><span class="n">hist</span></a><span class="p">(</span><span class="n">residuals</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s2">&quot;residuals (m)&quot;</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlim.html#matplotlib.pyplot.xlim" title="View documentation for matplotlib.pyplot.xlim"><span class="n">plt</span><span class="o">.</span><span class="n">xlim</span></a><span class="p">(</span><span class="o">-</span><span class="mi">1500</span><span class="p">,</span> <span class="mi">1500</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
@@ -342,14 +348,14 @@ data, not the original data, so the fit won’t be perfect.</p>
 <p>Likewise, <a class="reference internal" href="../api/generated/verde.Chain.html#verde.Chain.grid" title="verde.Chain.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">verde.Chain.grid</span></code></a> creates a grid of the combined trend and spline
 predictions. This is equivalent to a <em>remove-compute-restore</em> procedure that should be
 familiar to the geodesists among us.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
     <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
     <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
     <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
     <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span>
     <span class="n">data_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;bathymetry&quot;</span><span class="p">],</span>
 <span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -361,15 +367,15 @@ Coordinates:
 Data variables:
     bathymetry  (latitude, longitude) float64 -3.621e+03 ... 8.798e+03
 Attributes:
-    metadata:  Generated by Chain(steps=[(&#39;reduce&#39;, BlockReduce(adjust=&#39;spaci...
+    metadata:  Generated by Chain(steps=[(&#39;reduce&#39;,\n              BlockReduc...
 </pre></div>
 </div>
 <p>Finally, we can plot the resulting grid:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="View documentation for matplotlib.pyplot.axes"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">(</span><span class="n">projection</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.Mercator" title="View documentation for cartopy.crs.Mercator"><span class="n">ccrs</span><span class="o">.</span><span class="n">Mercator</span></a><span class="p">())</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Gridded result of the chain&quot;</span><span class="p">)</span>
 <span class="n">pc</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">bathymetry</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
-    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">(),</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="bp">False</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">(),</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">pc</span><span class="p">)</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;meters&quot;</span><span class="p">)</span>
 <a href="../api/generated/verde.datasets.setup_baja_bathymetry_map.html#verde.datasets.setup_baja_bathymetry_map" title="View documentation for verde.datasets.setup_baja_bathymetry_map"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">setup_baja_bathymetry_map</span></a><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
@@ -378,37 +384,39 @@ Attributes:
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_chain_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_chain_003.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/build/fatiando/verde/tutorials/chain.py:126: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
+  plt.tight_layout()
+</pre></div>
+</div>
 <p>Each component of the chain can be accessed separately using the <code class="docutils literal notranslate"><span class="pre">named_steps</span></code>
 attribute. It’s a dictionary with keys and values matching the inputs given to the
 <a class="reference internal" href="../api/generated/verde.Chain.html#verde.Chain" title="verde.Chain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Chain</span></code></a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s2">&quot;trend&quot;</span><span class="p">])</span>
-<span class="k">print</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s2">&quot;spline&quot;</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s2">&quot;trend&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s2">&quot;spline&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Trend(degree=1)
-Spline(damping=None, engine=&#39;auto&#39;,
-    force_coords=(array([-11740463.1124 , -11730959.73312, ..., -11549477.98736,
-       -11539772.29983]), array([2083262.91616, 2074438.57757, ..., 3189646.214  , 3179476.44635])),
-    mindist=1e-05)
+Spline(damping=None, engine=&#39;auto&#39;, force_coords=None, mindist=1e-05)
 </pre></div>
 </div>
 <p>All gridders and estimators in the chain have been fitted and can be used to generate
 grids and predictions. For example, we can get a grid of the estimated trend:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">grid_trend</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s2">&quot;trend&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">grid_trend</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s2">&quot;trend&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
     <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
     <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
     <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
     <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span>
     <span class="n">data_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;bathymetry&quot;</span><span class="p">],</span>
 <span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">grid_trend</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">grid_trend</span><span class="p">)</span>
 
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="View documentation for matplotlib.pyplot.axes"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">(</span><span class="n">projection</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.Mercator" title="View documentation for cartopy.crs.Mercator"><span class="n">ccrs</span><span class="o">.</span><span class="n">Mercator</span></a><span class="p">())</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Gridded trend&quot;</span><span class="p">)</span>
 <span class="n">pc</span> <span class="o">=</span> <span class="n">grid_trend</span><span class="o">.</span><span class="n">bathymetry</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
-    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">(),</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="bp">False</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">(),</span> <span class="n">zorder</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">pc</span><span class="p">)</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;meters&quot;</span><span class="p">)</span>
 <a href="../api/generated/verde.datasets.setup_baja_bathymetry_map.html#verde.datasets.setup_baja_bathymetry_map" title="View documentation for verde.datasets.setup_baja_bathymetry_map"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">setup_baja_bathymetry_map</span></a><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
@@ -427,16 +435,18 @@ Data variables:
     bathymetry  (latitude, longitude) float64 -4.911e+03 ... 2.264e+03
 Attributes:
     metadata:  Generated by Trend(degree=1)
+/home/travis/build/fatiando/verde/tutorials/chain.py:158: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
+  plt.tight_layout()
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  17.083 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  12.855 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-chain-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/1a2cc52b71250d08e9b53208420b66a8/chain.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">chain.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../_downloads/900d3521590efda0e21b7ffbcd657daf/chain.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">chain.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 
 
@@ -447,10 +457,10 @@ Attributes:
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="model_selection.html" class="btn btn-neutral float-right" title="Model Selection" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="model_evaluation.html" class="btn btn-neutral float-right" title="Evaluating Performance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="projections.html" class="btn btn-neutral" title="Geographic Coordinates" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="projections.html" class="btn btn-neutral float-left" title="Geographic Coordinates" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -459,8 +469,10 @@ Attributes:
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Nov 06, 2018.
+        &copy; Copyright 2017-2019, The Verde Developers
+      <span class="lastupdated">
+        Last updated on Jul 23, 2019.
+      </span>
 
     </p>
   </div>
@@ -477,26 +489,16 @@ Attributes:
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

@@ -22,13 +22,21 @@
   
 
   
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
@@ -36,13 +44,19 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="verde.datasets.fetch_baja_bathymetry" href="verde.datasets.fetch_baja_bathymetry.html" />
-    <link rel="prev" title="verde.grid_to_table" href="verde.grid_to_table.html" />
-    
-    <script src="../../_static/require.js"></script>
+    <link rel="prev" title="verde.load_surfer" href="verde.load_surfer.html" />
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
 
 </head>
 
@@ -50,11 +64,10 @@
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -106,10 +119,12 @@
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/grid_coordinates.html">Grid Coordinates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/trends.html">Trend Estimation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/decimation.html">Data Decimation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/projections.html">Geographic Coordinates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_evaluation.html">Evaluating Performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_selection.html">Model Selection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/weights.html">Using Weights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/vectors.html">Vector Data</a></li>
@@ -123,6 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#model-selection">Model Selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#coordinate-manipulation">Coordinate Manipulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#utilities">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#input-output">Input/Output</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#datasets">Datasets</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">verde.datasets.CheckerBoard</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#examples-using-verde-datasets-checkerboard">Examples using <code class="docutils literal notranslate"><span class="pre">verde.datasets.CheckerBoard</span></code></a></li>
@@ -138,7 +154,7 @@
 <li class="toctree-l3"><a class="reference internal" href="verde.datasets.setup_rio_magnetic_map.html">verde.datasets.setup_rio_magnetic_map</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../index.html#base-classes">Base Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#base-classes-and-functions">Base Classes and Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
@@ -238,26 +254,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast + .nbinput {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-</style>
-<div class="section" id="verde-datasets-checkerboard">
+  <div class="section" id="verde-datasets-checkerboard">
 <h1>verde.datasets.CheckerBoard<a class="headerlink" href="#verde-datasets-checkerboard" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="verde.datasets.CheckerBoard">
@@ -303,8 +300,6 @@ South-North size of the evaluating region.</p>
 <span class="go">2500.0 2500.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Checkerboard.grid produces an xarray.Dataset with data on a regular grid</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">synth</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
-<span class="go">&lt;class &#39;xarray.core.dataset.Dataset&#39;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># scatter and profile generate pandas.DataFrame objects</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">synth</span><span class="o">.</span><span class="n">scatter</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
@@ -340,31 +335,31 @@ South-North size of the evaluating region.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#verde.datasets.CheckerBoard.filter" title="verde.datasets.CheckerBoard.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span></code></a>(coordinates,&nbsp;data[,&nbsp;weights])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#verde.datasets.CheckerBoard.filter" title="verde.datasets.CheckerBoard.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span></code></a>(self,&nbsp;coordinates,&nbsp;data[,&nbsp;weights])</td>
 <td>Filter the data through the gridder and produce residuals.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#verde.datasets.CheckerBoard.fit" title="verde.datasets.CheckerBoard.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(coordinates,&nbsp;data[,&nbsp;weights])</td>
+<tr class="row-even"><td><a class="reference internal" href="#verde.datasets.CheckerBoard.fit" title="verde.datasets.CheckerBoard.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(self,&nbsp;coordinates,&nbsp;data[,&nbsp;weights])</td>
 <td>Fit the gridder to observed data.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#verde.datasets.CheckerBoard.get_params" title="verde.datasets.CheckerBoard.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#verde.datasets.CheckerBoard.get_params" title="verde.datasets.CheckerBoard.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>(self[,&nbsp;deep])</td>
 <td>Get parameters for this estimator.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#verde.datasets.CheckerBoard.grid" title="verde.datasets.CheckerBoard.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid</span></code></a>([region,&nbsp;shape,&nbsp;spacing,&nbsp;dims,&nbsp;…])</td>
+<tr class="row-even"><td><a class="reference internal" href="#verde.datasets.CheckerBoard.grid" title="verde.datasets.CheckerBoard.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid</span></code></a>(self[,&nbsp;region,&nbsp;shape,&nbsp;spacing,&nbsp;dims,&nbsp;…])</td>
 <td>Interpolate the data onto a regular grid.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#verde.datasets.CheckerBoard.predict" title="verde.datasets.CheckerBoard.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(coordinates)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#verde.datasets.CheckerBoard.predict" title="verde.datasets.CheckerBoard.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(self,&nbsp;coordinates)</td>
 <td>Evaluate the checkerboard function on a given set of points.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#verde.datasets.CheckerBoard.profile" title="verde.datasets.CheckerBoard.profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">profile</span></code></a>(point1,&nbsp;point2,&nbsp;size[,&nbsp;dims,&nbsp;…])</td>
+<tr class="row-even"><td><a class="reference internal" href="#verde.datasets.CheckerBoard.profile" title="verde.datasets.CheckerBoard.profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">profile</span></code></a>(self,&nbsp;point1,&nbsp;point2,&nbsp;size[,&nbsp;dims,&nbsp;…])</td>
 <td>Interpolate data along a profile between two points.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#verde.datasets.CheckerBoard.scatter" title="verde.datasets.CheckerBoard.scatter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scatter</span></code></a>([region,&nbsp;size,&nbsp;random_state,&nbsp;dims,&nbsp;…])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#verde.datasets.CheckerBoard.scatter" title="verde.datasets.CheckerBoard.scatter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scatter</span></code></a>(self[,&nbsp;region,&nbsp;size,&nbsp;random_state,&nbsp;…])</td>
 <td>Interpolate values onto a random scatter of points.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#verde.datasets.CheckerBoard.score" title="verde.datasets.CheckerBoard.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(coordinates,&nbsp;data[,&nbsp;weights])</td>
+<tr class="row-even"><td><a class="reference internal" href="#verde.datasets.CheckerBoard.score" title="verde.datasets.CheckerBoard.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(self,&nbsp;coordinates,&nbsp;data[,&nbsp;weights])</td>
 <td>Score the gridder predictions against the given data.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#verde.datasets.CheckerBoard.set_params" title="verde.datasets.CheckerBoard.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#verde.datasets.CheckerBoard.set_params" title="verde.datasets.CheckerBoard.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(self,&nbsp;\*\*params)</td>
 <td>Set the parameters of this estimator.</td>
 </tr>
 </tbody>
@@ -377,13 +372,13 @@ South-North size of the evaluating region.</p>
 <img alt="../../_images/sphx_glr_overview_thumb.png" src="../../_images/sphx_glr_overview_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/overview.html#sphx-glr-tutorials-overview-py"><span class="std std-ref">Overview</span></a></span></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="The :class:`verde.datasets.CheckerBoard` class generates synthetic data in a checkerboard patte..."><div class="figure" id="id2">
+</div><div class="sphx-glr-thumbcontainer" tooltip="The verde.datasets.CheckerBoard class generates synthetic data in a checkerboard pattern. It ha..."><div class="figure" id="id2">
 <img alt="../../_images/sphx_glr_checkerboard_thumb.png" src="../../_images/sphx_glr_checkerboard_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../sample_data/checkerboard.html#sphx-glr-sample-data-checkerboard-py"><span class="std std-ref">Checkerboard function</span></a></span></p>
 </div>
 </div><div style='clear:both'></div><dl class="method">
 <dt id="verde.datasets.CheckerBoard.filter">
-<code class="descclassname">CheckerBoard.</code><code class="descname">filter</code><span class="sig-paren">(</span><em>coordinates</em>, <em>data</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.datasets.CheckerBoard.filter" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">CheckerBoard.</code><code class="descname">filter</code><span class="sig-paren">(</span><em>self</em>, <em>coordinates</em>, <em>data</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.datasets.CheckerBoard.filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter the data through the gridder and produce residuals.</p>
 <p>Calls <code class="docutils literal notranslate"><span class="pre">fit</span></code> on the data, evaluates the residuals (data - predicted
 data), and returns the coordinates, residuals, and weights.</p>
@@ -414,7 +409,7 @@ array for each data component (if not None).</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>coordinates, residuals, weights</strong></dt>
+<dt>coordinates, residuals, weights</dt>
 <dd><p class="first last">The coordinates and weights are same as the input. Residuals are
 the input data minus the predicted data.</p>
 </dd>
@@ -427,7 +422,7 @@ the input data minus the predicted data.</p>
 
 <dl class="method">
 <dt id="verde.datasets.CheckerBoard.fit">
-<code class="descclassname">CheckerBoard.</code><code class="descname">fit</code><span class="sig-paren">(</span><em>coordinates</em>, <em>data</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.datasets.CheckerBoard.fit" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">CheckerBoard.</code><code class="descname">fit</code><span class="sig-paren">(</span><em>self</em>, <em>coordinates</em>, <em>data</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.datasets.CheckerBoard.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the gridder to observed data. NOT IMPLEMENTED.</p>
 <p>This is a dummy placeholder for an actual method.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -453,7 +448,7 @@ array for each data component (if not None).</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self</strong></dt>
+<dt>self</dt>
 <dd><p class="first last">This instance of the gridder. Useful to chain operations.</p>
 </dd>
 </dl>
@@ -465,7 +460,7 @@ array for each data component (if not None).</p>
 
 <dl class="method">
 <dt id="verde.datasets.CheckerBoard.get_params">
-<code class="descclassname">CheckerBoard.</code><code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.datasets.CheckerBoard.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">CheckerBoard.</code><code class="descname">get_params</code><span class="sig-paren">(</span><em>self</em>, <em>deep=True</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.datasets.CheckerBoard.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -492,7 +487,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="verde.datasets.CheckerBoard.grid">
-<code class="descclassname">CheckerBoard.</code><code class="descname">grid</code><span class="sig-paren">(</span><em>region=None</em>, <em>shape=None</em>, <em>spacing=None</em>, <em>dims=None</em>, <em>data_names=None</em>, <em>projection=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.datasets.CheckerBoard.grid" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">CheckerBoard.</code><code class="descname">grid</code><span class="sig-paren">(</span><em>self</em>, <em>region=None</em>, <em>shape=None</em>, <em>spacing=None</em>, <em>dims=None</em>, <em>data_names=None</em>, <em>projection=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.datasets.CheckerBoard.grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate the data onto a regular grid.</p>
 <p>The grid can be specified by either the number of points in each dimension (the
 <em>shape</em>) or by the grid node spacing. See <a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> for
@@ -501,7 +496,7 @@ extra keyword arguments (<code class="docutils literal notranslate"><span class=
 <p>If the interpolator collected the input data region, then it will be used if
 <code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
 <p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the dimensions
-and the data field(s) in the output <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.10.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>. Default names will
+and the data field(s) in the output <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.12.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>. Default names will
 be provided if none are given.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -564,7 +559,7 @@ generate a geographic grid from a Cartesian gridder.</p>
 
 <dl class="method">
 <dt id="verde.datasets.CheckerBoard.predict">
-<code class="descclassname">CheckerBoard.</code><code class="descname">predict</code><span class="sig-paren">(</span><em>coordinates</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/datasets/synthetic.html#CheckerBoard.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.datasets.CheckerBoard.predict" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">CheckerBoard.</code><code class="descname">predict</code><span class="sig-paren">(</span><em>self</em>, <em>coordinates</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/datasets/synthetic.html#CheckerBoard.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.datasets.CheckerBoard.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate the checkerboard function on a given set of points.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -593,14 +588,14 @@ ignored.</p>
 
 <dl class="method">
 <dt id="verde.datasets.CheckerBoard.profile">
-<code class="descclassname">CheckerBoard.</code><code class="descname">profile</code><span class="sig-paren">(</span><em>point1</em>, <em>point2</em>, <em>size</em>, <em>dims=None</em>, <em>data_names=None</em>, <em>projection=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.datasets.CheckerBoard.profile" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">CheckerBoard.</code><code class="descname">profile</code><span class="sig-paren">(</span><em>self</em>, <em>point1</em>, <em>point2</em>, <em>size</em>, <em>dims=None</em>, <em>data_names=None</em>, <em>projection=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.datasets.CheckerBoard.profile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate data along a profile between two points.</p>
 <p>Generates the profile along a straight line assuming Cartesian distances. Point
 coordinates are generated by <a class="reference internal" href="verde.profile_coordinates.html#verde.profile_coordinates" title="verde.profile_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.profile_coordinates</span></code></a>. Other arguments
 for this function can be passed as extra keyword arguments (<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this
 method.</p>
 <p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the dimensions
-and the data field(s) in the output <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are
+and the data field(s) in the output <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are
 provided.</p>
 <p>Includes the calculated Cartesian distance from <em>point1</em> for each data point in
 the profile.</p>
@@ -656,7 +651,7 @@ generate a geographic profile from a Cartesian gridder.</p>
 
 <dl class="method">
 <dt id="verde.datasets.CheckerBoard.scatter">
-<code class="descclassname">CheckerBoard.</code><code class="descname">scatter</code><span class="sig-paren">(</span><em>region=None</em>, <em>size=300</em>, <em>random_state=0</em>, <em>dims=None</em>, <em>data_names=None</em>, <em>projection=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.datasets.CheckerBoard.scatter" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">CheckerBoard.</code><code class="descname">scatter</code><span class="sig-paren">(</span><em>self</em>, <em>region=None</em>, <em>size=300</em>, <em>random_state=0</em>, <em>dims=None</em>, <em>data_names=None</em>, <em>projection=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.datasets.CheckerBoard.scatter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate values onto a random scatter of points.</p>
 <p>Point coordinates are generated by <a class="reference internal" href="verde.scatter_points.html#verde.scatter_points" title="verde.scatter_points"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.scatter_points</span></code></a>. Other arguments
 for this function can be passed as extra keyword arguments (<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this
@@ -664,7 +659,7 @@ method.</p>
 <p>If the interpolator collected the input data region, then it will be used if
 <code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
 <p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the dimensions
-and the data field(s) in the output <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.23.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are
+and the data field(s) in the output <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are
 provided.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -722,7 +717,7 @@ generate a geographic scatter from a Cartesian gridder.</p>
 
 <dl class="method">
 <dt id="verde.datasets.CheckerBoard.score">
-<code class="descclassname">CheckerBoard.</code><code class="descname">score</code><span class="sig-paren">(</span><em>coordinates</em>, <em>data</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.datasets.CheckerBoard.score" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">CheckerBoard.</code><code class="descname">score</code><span class="sig-paren">(</span><em>self</em>, <em>coordinates</em>, <em>data</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.datasets.CheckerBoard.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Score the gridder predictions against the given data.</p>
 <p>Calculates the R^2 coefficient of determination of between the
 predicted values and the given data values. A maximum score of 1 means
@@ -764,7 +759,7 @@ array for each data component (if not None).</p>
 
 <dl class="method">
 <dt id="verde.datasets.CheckerBoard.set_params">
-<code class="descclassname">CheckerBoard.</code><code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.datasets.CheckerBoard.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">CheckerBoard.</code><code class="descname">set_params</code><span class="sig-paren">(</span><em>self</em>, <em>**params</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.datasets.CheckerBoard.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -775,7 +770,7 @@ component of a nested object.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self</strong></dt>
+<dt>self</dt>
 <dd></dd>
 </dl>
 </td>
@@ -798,7 +793,7 @@ component of a nested object.</p>
         <a href="verde.datasets.fetch_baja_bathymetry.html" class="btn btn-neutral float-right" title="verde.datasets.fetch_baja_bathymetry" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="verde.grid_to_table.html" class="btn btn-neutral" title="verde.grid_to_table" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="verde.load_surfer.html" class="btn btn-neutral float-left" title="verde.load_surfer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -807,8 +802,10 @@ component of a nested object.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Nov 06, 2018.
+        &copy; Copyright 2017-2019, The Verde Developers
+      <span class="lastupdated">
+        Last updated on Jul 23, 2019.
+      </span>
 
     </p>
   </div>
@@ -825,26 +822,16 @@ component of a nested object.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

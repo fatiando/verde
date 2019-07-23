@@ -22,13 +22,21 @@
   
 
   
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
@@ -37,12 +45,18 @@
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="verde.grid_coordinates" href="verde.grid_coordinates.html" />
     <link rel="prev" title="verde.train_test_split" href="verde.train_test_split.html" />
-    
-    <script src="../../_static/require.js"></script>
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
 
 </head>
 
@@ -50,11 +64,10 @@
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -106,10 +119,12 @@
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/grid_coordinates.html">Grid Coordinates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/trends.html">Trend Estimation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/decimation.html">Data Decimation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/projections.html">Geographic Coordinates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_evaluation.html">Evaluating Performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_selection.html">Model Selection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/weights.html">Using Weights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/vectors.html">Vector Data</a></li>
@@ -122,13 +137,17 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#composite-estimators">Composite Estimators</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#model-selection">Model Selection</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="verde.train_test_split.html">verde.train_test_split</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">verde.cross_val_score</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">verde.cross_val_score</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#examples-using-verde-cross-val-score">Examples using <code class="docutils literal notranslate"><span class="pre">verde.cross_val_score</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#coordinate-manipulation">Coordinate Manipulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#utilities">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#input-output">Input/Output</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#datasets">Datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../index.html#base-classes">Base Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#base-classes-and-functions">Base Classes and Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
@@ -228,34 +247,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast + .nbinput {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-</style>
-<div class="section" id="verde-cross-val-score">
+  <div class="section" id="verde-cross-val-score">
 <h1>verde.cross_val_score<a class="headerlink" href="#verde-cross-val-score" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="verde.cross_val_score">
 <code class="descclassname">verde.</code><code class="descname">cross_val_score</code><span class="sig-paren">(</span><em>estimator</em>, <em>coordinates</em>, <em>data</em>, <em>weights=None</em>, <em>cv=None</em>, <em>client=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/model_selection.html#cross_val_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.cross_val_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Score an estimator/gridder using cross-validation.</p>
-<p>Similar to <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="(in scikit-learn v0.20.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.model_selection.cross_val_score</span></code></a> but modified to
+<p>Similar to <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="(in scikit-learn v0.21.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.model_selection.cross_val_score</span></code></a> but modified to
 accept spatial multi-component data with weights.</p>
-<p>By default, will use <a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html#sklearn.model_selection.KFold" title="(in scikit-learn v0.20.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.KFold</span></code></a> to split the
+<p>By default, will use <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html#sklearn.model_selection.KFold" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.KFold</span></code></a> to split the
 dataset. Another cross-validation class can be passed in through the <em>cv</em>
 argument.</p>
 <p>Can optionally run in parallel using <a class="reference external" href="https://dask.pydata.org/">dask</a>.
@@ -288,7 +288,7 @@ each data component (if not none).</p>
 </dd>
 <dt><strong>cv</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None or cross-validation generator</span></dt>
 <dd><p class="first last">Any scikit-learn cross-validation generator. Defaults to
-<a class="reference external" href="http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html#sklearn.model_selection.KFold" title="(in scikit-learn v0.20.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.KFold</span></code></a>.</p>
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html#sklearn.model_selection.KFold" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.KFold</span></code></a>.</p>
 </dd>
 <dt><strong>client</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None or dask.distributed.Client</span></dt>
 <dd><p class="first last">If None, then computations are run serially. Otherwise, should be a
@@ -299,8 +299,8 @@ dask cluster.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>scores</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
-<dd><p class="first last">List of scores for each split of the cross-validation generator. If
+<dt><strong>scores</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array</span></dt>
+<dd><p class="first last">Array of scores for each split of the cross-validation generator. If
 <em>client</em> is not None, then the scores will be futures.</p>
 </dd>
 </dl>
@@ -318,11 +318,12 @@ dask cluster.</p>
 <span class="go">1.00, 1.00, 1.00, 1.00, 1.00</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># To run parallel, we need to create a dask.distributed Client. It will</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># create a local cluster if no arguments are given so we can run the</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># scoring on a single machine.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="k">import</span> <span class="n">Client</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+<p>To run parallel, we need to create a <code class="xref py py-class docutils literal notranslate"><span class="pre">dask.distributed.Client</span></code>. It will
+create a local cluster if no arguments are given so we can run the scoring on a
+single machine. We’ll use threads instead of processes for this example but in most
+cases you’ll want processes.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="k">import</span> <span class="n">Client</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># The scoring will now only submit tasks to our local cluster</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">scores</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">Trend</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">coords</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># The scores are not the actual values but Futures</span>
@@ -331,11 +332,28 @@ dask cluster.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># We need to call .result() to get back the actual value</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">result</span><span class="p">()))</span>
 <span class="go">1.00</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Close the client and shutdown the local cluster</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
 
-<div style='clear:both'></div></div>
+<div class="section" id="examples-using-verde-cross-val-score">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">verde.cross_val_score</span></code><a class="headerlink" href="#examples-using-verde-cross-val-score" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="The verde.Spline has two main parameters that need to be configured:"><div class="figure" id="id1">
+<img alt="../../_images/sphx_glr_spline_cv_thumb.png" src="../../_images/sphx_glr_spline_cv_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline_cv.html#sphx-glr-gallery-spline-cv-py"><span class="std std-ref">Gridding with splines (cross-validated)</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The Green&#x27;s functions based interpolations in Verde are all linear regressions under the hood. ..."><div class="figure" id="id2">
+<img alt="../../_images/sphx_glr_model_evaluation_thumb.png" src="../../_images/sphx_glr_model_evaluation_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/model_evaluation.html#sphx-glr-tutorials-model-evaluation-py"><span class="std std-ref">Evaluating Performance</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="In model_evaluation, we saw how to check the performance of an interpolator using cross-validat..."><div class="figure" id="id3">
+<img alt="../../_images/sphx_glr_model_selection_thumb.png" src="../../_images/sphx_glr_model_selection_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/model_selection.html#sphx-glr-tutorials-model-selection-py"><span class="std std-ref">Model Selection</span></a></span></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
 
 
            </div>
@@ -348,7 +366,7 @@ dask cluster.</p>
         <a href="verde.grid_coordinates.html" class="btn btn-neutral float-right" title="verde.grid_coordinates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="verde.train_test_split.html" class="btn btn-neutral" title="verde.train_test_split" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="verde.train_test_split.html" class="btn btn-neutral float-left" title="verde.train_test_split" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -357,8 +375,10 @@ dask cluster.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Nov 06, 2018.
+        &copy; Copyright 2017-2019, The Verde Developers
+      <span class="lastupdated">
+        Last updated on Jul 23, 2019.
+      </span>
 
     </p>
   </div>
@@ -375,26 +395,16 @@ dask cluster.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

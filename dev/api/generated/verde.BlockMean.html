@@ -22,13 +22,21 @@
   
 
   
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
@@ -37,12 +45,18 @@
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="verde.Trend" href="verde.Trend.html" />
     <link rel="prev" title="verde.BlockReduce" href="verde.BlockReduce.html" />
-    
-    <script src="../../_static/require.js"></script>
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
 
 </head>
 
@@ -50,11 +64,10 @@
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -106,10 +119,12 @@
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/grid_coordinates.html">Grid Coordinates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/trends.html">Trend Estimation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/decimation.html">Data Decimation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/projections.html">Geographic Coordinates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_evaluation.html">Evaluating Performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_selection.html">Model Selection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/weights.html">Using Weights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/vectors.html">Vector Data</a></li>
@@ -131,8 +146,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#model-selection">Model Selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#coordinate-manipulation">Coordinate Manipulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#utilities">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#input-output">Input/Output</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#datasets">Datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../index.html#base-classes">Base Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#base-classes-and-functions">Base Classes and Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
@@ -232,30 +248,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast + .nbinput {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-</style>
-<div class="section" id="verde-blockmean">
+  <div class="section" id="verde-blockmean">
 <h1>verde.BlockMean<a class="headerlink" href="#verde-blockmean" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="verde.BlockMean">
-<em class="property">class </em><code class="descclassname">verde.</code><code class="descname">BlockMean</code><span class="sig-paren">(</span><em>spacing</em>, <em>region=None</em>, <em>adjust='spacing'</em>, <em>center_coordinates=False</em>, <em>uncertainty=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/blockreduce.html#BlockMean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.BlockMean" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">verde.</code><code class="descname">BlockMean</code><span class="sig-paren">(</span><em>spacing=None</em>, <em>region=None</em>, <em>adjust='spacing'</em>, <em>center_coordinates=False</em>, <em>uncertainty=False</em>, <em>shape=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/blockreduce.html#BlockMean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.BlockMean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply a (weighted) mean to the data in blocks/windows.</p>
 <p>Returns the mean data value for each block along with the associated
 coordinates and weights. Coordinates can be determined through the mean of
@@ -286,6 +283,9 @@ the data instead.</p>
 <p>If a data region to be divided into blocks is not given, it will be the
 bounding region of the data. When using this class to decimate data before
 gridding, it’s best to use the same region and spacing as the desired grid.</p>
+<p>The size of the blocks can be specified by the <em>spacing</em> parameter. Alternatively,
+the number of blocks in the South-North and West-East directions can be specified
+using the <em>shape</em> parameter.</p>
 <p>If the given region is not divisible by the spacing (block size), either
 the region or the spacing will have to be adjusted. By default, the spacing
 will be rounded to the nearest multiple. Optionally, the East and North
@@ -299,6 +299,9 @@ during prediction.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>shape</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple = (n_north, n_east) or None</span></dt>
+<dd><p class="first last">The number of blocks in the South-North and West-East directions, respectively.</p>
+</dd>
 <dt><strong>spacing</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, tuple = (s_north, s_east), or None</span></dt>
 <dd><p class="first last">The block size in the South-North and West-East directions,
 respectively. A single value means that the size is equal in both
@@ -349,13 +352,13 @@ they can be normalized).</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#verde.BlockMean.filter" title="verde.BlockMean.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span></code></a>(coordinates,&nbsp;data[,&nbsp;weights])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#verde.BlockMean.filter" title="verde.BlockMean.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span></code></a>(self,&nbsp;coordinates,&nbsp;data[,&nbsp;weights])</td>
 <td>Apply the blocked mean to the given data.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#verde.BlockMean.get_params" title="verde.BlockMean.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</td>
+<tr class="row-even"><td><a class="reference internal" href="#verde.BlockMean.get_params" title="verde.BlockMean.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>(self[,&nbsp;deep])</td>
 <td>Get parameters for this estimator.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#verde.BlockMean.set_params" title="verde.BlockMean.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#verde.BlockMean.set_params" title="verde.BlockMean.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(self,&nbsp;\*\*params)</td>
 <td>Set the parameters of this estimator.</td>
 </tr>
 </tbody>
@@ -364,25 +367,33 @@ they can be normalized).</p>
 
 <div class="section" id="examples-using-verde-blockmean">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">verde.BlockMean</span></code><a class="headerlink" href="#examples-using-verde-blockmean" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip=":class:`verde.BlockReduce` is not able to output weights because we need to make assumptions ab..."><div class="figure" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Sometimes data has outliers or less reliable points that might skew a blocked mean or even a me..."><div class="figure" id="id1">
+<img alt="../../_images/sphx_glr_blockreduce_weights_thumb.png" src="../../_images/sphx_glr_blockreduce_weights_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/blockreduce_weights.html#sphx-glr-gallery-blockreduce-weights-py"><span class="std std-ref">Using weights in blocked reduction</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="verde.BlockReduce is not able to output weights because we need to make assumptions about the r..."><div class="figure" id="id2">
 <img alt="../../_images/sphx_glr_blockreduce_weights_mean_thumb.png" src="../../_images/sphx_glr_blockreduce_weights_mean_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/blockreduce_weights_mean.html#sphx-glr-gallery-blockreduce-weights-mean-py"><span class="std std-ref">Using weights in blocked means</span></a></span></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="An advantage of using the Green&#x27;s functions based :class:`verde.Spline` over :class:`verde.Scip..."><div class="figure" id="id2">
+</div><div class="sphx-glr-thumbcontainer" tooltip="An advantage of using the Green&#x27;s functions based verde.Spline over verde.ScipyGridder is that ..."><div class="figure" id="id3">
 <img alt="../../_images/sphx_glr_spline_weights_thumb.png" src="../../_images/sphx_glr_spline_weights_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline_weights.html#sphx-glr-gallery-spline-weights-py"><span class="std std-ref">Gridding with splines and weights</span></a></span></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Some datasets have multiple vector components measured for each location, like the East and Wes..."><div class="figure" id="id3">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Often, a data processing pipeline looks like the following:"><div class="figure" id="id4">
+<img alt="../../_images/sphx_glr_chain_thumb.png" src="../../_images/sphx_glr_chain_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/chain.html#sphx-glr-tutorials-chain-py"><span class="std std-ref">Chaining Operations</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Some datasets have multiple vector components measured for each location, like the East and Wes..."><div class="figure" id="id5">
 <img alt="../../_images/sphx_glr_vectors_thumb.png" src="../../_images/sphx_glr_vectors_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/vectors.html#sphx-glr-tutorials-vectors-py"><span class="std std-ref">Vector Data</span></a></span></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="One of the advantages of using a Green&#x27;s functions approach to interpolation is that we can eas..."><div class="figure" id="id4">
+</div><div class="sphx-glr-thumbcontainer" tooltip="One of the advantages of using a Green&#x27;s functions approach to interpolation is that we can eas..."><div class="figure" id="id6">
 <img alt="../../_images/sphx_glr_weights_thumb.png" src="../../_images/sphx_glr_weights_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/weights.html#sphx-glr-tutorials-weights-py"><span class="std std-ref">Using Weights</span></a></span></p>
 </div>
 </div><div style='clear:both'></div><dl class="method">
 <dt id="verde.BlockMean.filter">
-<code class="descclassname">BlockMean.</code><code class="descname">filter</code><span class="sig-paren">(</span><em>coordinates</em>, <em>data</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/blockreduce.html#BlockMean.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.BlockMean.filter" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">BlockMean.</code><code class="descname">filter</code><span class="sig-paren">(</span><em>self</em>, <em>coordinates</em>, <em>data</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/blockreduce.html#BlockMean.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.BlockMean.filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply the blocked mean to the given data.</p>
 <p>Returns the reduced data value for each block along with the associated
 coordinates and weights. See the class docstring for details.</p>
@@ -432,7 +443,7 @@ contains data.</p>
 
 <dl class="method">
 <dt id="verde.BlockMean.get_params">
-<code class="descclassname">BlockMean.</code><code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.BlockMean.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">BlockMean.</code><code class="descname">get_params</code><span class="sig-paren">(</span><em>self</em>, <em>deep=True</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.BlockMean.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -459,7 +470,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="verde.BlockMean.set_params">
-<code class="descclassname">BlockMean.</code><code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.BlockMean.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">BlockMean.</code><code class="descname">set_params</code><span class="sig-paren">(</span><em>self</em>, <em>**params</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.BlockMean.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -470,7 +481,7 @@ component of a nested object.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self</strong></dt>
+<dt>self</dt>
 <dd></dd>
 </dl>
 </td>
@@ -493,7 +504,7 @@ component of a nested object.</p>
         <a href="verde.Trend.html" class="btn btn-neutral float-right" title="verde.Trend" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="verde.BlockReduce.html" class="btn btn-neutral" title="verde.BlockReduce" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="verde.BlockReduce.html" class="btn btn-neutral float-left" title="verde.BlockReduce" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -502,8 +513,10 @@ component of a nested object.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Nov 06, 2018.
+        &copy; Copyright 2017-2019, The Verde Developers
+      <span class="lastupdated">
+        Last updated on Jul 23, 2019.
+      </span>
 
     </p>
   </div>
@@ -520,26 +533,16 @@ component of a nested object.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

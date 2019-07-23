@@ -22,13 +22,21 @@
   
 
   
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
@@ -37,12 +45,18 @@
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="verde.BlockMean" href="verde.BlockMean.html" />
     <link rel="prev" title="verde.ScipyGridder" href="verde.ScipyGridder.html" />
-    
-    <script src="../../_static/require.js"></script>
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
 
 </head>
 
@@ -50,11 +64,10 @@
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -106,10 +119,12 @@
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/grid_coordinates.html">Grid Coordinates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/trends.html">Trend Estimation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/decimation.html">Data Decimation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/projections.html">Geographic Coordinates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_evaluation.html">Evaluating Performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_selection.html">Model Selection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/weights.html">Using Weights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/vectors.html">Vector Data</a></li>
@@ -131,8 +146,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#model-selection">Model Selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#coordinate-manipulation">Coordinate Manipulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#utilities">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#input-output">Input/Output</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#datasets">Datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../index.html#base-classes">Base Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#base-classes-and-functions">Base Classes and Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
@@ -232,30 +248,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast,
-.nboutput.nblast {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast + .nbinput {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-</style>
-<div class="section" id="verde-blockreduce">
+  <div class="section" id="verde-blockreduce">
 <h1>verde.BlockReduce<a class="headerlink" href="#verde-blockreduce" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="verde.BlockReduce">
-<em class="property">class </em><code class="descclassname">verde.</code><code class="descname">BlockReduce</code><span class="sig-paren">(</span><em>reduction</em>, <em>spacing</em>, <em>region=None</em>, <em>adjust='spacing'</em>, <em>center_coordinates=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/blockreduce.html#BlockReduce"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.BlockReduce" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">verde.</code><code class="descname">BlockReduce</code><span class="sig-paren">(</span><em>reduction</em>, <em>spacing=None</em>, <em>region=None</em>, <em>adjust='spacing'</em>, <em>center_coordinates=False</em>, <em>shape=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/blockreduce.html#BlockReduce"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.BlockReduce" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply a reduction/aggregation operation to the data in blocks/windows.</p>
 <p>Returns the reduced data value for each block along with the associated
 coordinates, which can be determined through the same reduction applied to
@@ -263,6 +260,9 @@ the coordinates or as the center of each block.</p>
 <p>If a data region to be divided into blocks is not given, it will be the
 bounding region of the data. When using this class to decimate data before
 gridding, it’s best to use the same region and spacing as the desired grid.</p>
+<p>The size of the blocks can be specified by the <em>spacing</em> parameter. Alternatively,
+the number of blocks in the South-North and West-East directions can be specified
+using the <em>shape</em> parameter.</p>
 <p>If the given region is not divisible by the spacing (block size), either
 the region or the spacing will have to be adjusted. By default, the spacing
 will be rounded to the nearest multiple. Optionally, the East and North
@@ -279,6 +279,9 @@ during prediction.</p>
 <dt><strong>reduction</strong> <span class="classifier-delimiter">:</span> <span class="classifier">function</span></dt>
 <dd><p class="first last">A reduction function that takes an array and returns a single value
 (e.g., <code class="docutils literal notranslate"><span class="pre">np.mean</span></code>, <code class="docutils literal notranslate"><span class="pre">np.median</span></code>, etc).</p>
+</dd>
+<dt><strong>shape</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple = (n_north, n_east) or None</span></dt>
+<dd><p class="first last">The number of blocks in the South-North and West-East directions, respectively.</p>
 </dd>
 <dt><strong>spacing</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, tuple = (s_north, s_east), or None</span></dt>
 <dd><p class="first last">The block size in the South-North and West-East directions,
@@ -322,13 +325,13 @@ reduction operation to the input coordinates.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#verde.BlockReduce.filter" title="verde.BlockReduce.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span></code></a>(coordinates,&nbsp;data[,&nbsp;weights])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#verde.BlockReduce.filter" title="verde.BlockReduce.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span></code></a>(self,&nbsp;coordinates,&nbsp;data[,&nbsp;weights])</td>
 <td>Apply the blocked aggregation to the given data.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#verde.BlockReduce.get_params" title="verde.BlockReduce.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</td>
+<tr class="row-even"><td><a class="reference internal" href="#verde.BlockReduce.get_params" title="verde.BlockReduce.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>(self[,&nbsp;deep])</td>
 <td>Get parameters for this estimator.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#verde.BlockReduce.set_params" title="verde.BlockReduce.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#verde.BlockReduce.set_params" title="verde.BlockReduce.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(self,&nbsp;\*\*params)</td>
 <td>Set the parameters of this estimator.</td>
 </tr>
 </tbody>
@@ -345,45 +348,49 @@ reduction operation to the input coordinates.</p>
 <img alt="../../_images/sphx_glr_blockreduce_weights_thumb.png" src="../../_images/sphx_glr_blockreduce_weights_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/blockreduce_weights.html#sphx-glr-gallery-blockreduce-weights-py"><span class="std std-ref">Using weights in blocked reduction</span></a></span></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Scipy offers a range of interpolation methods in :mod:`scipy.interpolate` and 3 specifically fo..."><div class="figure" id="id3">
+</div><div class="sphx-glr-thumbcontainer" tooltip="verde.BlockReduce is not able to output weights because we need to make assumptions about the r..."><div class="figure" id="id3">
+<img alt="../../_images/sphx_glr_blockreduce_weights_mean_thumb.png" src="../../_images/sphx_glr_blockreduce_weights_mean_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/blockreduce_weights_mean.html#sphx-glr-gallery-blockreduce-weights-mean-py"><span class="std std-ref">Using weights in blocked means</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Scipy offers a range of interpolation methods in scipy.interpolate and 3 specifically for 2D da..."><div class="figure" id="id4">
 <img alt="../../_images/sphx_glr_scipygridder_thumb.png" src="../../_images/sphx_glr_scipygridder_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/scipygridder.html#sphx-glr-gallery-scipygridder-py"><span class="std std-ref">Gridding with Scipy</span></a></span></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Biharmonic spline interpolation is based on estimating vertical forces acting on an elastic she..."><div class="figure" id="id4">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Biharmonic spline interpolation is based on estimating vertical forces acting on an elastic she..."><div class="figure" id="id5">
 <img alt="../../_images/sphx_glr_spline_thumb.png" src="../../_images/sphx_glr_spline_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline.html#sphx-glr-gallery-spline-py"><span class="std std-ref">Gridding with splines</span></a></span></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="We can use :class:`verde.Vector` to simultaneously process and grid all components of vector da..."><div class="figure" id="id5">
+</div><div class="sphx-glr-thumbcontainer" tooltip="We can use verde.Vector to simultaneously process and grid all components of vector data. Each ..."><div class="figure" id="id6">
 <img alt="../../_images/sphx_glr_vector_uncoupled_thumb.png" src="../../_images/sphx_glr_vector_uncoupled_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/vector_uncoupled.html#sphx-glr-gallery-vector-uncoupled-py"><span class="std std-ref">Gridding 2D vectors (uncoupled)</span></a></span></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="One way of gridding vector data would be grid each component separately using :class:`verde.Spl..."><div class="figure" id="id6">
+</div><div class="sphx-glr-thumbcontainer" tooltip="One way of gridding vector data would be grid each component separately using verde.Spline and ..."><div class="figure" id="id7">
 <img alt="../../_images/sphx_glr_vectorspline2d_thumb.png" src="../../_images/sphx_glr_vectorspline2d_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/vectorspline2d.html#sphx-glr-gallery-vectorspline2d-py"><span class="std std-ref">Gridding 2D vectors (coupled)</span></a></span></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Often, a data processing pipeline looks like the following:"><div class="figure" id="id7">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Often, a data processing pipeline looks like the following:"><div class="figure" id="id8">
 <img alt="../../_images/sphx_glr_chain_thumb.png" src="../../_images/sphx_glr_chain_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/chain.html#sphx-glr-tutorials-chain-py"><span class="std std-ref">Chaining Operations</span></a></span></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Often times, raw spatial data can be highly oversampled in a direction. In these cases, we need..."><div class="figure" id="id8">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Often times, raw spatial data can be highly oversampled in a direction. In these cases, we need..."><div class="figure" id="id9">
 <img alt="../../_images/sphx_glr_decimation_thumb.png" src="../../_images/sphx_glr_decimation_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/decimation.html#sphx-glr-tutorials-decimation-py"><span class="std std-ref">Data Decimation</span></a></span></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="The Green&#x27;s functions based interpolations in Verde are all linear regressions under the hood. ..."><div class="figure" id="id9">
-<img alt="../../_images/sphx_glr_model_selection_thumb.png" src="../../_images/sphx_glr_model_selection_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/model_selection.html#sphx-glr-tutorials-model-selection-py"><span class="std std-ref">Model Selection</span></a></span></p>
 </div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Most gridders and processing methods in Verde operate under the assumption that the data coordi..."><div class="figure" id="id10">
 <img alt="../../_images/sphx_glr_projections_thumb.png" src="../../_images/sphx_glr_projections_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/projections.html#sphx-glr-tutorials-projections-py"><span class="std std-ref">Geographic Coordinates</span></a></span></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="One of the advantages of using a Green&#x27;s functions approach to interpolation is that we can eas..."><div class="figure" id="id11">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Some datasets have multiple vector components measured for each location, like the East and Wes..."><div class="figure" id="id11">
+<img alt="../../_images/sphx_glr_vectors_thumb.png" src="../../_images/sphx_glr_vectors_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/vectors.html#sphx-glr-tutorials-vectors-py"><span class="std std-ref">Vector Data</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="One of the advantages of using a Green&#x27;s functions approach to interpolation is that we can eas..."><div class="figure" id="id12">
 <img alt="../../_images/sphx_glr_weights_thumb.png" src="../../_images/sphx_glr_weights_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/weights.html#sphx-glr-tutorials-weights-py"><span class="std std-ref">Using Weights</span></a></span></p>
 </div>
 </div><div style='clear:both'></div><dl class="method">
 <dt id="verde.BlockReduce.filter">
-<code class="descclassname">BlockReduce.</code><code class="descname">filter</code><span class="sig-paren">(</span><em>coordinates</em>, <em>data</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/blockreduce.html#BlockReduce.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.BlockReduce.filter" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">BlockReduce.</code><code class="descname">filter</code><span class="sig-paren">(</span><em>self</em>, <em>coordinates</em>, <em>data</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/blockreduce.html#BlockReduce.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.BlockReduce.filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply the blocked aggregation to the given data.</p>
 <p>Returns the reduced data value for each block along with the associated
 coordinates, which can be determined through the same reduction applied
@@ -434,7 +441,7 @@ contains data.</p>
 
 <dl class="method">
 <dt id="verde.BlockReduce.get_params">
-<code class="descclassname">BlockReduce.</code><code class="descname">get_params</code><span class="sig-paren">(</span><em>deep=True</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.BlockReduce.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">BlockReduce.</code><code class="descname">get_params</code><span class="sig-paren">(</span><em>self</em>, <em>deep=True</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.BlockReduce.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -461,7 +468,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="method">
 <dt id="verde.BlockReduce.set_params">
-<code class="descclassname">BlockReduce.</code><code class="descname">set_params</code><span class="sig-paren">(</span><em>**params</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.BlockReduce.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">BlockReduce.</code><code class="descname">set_params</code><span class="sig-paren">(</span><em>self</em>, <em>**params</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.BlockReduce.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
@@ -472,7 +479,7 @@ component of a nested object.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self</strong></dt>
+<dt>self</dt>
 <dd></dd>
 </dl>
 </td>
@@ -495,7 +502,7 @@ component of a nested object.</p>
         <a href="verde.BlockMean.html" class="btn btn-neutral float-right" title="verde.BlockMean" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="verde.ScipyGridder.html" class="btn btn-neutral" title="verde.ScipyGridder" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="verde.ScipyGridder.html" class="btn btn-neutral float-left" title="verde.ScipyGridder" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -504,8 +511,10 @@ component of a nested object.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Nov 06, 2018.
+        &copy; Copyright 2017-2019, The Verde Developers
+      <span class="lastupdated">
+        Last updated on Jul 23, 2019.
+      </span>
 
     </p>
   </div>
@@ -522,26 +531,16 @@ component of a nested object.</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

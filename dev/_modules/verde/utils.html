@@ -22,25 +22,39 @@
   
 
   
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    
-    <script src="../../_static/require.js"></script>
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-
-  
-  <script src="../../_static/js/modernizr.min.js"></script>
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
 
 </head>
 
@@ -48,11 +62,10 @@
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -104,10 +117,12 @@
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/grid_coordinates.html">Grid Coordinates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/trends.html">Trend Estimation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/decimation.html">Data Decimation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/projections.html">Geographic Coordinates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_evaluation.html">Evaluating Performance</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_selection.html">Model Selection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/weights.html">Using Weights</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/vectors.html">Vector Data</a></li>
@@ -215,6 +230,36 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="k">import</span> <span class="n">cKDTree</span>  <span class="c1"># pylint: disable=no-name-in-module</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pykdtree.kdtree</span> <span class="k">import</span> <span class="n">KDTree</span> <span class="k">as</span> <span class="n">pyKDTree</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">pyKDTree</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="kn">from</span> <span class="nn">.base.utils</span> <span class="k">import</span> <span class="n">check_data</span><span class="p">,</span> <span class="n">n_1d_arrays</span>
+
+
+<span class="k">class</span> <span class="nc">DummyClient</span><span class="p">:</span>  <span class="c1"># pylint: disable=no-self-use,too-few-public-methods</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Dummy client to mimic a dask.distributed.Client for immediate local</span>
+<span class="sd">    execution.</span>
+
+<span class="sd">    &gt;&gt;&gt; client = DummyClient()</span>
+<span class="sd">    &gt;&gt;&gt; client.submit(sum, (1, 2, 3))</span>
+<span class="sd">    6</span>
+<span class="sd">    &gt;&gt;&gt; print(client.scatter(&quot;bla&quot;))</span>
+<span class="sd">    bla</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">submit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="s2">&quot;Execute function with the given arguments and return its output&quot;</span>
+        <span class="k">return</span> <span class="n">function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">scatter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="s2">&quot;Does nothing but return the input&quot;</span>
+        <span class="k">return</span> <span class="n">value</span>
 
 
 <span class="k">def</span> <span class="nf">parse_engine</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
@@ -237,7 +282,7 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid engine &#39;</span><span class="si">{}</span><span class="s2">&#39;. Must be in </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">engines</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">engine</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">numba</span>  <span class="c1"># pylint: disable=unused-variable</span>
+            <span class="kn">import</span> <span class="nn">numba</span>  <span class="c1"># pylint: disable=unused-variable,unused-import</span>
 
             <span class="k">return</span> <span class="s2">&quot;numba&quot;</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
@@ -274,56 +319,6 @@
         <span class="k">return</span> <span class="n">dummy_function</span>
 
     <span class="k">return</span> <span class="n">dummy_decorator</span>
-
-
-<span class="k">def</span> <span class="nf">n_1d_arrays</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get the first n elements from a tuple/list, make sure they are arrays, and ravel.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    arrays : tuple of arrays</span>
-<span class="sd">        The arrays. Can be lists or anything that can be converted to a numpy array</span>
-<span class="sd">        (including numpy arrays).</span>
-<span class="sd">    n : int</span>
-<span class="sd">        How many arrays to return.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    1darrays : tuple of arrays</span>
-<span class="sd">        The converted 1D numpy arrays.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-
-<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">    &gt;&gt;&gt; arrays = [np.arange(4).reshape(2, 2)]*3</span>
-<span class="sd">    &gt;&gt;&gt; n_1d_arrays(arrays, n=2)</span>
-<span class="sd">    (array([0, 1, 2, 3]), array([0, 1, 2, 3]))</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">[:</span><span class="n">n</span><span class="p">])</span>
-
-
-<span class="k">def</span> <span class="nf">check_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check the *data* argument and make sure it&#39;s a tuple.</span>
-<span class="sd">    If the data is a single array, return it as a tuple with a single element.</span>
-
-<span class="sd">    This is the default format accepted and used by all gridders and processing</span>
-<span class="sd">    functions.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-
-<span class="sd">    &gt;&gt;&gt; check_data([1, 2, 3])</span>
-<span class="sd">    ([1, 2, 3],)</span>
-<span class="sd">    &gt;&gt;&gt; check_data(([1, 2], [3, 4]))</span>
-<span class="sd">    ([1, 2], [3, 4])</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">,)</span>
-    <span class="k">return</span> <span class="n">data</span>
 
 
 <div class="viewcode-block" id="variance_to_weights"><a class="viewcode-back" href="../../api/generated/verde.variance_to_weights.html#verde.variance_to_weights">[docs]</a><span class="k">def</span> <span class="nf">variance_to_weights</span><span class="p">(</span><span class="n">variance</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-15</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">):</span>
@@ -383,7 +378,7 @@
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="maxabs"><a class="viewcode-back" href="../../api/generated/verde.maxabs.html#verde.maxabs">[docs]</a><span class="k">def</span> <span class="nf">maxabs</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<div class="viewcode-block" id="maxabs"><a class="viewcode-back" href="../../api/generated/verde.maxabs.html#verde.maxabs">[docs]</a><span class="k">def</span> <span class="nf">maxabs</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">nan</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the maximum absolute value of the given array(s).</span>
 
@@ -408,10 +403,23 @@
 <span class="sd">    &gt;&gt;&gt; maxabs((1, -10.5, 25, 2), (0.1, 100, -500), (-200, -300, -0.1, -499))</span>
 <span class="sd">    500.0</span>
 
+<span class="sd">    If the array contains NaNs, we&#39;ll use the ``nan`` version of of the numpy functions</span>
+<span class="sd">    by default. You can turn this off through the *nan* argument.</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; maxabs((1, -10, 25, 2, 3, np.nan))</span>
+<span class="sd">    25.0</span>
+<span class="sd">    &gt;&gt;&gt; maxabs((1, -10, 25, 2, 3, np.nan), nan=False)</span>
+<span class="sd">    nan</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
-    <span class="n">absolute</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">i</span><span class="o">.</span><span class="n">max</span><span class="p">()])</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">absolute</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="n">nan</span><span class="p">:</span>
+        <span class="n">npmin</span><span class="p">,</span> <span class="n">npmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">npmin</span><span class="p">,</span> <span class="n">npmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span>
+    <span class="n">absolute</span> <span class="o">=</span> <span class="p">[</span><span class="n">npmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">([</span><span class="n">npmin</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">npmax</span><span class="p">(</span><span class="n">i</span><span class="p">)]))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">npmax</span><span class="p">(</span><span class="n">absolute</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="grid_to_table"><a class="viewcode-back" href="../../api/generated/verde.grid_to_table.html#verde.grid_to_table">[docs]</a><span class="k">def</span> <span class="nf">grid_to_table</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
@@ -491,6 +499,44 @@
     <span class="n">coord_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">var_dict</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">coord_dict</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">data</span></div>
+
+
+<span class="k">def</span> <span class="nf">kdtree</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">use_pykdtree</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a KD-Tree object with the given coordinate arrays.</span>
+
+<span class="sd">    Automatically transposes and flattens the coordinate arrays into a single matrix for</span>
+<span class="sd">    use in the KD-Tree classes.</span>
+
+<span class="sd">    All other keyword arguments are passed to the KD-Tree class.</span>
+
+<span class="sd">    If installed, package ``pykdtree`` will be used instead of</span>
+<span class="sd">    :class:`scipy.spatial.cKDTree` for better performance. Not all features are</span>
+<span class="sd">    available in ``pykdtree`` so if you require the scipy version set</span>
+<span class="sd">    ``use_pykdtee=False``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : tuple of arrays</span>
+<span class="sd">        Arrays with the coordinates of each data point. Should be in the</span>
+<span class="sd">        following order: (easting, northing, vertical, ...). All coordinate arrays are</span>
+<span class="sd">        used.</span>
+<span class="sd">    use_pykdtree : bool</span>
+<span class="sd">        If True, will prefer ``pykdtree`` (if installed) over</span>
+<span class="sd">        :class:`scipy.spatial.cKDTree`. Otherwise, always use the scipy version.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tree : :class:`scipy.spatial.cKDTree` or ``pykdtree.kdtree.KDTree``</span>
+<span class="sd">        The tree instance initialized with the given coordinates and arguments.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="n">pyKDTree</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">use_pykdtree</span><span class="p">:</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">pyKDTree</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">cKDTree</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tree</span>
 </pre></div>
 
            </div>
@@ -503,8 +549,10 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2018, Leonardo Uieda
-      Last updated on Nov 06, 2018.
+        &copy; Copyright 2017-2019, The Verde Developers
+      <span class="lastupdated">
+        Last updated on Jul 23, 2019.
+      </span>
 
     </p>
   </div>
@@ -521,26 +569,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
