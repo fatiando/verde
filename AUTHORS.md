@@ -6,4 +6,5 @@ are considered "The Verde Developers":
 
 * [David Hoese](https://github.com/djhoese)
 * [Jesse Pisel](https://github.com/jessepisel)
+* [Santiago R. Soler](https://github.com/santisoler)
 * [Leonardo Uieda](https://github.com/leouieda)
