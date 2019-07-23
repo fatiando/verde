@@ -1,0 +1,695 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    
+        <title>Grid Coordinates &mdash; Verde</title>
+    
+
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Trend Estimation" href="trends.html" />
+    <link rel="prev" title="Wind speed data from Texas" href="../sample_data/texas-wind.html" />
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/verde-logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Verde</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gallery/index.html">Gallery</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Grid Coordinates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#adjusting-region-boundaries-when-creating-the-grid-coordinates">Adjusting region boundaries when creating the grid coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adjusting-spacing-when-creating-the-grid">Adjusting spacing when creating the grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#visualize-the-different-adjustments">Visualize the different adjustments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pixel-registration">Pixel Registration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extra-coordinates">Extra Coordinates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_evaluation.html">Evaluating Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+
+            
+          
+
+    
+        <p class="caption">
+            <span class="caption-text">
+            
+                Getting help and contributing
+            
+            </span>
+        </p>
+        <ul>
+            
+                <li class="toctree-l1"><a href="https://www.fatiando.org"><i class="fa fa-external-link-square fa-fw"></i> Fatiando a Terra</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md"><i class="fa fa-users fa-fw"></i> Contributing</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
+            
+                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
+            
+        </ul>
+    
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Verde</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Grid Coordinates</li>
+    
+    
+    <li class="source-link">
+        
+            
+                
+                
+                
+                    
+                
+                <a href="https://github.com/fatiando/verde/edit/master/doc/../tutorials/grid_coordinates.py"
+                   class="fa fa-github"> Improve this page</a>
+            
+        
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-tutorials-grid-coordinates-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="grid-coordinates">
+<span id="sphx-glr-tutorials-grid-coordinates-py"></span><span id="id1"></span><h1>Grid Coordinates<a class="headerlink" href="#grid-coordinates" title="Permalink to this headline">¶</a></h1>
+<p>Creating the coordinates for regular grids in Verde is done using the
+<a class="reference internal" href="../api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> function. It creates a set of regularly spaced points in
+both the west-east and south-north directions, i.e. a two-dimensional spatial grid. These
+points are then used by the Verde gridders to interpolate between data points. As such, all
+<cite>.grid</cite> methods (like <a class="reference internal" href="../api/generated/verde.Spline.html#verde.Spline.grid" title="verde.Spline.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">verde.Spline.grid</span></code></a>) take as input the configuration parameters
+for <a class="reference internal" href="../api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a>. The grid can be specified either by the number of points
+in each dimension (the shape) or by the grid node spacing.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
+<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="k">import</span> <span class="n">Rectangle</span>
+</pre></div>
+</div>
+<p>First let’s create a region that is 1000 units west-east and 1000 units south-north,
+and we will set an initial spacing to 100 units.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spacing</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">west</span><span class="p">,</span> <span class="n">east</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span>
+<span class="n">region</span> <span class="o">=</span> <span class="p">(</span><span class="n">west</span><span class="p">,</span> <span class="n">east</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">north</span><span class="p">)</span>
+
+<span class="c1"># create the grid coordinates</span>
+<span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <a href="../api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="View documentation for verde.grid_coordinates"><span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span></a><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can check the dimensions of the grid coordinates. The region is 1000 units and the
+spacing is 100 units, so the shape of the segments is 10x10. However, the number of
+grid nodes in this case is one more than the number of segments. So our grid
+coordinates have a shape of 11x11.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">easting</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">northing</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(11, 11) (11, 11)
+</pre></div>
+</div>
+<p>Let’s define two functions to visualize the region bounds and grid points</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_region</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="p">):</span>
+    <span class="s2">&quot;Plot the region as a solid line.&quot;</span>
+    <span class="n">west</span><span class="p">,</span> <span class="n">east</span><span class="p">,</span> <span class="n">south</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="n">region</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">west</span><span class="p">,</span> <span class="n">south</span><span class="p">),</span> <span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Region Bounds&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">plot_grid</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="s2">&quot;Plot the grid coordinates as dots and lines.&quot;</span>
+    <span class="n">data_region</span> <span class="o">=</span> <a href="../api/generated/verde.get_region.html#verde.get_region" title="View documentation for verde.get_region"><span class="n">vd</span><span class="o">.</span><span class="n">get_region</span></a><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span>
+        <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">ymin</span><span class="o">=</span><span class="n">data_region</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+        <span class="n">ymax</span><span class="o">=</span><span class="n">data_region</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+        <span class="n">linestyles</span><span class="o">=</span><span class="n">linestyles</span><span class="p">,</span>
+        <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span>
+        <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">xmin</span><span class="o">=</span><span class="n">data_region</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">xmax</span><span class="o">=</span><span class="n">data_region</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">linestyles</span><span class="o">=</span><span class="n">linestyles</span><span class="p">,</span>
+        <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">pad</span><span class="p">:</span>
+        <span class="n">padded</span> <span class="o">=</span> <a href="../api/generated/verde.pad_region.html#verde.pad_region" title="View documentation for verde.pad_region"><span class="n">vd</span><span class="o">.</span><span class="n">pad_region</span></a><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="n">pad</span><span class="p">)</span>
+        <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlim.html#matplotlib.pyplot.xlim" title="View documentation for matplotlib.pyplot.xlim"><span class="n">plt</span><span class="o">.</span><span class="n">xlim</span></a><span class="p">(</span><span class="n">padded</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+        <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylim.html#matplotlib.pyplot.ylim" title="View documentation for matplotlib.pyplot.ylim"><span class="n">plt</span><span class="o">.</span><span class="n">ylim</span></a><span class="p">(</span><span class="n">padded</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
+</pre></div>
+</div>
+<p>Visualize our region and grid coordinates using our functions</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">plot_region</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">)</span>
+<span class="n">plot_grid</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">),</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Square Region Grid Nodes&quot;</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<span class="p">)</span>
+
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s2">&quot;Easting&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s2">&quot;Northing&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="View documentation for matplotlib.pyplot.legend"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper center&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.15</span><span class="p">))</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_grid_coordinates_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_grid_coordinates_001.png" />
+<div class="section" id="adjusting-region-boundaries-when-creating-the-grid-coordinates">
+<h2>Adjusting region boundaries when creating the grid coordinates<a class="headerlink" href="#adjusting-region-boundaries-when-creating-the-grid-coordinates" title="Permalink to this headline">¶</a></h2>
+<p>Now let’s change our spacing to 300 units. Because the range of the west-east and
+south-north boundaries are not multiples of 300, we must choose to change either:</p>
+<ul class="simple">
+<li>the boundaries of the region in order to fit the spacing, or</li>
+<li>the spacing in order to fit the region boundaries.</li>
+</ul>
+<p>We could tell <a class="reference internal" href="../api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> to adjust the region boundaries by
+passing <code class="docutils literal notranslate"><span class="pre">adjust=&quot;region&quot;</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spacing</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">region_easting</span><span class="p">,</span> <span class="n">region_northing</span> <span class="o">=</span> <a href="../api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="View documentation for verde.grid_coordinates"><span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span></a><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">adjust</span><span class="o">=</span><span class="s2">&quot;region&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">region_easting</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">region_northing</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(4, 4) (4, 4)
+</pre></div>
+</div>
+<p>With the spacing set at 300 units and a 4 by 4 grid of regular dimensions,
+<a class="reference internal" href="../api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> calculates the spatial location of each
+grid point and adjusts the region so that the maximum northing and maximum
+easting values are divisible by the spacing. In this example, both the  easting and
+northing have 3 segments (4 nodes) that are each 300 units long, meaning the easting
+and northing span from 0 to 900. Both dimensions are divisible
+by 300.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">region_easting</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">region_northing</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[  0. 300. 600. 900.]
+ [  0. 300. 600. 900.]
+ [  0. 300. 600. 900.]
+ [  0. 300. 600. 900.]]
+[[  0.   0.   0.   0.]
+ [300. 300. 300. 300.]
+ [600. 600. 600. 600.]
+ [900. 900. 900. 900.]]
+</pre></div>
+</div>
+<p>By default, if <code class="docutils literal notranslate"><span class="pre">adjust</span></code> is not assigned to <code class="docutils literal notranslate"><span class="pre">&quot;region&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;spacing&quot;</span></code>,
+then <a class="reference internal" href="../api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> will adjust the spacing. With the adjust
+parameter set to <code class="docutils literal notranslate"><span class="pre">spacing</span></code> <a class="reference internal" href="../api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> creates grid nodes
+in a similar manner as when it adjusts the region. However, it doesn’t readjust
+the region so that it is divisble by the spacing before creating the grid.
+This means the grid will have the same number of grid points no matter if
+the adjust parameter is set to <code class="docutils literal notranslate"><span class="pre">region</span></code> or <code class="docutils literal notranslate"><span class="pre">spacing</span></code>.</p>
+</div>
+<div class="section" id="adjusting-spacing-when-creating-the-grid">
+<h2>Adjusting spacing when creating the grid<a class="headerlink" href="#adjusting-spacing-when-creating-the-grid" title="Permalink to this headline">¶</a></h2>
+<p>Now let’s adjust the spacing of the grid points by passing <code class="docutils literal notranslate"><span class="pre">adjust=&quot;spacing&quot;</span></code>
+to <a class="reference internal" href="../api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spacing_easting</span><span class="p">,</span> <span class="n">spacing_northing</span> <span class="o">=</span> <a href="../api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="View documentation for verde.grid_coordinates"><span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span></a><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">adjust</span><span class="o">=</span><span class="s2">&quot;spacing&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">spacing_easting</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">spacing_northing</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(4, 4) (4, 4)
+</pre></div>
+</div>
+<p>However the regular spacing between the grid points is no longer 300 units.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">spacing_easting</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">spacing_northing</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[   0.          333.33333333  666.66666667 1000.        ]
+ [   0.          333.33333333  666.66666667 1000.        ]
+ [   0.          333.33333333  666.66666667 1000.        ]
+ [   0.          333.33333333  666.66666667 1000.        ]]
+[[   0.            0.            0.            0.        ]
+ [ 333.33333333  333.33333333  333.33333333  333.33333333]
+ [ 666.66666667  666.66666667  666.66666667  666.66666667]
+ [1000.         1000.         1000.         1000.        ]]
+</pre></div>
+</div>
+</div>
+<div class="section" id="visualize-the-different-adjustments">
+<h2>Visualize the different adjustments<a class="headerlink" href="#visualize-the-different-adjustments" title="Permalink to this headline">¶</a></h2>
+<p>Let’s visualize the difference between the original region bounds, the
+adjusted region grid nodes, and the adjusted spacing grid nodes. Note the
+adjusted spacing grid nodes keep the original region, while the adjusted
+region grid nodes on the north and east side of the region have moved.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">plot_region</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">)</span>
+<span class="n">plot_grid</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">region_easting</span><span class="p">,</span> <span class="n">region_northing</span><span class="p">),</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Adjusted Region Grid Nodes&quot;</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plot_grid</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">spacing_easting</span><span class="p">,</span> <span class="n">spacing_northing</span><span class="p">),</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Adjusted Spacing Grid Nodes&quot;</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s2">&quot;Easting&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s2">&quot;Northing&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="View documentation for matplotlib.pyplot.legend"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper center&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.18</span><span class="p">))</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_grid_coordinates_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_grid_coordinates_002.png" />
+</div>
+<div class="section" id="pixel-registration">
+<h2>Pixel Registration<a class="headerlink" href="#pixel-registration" title="Permalink to this headline">¶</a></h2>
+<p>Pixel registration locates the grid points in the middle of the grid segments
+rather than in the corner of each grid node.</p>
+<p>First, let’s take our 1000x1000 region and use the 100 unit spacing from the first
+example and set the <code class="docutils literal notranslate"><span class="pre">pixel_register</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">True</span></code>. Without pixel
+registration our grid should have dimensions of 11x11. With pixel registration we
+expect the dimensions of the grid to be the dimensions of the non-registered grid
+minus one, or equal to the number of segments between the grid points in the
+non-registered grid (10x10).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">spacing</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">pixel_easting</span><span class="p">,</span> <span class="n">pixel_northing</span> <span class="o">=</span> <a href="../api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="View documentation for verde.grid_coordinates"><span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span></a><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">pixel_register</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pixel_easting</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">pixel_northing</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(10, 10) (10, 10)
+</pre></div>
+</div>
+<p>And we can check the coordinates for the grid points with pixel registration.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">pixel_easting</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pixel_northing</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[ 50. 150. 250. 350. 450. 550. 650. 750. 850. 950.]
+ [ 50. 150. 250. 350. 450. 550. 650. 750. 850. 950.]
+ [ 50. 150. 250. 350. 450. 550. 650. 750. 850. 950.]
+ [ 50. 150. 250. 350. 450. 550. 650. 750. 850. 950.]
+ [ 50. 150. 250. 350. 450. 550. 650. 750. 850. 950.]
+ [ 50. 150. 250. 350. 450. 550. 650. 750. 850. 950.]
+ [ 50. 150. 250. 350. 450. 550. 650. 750. 850. 950.]
+ [ 50. 150. 250. 350. 450. 550. 650. 750. 850. 950.]
+ [ 50. 150. 250. 350. 450. 550. 650. 750. 850. 950.]
+ [ 50. 150. 250. 350. 450. 550. 650. 750. 850. 950.]]
+[[ 50.  50.  50.  50.  50.  50.  50.  50.  50.  50.]
+ [150. 150. 150. 150. 150. 150. 150. 150. 150. 150.]
+ [250. 250. 250. 250. 250. 250. 250. 250. 250. 250.]
+ [350. 350. 350. 350. 350. 350. 350. 350. 350. 350.]
+ [450. 450. 450. 450. 450. 450. 450. 450. 450. 450.]
+ [550. 550. 550. 550. 550. 550. 550. 550. 550. 550.]
+ [650. 650. 650. 650. 650. 650. 650. 650. 650. 650.]
+ [750. 750. 750. 750. 750. 750. 750. 750. 750. 750.]
+ [850. 850. 850. 850. 850. 850. 850. 850. 850. 850.]
+ [950. 950. 950. 950. 950. 950. 950. 950. 950. 950.]]
+</pre></div>
+</div>
+<p>If we set <code class="docutils literal notranslate"><span class="pre">pixel_register</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code> the function will return the grid
+coordinates of the nodes instead of pixel centers, resulting in an extra point in each direction.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <a href="../api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="View documentation for verde.grid_coordinates"><span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span></a><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">pixel_register</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">easting</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">northing</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(11, 11) (11, 11)
+</pre></div>
+</div>
+<p>Again we can check the coordinates for grid points with spacing adjustment.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">easting</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">northing</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[   0.  100.  200.  300.  400.  500.  600.  700.  800.  900. 1000.]
+ [   0.  100.  200.  300.  400.  500.  600.  700.  800.  900. 1000.]
+ [   0.  100.  200.  300.  400.  500.  600.  700.  800.  900. 1000.]
+ [   0.  100.  200.  300.  400.  500.  600.  700.  800.  900. 1000.]
+ [   0.  100.  200.  300.  400.  500.  600.  700.  800.  900. 1000.]
+ [   0.  100.  200.  300.  400.  500.  600.  700.  800.  900. 1000.]
+ [   0.  100.  200.  300.  400.  500.  600.  700.  800.  900. 1000.]
+ [   0.  100.  200.  300.  400.  500.  600.  700.  800.  900. 1000.]
+ [   0.  100.  200.  300.  400.  500.  600.  700.  800.  900. 1000.]
+ [   0.  100.  200.  300.  400.  500.  600.  700.  800.  900. 1000.]
+ [   0.  100.  200.  300.  400.  500.  600.  700.  800.  900. 1000.]]
+[[   0.    0.    0.    0.    0.    0.    0.    0.    0.    0.    0.]
+ [ 100.  100.  100.  100.  100.  100.  100.  100.  100.  100.  100.]
+ [ 200.  200.  200.  200.  200.  200.  200.  200.  200.  200.  200.]
+ [ 300.  300.  300.  300.  300.  300.  300.  300.  300.  300.  300.]
+ [ 400.  400.  400.  400.  400.  400.  400.  400.  400.  400.  400.]
+ [ 500.  500.  500.  500.  500.  500.  500.  500.  500.  500.  500.]
+ [ 600.  600.  600.  600.  600.  600.  600.  600.  600.  600.  600.]
+ [ 700.  700.  700.  700.  700.  700.  700.  700.  700.  700.  700.]
+ [ 800.  800.  800.  800.  800.  800.  800.  800.  800.  800.  800.]
+ [ 900.  900.  900.  900.  900.  900.  900.  900.  900.  900.  900.]
+ [1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000.]]
+</pre></div>
+</div>
+<p>Lastly, we can visualize the pixel-registered grid points to see where they fall
+within the original region bounds.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="n">plot_region</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">)</span>
+<span class="n">plot_grid</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">pixel_easting</span><span class="p">,</span> <span class="n">pixel_northing</span><span class="p">),</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Pixel Registered Grid Nodes&quot;</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plot_grid</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+    <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">),</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Regular Registered Grid Nodes&quot;</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span>
+    <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<span class="p">)</span>
+
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.xlabel.html#matplotlib.pyplot.xlabel" title="View documentation for matplotlib.pyplot.xlabel"><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span></a><span class="p">(</span><span class="s2">&quot;Easting&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.ylabel.html#matplotlib.pyplot.ylabel" title="View documentation for matplotlib.pyplot.ylabel"><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span></a><span class="p">(</span><span class="s2">&quot;Northing&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="View documentation for matplotlib.pyplot.legend"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper center&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.18</span><span class="p">))</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_grid_coordinates_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_grid_coordinates_003.png" />
+</div>
+<div class="section" id="extra-coordinates">
+<h2>Extra Coordinates<a class="headerlink" href="#extra-coordinates" title="Permalink to this headline">¶</a></h2>
+<p>In some cases, you might need an additional coordinate such as a height or a time
+that is associated with your coordinate grid. The <code class="docutils literal notranslate"><span class="pre">extra_coords</span></code> parameter
+in <a class="reference internal" href="../api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> creates an extra coordinate array that is the same
+shape as the coordinate grid, but contains a constant value. For example, let’s
+add a constant height of 1000 units and time of 1 to our coordinate grid.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">time</span> <span class="o">=</span> <a href="../api/generated/verde.grid_coordinates.html#verde.grid_coordinates" title="View documentation for verde.grid_coordinates"><span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span></a><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">extra_coords</span><span class="o">=</span><span class="p">[</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">easting</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">northing</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">height</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(11, 11) (11, 11) (11, 11) (11, 11)
+</pre></div>
+</div>
+<p>And we can print the height array to verify that it is correct</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000.]
+ [1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000.]
+ [1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000.]
+ [1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000.]
+ [1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000.]
+ [1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000.]
+ [1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000.]
+ [1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000.]
+ [1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000.]
+ [1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000.]
+ [1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000.]]
+</pre></div>
+</div>
+<p>And we can print the time array as well</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[[1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]
+ [1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]
+ [1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]
+ [1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]
+ [1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]
+ [1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]
+ [1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]
+ [1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]
+ [1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]
+ [1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]
+ [1. 1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]]
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.395 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-grid-coordinates-py">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" download="" href="../_downloads/2a25e83f12d0e65bd25e4efe99aecc43/grid_coordinates.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">grid_coordinates.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" download="" href="../_downloads/aada356c098ae60a6ae19f8a07a01fdb/grid_coordinates.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">grid_coordinates.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="trends.html" class="btn btn-neutral float-right" title="Trend Estimation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../sample_data/texas-wind.html" class="btn btn-neutral float-left" title="Wind speed data from Texas" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2019, The Verde Developers
+      <span class="lastupdated">
+        Last updated on Jul 23, 2019.
+      </span>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
