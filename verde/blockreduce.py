@@ -199,19 +199,20 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
             each non-empty block.
 
         """
-        if self.center_coordinates:
-            unique = np.unique(labels)
-            return tuple(i[unique] for i in block_coordinates)
         # Doing the coordinates separately from the data because in case of
         # weights the reduction applied to then is different (no weights
         # ever)
-        coordinates_dict = {
+        coords = {
             "coordinate{}".format(i): coord.ravel()
             for i, coord in enumerate(coordinates)
         }
-        coordinates_dict["block"] = labels
-        table = pd.DataFrame(coordinates_dict)
+        coords["block"] = labels
+        table = pd.DataFrame(coords)
         grouped = table.groupby("block").aggregate(self.reduction)
+        if self.center_coordinates:
+            unique = np.unique(labels)
+            for i, block_coord in enumerate(block_coordinates[:2]):
+                grouped["coordinate{}".format(i)] = block_coord[unique].ravel()
         return tuple(
             grouped["coordinate{}".format(i)].values for i in range(len(coordinates))
         )
