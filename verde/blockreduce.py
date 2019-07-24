@@ -120,8 +120,8 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
             following order: (easting, northing, vertical, ...). Only easting
-            and northing will be used to create the blocks, but all coordinates
-            will be reduced.
+            and northing will be used to create the blocks. All other coordinates
+            will be reduced along with the data.
         data : array or tuple of arrays
             The data values at each point. If you want to reduce more than one
             data component, pass in multiple arrays as elements of a tuple. All
@@ -337,8 +337,8 @@ class BlockMean(BlockReduce):  # pylint: disable=too-few-public-methods
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
             following order: (easting, northing, vertical, ...). Only easting
-            and northing will be used to create the blocks, but all coordinates
-            will be reduced.
+            and northing will be used to create the blocks. All other coordinates
+            will be reduced along with the data.
         data : array or tuple of arrays
             The data values at each point. If you want to reduce more than one
             data component, pass in multiple arrays as elements of a tuple. All
