@@ -76,6 +76,69 @@ def test_block_reduce_weights():
     npt.assert_allclose(block_data, 20)
 
 
+def test_block_reduce_drop_coords():
+    "Try reducing constant values in a regular grid dropping extra coordinates"
+    region = (-5, 0, 5, 10)
+    east, north, down, time = grid_coordinates(
+        region, spacing=0.1, pixel_register=True, extra_coords=[70, 1]
+    )
+    data = 20 * np.ones_like(east)
+    reducer = BlockReduce(np.mean, spacing=1, drop_coords=True)
+    block_coords, block_data = reducer.filter((east, north, down, time), data)
+    assert len(block_coords) == 2
+    assert len(block_coords[0]) == 25
+    assert len(block_coords[1]) == 25
+    assert len(block_data) == 25
+    npt.assert_allclose(block_data, 20)
+    npt.assert_allclose(block_coords[0][:5], np.linspace(-4.5, -0.5, 5))
+    npt.assert_allclose(block_coords[1][::5], np.linspace(5.5, 9.5, 5))
+
+
+def test_block_reduce_multiple_coordinates():
+    "Try reducing constant values in a regular grid with n-dimensional coordinates"
+    region = (-5, 0, 5, 10)
+    east, north, down, time = grid_coordinates(
+        region, spacing=0.1, pixel_register=True, extra_coords=[70, 1]
+    )
+    data = 20 * np.ones_like(east)
+    reducer = BlockReduce(np.mean, spacing=1, drop_coords=False)
+    block_coords, block_data = reducer.filter((east, north, down, time), data)
+    assert len(block_coords) == 4
+    assert len(block_coords[0]) == 25
+    assert len(block_coords[1]) == 25
+    assert len(block_coords[2]) == 25
+    assert len(block_coords[3]) == 25
+    assert len(block_data) == 25
+    npt.assert_allclose(block_data, 20)
+    npt.assert_allclose(block_coords[0][:5], np.linspace(-4.5, -0.5, 5))
+    npt.assert_allclose(block_coords[1][::5], np.linspace(5.5, 9.5, 5))
+    npt.assert_allclose(block_coords[2][::5], 70 * np.ones(5))
+    npt.assert_allclose(block_coords[3][::5], np.ones(5))
+
+
+def test_block_reduce_scatter_multiple_coordinates():
+    "Try reducing constant values in a dense enough scatter with n-dimensional coords"
+    region = (-5, 0, 5, 10)
+    coordinates = scatter_points(
+        region, size=10000, random_state=0, extra_coords=[70, 1]
+    )
+    data = 20 * np.ones_like(coordinates[0])
+    block_coords, block_data = BlockReduce(
+        np.mean, 1, region=region, center_coordinates=True, drop_coords=False
+    ).filter(coordinates, data)
+    assert len(block_coords) == 4
+    assert len(block_coords[0]) == 25
+    assert len(block_coords[1]) == 25
+    assert len(block_coords[2]) == 25
+    assert len(block_coords[3]) == 25
+    assert len(block_data) == 25
+    npt.assert_allclose(block_data, 20)
+    npt.assert_allclose(block_coords[0][:5], np.linspace(-4.5, -0.5, 5))
+    npt.assert_allclose(block_coords[1][::5], np.linspace(5.5, 9.5, 5))
+    npt.assert_allclose(block_coords[2][::5], 70 * np.ones(5))
+    npt.assert_allclose(block_coords[3][::5], np.ones(5))
+
+
 def test_block_reduce_multiple_components():
     "Try reducing multiple components in a regular grid"
     region = (-5, 0, 5, 10)
