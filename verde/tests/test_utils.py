@@ -1,7 +1,6 @@
 """
 Test the utility functions.
 """
-import sys
 from unittest import mock
 
 import numpy as np
@@ -11,15 +10,16 @@ import pytest
 
 from ..coordinates import grid_coordinates
 from ..utils import parse_engine, dummy_jit, kdtree
+from .. import utils
 
 
 def test_parse_engine():
     "Check that it works for common input"
     assert parse_engine("numba") == "numba"
     assert parse_engine("numpy") == "numpy"
-    with mock.patch.dict(sys.modules, {"numba": None}):
+    with mock.patch.object(utils, "numba", None):
         assert parse_engine("auto") == "numpy"
-    with mock.patch.dict(sys.modules, {"numba": mock.MagicMock()}):
+    with mock.patch.object(utils, "numba", mock.MagicMock()):
         assert parse_engine("auto") == "numba"
 
 
