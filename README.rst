@@ -3,7 +3,7 @@
 
 `Documentation <http://www.fatiando.org/verde>`__ |
 `Documentation (dev version) <http://www.fatiando.org/verde/dev>`__ |
-`Contact <https://gitter.im/fatiando/fatiando>`__ |
+`Contact <http://contact.fatiando.org>`__ |
 Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 
 
@@ -25,9 +25,6 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 .. image:: https://img.shields.io/pypi/pyversions/verde.svg?style=flat-square
     :alt: Compatible Python versions.
     :target: https://pypi.python.org/pypi/verde
-.. image:: https://img.shields.io/gitter/room/fatiando/fatiando.svg?style=flat-square
-    :alt: Chat room on Gitter
-    :target: https://gitter.im/fatiando/fatiando
 .. image:: https://img.shields.io/badge/doi-10.21105%2Fjoss.00957-blue.svg?style=flat-square
     :alt: Digital Object Identifier for the JOSS paper
     :target: https://doi.org/10.21105/joss.00957
@@ -88,7 +85,7 @@ Contacting us
   Feel free to `open an issue
   <https://github.com/fatiando/verde/issues/new>`__ or comment
   on any open issue or pull request.
-* We have `chat room on Gitter <https://gitter.im/fatiando/fatiando>`__
+* We have `chat room on Slack <http://contact.fatiando.org>`__
   where you can ask questions and leave comments.
 
 

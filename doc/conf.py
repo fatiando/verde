@@ -114,7 +114,7 @@ html_context = {
         ('<i class="fa fa-external-link-square fa-fw"></i> Fatiando a Terra', 'https://www.fatiando.org'),
         ('<i class="fa fa-users fa-fw"></i> Contributing', 'https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md'),
         ('<i class="fa fa-gavel fa-fw"></i> Code of Conduct', 'https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md'),
-        ('<i class="fa fa-comment fa-fw"></i> Contact', 'https://gitter.im/fatiando/fatiando'),
+        ('<i class="fa fa-comment fa-fw"></i> Contact', 'http://contact.fatiando.org'),
         ('<i class="fa fa-github fa-fw"></i> Source Code', 'https://github.com/fatiando/verde'),
     ],
     # Custom variables to enable "Improve this page"" and "Download notebook"
