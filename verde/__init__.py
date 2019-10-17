@@ -1,4 +1,4 @@
-# pylint: disable=missing-docstring
+# pylint: disable=missing-docstring,import-outside-toplevel
 # Import functions/classes to make the public API
 from . import datasets
 from . import version
