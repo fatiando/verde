@@ -7,6 +7,13 @@ import numpy as np
 import pandas as pd
 import pooch
 
+try:
+    import cartopy.feature as cfeature
+    import cartopy.crs as ccrs
+    from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
+except ImportError:
+    pass
+
 from ..version import full_version
 
 
@@ -26,8 +33,6 @@ def _setup_map(
     """
     Setup a Cartopy map with land and ocean features and proper tick labels.
     """
-    import cartopy.feature as cfeature
-    from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 
     if land is not None:
         ax.add_feature(cfeature.LAND, facecolor=land)
@@ -93,8 +98,6 @@ def setup_baja_bathymetry_map(
     fetch_baja_bathymetry: Sample bathymetry data from Baja California.
 
     """
-    import cartopy.crs as ccrs
-
     _setup_map(
         ax,
         xticks=np.arange(-114, -105, 2),
@@ -167,8 +170,6 @@ def setup_rio_magnetic_map(ax, region=(-42.6, -42, -22.5, -22)):
     fetch_rio_magnetic: Sample magnetic anomaly data from Rio de Janeiro, Brazil.
 
     """
-    import cartopy.crs as ccrs
-
     _setup_map(
         ax,
         xticks=np.arange(-42.5, -42, 0.1),
@@ -237,8 +238,6 @@ def setup_california_gps_map(
     fetch_california_gps: Sample GPS velocity data from California.
 
     """
-    import cartopy.crs as ccrs
-
     _setup_map(
         ax,
         xticks=np.arange(-124, -115, 4),
@@ -301,7 +300,6 @@ def setup_texas_wind_map(
     fetch_texas_wind: Sample wind speed and air temperature data for Texas.
 
     """
-    import cartopy.crs as ccrs
 
     _setup_map(
         ax,

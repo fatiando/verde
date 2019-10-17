@@ -12,6 +12,11 @@ try:
 except ImportError:
     pyKDTree = None
 
+try:
+    import numba
+except ImportError:
+    numba = None
+
 from .base.utils import check_data, n_1d_arrays
 
 
@@ -56,12 +61,9 @@ def parse_engine(engine):
     if engine not in engines:
         raise ValueError("Invalid engine '{}'. Must be in {}.".format(engine, engines))
     if engine == "auto":
-        try:
-            import numba  # pylint: disable=unused-variable,unused-import
-
-            return "numba"
-        except ImportError:
+        if numba is None:
             return "numpy"
+        return "numba"
     return engine
 
 
