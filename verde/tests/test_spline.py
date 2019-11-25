@@ -7,6 +7,10 @@ import numpy as np
 import numpy.testing as npt
 from sklearn.model_selection import ShuffleSplit
 
+try:
+    from dask.distributed import Client
+except ImportError:
+    Client = None
 
 from ..spline import Spline, SplineCV
 from ..datasets.synthetic import CheckerBoard
@@ -57,8 +61,6 @@ def test_spline_cv():
 @requires_dask
 def test_spline_cv_parallel():
     "See if the parallel version of SplineCV works"
-    from dask.distributed import Client
-
     region = (100, 500, -800, -700)
     synth = CheckerBoard(region=region)
     data = synth.scatter(size=1500, random_state=1)
