@@ -2,11 +2,11 @@
 Trend Estimation
 ================
 
-Trend estimation and removal is a common operation, particularly when dealing with
-geophysical data. Moreover, some of the interpolation methods, like
-:class:`verde.VectorSpline2D`, struggle with long-wavelength trends in the data. The
-:class:`verde.Trend` class fits a 2D polynomial trend of arbitrary degree to the data
-and can be used to remove it.
+Trend estimation and removal is a common operation, particularly when dealing
+with geophysical data. Moreover, some of the interpolation methods, like
+:class:`verde.Spline`, can struggle with long-wavelength trends in the data.
+The :class:`verde.Trend` class fits a 2D polynomial trend of arbitrary degree
+to the data and can be used to remove it.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs

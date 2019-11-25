@@ -1,13 +1,14 @@
 """
-Gridding 2D vectors (uncoupled)
-===============================
+Gridding 2D vectors
+===================
 
 We can use :class:`verde.Vector` to simultaneously process and grid all
-components of vector data. Each component is processed and gridded separately (see
-:class:`verde.VectorSpline2D` for a coupled alternative) but we have the convenience of
-dealing with a single estimator. :class:`verde.Vector` can be combined with
-:class:`verde.Trend`, :class:`verde.Spline`, and :class:`verde.Chain` to create a full
-processing pipeline.
+components of vector data. Each component is processed and gridded separately
+(see `Erizo <https://github.com/fatiando/erizo>`__ for an elastically coupled
+alternative) but we have the convenience of dealing with a single estimator.
+:class:`verde.Vector` can be combined with :class:`verde.Trend`,
+:class:`verde.Spline`, and :class:`verde.Chain` to create a full processing
+pipeline.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
