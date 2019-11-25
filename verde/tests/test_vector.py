@@ -79,7 +79,7 @@ def test_vector2d_predict_implementations(data2d):
     npt.assert_allclose(pred_numpy, pred_numba, atol=1e-4)
 
 
-########################################################################################
+###############################################################################
 # Test the Vector meta-gridder
 
 

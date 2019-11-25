@@ -98,7 +98,7 @@ def test_profile_coordiantes_fails():
 
 def test_longitude_continuity():
     "Test continuous boundary conditions in geographic coordinates."
-    # Define longitude coordinates around the globe for [0, 360) and [-180, 180)
+    # Define longitude around the globe for [0, 360) and [-180, 180)
     longitude_360 = np.linspace(0, 350, 36)
     longitude_180 = np.hstack((longitude_360[:18], longitude_360[18:] - 360))
     latitude = np.linspace(-90, 90, 36)
@@ -161,7 +161,7 @@ def test_longitude_continuity():
 
 
 def test_invalid_geographic_region():
-    "Check if passing invalid region to longitude_continuity raises a ValueError"
+    "Check if invalid region in longitude_continuity raises a ValueError"
     # Region with latitude over boundaries
     w, e = -10, 10
     for s, n in [[-200, 90], [-90, 200]]:
@@ -179,7 +179,7 @@ def test_invalid_geographic_region():
 
 
 def test_invalid_geographic_coordinates():
-    "Check if passing invalid coordinates to longitude_continuity raises a ValueError"
+    "Check if invalid coordinates in longitude_continuity raises a ValueError"
     boundaries = [0, 360, -90, 90]
     spacing = 10
     region = [-20, 20, -20, 20]

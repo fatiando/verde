@@ -95,7 +95,7 @@ def test_block_reduce_drop_coords():
 
 
 def test_block_reduce_multiple_coordinates():
-    "Try reducing constant values in a regular grid with n-dimensional coordinates"
+    "Reduce constant values in a regular grid with n-dimensional coordinates"
     region = (-5, 0, 5, 10)
     east, north, down, time = grid_coordinates(
         region, spacing=0.1, pixel_register=True, extra_coords=[70, 1]
@@ -117,7 +117,7 @@ def test_block_reduce_multiple_coordinates():
 
 
 def test_block_reduce_scatter_multiple_coordinates():
-    "Try reducing constant values in a dense enough scatter with n-dimensional coords"
+    "Reduce constant values in a dense scatter with n-dimensional coords"
     region = (-5, 0, 5, 10)
     coordinates = scatter_points(
         region, size=10000, random_state=0, extra_coords=[70, 1]

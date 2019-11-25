@@ -83,16 +83,16 @@ def check_fit_input(coordinates, data, weights, unpack=True):
 
 def n_1d_arrays(arrays, n):
     """
-    Get the first n elements from a tuple/list, make sure they are arrays, and ravel.
+    Get the first n elements from a tuple/list, convert to arrays, and ravel.
 
-    Use this function to make sure that coordinate and data arrays are ready for
-    building Jacobian matrices and least-squares fitting.
+    Use this function to make sure that coordinate and data arrays are ready
+    for building Jacobian matrices and least-squares fitting.
 
     Parameters
     ----------
     arrays : tuple of arrays
-        The arrays. Can be lists or anything that can be converted to a numpy array
-        (including numpy arrays).
+        The arrays. Can be lists or anything that can be converted to a numpy
+        array (including numpy arrays).
     n : int
         How many arrays to return.
 

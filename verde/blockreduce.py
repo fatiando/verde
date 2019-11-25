@@ -39,9 +39,9 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
     bounding region of the data. When using this class to decimate data before
     gridding, it's best to use the same region and spacing as the desired grid.
 
-    The size of the blocks can be specified by the *spacing* parameter. Alternatively,
-    the number of blocks in the South-North and West-East directions can be specified
-    using the *shape* parameter.
+    The size of the blocks can be specified by the *spacing* parameter.
+    Alternatively, the number of blocks in the South-North and West-East
+    directions can be specified using the *shape* parameter.
 
     If the given region is not divisible by the spacing (block size), either
     the region or the spacing will have to be adjusted. By default, the spacing
@@ -60,7 +60,8 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
         A reduction function that takes an array and returns a single value
         (e.g., ``np.mean``, ``np.median``, etc).
     shape : tuple = (n_north, n_east) or None
-        The number of blocks in the South-North and West-East directions, respectively.
+        The number of blocks in the South-North and West-East directions,
+        respectively.
     spacing : float, tuple = (s_north, s_east), or None
         The block size in the South-North and West-East directions,
         respectively. A single value means that the size is equal in both
@@ -77,9 +78,9 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
         block. Otherwise, the coordinates are calculated by applying the same
         reduction operation to the input coordinates.
     drop_coords : bool
-        If True, only the reduced ``easting`` and ``northing`` coordinates are returned,
-        dropping any other ones. If False, all coordinates are reduced and returned.
-        Default True.
+        If True, only the reduced ``easting`` and ``northing`` coordinates are
+        returned, dropping any other ones. If False, all coordinates are
+        reduced and returned. Default True.
 
     See also
     --------
@@ -126,8 +127,9 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
             following order: (easting, northing, vertical, ...). Only easting
-            and northing will be used to create the blocks. If ``drop_coords`` is
-            ``False``, all other coordinates will be reduced along with the data.
+            and northing will be used to create the blocks. If ``drop_coords``
+            is ``False``, all other coordinates will be reduced along with the
+            data.
         data : array or tuple of arrays
             The data values at each point. If you want to reduce more than one
             data component, pass in multiple arrays as elements of a tuple. All
@@ -140,10 +142,11 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
         Returns
         -------
         blocked_coordinates : tuple of arrays
-            Tuple containing arrays with the coordinates of each block that contains
-            data. If ``drop_coords`` is ``True``, the tuple will only contain
-            (``easting``, ``northing``). If ``drop_coords`` is ``False``, it will
-            contain (``easting``, ``northing``, ``vertical``, ...).
+            Tuple containing arrays with the coordinates of each block that
+            contains data. If ``drop_coords`` is ``True``, the tuple will only
+            contain (``easting``, ``northing``). If ``drop_coords`` is
+            ``False``, it will contain (``easting``, ``northing``,
+            ``vertical``, ...).
         blocked_data : array
             The block reduced data values.
 
@@ -183,8 +186,8 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
         If self.center_coordinates, the coordinates will be the center of each
         block. Otherwise, will apply the reduction to the coordinates.
 
-        If self.drop_coords, only the easting and northing coordinates will be returned.
-        If False, all coordinates will be reduced.
+        If self.drop_coords, only the easting and northing coordinates will be
+        returned. If False, all coordinates will be reduced.
 
         Blocks without any data will be omitted.
 
@@ -206,10 +209,11 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
         Returns
         -------
         coordinates : tuple of arrays
-            Tuple containing arrays with the coordinates of each block that contains
-            data. If ``drop_coords`` is ``True``, the tuple will only contain
-            (``easting``, ``northing``). If ``drop_coords`` is ``False``, it will
-            contain (``easting``, ``northing``, ``vertical``, ...).
+            Tuple containing arrays with the coordinates of each block that
+            contains data. If ``drop_coords`` is ``True``, the tuple will only
+            contain (``easting``, ``northing``). If ``drop_coords`` is
+            ``False``, it will contain (``easting``, ``northing``,
+            ``vertical``, ...).
 
         """
         # Doing the coordinates separately from the data because in case of
@@ -271,9 +275,9 @@ class BlockMean(BlockReduce):  # pylint: disable=too-few-public-methods
     bounding region of the data. When using this class to decimate data before
     gridding, it's best to use the same region and spacing as the desired grid.
 
-    The size of the blocks can be specified by the *spacing* parameter. Alternatively,
-    the number of blocks in the South-North and West-East directions can be specified
-    using the *shape* parameter.
+    The size of the blocks can be specified by the *spacing* parameter.
+    Alternatively, the number of blocks in the South-North and West-East
+    directions can be specified using the *shape* parameter.
 
     If the given region is not divisible by the spacing (block size), either
     the region or the spacing will have to be adjusted. By default, the spacing
@@ -289,7 +293,8 @@ class BlockMean(BlockReduce):  # pylint: disable=too-few-public-methods
     Parameters
     ----------
     shape : tuple = (n_north, n_east) or None
-        The number of blocks in the South-North and West-East directions, respectively.
+        The number of blocks in the South-North and West-East directions,
+        respectively.
     spacing : float, tuple = (s_north, s_east), or None
         The block size in the South-North and West-East directions,
         respectively. A single value means that the size is equal in both
@@ -306,9 +311,9 @@ class BlockMean(BlockReduce):  # pylint: disable=too-few-public-methods
         block. Otherwise, the coordinates are calculated by applying the same
         reduction operation to the input coordinates.
     drop_coords : bool
-        If True, only the reduced ``easting`` and ``northing`` coordinates are returned,
-        dropping any other ones. If False, all coordinates are reduced and returned.
-        Default True.
+        If True, only the reduced ``easting`` and ``northing`` coordinates are
+        returned, dropping any other ones. If False, all coordinates are
+        reduced and returned. Default True.
     uncertainty : bool
         If True, the blocked weights will be calculated by uncertainty
         propagation of the data uncertainties. If this is case, then the input
@@ -358,8 +363,9 @@ class BlockMean(BlockReduce):  # pylint: disable=too-few-public-methods
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
             following order: (easting, northing, vertical, ...). Only easting
-            and northing will be used to create the blocks. If ``drop_coords`` is
-            ``False``, all other coordinates will be reduced along with the data.
+            and northing will be used to create the blocks. If ``drop_coords``
+            is ``False``, all other coordinates will be reduced along with the
+            data.
         data : array or tuple of arrays
             The data values at each point. If you want to reduce more than one
             data component, pass in multiple arrays as elements of a tuple. All
@@ -374,10 +380,11 @@ class BlockMean(BlockReduce):  # pylint: disable=too-few-public-methods
         Returns
         -------
         blocked_coordinates : tuple of arrays
-            Tuple containing arrays with the coordinates of each block that contains
-            data. If ``drop_coords`` is ``True``, the tuple will only contain
-            (``easting``, ``northing``). If ``drop_coords`` is ``False``, it will
-            contain (``easting``, ``northing``, ``vertical``, ...).
+            Tuple containing arrays with the coordinates of each block that
+            contains data. If ``drop_coords`` is ``True``, the tuple will only
+            contain (``easting``, ``northing``). If ``drop_coords`` is
+            ``False``, it will contain (``easting``, ``northing``,
+            ``vertical``, ...).
         blocked_mean : array or tuple of arrays
             The block averaged data values.
         blocked_weights : array or tuple of arrays
