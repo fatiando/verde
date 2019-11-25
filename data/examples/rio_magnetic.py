@@ -1,6 +1,13 @@
 """
-Magnetic data from Rio de Janeiro
-=================================
+[DEPRECATED] Magnetic data from Rio de Janeiro
+==============================================
+
+.. warning::
+
+    **The Rio magnetic anomaly dataset is deprecated and will be removed in
+    Verde v2.0.0** (functions :func:`verde.datasets.fetch_rio_magnetic` and
+    :func:`verde.datasets.setup_rio_magnetic_map`). Please use another dataset
+    instead.
 
 We provide sample total-field magnetic anomaly data from an airborne survey of Rio de
 Janeiro, Brazil, from the 1970s. The data are made available by the Geological Survey of
