@@ -9,23 +9,25 @@ from sklearn.linear_model import LinearRegression, Ridge
 
 def least_squares(jacobian, data, weights, damping=None):
     """
-    Solve a weighted least-squares problem with optional damping regularization.
+    Solve a weighted least-squares problem with optional damping regularization
 
-    Scales the Jacobian matrix so that each column has unit variance. This helps keep
-    the regularization parameter in a sensible range. The scaling is undone before
-    returning the estimated parameters so that scaling isn't required for predictions.
-    Doesn't normalize the column means because that operation can't be undone.
+    Scales the Jacobian matrix so that each column has unit variance. This
+    helps keep the regularization parameter in a sensible range. The scaling is
+    undone before returning the estimated parameters so that scaling isn't
+    required for predictions. Doesn't normalize the column means because that
+    operation can't be undone.
 
     Parameters
     ----------
     jacobian : 2d-array
         The Jacobian/sensitivity/feature matrix.
     data : 1d-array
-        The data array. Must be a single 1D array. If fitting multiple data components,
-        stack the arrays and the Jacobian matrices.
+        The data array. Must be a single 1D array. If fitting multiple data
+        components, stack the arrays and the Jacobian matrices.
     weights : None or 1d-array
-        The data weights. Like the data, this must also be a 1D array. Stack the weights
-        in the same order as the data. Use ``weights=None`` to fit without weights.
+        The data weights. Like the data, this must also be a 1D array. Stack
+        the weights in the same order as the data. Use ``weights=None`` to fit
+        without weights.
     damping : None or float
         The positive damping (Tikhonov 0th order) regularization parameter. If
         ``damping=None``, will use a regular least-squares fit.

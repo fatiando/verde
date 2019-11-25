@@ -49,7 +49,8 @@ def parse_engine(engine):
     Parameters
     ----------
     engine : str
-        The name of the engine. If ``"auto"`` will favor numba if it's available.
+        The name of the engine. If ``"auto"`` will favor numba if it's
+        available.
 
     Returns
     -------
@@ -69,7 +70,7 @@ def parse_engine(engine):
 
 def dummy_jit(**kwargs):  # pylint: disable=unused-argument
     """
-    Replace numba.jit if not installed with a function that raises RunTimeError.
+    Replace numba.jit if not installed with a function that raises RunTimeError
 
     Use as a decorator.
 
@@ -81,7 +82,8 @@ def dummy_jit(**kwargs):  # pylint: disable=unused-argument
     Returns
     -------
     function
-        A function that raises :class:`RunTimeError` warning that numba isn't installed.
+        A function that raises :class:`RunTimeError` warning that numba isn't
+        installed.
 
     """
 
@@ -164,8 +166,8 @@ def maxabs(*args, nan=True):
     Parameters
     ----------
     args
-        One or more arrays. If more than one are given, a single maximum will be
-        calculated across all arrays.
+        One or more arrays. If more than one are given, a single maximum will
+        be calculated across all arrays.
 
     Returns
     -------
@@ -180,8 +182,8 @@ def maxabs(*args, nan=True):
     >>> maxabs((1, -10.5, 25, 2), (0.1, 100, -500), (-200, -300, -0.1, -499))
     500.0
 
-    If the array contains NaNs, we'll use the ``nan`` version of of the numpy functions
-    by default. You can turn this off through the *nan* argument.
+    If the array contains NaNs, we'll use the ``nan`` version of of the numpy
+    functions by default. You can turn this off through the *nan* argument.
 
     >>> import numpy as np
     >>> maxabs((1, -10, 25, 2, 3, np.nan))
@@ -204,9 +206,9 @@ def grid_to_table(grid):
     Convert a grid to a table with the values and coordinates of each point.
 
     Takes a 2D grid as input, extracts the coordinates and runs them through
-    :func:`numpy.meshgrid` to create a 2D table. Works for 2D grids and any number of
-    variables. Use cases includes passing gridded data to functions that expect data in
-    XYZ format, such as :class:`verde.BlockReduce`
+    :func:`numpy.meshgrid` to create a 2D table. Works for 2D grids and any
+    number of variables. Use cases includes passing gridded data to functions
+    that expect data in XYZ format, such as :class:`verde.BlockReduce`
 
     Parameters
     ----------
@@ -282,8 +284,8 @@ def kdtree(coordinates, use_pykdtree=True, **kwargs):
     """
     Create a KD-Tree object with the given coordinate arrays.
 
-    Automatically transposes and flattens the coordinate arrays into a single matrix for
-    use in the KD-Tree classes.
+    Automatically transposes and flattens the coordinate arrays into a single
+    matrix for use in the KD-Tree classes.
 
     All other keyword arguments are passed to the KD-Tree class.
 
@@ -296,11 +298,12 @@ def kdtree(coordinates, use_pykdtree=True, **kwargs):
     ----------
     coordinates : tuple of arrays
         Arrays with the coordinates of each data point. Should be in the
-        following order: (easting, northing, vertical, ...). All coordinate arrays are
-        used.
+        following order: (easting, northing, vertical, ...). All coordinate
+        arrays are used.
     use_pykdtree : bool
         If True, will prefer ``pykdtree`` (if installed) over
-        :class:`scipy.spatial.cKDTree`. Otherwise, always use the scipy version.
+        :class:`scipy.spatial.cKDTree`. Otherwise, always use the scipy
+        version.
 
     Returns
     -------

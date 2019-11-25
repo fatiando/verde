@@ -25,35 +25,36 @@ class Vector(BaseGridder):
     """
     Fit an estimator to each component of multi-component vector data.
 
-    Provides a convenient way of fitting and gridding vector data using scalar gridders
-    and estimators.
+    Provides a convenient way of fitting and gridding vector data using scalar
+    gridders and estimators.
 
-    Each data component provided to :meth:`~verde.Vector.fit` is fitted to a separated
-    estimator. Methods like :meth:`~verde.Vector.grid` and :meth:`~verde.Vector.predict`
-    will operate on the multiple components simultaneously.
+    Each data component provided to :meth:`~verde.Vector.fit` is fitted to a
+    separated estimator. Methods like :meth:`~verde.Vector.grid` and
+    :meth:`~verde.Vector.predict` will operate on the multiple components
+    simultaneously.
 
     .. warning::
 
-        Never pass code like this as input to this class: ``[vd.Trend(1)]*3``. This
-        creates 3 references to the **same instance** of ``Trend``, which means that
-        they will all get the same coefficients after fitting. Use a list comprehension
-        instead: ``[vd.Trend(1) for i in range(3)]``.
+        Never pass code like this as input to this class: ``[vd.Trend(1)]*3``.
+        This creates 3 references to the **same instance** of ``Trend``, which
+        means that they will all get the same coefficients after fitting. Use a
+        list comprehension instead: ``[vd.Trend(1) for i in range(3)]``.
 
     Parameters
     ----------
     components : tuple or list
-        A tuple or list of the estimator/gridder instances used for each component. The
-        estimators will be applied for each data component in the same order that they
-        are given here.
+        A tuple or list of the estimator/gridder instances used for each
+        component. The estimators will be applied for each data component in
+        the same order that they are given here.
 
     Attributes
     ----------
     components : tuple
         Tuple of the fitted estimators on each component of the data.
     region_ : tuple
-        The boundaries (``[W, E, S, N]``) of the data used to fit the interpolator. Used
-        as the default region for the :meth:`~verde.Vector.grid` and
-        :meth:`~verde.Vector.scatter` methods.
+        The boundaries (``[W, E, S, N]``) of the data used to fit the
+        interpolator. Used as the default region for the
+        :meth:`~verde.Vector.grid` and :meth:`~verde.Vector.scatter` methods.
 
     See also
     --------
@@ -127,8 +128,8 @@ class Vector(BaseGridder):
         Returns
         -------
         data : tuple of array
-            The values for each vector component evaluated on the given points. The
-            order of components will be the same as was provided to
+            The values for each vector component evaluated on the given points.
+            The order of components will be the same as was provided to
             :meth:`~verde.Vector.fit`.
 
         """
@@ -142,58 +143,62 @@ class VectorSpline2D(BaseGridder):
 
     This gridder assumes Cartesian coordinates.
 
-    Uses the Green's functions based on elastic deformation from [SandwellWessel2016]_.
-    The interpolation is done by estimating point forces that generate an elastic
-    deformation that fits the observed vector data. The deformation equations are based
-    on a 2D elastic sheet with a constant Poisson's ratio. The data can then be
-    predicted at any desired location.
+    Uses the Green's functions based on elastic deformation from
+    [SandwellWessel2016]_. The interpolation is done by estimating point forces
+    that generate an elastic deformation that fits the observed vector data.
+    The deformation equations are based on a 2D elastic sheet with a constant
+    Poisson's ratio. The data can then be predicted at any desired location.
 
-    The east and north data components are coupled through the elastic deformation
-    equations. This coupling is controlled by the Poisson's ratio, which is usually
-    between -1 and 1. The special case of Poisson's ratio -1 leads to an uncoupled
-    interpolation, meaning that the east and north components don't interfere with each
-    other.
+    The east and north data components are coupled through the elastic
+    deformation equations. This coupling is controlled by the Poisson's ratio,
+    which is usually between -1 and 1. The special case of Poisson's ratio -1
+    leads to an uncoupled interpolation, meaning that the east and north
+    components don't interfere with each other.
 
-    The point forces are traditionally placed under each data point. The force locations
-    are set the first time :meth:`~verde.VectorSpline2D.fit` is called. Subsequent calls
-    will fit using the same force locations as the first call. This configuration
-    results in an exact prediction at the data points but can be unstable.
+    The point forces are traditionally placed under each data point. The force
+    locations are set the first time :meth:`~verde.VectorSpline2D.fit` is
+    called. Subsequent calls will fit using the same force locations as the
+    first call. This configuration results in an exact prediction at the data
+    points but can be unstable.
 
-    [SandwellWessel2016]_ stabilize the solution using Singular Value Decomposition but
-    we use ridge regression instead. The regularization can be controlled using the
-    *damping* argument. Alternatively, you can specify the position of the forces
-    manually using the *force_coords* argument. Regularization or forces not coinciding
-    with data points will result in a least-squares estimate, not an exact solution.
-    Note that the least-squares solution is required for data weights to have any
-    effect.
+    [SandwellWessel2016]_ stabilize the solution using Singular Value
+    Decomposition but we use ridge regression instead. The regularization can
+    be controlled using the *damping* argument. Alternatively, you can specify
+    the position of the forces manually using the *force_coords* argument.
+    Regularization or forces not coinciding with data points will result in a
+    least-squares estimate, not an exact solution. Note that the least-squares
+    solution is required for data weights to have any effect.
 
-    Before fitting, the Jacobian (design, sensitivity, feature, etc) matrix for the
-    spline is normalized using :class:`sklearn.preprocessing.StandardScaler` without
-    centering the mean so that the transformation can be undone in the estimated forces.
+    Before fitting, the Jacobian (design, sensitivity, feature, etc) matrix for
+    the spline is normalized using
+    :class:`sklearn.preprocessing.StandardScaler` without centering the mean so
+    that the transformation can be undone in the estimated forces.
 
     Parameters
     ----------
     poisson : float
-        The Poisson's ratio for the elastic deformation Green's functions. Default is
-        0.5. A value of -1 will lead to uncoupled interpolation of the east and north
-        data components.
+        The Poisson's ratio for the elastic deformation Green's functions.
+        Default is 0.5. A value of -1 will lead to uncoupled interpolation of
+        the east and north data components.
     mindist : float
-        A minimum distance between the point forces and data points. Needed because the
-        Green's functions are singular when forces and data points coincide. Acts as a
-        fudge factor. A good rule of thumb is to use the average spacing between data
-        points.
+        A minimum distance between the point forces and data points. Needed
+        because the Green's functions are singular when forces and data points
+        coincide. Acts as a fudge factor. A good rule of thumb is to use the
+        average spacing between data points.
     damping : None or float
-        The positive damping regularization parameter. Controls how much smoothness is
-        imposed on the estimated forces. If None, no regularization is used.
+        The positive damping regularization parameter. Controls how much
+        smoothness is imposed on the estimated forces. If None, no
+        regularization is used.
     force_coords : None or tuple of arrays
-        The easting and northing coordinates of the point forces. If None (default),
-        then will be set to the data coordinates the first time
+        The easting and northing coordinates of the point forces. If None
+        (default), then will be set to the data coordinates the first time
         :meth:`~verde.VectorSpline2D.fit` is called.
     engine : str
-        Computation engine for the Jacobian matrix and predictions. Can be ``'auto'``,
-        ``'numba'``, or ``'numpy'``. If ``'auto'``, will use numba if it is installed or
-        numpy otherwise. The numba version is multi-threaded and usually faster, which
-        makes fitting and predicting faster.
+        Computation engine for the Jacobian matrix and predictions. Can be
+        ``'auto'``, ``'numba'``, or ``'numpy'``. If ``'auto'``, will use numba
+        if it is installed or numpy otherwise. The numba version is
+        multi-threaded and usually faster, which makes fitting and predicting
+        faster.
 
     Attributes
     ----------
@@ -202,8 +207,8 @@ class VectorSpline2D(BaseGridder):
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
-        :meth:`~verde.VectorSpline2D.grid` and :meth:`~verde.VectorSpline2D.scatter`
-        methods.
+        :meth:`~verde.VectorSpline2D.grid` and
+        :meth:`~verde.VectorSpline2D.scatter` methods.
 
     """
 
@@ -222,8 +227,8 @@ class VectorSpline2D(BaseGridder):
         Fit the gridder to the given 2-component vector data.
 
         The data region is captured and used as default for the
-        :meth:`~verde.VectorSpline2D.grid` and :meth:`~verde.VectorSpline2D.scatter`
-        methods.
+        :meth:`~verde.VectorSpline2D.grid` and
+        :meth:`~verde.VectorSpline2D.scatter` methods.
 
         All input arrays must have the same shape.
 
@@ -329,24 +334,25 @@ class VectorSpline2D(BaseGridder):
         """
         Make the Jacobian matrix for the 2D coupled elastic deformation.
 
-        The Jacobian is segmented into 4 parts, each relating a force component to a
-        data component [SandwellWessel2016]_::
+        The Jacobian is segmented into 4 parts, each relating a force component
+        to a data component [SandwellWessel2016]_::
 
             | J_ee  J_ne |*|f_e| = |d_e|
             | J_ne  J_nn | |f_n|   |d_n|
 
-        The forces and data are assumed to be stacked into 1D arrays with the east
-        component on top of the north component.
+        The forces and data are assumed to be stacked into 1D arrays with the
+        east component on top of the north component.
 
         Parameters
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
-            following order: (easting, northing, vertical, ...). Only easting and
-            northing will be used, all subsequent coordinates will be ignored.
+            following order: (easting, northing, vertical, ...). Only easting
+            and northing will be used, all subsequent coordinates will be
+            ignored.
         force_coords : tuple of arrays
-            Arrays with the coordinates for the forces. Should be in the same order as
-            the coordinate arrays.
+            Arrays with the coordinates for the forces. Should be in the same
+            order as the coordinate arrays.
         dtype : str or numpy dtype
             The type of the Jacobian array.
 
@@ -405,8 +411,8 @@ def jacobian_2d_numpy(east, north, force_east, force_north, mindist, poisson, ja
     "Calculate the Jacobian matrix using numpy broadcasting."
     npoints = east.size
     nforces = force_east.size
-    # Reshaping the data coordinates to a column vector will automatically build a
-    # Green's functions matrix between each data point and force.
+    # Reshaping the data coordinates to a column vector will automatically
+    # build a Green's functions matrix between each data point and force.
     green_ee, green_nn, green_ne = greens_func_2d(
         east.reshape((npoints, 1)) - force_east,
         north.reshape((npoints, 1)) - force_north,
