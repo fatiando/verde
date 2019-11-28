@@ -28,41 +28,43 @@ class SplineCV(BaseGridder):
     r"""
     Cross-validated biharmonic spline interpolation.
 
-    Similar to :class:`verde.Spline` but automatically chooses the best *damping* and
-    *mindist* parameters using cross-validation. Tests all combinations of the given
-    *dampings* and *mindists* and selects the maximum (or minimum) mean cross-validation
-    score (i.e., a grid search).
+    Similar to :class:`verde.Spline` but automatically chooses the best
+    *damping* and *mindist* parameters using cross-validation. Tests all
+    combinations of the given *dampings* and *mindists* and selects the maximum
+    (or minimum) mean cross-validation score (i.e., a grid search).
 
-    The grid search can optionally run in parallel using :mod:`dask`. To do this, pass
-    in a :class:`dask.distributed.Client` as the *client* argument. The client can
-    manage a process or thread pool in your local computer or a remote cluster.
+    The grid search can optionally run in parallel using :mod:`dask`. To do
+    this, pass in a :class:`dask.distributed.Client` as the *client* argument.
+    The client can manage a process or thread pool in your local computer or a
+    remote cluster.
 
-    Other cross-validation generators from :mod:`sklearn.model_selection` can be used by
-    passing them through the *cv* argument.
+    Other cross-validation generators from :mod:`sklearn.model_selection` can
+    be used by passing them through the *cv* argument.
 
     Parameters
     ----------
     mindists : iterable or 1d array
-        List (or other iterable) of *mindist* parameter values to try. Can be considered
-        a minimum distance between the point forces and data points. Needed because the
-        Green's functions are singular when forces and data points coincide. Acts as a
-        fudge factor.
+        List (or other iterable) of *mindist* parameter values to try. Can be
+        considered a minimum distance between the point forces and data points.
+        Needed because the Green's functions are singular when forces and data
+        points coincide. Acts as a fudge factor.
     dampings : iterable or 1d array
-        List (or other iterable) of *damping* parameter values to try. Is the positive
-        damping regularization parameter. Controls how much smoothness is imposed on the
-        estimated forces. If None, no regularization is used.
+        List (or other iterable) of *damping* parameter values to try. Is the
+        positive damping regularization parameter. Controls how much smoothness
+        is imposed on the estimated forces. If None, no regularization is used.
     force_coords : None or tuple of arrays
-        The easting and northing coordinates of the point forces. If None (default),
-        then will be set to the data coordinates the first time
+        The easting and northing coordinates of the point forces. If None
+        (default), then will be set to the data coordinates the first time
         :meth:`~verde.SplineCV.fit` is called.
     engine : str
-        Computation engine for the Jacobian matrix and prediction. Can be ``'auto'``,
-        ``'numba'``, or ``'numpy'``. If ``'auto'``, will use numba if it is installed or
-        numpy otherwise. The numba version is multi-threaded and usually faster, which
-        makes fitting and predicting faster.
+        Computation engine for the Jacobian matrix and prediction. Can be
+        ``'auto'``, ``'numba'``, or ``'numpy'``. If ``'auto'``, will use numba
+        if it is installed or numpy otherwise. The numba version is
+        multi-threaded and usually faster, which makes fitting and predicting
+        faster.
     cv : None or cross-validation generator
-        Any scikit-learn cross-validation generator. If not given, will use the default
-        set by :func:`verde.cross_val_score`.
+        Any scikit-learn cross-validation generator. If not given, will use the
+        default set by :func:`verde.cross_val_score`.
     client : None or dask.distributed.Client
         If None, then computations are run serially. Otherwise, should be a
         dask ``Client`` object. It will be used to dispatch computations to the
@@ -74,12 +76,14 @@ class SplineCV(BaseGridder):
     force_ : array
         The estimated forces that fit the observed data.
     force_coords_ : tuple of arrays
-        The easting and northing coordinates of the point forces. Same as *force_coords*
-        if it is not None. Otherwise, same as the data locations used to fit the spline.
+        The easting and northing coordinates of the point forces. Same as
+        *force_coords* if it is not None. Otherwise, same as the data locations
+        used to fit the spline.
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
-        :meth:`~verde.SplineCV.grid` and :meth:`~verde.SplineCV.scatter` methods.
+        :meth:`~verde.SplineCV.grid` and :meth:`~verde.SplineCV.scatter`
+        methods.
     scores_ : array
         The mean cross-validation score for each parameter combination.
     mindist_ : float
@@ -113,15 +117,16 @@ class SplineCV(BaseGridder):
 
     def fit(self, coordinates, data, weights=None):
         """
-        Fit the biharmonic spline to the given data and automatically tune parameters.
+        Fit the spline to the given data and automatically tune parameters.
 
-        For each combination of the parameters given, computes the mean cross validation
-        score using :func:`verde.cross_val_score` and the given CV splitting class (the
-        *cv* parameter of this class). The configuration with the best score is then
-        chosen and used to fit the entire dataset.
+        For each combination of the parameters given, computes the mean cross
+        validation score using :func:`verde.cross_val_score` and the given CV
+        splitting class (the *cv* parameter of this class). The configuration
+        with the best score is then chosen and used to fit the entire dataset.
 
         The data region is captured and used as default for the
-        :meth:`~verde.SplineCV.grid` and :meth:`~verde.SplineCV.scatter` methods.
+        :meth:`~verde.SplineCV.grid` and :meth:`~verde.SplineCV.scatter`
+        methods.
 
         All input arrays must have the same shape.
 
@@ -148,8 +153,8 @@ class SplineCV(BaseGridder):
             client = DummyClient()
         else:
             client = self.client
-        # If this is a parallel client, scattering the data makes sure each worker has a
-        # copy of the data so we minimize transfer.
+        # If this is a parallel client, scattering the data makes sure each
+        # worker has a copy of the data so we minimize transfer.
         futures = tuple(client.scatter(i) for i in (coordinates, data, weights))
         parameter_sets = [
             dict(
@@ -236,64 +241,71 @@ class Spline(BaseGridder):
 
     This gridder assumes Cartesian coordinates.
 
-    Implements the 2D splines of [Sandwell1987]_. The Green's function for the spline
-    corresponds to the elastic deflection of a thin sheet subject to a vertical force.
-    For an observation point at the origin and a force at the coordinates given by the
-    vector :math:`\mathbf{x}`, the Green's function is:
+    Implements the 2D splines of [Sandwell1987]_. The Green's function for the
+    spline corresponds to the elastic deflection of a thin sheet subject to a
+    vertical force. For an observation point at the origin and a force at the
+    coordinates given by the vector :math:`\mathbf{x}`, the Green's function
+    is:
 
     .. math::
 
         g(\mathbf{x}) = \|\mathbf{x}\|^2 \left(\log \|\mathbf{x}\| - 1\right)
 
-    In practice, this function is not defined for data points that coincide with a
-    force. To prevent this, a fudge factor is added to :math:`\|\mathbf{x}\|`.
+    In practice, this function is not defined for data points that coincide
+    with a force. To prevent this, a fudge factor is added to
+    :math:`\|\mathbf{x}\|`.
 
-    The interpolation is performed by estimating forces that produce deflections that
-    fit the observed data (using least-squares). Then, the interpolated points can be
-    evaluated at any location.
+    The interpolation is performed by estimating forces that produce
+    deflections that fit the observed data (using least-squares). Then, the
+    interpolated points can be evaluated at any location.
 
-    By default, the forces will be placed at the same points as the input data given to
-    :meth:`~verde.Spline.fit`. This configuration provides an exact solution on top of
-    the data points. However, this solution can be unstable for certain configurations
-    of data points.
+    By default, the forces will be placed at the same points as the input data
+    given to :meth:`~verde.Spline.fit`. This configuration provides an exact
+    solution on top of the data points. However, this solution can be unstable
+    for certain configurations of data points.
 
     Approximate (and more stable) solutions can be obtained by applying damping
-    regularization to smooth the estimated forces (and interpolated values) or by not
-    using the data coordinates to position the forces (use the *force_coords*
-    parameter).
+    regularization to smooth the estimated forces (and interpolated values) or
+    by not using the data coordinates to position the forces (use the
+    *force_coords* parameter).
 
-    Data weights can be used during fitting but only have an any effect when using the
-    approximate solutions.
+    Data weights can be used during fitting but only have an any effect when
+    using the approximate solutions.
 
-    Before fitting, the Jacobian (design, sensitivity, feature, etc) matrix for the
-    spline is normalized using :class:`sklearn.preprocessing.StandardScaler` without
-    centering the mean so that the transformation can be undone in the estimated forces.
+    Before fitting, the Jacobian (design, sensitivity, feature, etc) matrix for
+    the spline is normalized using
+    :class:`sklearn.preprocessing.StandardScaler` without centering the mean so
+    that the transformation can be undone in the estimated forces.
 
     Parameters
     ----------
     mindist : float
-        A minimum distance between the point forces and data points. Needed because the
-        Green's functions are singular when forces and data points coincide. Acts as a
-        fudge factor.
+        A minimum distance between the point forces and data points. Needed
+        because the Green's functions are singular when forces and data points
+        coincide. Acts as a fudge factor.
     damping : None or float
-        The positive damping regularization parameter. Controls how much smoothness is
-        imposed on the estimated forces. If None, no regularization is used.
+        The positive damping regularization parameter. Controls how much
+        smoothness is imposed on the estimated forces. If None, no
+        regularization is used.
     force_coords : None or tuple of arrays
-        The easting and northing coordinates of the point forces. If None (default),
-        then will be set to the data coordinates used to fit the spline.
+        The easting and northing coordinates of the point forces. If None
+        (default), then will be set to the data coordinates used to fit the
+        spline.
     engine : str
-        Computation engine for the Jacobian matrix and prediction. Can be ``'auto'``,
-        ``'numba'``, or ``'numpy'``. If ``'auto'``, will use numba if it is installed or
-        numpy otherwise. The numba version is multi-threaded and usually faster, which
-        makes fitting and predicting faster.
+        Computation engine for the Jacobian matrix and prediction. Can be
+        ``'auto'``, ``'numba'``, or ``'numpy'``. If ``'auto'``, will use numba
+        if it is installed or numpy otherwise. The numba version is
+        multi-threaded and usually faster, which makes fitting and predicting
+        faster.
 
     Attributes
     ----------
     force_ : array
         The estimated forces that fit the observed data.
     force_coords_ : tuple of arrays
-        The easting and northing coordinates of the point forces. Same as *force_coords*
-        if it is not None. Otherwise, same as the data locations used to fit the spline.
+        The easting and northing coordinates of the point forces. Same as
+        *force_coords* if it is not None. Otherwise, same as the data locations
+        used to fit the spline.
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
@@ -391,18 +403,19 @@ class Spline(BaseGridder):
         """
         Make the Jacobian matrix for the 2D biharmonic spline.
 
-        Each column of the Jacobian is the Green's function for a single force evaluated
-        on all observation points [Sandwell1987]_.
+        Each column of the Jacobian is the Green's function for a single force
+        evaluated on all observation points [Sandwell1987]_.
 
         Parameters
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
-            following order: (easting, northing, vertical, ...). Only easting and
-            northing will be used, all subsequent coordinates will be ignored.
+            following order: (easting, northing, vertical, ...). Only easting
+            and northing will be used, all subsequent coordinates will be
+            ignored.
         force_coords : tuple of arrays
-            Arrays with the coordinates for the forces. Should be in the same order as
-            the coordinate arrays.
+            Arrays with the coordinates for the forces. Should be in the same
+            order as the coordinate arrays.
         dtype : str or numpy dtype
             The type of the Jacobian array.
 
@@ -433,13 +446,14 @@ def warn_weighted_exact_solution(spline, weights):
     Parameters
     ----------
     spline : estimator
-        The spline instance that we'll check. Needs to have the ``damping`` attribute.
+        The spline instance that we'll check. Needs to have the ``damping``
+        attribute.
     weights : array or None
         The weights given to fit.
 
     """
-    # Check if we're using weights without damping and warn the user that it might not
-    # have any effect.
+    # Check if we're using weights without damping and warn the user that it
+    # might not have any effect.
     if weights is not None and spline.damping is None:
         warn(
             "Weights might have no effect if no regularization is used. "
@@ -467,8 +481,8 @@ def predict_numpy(east, north, force_east, force_north, mindist, forces, result)
 
 def jacobian_numpy(east, north, force_east, force_north, mindist, jac):
     "Calculate the Jacobian using numpy broadcasting."
-    # Reshaping the data to a column vector will automatically build a distance matrix
-    # between each data point and force.
+    # Reshaping the data to a column vector will automatically build a distance
+    # matrix between each data point and force.
     jac[:] = greens_func(
         east.reshape((east.size, 1)) - force_east,
         north.reshape((north.size, 1)) - force_north,

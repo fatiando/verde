@@ -1,6 +1,6 @@
 """
-A minimal integration test to make sure the most critical parts of Verde work as
-expected.
+A minimal integration test to make sure the most critical parts of Verde work
+as expected.
 """
 import numpy.testing as npt
 import pyproj

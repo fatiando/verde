@@ -22,7 +22,8 @@ def load_surfer(fname, dtype="float64"):
     Parameters
     ----------
     fname : str or file-like object
-        Name or path of the Surfer grid file or an open file (or file-like) object.
+        Name or path of the Surfer grid file or an open file (or file-like)
+        object.
     dtype : str or numpy.dtype
         The type of variable used for the data. Default is ``float64``. Use
         ``float32`` if the data are large and precision is not an issue.
@@ -73,8 +74,8 @@ def _read_surfer_header(input_file):
     """
     Parse the header record of the grid file.
 
-    The header contains information on the grid shape, region, and the minimum and
-    maximum data values.
+    The header contains information on the grid shape, region, and the minimum
+    and maximum data values.
 
     Parameters
     ----------
@@ -86,7 +87,8 @@ def _read_surfer_header(input_file):
     grid_id : str
         The ID of the Surfer ASCII grid.
     shape : tuple = (n_northing, n_easting)
-        The number of grid points in the northing and easting dimension, respectively.
+        The number of grid points in the northing and easting dimension,
+        respectively.
     region : tuple = (west, east, south, north)
         The grid region.
     data_range : list = [min, max]
