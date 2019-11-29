@@ -281,59 +281,18 @@ plt.tight_layout()
 plt.show()
 
 ########################################################################################
-# Another way of gridding 2-component vector data is using
-# :class:`verde.VectorSpline2D`. This gridder uses linear elasticity theory to couple
-# the two vector components. The degree of coupling can be controlled through the
-# ``poisson`` parameter which sets the `Poisson's ratio
-# <https://en.wikipedia.org/wiki/Poisson%27s_ratio>`__ of the elastic medium.
-
-chain_coupled = vd.Chain(
-    [
-        ("mean", vd.BlockMean(spacing=spacing * 111e3, uncertainty=True)),
-        ("trend", vd.Vector([vd.Trend(1), vd.Trend(1)])),
-        ("spline", vd.VectorSpline2D(poisson=0.5, damping=1e-10)),
-    ]
-)
-chain_coupled.fit(*train)
-print(chain_coupled.score(*test))
-
-########################################################################################
-# :class:`~verde.VectorSpline2D` generally gives better results when gridding GPS
-# velocities, particularly for higher density grids and areas with sharp changes in
-# velocity [SandwellWessel2016]_. Here, we won't see a big difference because of the
-# low-density grid that we're making.
-
-grid_coupled = chain_coupled.grid(
-    region=region,
-    spacing=spacing,
-    projection=projection,
-    dims=["latitude", "longitude"],
-)
-grid_coupled = vd.distance_mask(
-    (data.longitude, data.latitude),
-    maxdist=spacing * 2 * 111e3,
-    grid=grid_coupled,
-    projection=projection,
-)
-
-fig, axes = plt.subplots(
-    1, 2, figsize=(9, 6.5), subplot_kw=dict(projection=ccrs.Mercator())
-)
-crs = ccrs.PlateCarree()
-titles = ["Gridded velocity (uncoupled)", "Gridded velocity (coupled)"]
-grids = [grid, grid_coupled]
-for ax, grd, title in zip(axes, grids, titles):
-    ax.set_title(title)
-    tmp = ax.quiver(
-        grd.longitude.values,
-        grd.latitude.values,
-        grd.east_component.values,
-        grd.north_component.values,
-        scale=0.3,
-        transform=crs,
-        width=0.002,
-    )
-    vd.datasets.setup_california_gps_map(ax)
-ax.quiverkey(tmp, 0.15, 0.15, 0.05, label="0.05 m/yr", coordinates="figure")
-plt.tight_layout()
-plt.show()
+# GPS/GNSS data
+# +++++++++++++
+#
+# For some types of vector data, like GPS/GNSS displacements, the vector
+# components are coupled through elasticity. In these cases, elastic Green's
+# functions can be used to achieve better interpolation results. The `Erizo
+# package <https://github.com/fatiando/erizo>`__ implements some of these
+# Green's functions.
+#
+# .. warning::
+#
+#     The :class:`verde.VectorSpline2D` class implemented an elastically
+#     coupled Green's function but it is deprecated and will be removed in
+#     Verde v2.0.0. Please use the implementation in the `Erizo
+#     <https://github.com/fatiando/erizo>`__ package instead.
