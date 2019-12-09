@@ -2,6 +2,7 @@
 Functions to load sample data
 """
 import os
+import warnings
 
 import numpy as np
 import pandas as pd
@@ -16,6 +17,9 @@ except ImportError:
 
 from ..version import full_version
 
+
+# Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
+warnings.simplefilter("default")
 
 POOCH = pooch.create(
     path=["~", ".verde", "data"],
@@ -113,6 +117,13 @@ def fetch_rio_magnetic():
     """
     Fetch total-field magnetic anomaly data from Rio de Janeiro, Brazil.
 
+    .. warning::
+
+        **The Rio magnetic anomaly dataset is deprecated and will be removed in
+        Verde v2.0.0** (functions :func:`verde.datasets.fetch_rio_magnetic` and
+        :func:`verde.datasets.setup_rio_magnetic_map`). Please use another
+        dataset instead.
+
     These data were cropped from the northwestern part of an airborne survey of
     Rio de Janeiro, Brazil, conducted in 1978. The data are made available by
     the Geological Survey of Brazil (CPRM) through their `GEOSGB portal
@@ -145,6 +156,11 @@ def fetch_rio_magnetic():
     setup_rio_magnetic_map: Utility function to help setup a Cartopy map.
 
     """
+    warnings.warn(
+        "The Rio magnetic anomaly dataset is deprecated and will be removed "
+        "in Verde v2.0.0. Use a different dataset instead.",
+        DeprecationWarning,
+    )
     data_file = POOCH.fetch("rio-magnetic.csv.xz")
     data = pd.read_csv(data_file, compression="xz")
     return data
@@ -153,6 +169,13 @@ def fetch_rio_magnetic():
 def setup_rio_magnetic_map(ax, region=(-42.6, -42, -22.5, -22)):
     """
     Setup a Cartopy map for the Rio de Janeiro magnetic anomaly dataset.
+
+    .. warning::
+
+        **The Rio magnetic anomaly dataset is deprecated and will be removed in
+        Verde v2.0.0** (functions :func:`verde.datasets.fetch_rio_magnetic` and
+        :func:`verde.datasets.setup_rio_magnetic_map`). Please use another
+        dataset instead.
 
     Parameters
     ----------
@@ -170,6 +193,11 @@ def setup_rio_magnetic_map(ax, region=(-42.6, -42, -22.5, -22)):
     fetch_rio_magnetic: Magnetic anomaly data from Rio de Janeiro, Brazil.
 
     """
+    warnings.warn(
+        "The Rio magnetic anomaly dataset is deprecated and will be removed "
+        "in Verde v2.0.0. Use a different dataset instead.",
+        DeprecationWarning,
+    )
     _setup_map(
         ax,
         xticks=np.arange(-42.5, -42, 0.1),
@@ -256,7 +284,7 @@ def fetch_texas_wind():
 
     Data are average wind speed and air temperature for data for February 26
     2018. The original data was downloaded from `Iowa State University
-              <https://mesonet.agron.iastate.edu/request/download.phtml>`__.
+    <https://mesonet.agron.iastate.edu/request/download.phtml>`__.
 
     If the file isn't already in your data directory, it will be downloaded
     automatically.
