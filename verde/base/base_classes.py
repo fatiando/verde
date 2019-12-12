@@ -54,12 +54,16 @@ class BaseGridder(BaseEstimator):
     ...         if self.multiplier <= 0:
     ...             raise ValueError('Invalid multiplier {}'
     ...                              .format(self.multiplier))
+    ...         # Use a trailing underscore on the mean so we could
+    ...         # know if the gridder is already fitted before predicting
     ...         self.mean_ = data.mean()*self.multiplier
     ...         # fit should return self so that we can chain operations
     ...         return self
     ...     def predict(self, coordinates):
-    ...         # We know the gridder has been fitted if it has the mean
-    ...         check_is_fitted(self, ['mean_'])
+    ...         # We know the gridder has been fitted if it has the mean_
+    ...         # attribute (or if the gridder has any attribute with a
+    ...         # trailing underscore)
+    ...         check_is_fitted(self)
     ...         return np.ones_like(coordinates[0])*self.mean_
     >>> # Try it on some synthetic data
     >>> synthetic = vd.datasets.CheckerBoard(region=(0, 5, -10, 8))

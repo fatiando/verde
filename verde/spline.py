@@ -231,7 +231,7 @@ class SplineCV(BaseGridder):
             The data values evaluated on the given points.
 
         """
-        check_is_fitted(self, ["_best"])
+        check_is_fitted(self)
         return self._best.predict(coordinates)
 
 
