@@ -161,18 +161,19 @@ def scatter_points(region, size, random_state=None, extra_coords=None):
         reproducible. Use ``None`` to choose a seed automatically (resulting in
         different numbers with each run).
     extra_coords : None, scalar, or list
-        If not None, then value(s) of extra coordinate arrays to be generated. These
-        extra arrays will have the same *size* as the others but will contain a
-        constant value. Will generate an extra array per value given in *extra_coords*.
-        Use this to generate arrays of constant heights or times, for example, that
-        might be needed to evaluate a gridder.
+        If not None, then value(s) of extra coordinate arrays to be generated.
+        These extra arrays will have the same *size* as the others but will
+        contain a constant value. Will generate an extra array per value given
+        in *extra_coords*. Use this to generate arrays of constant heights or
+        times, for example, that might be needed to evaluate a gridder.
 
     Returns
     -------
     coordinates : tuple of arrays
-        Arrays with coordinates of each point in the grid. Each array contains values
-        for a dimension in the order: easting, northing, vertical, and any extra
-        dimensions given in *extra_coords*. All arrays will have the specified *size*.
+        Arrays with coordinates of each point in the grid. Each array contains
+        values for a dimension in the order: easting, northing, vertical, and
+        any extra dimensions given in *extra_coords*. All arrays will have the
+        specified *size*.
 
     Examples
     --------
@@ -184,8 +185,9 @@ def scatter_points(region, size, random_state=None, extra_coords=None):
     5.4881, 7.1519, 6.0276, 5.4488
     >>> print(', '.join(['{:.4f}'.format(i) for i in northing]))
     -1.5763, -1.3541, -1.5624, -1.1082
-    >>> easting, northing, height = scatter_points((0, 10, -2, -1), 4, random_state=0,
-    ...                                            extra_coords=12)
+    >>> easting, northing, height = scatter_points(
+    ...     (0, 10, -2, -1), 4, random_state=0, extra_coords=12
+    ... )
     >>> print(height)
     [12. 12. 12. 12.]
     >>> easting, northing, height, time = scatter_points(
@@ -223,44 +225,50 @@ def grid_coordinates(
     """
     Generate the coordinates for each point on a regular grid.
 
-    The grid can be specified by either the number of points in each dimension (the
-    *shape*) or by the grid node spacing.
+    The grid can be specified by either the number of points in each dimension
+    (the *shape*) or by the grid node spacing.
 
-    If the given region is not divisible by the desired spacing, either the region or
-    the spacing will have to be adjusted. By default, the spacing will be rounded to the
-    nearest multiple. Optionally, the East and North boundaries of the region can be
-    adjusted to fit the exact spacing given. See the examples below.
+    If the given region is not divisible by the desired spacing, either the
+    region or the spacing will have to be adjusted. By default, the spacing
+    will be rounded to the nearest multiple. Optionally, the East and North
+    boundaries of the region can be adjusted to fit the exact spacing given.
+    See the examples below.
 
     Parameters
     ----------
     region : list = [W, E, S, N]
-        The boundaries of a given region in Cartesian or geographic coordinates.
+        The boundaries of a given region in Cartesian or geographic
+        coordinates.
     shape : tuple = (n_north, n_east) or None
-        The number of points in the South-North and West-East directions, respectively.
+        The number of points in the South-North and West-East directions,
+        respectively.
     spacing : float, tuple = (s_north, s_east), or None
-        The grid spacing in the South-North and West-East directions, respectively. A
-        single value means that the spacing is equal in both directions.
+        The grid spacing in the South-North and West-East directions,
+        respectively. A single value means that the spacing is equal in both
+        directions.
     adjust : {'spacing', 'region'}
-        Whether to adjust the spacing or the region if required. Ignored if *shape* is
-        given instead of *spacing*. Defaults to adjusting the spacing.
+        Whether to adjust the spacing or the region if required. Ignored if
+        *shape* is given instead of *spacing*. Defaults to adjusting the
+        spacing.
     pixel_register : bool
-        If True, the coordinates will refer to the center of each grid pixel instead of
-        the grid lines. In practice, this means that there will be one less element per
-        dimension of the grid when compared to grid line registered (only if given
-        *spacing* and not *shape*). Default is False.
+        If True, the coordinates will refer to the center of each grid pixel
+        instead of the grid lines. In practice, this means that there will be
+        one less element per dimension of the grid when compared to grid line
+        registered (only if given *spacing* and not *shape*). Default is False.
     extra_coords : None, scalar, or list
-        If not None, then value(s) of extra coordinate arrays to be generated. These
-        extra arrays will have the same *shape* as the others but will contain a
-        constant value. Will generate an extra array per value given in *extra_coords*.
-        Use this to generate arrays of constant heights or times, for example, that
-        might be needed to evaluate a gridder.
+        If not None, then value(s) of extra coordinate arrays to be generated.
+        These extra arrays will have the same *shape* as the others but will
+        contain a constant value. Will generate an extra array per value given
+        in *extra_coords*. Use this to generate arrays of constant heights or
+        times, for example, that might be needed to evaluate a gridder.
 
     Returns
     -------
     coordinates : tuple of arrays
-        Arrays with coordinates of each point in the grid. Each array contains values
-        for a dimension in the order: easting, northing, vertical, and any extra
-        dimensions given in *extra_coords*. All arrays will have the specified *shape*.
+        Arrays with coordinates of each point in the grid. Each array contains
+        values for a dimension in the order: easting, northing, vertical, and
+        any extra dimensions given in *extra_coords*. All arrays will have the
+        specified *shape*.
 
     Examples
     --------
@@ -283,8 +291,8 @@ def grid_coordinates(
      [ 7.5  7.5  7.5]
      [10.  10.  10. ]]
 
-    The grid can also be specified using the spacing between points instead of the
-    shape:
+    The grid can also be specified using the spacing between points instead of
+    the shape:
 
     >>> east, north = grid_coordinates(region=(0, 5, 0, 10), spacing=2.5)
     >>> print(east.shape, north.shape)
@@ -320,8 +328,8 @@ def grid_coordinates(
      [ 7.5  7.5  7.5  7.5  7.5  7.5  7.5]
      [10.  10.  10.  10.  10.  10.  10. ]]
 
-    If the region can't be divided into the desired spacing, the spacing will be
-    adjusted to conform to the region:
+    If the region can't be divided into the desired spacing, the spacing will
+    be adjusted to conform to the region:
 
     >>> east, north = grid_coordinates(region=(-5, 0, 0, 5), spacing=2.6)
     >>> print(east.shape, north.shape)
@@ -346,7 +354,8 @@ def grid_coordinates(
      [2.5 2.5 2.5]
      [5.  5.  5. ]]
 
-    You can choose to adjust the East and North boundaries of the region instead:
+    You can choose to adjust the East and North boundaries of the region
+    instead:
 
     >>> east, north = grid_coordinates(region=(-5, 0, 0, 5), spacing=2.6,
     ...                                adjust='region')
@@ -373,8 +382,8 @@ def grid_coordinates(
      [2.4 2.4 2.4]
      [4.8 4.8 4.8]]
 
-    We can optionally generate coordinates for the center of each grid pixel instead of
-    the corner (default):
+    We can optionally generate coordinates for the center of each grid pixel
+    instead of the corner (default):
 
     >>> east, north = grid_coordinates(region=(0, 5, 0, 10), spacing=2.5,
     ...                                pixel_register=True)
@@ -408,8 +417,9 @@ def grid_coordinates(
 
     Generate arrays for other coordinates that have a constant value:
 
-    >>> east, north, height = grid_coordinates(region=(0, 5, 0, 10), spacing=2.5,
-    ...                                        extra_coords=57)
+    >>> east, north, height = grid_coordinates(
+    ...     region=(0, 5, 0, 10), spacing=2.5, extra_coords=57
+    ... )
     >>> print(east.shape, north.shape, height.shape)
     (5, 3) (5, 3) (5, 3)
     >>> print(height)
@@ -418,8 +428,9 @@ def grid_coordinates(
      [57. 57. 57.]
      [57. 57. 57.]
      [57. 57. 57.]]
-    >>> east, north, height, time = grid_coordinates(region=(0, 5, 0, 10), spacing=2.5,
-    ...                                              extra_coords=[57, 0.1])
+    >>> east, north, height, time = grid_coordinates(
+    ...     region=(0, 5, 0, 10), spacing=2.5, extra_coords=[57, 0.1]
+    ... )
     >>> print(east.shape, north.shape, height.shape, time.shape)
     (5, 3) (5, 3) (5, 3) (5, 3)
     >>> print(height)
@@ -449,9 +460,10 @@ def grid_coordinates(
     if spacing is not None:
         shape, region = spacing_to_shape(region, spacing, adjust)
     elif pixel_register:
-        # Starts by generating grid-line registered coordinates and shifting them to the
-        # center of the pixel. Need 1 more point if given a shape so that we can do
-        # that because we discard the last point when shifting the coordinates.
+        # Starts by generating grid-line registered coordinates and shifting
+        # them to the center of the pixel. Need 1 more point if given a shape
+        # so that we can do that because we discard the last point when
+        # shifting the coordinates.
         shape = tuple(i + 1 for i in shape)
     east_lines = np.linspace(region[0], region[1], shape[1])
     north_lines = np.linspace(region[2], region[3], shape[0])
@@ -537,17 +549,17 @@ def profile_coordinates(point1, point2, size, extra_coords=None):
     size : int
         Number of points to sample along the line.
     extra_coords : None, scalar, or list
-        If not None, then value(s) of extra coordinate arrays to be generated. These
-        extra arrays will have the same *size* as the others but will contain a
-        constant value. Will generate an extra array per value given in *extra_coords*.
-        Use this to generate arrays of constant heights or times, for example, that
-        might be needed to evaluate a gridder.
+        If not None, then value(s) of extra coordinate arrays to be generated.
+        These extra arrays will have the same *size* as the others but will
+        contain a constant value. Will generate an extra array per value given
+        in *extra_coords*. Use this to generate arrays of constant heights or
+        times, for example, that might be needed to evaluate a gridder.
 
     Returns
     -------
     coordinates, distances : tuple and 1d array
-        The coordinates of points along the straight line and the distances from the
-        first point.
+        The coordinates of points along the straight line and the distances
+        from the first point.
 
     Examples
     --------
@@ -637,7 +649,8 @@ def inside(coordinates, region):
      [False  True  True]
      [False False False]]
 
-    Geographic coordinates are also supported using :func:`verde.longitude_continuity`:
+    Geographic coordinates are also supported using
+    :func:`verde.longitude_continuity`:
 
     >>> from verde import longitude_continuity
     >>> east, north = grid_coordinates([0, 350, -20, 20], spacing=10)
@@ -675,12 +688,13 @@ def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=
     """
     Split a region into blocks and label points according to where they fall.
 
-    The labels are integers corresponding to the index of the block. Also returns the
-    coordinates of the center of each block (following the same index as the labels).
+    The labels are integers corresponding to the index of the block. Also
+    returns the coordinates of the center of each block (following the same
+    index as the labels).
 
-    The size of the blocks can be specified by the *spacing* parameter. Alternatively,
-    the number of blocks in the South-North and West-East directions can be specified
-    using the *shape* parameter.
+    The size of the blocks can be specified by the *spacing* parameter.
+    Alternatively, the number of blocks in the South-North and West-East
+    directions can be specified using the *shape* parameter.
 
     .. note::
 
@@ -694,7 +708,8 @@ def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=
         following order: (easting, northing, vertical, ...). Only easting and
         northing will be used, all subsequent coordinates will be ignored.
     shape : tuple = (n_north, n_east) or None
-        The number of blocks in the South-North and West-East directions, respectively.
+        The number of blocks in the South-North and West-East directions,
+        respectively.
     spacing : float, tuple = (s_north, s_east), or None
         The block size in the South-North and West-East directions,
         respectively. A single value means that the size is equal in both
@@ -770,8 +785,9 @@ def longitude_continuity(coordinates, region):
     """
     Modify coordinates and region boundaries to ensure longitude continuity.
 
-    Longitudinal boundaries of the region are moved to the ``[0, 360)`` or ``[-180, 180)``
-    degrees interval depending which one is better suited for that specific region.
+    Longitudinal boundaries of the region are moved to the ``[0, 360)`` or
+    ``[-180, 180)`` degrees interval depending which one is better suited for
+    that specific region.
 
     Parameters
     ----------
@@ -779,16 +795,16 @@ def longitude_continuity(coordinates, region):
         Set of geographic coordinates that will be moved to the same degrees
         interval as the one of the modified region.
     region : list or array
-        List or array containing the boundary coordinates `w`, `e`, `s`, `n` of the
-        region in degrees.
+        List or array containing the boundary coordinates `w`, `e`, `s`, `n` of
+        the region in degrees.
 
     Returns
     -------
     modified_coordinates : array
         Modified set of extra geographic coordinates.
     modified_region : array
-        List containing the modified boundary coordinates `w, `e`, `s`, `n` of the
-        region.
+        List containing the modified boundary coordinates `w, `e`, `s`, `n` of
+        the region.
 
     Examples
     --------
@@ -801,7 +817,9 @@ def longitude_continuity(coordinates, region):
     >>> from verde import grid_coordinates
     >>> region = [-70, -60, -40, -30]
     >>> coordinates = grid_coordinates([270, 320, -50, -20], spacing=5)
-    >>> [longitude, latitude], region = longitude_continuity(coordinates, region)
+    >>> [longitude, latitude], region = longitude_continuity(
+    ...     coordinates, region
+    ... )
     >>> print(region)
     [290 300 -40 -30]
     >>> print(longitude.min(), longitude.max())
@@ -809,7 +827,9 @@ def longitude_continuity(coordinates, region):
     >>> # Another example
     >>> region = [-20, 20, -20, 20]
     >>> coordinates = grid_coordinates([0, 350, -90, 90], spacing=10)
-    >>> [longitude, latitude], region = longitude_continuity(coordinates, region)
+    >>> [longitude, latitude], region = longitude_continuity(
+    ...     coordinates, region
+    ... )
     >>> print(region)
     [-20  20 -20  20]
     >>> print(longitude.min(), longitude.max())
@@ -864,7 +884,9 @@ def _check_geographic_coordinates(coordinates):
 
 
 def _check_geographic_region(region):
-    "Check if region in geographic coordinates are within accepted degree intervals"
+    """
+    Check if region is in geographic coordinates are within accepted intervals.
+    """
     w, e, s, n = region[:4]
     # Check if coordinates are within accepted degrees intervals
     if np.any(np.array([w, e]) > 360) or np.any(np.array([w, e]) < -180):
@@ -877,7 +899,8 @@ def _check_geographic_region(region):
             "Invalid region '{}' (W, E, S, N). ".format(region)
             + "Latitudinal coordinates should be < 90 and > -90 degrees."
         )
-    # Check if longitude boundaries do not involve more than one spin around the globe
+    # Check if longitude boundaries do not involve more than one spin around
+    # the globe
     if abs(e - w) > 360:
         raise ValueError(
             "Invalid region '{}' (W, E, S, N). ".format(region)

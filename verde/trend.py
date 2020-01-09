@@ -21,16 +21,17 @@ class Trend(BaseGridder):
     in which :math:`e` and :math:`n` are the easting and northing coordinates,
     respectively.
 
-    The trend is estimated through weighted least-squares regression. The Jacobian
-    (design, sensitivity, feature, etc) matrix for the regression is normalized using
-    :class:`sklearn.preprocessing.StandardScaler` without centering the mean so that the
-    transformation can be undone in the estimated coefficients.
+    The trend is estimated through weighted least-squares regression. The
+    Jacobian (design, sensitivity, feature, etc) matrix for the regression is
+    normalized using :class:`sklearn.preprocessing.StandardScaler` without
+    centering the mean so that the transformation can be undone in the
+    estimated coefficients.
 
     Parameters
     ----------
     degree : int
-        The degree of the polynomial. Must be >= 0 (a degree of zero would estimate the
-        mean of the data).
+        The degree of the polynomial. Must be >= 0 (a degree of zero would
+        estimate the mean of the data).
 
     Attributes
     ----------
@@ -49,7 +50,10 @@ class Trend(BaseGridder):
     >>> coordinates = grid_coordinates((1, 5, -5, -1), shape=(5, 5))
     >>> data = 10 + 2*coordinates[0] - 0.4*coordinates[1]
     >>> trend = Trend(degree=1).fit(coordinates, data)
-    >>> print("Coefficients:", ', '.join(['{:.1f}'.format(i) for i in trend.coef_]))
+    >>> print(
+    ...     "Coefficients:",
+    ...     ', '.join(['{:.1f}'.format(i) for i in trend.coef_])
+    ... )
     Coefficients: 10.0, 2.0, -0.4
     >>> np.allclose(trend.predict(coordinates), data)
     True
@@ -73,9 +77,13 @@ class Trend(BaseGridder):
     >>> weights[2, 2] = 1e-10
     >>> trend_out = Trend(degree=1).fit(coordinates, data_out, weights)
     >>> # Still recover the coefficients even with the added outlier
-    >>> print("Coefficients:", ', '.join(['{:.1f}'.format(i) for i in trend_out.coef_]))
+    >>> print(
+    ...     "Coefficients:",
+    ...     ', '.join(['{:.1f}'.format(i) for i in trend_out.coef_])
+    ... )
     Coefficients: 10.0, 2.0, -0.4
-    >>> # The residual at the outlier location should be values we added to that point
+    >>> # The residual at the outlier location should be values we added to
+    >>> # that point
     >>> residual = data_out - trend_out.predict(coordinates)
     >>> print('{:.2f}'.format(residual[2, 2]))
     500.00
@@ -141,7 +149,7 @@ class Trend(BaseGridder):
             The trend values evaluated on the given points.
 
         """
-        check_is_fitted(self, ["coef_"])
+        check_is_fitted(self)
         easting, northing = n_1d_arrays(coordinates, 2)
         shape = np.broadcast(*coordinates[:2]).shape
         data = np.zeros(easting.size, dtype=easting.dtype)
@@ -154,15 +162,16 @@ class Trend(BaseGridder):
         """
         Make the Jacobian matrix for a 2D polynomial.
 
-        Each column of the Jacobian is ``easting**i * northing**j`` for each (i, j)
-        pair in the polynomial.
+        Each column of the Jacobian is ``easting**i * northing**j`` for each
+        (i, j) pair in the polynomial.
 
         Parameters
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
-            following order: (easting, northing, vertical, ...). Only easting and
-            northing will be used, all subsequent coordinates will be ignored.
+            following order: (easting, northing, vertical, ...). Only easting
+            and northing will be used, all subsequent coordinates will be
+            ignored.
         dtype : str or numpy dtype
             The type of the output Jacobian numpy array.
 

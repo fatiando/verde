@@ -13,13 +13,15 @@ def distance_mask(
     """
     Mask grid points that are too far from the given data points.
 
-    Distances are Euclidean norms. If using geographic data, provide a projection
-    function to convert coordinates to Cartesian before distance calculations.
+    Distances are Euclidean norms. If using geographic data, provide a
+    projection function to convert coordinates to Cartesian before distance
+    calculations.
 
     Either *coordinates* or *grid* must be given:
 
-    * If *coordinates* is not None, produces an array that is False when a point is
-      more than *maxdist* from the closest data point and True otherwise.
+    * If *coordinates* is not None, produces an array that is False when a
+      point is more than *maxdist* from the closest data point and True
+      otherwise.
     * If *grid* is not None, produces a mask and applies it to *grid* (an
       :class:`xarray.Dataset`).
 
@@ -37,18 +39,20 @@ def distance_mask(
         The maximum distance that a point can be from the closest data point.
     coordinates : None or tuple of arrays
         Arrays with the coordinates of each point that will be masked. Should
-        be in the following order: (easting, northing, ...). Only easting and northing
-        will be used, all subsequent coordinates will be ignored.
+        be in the following order: (easting, northing, ...). Only easting and
+        northing will be used, all subsequent coordinates will be ignored.
     grid : None or :class:`xarray.Dataset`
-        2D grid with values to be masked. Will use the first two dimensions of the grid
-        as northing and easting coordinates, respectively. The mask will be applied to
-        *grid* using the :meth:`xarray.Dataset.where` method.
+        2D grid with values to be masked. Will use the first two dimensions of
+        the grid as northing and easting coordinates, respectively. The mask
+        will be applied to *grid* using the :meth:`xarray.Dataset.where`
+        method.
     projection : callable or None
-        If not None, then should be a callable object ``projection(easting, northing) ->
-        (proj_easting, proj_northing)`` that takes in easting and northing coordinate
-        arrays and returns projected easting and northing coordinate arrays. This
-        function will be used to project the given coordinates (or the ones extracted
-        from the grid) before calculating distances.
+        If not None, then should be a callable object ``projection(easting,
+        northing) -> (proj_easting, proj_northing)`` that takes in easting and
+        northing coordinate arrays and returns projected easting and northing
+        coordinate arrays. This function will be used to project the given
+        coordinates (or the ones extracted from the grid) before calculating
+        distances.
 
     Returns
     -------

@@ -21,7 +21,7 @@ Here is a Bibtex entry to make things easier if you're using Latex::
       journal = {Journal of Open Source Software},
       volume = {3},
       number = {29},
-      pages = {957}
+      pages = {957},
       issn = {2475-9066},
       doi = {10.21105/joss.00957},
     }
