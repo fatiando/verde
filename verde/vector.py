@@ -22,9 +22,6 @@ except ImportError:
 # Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
 warnings.simplefilter("default")
 
-# Default arguments for numba.jit
-JIT_ARGS = dict(nopython=True, target="cpu", fastmath=True, parallel=True)
-
 
 class Vector(BaseGridder):
     """
@@ -444,7 +441,7 @@ def jacobian_2d_numpy(east, north, force_east, force_north, mindist, poisson, ja
     return jac
 
 
-@jit(**JIT_ARGS)
+@jit(nopython=True, fastmath=True, parallel=True)
 def predict_2d_numba(
     east, north, force_east, force_north, mindist, poisson, forces, vec_east, vec_north
 ):
@@ -462,7 +459,7 @@ def predict_2d_numba(
     return vec_east, vec_north
 
 
-@jit(**JIT_ARGS)
+@jit(nopython=True, fastmath=True, parallel=True)
 def jacobian_2d_numba(east, north, force_east, force_north, mindist, poisson, jac):
     "Calculate the Jacobian matrix using numba to speed things up."
     nforces = force_east.size
@@ -480,4 +477,4 @@ def jacobian_2d_numba(east, north, force_east, force_north, mindist, poisson, ja
 
 
 # JIT compile the Greens functions for use in numba functions
-GREENS_FUNC_2D_JIT = jit(**JIT_ARGS)(greens_func_2d)
+GREENS_FUNC_2D_JIT = jit(nopython=True, fastmath=True)(greens_func_2d)
