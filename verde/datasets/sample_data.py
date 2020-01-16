@@ -4,6 +4,7 @@ Functions to load sample data
 import os
 import warnings
 
+import pkg_resources
 import numpy as np
 import pandas as pd
 import pooch
@@ -22,13 +23,34 @@ from ..version import full_version
 warnings.simplefilter("default")
 
 POOCH = pooch.create(
-    path=["~", ".verde", "data"],
+    path=pooch.os_cache("verde"),
     base_url="https://github.com/fatiando/verde/raw/{version}/data/",
     version=full_version,
     version_dev="master",
     env="VERDE_DATA_DIR",
 )
-POOCH.load_registry(os.path.join(os.path.dirname(__file__), "registry.txt"))
+POOCH.load_registry(pkg_resources.resource_stream("verde.datasets", "registry.txt"))
+
+
+def locate():
+    r"""
+    The absolute path to the sample data storage location on disk.
+
+    This is where the data are saved on your computer. The location is
+    dependent on the operating system. The folder locations are defined by the
+    ``appdirs``  package (see the `appdirs documentation
+    <https://github.com/ActiveState/appdirs>`__).
+
+    The location can be overwritten by the ``VERDE_DATA_DIR`` environment
+    variable to the desired destination.
+
+    Returns
+    -------
+    path : str
+        The local data storage location.
+
+    """
+    return str(POOCH.abspath)
 
 
 def _setup_map(

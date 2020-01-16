@@ -1,12 +1,15 @@
 """
 Test data fetching routines.
 """
+import os
+
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 
 import pytest
 
 from ..datasets.sample_data import (
+    locate,
     fetch_baja_bathymetry,
     setup_baja_bathymetry_map,
     fetch_rio_magnetic,
@@ -16,6 +19,15 @@ from ..datasets.sample_data import (
     fetch_texas_wind,
     setup_texas_wind_map,
 )
+
+
+def test_datasets_locate():
+    "Make sure the data cache location has the right package name"
+    path = locate()
+    assert os.path.exists(path)
+    # This is the most we can check in a platform independent way without
+    # testing appdirs itself.
+    assert "verde" in path
 
 
 def test_fetch_texas_wind():

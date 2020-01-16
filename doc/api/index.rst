@@ -93,6 +93,7 @@ Datasets
 .. autosummary::
    :toctree: generated/
 
+    datasets.locate
     datasets.CheckerBoard
     datasets.fetch_baja_bathymetry
     datasets.setup_baja_bathymetry_map
