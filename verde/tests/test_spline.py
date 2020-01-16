@@ -26,8 +26,8 @@ def test_spline_cv():
     # Can't test on many configurations because it takes too long for regular
     # testing
     spline = SplineCV(
-        dampings=[None],
-        mindists=[1e-7, 1e-5],
+        dampings=[None, 100],
+        mindists=[1e-7, 1e-2],
         cv=ShuffleSplit(n_splits=2, random_state=0),
     ).fit(coords, data.scalars)
     # The interpolation should be perfect on top of the data points
@@ -70,8 +70,8 @@ def test_spline_cv_parallel():
     # testing. Use ShuffleSplit instead of KFold to test it out and make this
     # run faster
     spline = SplineCV(
-        dampings=[None, 1e-8],
-        mindists=[1e-7, 1e-5],
+        dampings=[None, 100],
+        mindists=[1e-7, 1e-2],
         client=client,
         cv=ShuffleSplit(n_splits=1, random_state=0),
     ).fit(coords, data.scalars)
