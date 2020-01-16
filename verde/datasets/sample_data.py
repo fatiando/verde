@@ -1,7 +1,6 @@
 """
 Functions to load sample data
 """
-import os
 import warnings
 
 import pkg_resources
