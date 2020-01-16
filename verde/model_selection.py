@@ -151,7 +151,7 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None, client=
     scoring on a single machine.
 
     >>> from dask.distributed import Client
-    >>> client = Client()
+    >>> client = Client(processes=True)
     >>> # The scoring will now only submit tasks to our local cluster
     >>> scores = cross_val_score(Trend(degree=1), coords, data, client=client)
     >>> # The scores are not the actual values but Futures
