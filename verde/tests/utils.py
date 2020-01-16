@@ -9,9 +9,9 @@ except ImportError:
     numba = None
 
 try:
-    from dask import distributed
+    import dask
 except ImportError:
-    distributed = None
+    dask = None
 
 
 def requires_numba(function):
@@ -24,7 +24,7 @@ def requires_numba(function):
 
 def requires_dask(function):
     """
-    Skip the decorated test if dask.distributed is not installed.
+    Skip the decorated test if dask is not installed.
     """
-    mark = pytest.mark.skipif(distributed is None, reason="requires dask")
+    mark = pytest.mark.skipif(dask is None, reason="requires dask")
     return mark(function)

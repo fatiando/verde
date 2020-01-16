@@ -17,6 +17,11 @@ try:
 except ImportError:
     numba = None
 
+try:
+    import dask
+except ImportError:
+    dask = None
+
 from .base.utils import check_data, n_1d_arrays
 
 
@@ -40,6 +45,18 @@ class DummyClient:  # pylint: disable=no-self-use,too-few-public-methods
     def scatter(self, value):
         "Does nothing but return the input"
         return value
+
+
+def dispatch(client, delayed, function, *args, **kwargs):
+    if delayed:
+        if dask is None:
+            raise RuntimeError(
+                "Dask is required for 'delayed' operations but could not be found."
+            )
+        return dask.delayed(function)(*args, **kwargs)
+    elif client is not None:
+        return client.submit(function, *args, **kwargs)
+    return function(*args, **kwargs)
 
 
 def parse_engine(engine):

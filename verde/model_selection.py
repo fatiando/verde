@@ -8,7 +8,7 @@ import numpy as np
 from sklearn.model_selection import KFold, ShuffleSplit
 
 from .base import check_fit_input
-from .utils import DummyClient
+from .utils import dispatch
 
 
 def train_test_split(coordinates, data, weights=None, **kwargs):
@@ -88,7 +88,9 @@ def train_test_split(coordinates, data, weights=None, **kwargs):
     return train, test
 
 
-def cross_val_score(estimator, coordinates, data, weights=None, cv=None, client=None):
+def cross_val_score(
+    estimator, coordinates, data, weights=None, cv=None, client=None, delayed=False
+):
     """
     Score an estimator/gridder using cross-validation.
 
@@ -125,15 +127,22 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None, client=
         Any scikit-learn cross-validation generator. Defaults to
         :class:`sklearn.model_selection.KFold`.
     client : None or dask.distributed.Client
-        If None, then computations are run serially. Otherwise, should be a
-        dask ``Client`` object. It will be used to dispatch computations to the
-        dask cluster.
+        **Deprecated in Verde v1.3.0:** This option is deprecated and will be
+        removed in Verde v2.0.0. If None, then computations are run serially.
+        Otherwise, should be a dask ``Client`` object. It will be used to
+        dispatch computations to the dask cluster.
+    delayed : bool
+        If True, will use :func:`dask.delayed` to dispatch computations without
+        actually executing them. The returned scores will be a list of delayed
+        objects. Call `.compute()` on each score or :func:`dask.compute` on the
+        entire list to trigger the actual computations.
 
     Returns
     -------
     scores : array
         Array of scores for each split of the cross-validation generator. If
-        *client* is not None, then the scores will be futures.
+        *delayed*, will be a list of Dask delayed objects (see the *delayed*
+        option). If *client* is not None, then the scores will be futures.
 
     Examples
     --------
@@ -148,8 +157,7 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None, client=
 
     To run parallel, we need to create a :class:`dask.distributed.Client`. It
     will create a local cluster if no arguments are given so we can run the
-    scoring on a single machine. We'll use threads instead of processes for
-    this example but in most cases you'll want processes.
+    scoring on a single machine.
 
     >>> from dask.distributed import Client
     >>> client = Client(processes=False)
@@ -168,8 +176,6 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None, client=
     coordinates, data, weights = check_fit_input(
         coordinates, data, weights, unpack=False
     )
-    if client is None:
-        client = DummyClient()
     if cv is None:
         cv = KFold(shuffle=True, random_state=0, n_splits=5)
     ndata = data[0].size
@@ -179,9 +185,11 @@ def cross_val_score(estimator, coordinates, data, weights=None, cv=None, client=
         train_data, test_data = (
             tuple(select(i, index) for i in args) for index in (train, test)
         )
-        score = client.submit(fit_score, estimator, train_data, test_data)
+        score = dispatch(client, delayed, fit_score, estimator, train_data, test_data)
         scores.append(score)
-    return np.asarray(scores)
+    if not delayed and client is None:
+        scores = np.asarray(scores)
+    return scores
 
 
 def fit_score(estimator, train_data, test_data):

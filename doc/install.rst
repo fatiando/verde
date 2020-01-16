@@ -35,13 +35,13 @@ they are installed:
 * `pykdtree <https://github.com/storpipfugl/pykdtree>`__: replaces
   :class:`scipy.spatial.cKDTree` for better performance in near neighbor calculations
   used in blocked operations, distance masking, etc.
+* `dask <https://dask.org/>`__: used for parallelism in cross-validation.
 
 Most of the examples in the :ref:`gallery` and :ref:`tutorials` also use:
 
 * `matplotlib <https://matplotlib.org/>`__
 * `cartopy <https://scitools.org.uk/cartopy/>`__ for plotting maps
 * `pyproj <https://jswhit.github.io/pyproj/>`__ for cartographic projections
-* `dask <https://dask.pydata.org/>`__ for parallelism
 
 
 Installing with conda
