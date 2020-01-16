@@ -47,16 +47,35 @@ class DummyClient:  # pylint: disable=no-self-use,too-few-public-methods
         return value
 
 
-def dispatch(client, delayed, function, *args, **kwargs):
+def dispatch(function, delayed=False, client=None):
+    """
+    Decide how to wrap a function for Dask depending on the options given.
+
+    Parameters
+    ----------
+    function : callable
+        The function that will be called.
+    delayed : bool
+        If True, will wrap the function is :func:`dask.delayed`.
+    client : None or dask.distributed Client
+        If *delayed* is False and *client* is not None, will return a partial
+        execution of the ``client.submit`` with the function as first argument.
+
+    Returns
+    -------
+    function : callable
+        The function wrapped in Dask.
+
+    """
     if delayed:
         if dask is None:
             raise RuntimeError(
                 "Dask is required for 'delayed' operations but could not be found."
             )
-        return dask.delayed(function)(*args, **kwargs)
+        return dask.delayed(function)
     elif client is not None:
-        return client.submit(function, *args, **kwargs)
-    return function(*args, **kwargs)
+        return functools.partial(client.submit, function)
+    return function
 
 
 def parse_engine(engine):

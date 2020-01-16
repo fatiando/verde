@@ -9,7 +9,7 @@ from sklearn.utils.validation import check_is_fitted
 
 from .base import n_1d_arrays, BaseGridder, check_fit_input, least_squares
 from .coordinates import get_region
-from .utils import DummyClient, parse_engine
+from .utils import dispatch, parse_engine
 from .model_selection import cross_val_score
 
 try:
@@ -106,6 +106,7 @@ class SplineCV(BaseGridder):
         engine="auto",
         cv=None,
         client=None,
+        delayed=False,
     ):
         super().__init__()
         self.dampings = dampings
@@ -114,6 +115,7 @@ class SplineCV(BaseGridder):
         self.engine = engine
         self.cv = cv
         self.client = client
+        self.delayed = delayed
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -149,13 +151,6 @@ class SplineCV(BaseGridder):
             Returns this estimator instance for chaining operations.
 
         """
-        if self.client is None:
-            client = DummyClient()
-        else:
-            client = self.client
-        # If this is a parallel client, scattering the data makes sure each
-        # worker has a copy of the data so we minimize transfer.
-        futures = tuple(client.scatter(i) for i in (coordinates, data, weights))
         parameter_sets = [
             dict(
                 mindist=combo[0],
@@ -165,25 +160,42 @@ class SplineCV(BaseGridder):
             )
             for combo in itertools.product(self.mindists, self.dampings)
         ]
-        scores = []
-        for params in parameter_sets:
-            spline = Spline(**params)
-            scores.append(
-                client.submit(
-                    cross_val_score,
+        if self.client is not None:
+            scores = []
+            for params in parameter_sets:
+                spline = Spline(**params)
+                scores.append(
+                    self.client.submit(
+                        cross_val_score,
+                        spline,
+                        coordinates=coordinates,
+                        data=data,
+                        weights=weights,
+                        cv=self.cv,
+                    )
+                )
+            scores = [np.mean(score.result()) for score in scores]
+        else:
+            scores = []
+            for params in parameter_sets:
+                spline = Spline(**params)
+                score = dispatch(cross_val_score, delayed=self.delayed)(
                     spline,
-                    coordinates=futures[0],
-                    data=futures[1],
-                    weights=futures[2],
+                    coordinates=coordinates,
+                    data=data,
+                    weights=weights,
                     cv=self.cv,
                 )
-            )
-        if self.client is not None:
-            scores = [score.result() for score in scores]
-        self.scores_ = np.mean(scores, axis=1)
-        best = np.argmax(self.scores_)
+                scores.append(
+                    dispatch(np.mean, delayed=self.delayed)(score)
+                )
+        best = dispatch(np.argmax, delayed=self.delayed)(scores)
+        if self.delayed:
+            best = best.compute()
+            # scores = [score.compute() for score in scores]
         self._best = Spline(**parameter_sets[best])
         self._best.fit(coordinates, data, weights=weights)
+        self.scores_ = scores
         return self
 
     @property

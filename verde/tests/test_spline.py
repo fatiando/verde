@@ -59,6 +59,39 @@ def test_spline_cv():
 
 
 @requires_dask
+def test_spline_cv_delayed():
+    "See if the parallel version of SplineCV with delayed"
+    region = (100, 500, -800, -700)
+    synth = CheckerBoard(region=region)
+    data = synth.scatter(size=1500, random_state=1)
+    coords = (data.easting, data.northing)
+    # Can't test on many configurations because it takes too long for regular
+    # testing. Use ShuffleSplit instead of KFold to test it out and make this
+    # run faster
+    spline = SplineCV(
+        dampings=[None, 1e-8],
+        mindists=[1e-7, 1e-5],
+        cv=ShuffleSplit(n_splits=1, random_state=0),
+        delayed=True,
+    ).fit(coords, data.scalars)
+    # The interpolation should be perfect on top of the data points
+    npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-5)
+    npt.assert_allclose(spline.score(coords, data.scalars), 1)
+    npt.assert_allclose(spline.force_coords_, coords)
+    assert spline.mindist_ == 1e-7
+    assert spline.damping_ is None
+    shape = (5, 5)
+    region = (270, 320, -770, -720)
+    # Tolerance needs to be kind of high to allow for error due to small
+    # dataset
+    npt.assert_allclose(
+        spline.grid(region, shape=shape).scalars,
+        synth.grid(region, shape=shape).scalars,
+        rtol=5e-2,
+    )
+
+
+@requires_dask
 def test_spline_cv_parallel():
     "See if the parallel version of SplineCV works"
     region = (100, 500, -800, -700)

@@ -98,16 +98,20 @@ def cross_val_score(
     accept spatial multi-component data with weights.
 
     By default, will use :class:`sklearn.model_selection.KFold` to split the
-    dataset. Another cross-validation class can be passed in through the *cv*
+    dataset. Any other cross-validation class can be passed in through the *cv*
     argument.
 
-    Can optionally run in parallel using `dask <https://dask.pydata.org/>`__.
-    To do this, pass in a :class:`dask.distributed.Client` as the *client*
-    argument. Tasks in this function will be submitted to the dask cluster,
-    which can be local. In this case, the resulting scores won't be the actual
-    values but :class:`dask.distributed.Future` objects. Call their
-    ``.result()`` methods to get back the values or pass them along to other
-    dask computations.
+    Can optionally run in parallel using :mod:`dask`. To do this, use
+    ``delayed=True`` to dispatch computations with :func:`dask.delayed` instead
+    of running them. The returned scores will be "lazy" objects instead of the
+    actual scores. To trigger the computation (which Dask will run in parallel)
+    call the `.compute()` method of each score or :func:`dask.compute` with the
+    entire list of scores.
+
+    .. warning::
+
+        The ``client`` parameter is deprecated and will be removed in Verde
+        v2.0.0. Use ``delayed`` instead.
 
     Parameters
     ----------
@@ -127,10 +131,10 @@ def cross_val_score(
         Any scikit-learn cross-validation generator. Defaults to
         :class:`sklearn.model_selection.KFold`.
     client : None or dask.distributed.Client
-        **Deprecated in Verde v1.3.0:** This option is deprecated and will be
-        removed in Verde v2.0.0. If None, then computations are run serially.
-        Otherwise, should be a dask ``Client`` object. It will be used to
-        dispatch computations to the dask cluster.
+        **DEPRECATED:** This option is deprecated and will be removed in Verde
+        v2.0.0. If None, then computations are run serially. Otherwise, should
+        be a dask ``Client`` object. It will be used to dispatch computations
+        to the dask cluster.
     delayed : bool
         If True, will use :func:`dask.delayed` to dispatch computations without
         actually executing them. The returned scores will be a list of delayed
@@ -147,30 +151,19 @@ def cross_val_score(
     Examples
     --------
 
+    We can score a fitting :class:`verde.Trend` on data that follows a linear
+    trend.
+
     >>> from verde import grid_coordinates, Trend
     >>> coords = grid_coordinates((0, 10, -10, -5), spacing=0.1)
     >>> data = 10 - coords[0] + 0.5*coords[1]
-    >>> # A linear trend should perfectly predict this data
+
+    In this case, the model should perfectly predict the data and R² scores
+    should be equal to 1.
+
     >>> scores = cross_val_score(Trend(degree=1), coords, data)
     >>> print(', '.join(['{:.2f}'.format(score) for score in scores]))
     1.00, 1.00, 1.00, 1.00, 1.00
-
-    To run parallel, we need to create a :class:`dask.distributed.Client`. It
-    will create a local cluster if no arguments are given so we can run the
-    scoring on a single machine.
-
-    >>> from dask.distributed import Client
-    >>> client = Client(processes=False)
-    >>> # The scoring will now only submit tasks to our local cluster
-    >>> scores = cross_val_score(Trend(degree=1), coords, data, client=client)
-    >>> # The scores are not the actual values but Futures
-    >>> type(scores[0])
-    <class 'distributed.client.Future'>
-    >>> # We need to call .result() to get back the actual value
-    >>> print('{:.2f}'.format(scores[0].result()))
-    1.00
-    >>> # Close the client and shutdown the local cluster
-    >>> client.close()
 
     """
     coordinates, data, weights = check_fit_input(
@@ -185,7 +178,9 @@ def cross_val_score(
         train_data, test_data = (
             tuple(select(i, index) for i in args) for index in (train, test)
         )
-        score = dispatch(client, delayed, fit_score, estimator, train_data, test_data)
+        score = dispatch(fit_score, client=client, delayed=delayed)(
+            estimator, train_data, test_data
+        )
         scores.append(score)
     if not delayed and client is None:
         scores = np.asarray(scores)
