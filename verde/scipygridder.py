@@ -131,6 +131,6 @@ class ScipyGridder(BaseGridder):
             The data values interpolated on the given points.
 
         """
-        check_is_fitted(self)
+        check_is_fitted(self, ["interpolator_"])
         easting, northing = coordinates[:2]
         return self.interpolator_((easting, northing))
