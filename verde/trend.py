@@ -149,7 +149,7 @@ class Trend(BaseGridder):
             The trend values evaluated on the given points.
 
         """
-        check_is_fitted(self)
+        check_is_fitted(self, ["coef_"])
         easting, northing = n_1d_arrays(coordinates, 2)
         shape = np.broadcast(*coordinates[:2]).shape
         data = np.zeros(easting.size, dtype=easting.dtype)

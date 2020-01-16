@@ -138,7 +138,7 @@ class Vector(BaseGridder):
             :meth:`~verde.Vector.fit`.
 
         """
-        check_is_fitted(self)
+        check_is_fitted(self, ["region_"])
         return tuple(comp.predict(coordinates) for comp in self.components)
 
 
