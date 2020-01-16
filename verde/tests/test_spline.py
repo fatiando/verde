@@ -72,8 +72,8 @@ def test_spline_cv_parallel():
     spline = SplineCV(
         dampings=[None, 100],
         mindists=[1e-7, 1e-2],
+        cv=ShuffleSplit(n_splits=2, random_state=0),
         client=client,
-        cv=ShuffleSplit(n_splits=1, random_state=0),
     ).fit(coords, data.scalars)
     client.close()
     # The interpolation should be perfect on top of the data points
