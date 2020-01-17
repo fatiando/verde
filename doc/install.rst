@@ -25,6 +25,7 @@ Dependencies
 * `xarray <http://xarray.pydata.org/>`__
 * `scikit-learn <http://scikit-learn.org/>`__
 * `pooch <http://www.fatiando.org/pooch/>`__
+* `dask <https://dask.org/>`__
 
 The following are optional dependencies that can make some parts of the code faster if
 they are installed:
@@ -35,7 +36,6 @@ they are installed:
 * `pykdtree <https://github.com/storpipfugl/pykdtree>`__: replaces
   :class:`scipy.spatial.cKDTree` for better performance in near neighbor calculations
   used in blocked operations, distance masking, etc.
-* `dask <https://dask.org/>`__: used for parallelism in cross-validation.
 
 Most of the examples in the :ref:`gallery` and :ref:`tutorials` also use:
 

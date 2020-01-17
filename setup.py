@@ -43,7 +43,15 @@ PACKAGE_DATA = {
     "verde.datasets": ["registry.txt"],
     "verde.tests": ["data/*", "baseline/*"],
 }
-INSTALL_REQUIRES = ["numpy", "scipy", "pandas", "xarray", "scikit-learn", "pooch"]
+INSTALL_REQUIRES = [
+    "numpy",
+    "scipy",
+    "pandas",
+    "xarray",
+    "scikit-learn",
+    "pooch",
+    "dask",
+]
 PYTHON_REQUIRES = ">=3.6"
 
 if __name__ == "__main__":
