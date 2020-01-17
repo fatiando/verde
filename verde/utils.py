@@ -3,6 +3,7 @@ General utilities.
 """
 import functools
 
+import dask
 import numpy as np
 import pandas as pd
 from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
@@ -17,34 +18,7 @@ try:
 except ImportError:
     numba = None
 
-try:
-    import dask
-except ImportError:
-    dask = None
-
 from .base.utils import check_data, n_1d_arrays
-
-
-class DummyClient:  # pylint: disable=no-self-use,too-few-public-methods
-    """
-    Dummy client to mimic a dask.distributed.Client for immediate local
-    execution.
-
-    >>> client = DummyClient()
-    >>> client.submit(sum, (1, 2, 3))
-    6
-    >>> print(client.scatter("bla"))
-    bla
-
-    """
-
-    def submit(self, function, *args, **kwargs):
-        "Execute function with the given arguments and return its output"
-        return function(*args, **kwargs)
-
-    def scatter(self, value):
-        "Does nothing but return the input"
-        return value
 
 
 def dispatch(function, delayed=False, client=None):
@@ -68,12 +42,8 @@ def dispatch(function, delayed=False, client=None):
 
     """
     if delayed:
-        if dask is None:
-            raise RuntimeError(
-                "Dask is required for 'delayed' operations but could not be found."
-            )
         return dask.delayed(function)
-    elif client is not None:
+    if client is not None:
         return functools.partial(client.submit, function)
     return function
 

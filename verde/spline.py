@@ -4,7 +4,6 @@ Biharmonic splines in 2D.
 import itertools
 from warnings import warn
 
-import dask
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
@@ -85,12 +84,12 @@ class SplineCV(BaseGridder):
         interpolator. Used as the default region for the
         :meth:`~verde.SplineCV.grid` and :meth:`~verde.SplineCV.scatter`
         methods.
-    scores_ : array
-        The mean cross-validation score for each parameter combination.
     mindist_ : float
         The optimal value for the *mindist* parameter.
     damping_ : float
         The optimal value for the *damping* parameter.
+    scores_ : array
+        The mean cross-validation score for each parameter combination.
 
     See also
     --------
@@ -162,6 +161,7 @@ class SplineCV(BaseGridder):
             for combo in itertools.product(self.mindists, self.dampings)
         ]
         if self.client is not None:
+            # Deprecated and will be removed in v2.0.0
             scores = []
             for params in parameter_sets:
                 spline = Spline(**params)
@@ -188,16 +188,15 @@ class SplineCV(BaseGridder):
                     cv=self.cv,
                     delayed=self.delayed,
                 )
-                scores.append(
-                    dispatch(np.mean, delayed=self.delayed)(score)
-                )
-            # scores = dask.compute(*scores)
+                scores.append(dispatch(np.mean, delayed=self.delayed)(score))
         best = dispatch(np.argmax, delayed=self.delayed)(scores)
         if self.delayed:
             best = best.compute()
+        else:
+            scores = np.asarray(scores)
         self._best = Spline(**parameter_sets[best])
         self._best.fit(coordinates, data, weights=weights)
-        self.scores_ = np.asarray(scores)
+        self.scores_ = scores
         return self
 
     @property

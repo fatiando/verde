@@ -4,7 +4,6 @@ Functions for automating model selection through cross-validation.
 Supports using a dask.distributed.Client object for parallelism. The
 DummyClient is used as a serial version of the parallel client.
 """
-import dask
 import numpy as np
 from sklearn.model_selection import KFold, ShuffleSplit
 

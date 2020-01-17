@@ -3,39 +3,45 @@ Test the biharmonic splines
 """
 import warnings
 
+import pytest
 import numpy as np
 import numpy.testing as npt
 from sklearn.model_selection import ShuffleSplit
-
-try:
-    from dask.distributed import Client
-except ImportError:
-    Client = None
+from dask.distributed import Client
 
 from ..spline import Spline, SplineCV
 from ..datasets.synthetic import CheckerBoard
-from .utils import requires_numba, requires_dask
+from .utils import requires_numba
 
 
-def test_spline_cv():
+@pytest.mark.parametrize(
+    "delayed,client",
+    [(False, None), (True, None), (False, Client(processes=False))],
+    ids=["serial", "delayed", "distributed"],
+)
+def test_spline_cv(delayed, client):
     "See if the cross-validated spline solution matches the synthetic data"
     region = (100, 500, -800, -700)
     synth = CheckerBoard(region=region)
-    data = synth.scatter(size=1500, random_state=1)
+    data = synth.scatter(size=1500, random_state=0)
     coords = (data.easting, data.northing)
     # Can't test on many configurations because it takes too long for regular
     # testing
     spline = SplineCV(
-        dampings=[None],
-        mindists=[1e-7, 1e-5],
-        cv=ShuffleSplit(n_splits=2, random_state=0),
+        dampings=[None, 1e3],
+        mindists=[1e-7, 1e6],
+        cv=ShuffleSplit(n_splits=1, random_state=0),
+        delayed=delayed,
+        client=client,
     ).fit(coords, data.scalars)
+    if client is not None:
+        client.close()
+    assert spline.mindist_ == 1e-7
+    assert spline.damping_ is None
     # The interpolation should be perfect on top of the data points
     npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-5)
     npt.assert_allclose(spline.score(coords, data.scalars), 1)
     npt.assert_allclose(spline.force_coords_, coords)
-    assert spline.mindist_ == 1e-7
-    assert spline.damping_ is None
     # There should be 1 force per data point
     assert data.scalars.size == spline.force_.size
     npt.assert_allclose(
@@ -47,74 +53,6 @@ def test_spline_cv():
             data.northing.max(),
         ),
     )
-    shape = (5, 5)
-    region = (270, 320, -770, -720)
-    # Tolerance needs to be kind of high to allow for error due to small
-    # dataset
-    npt.assert_allclose(
-        spline.grid(region, shape=shape).scalars,
-        synth.grid(region, shape=shape).scalars,
-        rtol=5e-2,
-    )
-
-
-@requires_dask
-def test_spline_cv_delayed():
-    "See if the parallel version of SplineCV with delayed"
-    region = (100, 500, -800, -700)
-    synth = CheckerBoard(region=region)
-    data = synth.scatter(size=1500, random_state=1)
-    coords = (data.easting, data.northing)
-    # Can't test on many configurations because it takes too long for regular
-    # testing. Use ShuffleSplit instead of KFold to test it out and make this
-    # run faster
-    spline = SplineCV(
-        dampings=[None, 1e-8],
-        mindists=[1e-7, 1e-5],
-        cv=ShuffleSplit(n_splits=1, random_state=0),
-        delayed=True,
-    ).fit(coords, data.scalars)
-    # The interpolation should be perfect on top of the data points
-    npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-5)
-    npt.assert_allclose(spline.score(coords, data.scalars), 1)
-    npt.assert_allclose(spline.force_coords_, coords)
-    assert spline.mindist_ == 1e-7
-    assert spline.damping_ is None
-    shape = (5, 5)
-    region = (270, 320, -770, -720)
-    # Tolerance needs to be kind of high to allow for error due to small
-    # dataset
-    npt.assert_allclose(
-        spline.grid(region, shape=shape).scalars,
-        synth.grid(region, shape=shape).scalars,
-        rtol=5e-2,
-    )
-
-
-@requires_dask
-def test_spline_cv_parallel():
-    "See if the parallel version of SplineCV works"
-    region = (100, 500, -800, -700)
-    synth = CheckerBoard(region=region)
-    data = synth.scatter(size=1500, random_state=1)
-    coords = (data.easting, data.northing)
-    client = Client(processes=False)
-    # Can't test on many configurations because it takes too long for regular
-    # testing. Use ShuffleSplit instead of KFold to test it out and make this
-    # run faster
-    spline = SplineCV(
-        dampings=[None, 1e-8],
-        mindists=[1e-7, 1e-5],
-        client=client,
-        cv=ShuffleSplit(n_splits=1, random_state=0),
-    ).fit(coords, data.scalars)
-    client.close()
-    # The interpolation should be perfect on top of the data points
-    npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-5)
-    npt.assert_allclose(spline.score(coords, data.scalars), 1)
-    npt.assert_allclose(spline.force_coords_, coords)
-    assert spline.mindist_ == 1e-7
-    assert spline.damping_ is None
     shape = (5, 5)
     region = (270, 320, -770, -720)
     # Tolerance needs to be kind of high to allow for error due to small
