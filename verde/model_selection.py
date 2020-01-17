@@ -4,6 +4,7 @@ Functions for automating model selection through cross-validation.
 Supports using a dask.distributed.Client object for parallelism. The
 DummyClient is used as a serial version of the parallel client.
 """
+import dask
 import numpy as np
 from sklearn.model_selection import KFold, ShuffleSplit
 
@@ -172,14 +173,13 @@ def cross_val_score(
     if cv is None:
         cv = KFold(shuffle=True, random_state=0, n_splits=5)
     ndata = data[0].size
-    args = (coordinates, data, weights)
+    fit_args = (coordinates, data, weights)
     scores = []
-    for train, test in cv.split(np.arange(ndata)):
-        train_data, test_data = (
-            tuple(select(i, index) for i in args) for index in (train, test)
-        )
+    for train_index, test_index in cv.split(np.arange(ndata)):
+        train = tuple(select(i, train_index) for i in fit_args)
+        test = tuple(select(i, test_index) for i in fit_args)
         score = dispatch(fit_score, client=client, delayed=delayed)(
-            estimator, train_data, test_data
+            estimator, train, test
         )
         scores.append(score)
     if not delayed and client is None:
@@ -191,8 +191,7 @@ def fit_score(estimator, train_data, test_data):
     """
     Fit an estimator on the training data and then score it on the testing data
     """
-    estimator.fit(*train_data)
-    return estimator.score(*test_data)
+    return estimator.fit(*train_data).score(*test_data)
 
 
 def select(arrays, index):
