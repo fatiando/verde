@@ -4,6 +4,7 @@ Biharmonic splines in 2D.
 import itertools
 from warnings import warn
 
+import dask
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
@@ -179,23 +180,24 @@ class SplineCV(BaseGridder):
             scores = []
             for params in parameter_sets:
                 spline = Spline(**params)
-                score = dispatch(cross_val_score, delayed=self.delayed)(
+                score = cross_val_score(
                     spline,
                     coordinates=coordinates,
                     data=data,
                     weights=weights,
                     cv=self.cv,
+                    delayed=self.delayed,
                 )
                 scores.append(
                     dispatch(np.mean, delayed=self.delayed)(score)
                 )
+            # scores = dask.compute(*scores)
         best = dispatch(np.argmax, delayed=self.delayed)(scores)
         if self.delayed:
             best = best.compute()
-            # scores = [score.compute() for score in scores]
         self._best = Spline(**parameter_sets[best])
         self._best.fit(coordinates, data, weights=weights)
-        self.scores_ = scores
+        self.scores_ = np.asarray(scores)
         return self
 
     @property
