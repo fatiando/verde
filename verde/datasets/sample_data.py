@@ -21,14 +21,15 @@ from ..version import full_version
 # Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
 warnings.simplefilter("default")
 
-POOCH = pooch.create(
+REGISTRY = pooch.create(
     path=pooch.os_cache("verde"),
     base_url="https://github.com/fatiando/verde/raw/{version}/data/",
     version=full_version,
     version_dev="master",
     env="VERDE_DATA_DIR",
 )
-POOCH.load_registry(pkg_resources.resource_stream("verde.datasets", "registry.txt"))
+with pkg_resources.resource_stream("verde.datasets", "registry.txt") as registry_file:
+    REGISTRY.load_registry(registry_file)
 
 
 def locate():
@@ -49,7 +50,7 @@ def locate():
         The local data storage location.
 
     """
-    return str(POOCH.abspath)
+    return str(REGISTRY.abspath)
 
 
 def _setup_map(
@@ -96,7 +97,7 @@ def fetch_baja_bathymetry():
     setup_baja_bathymetry_map: Utility function to help setup a Cartopy map.
 
     """
-    data_file = POOCH.fetch("baja-bathymetry.csv.xz")
+    data_file = REGISTRY.fetch("baja-bathymetry.csv.xz")
     data = pd.read_csv(data_file, compression="xz")
     return data
 
@@ -182,7 +183,7 @@ def fetch_rio_magnetic():
         "in Verde v2.0.0. Use a different dataset instead.",
         DeprecationWarning,
     )
-    data_file = POOCH.fetch("rio-magnetic.csv.xz")
+    data_file = REGISTRY.fetch("rio-magnetic.csv.xz")
     data = pd.read_csv(data_file, compression="xz")
     return data
 
@@ -261,7 +262,7 @@ def fetch_california_gps():
     setup_california_gps_map: Utility function to help setup a Cartopy map.
 
     """
-    data_file = POOCH.fetch("california-gps.csv.xz")
+    data_file = REGISTRY.fetch("california-gps.csv.xz")
     data = pd.read_csv(data_file, compression="xz")
     return data
 
@@ -322,7 +323,7 @@ def fetch_texas_wind():
     setup_texas_wind_map: Utility function to help setup a Cartopy map.
 
     """
-    data_file = POOCH.fetch("texas-wind.csv")
+    data_file = REGISTRY.fetch("texas-wind.csv")
     data = pd.read_csv(data_file)
     return data
 
