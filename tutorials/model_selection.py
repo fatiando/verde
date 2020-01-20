@@ -100,10 +100,7 @@ print("Best parameters:", parameter_sets[best])
 # automatically when fitting a dataset. The only difference is that you must provide a
 # list of ``damping`` and ``mindist`` parameters to try instead of only a single value:
 
-spline = vd.SplineCV(
-    dampings=dampings,
-    mindists=mindists,
-)
+spline = vd.SplineCV(dampings=dampings, mindists=mindists,)
 
 ########################################################################################
 # Calling :meth:`~verde.SplineCV.fit` will run a grid search over all parameter
@@ -137,11 +134,7 @@ print(grid)
 # grid search in parallel using `Dask <https://dask.org/>`__ by specifying the
 # ``delayed`` attribute:
 
-spline = vd.SplineCV(
-    dampings=dampings,
-    mindists=mindists,
-    delayed=True,
-)
+spline = vd.SplineCV(dampings=dampings, mindists=mindists, delayed=True,)
 
 ########################################################################################
 # Unlike :func:`verde.cross_val_score`, calling :meth:`~verde.SplineCV.fit`
