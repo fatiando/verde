@@ -52,8 +52,8 @@ print("R² with defaults:", score_default)
 # re-evaluating the model score repeatedly for different values of these parameters.
 # Let's test the following combinations:
 
-dampings = [None, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1]
-mindists = [5e3, 10e3, 25e3, 50e3, 75e3, 100e3]
+dampings = [None, 1e-4, 1e-3, 1e-2]
+mindists = [5e3, 10e3, 50e3, 100e3]
 
 # Use itertools to create a list with all combinations of parameters to test
 parameter_sets = [
@@ -134,7 +134,7 @@ print(grid)
 # grid search in parallel using `Dask <https://dask.org/>`__ by specifying the
 # ``delayed`` attribute:
 
-spline = vd.SplineCV(dampings=dampings, mindists=mindists, delayed=True,)
+spline = vd.SplineCV(dampings=dampings, mindists=mindists, delayed=True)
 
 ########################################################################################
 # Unlike :func:`verde.cross_val_score`, calling :meth:`~verde.SplineCV.fit`
