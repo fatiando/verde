@@ -2,7 +2,7 @@
 Biharmonic splines in 2D.
 """
 import itertools
-from warnings import warn
+import warnings
 
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
@@ -20,6 +20,9 @@ except ImportError:
     from .utils import dummy_jit as jit
 
 
+# Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
+warnings.simplefilter("default")
+
 # Default arguments for numba.jit
 JIT_ARGS = dict(nopython=True, target="cpu", fastmath=True, parallel=True)
 
@@ -33,10 +36,25 @@ class SplineCV(BaseGridder):
     combinations of the given *dampings* and *mindists* and selects the maximum
     (or minimum) mean cross-validation score (i.e., a grid search).
 
-    The grid search can optionally run in parallel using :mod:`dask`. To do
-    this, pass in a :class:`dask.distributed.Client` as the *client* argument.
-    The client can manage a process or thread pool in your local computer or a
-    remote cluster.
+    Can optionally run in parallel using :mod:`dask`. To do this, use
+    ``delayed=True`` to dispatch computations with :func:`dask.delayed`.
+    In this case, each fit and score operation of the grid search will be
+    performed in parallel.
+
+    .. note::
+
+        When using *delayed*, the ``scores_`` attribute will be
+        :func:`dask.delayed` objects instead of the actual scores. This is
+        because the scores are an intermediate step in the computations and
+        their results are not stored. If you need the scores, run
+        :func:`dask.compute` on ``scores_`` to calculate them. Be warned that
+        **this will run the grid search again**. It might still be faster than
+        serial execution but not necessarily.
+
+    .. warning::
+
+        The ``client`` parameter is deprecated and will be removed in Verde
+        v2.0.0. Use ``delayed`` instead.
 
     Other cross-validation generators from :mod:`sklearn.model_selection` can
     be used by passing them through the *cv* argument.
@@ -66,10 +84,14 @@ class SplineCV(BaseGridder):
         Any scikit-learn cross-validation generator. If not given, will use the
         default set by :func:`verde.cross_val_score`.
     client : None or dask.distributed.Client
-        If None, then computations are run serially. Otherwise, should be a
-        dask ``Client`` object. It will be used to dispatch computations to the
-        dask cluster.
-
+        **DEPRECATED:** This option is deprecated and will be removed in Verde
+        v2.0.0. If None, then computations are run serially. Otherwise, should
+        be a dask ``Client`` object. It will be used to dispatch computations
+        to the dask cluster.
+    delayed : bool
+        If True, will use :func:`dask.delayed` to dispatch computations and
+        allow mod:`dask` to execute the grid search in parallel (see note
+        above).
 
     Attributes
     ----------
@@ -85,7 +107,9 @@ class SplineCV(BaseGridder):
         :meth:`~verde.SplineCV.grid` and :meth:`~verde.SplineCV.scatter`
         methods.
     scores_ : array
-        The mean cross-validation score for each parameter combination.
+        The mean cross-validation score for each parameter combination. If
+        ``delayed=True``, will be a list of :func:`dask.delayed` objects (see
+        note above).
     mindist_ : float
         The optimal value for the *mindist* parameter.
     damping_ : float
@@ -119,6 +143,13 @@ class SplineCV(BaseGridder):
         self.cv = cv
         self.client = client
         self.delayed = delayed
+        if client is not None:
+            warnings.warn(
+                "The 'client' parameter of 'verde.SplineCV' is "
+                "deprecated and will be removed in Verde 2.0.0. "
+                "Use the 'delayed' parameter instead.",
+                DeprecationWarning,
+            )
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -471,7 +502,7 @@ def warn_weighted_exact_solution(spline, weights):
     # Check if we're using weights without damping and warn the user that it
     # might not have any effect.
     if weights is not None and spline.damping is None:
-        warn(
+        warnings.warn(
             "Weights might have no effect if no regularization is used. "
             "Use damping or specify force positions that are different from the data."
         )
