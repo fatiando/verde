@@ -8,6 +8,7 @@ import warnings
 
 import numpy as np
 from sklearn.model_selection import KFold, ShuffleSplit
+from sklearn.base import clone
 
 from .base import check_fit_input
 from .utils import dispatch
@@ -221,8 +222,10 @@ def cross_val_score(
     for train_index, test_index in cv.split(np.arange(ndata)):
         train = tuple(select(i, train_index) for i in fit_args)
         test = tuple(select(i, test_index) for i in fit_args)
+        # Clone the estimator to avoid fitting the same object simultaneously
+        # when delayed=True.
         score = dispatch(fit_score, client=client, delayed=delayed)(
-            estimator, train, test
+            clone(estimator), train, test
         )
         scores.append(score)
     if not delayed and client is None:
