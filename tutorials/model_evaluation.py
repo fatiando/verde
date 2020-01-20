@@ -184,7 +184,53 @@ print("shuffle scores:", scores)
 print("Mean score:", np.mean(scores))
 
 ########################################################################################
-# **That is not a very good score** so clearly the default arguments for
-# :class:`~verde.Spline` aren't suitable for this dataset. We could try different
-# combinations manually until we get a good score. A better way is to do this
-# automatically. In :ref:`model_selection` we'll go over how to do that.
+# Parallel cross-validation
+# -------------------------
+#
+# Cross-validation involves running several model fit and score operations
+# which are independent of each other. Because of this, they are prime targets
+# for parallelization. Verde uses the excellent `Dask <https://dask.org/>`__
+# library for parallel execution.
+#
+# To run :func:`verde.cross_val_score` with Dask, use the ``delayed`` argument:
+
+scores = vd.cross_val_score(
+    vd.Spline(), proj_coords, data.air_temperature_c, delayed=True
+)
+print("Delayed k-fold scores:", scores)
+
+########################################################################################
+# In this case, the scores haven't actually been computed yet (hence the
+# "delayed" term). Instead, Verde scheduled the operations with Dask. Since we
+# are interested only in the mean score, we can schedule the mean as well using
+# :func:`dask.delayed`:
+
+import dask
+
+mean_score = dask.delayed(np.mean)(scores)
+print("Delayed mean:", mean_score)
+
+########################################################################################
+# To run the scheduled computations and get the mean score, use
+# :func:`dask.compute` or ``.compute()``. Dask will automatically execute
+# things in parallel.
+
+mean_score = mean_score.compute()
+print("Mean score:", mean_score)
+
+########################################################################################
+# .. note::
+#
+#     Dask will run many ``fit`` operations in parallel, which can be memory
+#     intensive. Make sure you have enough RAM to run multiple fits.
+#
+
+########################################################################################
+# Improving the score
+# -------------------
+#
+# That score is not bad but it could be better. The default arguments for
+# :class:`~verde.Spline` aren't optimal for this dataset. We could try
+# different combinations manually until we get a good score. A better way is to
+# do this automatically. In :ref:`model_selection` we'll go over how to do just
+# that.
