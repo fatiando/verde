@@ -49,7 +49,7 @@ INSTALL_REQUIRES = [
     "pandas",
     "xarray",
     "scikit-learn",
-    "pooch",
+    "pooch>=0.7.0",
     "dask",
 ]
 PYTHON_REQUIRES = ">=3.6"

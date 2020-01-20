@@ -23,6 +23,7 @@ env:
         # PyPI password for deploying releases (TWINE_PASSWORD)
         - secure: "Gvd2kH5bGIng7Wz3R4Md5d48qU0vYo0Sb4g7A1UAn8EOuWAcbkdSAq5yDiAp4pENeGceHQG0+jX+GQBZoSOMUpwAfhPkWG5HBIc+P/G+iTUyF2oELLCekcGgccPzwNgQt574FzM0PkC9L4hINNRjVtnFa+SIx72D2r1OdTvmk2+c4jXBZl52e4l5dU+Hjzwh22KNzAMtXDVuvr3NVdJZHA/ldTwEBUQfiLo2CGkgls6o8ZLixK0tCRGIFKlZko9WeBTzQYidloSo3EQx0eqiTz7qydm3UfCezA9UYPefGOtUaA/4ysqs8tgG8xrnx8NhhRqH9pfPAhgsCMwfmtibslNwH+C7gtbERT8lLY5NfU1xyDC4UxkjbwbzKQno/vPhiqEJ/uR458IdZbzUeWXlt+Rz+Dyj1lW7FqPLOl3Zpfgfv1swWqxjVwduV46c3nlgu9fEkAiEH2SzAtBlsQ2qwbJCZKXj+8Ps9FmaqvQ+SCOTAycgR9WnYoIIutpn0cs3k8zqqQyBq2zXJLkPHflVich8wKKaOsaFMCIKLWaOODCw5fLkfxck/QtlolGGFi3lh5W5p4Zxxr7KdL8f+UrkAb6gY9LStvqwe2rSG2olqc95+zozsMY/YHXTIG092WB3EmptwO9jL67D3AIVBKOdvcRYFetWMyY61ZmEK0s/43I="
         - TWINE_USERNAME=Leonardo.Uieda
+        - VERDE_DATA_DIR="$HOME/.verde/data"
         # The file with the listed requirements to be installed by conda
         - CONDA_REQUIREMENTS=requirements.txt
         - CONDA_REQUIREMENTS_DEV=requirements-dev.txt
@@ -65,8 +66,8 @@ matrix:
 # Setup the build environment
 before_install:
     # Copy sample data to the verde data dir to avoid downloading all the time
-    - mkdir -p $HOME/.verde/data/master
-    - cp -r data/* $HOME/.verde/data/master
+    - mkdir -p ${VERDE_DATA_DIR}/master
+    - cp -r data/* ${VERDE_DATA_DIR}/master
     # Get the Fatiando CI scripts
     - git clone --branch=1.2.0 --depth=1 https://github.com/fatiando/continuous-integration.git
     # Download and install miniconda and setup dependencies
