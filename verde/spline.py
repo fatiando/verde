@@ -84,12 +84,15 @@ class SplineCV(BaseGridder):
         interpolator. Used as the default region for the
         :meth:`~verde.SplineCV.grid` and :meth:`~verde.SplineCV.scatter`
         methods.
+    scores_ : array
+        The mean cross-validation score for each parameter combination.
     mindist_ : float
         The optimal value for the *mindist* parameter.
     damping_ : float
         The optimal value for the *damping* parameter.
-    scores_ : array
-        The mean cross-validation score for each parameter combination.
+    spline_ : :class:`verde.Spline`
+        A fitted :class:`~verde.Spline` with the optimal configuration
+        parameters.
 
     See also
     --------
@@ -194,35 +197,35 @@ class SplineCV(BaseGridder):
             best = best.compute()
         else:
             scores = np.asarray(scores)
-        self._best = Spline(**parameter_sets[best])
-        self._best.fit(coordinates, data, weights=weights)
+        self.spline_ = Spline(**parameter_sets[best])
+        self.spline_.fit(coordinates, data, weights=weights)
         self.scores_ = scores
         return self
 
     @property
     def force_(self):
         "The estimated forces that fit the data."
-        return self._best.force_
+        return self.spline_.force_
 
     @property
     def region_(self):
         "The bounding region of the data used to fit the spline"
-        return self._best.region_
+        return self.spline_.region_
 
     @property
     def damping_(self):
         "The optimal damping parameter"
-        return self._best.damping
+        return self.spline_.damping
 
     @property
     def mindist_(self):
         "The optimal mindist parameter"
-        return self._best.mindist
+        return self.spline_.mindist
 
     @property
     def force_coords_(self):
         "The optimal force locations"
-        return self._best.force_coords_
+        return self.spline_.force_coords_
 
     def predict(self, coordinates):
         """
@@ -244,8 +247,8 @@ class SplineCV(BaseGridder):
             The data values evaluated on the given points.
 
         """
-        check_is_fitted(self, ["_best"])
-        return self._best.predict(coordinates)
+        check_is_fitted(self, ["spline_"])
+        return self.spline_.predict(coordinates)
 
 
 class Spline(BaseGridder):
