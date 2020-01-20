@@ -77,7 +77,7 @@ jobs:
     CONDA_REQUIREMENTS: requirements.txt
     CONDA_REQUIREMENTS_DEV: requirements-dev.txt
     CONDA_INSTALL_EXTRA: "codecov"
-    VERDE_DATA_DIR: "verde_data_cache"
+    VERDE_DATA_DIR: "$(Agent.TempDirectory)/.verde/data"
 
   strategy:
     matrix:
@@ -180,7 +180,7 @@ jobs:
     CONDA_REQUIREMENTS: requirements.txt
     CONDA_REQUIREMENTS_DEV: requirements-dev.txt
     CONDA_INSTALL_EXTRA: "codecov"
-    VERDE_DATA_DIR: "verde_data_cache"
+    VERDE_DATA_DIR: "$(Agent.TempDirectory)/.verde/data"
 
   strategy:
     matrix:
