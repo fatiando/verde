@@ -1,6 +1,7 @@
 # pylint: disable=missing-docstring
 from .synthetic import CheckerBoard
 from .sample_data import (
+    locate,
     fetch_baja_bathymetry,
     setup_baja_bathymetry_map,
     fetch_rio_magnetic,
