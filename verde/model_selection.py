@@ -4,11 +4,17 @@ Functions for automating model selection through cross-validation.
 Supports using a dask.distributed.Client object for parallelism. The
 DummyClient is used as a serial version of the parallel client.
 """
+import warnings
+
 import numpy as np
 from sklearn.model_selection import KFold, ShuffleSplit
 
 from .base import check_fit_input
 from .utils import dispatch
+
+
+# Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
+warnings.simplefilter("default")
 
 
 def train_test_split(coordinates, data, weights=None, **kwargs):
@@ -97,9 +103,9 @@ def cross_val_score(
     Similar to :func:`sklearn.model_selection.cross_val_score` but modified to
     accept spatial multi-component data with weights.
 
-    By default, will use :class:`sklearn.model_selection.KFold` to split the
-    dataset. Any other cross-validation class can be passed in through the *cv*
-    argument.
+    By default, will use :class:`sklearn.model_selection.KFold` with
+    ``n_splits=5`` and ``random_state=0`` to split the dataset. Any other
+    cross-validation class can be passed in through the *cv* argument.
 
     Can optionally run in parallel using :mod:`dask`. To do this, use
     ``delayed=True`` to dispatch computations with :func:`dask.delayed` instead
@@ -197,6 +203,13 @@ def cross_val_score(
     So this is best used when fitting several smaller models.
 
     """
+    if client is not None:
+        warnings.warn(
+            "The 'client' parameter of 'verde.cross_val_score' is deprecated "
+            "and will be removed in Verde 2.0.0. "
+            "Use the 'delayed' parameter instead.",
+            DeprecationWarning,
+        )
     coordinates, data, weights = check_fit_input(
         coordinates, data, weights, unpack=False
     )
