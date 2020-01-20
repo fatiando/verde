@@ -151,19 +151,50 @@ def cross_val_score(
     Examples
     --------
 
-    We can score a fitting :class:`verde.Trend` on data that follows a linear
-    trend.
+    As an example, we can score :class:`verde.Trend` on data that actually
+    follows a linear trend.
 
     >>> from verde import grid_coordinates, Trend
     >>> coords = grid_coordinates((0, 10, -10, -5), spacing=0.1)
     >>> data = 10 - coords[0] + 0.5*coords[1]
+    >>> model = Trend(degree=1)
 
     In this case, the model should perfectly predict the data and R² scores
     should be equal to 1.
 
-    >>> scores = cross_val_score(Trend(degree=1), coords, data)
+    >>> scores = cross_val_score(model, coords, data)
     >>> print(', '.join(['{:.2f}'.format(score) for score in scores]))
     1.00, 1.00, 1.00, 1.00, 1.00
+
+    There are 5 scores because the default cross-validator is
+    :class:`sklearn.model_selection.KFold` with ``n_splits=5``.
+
+    We can use different cross-validators by assigning them to the ``cv``
+    argument:
+
+    >>> from sklearn.model_selection import ShuffleSplit
+    >>> # Set the random state to get reproducible results
+    >>> cross_validator = ShuffleSplit(n_splits=3, random_state=0)
+    >>> scores = cross_val_score(model, coords, data, cv=cross_validator)
+    >>> print(', '.join(['{:.2f}'.format(score) for score in scores]))
+    1.00, 1.00, 1.00
+
+    If using many splits, we can speed up computations by running them in
+    parallel with Dask:
+
+    >>> cross_validator = ShuffleSplit(n_splits=10, random_state=0)
+    >>> scores_delayed = cross_val_score(
+    ...     model, coords, data, cv=cross_validator, delayed=True
+    ... )
+    >>> # The scores are delayed objects.
+    >>> # To actually run the computations, call dask.compute
+    >>> import dask
+    >>> scores = dask.compute(*scores_delayed)
+    >>> print(', '.join(['{:.2f}'.format(score) for score in scores]))
+    1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00
+
+    Note that you must have enough RAM to fit multiple models simultaneously.
+    So this is best used when fitting several smaller models.
 
     """
     coordinates, data, weights = check_fit_input(
