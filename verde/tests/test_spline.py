@@ -15,11 +15,11 @@ from .utils import requires_numba
 
 
 @pytest.mark.parametrize(
-    "delayed,client",
-    [(False, None), (True, None), (False, Client(processes=False))],
+    "delayed,client,engine",
+    [(False, None, "auto"), (True, None, "numpy"), (False, Client(processes=False), "numpy")],
     ids=["serial", "delayed", "distributed"],
 )
-def test_spline_cv(delayed, client):
+def test_spline_cv(delayed, client, engine):
     "See if the cross-validated spline solution matches the synthetic data"
     region = (100, 500, -800, -700)
     synth = CheckerBoard(region=region)
@@ -33,6 +33,7 @@ def test_spline_cv(delayed, client):
         cv=ShuffleSplit(n_splits=1, random_state=0),
         delayed=delayed,
         client=client,
+        engine=engine,
     ).fit(coords, data.scalars)
     if client is not None:
         client.close()
