@@ -58,9 +58,8 @@ Advantages of using Green's functions include:
 * The estimated model can be **easily stored** for later use, like
   spherical-harmonic coefficients are used in gravimetry.
 
-The main disadvantage is the heavy memory and processing time requirement (it's a linear
-regression problem). So it's not recommended for gridding large datasets (> 10,000
-points), though it will depend on how much RAM you have available.
+The main disadvantage is the heavy memory and processing time requirement (it's
+a linear regression problem).
 
 
 Project goals
@@ -160,6 +159,7 @@ Documentation for other versions
 * `Development <http://www.fatiando.org/verde/dev>`__ (reflects the *master* branch on
   Github)
 * `Latest release <http://www.fatiando.org/verde/latest>`__
+* `v1.3.0 <http://www.fatiando.org/verde/v1.3.0>`__
 * `v1.2.0 <http://www.fatiando.org/verde/v1.2.0>`__
 * `v1.1.0 <http://www.fatiando.org/verde/v1.1.0>`__
 * `v1.0.1 <http://www.fatiando.org/verde/v1.0.1>`__

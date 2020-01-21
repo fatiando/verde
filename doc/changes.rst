@@ -3,6 +3,91 @@
 Changelog
 =========
 
+Version 1.3.0
+-------------
+
+*Released on: 2020/01/21*
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3620851.svg
+   :target: https://doi.org/10.5281/zenodo.3620851
+
+**DEPRECATIONS** (the following features are deprecated and will be removed in
+Verde v2.0.0):
+
+* Functions and the associated sample dataset
+  ``verde.datasets.fetch_rio_magnetic`` and
+  ``verde.datasets.setup_rio_magnetic_map`` are deprecated. Please use another
+  dataset instead.
+  (`#213 <https://github.com/fatiando/verde/pull/213>`__)
+* Class ``verde.VectorSpline2D`` is deprecated. The class is specific for
+  GPS/GNSS data and doesn't fit the general-purpose nature of Verde. The
+  implementation will be moved to the `Erizo
+  <https://github.com/fatiando/erizo>`__ package instead.
+  (`#214 <https://github.com/fatiando/verde/pull/214>`__)
+* The ``client`` keyword argument for ``verde.cross_val_score`` and
+  ``verde.SplineCV`` is deprecated in favor of the new ``delayed`` argument
+  (see below).
+  (`#222 <https://github.com/fatiando/verde/pull/222>`__)
+
+New features:
+
+* Use the ``dask.delayed`` interface for parallelism in cross-validation
+  instead of the futures interface (``dask.distributed.Client``). It's easier
+  and allows building the entire graph lazily before executing. To use the new
+  feature, pass ``delayed=True`` to ``verde.cross_val_score`` and
+  ``verde.SplineCV``. The argument ``client`` in both of these is deprecated
+  (see above).
+  (`#222 <https://github.com/fatiando/verde/pull/222>`__)
+* Expose the optimal spline in ``verde.SplineCV.spline_``. This is the fitted
+  ``verde.Spline`` object using the optimal parameters.
+  (`#219 <https://github.com/fatiando/verde/pull/219>`__)
+* New option ``drop_coords`` to allow ``verde.BlockReduce`` and
+  ``verde.BlockMean`` to reduce extra elements in ``coordinates`` (basically,
+  treat them as data). Default to ``True`` to maintain backwards compatibility.
+  If ``False``, will no longer drop coordinates after the second one but will
+  apply the reduction in blocks to them as well. The reduced coordinates are
+  returned in the same order in the ``coordinates``.
+  (`#198 <https://github.com/fatiando/verde/pull/198>`__)
+
+Improvements:
+
+* Use the default system cache location to store the sample data instead of
+  ``~/.verde/data``. This is so users can more easily clean up unused files.
+  Because this is system specific, function ``verde.datasets.locate`` was added
+  to return the cache folder location.
+  (`#220 <https://github.com/fatiando/verde/pull/220>`__)
+
+Bug fixes:
+
+* Correctly use ``parallel=True`` and ``numba.prange`` in the numba compiled
+  functions. Using it on the Green's function was raising a warning because
+  there is nothing to parallelize.
+  (`#221 <https://github.com/fatiando/verde/pull/221>`__)
+
+Maintenance:
+
+* Add testing and support for Python 3.8.
+  (`#211 <https://github.com/fatiando/verde/pull/211>`__)
+
+Documentation:
+
+* Fix a typo in the JOSS paper Bibtex entry.
+  (`#215 <https://github.com/fatiando/verde/pull/215>`__)
+* Wrap docstrings to 79 characters for better integration with Jupyter and
+  IPython. These systems display docstrings using 80 character windows, causing
+  our larger lines to wrap around and become almost illegible.
+  (`#212 <https://github.com/fatiando/verde/pull/212>`__)
+* Use napoleon instead of numpydoc to format docstrings. Results is slightly
+  different layout in the website documentation.
+  (`#209 <https://github.com/fatiando/verde/pull/209>`__)
+* Update contact information to point to the Slack chat instead of Gitter.
+  (`#204 <https://github.com/fatiando/verde/pull/204>`__)
+
+This release contains contributions from:
+
+* Santiago Soler
+* Leonardo Uieda
+
 
 Version 1.2.0
 -------------
