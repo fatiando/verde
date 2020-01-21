@@ -16,7 +16,11 @@ from .utils import requires_numba
 
 @pytest.mark.parametrize(
     "delayed,client,engine",
-    [(False, None, "auto"), (True, None, "numpy"), (False, Client(processes=False), "numpy")],
+    [
+        (False, None, "auto"),
+        (True, None, "numpy"),
+        (False, Client(processes=False), "numpy"),
+    ],
     ids=["serial", "delayed", "distributed"],
 )
 def test_spline_cv(delayed, client, engine):
