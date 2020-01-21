@@ -3,6 +3,7 @@ General utilities.
 """
 import functools
 
+import dask
 import numpy as np
 import pandas as pd
 from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
@@ -20,26 +21,31 @@ except ImportError:
 from .base.utils import check_data, n_1d_arrays
 
 
-class DummyClient:  # pylint: disable=no-self-use,too-few-public-methods
+def dispatch(function, delayed=False, client=None):
     """
-    Dummy client to mimic a dask.distributed.Client for immediate local
-    execution.
+    Decide how to wrap a function for Dask depending on the options given.
 
-    >>> client = DummyClient()
-    >>> client.submit(sum, (1, 2, 3))
-    6
-    >>> print(client.scatter("bla"))
-    bla
+    Parameters
+    ----------
+    function : callable
+        The function that will be called.
+    delayed : bool
+        If True, will wrap the function in :func:`dask.delayed`.
+    client : None or dask.distributed Client
+        If *delayed* is False and *client* is not None, will return a partial
+        execution of the ``client.submit`` with the function as first argument.
+
+    Returns
+    -------
+    function : callable
+        The function wrapped in Dask.
 
     """
-
-    def submit(self, function, *args, **kwargs):
-        "Execute function with the given arguments and return its output"
-        return function(*args, **kwargs)
-
-    def scatter(self, value):
-        "Does nothing but return the input"
-        return value
+    if delayed:
+        return dask.delayed(function)
+    if client is not None:
+        return functools.partial(client.submit, function)
+    return function
 
 
 def parse_engine(engine):
