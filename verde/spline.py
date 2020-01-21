@@ -2,14 +2,14 @@
 Biharmonic splines in 2D.
 """
 import itertools
-from warnings import warn
+import warnings
 
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
 from .base import n_1d_arrays, BaseGridder, check_fit_input, least_squares
 from .coordinates import get_region
-from .utils import DummyClient, parse_engine
+from .utils import dispatch, parse_engine
 from .model_selection import cross_val_score
 
 try:
@@ -18,6 +18,10 @@ try:
 except ImportError:
     numba = None
     from .utils import dummy_jit as jit
+
+
+# Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
+warnings.simplefilter("default")
 
 
 class SplineCV(BaseGridder):
@@ -29,10 +33,25 @@ class SplineCV(BaseGridder):
     combinations of the given *dampings* and *mindists* and selects the maximum
     (or minimum) mean cross-validation score (i.e., a grid search).
 
-    The grid search can optionally run in parallel using :mod:`dask`. To do
-    this, pass in a :class:`dask.distributed.Client` as the *client* argument.
-    The client can manage a process or thread pool in your local computer or a
-    remote cluster.
+    This can optionally run in parallel using :mod:`dask`. To do this, use
+    ``delayed=True`` to dispatch computations with :func:`dask.delayed`.
+    In this case, each fit and score operation of the grid search will be
+    performed in parallel.
+
+    .. note::
+
+        When using *delayed*, the ``scores_`` attribute will be
+        :func:`dask.delayed` objects instead of the actual scores. This is
+        because the scores are an intermediate step in the computations and
+        their results are not stored. If you need the scores, run
+        :func:`dask.compute` on ``scores_`` to calculate them. Be warned that
+        **this will run the grid search again**. It might still be faster than
+        serial execution but not necessarily.
+
+    .. warning::
+
+        The ``client`` parameter is deprecated and will be removed in Verde
+        v2.0.0. Use ``delayed`` instead.
 
     Other cross-validation generators from :mod:`sklearn.model_selection` can
     be used by passing them through the *cv* argument.
@@ -62,10 +81,14 @@ class SplineCV(BaseGridder):
         Any scikit-learn cross-validation generator. If not given, will use the
         default set by :func:`verde.cross_val_score`.
     client : None or dask.distributed.Client
-        If None, then computations are run serially. Otherwise, should be a
-        dask ``Client`` object. It will be used to dispatch computations to the
-        dask cluster.
-
+        **DEPRECATED:** This option is deprecated and will be removed in Verde
+        v2.0.0. If None, then computations are run serially. Otherwise, should
+        be a dask ``Client`` object. It will be used to dispatch computations
+        to the dask cluster.
+    delayed : bool
+        If True, will use :func:`dask.delayed` to dispatch computations and
+        allow mod:`dask` to execute the grid search in parallel (see note
+        above).
 
     Attributes
     ----------
@@ -81,11 +104,16 @@ class SplineCV(BaseGridder):
         :meth:`~verde.SplineCV.grid` and :meth:`~verde.SplineCV.scatter`
         methods.
     scores_ : array
-        The mean cross-validation score for each parameter combination.
+        The mean cross-validation score for each parameter combination. If
+        ``delayed=True``, will be a list of :func:`dask.delayed` objects (see
+        note above).
     mindist_ : float
         The optimal value for the *mindist* parameter.
     damping_ : float
         The optimal value for the *damping* parameter.
+    spline_ : :class:`verde.Spline`
+        A fitted :class:`~verde.Spline` with the optimal configuration
+        parameters.
 
     See also
     --------
@@ -102,6 +130,7 @@ class SplineCV(BaseGridder):
         engine="auto",
         cv=None,
         client=None,
+        delayed=False,
     ):
         super().__init__()
         self.dampings = dampings
@@ -110,6 +139,14 @@ class SplineCV(BaseGridder):
         self.engine = engine
         self.cv = cv
         self.client = client
+        self.delayed = delayed
+        if client is not None:
+            warnings.warn(
+                "The 'client' parameter of 'verde.SplineCV' is "
+                "deprecated and will be removed in Verde 2.0.0. "
+                "Use the 'delayed' parameter instead.",
+                DeprecationWarning,
+            )
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -145,13 +182,6 @@ class SplineCV(BaseGridder):
             Returns this estimator instance for chaining operations.
 
         """
-        if self.client is None:
-            client = DummyClient()
-        else:
-            client = self.client
-        # If this is a parallel client, scattering the data makes sure each
-        # worker has a copy of the data so we minimize transfer.
-        futures = tuple(client.scatter(i) for i in (coordinates, data, weights))
         parameter_sets = [
             dict(
                 mindist=combo[0],
@@ -161,51 +191,69 @@ class SplineCV(BaseGridder):
             )
             for combo in itertools.product(self.mindists, self.dampings)
         ]
-        scores = []
-        for params in parameter_sets:
-            spline = Spline(**params)
-            scores.append(
-                client.submit(
-                    cross_val_score,
-                    spline,
-                    coordinates=futures[0],
-                    data=futures[1],
-                    weights=futures[2],
-                    cv=self.cv,
-                )
-            )
         if self.client is not None:
-            scores = [score.result() for score in scores]
-        self.scores_ = np.mean(scores, axis=1)
-        best = np.argmax(self.scores_)
-        self._best = Spline(**parameter_sets[best])
-        self._best.fit(coordinates, data, weights=weights)
+            # Deprecated and will be removed in v2.0.0
+            scores = []
+            for params in parameter_sets:
+                spline = Spline(**params)
+                scores.append(
+                    self.client.submit(
+                        cross_val_score,
+                        spline,
+                        coordinates=coordinates,
+                        data=data,
+                        weights=weights,
+                        cv=self.cv,
+                    )
+                )
+            scores = [np.mean(score.result()) for score in scores]
+        else:
+            scores = []
+            for params in parameter_sets:
+                spline = Spline(**params)
+                score = cross_val_score(
+                    spline,
+                    coordinates=coordinates,
+                    data=data,
+                    weights=weights,
+                    cv=self.cv,
+                    delayed=self.delayed,
+                )
+                scores.append(dispatch(np.mean, delayed=self.delayed)(score))
+        best = dispatch(np.argmax, delayed=self.delayed)(scores)
+        if self.delayed:
+            best = best.compute()
+        else:
+            scores = np.asarray(scores)
+        self.spline_ = Spline(**parameter_sets[best])
+        self.spline_.fit(coordinates, data, weights=weights)
+        self.scores_ = scores
         return self
 
     @property
     def force_(self):
         "The estimated forces that fit the data."
-        return self._best.force_
+        return self.spline_.force_
 
     @property
     def region_(self):
         "The bounding region of the data used to fit the spline"
-        return self._best.region_
+        return self.spline_.region_
 
     @property
     def damping_(self):
         "The optimal damping parameter"
-        return self._best.damping
+        return self.spline_.damping
 
     @property
     def mindist_(self):
         "The optimal mindist parameter"
-        return self._best.mindist
+        return self.spline_.mindist
 
     @property
     def force_coords_(self):
         "The optimal force locations"
-        return self._best.force_coords_
+        return self.spline_.force_coords_
 
     def predict(self, coordinates):
         """
@@ -227,8 +275,8 @@ class SplineCV(BaseGridder):
             The data values evaluated on the given points.
 
         """
-        check_is_fitted(self, ["_best"])
-        return self._best.predict(coordinates)
+        check_is_fitted(self, ["spline_"])
+        return self.spline_.predict(coordinates)
 
 
 class Spline(BaseGridder):
@@ -451,7 +499,7 @@ def warn_weighted_exact_solution(spline, weights):
     # Check if we're using weights without damping and warn the user that it
     # might not have any effect.
     if weights is not None and spline.damping is None:
-        warn(
+        warnings.warn(
             "Weights might have no effect if no regularization is used. "
             "Use damping or specify force positions that are different from the data."
         )
