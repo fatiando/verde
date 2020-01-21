@@ -160,10 +160,10 @@ print("Delayed scores:", spline.scores_)
 # combination.
 
 ########################################################################################
-# The importance of tunning
-# -------------------------
+# The importance of tuning
+# ------------------------
 #
-# To see the difference that tunning has on the results, we can make a grid
+# To see the difference that tuning has on the results, we can make a grid
 # with the best configuration and see how it compares to the default result.
 
 grid_default = spline_default.grid(
