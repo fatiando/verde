@@ -36,7 +36,7 @@ class SplineCV(BaseGridder):
     combinations of the given *dampings* and *mindists* and selects the maximum
     (or minimum) mean cross-validation score (i.e., a grid search).
 
-    Can optionally run in parallel using :mod:`dask`. To do this, use
+    This can optionally run in parallel using :mod:`dask`. To do this, use
     ``delayed=True`` to dispatch computations with :func:`dask.delayed`.
     In this case, each fit and score operation of the grid search will be
     performed in parallel.
