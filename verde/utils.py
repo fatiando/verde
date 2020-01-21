@@ -30,7 +30,7 @@ def dispatch(function, delayed=False, client=None):
     function : callable
         The function that will be called.
     delayed : bool
-        If True, will wrap the function is :func:`dask.delayed`.
+        If True, will wrap the function in :func:`dask.delayed`.
     client : None or dask.distributed Client
         If *delayed* is False and *client* is not None, will return a partial
         execution of the ``client.submit`` with the function as first argument.
