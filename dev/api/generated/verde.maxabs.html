@@ -177,7 +177,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -255,30 +255,18 @@
 <h1>verde.maxabs<a class="headerlink" href="#verde-maxabs" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="verde.maxabs">
-<code class="descclassname">verde.</code><code class="descname">maxabs</code><span class="sig-paren">(</span><em>*args</em>, <em>nan=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/utils.html#maxabs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.maxabs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">verde.</code><code class="sig-name descname">maxabs</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">nan=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/utils.html#maxabs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.maxabs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the maximum absolute value of the given array(s).</p>
 <p>Use this to set the limits of your colorbars and center them on zero.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>args</strong></dt>
-<dd><p class="first last">One or more arrays. If more than one are given, a single maximum will be
-calculated across all arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> – One or more arrays. If more than one are given, a single maximum will
+be calculated across all arrays.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>maxabs</strong> (<em>float</em>) – The maximum absolute value across all arrays.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>maxabs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">The maximum absolute value across all arrays.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">maxabs</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="go">25</span>
@@ -286,8 +274,8 @@ calculated across all arrays.</p>
 <span class="go">500.0</span>
 </pre></div>
 </div>
-<p>If the array contains NaNs, we’ll use the <code class="docutils literal notranslate"><span class="pre">nan</span></code> version of of the numpy functions
-by default. You can turn this off through the <em>nan</em> argument.</p>
+<p>If the array contains NaNs, we’ll use the <code class="docutils literal notranslate"><span class="pre">nan</span></code> version of of the numpy
+functions by default. You can turn this off through the <em>nan</em> argument.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">maxabs</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">))</span>
 <span class="go">25.0</span>
@@ -299,41 +287,41 @@ by default. You can turn this off through the <em>nan</em> argument.</p>
 
 <div class="section" id="examples-using-verde-maxabs">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">verde.maxabs</span></code><a class="headerlink" href="#examples-using-verde-maxabs" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Sometimes data has outliers or less reliable points that might skew a blocked mean or even a me..."><div class="figure" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Sometimes data has outliers or less reliable points that might skew a blocked mean or even a me..."><div class="figure align-default" id="id1">
 <img alt="../../_images/sphx_glr_blockreduce_weights_thumb.png" src="../../_images/sphx_glr_blockreduce_weights_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/blockreduce_weights.html#sphx-glr-gallery-blockreduce-weights-py"><span class="std std-ref">Using weights in blocked reduction</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/blockreduce_weights.html#sphx-glr-gallery-blockreduce-weights-py"><span class="std std-ref">Using weights in blocked reduction</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="An advantage of using the Green&#x27;s functions based verde.Spline over verde.ScipyGridder is that ..."><div class="figure" id="id2">
+</div><div class="sphx-glr-thumbcontainer" tooltip="An advantage of using the Green&#x27;s functions based verde.Spline over verde.ScipyGridder is that ..."><div class="figure align-default" id="id2">
 <img alt="../../_images/sphx_glr_spline_weights_thumb.png" src="../../_images/sphx_glr_spline_weights_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline_weights.html#sphx-glr-gallery-spline-weights-py"><span class="std std-ref">Gridding with splines and weights</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline_weights.html#sphx-glr-gallery-spline-weights-py"><span class="std std-ref">Gridding with splines and weights</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Verde offers the verde.Trend class to fit a 2D polynomial trend to your data. This can be usefu..."><div class="figure" id="id3">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Verde offers the verde.Trend class to fit a 2D polynomial trend to your data. This can be usefu..."><div class="figure align-default" id="id3">
 <img alt="../../_images/sphx_glr_trend_thumb.png" src="../../_images/sphx_glr_trend_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/trend.html#sphx-glr-gallery-trend-py"><span class="std std-ref">Polynomial trend</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/trend.html#sphx-glr-gallery-trend-py"><span class="std std-ref">Polynomial trend</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Verde provides the verde.Trend class to estimate a polynomial trend and the verde.Vector class ..."><div class="figure" id="id4">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Verde provides the verde.Trend class to estimate a polynomial trend and the verde.Vector class ..."><div class="figure align-default" id="id4">
 <img alt="../../_images/sphx_glr_vector_trend_thumb.png" src="../../_images/sphx_glr_vector_trend_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/vector_trend.html#sphx-glr-gallery-vector-trend-py"><span class="std std-ref">Trends in vector data</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/vector_trend.html#sphx-glr-gallery-vector-trend-py"><span class="std std-ref">Trends in vector data</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Trend estimation and removal is a common operation, particularly when dealing with geophysical ..."><div class="figure" id="id5">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Trend estimation and removal is a common operation, particularly when dealing with geophysical ..."><div class="figure align-default" id="id5">
 <img alt="../../_images/sphx_glr_trends_thumb.png" src="../../_images/sphx_glr_trends_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/trends.html#sphx-glr-tutorials-trends-py"><span class="std std-ref">Trend Estimation</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/trends.html#sphx-glr-tutorials-trends-py"><span class="std std-ref">Trend Estimation</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Some datasets have multiple vector components measured for each location, like the East and Wes..."><div class="figure" id="id6">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Some datasets have multiple vector components measured for each location, like the East and Wes..."><div class="figure align-default" id="id6">
 <img alt="../../_images/sphx_glr_vectors_thumb.png" src="../../_images/sphx_glr_vectors_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/vectors.html#sphx-glr-tutorials-vectors-py"><span class="std std-ref">Vector Data</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/vectors.html#sphx-glr-tutorials-vectors-py"><span class="std std-ref">Vector Data</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="One of the advantages of using a Green&#x27;s functions approach to interpolation is that we can eas..."><div class="figure" id="id7">
+</div><div class="sphx-glr-thumbcontainer" tooltip="One of the advantages of using a Green&#x27;s functions approach to interpolation is that we can eas..."><div class="figure align-default" id="id7">
 <img alt="../../_images/sphx_glr_weights_thumb.png" src="../../_images/sphx_glr_weights_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/weights.html#sphx-glr-tutorials-weights-py"><span class="std std-ref">Using Weights</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/weights.html#sphx-glr-tutorials-weights-py"><span class="std std-ref">Using Weights</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="We provide sample 3-component GPS velocity data from the West coast of the U.S. The data were c..."><div class="figure" id="id8">
+</div><div class="sphx-glr-thumbcontainer" tooltip="We provide sample 3-component GPS velocity data from the West coast of the U.S. The data were c..."><div class="figure align-default" id="id8">
 <img alt="../../_images/sphx_glr_california_gps_thumb.png" src="../../_images/sphx_glr_california_gps_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../sample_data/california_gps.html#sphx-glr-sample-data-california-gps-py"><span class="std std-ref">GPS velocities from California</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../sample_data/california_gps.html#sphx-glr-sample-data-california-gps-py"><span class="std std-ref">GPS velocities from California</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="We provide sample total-field magnetic anomaly data from an airborne survey of Rio de Janeiro, ..."><div class="figure" id="id9">
+</div><div class="sphx-glr-thumbcontainer" tooltip="    **The Rio magnetic anomaly dataset is deprecated and will be removed in     Verde v2.0.0** ..."><div class="figure align-default" id="id9">
 <img alt="../../_images/sphx_glr_rio_magnetic_thumb.png" src="../../_images/sphx_glr_rio_magnetic_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../sample_data/rio_magnetic.html#sphx-glr-sample-data-rio-magnetic-py"><span class="std std-ref">Magnetic data from Rio de Janeiro</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../sample_data/rio_magnetic.html#sphx-glr-sample-data-rio-magnetic-py"><span class="std std-ref">[DEPRECATED] Magnetic data from Rio de Janeiro</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -358,9 +346,9 @@ by default. You can turn this off through the <em>nan</em> argument.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

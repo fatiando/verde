@@ -153,7 +153,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -226,31 +226,33 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Functions for least-squares fitting with optional regularization.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">warnings</span> <span class="k">import</span> <span class="n">warn</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
 
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LinearRegression</span><span class="p">,</span> <span class="n">Ridge</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span><span class="p">,</span> <span class="n">Ridge</span>
 
 
 <div class="viewcode-block" id="least_squares"><a class="viewcode-back" href="../../../api/generated/verde.base.least_squares.html#verde.base.least_squares">[docs]</a><span class="k">def</span> <span class="nf">least_squares</span><span class="p">(</span><span class="n">jacobian</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Solve a weighted least-squares problem with optional damping regularization.</span>
+<span class="sd">    Solve a weighted least-squares problem with optional damping regularization</span>
 
-<span class="sd">    Scales the Jacobian matrix so that each column has unit variance. This helps keep</span>
-<span class="sd">    the regularization parameter in a sensible range. The scaling is undone before</span>
-<span class="sd">    returning the estimated parameters so that scaling isn&#39;t required for predictions.</span>
-<span class="sd">    Doesn&#39;t normalize the column means because that operation can&#39;t be undone.</span>
+<span class="sd">    Scales the Jacobian matrix so that each column has unit variance. This</span>
+<span class="sd">    helps keep the regularization parameter in a sensible range. The scaling is</span>
+<span class="sd">    undone before returning the estimated parameters so that scaling isn&#39;t</span>
+<span class="sd">    required for predictions. Doesn&#39;t normalize the column means because that</span>
+<span class="sd">    operation can&#39;t be undone.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    jacobian : 2d-array</span>
 <span class="sd">        The Jacobian/sensitivity/feature matrix.</span>
 <span class="sd">    data : 1d-array</span>
-<span class="sd">        The data array. Must be a single 1D array. If fitting multiple data components,</span>
-<span class="sd">        stack the arrays and the Jacobian matrices.</span>
+<span class="sd">        The data array. Must be a single 1D array. If fitting multiple data</span>
+<span class="sd">        components, stack the arrays and the Jacobian matrices.</span>
 <span class="sd">    weights : None or 1d-array</span>
-<span class="sd">        The data weights. Like the data, this must also be a 1D array. Stack the weights</span>
-<span class="sd">        in the same order as the data. Use ``weights=None`` to fit without weights.</span>
+<span class="sd">        The data weights. Like the data, this must also be a 1D array. Stack</span>
+<span class="sd">        the weights in the same order as the data. Use ``weights=None`` to fit</span>
+<span class="sd">        without weights.</span>
 <span class="sd">    damping : None or float</span>
 <span class="sd">        The positive damping (Tikhonov 0th order) regularization parameter. If</span>
 <span class="sd">        ``damping=None``, will use a regular least-squares fit.</span>
@@ -288,9 +290,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

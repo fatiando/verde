@@ -25,6 +25,7 @@ Dependencies
 * `xarray <http://xarray.pydata.org/>`__
 * `scikit-learn <http://scikit-learn.org/>`__
 * `pooch <http://www.fatiando.org/pooch/>`__
+* `dask <https://dask.org/>`__
 
 The following are optional dependencies that can make some parts of the code faster if
 they are installed:
@@ -41,7 +42,6 @@ Most of the examples in the :ref:`gallery` and :ref:`tutorials` also use:
 * `matplotlib <https://matplotlib.org/>`__
 * `cartopy <https://scitools.org.uk/cartopy/>`__ for plotting maps
 * `pyproj <https://jswhit.github.io/pyproj/>`__ for cartographic projections
-* `dask <https://dask.pydata.org/>`__ for parallelism
 
 
 Installing with conda

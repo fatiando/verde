@@ -31,6 +31,7 @@ interpolation or the data decimation.
 
 
 
+
 We'll use some sample GPS vertical ground velocity which has some variable
 uncertainties associated with each data point. The data are loaded as a
 pandas.DataFrame:
@@ -59,6 +60,7 @@ pandas.DataFrame:
     4  34.116409  242.906805  762.07699  ...     0.0002   0.00037  0.00053
 
     [5 rows x 9 columns]
+
 
 
 
@@ -128,6 +130,7 @@ uncertainties look like. We'll make a function for this so we can reuse it later
 
 
 
+
 Weights in data decimation
 --------------------------
 
@@ -157,8 +160,9 @@ Let's explore all of the possibilities.
 
  .. code-block:: none
 
-    BlockMean(adjust='spacing', center_coordinates=False, region=None, shape=None,
-              spacing=0.25, uncertainty=False)
+    BlockMean(adjust='spacing', center_coordinates=False, drop_coords=True,
+              region=None, shape=None, spacing=0.25, uncertainty=False)
+
 
 
 
@@ -204,6 +208,7 @@ smaller weights, like the data points in the south.
 
 .. image:: /tutorials/images/sphx_glr_weights_002.png
     :class: sphx-glr-single-img
+
 
 
 
@@ -257,6 +262,7 @@ will have a smaller influence on the mean and also on the output weights.
 
 .. image:: /tutorials/images/sphx_glr_weights_003.png
     :class: sphx-glr-single-img
+
 
 
 
@@ -316,6 +322,7 @@ weight is given to the data points that had larger uncertainties from the start.
 
 
 
+
 .. note::
 
     Output weights are always normalized to the ]0, 1] range. See
@@ -342,6 +349,7 @@ gridder.
 
     region = vd.get_region(coordinates)
     spacing = 5 / 60
+
 
 
 
@@ -380,6 +388,7 @@ point forces. Here, we'll apply a bit of damping.
 
 
 
+
 Calculate an unweighted spline as well for comparison.
 
 
@@ -398,6 +407,7 @@ Calculate an unweighted spline as well for comparison.
         dims=["latitude", "longitude"],
         data_names=["velocity"],
     )
+
 
 
 
@@ -466,9 +476,10 @@ Finally, plot the weighted and unweighted grids side by side.
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  5.197 seconds)
+   **Total running time of the script:** ( 0 minutes  4.253 seconds)
 
 
 .. _sphx_glr_download_tutorials_weights.py:

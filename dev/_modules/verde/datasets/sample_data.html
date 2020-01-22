@@ -153,7 +153,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -226,23 +226,56 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Functions to load sample data</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">pooch</span>
 
-<span class="kn">from</span> <span class="nn">..version</span> <span class="k">import</span> <span class="n">full_version</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+    <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+    <span class="kn">from</span> <span class="nn">cartopy.mpl.ticker</span> <span class="kn">import</span> <span class="n">LongitudeFormatter</span><span class="p">,</span> <span class="n">LatitudeFormatter</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="kn">from</span> <span class="nn">..version</span> <span class="kn">import</span> <span class="n">full_version</span>
 
 
-<span class="n">POOCH</span> <span class="o">=</span> <span class="n">pooch</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-    <span class="n">path</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;~&quot;</span><span class="p">,</span> <span class="s2">&quot;.verde&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">],</span>
+<span class="c1"># Otherwise, DeprecationWarning won&#39;t be shown, kind of defeating the purpose.</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
+
+<span class="n">REGISTRY</span> <span class="o">=</span> <span class="n">pooch</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">pooch</span><span class="o">.</span><span class="n">os_cache</span><span class="p">(</span><span class="s2">&quot;verde&quot;</span><span class="p">),</span>
     <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;https://github.com/fatiando/verde/raw/</span><span class="si">{version}</span><span class="s2">/data/&quot;</span><span class="p">,</span>
     <span class="n">version</span><span class="o">=</span><span class="n">full_version</span><span class="p">,</span>
     <span class="n">version_dev</span><span class="o">=</span><span class="s2">&quot;master&quot;</span><span class="p">,</span>
     <span class="n">env</span><span class="o">=</span><span class="s2">&quot;VERDE_DATA_DIR&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">POOCH</span><span class="o">.</span><span class="n">load_registry</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;registry.txt&quot;</span><span class="p">))</span>
+<span class="k">with</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_stream</span><span class="p">(</span><span class="s2">&quot;verde.datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;registry.txt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">registry_file</span><span class="p">:</span>
+    <span class="n">REGISTRY</span><span class="o">.</span><span class="n">load_registry</span><span class="p">(</span><span class="n">registry_file</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="locate"><a class="viewcode-back" href="../../../api/generated/verde.datasets.locate.html#verde.datasets.locate">[docs]</a><span class="k">def</span> <span class="nf">locate</span><span class="p">():</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The absolute path to the sample data storage location on disk.</span>
+
+<span class="sd">    This is where the data are saved on your computer. The location is</span>
+<span class="sd">    dependent on the operating system. The folder locations are defined by the</span>
+<span class="sd">    ``appdirs``  package (see the `appdirs documentation</span>
+<span class="sd">    &lt;https://github.com/ActiveState/appdirs&gt;`__).</span>
+
+<span class="sd">    The location can be overwritten by the ``VERDE_DATA_DIR`` environment</span>
+<span class="sd">    variable to the desired destination.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    path : str</span>
+<span class="sd">        The local data storage location.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">REGISTRY</span><span class="o">.</span><span class="n">abspath</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">_setup_map</span><span class="p">(</span>
@@ -251,8 +284,6 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Setup a Cartopy map with land and ocean features and proper tick labels.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
-    <span class="kn">from</span> <span class="nn">cartopy.mpl.ticker</span> <span class="k">import</span> <span class="n">LongitudeFormatter</span><span class="p">,</span> <span class="n">LatitudeFormatter</span>
 
     <span class="k">if</span> <span class="n">land</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">LAND</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">land</span><span class="p">)</span>
@@ -291,7 +322,7 @@
 <span class="sd">    setup_baja_bathymetry_map: Utility function to help setup a Cartopy map.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">data_file</span> <span class="o">=</span> <span class="n">POOCH</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;baja-bathymetry.csv.xz&quot;</span><span class="p">)</span>
+    <span class="n">data_file</span> <span class="o">=</span> <span class="n">REGISTRY</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;baja-bathymetry.csv.xz&quot;</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;xz&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">data</span></div>
 
@@ -318,8 +349,6 @@
 <span class="sd">    fetch_baja_bathymetry: Sample bathymetry data from Baja California.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
-
     <span class="n">_setup_map</span><span class="p">(</span>
         <span class="n">ax</span><span class="p">,</span>
         <span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">114</span><span class="p">,</span> <span class="o">-</span><span class="mi">105</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
@@ -333,15 +362,22 @@
 
 <div class="viewcode-block" id="fetch_rio_magnetic"><a class="viewcode-back" href="../../../api/generated/verde.datasets.fetch_rio_magnetic.html#verde.datasets.fetch_rio_magnetic">[docs]</a><span class="k">def</span> <span class="nf">fetch_rio_magnetic</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Fetch sample total-field magnetic anomaly data from Rio de Janeiro, Brazil.</span>
+<span class="sd">    Fetch total-field magnetic anomaly data from Rio de Janeiro, Brazil.</span>
 
-<span class="sd">    These data were cropped from the northwestern part of an airborne survey of Rio de</span>
-<span class="sd">    Janeiro, Brazil, conducted in 1978. The data are made available by the Geological</span>
-<span class="sd">    Survey of Brazil (CPRM) through their `GEOSGB portal</span>
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        **The Rio magnetic anomaly dataset is deprecated and will be removed in</span>
+<span class="sd">        Verde v2.0.0** (functions :func:`verde.datasets.fetch_rio_magnetic` and</span>
+<span class="sd">        :func:`verde.datasets.setup_rio_magnetic_map`). Please use another</span>
+<span class="sd">        dataset instead.</span>
+
+<span class="sd">    These data were cropped from the northwestern part of an airborne survey of</span>
+<span class="sd">    Rio de Janeiro, Brazil, conducted in 1978. The data are made available by</span>
+<span class="sd">    the Geological Survey of Brazil (CPRM) through their `GEOSGB portal</span>
 <span class="sd">    &lt;http://geosgb.cprm.gov.br/&gt;`__.</span>
 
-<span class="sd">    The anomaly is calculated with respect to the IGRF field parameters listed on the</span>
-<span class="sd">    table below. See the original data for more processing information.</span>
+<span class="sd">    The anomaly is calculated with respect to the IGRF field parameters listed</span>
+<span class="sd">    on the table below. See the original data for more processing information.</span>
 
 <span class="sd">    +----------+-----------+----------------+-------------+-------------+</span>
 <span class="sd">    |               IGRF for year 1978.3 at 500 m height                |</span>
@@ -358,16 +394,21 @@
 <span class="sd">    -------</span>
 <span class="sd">    data : :class:`pandas.DataFrame`</span>
 <span class="sd">        The magnetic anomaly data. Columns are longitude, latitude, total-field</span>
-<span class="sd">        magnetic anomaly (nanoTesla), observation height above the WGS84 ellipsoid (in</span>
-<span class="sd">        meters), flight line type (LINE or TIE), and flight line number for each data</span>
-<span class="sd">        point.</span>
+<span class="sd">        magnetic anomaly (nanoTesla), observation height above the WGS84</span>
+<span class="sd">        ellipsoid (in meters), flight line type (LINE or TIE), and flight line</span>
+<span class="sd">        number for each data point.</span>
 
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
 <span class="sd">    setup_rio_magnetic_map: Utility function to help setup a Cartopy map.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">data_file</span> <span class="o">=</span> <span class="n">POOCH</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;rio-magnetic.csv.xz&quot;</span><span class="p">)</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+        <span class="s2">&quot;The Rio magnetic anomaly dataset is deprecated and will be removed &quot;</span>
+        <span class="s2">&quot;in Verde v2.0.0. Use a different dataset instead.&quot;</span><span class="p">,</span>
+        <span class="ne">DeprecationWarning</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">data_file</span> <span class="o">=</span> <span class="n">REGISTRY</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;rio-magnetic.csv.xz&quot;</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;xz&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">data</span></div>
 
@@ -375,6 +416,13 @@
 <div class="viewcode-block" id="setup_rio_magnetic_map"><a class="viewcode-back" href="../../../api/generated/verde.datasets.setup_rio_magnetic_map.html#verde.datasets.setup_rio_magnetic_map">[docs]</a><span class="k">def</span> <span class="nf">setup_rio_magnetic_map</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">42.6</span><span class="p">,</span> <span class="o">-</span><span class="mi">42</span><span class="p">,</span> <span class="o">-</span><span class="mf">22.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">22</span><span class="p">)):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Setup a Cartopy map for the Rio de Janeiro magnetic anomaly dataset.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        **The Rio magnetic anomaly dataset is deprecated and will be removed in</span>
+<span class="sd">        Verde v2.0.0** (functions :func:`verde.datasets.fetch_rio_magnetic` and</span>
+<span class="sd">        :func:`verde.datasets.setup_rio_magnetic_map`). Please use another</span>
+<span class="sd">        dataset instead.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -389,11 +437,14 @@
 
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
-<span class="sd">    fetch_rio_magnetic: Sample magnetic anomaly data from Rio de Janeiro, Brazil.</span>
+<span class="sd">    fetch_rio_magnetic: Magnetic anomaly data from Rio de Janeiro, Brazil.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
-
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+        <span class="s2">&quot;The Rio magnetic anomaly dataset is deprecated and will be removed &quot;</span>
+        <span class="s2">&quot;in Verde v2.0.0. Use a different dataset instead.&quot;</span><span class="p">,</span>
+        <span class="ne">DeprecationWarning</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="n">_setup_map</span><span class="p">(</span>
         <span class="n">ax</span><span class="p">,</span>
         <span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">42.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">42</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
@@ -409,14 +460,15 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fetch sample GPS velocity data from California (the U.S. West coast).</span>
 
-<span class="sd">    Velocities and their standard deviations are in meters/year. Height is geometric</span>
-<span class="sd">    height above WGS84 in meters. Velocities are referenced to the North American</span>
-<span class="sd">    tectonic plate (NAM08). The average velocities were released on 2017-12-27.</span>
+<span class="sd">    Velocities and their standard deviations are in meters/year. Height is</span>
+<span class="sd">    geometric height above WGS84 in meters. Velocities are referenced to the</span>
+<span class="sd">    North American tectonic plate (NAM08). The average velocities were released</span>
+<span class="sd">    on 2017-12-27.</span>
 
-<span class="sd">    This material is based on EarthScope Plate Boundary Observatory data services</span>
-<span class="sd">    provided by UNAVCO through the GAGE Facility with support from the National Science</span>
-<span class="sd">    Foundation (NSF) and National Aeronautics and Space Administration (NASA) under NSF</span>
-<span class="sd">    Cooperative Agreement No. EAR-1261833.</span>
+<span class="sd">    This material is based on EarthScope Plate Boundary Observatory data</span>
+<span class="sd">    services provided by UNAVCO through the GAGE Facility with support from the</span>
+<span class="sd">    National Science Foundation (NSF) and National Aeronautics and Space</span>
+<span class="sd">    Administration (NASA) under NSF Cooperative Agreement No. EAR-1261833.</span>
 
 <span class="sd">    If the file isn&#39;t already in your data directory, it will be downloaded</span>
 <span class="sd">    automatically.</span>
@@ -435,7 +487,7 @@
 <span class="sd">    setup_california_gps_map: Utility function to help setup a Cartopy map.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">data_file</span> <span class="o">=</span> <span class="n">POOCH</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;california-gps.csv.xz&quot;</span><span class="p">)</span>
+    <span class="n">data_file</span> <span class="o">=</span> <span class="n">REGISTRY</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;california-gps.csv.xz&quot;</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;xz&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">data</span></div>
 
@@ -462,8 +514,6 @@
 <span class="sd">    fetch_california_gps: Sample GPS velocity data from California.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
-
     <span class="n">_setup_map</span><span class="p">(</span>
         <span class="n">ax</span><span class="p">,</span>
         <span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">124</span><span class="p">,</span> <span class="o">-</span><span class="mi">115</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
@@ -477,10 +527,10 @@
 
 <div class="viewcode-block" id="fetch_texas_wind"><a class="viewcode-back" href="../../../api/generated/verde.datasets.fetch_texas_wind.html#verde.datasets.fetch_texas_wind">[docs]</a><span class="k">def</span> <span class="nf">fetch_texas_wind</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Fetch sample wind speed and air temperature data for the state of Texas, USA.</span>
+<span class="sd">    Fetch sample wind speed and air temperature data for Texas, USA.</span>
 
-<span class="sd">    Data are average wind speed and air temperature for data for February 26 2018. The</span>
-<span class="sd">    original data was downloaded from `Iowa State University</span>
+<span class="sd">    Data are average wind speed and air temperature for data for February 26</span>
+<span class="sd">    2018. The original data was downloaded from `Iowa State University</span>
 <span class="sd">    &lt;https://mesonet.agron.iastate.edu/request/download.phtml&gt;`__.</span>
 
 <span class="sd">    If the file isn&#39;t already in your data directory, it will be downloaded</span>
@@ -489,15 +539,16 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    data : :class:`pandas.DataFrame`</span>
-<span class="sd">        Columns are the station ID, longitude, latitude, air temperature in C, east</span>
-<span class="sd">        component of wind speed in knots, and north component of wind speed in knots.</span>
+<span class="sd">        Columns are the station ID, longitude, latitude, air temperature in C,</span>
+<span class="sd">        east component of wind speed in knots, and north component of wind</span>
+<span class="sd">        speed in knots.</span>
 
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
 <span class="sd">    setup_texas_wind_map: Utility function to help setup a Cartopy map.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">data_file</span> <span class="o">=</span> <span class="n">POOCH</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;texas-wind.csv&quot;</span><span class="p">)</span>
+    <span class="n">data_file</span> <span class="o">=</span> <span class="n">REGISTRY</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;texas-wind.csv&quot;</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">data</span></div>
 
@@ -526,7 +577,6 @@
 <span class="sd">    fetch_texas_wind: Sample wind speed and air temperature data for Texas.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
 
     <span class="n">_setup_map</span><span class="p">(</span>
         <span class="n">ax</span><span class="p">,</span>
@@ -551,9 +601,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

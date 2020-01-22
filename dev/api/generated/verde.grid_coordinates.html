@@ -179,7 +179,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -257,69 +257,46 @@
 <h1>verde.grid_coordinates<a class="headerlink" href="#verde-grid-coordinates" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="verde.grid_coordinates">
-<code class="descclassname">verde.</code><code class="descname">grid_coordinates</code><span class="sig-paren">(</span><em>region</em>, <em>shape=None</em>, <em>spacing=None</em>, <em>adjust='spacing'</em>, <em>pixel_register=False</em>, <em>extra_coords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/coordinates.html#grid_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.grid_coordinates" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">verde.</code><code class="sig-name descname">grid_coordinates</code><span class="sig-paren">(</span><em class="sig-param">region</em>, <em class="sig-param">shape=None</em>, <em class="sig-param">spacing=None</em>, <em class="sig-param">adjust='spacing'</em>, <em class="sig-param">pixel_register=False</em>, <em class="sig-param">extra_coords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/coordinates.html#grid_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.grid_coordinates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the coordinates for each point on a regular grid.</p>
-<p>The grid can be specified by either the number of points in each dimension (the
-<em>shape</em>) or by the grid node spacing.</p>
-<p>If the given region is not divisible by the desired spacing, either the region or
-the spacing will have to be adjusted. By default, the spacing will be rounded to the
-nearest multiple. Optionally, the East and North boundaries of the region can be
-adjusted to fit the exact spacing given. See the examples below.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>region</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list = [W, E, S, N]</span></dt>
-<dd><p class="first last">The boundaries of a given region in Cartesian or geographic coordinates.</p>
+<p>The grid can be specified by either the number of points in each dimension
+(the <em>shape</em>) or by the grid node spacing.</p>
+<p>If the given region is not divisible by the desired spacing, either the
+region or the spacing will have to be adjusted. By default, the spacing
+will be rounded to the nearest multiple. Optionally, the East and North
+boundaries of the region can be adjusted to fit the exact spacing given.
+See the examples below.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region</strong> (<em>list =</em><em> [</em><em>W</em><em>, </em><em>E</em><em>, </em><em>S</em><em>, </em><em>N</em><em>]</em>) – The boundaries of a given region in Cartesian or geographic
+coordinates.</p></li>
+<li><p><strong>shape</strong> (<em>tuple =</em><em> (</em><em>n_north</em><em>, </em><em>n_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – The number of points in the South-North and West-East directions,
+respectively.</p></li>
+<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><em>tuple =</em><em> (</em><em>s_north</em><em>, </em><em>s_east</em><em>)</em><em>, or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – The grid spacing in the South-North and West-East directions,
+respectively. A single value means that the spacing is equal in both
+directions.</p></li>
+<li><p><strong>adjust</strong> (<em>{'spacing'</em><em>, </em><em>'region'}</em>) – Whether to adjust the spacing or the region if required. Ignored if
+<em>shape</em> is given instead of <em>spacing</em>. Defaults to adjusting the
+spacing.</p></li>
+<li><p><strong>pixel_register</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – If True, the coordinates will refer to the center of each grid pixel
+instead of the grid lines. In practice, this means that there will be
+one less element per dimension of the grid when compared to grid line
+registered (only if given <em>spacing</em> and not <em>shape</em>). Default is False.</p></li>
+<li><p><strong>extra_coords</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em>, </em><em>scalar</em><em>, or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – If not None, then value(s) of extra coordinate arrays to be generated.
+These extra arrays will have the same <em>shape</em> as the others but will
+contain a constant value. Will generate an extra array per value given
+in <em>extra_coords</em>. Use this to generate arrays of constant heights or
+times, for example, that might be needed to evaluate a gridder.</p></li>
+</ul>
 </dd>
-<dt><strong>shape</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple = (n_north, n_east) or None</span></dt>
-<dd><p class="first last">The number of points in the South-North and West-East directions, respectively.</p>
-</dd>
-<dt><strong>spacing</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, tuple = (s_north, s_east), or None</span></dt>
-<dd><p class="first last">The grid spacing in the South-North and West-East directions, respectively. A
-single value means that the spacing is equal in both directions.</p>
-</dd>
-<dt><strong>adjust</strong> <span class="classifier-delimiter">:</span> <span class="classifier">{‘spacing’, ‘region’}</span></dt>
-<dd><p class="first last">Whether to adjust the spacing or the region if required. Ignored if <em>shape</em> is
-given instead of <em>spacing</em>. Defaults to adjusting the spacing.</p>
-</dd>
-<dt><strong>pixel_register</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd><p class="first last">If True, the coordinates will refer to the center of each grid pixel instead of
-the grid lines. In practice, this means that there will be one less element per
-dimension of the grid when compared to grid line registered (only if given
-<em>spacing</em> and not <em>shape</em>). Default is False.</p>
-</dd>
-<dt><strong>extra_coords</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None, scalar, or list</span></dt>
-<dd><p class="first last">If not None, then value(s) of extra coordinate arrays to be generated. These
-extra arrays will have the same <em>shape</em> as the others but will contain a
-constant value. Will generate an extra array per value given in <em>extra_coords</em>.
-Use this to generate arrays of constant heights or times, for example, that
-might be needed to evaluate a gridder.</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>coordinates</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of arrays</span></dt>
-<dd><p class="first last">Arrays with coordinates of each point in the grid. Each array contains values
-for a dimension in the order: easting, northing, vertical, and any extra
-dimensions given in <em>extra_coords</em>. All arrays will have the specified <em>shape</em>.</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Arrays with coordinates of each point in the grid. Each array contains
+values for a dimension in the order: easting, northing, vertical, and
+any extra dimensions given in <em>extra_coords</em>. All arrays will have the
+specified <em>shape</em>.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<dl class="last docutils">
-<dt><a class="reference internal" href="verde.scatter_points.html#verde.scatter_points" title="verde.scatter_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scatter_points</span></code></a></dt>
-<dd>Generate the coordinates for a random scatter of points</dd>
-<dt><a class="reference internal" href="verde.profile_coordinates.html#verde.profile_coordinates" title="verde.profile_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">profile_coordinates</span></code></a></dt>
-<dd>Coordinates for a profile between two points</dd>
-</dl>
-</div>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">east</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">north</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -340,8 +317,8 @@ dimensions given in <em>extra_coords</em>. All arrays will have the specified <e
 <span class="go"> [10.  10.  10. ]]</span>
 </pre></div>
 </div>
-<p>The grid can also be specified using the spacing between points instead of the
-shape:</p>
+<p>The grid can also be specified using the spacing between points instead of
+the shape:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">east</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">north</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="go">(5, 3) (5, 3)</span>
@@ -377,8 +354,8 @@ shape:</p>
 <span class="go"> [10.  10.  10.  10.  10.  10.  10. ]]</span>
 </pre></div>
 </div>
-<p>If the region can’t be divided into the desired spacing, the spacing will be
-adjusted to conform to the region:</p>
+<p>If the region can’t be divided into the desired spacing, the spacing will
+be adjusted to conform to the region:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">east</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">2.6</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">north</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="go">(3, 3) (3, 3)</span>
@@ -403,7 +380,8 @@ adjusted to conform to the region:</p>
 <span class="go"> [5.  5.  5. ]]</span>
 </pre></div>
 </div>
-<p>You can choose to adjust the East and North boundaries of the region instead:</p>
+<p>You can choose to adjust the East and North boundaries of the region
+instead:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">east</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">2.6</span><span class="p">,</span>
 <span class="gp">... </span>                               <span class="n">adjust</span><span class="o">=</span><span class="s1">&#39;region&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">north</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -430,8 +408,8 @@ adjusted to conform to the region:</p>
 <span class="go"> [4.8 4.8 4.8]]</span>
 </pre></div>
 </div>
-<p>We can optionally generate coordinates for the center of each grid pixel instead of
-the corner (default):</p>
+<p>We can optionally generate coordinates for the center of each grid pixel
+instead of the corner (default):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">east</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
 <span class="gp">... </span>                               <span class="n">pixel_register</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Raise the printing precision for this example</span>
@@ -464,8 +442,9 @@ the corner (default):</p>
 </pre></div>
 </div>
 <p>Generate arrays for other coordinates that have a constant value:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
-<span class="gp">... </span>                                       <span class="n">extra_coords</span><span class="o">=</span><span class="mi">57</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">extra_coords</span><span class="o">=</span><span class="mi">57</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">north</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">height</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="go">(5, 3) (5, 3) (5, 3)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
@@ -474,8 +453,9 @@ the corner (default):</p>
 <span class="go"> [57. 57. 57.]</span>
 <span class="go"> [57. 57. 57.]</span>
 <span class="go"> [57. 57. 57.]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">time</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
-<span class="gp">... </span>                                             <span class="n">extra_coords</span><span class="o">=</span><span class="p">[</span><span class="mi">57</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">time</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">extra_coords</span><span class="o">=</span><span class="p">[</span><span class="mi">57</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">north</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">height</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="go">(5, 3) (5, 3) (5, 3) (5, 3)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
@@ -492,29 +472,38 @@ the corner (default):</p>
 <span class="go"> [0.1 0.1 0.1]]</span>
 </pre></div>
 </div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="verde.scatter_points.html#verde.scatter_points" title="verde.scatter_points"><code class="xref py py-func docutils literal notranslate"><span class="pre">scatter_points</span></code></a></dt><dd><p>Generate the coordinates for a random scatter of points</p>
+</dd>
+<dt><a class="reference internal" href="verde.profile_coordinates.html#verde.profile_coordinates" title="verde.profile_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">profile_coordinates</span></code></a></dt><dd><p>Coordinates for a profile between two points</p>
+</dd>
+</dl>
+</div>
 </dd></dl>
 
 <div class="section" id="examples-using-verde-grid-coordinates">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code><a class="headerlink" href="#examples-using-verde-grid-coordinates" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Sometimes, data points are unevenly distributed. In such cases, we might not want to have inter..."><div class="figure" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Sometimes, data points are unevenly distributed. In such cases, we might not want to have inter..."><div class="figure align-default" id="id1">
 <img alt="../../_images/sphx_glr_distance_mask_thumb.png" src="../../_images/sphx_glr_distance_mask_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/distance_mask.html#sphx-glr-gallery-distance-mask-py"><span class="std std-ref">Mask grid points by distance</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/distance_mask.html#sphx-glr-gallery-distance-mask-py"><span class="std std-ref">Mask grid points by distance</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Creating the coordinates for regular grids in Verde is done using the  verde.grid_coordinates f..."><div class="figure" id="id2">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Creating the coordinates for regular grids in Verde is done using the  verde.grid_coordinates f..."><div class="figure align-default" id="id2">
 <img alt="../../_images/sphx_glr_grid_coordinates_thumb.png" src="../../_images/sphx_glr_grid_coordinates_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/grid_coordinates.html#sphx-glr-tutorials-grid-coordinates-py"><span class="std std-ref">Grid Coordinates</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/grid_coordinates.html#sphx-glr-tutorials-grid-coordinates-py"><span class="std std-ref">Grid Coordinates</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="The Green&#x27;s functions based interpolations in Verde are all linear regressions under the hood. ..."><div class="figure" id="id3">
+</div><div class="sphx-glr-thumbcontainer" tooltip="The Green&#x27;s functions based interpolations in Verde are all linear regressions under the hood. ..."><div class="figure align-default" id="id3">
 <img alt="../../_images/sphx_glr_model_evaluation_thumb.png" src="../../_images/sphx_glr_model_evaluation_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/model_evaluation.html#sphx-glr-tutorials-model-evaluation-py"><span class="std std-ref">Evaluating Performance</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/model_evaluation.html#sphx-glr-tutorials-model-evaluation-py"><span class="std std-ref">Evaluating Performance</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="In model_evaluation, we saw how to check the performance of an interpolator using cross-validat..."><div class="figure" id="id4">
+</div><div class="sphx-glr-thumbcontainer" tooltip="In model_evaluation, we saw how to check the performance of an interpolator using cross-validat..."><div class="figure align-default" id="id4">
 <img alt="../../_images/sphx_glr_model_selection_thumb.png" src="../../_images/sphx_glr_model_selection_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/model_selection.html#sphx-glr-tutorials-model-selection-py"><span class="std std-ref">Model Selection</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/model_selection.html#sphx-glr-tutorials-model-selection-py"><span class="std std-ref">Model Selection</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Verde provides classes and functions for processing spatial data, like bathymetry, GPS, tempera..."><div class="figure" id="id5">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Verde provides classes and functions for processing spatial data, like bathymetry, GPS, tempera..."><div class="figure align-default" id="id5">
 <img alt="../../_images/sphx_glr_overview_thumb.png" src="../../_images/sphx_glr_overview_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/overview.html#sphx-glr-tutorials-overview-py"><span class="std std-ref">Overview</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/overview.html#sphx-glr-tutorials-overview-py"><span class="std std-ref">Overview</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -539,9 +528,9 @@ the corner (default):</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

@@ -153,7 +153,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -226,25 +226,25 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Class for chaining gridders.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="k">import</span> <span class="n">check_is_fitted</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
 
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">BaseGridder</span>
-<span class="kn">from</span> <span class="nn">.base.utils</span> <span class="k">import</span> <span class="n">check_data</span>
-<span class="kn">from</span> <span class="nn">.coordinates</span> <span class="k">import</span> <span class="n">get_region</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">BaseGridder</span>
+<span class="kn">from</span> <span class="nn">.base.utils</span> <span class="kn">import</span> <span class="n">check_data</span>
+<span class="kn">from</span> <span class="nn">.coordinates</span> <span class="kn">import</span> <span class="n">get_region</span>
 
 
 <div class="viewcode-block" id="Chain"><a class="viewcode-back" href="../../api/generated/verde.Chain.html#verde.Chain">[docs]</a><span class="k">class</span> <span class="nc">Chain</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Chain filtering operations to fit on each subsequent output.</span>
 
-<span class="sd">    The :meth:`~verde.base.BaseGridder.filter` method of each element of the set is</span>
-<span class="sd">    called with the outputs of the previous one. For gridders and trend</span>
+<span class="sd">    The :meth:`~verde.base.BaseGridder.filter` method of each element of the</span>
+<span class="sd">    set is called with the outputs of the previous one. For gridders and trend</span>
 <span class="sd">    estimators this means that each element fits the residuals (input data</span>
 <span class="sd">    minus predicted data) of the previous one.</span>
 
-<span class="sd">    When predicting data, the predictions of each step in the chain are added together.</span>
-<span class="sd">    Steps that don&#39;t implement a :meth:`~verde.base.BaseGridder.predict` method are</span>
-<span class="sd">    ignored.</span>
+<span class="sd">    When predicting data, the predictions of each step in the chain are added</span>
+<span class="sd">    together. Steps that don&#39;t implement a</span>
+<span class="sd">    :meth:`~verde.base.BaseGridder.predict` method are ignored.</span>
 
 <span class="sd">    This provides a convenient way to chaining operations like trend estimation</span>
 <span class="sd">    to a given gridder.</span>
@@ -268,11 +268,11 @@
 
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
-<span class="sd">    verde.Vector : Fit an estimator to each component of multi-component vector data</span>
+<span class="sd">    verde.Vector : Fit an estimator to each component of vector data</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">steps</span> <span class="o">=</span> <span class="n">steps</span>
 
@@ -367,9 +367,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

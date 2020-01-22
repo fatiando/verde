@@ -153,7 +153,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -229,8 +229,8 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">..base</span> <span class="k">import</span> <span class="n">BaseGridder</span>
-<span class="kn">from</span> <span class="nn">..coordinates</span> <span class="k">import</span> <span class="n">check_region</span>
+<span class="kn">from</span> <span class="nn">..base</span> <span class="kn">import</span> <span class="n">BaseGridder</span>
+<span class="kn">from</span> <span class="nn">..coordinates</span> <span class="kn">import</span> <span class="n">check_region</span>
 
 
 <div class="viewcode-block" id="CheckerBoard"><a class="viewcode-back" href="../../../api/generated/verde.datasets.CheckerBoard.html#verde.datasets.CheckerBoard">[docs]</a><span class="k">class</span> <span class="nc">CheckerBoard</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
@@ -270,7 +270,7 @@
 <span class="sd">    &gt;&gt;&gt; # Default values for the wavelengths are selected automatically</span>
 <span class="sd">    &gt;&gt;&gt; print(synth.w_east_, synth.w_north_)</span>
 <span class="sd">    2500.0 2500.0</span>
-<span class="sd">    &gt;&gt;&gt; # Checkerboard.grid produces an xarray.Dataset with data on a regular grid</span>
+<span class="sd">    &gt;&gt;&gt; # CheckerBoard.grid produces an xarray.Dataset with data on a grid</span>
 <span class="sd">    &gt;&gt;&gt; grid = synth.grid(shape=(11, 6))</span>
 <span class="sd">    &gt;&gt;&gt; # scatter and profile generate pandas.DataFrame objects</span>
 <span class="sd">    &gt;&gt;&gt; table = synth.scatter()</span>
@@ -282,7 +282,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="o">-</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">w_east</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">w_north</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -348,9 +348,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

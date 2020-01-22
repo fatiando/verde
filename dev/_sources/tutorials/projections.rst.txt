@@ -32,6 +32,7 @@ projection operations.
 
 
 
+
 With pyproj, we can create functions that will project our coordinates to and from
 different coordinate systems. For our Baja California bathymetry data, we'll use a
 Mercator projection.
@@ -43,6 +44,7 @@ Mercator projection.
     data = vd.datasets.fetch_baja_bathymetry()
     # We're choosing the latitude of true scale as the mean latitude of our dataset.
     projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
+
 
 
 
@@ -77,6 +79,7 @@ longitude and latitude and return easting and northing coordinates.
 
 
 
+
 We can plot our projected coordinates using matplotlib.
 
 
@@ -102,6 +105,7 @@ We can plot our projected coordinates using matplotlib.
 
 
 
+
 Cartesian grids
 ---------------
 
@@ -116,6 +120,7 @@ Cartesian using the 1 degree approx. 111 km rule-of-thumb.
     reducer = vd.BlockReduce(np.median, spacing=spacing * 111e3)
     filter_coords, filter_bathy = reducer.filter(proj_coords, data.bathymetry_m)
     spline = vd.Spline().fit(filter_coords, filter_bathy)
+
 
 
 
@@ -156,6 +161,7 @@ projected Cartesian coordinates.
 
 
 
+
 We'll mask our grid using :func:`verde.distance_mask` to get rid of all the spurious
 solutions far away from the data points.
 
@@ -181,6 +187,7 @@ solutions far away from the data points.
 
 .. image:: /tutorials/images/sphx_glr_projections_002.png
     :class: sphx-glr-single-img
+
 
 
 
@@ -241,6 +248,7 @@ coordinate system other than the one you used to fit the spline.
 
 
 
+
 Notice that grid has longitude and latitude coordinates and slightly different number
 of points than the Cartesian grid.
 
@@ -254,6 +262,7 @@ will project the coordinates before calculating distances.
     grid_geo = vd.distance_mask(
         (data.longitude, data.latitude), maxdist=30e3, grid=grid_geo, projection=projection
     )
+
 
 
 
@@ -296,9 +305,10 @@ Now we can use the Cartopy library to plot our geographic grid.
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.642 seconds)
+   **Total running time of the script:** ( 0 minutes  2.973 seconds)
 
 
 .. _sphx_glr_download_tutorials_projections.py:

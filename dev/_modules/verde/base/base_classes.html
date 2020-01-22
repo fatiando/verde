@@ -153,7 +153,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -229,11 +229,11 @@
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">BaseEstimator</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">r2_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span>
 
-<span class="kn">from</span> <span class="nn">..coordinates</span> <span class="k">import</span> <span class="n">grid_coordinates</span><span class="p">,</span> <span class="n">profile_coordinates</span><span class="p">,</span> <span class="n">scatter_points</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">check_data</span><span class="p">,</span> <span class="n">check_fit_input</span>
+<span class="kn">from</span> <span class="nn">..coordinates</span> <span class="kn">import</span> <span class="n">grid_coordinates</span><span class="p">,</span> <span class="n">profile_coordinates</span><span class="p">,</span> <span class="n">scatter_points</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">check_data</span><span class="p">,</span> <span class="n">check_fit_input</span>
 
 
 <div class="viewcode-block" id="BaseGridder"><a class="viewcode-back" href="../../../api/generated/verde.base.BaseGridder.html#verde.BaseGridder">[docs]</a><span class="k">class</span> <span class="nc">BaseGridder</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">):</span>
@@ -241,12 +241,13 @@
 <span class="sd">    Base class for gridders.</span>
 
 <span class="sd">    Most methods of this class requires the implementation of a</span>
-<span class="sd">    :meth:`~verde.base.BaseGridder.predict` method. The data returned by it should</span>
-<span class="sd">    be a 1d or 2d numpy array for scalar data or a tuple with 1d or 2d numpy</span>
-<span class="sd">    arrays for each component of vector data.</span>
+<span class="sd">    :meth:`~verde.base.BaseGridder.predict` method. The data returned by it</span>
+<span class="sd">    should be a 1d or 2d numpy array for scalar data or a tuple with 1d or 2d</span>
+<span class="sd">    numpy arrays for each component of vector data.</span>
 
-<span class="sd">    The :meth:`~verde.base.BaseGridder.filter` method requires the implementation of</span>
-<span class="sd">    a :meth:`~verde.base.BaseGridder.fit` method to fit the gridder model to data.</span>
+<span class="sd">    The :meth:`~verde.base.BaseGridder.filter` method requires the</span>
+<span class="sd">    implementation of a :meth:`~verde.base.BaseGridder.fit` method to fit the</span>
+<span class="sd">    gridder model to data.</span>
 
 <span class="sd">    Doesn&#39;t define any new attributes.</span>
 
@@ -454,32 +455,35 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Interpolate the data onto a regular grid.</span>
 
-<span class="sd">        The grid can be specified by either the number of points in each dimension (the</span>
-<span class="sd">        *shape*) or by the grid node spacing. See :func:`verde.grid_coordinates` for</span>
-<span class="sd">        details. Other arguments for :func:`verde.grid_coordinates` can be passed as</span>
-<span class="sd">        extra keyword arguments (``kwargs``) to this method.</span>
+<span class="sd">        The grid can be specified by either the number of points in each</span>
+<span class="sd">        dimension (the *shape*) or by the grid node spacing. See</span>
+<span class="sd">        :func:`verde.grid_coordinates` for details. Other arguments for</span>
+<span class="sd">        :func:`verde.grid_coordinates` can be passed as extra keyword arguments</span>
+<span class="sd">        (``kwargs``) to this method.</span>
 
-<span class="sd">        If the interpolator collected the input data region, then it will be used if</span>
-<span class="sd">        ``region=None``. Otherwise, you must specify the grid region.</span>
+<span class="sd">        If the interpolator collected the input data region, then it will be</span>
+<span class="sd">        used if ``region=None``. Otherwise, you must specify the grid region.</span>
 
-<span class="sd">        Use the *dims* and *data_names* arguments to set custom names for the dimensions</span>
-<span class="sd">        and the data field(s) in the output :class:`xarray.Dataset`. Default names will</span>
-<span class="sd">        be provided if none are given.</span>
+<span class="sd">        Use the *dims* and *data_names* arguments to set custom names for the</span>
+<span class="sd">        dimensions and the data field(s) in the output :class:`xarray.Dataset`.</span>
+<span class="sd">        Default names will be provided if none are given.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        region : list = [W, E, S, N]</span>
-<span class="sd">            The boundaries of a given region in Cartesian or geographic coordinates.</span>
+<span class="sd">            The boundaries of a given region in Cartesian or geographic</span>
+<span class="sd">            coordinates.</span>
 <span class="sd">        shape : tuple = (n_north, n_east) or None</span>
 <span class="sd">            The number of points in the South-North and West-East directions,</span>
 <span class="sd">            respectively.</span>
 <span class="sd">        spacing : tuple = (s_north, s_east) or None</span>
-<span class="sd">            The grid spacing in the South-North and West-East directions, respectively.</span>
+<span class="sd">            The grid spacing in the South-North and West-East directions,</span>
+<span class="sd">            respectively.</span>
 <span class="sd">        dims : list or None</span>
-<span class="sd">            The names of the northing and easting data dimensions, respectively, in the</span>
-<span class="sd">            output grid. Defaults to ``[&#39;northing&#39;, &#39;easting&#39;]``. **NOTE: This is an</span>
-<span class="sd">            exception to the &quot;easting&quot; then &quot;northing&quot; pattern but is required for</span>
-<span class="sd">            compatibility with xarray.**</span>
+<span class="sd">            The names of the northing and easting data dimensions,</span>
+<span class="sd">            respectively, in the output grid. Defaults to ``[&#39;northing&#39;,</span>
+<span class="sd">            &#39;easting&#39;]``. **NOTE: This is an exception to the &quot;easting&quot; then</span>
+<span class="sd">            &quot;northing&quot; pattern but is required for compatibility with xarray.**</span>
 <span class="sd">        data_names : list of None</span>
 <span class="sd">            The name(s) of the data variables in the output grid. Defaults to</span>
 <span class="sd">            ``[&#39;scalars&#39;]`` for scalar data,</span>
@@ -498,8 +502,8 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        grid : xarray.Dataset</span>
-<span class="sd">            The interpolated grid. Metadata about the interpolator is written to the</span>
-<span class="sd">            ``attrs`` attribute.</span>
+<span class="sd">            The interpolated grid. Metadata about the interpolator is written</span>
+<span class="sd">            to the ``attrs`` attribute.</span>
 
 <span class="sd">        See also</span>
 <span class="sd">        --------</span>
@@ -534,16 +538,16 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Interpolate values onto a random scatter of points.</span>
 
-<span class="sd">        Point coordinates are generated by :func:`verde.scatter_points`. Other arguments</span>
-<span class="sd">        for this function can be passed as extra keyword arguments (``kwargs``) to this</span>
-<span class="sd">        method.</span>
+<span class="sd">        Point coordinates are generated by :func:`verde.scatter_points`. Other</span>
+<span class="sd">        arguments for this function can be passed as extra keyword arguments</span>
+<span class="sd">        (``kwargs``) to this method.</span>
 
-<span class="sd">        If the interpolator collected the input data region, then it will be used if</span>
-<span class="sd">        ``region=None``. Otherwise, you must specify the grid region.</span>
+<span class="sd">        If the interpolator collected the input data region, then it will be</span>
+<span class="sd">        used if ``region=None``. Otherwise, you must specify the grid region.</span>
 
-<span class="sd">        Use the *dims* and *data_names* arguments to set custom names for the dimensions</span>
-<span class="sd">        and the data field(s) in the output :class:`pandas.DataFrame`. Default names are</span>
-<span class="sd">        provided.</span>
+<span class="sd">        Use the *dims* and *data_names* arguments to set custom names for the</span>
+<span class="sd">        dimensions and the data field(s) in the output</span>
+<span class="sd">        :class:`pandas.DataFrame`. Default names are provided.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -558,10 +562,10 @@
 <span class="sd">            reproducible. Use ``None`` to choose a seed automatically</span>
 <span class="sd">            (resulting in different numbers with each run).</span>
 <span class="sd">        dims : list or None</span>
-<span class="sd">            The names of the northing and easting data dimensions, respectively, in the</span>
-<span class="sd">            output dataframe. Defaults to ``[&#39;northing&#39;, &#39;easting&#39;]``. **NOTE: This</span>
-<span class="sd">            is an exception to the &quot;easting&quot; then &quot;northing&quot; pattern but is required for</span>
-<span class="sd">            compatibility with xarray.**</span>
+<span class="sd">            The names of the northing and easting data dimensions,</span>
+<span class="sd">            respectively, in the output dataframe. Defaults to ``[&#39;northing&#39;,</span>
+<span class="sd">            &#39;easting&#39;]``. **NOTE: This is an exception to the &quot;easting&quot; then</span>
+<span class="sd">            &quot;northing&quot; pattern but is required for compatibility with xarray.**</span>
 <span class="sd">        data_names : list of None</span>
 <span class="sd">            The name(s) of the data variables in the output dataframe. Defaults</span>
 <span class="sd">            to ``[&#39;scalars&#39;]`` for scalar data,</span>
@@ -608,31 +612,33 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Interpolate data along a profile between two points.</span>
 
-<span class="sd">        Generates the profile along a straight line assuming Cartesian distances. Point</span>
-<span class="sd">        coordinates are generated by :func:`verde.profile_coordinates`. Other arguments</span>
-<span class="sd">        for this function can be passed as extra keyword arguments (``kwargs``) to this</span>
-<span class="sd">        method.</span>
+<span class="sd">        Generates the profile along a straight line assuming Cartesian</span>
+<span class="sd">        distances. Point coordinates are generated by</span>
+<span class="sd">        :func:`verde.profile_coordinates`. Other arguments for this function</span>
+<span class="sd">        can be passed as extra keyword arguments (``kwargs``) to this method.</span>
 
-<span class="sd">        Use the *dims* and *data_names* arguments to set custom names for the dimensions</span>
-<span class="sd">        and the data field(s) in the output :class:`pandas.DataFrame`. Default names are</span>
-<span class="sd">        provided.</span>
+<span class="sd">        Use the *dims* and *data_names* arguments to set custom names for the</span>
+<span class="sd">        dimensions and the data field(s) in the output</span>
+<span class="sd">        :class:`pandas.DataFrame`. Default names are provided.</span>
 
-<span class="sd">        Includes the calculated Cartesian distance from *point1* for each data point in</span>
-<span class="sd">        the profile.</span>
+<span class="sd">        Includes the calculated Cartesian distance from *point1* for each data</span>
+<span class="sd">        point in the profile.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        point1 : tuple</span>
-<span class="sd">            The easting and northing coordinates, respectively, of the first point.</span>
+<span class="sd">            The easting and northing coordinates, respectively, of the first</span>
+<span class="sd">            point.</span>
 <span class="sd">        point2 : tuple</span>
-<span class="sd">            The easting and northing coordinates, respectively, of the second point.</span>
+<span class="sd">            The easting and northing coordinates, respectively, of the second</span>
+<span class="sd">            point.</span>
 <span class="sd">        size : int</span>
 <span class="sd">            The number of points to generate.</span>
 <span class="sd">        dims : list or None</span>
-<span class="sd">            The names of the northing and easting data dimensions, respectively, in the</span>
-<span class="sd">            output dataframe. Defaults to ``[&#39;northing&#39;, &#39;easting&#39;]``. **NOTE: This</span>
-<span class="sd">            is an exception to the &quot;easting&quot; then &quot;northing&quot; pattern but is required for</span>
-<span class="sd">            compatibility with xarray.**</span>
+<span class="sd">            The names of the northing and easting data dimensions,</span>
+<span class="sd">            respectively, in the output dataframe. Defaults to ``[&#39;northing&#39;,</span>
+<span class="sd">            &#39;easting&#39;]``. **NOTE: This is an exception to the &quot;easting&quot; then</span>
+<span class="sd">            &quot;northing&quot; pattern but is required for compatibility with xarray.**</span>
 <span class="sd">        data_names : list of None</span>
 <span class="sd">            The name(s) of the data variables in the output dataframe. Defaults</span>
 <span class="sd">            to ``[&#39;scalars&#39;]`` for scalar data,</span>
@@ -753,9 +759,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

@@ -86,6 +86,7 @@ For example, let's create a pipeline to grid our sample bathymetry data.
 
 
 
+
 We'll create a chain that applies a blocked median to the data, fits a polynomial
 trend, and then fits a standard gridder to the trend residuals.
 
@@ -114,12 +115,14 @@ trend, and then fits a standard gridder to the trend residuals.
 
     Chain(steps=[('reduce',
                   BlockReduce(adjust='spacing', center_coordinates=False,
-                              reduction=<function median at 0x2b50953ab950>,
+                              drop_coords=True,
+                              reduction=<function median at 0x7f29259a9598>,
                               region=None, shape=None, spacing=18500.0)),
                  ('trend', Trend(degree=1)),
                  ('spline',
                   Spline(damping=None, engine='auto', force_coords=None,
                          mindist=1e-05))])
+
 
 
 
@@ -138,6 +141,23 @@ Calling :meth:`verde.Chain.fit` will automatically run the data through the chai
 
 
 
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+
+    Chain(steps=[('reduce',
+                  BlockReduce(adjust='spacing', center_coordinates=False,
+                              drop_coords=True,
+                              reduction=<function median at 0x7f29259a9598>,
+                              region=None, shape=None, spacing=18500.0)),
+                 ('trend', Trend(degree=1)),
+                 ('spline',
+                  Spline(damping=None, engine='auto', force_coords=None,
+                         mindist=1e-05))])
 
 
 
@@ -168,6 +188,7 @@ data, not the original data, so the fit won't be perfect.
 
 .. image:: /tutorials/images/sphx_glr_chain_002.png
     :class: sphx-glr-single-img
+
 
 
 
@@ -211,6 +232,7 @@ familiar to the geodesists among us.
 
 
 
+
 Finally, we can plot the resulting grid:
 
 
@@ -246,6 +268,7 @@ Finally, we can plot the resulting grid:
 
 
 
+
 Each component of the chain can be accessed separately using the ``named_steps``
 attribute. It's a dictionary with keys and values matching the inputs given to the
 :class:`~verde.Chain`.
@@ -269,6 +292,7 @@ attribute. It's a dictionary with keys and values matching the inputs given to t
 
     Trend(degree=1)
     Spline(damping=None, engine='auto', force_coords=None, mindist=1e-05)
+
 
 
 
@@ -326,9 +350,10 @@ grids and predictions. For example, we can get a grid of the estimated trend:
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  12.855 seconds)
+   **Total running time of the script:** ( 0 minutes  9.163 seconds)
 
 
 .. _sphx_glr_download_tutorials_chain.py:

@@ -13,7 +13,8 @@ Polynomial trend
 Verde offers the :class:`verde.Trend` class to fit a 2D polynomial trend to your data.
 This can be useful for isolating a regional component of your data, for example, which
 is a common operation for gravity and magnetic data. Let's look at how we can use Verde
-to remove the clear positive trend from the Rio de Janeiro magnetic anomaly data.
+to remove the clear trend from our Texas temperature dataset
+(:func:`verde.datasets.fetch_texas_wind`).
 
 
 
@@ -28,30 +29,31 @@ to remove the clear positive trend from the Rio de Janeiro magnetic anomaly data
  .. code-block:: none
 
     Original data:
-       longitude   latitude  ...  line_type  line_number
-    0 -42.590424 -22.499878  ...       LINE         2902
-    1 -42.590485 -22.498978  ...       LINE         2902
-    2 -42.590530 -22.498077  ...       LINE         2902
-    3 -42.590591 -22.497177  ...       LINE         2902
-    4 -42.590652 -22.496277  ...       LINE         2902
+      station_id  longitude  ...  wind_speed_east_knots  wind_speed_north_knots
+    0        0F2   -97.7756  ...               1.032920               -2.357185
+    1        11R   -96.3742  ...               1.692155                2.982564
+    2        2F5  -101.9018  ...              -1.110056               -0.311412
+    3        3T5   -96.9500  ...               1.695097                3.018448
+    4        5C1   -98.6946  ...               1.271400                1.090743
 
     [5 rows x 6 columns]
 
-    Trend estimator: Trend(degree=2)
+    Trend estimator: Trend(degree=1)
 
     Updated DataFrame:
-       longitude   latitude  ...      trend   residual
-    0 -42.590424 -22.499878  ...  93.929614  21.480386
-    1 -42.590485 -22.498978  ...  93.350509  27.999491
-    2 -42.590530 -22.498077  ...  92.778689  35.511311
-    3 -42.590591 -22.497177  ...  92.205282  41.034718
-    4 -42.590652 -22.496277  ...  91.634731  44.545269
+      station_id  longitude  latitude  ...  wind_speed_north_knots      trend  residual
+    0        0F2   -97.7756   33.6017  ...               -2.357185   9.067526  0.168585
+    1        11R   -96.3742   30.2189  ...                2.982564  14.727121 -0.512816
+    2        2F5  -101.9018   32.7479  ...               -0.311412   8.508071 -1.438626
+    3        3T5   -96.9500   29.9100  ...                3.018448  14.931638 -0.434877
+    4        5C1   -98.6946   29.7239  ...                1.090743  14.434636 -1.476303
 
     [5 rows x 8 columns]
-    /home/travis/build/fatiando/verde/examples/trend.py:79: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+    /home/travis/build/fatiando/verde/examples/trend.py:78: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
       plt.tight_layout()
-    /home/travis/build/fatiando/verde/examples/trend.py:79: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations. 
+    /home/travis/build/fatiando/verde/examples/trend.py:78: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations. 
       plt.tight_layout()
+
 
 
 
@@ -67,19 +69,19 @@ to remove the clear positive trend from the Rio de Janeiro magnetic anomaly data
     import cartopy.crs as ccrs
     import verde as vd
 
-    # Load the Rio de Janeiro total field magnetic anomaly data as a pandas.DataFrame
-    data = vd.datasets.fetch_rio_magnetic()
+    # Load the Texas wind and temperature data as a pandas.DataFrame
+    data = vd.datasets.fetch_texas_wind()
     print("Original data:")
     print(data.head())
 
-    # Fit a 2nd degree 2D polynomial to the anomaly data
+    # Fit a 1st degree 2D polynomial to the data
     coordinates = (data.longitude, data.latitude)
-    trend = vd.Trend(degree=2).fit(coordinates, data.total_field_anomaly_nt)
+    trend = vd.Trend(degree=1).fit(coordinates, data.air_temperature_c)
     print("\nTrend estimator:", trend)
 
     # Add the estimated trend and the residual data to the DataFrame
     data["trend"] = trend.predict(coordinates)
-    data["residual"] = data.total_field_anomaly_nt - data.trend
+    data["residual"] = data.air_temperature_c - data.trend
     print("\nUpdated DataFrame:")
     print(data.head())
 
@@ -91,27 +93,27 @@ to remove the clear positive trend from the Rio de Janeiro magnetic anomaly data
         ax = plt.subplot(2, 2, i, projection=ccrs.Mercator())
         ax.set_title(title)
         # Set vmin and vmax to the extremes of the original data
-        maxabs = vd.maxabs(data.total_field_anomaly_nt)
+        maxabs = vd.maxabs(data.air_temperature_c)
         mappable = ax.scatter(
             data.longitude,
             data.latitude,
             c=data[column],
-            s=1,
+            s=50,
             cmap="seismic",
             vmin=-maxabs,
             vmax=maxabs,
             transform=crs,
         )
         # Set the proper ticks for a Cartopy map
-        vd.datasets.setup_rio_magnetic_map(ax)
+        vd.datasets.setup_texas_wind_map(ax)
         return mappable
 
 
-    plt.figure(figsize=(9, 8))
+    plt.figure(figsize=(10, 9.5))
 
     # Plot the data fields and capture the mappable returned by scatter to use for
     # the colorbar
-    mappable = plot_data("total_field_anomaly_nt", 1, "Original magnetic anomaly")
+    mappable = plot_data("air_temperature_c", 1, "Original data")
     plot_data("trend", 2, "Regional trend")
     plot_data("residual", 3, "Residual")
 
@@ -119,17 +121,15 @@ to remove the clear positive trend from the Rio de Janeiro magnetic anomaly data
     # removed
     ax = plt.subplot(2, 2, 4)
     ax.set_title("Distribution of data")
-    ax.hist(data.total_field_anomaly_nt, bins="auto", alpha=0.7, label="Original data")
+    ax.hist(data.air_temperature_c, bins="auto", alpha=0.7, label="Original data")
     ax.hist(data.residual, bins="auto", alpha=0.7, label="Residuals")
     ax.legend()
-    ax.set_xlabel("Total field anomaly (nT)")
+    ax.set_xlabel("Air temperature (C)")
 
     # Add a single colorbar on top of the histogram plot where there is some space
-    cax = plt.axes((0.58, 0.44, 0.18, 0.015))
-    cb = plt.colorbar(
-        mappable, cax=cax, orientation="horizontal", ticks=np.arange(-800, 801, 400)
-    )
-    cb.set_label("nT")
+    cax = plt.axes((0.35, 0.44, 0.10, 0.01))
+    cb = plt.colorbar(mappable, cax=cax, orientation="horizontal",)
+    cb.set_label("C")
 
     plt.tight_layout()
     plt.show()
@@ -137,7 +137,7 @@ to remove the clear positive trend from the Rio de Janeiro magnetic anomaly data
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.906 seconds)
+   **Total running time of the script:** ( 0 minutes  0.439 seconds)
 
 
 .. _sphx_glr_download_gallery_trend.py:

@@ -29,8 +29,9 @@ and use weights based on the data uncertainty during gridding.
  .. code-block:: none
 
     Chain(steps=[('mean',
-                  BlockMean(adjust='spacing', center_coordinates=False, region=None,
-                            shape=None, spacing=9250.0, uncertainty=True)),
+                  BlockMean(adjust='spacing', center_coordinates=False,
+                            drop_coords=True, region=None, shape=None,
+                            spacing=9250.0, uncertainty=True)),
                  ('spline',
                   Spline(damping=1e-10, engine='auto', force_coords=None,
                          mindist=1e-05))])
@@ -38,6 +39,7 @@ and use weights based on the data uncertainty during gridding.
     Score: 0.819
     /home/travis/build/fatiando/verde/examples/spline_weights.py:110: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations. 
       plt.tight_layout()
+
 
 
 
@@ -153,7 +155,7 @@ and use weights based on the data uncertainty during gridding.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.942 seconds)
+   **Total running time of the script:** ( 0 minutes  1.375 seconds)
 
 
 .. _sphx_glr_download_gallery_spline_weights.py:

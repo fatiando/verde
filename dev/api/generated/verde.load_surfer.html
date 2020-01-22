@@ -43,7 +43,7 @@
   <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="verde.datasets.CheckerBoard" href="verde.datasets.CheckerBoard.html" />
+    <link rel="next" title="verde.datasets.locate" href="verde.datasets.locate.html" />
     <link rel="prev" title="verde.median_distance" href="verde.median_distance.html" />
     <!-- Google Analytics tracking code -->
     <script>
@@ -169,7 +169,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -247,39 +247,28 @@
 <h1>verde.load_surfer<a class="headerlink" href="#verde-load-surfer" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="verde.load_surfer">
-<code class="descclassname">verde.</code><code class="descname">load_surfer</code><span class="sig-paren">(</span><em>fname</em>, <em>dtype='float64'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/io.html#load_surfer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.load_surfer" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">verde.</code><code class="sig-name descname">load_surfer</code><span class="sig-paren">(</span><em class="sig-param">fname</em>, <em class="sig-param">dtype='float64'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/io.html#load_surfer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.load_surfer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read data from a Surfer ASCII grid file.</p>
 <p>This function reads a Surfer grid file, masks any NaNs in the data,
-and outputs a <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.12.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> that contains easting and northing
+and outputs a <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> that contains easting and northing
 coordinates, data values, and associated file metadata.</p>
 <p>Surfer is a contouring, griding and surface mapping software
 from GoldenSoftware. The names and logos for Surfer and Golden
 Software are registered trademarks of Golden Software, Inc.</p>
 <p><a class="reference external" href="http://www.goldensoftware.com/products/surfer">http://www.goldensoftware.com/products/surfer</a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>fname</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or file-like object</span></dt>
-<dd><p class="first last">Name or path of the Surfer grid file or an open file (or file-like) object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><em>file-like object</em>) – Name or path of the Surfer grid file or an open file (or file-like)
+object.</p></li>
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.17)"><em>numpy.dtype</em></a>) – The type of variable used for the data. Default is <code class="docutils literal notranslate"><span class="pre">float64</span></code>. Use
+<code class="docutils literal notranslate"><span class="pre">float32</span></code> if the data are large and precision is not an issue.</p></li>
+</ul>
 </dd>
-<dt><strong>dtype</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or numpy.dtype</span></dt>
-<dd><p class="first last">The type of variable used for the data. Default is <code class="docutils literal notranslate"><span class="pre">float64</span></code>. Use
-<code class="docutils literal notranslate"><span class="pre">float32</span></code> if the data are large and precision is not an issue.</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>data</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.12.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a></span></dt>
-<dd><p class="first last">A 2D grid with the data.</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>data</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – A 2D grid with the data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -292,7 +281,7 @@ Software are registered trademarks of Golden Software, Inc.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="verde.datasets.CheckerBoard.html" class="btn btn-neutral float-right" title="verde.datasets.CheckerBoard" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="verde.datasets.locate.html" class="btn btn-neutral float-right" title="verde.datasets.locate" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="verde.median_distance.html" class="btn btn-neutral float-left" title="verde.median_distance" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -304,9 +293,9 @@ Software are registered trademarks of Golden Software, Inc.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

@@ -174,7 +174,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -252,59 +252,48 @@
 <h1>verde.median_distance<a class="headerlink" href="#verde-median-distance" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="verde.median_distance">
-<code class="descclassname">verde.</code><code class="descname">median_distance</code><span class="sig-paren">(</span><em>coordinates</em>, <em>k_nearest=1</em>, <em>projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/distances.html#median_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.median_distance" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">verde.</code><code class="sig-name descname">median_distance</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">k_nearest=1</em>, <em class="sig-param">projection=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/distances.html#median_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.median_distance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Median distance between the <em>k</em> nearest neighbors of each point.</p>
-<p>For each point specified in <em>coordinates</em>, calculate the median of the distance to
-its <em>k_nearest</em> neighbors among the other points in the dataset. Sparse uniformly
-spaced datasets can use <em>k_nearest</em> of 1. Datasets with points clustered into tight
-groups (e.g., densely sampled along a flight line or ship treck) will have very
-small distances to the closest neighbors, which is not representative of the actual
-median spacing because it doesn’t take the spacing between lines into account. In
-these cases, a median of the 10 or 20 nearest neighbors might be more
+<p>For each point specified in <em>coordinates</em>, calculate the median of the
+distance to its <em>k_nearest</em> neighbors among the other points in the
+dataset. Sparse uniformly spaced datasets can use <em>k_nearest</em> of 1.
+Datasets with points clustered into tight groups (e.g., densely sampled
+along a flight line or ship treck) will have very small distances to the
+closest neighbors, which is not representative of the actual median spacing
+because it doesn’t take the spacing between lines into account. In these
+cases, a median of the 10 or 20 nearest neighbors might be more
 representative.</p>
-<p>The distances calculated are Cartesian (l2-norms) and horizontal (only the first two
-coordinate arrays are used). If the coordinates are in geodetic latitude and
-longitude, provide a <em>projection</em> function to convert them to Cartesian before doing
-the computations.</p>
+<p>The distances calculated are Cartesian (l2-norms) and horizontal (only the
+first two coordinate arrays are used). If the coordinates are in geodetic
+latitude and longitude, provide a <em>projection</em> function to convert them to
+Cartesian before doing the computations.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If installed, package <code class="docutils literal notranslate"><span class="pre">pykdtree</span></code> will be used instead of
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.cKDTree.html#scipy.spatial.cKDTree" title="(in SciPy v1.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.spatial.cKDTree</span></code></a> for better performance.</p>
+<p class="admonition-title">Note</p>
+<p>If installed, package <code class="docutils literal notranslate"><span class="pre">pykdtree</span></code> will be used instead of
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.cKDTree.html#scipy.spatial.cKDTree" title="(in SciPy v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.spatial.cKDTree</span></code></a> for better performance.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>coordinates</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of arrays</span></dt>
-<dd><p class="first last">Arrays with the coordinates of each data point. Should be in the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Arrays with the coordinates of each data point. Should be in the
 following order: (easting, northing, vertical, …). Only the first two
 coordinates (assumed to be the horizontal) will be used in the distance
-computations.</p>
-</dd>
-<dt><strong>k_nearest</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Will calculate the median of the <em>k</em> nearest neighbors of each point. A value of
-1 will result in the distance to nearest neighbor of each data point.</p>
-</dd>
-<dt><strong>projection</strong> <span class="classifier-delimiter">:</span> <span class="classifier">callable or None</span></dt>
-<dd><p class="first last">If not None, then should be a callable object (like a function)
+computations.</p></li>
+<li><p><strong>k_nearest</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Will calculate the median of the <em>k</em> nearest neighbors of each point. A
+value of 1 will result in the distance to nearest neighbor of each data
+point.</p></li>
+<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – If not None, then should be a callable object (like a function)
 <code class="docutils literal notranslate"><span class="pre">projection(easting,</span> <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code> that
 takes in easting and northing coordinate arrays and returns projected
-northing and easting coordinate arrays.</p>
+northing and easting coordinate arrays.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>distances</strong> (<em>array</em>) – An array with the median distances to the <em>k</em> nearest neighbors of each
+data point. The array will have the same shape as the input coordinate
+arrays.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>distances</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array</span></dt>
-<dd><p class="first last">An array with the median distances to the <em>k</em> nearest neighbors of each data
-point. The array will have the same shape as the input coordinate arrays.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -320,13 +309,13 @@ point. The array will have the same shape as the input coordinate arrays.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">distance</span> <span class="o">=</span> <span class="n">median_distance</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">k_nearest</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># The 3 nearest points are at a distance of 1 but on the corners they are</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># [1, 1, sqrt(2)] away. The median for these points is also 1.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># The 3 nearest points are at a distance of 1 but on the corners they</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># are [1, 1, sqrt(2)] away. The median for these points is also 1.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">distance</span> <span class="o">=</span> <span class="n">median_distance</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">k_nearest</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># The 4 nearest points are at a distance of 1 but on the corners they are</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># [1, 1, sqrt(2), 2] away.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># The 4 nearest points are at a distance of 1 but on the corners they</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># are [1, 1, sqrt(2), 2] away.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">distance</span> <span class="o">=</span> <span class="n">median_distance</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">k_nearest</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="p">])))</span>
 <span class="go">1.21</span>
@@ -362,9 +351,9 @@ point. The array will have the same shape as the input coordinate arrays.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

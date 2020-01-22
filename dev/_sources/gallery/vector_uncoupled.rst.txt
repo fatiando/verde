@@ -7,15 +7,16 @@
 .. _sphx_glr_gallery_vector_uncoupled.py:
 
 
-Gridding 2D vectors (uncoupled)
-===============================
+Gridding 2D vectors
+===================
 
 We can use :class:`verde.Vector` to simultaneously process and grid all
-components of vector data. Each component is processed and gridded separately (see
-:class:`verde.VectorSpline2D` for a coupled alternative) but we have the convenience of
-dealing with a single estimator. :class:`verde.Vector` can be combined with
-:class:`verde.Trend`, :class:`verde.Spline`, and :class:`verde.Chain` to create a full
-processing pipeline.
+components of vector data. Each component is processed and gridded separately
+(see `Erizo <https://github.com/fatiando/erizo>`__ for an elastically coupled
+alternative) but we have the convenience of dealing with a single estimator.
+:class:`verde.Vector` can be combined with :class:`verde.Trend`,
+:class:`verde.Spline`, and :class:`verde.Chain` to create a full processing
+pipeline.
 
 
 
@@ -39,7 +40,8 @@ processing pipeline.
     [5 rows x 6 columns]
     Chain(steps=[('mean',
                   BlockReduce(adjust='spacing', center_coordinates=False,
-                              reduction=<function mean at 0x2b509525eb70>,
+                              drop_coords=True,
+                              reduction=<function mean at 0x7f2925ae4e18>,
                               region=None, shape=None, spacing=37000.0)),
                  ('trend', Vector(components=[Trend(degree=1), Trend(degree=1)])),
                  ('spline',
@@ -53,8 +55,9 @@ processing pipeline.
       u, v = self.projection.transform_vectors(t, x, y, u, v)
     /home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:1752: RuntimeWarning: invalid value encountered in greater
       u, v = self.projection.transform_vectors(t, x, y, u, v)
-    /home/travis/build/fatiando/verde/examples/vector_uncoupled.py:100: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations. 
+    /home/travis/build/fatiando/verde/examples/vector_uncoupled.py:101: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations. 
       plt.tight_layout()
+
 
 
 
@@ -159,7 +162,7 @@ processing pipeline.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.372 seconds)
+   **Total running time of the script:** ( 0 minutes  0.224 seconds)
 
 
 .. _sphx_glr_download_gallery_vector_uncoupled.py:

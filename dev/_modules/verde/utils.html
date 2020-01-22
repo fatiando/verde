@@ -153,7 +153,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -228,38 +228,49 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">functools</span>
 
+<span class="kn">import</span> <span class="nn">dask</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="k">import</span> <span class="n">cKDTree</span>  <span class="c1"># pylint: disable=no-name-in-module</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">cKDTree</span>  <span class="c1"># pylint: disable=no-name-in-module</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pykdtree.kdtree</span> <span class="k">import</span> <span class="n">KDTree</span> <span class="k">as</span> <span class="n">pyKDTree</span>
+    <span class="kn">from</span> <span class="nn">pykdtree.kdtree</span> <span class="kn">import</span> <span class="n">KDTree</span> <span class="k">as</span> <span class="n">pyKDTree</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">pyKDTree</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="kn">from</span> <span class="nn">.base.utils</span> <span class="k">import</span> <span class="n">check_data</span><span class="p">,</span> <span class="n">n_1d_arrays</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">numba</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">numba</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="kn">from</span> <span class="nn">.base.utils</span> <span class="kn">import</span> <span class="n">check_data</span><span class="p">,</span> <span class="n">n_1d_arrays</span>
 
 
-<span class="k">class</span> <span class="nc">DummyClient</span><span class="p">:</span>  <span class="c1"># pylint: disable=no-self-use,too-few-public-methods</span>
+<span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">delayed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Dummy client to mimic a dask.distributed.Client for immediate local</span>
-<span class="sd">    execution.</span>
+<span class="sd">    Decide how to wrap a function for Dask depending on the options given.</span>
 
-<span class="sd">    &gt;&gt;&gt; client = DummyClient()</span>
-<span class="sd">    &gt;&gt;&gt; client.submit(sum, (1, 2, 3))</span>
-<span class="sd">    6</span>
-<span class="sd">    &gt;&gt;&gt; print(client.scatter(&quot;bla&quot;))</span>
-<span class="sd">    bla</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    function : callable</span>
+<span class="sd">        The function that will be called.</span>
+<span class="sd">    delayed : bool</span>
+<span class="sd">        If True, will wrap the function in :func:`dask.delayed`.</span>
+<span class="sd">    client : None or dask.distributed Client</span>
+<span class="sd">        If *delayed* is False and *client* is not None, will return a partial</span>
+<span class="sd">        execution of the ``client.submit`` with the function as first argument.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    function : callable</span>
+<span class="sd">        The function wrapped in Dask.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">submit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="s2">&quot;Execute function with the given arguments and return its output&quot;</span>
-        <span class="k">return</span> <span class="n">function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">scatter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="s2">&quot;Does nothing but return the input&quot;</span>
-        <span class="k">return</span> <span class="n">value</span>
+    <span class="k">if</span> <span class="n">delayed</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">,</span> <span class="n">function</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">function</span>
 
 
 <span class="k">def</span> <span class="nf">parse_engine</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
@@ -269,7 +280,8 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    engine : str</span>
-<span class="sd">        The name of the engine. If ``&quot;auto&quot;`` will favor numba if it&#39;s available.</span>
+<span class="sd">        The name of the engine. If ``&quot;auto&quot;`` will favor numba if it&#39;s</span>
+<span class="sd">        available.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -281,18 +293,15 @@
     <span class="k">if</span> <span class="n">engine</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">engines</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid engine &#39;</span><span class="si">{}</span><span class="s2">&#39;. Must be in </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">engines</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">engine</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">numba</span>  <span class="c1"># pylint: disable=unused-variable,unused-import</span>
-
-            <span class="k">return</span> <span class="s2">&quot;numba&quot;</span>
-        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">numba</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;numpy&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;numba&quot;</span>
     <span class="k">return</span> <span class="n">engine</span>
 
 
 <span class="k">def</span> <span class="nf">dummy_jit</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Replace numba.jit if not installed with a function that raises RunTimeError.</span>
+<span class="sd">    Replace numba.jit if not installed with a function that raises RunTimeError</span>
 
 <span class="sd">    Use as a decorator.</span>
 
@@ -304,7 +313,8 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    function</span>
-<span class="sd">        A function that raises :class:`RunTimeError` warning that numba isn&#39;t installed.</span>
+<span class="sd">        A function that raises :class:`RunTimeError` warning that numba isn&#39;t</span>
+<span class="sd">        installed.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -387,8 +397,8 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    args</span>
-<span class="sd">        One or more arrays. If more than one are given, a single maximum will be</span>
-<span class="sd">        calculated across all arrays.</span>
+<span class="sd">        One or more arrays. If more than one are given, a single maximum will</span>
+<span class="sd">        be calculated across all arrays.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -403,8 +413,8 @@
 <span class="sd">    &gt;&gt;&gt; maxabs((1, -10.5, 25, 2), (0.1, 100, -500), (-200, -300, -0.1, -499))</span>
 <span class="sd">    500.0</span>
 
-<span class="sd">    If the array contains NaNs, we&#39;ll use the ``nan`` version of of the numpy functions</span>
-<span class="sd">    by default. You can turn this off through the *nan* argument.</span>
+<span class="sd">    If the array contains NaNs, we&#39;ll use the ``nan`` version of of the numpy</span>
+<span class="sd">    functions by default. You can turn this off through the *nan* argument.</span>
 
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">    &gt;&gt;&gt; maxabs((1, -10, 25, 2, 3, np.nan))</span>
@@ -427,9 +437,9 @@
 <span class="sd">    Convert a grid to a table with the values and coordinates of each point.</span>
 
 <span class="sd">    Takes a 2D grid as input, extracts the coordinates and runs them through</span>
-<span class="sd">    :func:`numpy.meshgrid` to create a 2D table. Works for 2D grids and any number of</span>
-<span class="sd">    variables. Use cases includes passing gridded data to functions that expect data in</span>
-<span class="sd">    XYZ format, such as :class:`verde.BlockReduce`</span>
+<span class="sd">    :func:`numpy.meshgrid` to create a 2D table. Works for 2D grids and any</span>
+<span class="sd">    number of variables. Use cases includes passing gridded data to functions</span>
+<span class="sd">    that expect data in XYZ format, such as :class:`verde.BlockReduce`</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -505,8 +515,8 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a KD-Tree object with the given coordinate arrays.</span>
 
-<span class="sd">    Automatically transposes and flattens the coordinate arrays into a single matrix for</span>
-<span class="sd">    use in the KD-Tree classes.</span>
+<span class="sd">    Automatically transposes and flattens the coordinate arrays into a single</span>
+<span class="sd">    matrix for use in the KD-Tree classes.</span>
 
 <span class="sd">    All other keyword arguments are passed to the KD-Tree class.</span>
 
@@ -519,11 +529,12 @@
 <span class="sd">    ----------</span>
 <span class="sd">    coordinates : tuple of arrays</span>
 <span class="sd">        Arrays with the coordinates of each data point. Should be in the</span>
-<span class="sd">        following order: (easting, northing, vertical, ...). All coordinate arrays are</span>
-<span class="sd">        used.</span>
+<span class="sd">        following order: (easting, northing, vertical, ...). All coordinate</span>
+<span class="sd">        arrays are used.</span>
 <span class="sd">    use_pykdtree : bool</span>
 <span class="sd">        If True, will prefer ``pykdtree`` (if installed) over</span>
-<span class="sd">        :class:`scipy.spatial.cKDTree`. Otherwise, always use the scipy version.</span>
+<span class="sd">        :class:`scipy.spatial.cKDTree`. Otherwise, always use the scipy</span>
+<span class="sd">        version.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -549,9 +560,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

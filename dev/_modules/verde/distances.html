@@ -153,7 +153,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -228,27 +228,28 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">kdtree</span>
-<span class="kn">from</span> <span class="nn">.base.utils</span> <span class="k">import</span> <span class="n">n_1d_arrays</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">kdtree</span>
+<span class="kn">from</span> <span class="nn">.base.utils</span> <span class="kn">import</span> <span class="n">n_1d_arrays</span>
 
 
 <div class="viewcode-block" id="median_distance"><a class="viewcode-back" href="../../api/generated/verde.median_distance.html#verde.median_distance">[docs]</a><span class="k">def</span> <span class="nf">median_distance</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">k_nearest</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Median distance between the *k* nearest neighbors of each point.</span>
 
-<span class="sd">    For each point specified in *coordinates*, calculate the median of the distance to</span>
-<span class="sd">    its *k_nearest* neighbors among the other points in the dataset. Sparse uniformly</span>
-<span class="sd">    spaced datasets can use *k_nearest* of 1. Datasets with points clustered into tight</span>
-<span class="sd">    groups (e.g., densely sampled along a flight line or ship treck) will have very</span>
-<span class="sd">    small distances to the closest neighbors, which is not representative of the actual</span>
-<span class="sd">    median spacing because it doesn&#39;t take the spacing between lines into account. In</span>
-<span class="sd">    these cases, a median of the 10 or 20 nearest neighbors might be more</span>
+<span class="sd">    For each point specified in *coordinates*, calculate the median of the</span>
+<span class="sd">    distance to its *k_nearest* neighbors among the other points in the</span>
+<span class="sd">    dataset. Sparse uniformly spaced datasets can use *k_nearest* of 1.</span>
+<span class="sd">    Datasets with points clustered into tight groups (e.g., densely sampled</span>
+<span class="sd">    along a flight line or ship treck) will have very small distances to the</span>
+<span class="sd">    closest neighbors, which is not representative of the actual median spacing</span>
+<span class="sd">    because it doesn&#39;t take the spacing between lines into account. In these</span>
+<span class="sd">    cases, a median of the 10 or 20 nearest neighbors might be more</span>
 <span class="sd">    representative.</span>
 
-<span class="sd">    The distances calculated are Cartesian (l2-norms) and horizontal (only the first two</span>
-<span class="sd">    coordinate arrays are used). If the coordinates are in geodetic latitude and</span>
-<span class="sd">    longitude, provide a *projection* function to convert them to Cartesian before doing</span>
-<span class="sd">    the computations.</span>
+<span class="sd">    The distances calculated are Cartesian (l2-norms) and horizontal (only the</span>
+<span class="sd">    first two coordinate arrays are used). If the coordinates are in geodetic</span>
+<span class="sd">    latitude and longitude, provide a *projection* function to convert them to</span>
+<span class="sd">    Cartesian before doing the computations.</span>
 
 <span class="sd">    .. note::</span>
 
@@ -263,8 +264,9 @@
 <span class="sd">        coordinates (assumed to be the horizontal) will be used in the distance</span>
 <span class="sd">        computations.</span>
 <span class="sd">    k_nearest : int</span>
-<span class="sd">        Will calculate the median of the *k* nearest neighbors of each point. A value of</span>
-<span class="sd">        1 will result in the distance to nearest neighbor of each data point.</span>
+<span class="sd">        Will calculate the median of the *k* nearest neighbors of each point. A</span>
+<span class="sd">        value of 1 will result in the distance to nearest neighbor of each data</span>
+<span class="sd">        point.</span>
 <span class="sd">    projection : callable or None</span>
 <span class="sd">        If not None, then should be a callable object (like a function)</span>
 <span class="sd">        ``projection(easting, northing) -&gt; (proj_easting, proj_northing)`` that</span>
@@ -274,8 +276,9 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    distances : array</span>
-<span class="sd">        An array with the median distances to the *k* nearest neighbors of each data</span>
-<span class="sd">        point. The array will have the same shape as the input coordinate arrays.</span>
+<span class="sd">        An array with the median distances to the *k* nearest neighbors of each</span>
+<span class="sd">        data point. The array will have the same shape as the input coordinate</span>
+<span class="sd">        arrays.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -294,13 +297,13 @@
 <span class="sd">    &gt;&gt;&gt; distance = median_distance(coords, k_nearest=2)</span>
 <span class="sd">    &gt;&gt;&gt; np.allclose(distance, 1)</span>
 <span class="sd">    True</span>
-<span class="sd">    &gt;&gt;&gt; # The 3 nearest points are at a distance of 1 but on the corners they are</span>
-<span class="sd">    &gt;&gt;&gt; # [1, 1, sqrt(2)] away. The median for these points is also 1.</span>
+<span class="sd">    &gt;&gt;&gt; # The 3 nearest points are at a distance of 1 but on the corners they</span>
+<span class="sd">    &gt;&gt;&gt; # are [1, 1, sqrt(2)] away. The median for these points is also 1.</span>
 <span class="sd">    &gt;&gt;&gt; distance = median_distance(coords, k_nearest=3)</span>
 <span class="sd">    &gt;&gt;&gt; np.allclose(distance, 1)</span>
 <span class="sd">    True</span>
-<span class="sd">    &gt;&gt;&gt; # The 4 nearest points are at a distance of 1 but on the corners they are</span>
-<span class="sd">    &gt;&gt;&gt; # [1, 1, sqrt(2), 2] away.</span>
+<span class="sd">    &gt;&gt;&gt; # The 4 nearest points are at a distance of 1 but on the corners they</span>
+<span class="sd">    &gt;&gt;&gt; # are [1, 1, sqrt(2), 2] away.</span>
 <span class="sd">    &gt;&gt;&gt; distance = median_distance(coords, k_nearest=4)</span>
 <span class="sd">    &gt;&gt;&gt; print(&quot;{:.2f}&quot;.format(np.median([1, 1, np.sqrt(2), 2])))</span>
 <span class="sd">    1.21</span>
@@ -317,10 +320,11 @@
     <span class="k">if</span> <span class="n">projection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">coords</span> <span class="o">=</span> <span class="n">projection</span><span class="p">(</span><span class="o">*</span><span class="n">coords</span><span class="p">)</span>
     <span class="n">tree</span> <span class="o">=</span> <span class="n">kdtree</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
-    <span class="c1"># The k=1 nearest point is going to be the point itself (with a distance of zero)</span>
-    <span class="c1"># because we don&#39;t remove each point from the dataset in turn. We don&#39;t care about</span>
-    <span class="c1"># that distance so start with the second closest. Only get the first element</span>
-    <span class="c1"># returned (the distance) and ignore the rest (the neighbor indices).</span>
+    <span class="c1"># The k=1 nearest point is going to be the point itself (with a distance of</span>
+    <span class="c1"># zero) because we don&#39;t remove each point from the dataset in turn. We</span>
+    <span class="c1"># don&#39;t care about that distance so start with the second closest. Only get</span>
+    <span class="c1"># the first element returned (the distance) and ignore the rest (the</span>
+    <span class="c1"># neighbor indices).</span>
     <span class="n">k_distances</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">coords</span><span class="p">),</span> <span class="n">k</span><span class="o">=</span><span class="n">k_nearest</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">:]</span>
     <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">k_distances</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">distances</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span></div>
@@ -336,9 +340,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

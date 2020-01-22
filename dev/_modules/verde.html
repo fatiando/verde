@@ -153,7 +153,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -221,11 +221,11 @@
            <div itemprop="articleBody">
             
   <h1>Source code for verde</h1><div class="highlight"><pre>
-<span></span><span class="c1"># pylint: disable=missing-docstring</span>
+<span></span><span class="c1"># pylint: disable=missing-docstring,import-outside-toplevel</span>
 <span class="c1"># Import functions/classes to make the public API</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">datasets</span>
-<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">version</span>
-<span class="kn">from</span> <span class="nn">.coordinates</span> <span class="k">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">datasets</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">version</span>
+<span class="kn">from</span> <span class="nn">.coordinates</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">scatter_points</span><span class="p">,</span>
     <span class="n">grid_coordinates</span><span class="p">,</span>
     <span class="n">inside</span><span class="p">,</span>
@@ -236,17 +236,17 @@
     <span class="n">project_region</span><span class="p">,</span>
     <span class="n">longitude_continuity</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.mask</span> <span class="k">import</span> <span class="n">distance_mask</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">variance_to_weights</span><span class="p">,</span> <span class="n">maxabs</span><span class="p">,</span> <span class="n">grid_to_table</span>
-<span class="kn">from</span> <span class="nn">.io</span> <span class="k">import</span> <span class="n">load_surfer</span>
-<span class="kn">from</span> <span class="nn">.distances</span> <span class="k">import</span> <span class="n">median_distance</span>
-<span class="kn">from</span> <span class="nn">.blockreduce</span> <span class="k">import</span> <span class="n">BlockReduce</span><span class="p">,</span> <span class="n">BlockMean</span>
-<span class="kn">from</span> <span class="nn">.scipygridder</span> <span class="k">import</span> <span class="n">ScipyGridder</span>
-<span class="kn">from</span> <span class="nn">.trend</span> <span class="k">import</span> <span class="n">Trend</span>
-<span class="kn">from</span> <span class="nn">.chain</span> <span class="k">import</span> <span class="n">Chain</span>
-<span class="kn">from</span> <span class="nn">.spline</span> <span class="k">import</span> <span class="n">Spline</span><span class="p">,</span> <span class="n">SplineCV</span>
-<span class="kn">from</span> <span class="nn">.model_selection</span> <span class="k">import</span> <span class="n">cross_val_score</span><span class="p">,</span> <span class="n">train_test_split</span>
-<span class="kn">from</span> <span class="nn">.vector</span> <span class="k">import</span> <span class="n">Vector</span><span class="p">,</span> <span class="n">VectorSpline2D</span>
+<span class="kn">from</span> <span class="nn">.mask</span> <span class="kn">import</span> <span class="n">distance_mask</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">variance_to_weights</span><span class="p">,</span> <span class="n">maxabs</span><span class="p">,</span> <span class="n">grid_to_table</span>
+<span class="kn">from</span> <span class="nn">.io</span> <span class="kn">import</span> <span class="n">load_surfer</span>
+<span class="kn">from</span> <span class="nn">.distances</span> <span class="kn">import</span> <span class="n">median_distance</span>
+<span class="kn">from</span> <span class="nn">.blockreduce</span> <span class="kn">import</span> <span class="n">BlockReduce</span><span class="p">,</span> <span class="n">BlockMean</span>
+<span class="kn">from</span> <span class="nn">.scipygridder</span> <span class="kn">import</span> <span class="n">ScipyGridder</span>
+<span class="kn">from</span> <span class="nn">.trend</span> <span class="kn">import</span> <span class="n">Trend</span>
+<span class="kn">from</span> <span class="nn">.chain</span> <span class="kn">import</span> <span class="n">Chain</span>
+<span class="kn">from</span> <span class="nn">.spline</span> <span class="kn">import</span> <span class="n">Spline</span><span class="p">,</span> <span class="n">SplineCV</span>
+<span class="kn">from</span> <span class="nn">.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span><span class="p">,</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">.vector</span> <span class="kn">import</span> <span class="n">Vector</span><span class="p">,</span> <span class="n">VectorSpline2D</span>
 
 
 <div class="viewcode-block" id="test"><a class="viewcode-back" href="../api/generated/verde.test.html#verde.test">[docs]</a><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">doctest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">coverage</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figures</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -307,9 +307,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

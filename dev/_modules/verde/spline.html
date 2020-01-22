@@ -153,7 +153,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -227,90 +227,118 @@
 <span class="sd">Biharmonic splines in 2D.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
-<span class="kn">from</span> <span class="nn">warnings</span> <span class="k">import</span> <span class="n">warn</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="k">import</span> <span class="n">check_is_fitted</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
 
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">n_1d_arrays</span><span class="p">,</span> <span class="n">BaseGridder</span><span class="p">,</span> <span class="n">check_fit_input</span><span class="p">,</span> <span class="n">least_squares</span>
-<span class="kn">from</span> <span class="nn">.coordinates</span> <span class="k">import</span> <span class="n">get_region</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">DummyClient</span><span class="p">,</span> <span class="n">parse_engine</span>
-<span class="kn">from</span> <span class="nn">.model_selection</span> <span class="k">import</span> <span class="n">cross_val_score</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">n_1d_arrays</span><span class="p">,</span> <span class="n">BaseGridder</span><span class="p">,</span> <span class="n">check_fit_input</span><span class="p">,</span> <span class="n">least_squares</span>
+<span class="kn">from</span> <span class="nn">.coordinates</span> <span class="kn">import</span> <span class="n">get_region</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">dispatch</span><span class="p">,</span> <span class="n">parse_engine</span>
+<span class="kn">from</span> <span class="nn">.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">numba</span>
-    <span class="kn">from</span> <span class="nn">numba</span> <span class="k">import</span> <span class="n">jit</span>
+    <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">numba</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">dummy_jit</span> <span class="k">as</span> <span class="n">jit</span>
+    <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">dummy_jit</span> <span class="k">as</span> <span class="n">jit</span>
 
 
-<span class="c1"># Default arguments for numba.jit</span>
-<span class="n">JIT_ARGS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># Otherwise, DeprecationWarning won&#39;t be shown, kind of defeating the purpose.</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="SplineCV"><a class="viewcode-back" href="../../api/generated/verde.SplineCV.html#verde.SplineCV">[docs]</a><span class="k">class</span> <span class="nc">SplineCV</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Cross-validated biharmonic spline interpolation.</span>
 
-<span class="sd">    Similar to :class:`verde.Spline` but automatically chooses the best *damping* and</span>
-<span class="sd">    *mindist* parameters using cross-validation. Tests all combinations of the given</span>
-<span class="sd">    *dampings* and *mindists* and selects the maximum (or minimum) mean cross-validation</span>
-<span class="sd">    score (i.e., a grid search).</span>
+<span class="sd">    Similar to :class:`verde.Spline` but automatically chooses the best</span>
+<span class="sd">    *damping* and *mindist* parameters using cross-validation. Tests all</span>
+<span class="sd">    combinations of the given *dampings* and *mindists* and selects the maximum</span>
+<span class="sd">    (or minimum) mean cross-validation score (i.e., a grid search).</span>
 
-<span class="sd">    The grid search can optionally run in parallel using :mod:`dask`. To do this, pass</span>
-<span class="sd">    in a :class:`dask.distributed.Client` as the *client* argument. The client can</span>
-<span class="sd">    manage a process or thread pool in your local computer or a remote cluster.</span>
+<span class="sd">    This can optionally run in parallel using :mod:`dask`. To do this, use</span>
+<span class="sd">    ``delayed=True`` to dispatch computations with :func:`dask.delayed`.</span>
+<span class="sd">    In this case, each fit and score operation of the grid search will be</span>
+<span class="sd">    performed in parallel.</span>
 
-<span class="sd">    Other cross-validation generators from :mod:`sklearn.model_selection` can be used by</span>
-<span class="sd">    passing them through the *cv* argument.</span>
+<span class="sd">    .. note::</span>
+
+<span class="sd">        When using *delayed*, the ``scores_`` attribute will be</span>
+<span class="sd">        :func:`dask.delayed` objects instead of the actual scores. This is</span>
+<span class="sd">        because the scores are an intermediate step in the computations and</span>
+<span class="sd">        their results are not stored. If you need the scores, run</span>
+<span class="sd">        :func:`dask.compute` on ``scores_`` to calculate them. Be warned that</span>
+<span class="sd">        **this will run the grid search again**. It might still be faster than</span>
+<span class="sd">        serial execution but not necessarily.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        The ``client`` parameter is deprecated and will be removed in Verde</span>
+<span class="sd">        v2.0.0. Use ``delayed`` instead.</span>
+
+<span class="sd">    Other cross-validation generators from :mod:`sklearn.model_selection` can</span>
+<span class="sd">    be used by passing them through the *cv* argument.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    mindists : iterable or 1d array</span>
-<span class="sd">        List (or other iterable) of *mindist* parameter values to try. Can be considered</span>
-<span class="sd">        a minimum distance between the point forces and data points. Needed because the</span>
-<span class="sd">        Green&#39;s functions are singular when forces and data points coincide. Acts as a</span>
-<span class="sd">        fudge factor.</span>
+<span class="sd">        List (or other iterable) of *mindist* parameter values to try. Can be</span>
+<span class="sd">        considered a minimum distance between the point forces and data points.</span>
+<span class="sd">        Needed because the Green&#39;s functions are singular when forces and data</span>
+<span class="sd">        points coincide. Acts as a fudge factor.</span>
 <span class="sd">    dampings : iterable or 1d array</span>
-<span class="sd">        List (or other iterable) of *damping* parameter values to try. Is the positive</span>
-<span class="sd">        damping regularization parameter. Controls how much smoothness is imposed on the</span>
-<span class="sd">        estimated forces. If None, no regularization is used.</span>
+<span class="sd">        List (or other iterable) of *damping* parameter values to try. Is the</span>
+<span class="sd">        positive damping regularization parameter. Controls how much smoothness</span>
+<span class="sd">        is imposed on the estimated forces. If None, no regularization is used.</span>
 <span class="sd">    force_coords : None or tuple of arrays</span>
-<span class="sd">        The easting and northing coordinates of the point forces. If None (default),</span>
-<span class="sd">        then will be set to the data coordinates the first time</span>
+<span class="sd">        The easting and northing coordinates of the point forces. If None</span>
+<span class="sd">        (default), then will be set to the data coordinates the first time</span>
 <span class="sd">        :meth:`~verde.SplineCV.fit` is called.</span>
 <span class="sd">    engine : str</span>
-<span class="sd">        Computation engine for the Jacobian matrix and prediction. Can be ``&#39;auto&#39;``,</span>
-<span class="sd">        ``&#39;numba&#39;``, or ``&#39;numpy&#39;``. If ``&#39;auto&#39;``, will use numba if it is installed or</span>
-<span class="sd">        numpy otherwise. The numba version is multi-threaded and usually faster, which</span>
-<span class="sd">        makes fitting and predicting faster.</span>
+<span class="sd">        Computation engine for the Jacobian matrix and prediction. Can be</span>
+<span class="sd">        ``&#39;auto&#39;``, ``&#39;numba&#39;``, or ``&#39;numpy&#39;``. If ``&#39;auto&#39;``, will use numba</span>
+<span class="sd">        if it is installed or numpy otherwise. The numba version is</span>
+<span class="sd">        multi-threaded and usually faster, which makes fitting and predicting</span>
+<span class="sd">        faster.</span>
 <span class="sd">    cv : None or cross-validation generator</span>
-<span class="sd">        Any scikit-learn cross-validation generator. If not given, will use the default</span>
-<span class="sd">        set by :func:`verde.cross_val_score`.</span>
+<span class="sd">        Any scikit-learn cross-validation generator. If not given, will use the</span>
+<span class="sd">        default set by :func:`verde.cross_val_score`.</span>
 <span class="sd">    client : None or dask.distributed.Client</span>
-<span class="sd">        If None, then computations are run serially. Otherwise, should be a</span>
-<span class="sd">        dask ``Client`` object. It will be used to dispatch computations to the</span>
-<span class="sd">        dask cluster.</span>
-
+<span class="sd">        **DEPRECATED:** This option is deprecated and will be removed in Verde</span>
+<span class="sd">        v2.0.0. If None, then computations are run serially. Otherwise, should</span>
+<span class="sd">        be a dask ``Client`` object. It will be used to dispatch computations</span>
+<span class="sd">        to the dask cluster.</span>
+<span class="sd">    delayed : bool</span>
+<span class="sd">        If True, will use :func:`dask.delayed` to dispatch computations and</span>
+<span class="sd">        allow mod:`dask` to execute the grid search in parallel (see note</span>
+<span class="sd">        above).</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    force_ : array</span>
 <span class="sd">        The estimated forces that fit the observed data.</span>
 <span class="sd">    force_coords_ : tuple of arrays</span>
-<span class="sd">        The easting and northing coordinates of the point forces. Same as *force_coords*</span>
-<span class="sd">        if it is not None. Otherwise, same as the data locations used to fit the spline.</span>
+<span class="sd">        The easting and northing coordinates of the point forces. Same as</span>
+<span class="sd">        *force_coords* if it is not None. Otherwise, same as the data locations</span>
+<span class="sd">        used to fit the spline.</span>
 <span class="sd">    region_ : tuple</span>
 <span class="sd">        The boundaries (``[W, E, S, N]``) of the data used to fit the</span>
 <span class="sd">        interpolator. Used as the default region for the</span>
-<span class="sd">        :meth:`~verde.SplineCV.grid` and :meth:`~verde.SplineCV.scatter` methods.</span>
+<span class="sd">        :meth:`~verde.SplineCV.grid` and :meth:`~verde.SplineCV.scatter`</span>
+<span class="sd">        methods.</span>
 <span class="sd">    scores_ : array</span>
-<span class="sd">        The mean cross-validation score for each parameter combination.</span>
+<span class="sd">        The mean cross-validation score for each parameter combination. If</span>
+<span class="sd">        ``delayed=True``, will be a list of :func:`dask.delayed` objects (see</span>
+<span class="sd">        note above).</span>
 <span class="sd">    mindist_ : float</span>
 <span class="sd">        The optimal value for the *mindist* parameter.</span>
 <span class="sd">    damping_ : float</span>
 <span class="sd">        The optimal value for the *damping* parameter.</span>
+<span class="sd">    spline_ : :class:`verde.Spline`</span>
+<span class="sd">        A fitted :class:`~verde.Spline` with the optimal configuration</span>
+<span class="sd">        parameters.</span>
 
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
@@ -319,7 +347,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">mindists</span><span class="o">=</span><span class="p">(</span><span class="mf">1e3</span><span class="p">,</span> <span class="mf">10e3</span><span class="p">,</span> <span class="mf">100e3</span><span class="p">),</span>
         <span class="n">dampings</span><span class="o">=</span><span class="p">(</span><span class="mf">1e-10</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">),</span>
@@ -327,6 +355,7 @@
         <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
         <span class="n">cv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">delayed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dampings</span> <span class="o">=</span> <span class="n">dampings</span>
@@ -335,18 +364,27 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">engine</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cv</span> <span class="o">=</span> <span class="n">cv</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delayed</span> <span class="o">=</span> <span class="n">delayed</span>
+        <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;The &#39;client&#39; parameter of &#39;verde.SplineCV&#39; is &quot;</span>
+                <span class="s2">&quot;deprecated and will be removed in Verde 2.0.0. &quot;</span>
+                <span class="s2">&quot;Use the &#39;delayed&#39; parameter instead.&quot;</span><span class="p">,</span>
+                <span class="ne">DeprecationWarning</span><span class="p">,</span>
+            <span class="p">)</span>
 
 <div class="viewcode-block" id="SplineCV.fit"><a class="viewcode-back" href="../../api/generated/verde.SplineCV.html#verde.SplineCV.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Fit the biharmonic spline to the given data and automatically tune parameters.</span>
+<span class="sd">        Fit the spline to the given data and automatically tune parameters.</span>
 
-<span class="sd">        For each combination of the parameters given, computes the mean cross validation</span>
-<span class="sd">        score using :func:`verde.cross_val_score` and the given CV splitting class (the</span>
-<span class="sd">        *cv* parameter of this class). The configuration with the best score is then</span>
-<span class="sd">        chosen and used to fit the entire dataset.</span>
+<span class="sd">        For each combination of the parameters given, computes the mean cross</span>
+<span class="sd">        validation score using :func:`verde.cross_val_score` and the given CV</span>
+<span class="sd">        splitting class (the *cv* parameter of this class). The configuration</span>
+<span class="sd">        with the best score is then chosen and used to fit the entire dataset.</span>
 
 <span class="sd">        The data region is captured and used as default for the</span>
-<span class="sd">        :meth:`~verde.SplineCV.grid` and :meth:`~verde.SplineCV.scatter` methods.</span>
+<span class="sd">        :meth:`~verde.SplineCV.grid` and :meth:`~verde.SplineCV.scatter`</span>
+<span class="sd">        methods.</span>
 
 <span class="sd">        All input arrays must have the same shape.</span>
 
@@ -369,13 +407,6 @@
 <span class="sd">            Returns this estimator instance for chaining operations.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">client</span> <span class="o">=</span> <span class="n">DummyClient</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span>
-        <span class="c1"># If this is a parallel client, scattering the data makes sure each worker has a</span>
-        <span class="c1"># copy of the data so we minimize transfer.</span>
-        <span class="n">futures</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">))</span>
         <span class="n">parameter_sets</span> <span class="o">=</span> <span class="p">[</span>
             <span class="nb">dict</span><span class="p">(</span>
                 <span class="n">mindist</span><span class="o">=</span><span class="n">combo</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
@@ -385,51 +416,69 @@
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">combo</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mindists</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dampings</span><span class="p">)</span>
         <span class="p">]</span>
-        <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">parameter_sets</span><span class="p">:</span>
-            <span class="n">spline</span> <span class="o">=</span> <span class="n">Spline</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
-            <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
-                    <span class="n">cross_val_score</span><span class="p">,</span>
-                    <span class="n">spline</span><span class="p">,</span>
-                    <span class="n">coordinates</span><span class="o">=</span><span class="n">futures</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                    <span class="n">data</span><span class="o">=</span><span class="n">futures</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-                    <span class="n">weights</span><span class="o">=</span><span class="n">futures</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
-                    <span class="n">cv</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cv</span><span class="p">,</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">score</span><span class="o">.</span><span class="n">result</span><span class="p">()</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scores_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">best</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scores_</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_best</span> <span class="o">=</span> <span class="n">Spline</span><span class="p">(</span><span class="o">**</span><span class="n">parameter_sets</span><span class="p">[</span><span class="n">best</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_best</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
+            <span class="c1"># Deprecated and will be removed in v2.0.0</span>
+            <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">parameter_sets</span><span class="p">:</span>
+                <span class="n">spline</span> <span class="o">=</span> <span class="n">Spline</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+                <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
+                        <span class="n">cross_val_score</span><span class="p">,</span>
+                        <span class="n">spline</span><span class="p">,</span>
+                        <span class="n">coordinates</span><span class="o">=</span><span class="n">coordinates</span><span class="p">,</span>
+                        <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+                        <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span>
+                        <span class="n">cv</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cv</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">score</span><span class="o">.</span><span class="n">result</span><span class="p">())</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">params</span> <span class="ow">in</span> <span class="n">parameter_sets</span><span class="p">:</span>
+                <span class="n">spline</span> <span class="o">=</span> <span class="n">Spline</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+                <span class="n">score</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span>
+                    <span class="n">spline</span><span class="p">,</span>
+                    <span class="n">coordinates</span><span class="o">=</span><span class="n">coordinates</span><span class="p">,</span>
+                    <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+                    <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span>
+                    <span class="n">cv</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cv</span><span class="p">,</span>
+                    <span class="n">delayed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">delayed</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dispatch</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">delayed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">delayed</span><span class="p">)(</span><span class="n">score</span><span class="p">))</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">,</span> <span class="n">delayed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">delayed</span><span class="p">)(</span><span class="n">scores</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">delayed</span><span class="p">:</span>
+            <span class="n">best</span> <span class="o">=</span> <span class="n">best</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spline_</span> <span class="o">=</span> <span class="n">Spline</span><span class="p">(</span><span class="o">**</span><span class="n">parameter_sets</span><span class="p">[</span><span class="n">best</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spline_</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scores_</span> <span class="o">=</span> <span class="n">scores</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">force_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;The estimated forces that fit the data.&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best</span><span class="o">.</span><span class="n">force_</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spline_</span><span class="o">.</span><span class="n">force_</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">region_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;The bounding region of the data used to fit the spline&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best</span><span class="o">.</span><span class="n">region_</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spline_</span><span class="o">.</span><span class="n">region_</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">damping_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;The optimal damping parameter&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best</span><span class="o">.</span><span class="n">damping</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spline_</span><span class="o">.</span><span class="n">damping</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">mindist_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;The optimal mindist parameter&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best</span><span class="o">.</span><span class="n">mindist</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spline_</span><span class="o">.</span><span class="n">mindist</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">force_coords_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;The optimal force locations&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best</span><span class="o">.</span><span class="n">force_coords_</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spline_</span><span class="o">.</span><span class="n">force_coords_</span>
 
 <div class="viewcode-block" id="SplineCV.predict"><a class="viewcode-back" href="../../api/generated/verde.SplineCV.html#verde.SplineCV.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -451,8 +500,8 @@
 <span class="sd">            The data values evaluated on the given points.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;_best&quot;</span><span class="p">])</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span></div></div>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;spline_&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spline_</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Spline"><a class="viewcode-back" href="../../api/generated/verde.Spline.html#verde.Spline">[docs]</a><span class="k">class</span> <span class="nc">Spline</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
@@ -461,64 +510,71 @@
 
 <span class="sd">    This gridder assumes Cartesian coordinates.</span>
 
-<span class="sd">    Implements the 2D splines of [Sandwell1987]_. The Green&#39;s function for the spline</span>
-<span class="sd">    corresponds to the elastic deflection of a thin sheet subject to a vertical force.</span>
-<span class="sd">    For an observation point at the origin and a force at the coordinates given by the</span>
-<span class="sd">    vector :math:`\mathbf{x}`, the Green&#39;s function is:</span>
+<span class="sd">    Implements the 2D splines of [Sandwell1987]_. The Green&#39;s function for the</span>
+<span class="sd">    spline corresponds to the elastic deflection of a thin sheet subject to a</span>
+<span class="sd">    vertical force. For an observation point at the origin and a force at the</span>
+<span class="sd">    coordinates given by the vector :math:`\mathbf{x}`, the Green&#39;s function</span>
+<span class="sd">    is:</span>
 
 <span class="sd">    .. math::</span>
 
 <span class="sd">        g(\mathbf{x}) = \|\mathbf{x}\|^2 \left(\log \|\mathbf{x}\| - 1\right)</span>
 
-<span class="sd">    In practice, this function is not defined for data points that coincide with a</span>
-<span class="sd">    force. To prevent this, a fudge factor is added to :math:`\|\mathbf{x}\|`.</span>
+<span class="sd">    In practice, this function is not defined for data points that coincide</span>
+<span class="sd">    with a force. To prevent this, a fudge factor is added to</span>
+<span class="sd">    :math:`\|\mathbf{x}\|`.</span>
 
-<span class="sd">    The interpolation is performed by estimating forces that produce deflections that</span>
-<span class="sd">    fit the observed data (using least-squares). Then, the interpolated points can be</span>
-<span class="sd">    evaluated at any location.</span>
+<span class="sd">    The interpolation is performed by estimating forces that produce</span>
+<span class="sd">    deflections that fit the observed data (using least-squares). Then, the</span>
+<span class="sd">    interpolated points can be evaluated at any location.</span>
 
-<span class="sd">    By default, the forces will be placed at the same points as the input data given to</span>
-<span class="sd">    :meth:`~verde.Spline.fit`. This configuration provides an exact solution on top of</span>
-<span class="sd">    the data points. However, this solution can be unstable for certain configurations</span>
-<span class="sd">    of data points.</span>
+<span class="sd">    By default, the forces will be placed at the same points as the input data</span>
+<span class="sd">    given to :meth:`~verde.Spline.fit`. This configuration provides an exact</span>
+<span class="sd">    solution on top of the data points. However, this solution can be unstable</span>
+<span class="sd">    for certain configurations of data points.</span>
 
 <span class="sd">    Approximate (and more stable) solutions can be obtained by applying damping</span>
-<span class="sd">    regularization to smooth the estimated forces (and interpolated values) or by not</span>
-<span class="sd">    using the data coordinates to position the forces (use the *force_coords*</span>
-<span class="sd">    parameter).</span>
+<span class="sd">    regularization to smooth the estimated forces (and interpolated values) or</span>
+<span class="sd">    by not using the data coordinates to position the forces (use the</span>
+<span class="sd">    *force_coords* parameter).</span>
 
-<span class="sd">    Data weights can be used during fitting but only have an any effect when using the</span>
-<span class="sd">    approximate solutions.</span>
+<span class="sd">    Data weights can be used during fitting but only have an any effect when</span>
+<span class="sd">    using the approximate solutions.</span>
 
-<span class="sd">    Before fitting, the Jacobian (design, sensitivity, feature, etc) matrix for the</span>
-<span class="sd">    spline is normalized using :class:`sklearn.preprocessing.StandardScaler` without</span>
-<span class="sd">    centering the mean so that the transformation can be undone in the estimated forces.</span>
+<span class="sd">    Before fitting, the Jacobian (design, sensitivity, feature, etc) matrix for</span>
+<span class="sd">    the spline is normalized using</span>
+<span class="sd">    :class:`sklearn.preprocessing.StandardScaler` without centering the mean so</span>
+<span class="sd">    that the transformation can be undone in the estimated forces.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    mindist : float</span>
-<span class="sd">        A minimum distance between the point forces and data points. Needed because the</span>
-<span class="sd">        Green&#39;s functions are singular when forces and data points coincide. Acts as a</span>
-<span class="sd">        fudge factor.</span>
+<span class="sd">        A minimum distance between the point forces and data points. Needed</span>
+<span class="sd">        because the Green&#39;s functions are singular when forces and data points</span>
+<span class="sd">        coincide. Acts as a fudge factor.</span>
 <span class="sd">    damping : None or float</span>
-<span class="sd">        The positive damping regularization parameter. Controls how much smoothness is</span>
-<span class="sd">        imposed on the estimated forces. If None, no regularization is used.</span>
+<span class="sd">        The positive damping regularization parameter. Controls how much</span>
+<span class="sd">        smoothness is imposed on the estimated forces. If None, no</span>
+<span class="sd">        regularization is used.</span>
 <span class="sd">    force_coords : None or tuple of arrays</span>
-<span class="sd">        The easting and northing coordinates of the point forces. If None (default),</span>
-<span class="sd">        then will be set to the data coordinates used to fit the spline.</span>
+<span class="sd">        The easting and northing coordinates of the point forces. If None</span>
+<span class="sd">        (default), then will be set to the data coordinates used to fit the</span>
+<span class="sd">        spline.</span>
 <span class="sd">    engine : str</span>
-<span class="sd">        Computation engine for the Jacobian matrix and prediction. Can be ``&#39;auto&#39;``,</span>
-<span class="sd">        ``&#39;numba&#39;``, or ``&#39;numpy&#39;``. If ``&#39;auto&#39;``, will use numba if it is installed or</span>
-<span class="sd">        numpy otherwise. The numba version is multi-threaded and usually faster, which</span>
-<span class="sd">        makes fitting and predicting faster.</span>
+<span class="sd">        Computation engine for the Jacobian matrix and prediction. Can be</span>
+<span class="sd">        ``&#39;auto&#39;``, ``&#39;numba&#39;``, or ``&#39;numpy&#39;``. If ``&#39;auto&#39;``, will use numba</span>
+<span class="sd">        if it is installed or numpy otherwise. The numba version is</span>
+<span class="sd">        multi-threaded and usually faster, which makes fitting and predicting</span>
+<span class="sd">        faster.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    force_ : array</span>
 <span class="sd">        The estimated forces that fit the observed data.</span>
 <span class="sd">    force_coords_ : tuple of arrays</span>
-<span class="sd">        The easting and northing coordinates of the point forces. Same as *force_coords*</span>
-<span class="sd">        if it is not None. Otherwise, same as the data locations used to fit the spline.</span>
+<span class="sd">        The easting and northing coordinates of the point forces. Same as</span>
+<span class="sd">        *force_coords* if it is not None. Otherwise, same as the data locations</span>
+<span class="sd">        used to fit the spline.</span>
 <span class="sd">    region_ : tuple</span>
 <span class="sd">        The boundaries (``[W, E, S, N]``) of the data used to fit the</span>
 <span class="sd">        interpolator. Used as the default region for the</span>
@@ -530,7 +586,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mindist</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_coords</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mindist</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_coords</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mindist</span> <span class="o">=</span> <span class="n">mindist</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">damping</span> <span class="o">=</span> <span class="n">damping</span>
@@ -616,18 +672,19 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Make the Jacobian matrix for the 2D biharmonic spline.</span>
 
-<span class="sd">        Each column of the Jacobian is the Green&#39;s function for a single force evaluated</span>
-<span class="sd">        on all observation points [Sandwell1987]_.</span>
+<span class="sd">        Each column of the Jacobian is the Green&#39;s function for a single force</span>
+<span class="sd">        evaluated on all observation points [Sandwell1987]_.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        coordinates : tuple of arrays</span>
 <span class="sd">            Arrays with the coordinates of each data point. Should be in the</span>
-<span class="sd">            following order: (easting, northing, vertical, ...). Only easting and</span>
-<span class="sd">            northing will be used, all subsequent coordinates will be ignored.</span>
+<span class="sd">            following order: (easting, northing, vertical, ...). Only easting</span>
+<span class="sd">            and northing will be used, all subsequent coordinates will be</span>
+<span class="sd">            ignored.</span>
 <span class="sd">        force_coords : tuple of arrays</span>
-<span class="sd">            Arrays with the coordinates for the forces. Should be in the same order as</span>
-<span class="sd">            the coordinate arrays.</span>
+<span class="sd">            Arrays with the coordinates for the forces. Should be in the same</span>
+<span class="sd">            order as the coordinate arrays.</span>
 <span class="sd">        dtype : str or numpy dtype</span>
 <span class="sd">            The type of the Jacobian array.</span>
 
@@ -658,15 +715,16 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    spline : estimator</span>
-<span class="sd">        The spline instance that we&#39;ll check. Needs to have the ``damping`` attribute.</span>
+<span class="sd">        The spline instance that we&#39;ll check. Needs to have the ``damping``</span>
+<span class="sd">        attribute.</span>
 <span class="sd">    weights : array or None</span>
 <span class="sd">        The weights given to fit.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Check if we&#39;re using weights without damping and warn the user that it might not</span>
-    <span class="c1"># have any effect.</span>
+    <span class="c1"># Check if we&#39;re using weights without damping and warn the user that it</span>
+    <span class="c1"># might not have any effect.</span>
     <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">spline</span><span class="o">.</span><span class="n">damping</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">warn</span><span class="p">(</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;Weights might have no effect if no regularization is used. &quot;</span>
             <span class="s2">&quot;Use damping or specify force positions that are different from the data.&quot;</span>
         <span class="p">)</span>
@@ -692,8 +750,8 @@
 
 <span class="k">def</span> <span class="nf">jacobian_numpy</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">jac</span><span class="p">):</span>
     <span class="s2">&quot;Calculate the Jacobian using numpy broadcasting.&quot;</span>
-    <span class="c1"># Reshaping the data to a column vector will automatically build a distance matrix</span>
-    <span class="c1"># between each data point and force.</span>
+    <span class="c1"># Reshaping the data to a column vector will automatically build a distance</span>
+    <span class="c1"># matrix between each data point and force.</span>
     <span class="n">jac</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">greens_func</span><span class="p">(</span>
         <span class="n">east</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">east</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">force_east</span><span class="p">,</span>
         <span class="n">north</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">north</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">force_north</span><span class="p">,</span>
@@ -702,7 +760,7 @@
     <span class="k">return</span> <span class="n">jac</span>
 
 
-<span class="nd">@jit</span><span class="p">(</span><span class="o">**</span><span class="n">JIT_ARGS</span><span class="p">)</span>
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">predict_numba</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
     <span class="s2">&quot;Calculate the predicted data using numba to speed things up.&quot;</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">numba</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>  <span class="c1"># pylint: disable=not-an-iterable</span>
@@ -715,10 +773,10 @@
     <span class="k">return</span> <span class="n">result</span>
 
 
-<span class="nd">@jit</span><span class="p">(</span><span class="o">**</span><span class="n">JIT_ARGS</span><span class="p">)</span>
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">jacobian_numba</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">jac</span><span class="p">):</span>
     <span class="s2">&quot;Calculate the Jacobian matrix using numba to speed things up.&quot;</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">numba</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>  <span class="c1"># pylint: disable=not-an-iterable</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">force_east</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
             <span class="n">jac</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">GREENS_FUNC_JIT</span><span class="p">(</span>
                 <span class="n">east</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">force_east</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">north</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">force_north</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">mindist</span>
@@ -727,7 +785,7 @@
 
 
 <span class="c1"># Jit compile the Green&#39;s functions for use in the numba functions</span>
-<span class="n">GREENS_FUNC_JIT</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="o">**</span><span class="n">JIT_ARGS</span><span class="p">)(</span><span class="n">greens_func</span><span class="p">)</span>
+<span class="n">GREENS_FUNC_JIT</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">greens_func</span><span class="p">)</span>
 </pre></div>
 
            </div>
@@ -740,9 +798,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

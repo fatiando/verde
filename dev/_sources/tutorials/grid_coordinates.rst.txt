@@ -37,6 +37,7 @@ in each dimension (the shape) or by the grid node spacing.
 
 
 
+
 First let's create a region that is 1000 units west-east and 1000 units south-north,
 and we will set an initial spacing to 100 units.
 
@@ -50,6 +51,7 @@ and we will set an initial spacing to 100 units.
 
     # create the grid coordinates
     easting, northing = vd.grid_coordinates(region=region, spacing=spacing)
+
 
 
 
@@ -78,6 +80,7 @@ coordinates have a shape of 11x11.
  .. code-block:: none
 
     (11, 11) (11, 11)
+
 
 
 
@@ -126,6 +129,7 @@ Let's define two functions to visualize the region bounds and grid points
 
 
 
+
 Visualize our region and grid coordinates using our functions
 
 
@@ -155,6 +159,7 @@ Visualize our region and grid coordinates using our functions
 
 .. image:: /tutorials/images/sphx_glr_grid_coordinates_001.png
     :class: sphx-glr-single-img
+
 
 
 
@@ -195,6 +200,7 @@ passing ``adjust="region"``.
 
 
 
+
 With the spacing set at 300 units and a 4 by 4 grid of regular dimensions,
 :func:`verde.grid_coordinates` calculates the spatial location of each
 grid point and adjusts the region so that the maximum northing and maximum
@@ -228,6 +234,7 @@ by 300.
      [300. 300. 300. 300.]
      [600. 600. 600. 600.]
      [900. 900. 900. 900.]]
+
 
 
 
@@ -268,6 +275,7 @@ to :func:`verde.grid_coordinates`.
 
 
 
+
 However the regular spacing between the grid points is no longer 300 units.
 
 
@@ -295,6 +303,7 @@ However the regular spacing between the grid points is no longer 300 units.
      [ 333.33333333  333.33333333  333.33333333  333.33333333]
      [ 666.66666667  666.66666667  666.66666667  666.66666667]
      [1000.         1000.         1000.         1000.        ]]
+
 
 
 
@@ -347,6 +356,7 @@ region grid nodes on the north and east side of the region have moved.
 
 
 
+
 Pixel Registration
 ------------------
 
@@ -381,6 +391,7 @@ non-registered grid (10x10).
  .. code-block:: none
 
     (10, 10) (10, 10)
+
 
 
 
@@ -426,6 +437,7 @@ And we can check the coordinates for the grid points with pixel registration.
 
 
 
+
 If we set ``pixel_register`` to ``False`` the function will return the grid
 coordinates of the nodes instead of pixel centers, resulting in an extra point in each direction.
 
@@ -449,6 +461,7 @@ coordinates of the nodes instead of pixel centers, resulting in an extra point i
  .. code-block:: none
 
     (11, 11) (11, 11)
+
 
 
 
@@ -493,6 +506,7 @@ Again we can check the coordinates for grid points with spacing adjustment.
      [ 800.  800.  800.  800.  800.  800.  800.  800.  800.  800.  800.]
      [ 900.  900.  900.  900.  900.  900.  900.  900.  900.  900.  900.]
      [1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000. 1000.]]
+
 
 
 
@@ -541,6 +555,7 @@ within the original region bounds.
 
 
 
+
 Extra Coordinates
 -----------------
 
@@ -571,6 +586,7 @@ add a constant height of 1000 units and time of 1 to our coordinate grid.
  .. code-block:: none
 
     (11, 11) (11, 11) (11, 11) (11, 11)
+
 
 
 
@@ -606,6 +622,7 @@ And we can print the height array to verify that it is correct
 
 
 
+
 And we can print the time array as well
 
 
@@ -638,9 +655,10 @@ And we can print the time array as well
 
 
 
+
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.488 seconds)
+   **Total running time of the script:** ( 0 minutes  0.350 seconds)
 
 
 .. _sphx_glr_download_tutorials_grid_coordinates.py:

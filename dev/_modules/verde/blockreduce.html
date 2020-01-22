@@ -153,7 +153,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -228,11 +228,11 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="k">import</span> <span class="n">BaseEstimator</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span>
 
-<span class="kn">from</span> <span class="nn">.coordinates</span> <span class="k">import</span> <span class="n">block_split</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="k">import</span> <span class="n">check_fit_input</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">variance_to_weights</span>
+<span class="kn">from</span> <span class="nn">.coordinates</span> <span class="kn">import</span> <span class="n">block_split</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">check_fit_input</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">variance_to_weights</span>
 
 
 <span class="k">def</span> <span class="nf">attach_weights</span><span class="p">(</span><span class="n">reduction</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
@@ -264,9 +264,9 @@
 <span class="sd">    bounding region of the data. When using this class to decimate data before</span>
 <span class="sd">    gridding, it&#39;s best to use the same region and spacing as the desired grid.</span>
 
-<span class="sd">    The size of the blocks can be specified by the *spacing* parameter. Alternatively,</span>
-<span class="sd">    the number of blocks in the South-North and West-East directions can be specified</span>
-<span class="sd">    using the *shape* parameter.</span>
+<span class="sd">    The size of the blocks can be specified by the *spacing* parameter.</span>
+<span class="sd">    Alternatively, the number of blocks in the South-North and West-East</span>
+<span class="sd">    directions can be specified using the *shape* parameter.</span>
 
 <span class="sd">    If the given region is not divisible by the spacing (block size), either</span>
 <span class="sd">    the region or the spacing will have to be adjusted. By default, the spacing</span>
@@ -285,7 +285,8 @@
 <span class="sd">        A reduction function that takes an array and returns a single value</span>
 <span class="sd">        (e.g., ``np.mean``, ``np.median``, etc).</span>
 <span class="sd">    shape : tuple = (n_north, n_east) or None</span>
-<span class="sd">        The number of blocks in the South-North and West-East directions, respectively.</span>
+<span class="sd">        The number of blocks in the South-North and West-East directions,</span>
+<span class="sd">        respectively.</span>
 <span class="sd">    spacing : float, tuple = (s_north, s_east), or None</span>
 <span class="sd">        The block size in the South-North and West-East directions,</span>
 <span class="sd">        respectively. A single value means that the size is equal in both</span>
@@ -301,6 +302,10 @@
 <span class="sd">        If True, then the returned coordinates correspond to the center of each</span>
 <span class="sd">        block. Otherwise, the coordinates are calculated by applying the same</span>
 <span class="sd">        reduction operation to the input coordinates.</span>
+<span class="sd">    drop_coords : bool</span>
+<span class="sd">        If True, only the reduced ``easting`` and ``northing`` coordinates are</span>
+<span class="sd">        returned, dropping any other ones. If False, all coordinates are</span>
+<span class="sd">        reduced and returned. Default True.</span>
 
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
@@ -310,7 +315,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">reduction</span><span class="p">,</span>
         <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -318,6 +323,7 @@
         <span class="n">adjust</span><span class="o">=</span><span class="s2">&quot;spacing&quot;</span><span class="p">,</span>
         <span class="n">center_coordinates</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">drop_coords</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reduction</span> <span class="o">=</span> <span class="n">reduction</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">shape</span>
@@ -325,6 +331,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">region</span> <span class="o">=</span> <span class="n">region</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">adjust</span> <span class="o">=</span> <span class="n">adjust</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">center_coordinates</span> <span class="o">=</span> <span class="n">center_coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drop_coords</span> <span class="o">=</span> <span class="n">drop_coords</span>
 
 <div class="viewcode-block" id="BlockReduce.filter"><a class="viewcode-back" href="../../api/generated/verde.BlockReduce.html#verde.BlockReduce.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -345,8 +352,9 @@
 <span class="sd">        coordinates : tuple of arrays</span>
 <span class="sd">            Arrays with the coordinates of each data point. Should be in the</span>
 <span class="sd">            following order: (easting, northing, vertical, ...). Only easting</span>
-<span class="sd">            and northing will be used, all subsequent coordinates will be</span>
-<span class="sd">            ignored.</span>
+<span class="sd">            and northing will be used to create the blocks. If ``drop_coords``</span>
+<span class="sd">            is ``False``, all other coordinates will be reduced along with the</span>
+<span class="sd">            data.</span>
 <span class="sd">        data : array or tuple of arrays</span>
 <span class="sd">            The data values at each point. If you want to reduce more than one</span>
 <span class="sd">            data component, pass in multiple arrays as elements of a tuple. All</span>
@@ -359,8 +367,11 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        blocked_coordinates : tuple of arrays</span>
-<span class="sd">            (easting, northing) arrays with the coordinates of each block that</span>
-<span class="sd">            contains data.</span>
+<span class="sd">            Tuple containing arrays with the coordinates of each block that</span>
+<span class="sd">            contains data. If ``drop_coords`` is ``True``, the tuple will only</span>
+<span class="sd">            contain (``easting``, ``northing``). If ``drop_coords`` is</span>
+<span class="sd">            ``False``, it will contain (``easting``, ``northing``,</span>
+<span class="sd">            ``vertical``, ...).</span>
 <span class="sd">        blocked_data : array</span>
 <span class="sd">            The block reduced data values.</span>
 
@@ -400,6 +411,9 @@
 <span class="sd">        If self.center_coordinates, the coordinates will be the center of each</span>
 <span class="sd">        block. Otherwise, will apply the reduction to the coordinates.</span>
 
+<span class="sd">        If self.drop_coords, only the easting and northing coordinates will be</span>
+<span class="sd">        returned. If False, all coordinates will be reduced.</span>
+
 <span class="sd">        Blocks without any data will be omitted.</span>
 
 <span class="sd">        *block_coordinates* and *labels* should be the outputs of</span>
@@ -409,9 +423,7 @@
 <span class="sd">        ----------</span>
 <span class="sd">        coordinates : tuple of arrays</span>
 <span class="sd">            Arrays with the coordinates of each data point. Should be in the</span>
-<span class="sd">            following order: (easting, northing, vertical, ...). Only easting</span>
-<span class="sd">            and northing will be used, all subsequent coordinates will be</span>
-<span class="sd">            ignored.</span>
+<span class="sd">            following order: (easting, northing, vertical, ...).</span>
 <span class="sd">        block_coordinates : tuple of arrays</span>
 <span class="sd">            (easting, northing) arrays with the coordinates of the center of</span>
 <span class="sd">            each block.</span>
@@ -422,22 +434,32 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        coordinates : tuple of arrays</span>
-<span class="sd">            (easting, northing) arrays with the coordinates assigned to each</span>
-<span class="sd">            non-empty block.</span>
+<span class="sd">            Tuple containing arrays with the coordinates of each block that</span>
+<span class="sd">            contains data. If ``drop_coords`` is ``True``, the tuple will only</span>
+<span class="sd">            contain (``easting``, ``northing``). If ``drop_coords`` is</span>
+<span class="sd">            ``False``, it will contain (``easting``, ``northing``,</span>
+<span class="sd">            ``vertical``, ...).</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">center_coordinates</span><span class="p">:</span>
-            <span class="n">unique</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
-            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="n">unique</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">block_coordinates</span><span class="p">)</span>
         <span class="c1"># Doing the coordinates separately from the data because in case of</span>
         <span class="c1"># weights the reduction applied to then is different (no weights</span>
         <span class="c1"># ever)</span>
-        <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
-        <span class="n">table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-            <span class="nb">dict</span><span class="p">(</span><span class="n">easting</span><span class="o">=</span><span class="n">easting</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">northing</span><span class="o">=</span><span class="n">northing</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">block</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop_coords</span><span class="p">:</span>
+            <span class="n">coordinates</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;coordinate</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">coord</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="n">coords</span><span class="p">[</span><span class="s2">&quot;block&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
         <span class="n">grouped</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;block&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">grouped</span><span class="o">.</span><span class="n">easting</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">grouped</span><span class="o">.</span><span class="n">northing</span><span class="o">.</span><span class="n">values</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">center_coordinates</span><span class="p">:</span>
+            <span class="n">unique</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">block_coord</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">block_coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">]):</span>
+                <span class="n">grouped</span><span class="p">[</span><span class="s2">&quot;coordinate</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">block_coord</span><span class="p">[</span><span class="n">unique</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">grouped</span><span class="p">[</span><span class="s2">&quot;coordinate</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BlockMean"><a class="viewcode-back" href="../../api/generated/verde.BlockMean.html#verde.BlockMean">[docs]</a><span class="k">class</span> <span class="nc">BlockMean</span><span class="p">(</span><span class="n">BlockReduce</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-few-public-methods</span>
@@ -478,9 +500,9 @@
 <span class="sd">    bounding region of the data. When using this class to decimate data before</span>
 <span class="sd">    gridding, it&#39;s best to use the same region and spacing as the desired grid.</span>
 
-<span class="sd">    The size of the blocks can be specified by the *spacing* parameter. Alternatively,</span>
-<span class="sd">    the number of blocks in the South-North and West-East directions can be specified</span>
-<span class="sd">    using the *shape* parameter.</span>
+<span class="sd">    The size of the blocks can be specified by the *spacing* parameter.</span>
+<span class="sd">    Alternatively, the number of blocks in the South-North and West-East</span>
+<span class="sd">    directions can be specified using the *shape* parameter.</span>
 
 <span class="sd">    If the given region is not divisible by the spacing (block size), either</span>
 <span class="sd">    the region or the spacing will have to be adjusted. By default, the spacing</span>
@@ -496,7 +518,8 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    shape : tuple = (n_north, n_east) or None</span>
-<span class="sd">        The number of blocks in the South-North and West-East directions, respectively.</span>
+<span class="sd">        The number of blocks in the South-North and West-East directions,</span>
+<span class="sd">        respectively.</span>
 <span class="sd">    spacing : float, tuple = (s_north, s_east), or None</span>
 <span class="sd">        The block size in the South-North and West-East directions,</span>
 <span class="sd">        respectively. A single value means that the size is equal in both</span>
@@ -512,6 +535,10 @@
 <span class="sd">        If True, then the returned coordinates correspond to the center of each</span>
 <span class="sd">        block. Otherwise, the coordinates are calculated by applying the same</span>
 <span class="sd">        reduction operation to the input coordinates.</span>
+<span class="sd">    drop_coords : bool</span>
+<span class="sd">        If True, only the reduced ``easting`` and ``northing`` coordinates are</span>
+<span class="sd">        returned, dropping any other ones. If False, all coordinates are</span>
+<span class="sd">        reduced and returned. Default True.</span>
 <span class="sd">    uncertainty : bool</span>
 <span class="sd">        If True, the blocked weights will be calculated by uncertainty</span>
 <span class="sd">        propagation of the data uncertainties. If this is case, then the input</span>
@@ -528,7 +555,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -536,6 +563,7 @@
         <span class="n">center_coordinates</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">uncertainty</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">drop_coords</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">reduction</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">,</span>
@@ -544,6 +572,7 @@
             <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
             <span class="n">adjust</span><span class="o">=</span><span class="n">adjust</span><span class="p">,</span>
             <span class="n">center_coordinates</span><span class="o">=</span><span class="n">center_coordinates</span><span class="p">,</span>
+            <span class="n">drop_coords</span><span class="o">=</span><span class="n">drop_coords</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty</span> <span class="o">=</span> <span class="n">uncertainty</span>
 
@@ -559,8 +588,9 @@
 <span class="sd">        coordinates : tuple of arrays</span>
 <span class="sd">            Arrays with the coordinates of each data point. Should be in the</span>
 <span class="sd">            following order: (easting, northing, vertical, ...). Only easting</span>
-<span class="sd">            and northing will be used, all subsequent coordinates will be</span>
-<span class="sd">            ignored.</span>
+<span class="sd">            and northing will be used to create the blocks. If ``drop_coords``</span>
+<span class="sd">            is ``False``, all other coordinates will be reduced along with the</span>
+<span class="sd">            data.</span>
 <span class="sd">        data : array or tuple of arrays</span>
 <span class="sd">            The data values at each point. If you want to reduce more than one</span>
 <span class="sd">            data component, pass in multiple arrays as elements of a tuple. All</span>
@@ -575,8 +605,11 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        blocked_coordinates : tuple of arrays</span>
-<span class="sd">            (easting, northing) arrays with the coordinates of each block that</span>
-<span class="sd">            contains data.</span>
+<span class="sd">            Tuple containing arrays with the coordinates of each block that</span>
+<span class="sd">            contains data. If ``drop_coords`` is ``True``, the tuple will only</span>
+<span class="sd">            contain (``easting``, ``northing``). If ``drop_coords`` is</span>
+<span class="sd">            ``False``, it will contain (``easting``, ``northing``,</span>
+<span class="sd">            ``vertical``, ...).</span>
 <span class="sd">        blocked_mean : array or tuple of arrays</span>
 <span class="sd">            The block averaged data values.</span>
 <span class="sd">        blocked_weights : array or tuple of arrays</span>
@@ -704,9 +737,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

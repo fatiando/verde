@@ -176,7 +176,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -254,72 +254,57 @@
 <h1>verde.block_split<a class="headerlink" href="#verde-block-split" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="verde.block_split">
-<code class="descclassname">verde.</code><code class="descname">block_split</code><span class="sig-paren">(</span><em>coordinates</em>, <em>spacing=None</em>, <em>adjust='spacing'</em>, <em>region=None</em>, <em>shape=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/coordinates.html#block_split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.block_split" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">verde.</code><code class="sig-name descname">block_split</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">spacing=None</em>, <em class="sig-param">adjust='spacing'</em>, <em class="sig-param">region=None</em>, <em class="sig-param">shape=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/coordinates.html#block_split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.block_split" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split a region into blocks and label points according to where they fall.</p>
-<p>The labels are integers corresponding to the index of the block. Also returns the
-coordinates of the center of each block (following the same index as the labels).</p>
-<p>The size of the blocks can be specified by the <em>spacing</em> parameter. Alternatively,
-the number of blocks in the South-North and West-East directions can be specified
-using the <em>shape</em> parameter.</p>
+<p>The labels are integers corresponding to the index of the block. Also
+returns the coordinates of the center of each block (following the same
+index as the labels).</p>
+<p>The size of the blocks can be specified by the <em>spacing</em> parameter.
+Alternatively, the number of blocks in the South-North and West-East
+directions can be specified using the <em>shape</em> parameter.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If installed, package <code class="docutils literal notranslate"><span class="pre">pykdtree</span></code> will be used instead of
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.cKDTree.html#scipy.spatial.cKDTree" title="(in SciPy v1.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.spatial.cKDTree</span></code></a> for better performance.</p>
+<p class="admonition-title">Note</p>
+<p>If installed, package <code class="docutils literal notranslate"><span class="pre">pykdtree</span></code> will be used instead of
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.cKDTree.html#scipy.spatial.cKDTree" title="(in SciPy v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.spatial.cKDTree</span></code></a> for better performance.</p>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>coordinates</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of arrays</span></dt>
-<dd><p class="first last">Arrays with the coordinates of each data point. Should be in the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Arrays with the coordinates of each data point. Should be in the
 following order: (easting, northing, vertical, …). Only easting and
-northing will be used, all subsequent coordinates will be ignored.</p>
-</dd>
-<dt><strong>shape</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple = (n_north, n_east) or None</span></dt>
-<dd><p class="first last">The number of blocks in the South-North and West-East directions, respectively.</p>
-</dd>
-<dt><strong>spacing</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, tuple = (s_north, s_east), or None</span></dt>
-<dd><p class="first last">The block size in the South-North and West-East directions,
+northing will be used, all subsequent coordinates will be ignored.</p></li>
+<li><p><strong>shape</strong> (<em>tuple =</em><em> (</em><em>n_north</em><em>, </em><em>n_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – The number of blocks in the South-North and West-East directions,
+respectively.</p></li>
+<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><em>tuple =</em><em> (</em><em>s_north</em><em>, </em><em>s_east</em><em>)</em><em>, or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – The block size in the South-North and West-East directions,
 respectively. A single value means that the size is equal in both
-directions.</p>
-</dd>
-<dt><strong>adjust</strong> <span class="classifier-delimiter">:</span> <span class="classifier">{‘spacing’, ‘region’}</span></dt>
-<dd><p class="first last">Whether to adjust the spacing or the region if required. Ignored if
+directions.</p></li>
+<li><p><strong>adjust</strong> (<em>{'spacing'</em><em>, </em><em>'region'}</em>) – Whether to adjust the spacing or the region if required. Ignored if
 <em>shape</em> is given instead of <em>spacing</em>. Defaults to adjusting the
-spacing.</p>
-</dd>
-<dt><strong>region</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list = [W, E, S, N]</span></dt>
-<dd><p class="first last">The boundaries of a given region in Cartesian or geographic
+spacing.</p></li>
+<li><p><strong>region</strong> (<em>list =</em><em> [</em><em>W</em><em>, </em><em>E</em><em>, </em><em>S</em><em>, </em><em>N</em><em>]</em>) – The boundaries of a given region in Cartesian or geographic
 coordinates. If not region is given, will use the bounding region of
-the given points.</p>
+the given points.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>block_coordinates</strong> (<em>tuple of arrays</em>) – (easting, northing) arrays with the coordinates of the center of each
+block.</p></li>
+<li><p><strong>labels</strong> (<em>array</em>) – integer label for each data point. The label is the index of the block
+to which that point belongs.</p></li>
+</ul>
+</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>block_coordinates</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of arrays</span></dt>
-<dd><p class="first last">(easting, northing) arrays with the coordinates of the center of each
-block.</p>
-</dd>
-<dt><strong>labels</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array</span></dt>
-<dd><p class="first last">integer label for each data point. The label is the index of the block
-to which that point belongs.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<dl class="last docutils">
-<dt><a class="reference internal" href="verde.BlockReduce.html#verde.BlockReduce" title="verde.BlockReduce"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BlockReduce</span></code></a></dt>
-<dd>Apply a reduction operation to the data in blocks (windows).</dd>
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="verde.BlockReduce.html#verde.BlockReduce" title="verde.BlockReduce"><code class="xref py py-func docutils literal notranslate"><span class="pre">BlockReduce</span></code></a></dt><dd><p>Apply a reduction operation to the data in blocks (windows).</p>
+</dd>
 </dl>
 </div>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">verde</span> <span class="k">import</span> <span class="n">grid_coordinates</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">verde</span> <span class="kn">import</span> <span class="n">grid_coordinates</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">coords</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">((</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">block_coords</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">block_split</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">block_coords</span><span class="p">:</span>
@@ -372,9 +357,9 @@ to which that point belongs.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

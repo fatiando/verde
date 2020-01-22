@@ -177,7 +177,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -255,43 +255,29 @@
 <h1>verde.variance_to_weights<a class="headerlink" href="#verde-variance-to-weights" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="verde.variance_to_weights">
-<code class="descclassname">verde.</code><code class="descname">variance_to_weights</code><span class="sig-paren">(</span><em>variance</em>, <em>tol=1e-15</em>, <em>dtype='float64'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/utils.html#variance_to_weights"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.variance_to_weights" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">verde.</code><code class="sig-name descname">variance_to_weights</code><span class="sig-paren">(</span><em class="sig-param">variance</em>, <em class="sig-param">tol=1e-15</em>, <em class="sig-param">dtype='float64'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/utils.html#variance_to_weights"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.variance_to_weights" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts data variances to weights for gridding.</p>
 <p>Weights are defined as the inverse of the variance, scaled to the range
 [0, 1], i.e. <code class="docutils literal notranslate"><span class="pre">variance.min()/variance</span></code>.</p>
 <p>Any variance that is smaller than <em>tol</em> will automatically receive a weight
 of 1 to avoid zero division or blown up weights.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>variance</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array or tuple of arrays</span></dt>
-<dd><p class="first last">An array with the variance of each point. If there are multiple arrays
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>variance</strong> (<em>array</em><em> or </em><em>tuple of arrays</em>) – An array with the variance of each point. If there are multiple arrays
 in a tuple, will calculated weights for each of them separately. Can
 have NaNs but they will be converted to zeros and therefore receive a
-weight of 1.</p>
+weight of 1.</p></li>
+<li><p><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – The tolerance, or cutoff threshold, for small variances.</p></li>
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><em>numpy dtype</em>) – The type of the output weights array.</p></li>
+</ul>
 </dd>
-<dt><strong>tol</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">The tolerance, or cutoff threshold, for small variances.</p>
-</dd>
-<dt><strong>dtype</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or numpy dtype</span></dt>
-<dd><p class="first last">The type of the output weights array.</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>weights</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array or tuple of arrays</span></dt>
-<dd><p class="first last">Data weights in the range [0, 1] with the same shape as <em>variance</em>. If
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>weights</strong> (<em>array or tuple of arrays</em>) – Data weights in the range [0, 1] with the same shape as <em>variance</em>. If
 more than one variance array was provided, then this will be a tuple
 with the weights corresponding to each variance array.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">variance_to_weights</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">1e-16</span><span class="p">]))</span>
 <span class="go">[1.  0.1 1.  1. ]</span>
@@ -307,13 +293,13 @@ with the weights corresponding to each variance array.</p>
 
 <div class="section" id="examples-using-verde-variance-to-weights">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">verde.variance_to_weights</span></code><a class="headerlink" href="#examples-using-verde-variance-to-weights" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Verde provides the verde.Trend class to estimate a polynomial trend and the verde.Vector class ..."><div class="figure" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Verde provides the verde.Trend class to estimate a polynomial trend and the verde.Vector class ..."><div class="figure align-default" id="id1">
 <img alt="../../_images/sphx_glr_vector_trend_thumb.png" src="../../_images/sphx_glr_vector_trend_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/vector_trend.html#sphx-glr-gallery-vector-trend-py"><span class="std std-ref">Trends in vector data</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/vector_trend.html#sphx-glr-gallery-vector-trend-py"><span class="std std-ref">Trends in vector data</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="One of the advantages of using a Green&#x27;s functions approach to interpolation is that we can eas..."><div class="figure" id="id2">
+</div><div class="sphx-glr-thumbcontainer" tooltip="One of the advantages of using a Green&#x27;s functions approach to interpolation is that we can eas..."><div class="figure align-default" id="id2">
 <img alt="../../_images/sphx_glr_weights_thumb.png" src="../../_images/sphx_glr_weights_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/weights.html#sphx-glr-tutorials-weights-py"><span class="std std-ref">Using Weights</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/weights.html#sphx-glr-tutorials-weights-py"><span class="std std-ref">Using Weights</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -338,9 +324,9 @@ with the weights corresponding to each variance array.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

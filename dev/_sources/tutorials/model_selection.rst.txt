@@ -45,6 +45,7 @@ Once again, we'll start by importing the required packages and loading our sampl
 
 
 
+
 Before we begin tuning, let's reiterate what the results were with the default
 parameters.
 
@@ -70,7 +71,8 @@ parameters.
 
  .. code-block:: none
 
-    R² with defaults: 0.7960368854859687
+    R² with defaults: 0.7960368854849694
+
 
 
 
@@ -89,8 +91,8 @@ Let's test the following combinations:
 .. code-block:: default
 
 
-    dampings = [None, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1]
-    mindists = [5e3, 10e3, 25e3, 50e3, 75e3, 100e3]
+    dampings = [None, 1e-4, 1e-3, 1e-2]
+    mindists = [5e3, 10e3, 50e3, 100e3]
 
     # Use itertools to create a list with all combinations of parameters to test
     parameter_sets = [
@@ -110,8 +112,9 @@ Let's test the following combinations:
 
  .. code-block:: none
 
-    Number of combinations: 36
-    Combinations: [{'damping': None, 'mindist': 5000.0}, {'damping': None, 'mindist': 10000.0}, {'damping': None, 'mindist': 25000.0}, {'damping': None, 'mindist': 50000.0}, {'damping': None, 'mindist': 75000.0}, {'damping': None, 'mindist': 100000.0}, {'damping': 1e-05, 'mindist': 5000.0}, {'damping': 1e-05, 'mindist': 10000.0}, {'damping': 1e-05, 'mindist': 25000.0}, {'damping': 1e-05, 'mindist': 50000.0}, {'damping': 1e-05, 'mindist': 75000.0}, {'damping': 1e-05, 'mindist': 100000.0}, {'damping': 0.0001, 'mindist': 5000.0}, {'damping': 0.0001, 'mindist': 10000.0}, {'damping': 0.0001, 'mindist': 25000.0}, {'damping': 0.0001, 'mindist': 50000.0}, {'damping': 0.0001, 'mindist': 75000.0}, {'damping': 0.0001, 'mindist': 100000.0}, {'damping': 0.001, 'mindist': 5000.0}, {'damping': 0.001, 'mindist': 10000.0}, {'damping': 0.001, 'mindist': 25000.0}, {'damping': 0.001, 'mindist': 50000.0}, {'damping': 0.001, 'mindist': 75000.0}, {'damping': 0.001, 'mindist': 100000.0}, {'damping': 0.01, 'mindist': 5000.0}, {'damping': 0.01, 'mindist': 10000.0}, {'damping': 0.01, 'mindist': 25000.0}, {'damping': 0.01, 'mindist': 50000.0}, {'damping': 0.01, 'mindist': 75000.0}, {'damping': 0.01, 'mindist': 100000.0}, {'damping': 0.1, 'mindist': 5000.0}, {'damping': 0.1, 'mindist': 10000.0}, {'damping': 0.1, 'mindist': 25000.0}, {'damping': 0.1, 'mindist': 50000.0}, {'damping': 0.1, 'mindist': 75000.0}, {'damping': 0.1, 'mindist': 100000.0}]
+    Number of combinations: 16
+    Combinations: [{'damping': None, 'mindist': 5000.0}, {'damping': None, 'mindist': 10000.0}, {'damping': None, 'mindist': 50000.0}, {'damping': None, 'mindist': 100000.0}, {'damping': 0.0001, 'mindist': 5000.0}, {'damping': 0.0001, 'mindist': 10000.0}, {'damping': 0.0001, 'mindist': 50000.0}, {'damping': 0.0001, 'mindist': 100000.0}, {'damping': 0.001, 'mindist': 5000.0}, {'damping': 0.001, 'mindist': 10000.0}, {'damping': 0.001, 'mindist': 50000.0}, {'damping': 0.001, 'mindist': 100000.0}, {'damping': 0.01, 'mindist': 5000.0}, {'damping': 0.01, 'mindist': 10000.0}, {'damping': 0.01, 'mindist': 50000.0}, {'damping': 0.01, 'mindist': 100000.0}]
+
 
 
 
@@ -139,7 +142,8 @@ Now we can loop over the combinations and collect the scores for each parameter 
 
  .. code-block:: none
 
-    [-6.672752072404075, 0.4845403172460453, 0.5491476726406986, 0.8383522700290129, 0.8373973052331859, 0.8371988991061597, 0.8384949174037495, 0.8276885595470569, 0.8335063002193237, 0.8401681585165595, 0.8379791028175976, 0.8373785156855889, 0.8351153077141641, 0.8316607508849312, 0.847792340334785, 0.8492629930631497, 0.8444298795846465, 0.8418400888435157, 0.8371795091875353, 0.8412200336699478, 0.8371044537859913, 0.8529555082424366, 0.8530483081768795, 0.8521727667635496, 0.8401945161938581, 0.833018292387351, 0.8207648785488232, 0.8441706458560023, 0.8472574508035088, 0.8491145591354308, 0.8196594276366435, 0.8125453034182776, 0.8020740590701404, 0.8347980600512273, 0.841207887265696, 0.8427525325593704]
+    [-6.672752084450996, 0.4845403172681578, 0.8383522700290031, 0.8371988991060888, 0.8351153077295754, 0.8316607509400296, 0.849262993117369, 0.8418400888505818, 0.8371795091862098, 0.8412200336661682, 0.8529555082414106, 0.8521727667594355, 0.8401945161937409, 0.8330182923876521, 0.8441706458561657, 0.849114559135252]
+
 
 
 
@@ -164,13 +168,14 @@ The largest score will yield the best parameter combination.
 
  .. code-block:: none
 
-    Best score: 0.8530483081768795
-    Score with defaults: 0.7960368854859687
-    Best parameters: {'damping': 0.001, 'mindist': 75000.0}
+    Best score: 0.8529555082414106
+    Score with defaults: 0.7960368854849694
+    Best parameters: {'damping': 0.001, 'mindist': 50000.0}
 
 
 
-**That is a big improvement over our previous score!**
+
+**That is a nice improvement over our previous score!**
 
 This type of tuning is important and should always be performed when using a new
 gridder or a new dataset. However, the above implementation requires a lot of
@@ -189,20 +194,43 @@ list of ``damping`` and ``mindist`` parameters to try instead of only a single v
 .. code-block:: default
 
 
-    spline = vd.SplineCV(
-        dampings=[None, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1],
-        mindists=[5e3, 10e3, 25e3, 50e3, 75e3, 100e3],
-    )
+    spline = vd.SplineCV(dampings=dampings, mindists=mindists,)
+
+
+
+
+
+
+
+
+Calling :meth:`~verde.SplineCV.fit` will run a grid search over all parameter
+combinations to find the one that maximizes the cross-validation score.
+
+
+.. code-block:: default
+
+
     spline.fit(proj_coords, data.air_temperature_c)
 
 
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
 
 
-The estimated best damping and mindist, as well as the cross-validation scores, are
-stored in class attributes:
+    SplineCV(client=None, cv=None, dampings=[None, 0.0001, 0.001, 0.01],
+             delayed=False, engine='auto', force_coords=None,
+             mindists=[5000.0, 10000.0, 50000.0, 100000.0])
+
+
+
+The estimated best damping and mindist, as well as the cross-validation
+scores, are stored in class attributes:
 
 
 .. code-block:: default
@@ -222,14 +250,15 @@ stored in class attributes:
 
  .. code-block:: none
 
-    Highest score: 0.8530483081768795
+    Highest score: 0.8529555082414106
     Best damping: 0.001
-    Best mindist: 75000.0
+    Best mindist: 50000.0
 
 
 
-Finally, we can make a grid with the best configuration to see how it compares to the
-default result.
+
+The cross-validated gridder can be used like any other gridder (including in
+:class:`verde.Chain` and :class:`verde.Vector`):
 
 
 .. code-block:: default
@@ -260,13 +289,94 @@ default result.
       * longitude    (longitude) float64 -106.4 -106.1 -105.9 ... -94.06 -93.8
       * latitude     (latitude) float64 25.91 26.16 26.41 ... 35.91 36.16 36.41
     Data variables:
-        temperature  (latitude, longitude) float64 21.37 21.34 21.32 ... 7.858 8.07
+        temperature  (latitude, longitude) float64 19.42 19.42 19.43 ... 7.536 7.765
     Attributes:
-        metadata:  Generated by SplineCV(client=None, cv=None, dampings=[None, 1e...
+        metadata:  Generated by SplineCV(client=None, cv=None, dampings=[None, 0....
 
 
 
-Let's plot our grid side-by-side with one generated by the default spline:
+
+Like :func:`verde.cross_val_score`, :class:`~verde.SplineCV` can also run the
+grid search in parallel using `Dask <https://dask.org/>`__ by specifying the
+``delayed`` attribute:
+
+
+.. code-block:: default
+
+
+    spline = vd.SplineCV(dampings=dampings, mindists=mindists, delayed=True)
+
+
+
+
+
+
+
+
+Unlike :func:`verde.cross_val_score`, calling :meth:`~verde.SplineCV.fit`
+does **not** result in :func:`dask.delayed` objects. The full grid search is
+executed and the optimal parameters are found immediately.
+
+
+.. code-block:: default
+
+
+    spline.fit(proj_coords, data.air_temperature_c)
+
+    print("Best damping:", spline.damping_)
+    print("Best mindist:", spline.mindist_)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Best damping: 0.001
+    Best mindist: 50000.0
+
+
+
+
+The one caveat is the that the ``scores_`` attribute will be a list of
+:func:`dask.delayed` objects instead because the scores are only computed as
+intermediate values in the scheduled computations.
+
+
+.. code-block:: default
+
+
+    print("Delayed scores:", spline.scores_)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Delayed scores: [Delayed('mean-9b750d83-2508-4324-aa53-c30be1c58bb6'), Delayed('mean-de79e76c-c347-4335-a27d-f600aeba8289'), Delayed('mean-925901d7-179d-4d53-bd35-b96946b71429'), Delayed('mean-447a023e-7dd8-40df-af72-45dc53eb1f39'), Delayed('mean-a584c572-1cd1-4a36-8998-d20152cad684'), Delayed('mean-5557a60b-12a3-4528-8a25-fd233a06ab7e'), Delayed('mean-4276a766-1925-4026-8de1-192c616dce88'), Delayed('mean-62410594-f53e-40e1-a3ff-83c91ed3242c'), Delayed('mean-3e8171fd-69a9-4fa7-a919-d112e763dcc4'), Delayed('mean-044ef77b-275c-4577-9103-327c724888d6'), Delayed('mean-e6f73eb2-a190-4197-a4e8-9d613c620af8'), Delayed('mean-1d0d3529-b720-46f7-a124-a275062f244b'), Delayed('mean-ce84a3a8-552d-41ce-88cd-d55534f17eca'), Delayed('mean-3c8be123-126b-4a1d-aa69-d6e5980594ec'), Delayed('mean-f51b7356-28fe-4a78-89ee-ed4257751dfa'), Delayed('mean-f19d5eef-6c8d-4953-a2fa-e657ed9dc64b')]
+
+
+
+
+Calling :func:`dask.compute` on the scores will calculate their values but
+will unfortunately run the entire grid search again. So using
+``delayed=True`` is not recommended if you need the scores of each parameter
+combination.
+
+The importance of tuning
+------------------------
+
+To see the difference that tuning has on the results, we can make a grid
+with the best configuration and see how it compares to the default result.
 
 
 .. code-block:: default
@@ -279,6 +389,19 @@ Let's plot our grid side-by-side with one generated by the default spline:
         dims=["latitude", "longitude"],
         data_names=["temperature"],
     )
+
+
+
+
+
+
+
+
+Let's plot our grids side-by-side:
+
+
+.. code-block:: default
+
 
     mask = vd.distance_mask(
         (data.longitude, data.latitude),
@@ -324,8 +447,9 @@ Let's plot our grid side-by-side with one generated by the default spline:
 
  .. code-block:: none
 
-    /home/travis/build/fatiando/verde/tutorials/model_selection.py:169: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations. 
+    /home/travis/build/fatiando/verde/tutorials/model_selection.py:208: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations. 
       plt.tight_layout()
+
 
 
 
@@ -336,7 +460,7 @@ wavelength features that we get from the defaults.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.549 seconds)
+   **Total running time of the script:** ( 0 minutes  2.673 seconds)
 
 
 .. _sphx_glr_download_tutorials_model_selection.py:

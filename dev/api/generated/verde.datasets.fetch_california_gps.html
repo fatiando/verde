@@ -140,6 +140,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#utilities">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#input-output">Input/Output</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#datasets">Datasets</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="verde.datasets.locate.html">verde.datasets.locate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="verde.datasets.CheckerBoard.html">verde.datasets.CheckerBoard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="verde.datasets.fetch_baja_bathymetry.html">verde.datasets.fetch_baja_bathymetry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="verde.datasets.setup_baja_bathymetry_map.html">verde.datasets.setup_baja_bathymetry_map</a></li>
@@ -180,7 +181,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -258,76 +259,65 @@
 <h1>verde.datasets.fetch_california_gps<a class="headerlink" href="#verde-datasets-fetch-california-gps" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="verde.datasets.fetch_california_gps">
-<code class="descclassname">verde.datasets.</code><code class="descname">fetch_california_gps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/datasets/sample_data.html#fetch_california_gps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.datasets.fetch_california_gps" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">verde.datasets.</code><code class="sig-name descname">fetch_california_gps</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/datasets/sample_data.html#fetch_california_gps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.datasets.fetch_california_gps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch sample GPS velocity data from California (the U.S. West coast).</p>
-<p>Velocities and their standard deviations are in meters/year. Height is geometric
-height above WGS84 in meters. Velocities are referenced to the North American
-tectonic plate (NAM08). The average velocities were released on 2017-12-27.</p>
-<p>This material is based on EarthScope Plate Boundary Observatory data services
-provided by UNAVCO through the GAGE Facility with support from the National Science
-Foundation (NSF) and National Aeronautics and Space Administration (NASA) under NSF
-Cooperative Agreement No. EAR-1261833.</p>
+<p>Velocities and their standard deviations are in meters/year. Height is
+geometric height above WGS84 in meters. Velocities are referenced to the
+North American tectonic plate (NAM08). The average velocities were released
+on 2017-12-27.</p>
+<p>This material is based on EarthScope Plate Boundary Observatory data
+services provided by UNAVCO through the GAGE Facility with support from the
+National Science Foundation (NSF) and National Aeronautics and Space
+Administration (NASA) under NSF Cooperative Agreement No. EAR-1261833.</p>
 <p>If the file isn’t already in your data directory, it will be downloaded
 automatically.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>data</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></span></dt>
-<dd><p class="first last">The GPS velocity data. Columns are longitude, latitude, height
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>data</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – The GPS velocity data. Columns are longitude, latitude, height
 (geometric, in meters), East velocity (meter/year), North velocity
 (meter/year), upward velocity (meter/year), standard deviation of East
 velocity (meter/year), standard deviation of North velocity
 (meter/year), standard deviation of upward velocity (meter/year).</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<dl class="last docutils">
-<dt><a class="reference internal" href="verde.datasets.setup_california_gps_map.html#verde.datasets.setup_california_gps_map" title="verde.datasets.setup_california_gps_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_california_gps_map</span></code></a></dt>
-<dd>Utility function to help setup a Cartopy map.</dd>
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="verde.datasets.setup_california_gps_map.html#verde.datasets.setup_california_gps_map" title="verde.datasets.setup_california_gps_map"><code class="xref py py-func docutils literal notranslate"><span class="pre">setup_california_gps_map</span></code></a></dt><dd><p>Utility function to help setup a Cartopy map.</p>
+</dd>
 </dl>
 </div>
 </dd></dl>
 
 <div class="section" id="examples-using-verde-datasets-fetch-california-gps">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">verde.datasets.fetch_california_gps</span></code><a class="headerlink" href="#examples-using-verde-datasets-fetch-california-gps" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Sometimes data has outliers or less reliable points that might skew a blocked mean or even a me..."><div class="figure" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Sometimes data has outliers or less reliable points that might skew a blocked mean or even a me..."><div class="figure align-default" id="id1">
 <img alt="../../_images/sphx_glr_blockreduce_weights_thumb.png" src="../../_images/sphx_glr_blockreduce_weights_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/blockreduce_weights.html#sphx-glr-gallery-blockreduce-weights-py"><span class="std std-ref">Using weights in blocked reduction</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/blockreduce_weights.html#sphx-glr-gallery-blockreduce-weights-py"><span class="std std-ref">Using weights in blocked reduction</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="verde.BlockReduce is not able to output weights because we need to make assumptions about the r..."><div class="figure" id="id2">
+</div><div class="sphx-glr-thumbcontainer" tooltip="verde.BlockReduce is not able to output weights because we need to make assumptions about the r..."><div class="figure align-default" id="id2">
 <img alt="../../_images/sphx_glr_blockreduce_weights_mean_thumb.png" src="../../_images/sphx_glr_blockreduce_weights_mean_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/blockreduce_weights_mean.html#sphx-glr-gallery-blockreduce-weights-mean-py"><span class="std std-ref">Using weights in blocked means</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/blockreduce_weights_mean.html#sphx-glr-gallery-blockreduce-weights-mean-py"><span class="std std-ref">Using weights in blocked means</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="An advantage of using the Green&#x27;s functions based verde.Spline over verde.ScipyGridder is that ..."><div class="figure" id="id3">
+</div><div class="sphx-glr-thumbcontainer" tooltip="An advantage of using the Green&#x27;s functions based verde.Spline over verde.ScipyGridder is that ..."><div class="figure align-default" id="id3">
 <img alt="../../_images/sphx_glr_spline_weights_thumb.png" src="../../_images/sphx_glr_spline_weights_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline_weights.html#sphx-glr-gallery-spline-weights-py"><span class="std std-ref">Gridding with splines and weights</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline_weights.html#sphx-glr-gallery-spline-weights-py"><span class="std std-ref">Gridding with splines and weights</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Verde provides the verde.Trend class to estimate a polynomial trend and the verde.Vector class ..."><div class="figure" id="id4">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Verde provides the verde.Trend class to estimate a polynomial trend and the verde.Vector class ..."><div class="figure align-default" id="id4">
 <img alt="../../_images/sphx_glr_vector_trend_thumb.png" src="../../_images/sphx_glr_vector_trend_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/vector_trend.html#sphx-glr-gallery-vector-trend-py"><span class="std std-ref">Trends in vector data</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/vector_trend.html#sphx-glr-gallery-vector-trend-py"><span class="std std-ref">Trends in vector data</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="One way of gridding vector data would be grid each component separately using verde.Spline and ..."><div class="figure" id="id5">
-<img alt="../../_images/sphx_glr_vectorspline2d_thumb.png" src="../../_images/sphx_glr_vectorspline2d_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/vectorspline2d.html#sphx-glr-gallery-vectorspline2d-py"><span class="std std-ref">Gridding 2D vectors (coupled)</span></a></span></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Some datasets have multiple vector components measured for each location, like the East and Wes..."><div class="figure" id="id6">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Some datasets have multiple vector components measured for each location, like the East and Wes..."><div class="figure align-default" id="id5">
 <img alt="../../_images/sphx_glr_vectors_thumb.png" src="../../_images/sphx_glr_vectors_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/vectors.html#sphx-glr-tutorials-vectors-py"><span class="std std-ref">Vector Data</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/vectors.html#sphx-glr-tutorials-vectors-py"><span class="std std-ref">Vector Data</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="One of the advantages of using a Green&#x27;s functions approach to interpolation is that we can eas..."><div class="figure" id="id7">
+</div><div class="sphx-glr-thumbcontainer" tooltip="One of the advantages of using a Green&#x27;s functions approach to interpolation is that we can eas..."><div class="figure align-default" id="id6">
 <img alt="../../_images/sphx_glr_weights_thumb.png" src="../../_images/sphx_glr_weights_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/weights.html#sphx-glr-tutorials-weights-py"><span class="std std-ref">Using Weights</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/weights.html#sphx-glr-tutorials-weights-py"><span class="std std-ref">Using Weights</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="We provide sample 3-component GPS velocity data from the West coast of the U.S. The data were c..."><div class="figure" id="id8">
+</div><div class="sphx-glr-thumbcontainer" tooltip="We provide sample 3-component GPS velocity data from the West coast of the U.S. The data were c..."><div class="figure align-default" id="id7">
 <img alt="../../_images/sphx_glr_california_gps_thumb.png" src="../../_images/sphx_glr_california_gps_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../sample_data/california_gps.html#sphx-glr-sample-data-california-gps-py"><span class="std std-ref">GPS velocities from California</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../sample_data/california_gps.html#sphx-glr-sample-data-california-gps-py"><span class="std std-ref">GPS velocities from California</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -352,9 +342,9 @@ velocity (meter/year), standard deviation of North velocity
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

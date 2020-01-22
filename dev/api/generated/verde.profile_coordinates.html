@@ -176,7 +176,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -254,53 +254,28 @@
 <h1>verde.profile_coordinates<a class="headerlink" href="#verde-profile-coordinates" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="verde.profile_coordinates">
-<code class="descclassname">verde.</code><code class="descname">profile_coordinates</code><span class="sig-paren">(</span><em>point1</em>, <em>point2</em>, <em>size</em>, <em>extra_coords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/coordinates.html#profile_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.profile_coordinates" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">verde.</code><code class="sig-name descname">profile_coordinates</code><span class="sig-paren">(</span><em class="sig-param">point1</em>, <em class="sig-param">point2</em>, <em class="sig-param">size</em>, <em class="sig-param">extra_coords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/coordinates.html#profile_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.profile_coordinates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Coordinates for a profile along a straight line between two points.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>point1</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple or list</span></dt>
-<dd><p class="first last"><code class="docutils literal notranslate"><span class="pre">(easting,</span> <span class="pre">northing)</span></code> West-East and South-North coordinates of the
-first point, respectively.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point1</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – <code class="docutils literal notranslate"><span class="pre">(easting,</span> <span class="pre">northing)</span></code> West-East and South-North coordinates of the
+first point, respectively.</p></li>
+<li><p><strong>point2</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – <code class="docutils literal notranslate"><span class="pre">(easting,</span> <span class="pre">northing)</span></code> West-East and South-North coordinates of the
+second point, respectively.</p></li>
+<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Number of points to sample along the line.</p></li>
+<li><p><strong>extra_coords</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em>, </em><em>scalar</em><em>, or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – If not None, then value(s) of extra coordinate arrays to be generated.
+These extra arrays will have the same <em>size</em> as the others but will
+contain a constant value. Will generate an extra array per value given
+in <em>extra_coords</em>. Use this to generate arrays of constant heights or
+times, for example, that might be needed to evaluate a gridder.</p></li>
+</ul>
 </dd>
-<dt><strong>point2</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple or list</span></dt>
-<dd><p class="first last"><code class="docutils literal notranslate"><span class="pre">(easting,</span> <span class="pre">northing)</span></code> West-East and South-North coordinates of the
-second point, respectively.</p>
-</dd>
-<dt><strong>size</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Number of points to sample along the line.</p>
-</dd>
-<dt><strong>extra_coords</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None, scalar, or list</span></dt>
-<dd><p class="first last">If not None, then value(s) of extra coordinate arrays to be generated. These
-extra arrays will have the same <em>size</em> as the others but will contain a
-constant value. Will generate an extra array per value given in <em>extra_coords</em>.
-Use this to generate arrays of constant heights or times, for example, that
-might be needed to evaluate a gridder.</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>coordinates, distances</strong> (<em>tuple and 1d array</em>) – The coordinates of points along the straight line and the distances
+from the first point.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>coordinates, distances</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple and 1d array</span></dt>
-<dd><p class="first last">The coordinates of points along the straight line and the distances from the
-first point.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<dl class="last docutils">
-<dt><a class="reference internal" href="verde.scatter_points.html#verde.scatter_points" title="verde.scatter_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scatter_points</span></code></a></dt>
-<dd>Generate the coordinates for a random scatter of points</dd>
-<dt><a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_coordinates</span></code></a></dt>
-<dd>Generate coordinates for each point on a regular grid</dd>
-</dl>
-</div>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">),</span> <span class="n">dist</span> <span class="o">=</span> <span class="n">profile_coordinates</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;easting:&#39;</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:.1f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">east</span><span class="p">))</span>
@@ -320,6 +295,15 @@ first point.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
 <span class="go">[0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1]</span>
 </pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="verde.scatter_points.html#verde.scatter_points" title="verde.scatter_points"><code class="xref py py-func docutils literal notranslate"><span class="pre">scatter_points</span></code></a></dt><dd><p>Generate the coordinates for a random scatter of points</p>
+</dd>
+<dt><a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">grid_coordinates</span></code></a></dt><dd><p>Generate coordinates for each point on a regular grid</p>
+</dd>
+</dl>
 </div>
 </dd></dl>
 
@@ -345,9 +329,9 @@ first point.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

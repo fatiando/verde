@@ -119,12 +119,12 @@
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Data</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="index.html#where-is-my-data">Where is my data?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#where-are-my-data-files">Where are my data files?</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#available-datasets">Available datasets</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Bathymetry data from Baja California</a></li>
 <li class="toctree-l3"><a class="reference internal" href="california_gps.html">GPS velocities from California</a></li>
 <li class="toctree-l3"><a class="reference internal" href="checkerboard.html">Checkerboard function</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rio_magnetic.html">Magnetic data from Rio de Janeiro</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rio_magnetic.html">[DEPRECATED] Magnetic data from Rio de Janeiro</a></li>
 <li class="toctree-l3"><a class="reference internal" href="texas-wind.html">Wind speed data from Texas</a></li>
 </ul>
 </li>
@@ -166,7 +166,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -244,8 +244,8 @@
            <div itemprop="articleBody">
             
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-sample-data-baja-bathymetry-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-sample-data-baja-bathymetry-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="bathymetry-data-from-baja-california">
 <span id="sphx-glr-sample-data-baja-bathymetry-py"></span><h1>Bathymetry data from Baja California<a class="headerlink" href="#bathymetry-data-from-baja-california" title="Permalink to this headline">¶</a></h1>
@@ -278,8 +278,8 @@ directory if it’s not there already.</p>
 
 <span class="c1"># Make a Mercator map of the data using Cartopy</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="View documentation for matplotlib.pyplot.axes"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">(</span><span class="n">projection</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.Mercator" title="View documentation for cartopy.crs.Mercator"><span class="n">ccrs</span><span class="o">.</span><span class="n">Mercator</span></a><span class="p">())</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Bathymetry from Baja California&quot;</span><span class="p">)</span>
+<a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="View documentation for matplotlib.pyplot.axes"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">(</span><span class="n">projection</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.Mercator" title="View documentation for cartopy.crs.Mercator"><span class="n">ccrs</span><span class="o">.</span><span class="n">Mercator</span></a><span class="p">())</span>
+<a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Bathymetry from Baja California&quot;</span><span class="p">)</span>
 <span class="c1"># Plot the bathymetry as colored circles. Cartopy requires setting the projection of the</span>
 <span class="c1"># original data through the transform argument. Use PlateCarree for geographic data.</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.scatter.html#matplotlib.pyplot.scatter" title="View documentation for matplotlib.pyplot.scatter"><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span></a><span class="p">(</span>
@@ -291,17 +291,19 @@ directory if it’s not there already.</p>
 <span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">()</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;meters&quot;</span><span class="p">)</span>
 <span class="c1"># Use an utility function to add tick labels and land and ocean features to the map.</span>
-<a href="../api/generated/verde.datasets.setup_baja_bathymetry_map.html#verde.datasets.setup_baja_bathymetry_map" title="View documentation for verde.datasets.setup_baja_bathymetry_map"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">setup_baja_bathymetry_map</span></a><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<a href="../api/generated/verde.datasets.setup_baja_bathymetry_map.html#verde.datasets.setup_baja_bathymetry_map" title="View documentation for verde.datasets.setup_baja_bathymetry_map"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">setup_baja_bathymetry_map</span></a><span class="p">(</span><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.494 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.393 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-sample-data-baja-bathymetry-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/841b7397e4c28b2afa502860ab018f1d/baja_bathymetry.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">baja_bathymetry.py</span></code></a></div>
+<p><a class="reference download internal" download="" href="../_downloads/7ed84ce5d84ae6c67225d8ce81a2566b/baja_bathymetry.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">baja_bathymetry.py</span></code></a></p>
+</div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/f3cc60054fe762fd2c5b7512bb15b0ba/baja_bathymetry.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">baja_bathymetry.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../_downloads/037f1eb59fdd4407ffa748ec12204ad9/baja_bathymetry.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">baja_bathymetry.ipynb</span></code></a></p>
+</div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -326,9 +328,9 @@ directory if it’s not there already.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

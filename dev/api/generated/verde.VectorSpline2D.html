@@ -175,7 +175,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -253,144 +253,120 @@
 <h1>verde.VectorSpline2D<a class="headerlink" href="#verde-vectorspline2d" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="verde.VectorSpline2D">
-<em class="property">class </em><code class="descclassname">verde.</code><code class="descname">VectorSpline2D</code><span class="sig-paren">(</span><em>poisson=0.5</em>, <em>mindist=10000.0</em>, <em>damping=None</em>, <em>force_coords=None</em>, <em>engine='auto'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/vector.html#VectorSpline2D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.VectorSpline2D" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">verde.</code><code class="sig-name descname">VectorSpline2D</code><span class="sig-paren">(</span><em class="sig-param">poisson=0.5</em>, <em class="sig-param">mindist=10000.0</em>, <em class="sig-param">damping=None</em>, <em class="sig-param">force_coords=None</em>, <em class="sig-param">engine='auto'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/vector.html#VectorSpline2D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.VectorSpline2D" title="Permalink to this definition">¶</a></dt>
 <dd><p>Elastically coupled interpolation of 2-component vector data.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <a class="reference internal" href="#verde.VectorSpline2D" title="verde.VectorSpline2D"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorSpline2D</span></code></a> class is deprecated and will be
+removed in Verde v2.0.0. Its usage is restricted to GPS/GNSS data and
+not in the general scope of Verde. Please use the implementation in the
+<a class="reference external" href="https://github.com/fatiando/erizo">Erizo</a> package instead.</p>
+</div>
 <p>This gridder assumes Cartesian coordinates.</p>
-<p>Uses the Green’s functions based on elastic deformation from <a class="reference internal" href="../../references.html#sandwellwessel2016" id="id1">[SandwellWessel2016]</a>.
-The interpolation is done by estimating point forces that generate an elastic
-deformation that fits the observed vector data. The deformation equations are based
-on a 2D elastic sheet with a constant Poisson’s ratio. The data can then be
-predicted at any desired location.</p>
-<p>The east and north data components are coupled through the elastic deformation
-equations. This coupling is controlled by the Poisson’s ratio, which is usually
-between -1 and 1. The special case of Poisson’s ratio -1 leads to an uncoupled
-interpolation, meaning that the east and north components don’t interfere with each
-other.</p>
-<p>The point forces are traditionally placed under each data point. The force locations
-are set the first time <a class="reference internal" href="#verde.VectorSpline2D.fit" title="verde.VectorSpline2D.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a> is called. Subsequent calls
-will fit using the same force locations as the first call. This configuration
-results in an exact prediction at the data points but can be unstable.</p>
-<p><a class="reference internal" href="../../references.html#sandwellwessel2016" id="id2">[SandwellWessel2016]</a> stabilize the solution using Singular Value Decomposition but
-we use ridge regression instead. The regularization can be controlled using the
-<em>damping</em> argument. Alternatively, you can specify the position of the forces
-manually using the <em>force_coords</em> argument. Regularization or forces not coinciding
-with data points will result in a least-squares estimate, not an exact solution.
-Note that the least-squares solution is required for data weights to have any
-effect.</p>
-<p>Before fitting, the Jacobian (design, sensitivity, feature, etc) matrix for the
-spline is normalized using <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="(in scikit-learn v0.21.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.preprocessing.StandardScaler</span></code></a> without
-centering the mean so that the transformation can be undone in the estimated forces.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>poisson</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">The Poisson’s ratio for the elastic deformation Green’s functions. Default is
-0.5. A value of -1 will lead to uncoupled interpolation of the east and north
-data components.</p>
+<p>Uses the Green’s functions based on elastic deformation from
+<a class="reference internal" href="../../references.html#sandwellwessel2016" id="id1"><span>[SandwellWessel2016]</span></a>. The interpolation is done by estimating point forces
+that generate an elastic deformation that fits the observed vector data.
+The deformation equations are based on a 2D elastic sheet with a constant
+Poisson’s ratio. The data can then be predicted at any desired location.</p>
+<p>The east and north data components are coupled through the elastic
+deformation equations. This coupling is controlled by the Poisson’s ratio,
+which is usually between -1 and 1. The special case of Poisson’s ratio -1
+leads to an uncoupled interpolation, meaning that the east and north
+components don’t interfere with each other.</p>
+<p>The point forces are traditionally placed under each data point. The force
+locations are set the first time <a class="reference internal" href="#verde.VectorSpline2D.fit" title="verde.VectorSpline2D.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a> is
+called. Subsequent calls will fit using the same force locations as the
+first call. This configuration results in an exact prediction at the data
+points but can be unstable.</p>
+<p><a class="reference internal" href="../../references.html#sandwellwessel2016" id="id2"><span>[SandwellWessel2016]</span></a> stabilize the solution using Singular Value
+Decomposition but we use ridge regression instead. The regularization can
+be controlled using the <em>damping</em> argument. Alternatively, you can specify
+the position of the forces manually using the <em>force_coords</em> argument.
+Regularization or forces not coinciding with data points will result in a
+least-squares estimate, not an exact solution. Note that the least-squares
+solution is required for data weights to have any effect.</p>
+<p>Before fitting, the Jacobian (design, sensitivity, feature, etc) matrix for
+the spline is normalized using
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.preprocessing.StandardScaler</span></code></a> without centering the mean so
+that the transformation can be undone in the estimated forces.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>poisson</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – The Poisson’s ratio for the elastic deformation Green’s functions.
+Default is 0.5. A value of -1 will lead to uncoupled interpolation of
+the east and north data components.</p></li>
+<li><p><strong>mindist</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – A minimum distance between the point forces and data points. Needed
+because the Green’s functions are singular when forces and data points
+coincide. Acts as a fudge factor. A good rule of thumb is to use the
+average spacing between data points.</p></li>
+<li><p><strong>damping</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – The positive damping regularization parameter. Controls how much
+smoothness is imposed on the estimated forces. If None, no
+regularization is used.</p></li>
+<li><p><strong>force_coords</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> or </em><em>tuple of arrays</em>) – The easting and northing coordinates of the point forces. If None
+(default), then will be set to the data coordinates the first time
+<a class="reference internal" href="#verde.VectorSpline2D.fit" title="verde.VectorSpline2D.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a> is called.</p></li>
+<li><p><strong>engine</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Computation engine for the Jacobian matrix and predictions. Can be
+<code class="docutils literal notranslate"><span class="pre">'auto'</span></code>, <code class="docutils literal notranslate"><span class="pre">'numba'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'numpy'</span></code>. If <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>, will use numba
+if it is installed or numpy otherwise. The numba version is
+multi-threaded and usually faster, which makes fitting and predicting
+faster.</p></li>
+</ul>
 </dd>
-<dt><strong>mindist</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">A minimum distance between the point forces and data points. Needed because the
-Green’s functions are singular when forces and data points coincide. Acts as a
-fudge factor. A good rule of thumb is to use the average spacing between data
-points.</p>
-</dd>
-<dt><strong>damping</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None or float</span></dt>
-<dd><p class="first last">The positive damping regularization parameter. Controls how much smoothness is
-imposed on the estimated forces. If None, no regularization is used.</p>
-</dd>
-<dt><strong>force_coords</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None or tuple of arrays</span></dt>
-<dd><p class="first last">The easting and northing coordinates of the point forces. If None (default),
-then will be set to the data coordinates the first time
-<a class="reference internal" href="#verde.VectorSpline2D.fit" title="verde.VectorSpline2D.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a> is called.</p>
-</dd>
-<dt><strong>engine</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Computation engine for the Jacobian matrix and predictions. Can be <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>,
-<code class="docutils literal notranslate"><span class="pre">'numba'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'numpy'</span></code>. If <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>, will use numba if it is installed or
-numpy otherwise. The numba version is multi-threaded and usually faster, which
-makes fitting and predicting faster.</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>force_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array</span></dt>
-<dd><p class="first last">The estimated forces that fit the observed data.</p>
-</dd>
-<dt><strong>region_</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple</span></dt>
-<dd><p class="first last">The boundaries (<code class="docutils literal notranslate"><span class="pre">[W,</span> <span class="pre">E,</span> <span class="pre">S,</span> <span class="pre">N]</span></code>) of the data used to fit the
+<dt class="field-even">Variables</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>force_</strong> (<em>array</em>) – The estimated forces that fit the observed data.</p></li>
+<li><p><strong>region_</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – The boundaries (<code class="docutils literal notranslate"><span class="pre">[W,</span> <span class="pre">E,</span> <span class="pre">S,</span> <span class="pre">N]</span></code>) of the data used to fit the
 interpolator. Used as the default region for the
-<a class="reference internal" href="#verde.VectorSpline2D.grid" title="verde.VectorSpline2D.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a> and <a class="reference internal" href="#verde.VectorSpline2D.scatter" title="verde.VectorSpline2D.scatter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scatter</span></code></a>
-methods.</p>
+<a class="reference internal" href="#verde.VectorSpline2D.grid" title="verde.VectorSpline2D.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a> and
+<a class="reference internal" href="#verde.VectorSpline2D.scatter" title="verde.VectorSpline2D.scatter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scatter</span></code></a> methods.</p></li>
+</ul>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#verde.VectorSpline2D.filter" title="verde.VectorSpline2D.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span></code></a>(self,&nbsp;coordinates,&nbsp;data[,&nbsp;weights])</td>
-<td>Filter the data through the gridder and produce residuals.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#verde.VectorSpline2D.fit" title="verde.VectorSpline2D.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(self,&nbsp;coordinates,&nbsp;data[,&nbsp;weights])</td>
-<td>Fit the gridder to the given 2-component vector data.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#verde.VectorSpline2D.get_params" title="verde.VectorSpline2D.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>(self[,&nbsp;deep])</td>
-<td>Get parameters for this estimator.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#verde.VectorSpline2D.grid" title="verde.VectorSpline2D.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid</span></code></a>(self[,&nbsp;region,&nbsp;shape,&nbsp;spacing,&nbsp;dims,&nbsp;…])</td>
-<td>Interpolate the data onto a regular grid.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#verde.VectorSpline2D.jacobian" title="verde.VectorSpline2D.jacobian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacobian</span></code></a>(self,&nbsp;coordinates,&nbsp;force_coords[,&nbsp;…])</td>
-<td>Make the Jacobian matrix for the 2D coupled elastic deformation.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#verde.VectorSpline2D.predict" title="verde.VectorSpline2D.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(self,&nbsp;coordinates)</td>
-<td>Evaluate the fitted gridder on the given set of points.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#verde.VectorSpline2D.profile" title="verde.VectorSpline2D.profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">profile</span></code></a>(self,&nbsp;point1,&nbsp;point2,&nbsp;size[,&nbsp;dims,&nbsp;…])</td>
-<td>Interpolate data along a profile between two points.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#verde.VectorSpline2D.scatter" title="verde.VectorSpline2D.scatter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scatter</span></code></a>(self[,&nbsp;region,&nbsp;size,&nbsp;random_state,&nbsp;…])</td>
-<td>Interpolate values onto a random scatter of points.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#verde.VectorSpline2D.score" title="verde.VectorSpline2D.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(self,&nbsp;coordinates,&nbsp;data[,&nbsp;weights])</td>
-<td>Score the gridder predictions against the given data.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#verde.VectorSpline2D.set_params" title="verde.VectorSpline2D.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(self,&nbsp;\*\*params)</td>
-<td>Set the parameters of this estimator.</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
-<div class="section" id="examples-using-verde-vectorspline2d">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">verde.VectorSpline2D</span></code><a class="headerlink" href="#examples-using-verde-vectorspline2d" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="We can use verde.Vector to simultaneously process and grid all components of vector data. Each ..."><div class="figure" id="id4">
-<img alt="../../_images/sphx_glr_vector_uncoupled_thumb.png" src="../../_images/sphx_glr_vector_uncoupled_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/vector_uncoupled.html#sphx-glr-gallery-vector-uncoupled-py"><span class="std std-ref">Gridding 2D vectors (uncoupled)</span></a></span></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="One way of gridding vector data would be grid each component separately using verde.Spline and ..."><div class="figure" id="id5">
-<img alt="../../_images/sphx_glr_vectorspline2d_thumb.png" src="../../_images/sphx_glr_vectorspline2d_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/vectorspline2d.html#sphx-glr-gallery-vectorspline2d-py"><span class="std std-ref">Gridding 2D vectors (coupled)</span></a></span></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Trend estimation and removal is a common operation, particularly when dealing with geophysical ..."><div class="figure" id="id6">
-<img alt="../../_images/sphx_glr_trends_thumb.png" src="../../_images/sphx_glr_trends_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/trends.html#sphx-glr-tutorials-trends-py"><span class="std std-ref">Trend Estimation</span></a></span></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Some datasets have multiple vector components measured for each location, like the East and Wes..."><div class="figure" id="id7">
-<img alt="../../_images/sphx_glr_vectors_thumb.png" src="../../_images/sphx_glr_vectors_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/vectors.html#sphx-glr-tutorials-vectors-py"><span class="std std-ref">Vector Data</span></a></span></p>
-</div>
-</div><div style='clear:both'></div><dl class="method">
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#verde.VectorSpline2D.filter" title="verde.VectorSpline2D.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorSpline2D.filter</span></code></a>(coordinates, data[, …])</p></td>
+<td><p>Filter the data through the gridder and produce residuals.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#verde.VectorSpline2D.fit" title="verde.VectorSpline2D.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorSpline2D.fit</span></code></a>(coordinates, data[, weights])</p></td>
+<td><p>Fit the gridder to the given 2-component vector data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#verde.VectorSpline2D.get_params" title="verde.VectorSpline2D.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorSpline2D.get_params</span></code></a>([deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#verde.VectorSpline2D.grid" title="verde.VectorSpline2D.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorSpline2D.grid</span></code></a>([region, shape, …])</p></td>
+<td><p>Interpolate the data onto a regular grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#verde.VectorSpline2D.jacobian" title="verde.VectorSpline2D.jacobian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorSpline2D.jacobian</span></code></a>(coordinates, …[, …])</p></td>
+<td><p>Make the Jacobian matrix for the 2D coupled elastic deformation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#verde.VectorSpline2D.predict" title="verde.VectorSpline2D.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorSpline2D.predict</span></code></a>(coordinates)</p></td>
+<td><p>Evaluate the fitted gridder on the given set of points.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#verde.VectorSpline2D.profile" title="verde.VectorSpline2D.profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorSpline2D.profile</span></code></a>(point1, point2, size)</p></td>
+<td><p>Interpolate data along a profile between two points.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#verde.VectorSpline2D.scatter" title="verde.VectorSpline2D.scatter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorSpline2D.scatter</span></code></a>([region, size, …])</p></td>
+<td><p>Interpolate values onto a random scatter of points.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#verde.VectorSpline2D.score" title="verde.VectorSpline2D.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorSpline2D.score</span></code></a>(coordinates, data[, …])</p></td>
+<td><p>Score the gridder predictions against the given data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#verde.VectorSpline2D.set_params" title="verde.VectorSpline2D.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorSpline2D.set_params</span></code></a>(**params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<dl class="method">
 <dt id="verde.VectorSpline2D.filter">
-<code class="descclassname">VectorSpline2D.</code><code class="descname">filter</code><span class="sig-paren">(</span><em>self</em>, <em>coordinates</em>, <em>data</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.filter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">VectorSpline2D.</code><code class="sig-name descname">filter</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">data</em>, <em class="sig-param">weights=None</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter the data through the gridder and produce residuals.</p>
 <p>Calls <code class="docutils literal notranslate"><span class="pre">fit</span></code> on the data, evaluates the residuals (data - predicted
 data), and returns the coordinates, residuals, and weights.</p>
@@ -398,449 +374,317 @@ data), and returns the coordinates, residuals, and weights.</p>
 with other processing operations and is used by <a class="reference internal" href="verde.Chain.html#verde.Chain" title="verde.Chain"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Chain</span></code></a> to
 join them together (for example, so you can fit a spline on the
 residuals of a trend).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>coordinates</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of arrays</span></dt>
-<dd><p class="first last">Arrays with the coordinates of each data point. Should be in the
-following order: (easting, northing, vertical, …).</p>
-</dd>
-<dt><strong>data</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array or tuple of arrays</span></dt>
-<dd><p class="first last">The data values of each data point. If the data has more than one
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Arrays with the coordinates of each data point. Should be in the
+following order: (easting, northing, vertical, …).</p></li>
+<li><p><strong>data</strong> (<em>array</em><em> or </em><em>tuple of arrays</em>) – The data values of each data point. If the data has more than one
 component, <em>data</em> must be a tuple of arrays (one for each
-component).</p>
-</dd>
-<dt><strong>weights</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None or array or tuple of arrays</span></dt>
-<dd><p class="first last">If not None, then the weights assigned to each data point. If more
+component).</p></li>
+<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – If not None, then the weights assigned to each data point. If more
 than one data component is provided, you must provide a weights
-array for each data component (if not None).</p>
+array for each data component (if not None).</p></li>
+</ul>
 </dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt>coordinates, residuals, weights</dt>
-<dd><p class="first last">The coordinates and weights are same as the input. Residuals are
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>coordinates, residuals, weights</em> – The coordinates and weights are same as the input. Residuals are
 the input data minus the predicted data.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="verde.VectorSpline2D.fit">
-<code class="descclassname">VectorSpline2D.</code><code class="descname">fit</code><span class="sig-paren">(</span><em>self</em>, <em>coordinates</em>, <em>data</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/vector.html#VectorSpline2D.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.VectorSpline2D.fit" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">VectorSpline2D.</code><code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">data</em>, <em class="sig-param">weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/vector.html#VectorSpline2D.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.VectorSpline2D.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the gridder to the given 2-component vector data.</p>
 <p>The data region is captured and used as default for the
-<a class="reference internal" href="#verde.VectorSpline2D.grid" title="verde.VectorSpline2D.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a> and <a class="reference internal" href="#verde.VectorSpline2D.scatter" title="verde.VectorSpline2D.scatter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scatter</span></code></a>
-methods.</p>
+<a class="reference internal" href="#verde.VectorSpline2D.grid" title="verde.VectorSpline2D.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a> and
+<a class="reference internal" href="#verde.VectorSpline2D.scatter" title="verde.VectorSpline2D.scatter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scatter</span></code></a> methods.</p>
 <p>All input arrays must have the same shape.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>coordinates</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of arrays</span></dt>
-<dd><p class="first last">Arrays with the coordinates of each data point. Should be in the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Arrays with the coordinates of each data point. Should be in the
 following order: (easting, northing, vertical, …). Only easting
 and northing will be used, all subsequent coordinates will be
-ignored.</p>
-</dd>
-<dt><strong>data</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of array</span></dt>
-<dd><p class="first last">A tuple <code class="docutils literal notranslate"><span class="pre">(east_component,</span> <span class="pre">north_component)</span></code> of arrays with the
-vector data values at each point.</p>
-</dd>
-<dt><strong>weights</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None or tuple array</span></dt>
-<dd><p class="first last">If not None, then the weights assigned to each data point. Must be
+ignored.</p></li>
+<li><p><strong>data</strong> (<em>tuple of array</em>) – A tuple <code class="docutils literal notranslate"><span class="pre">(east_component,</span> <span class="pre">north_component)</span></code> of arrays with the
+vector data values at each point.</p></li>
+<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> or </em><em>tuple array</em>) – If not None, then the weights assigned to each data point. Must be
 one array per data component. Typically, this should be 1 over the
-data uncertainty squared.</p>
+data uncertainty squared.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>self</em> – Returns this estimator instance for chaining operations.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt>self</dt>
-<dd><p class="first last">Returns this estimator instance for chaining operations.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="verde.VectorSpline2D.get_params">
-<code class="descclassname">VectorSpline2D.</code><code class="descname">get_params</code><span class="sig-paren">(</span><em>self</em>, <em>deep=True</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.get_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">VectorSpline2D.</code><code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>deep</strong> <span class="classifier-delimiter">:</span> <span class="classifier">boolean, optional</span></dt>
-<dd><p class="first last">If True, will return the parameters for this estimator and
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>deep</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>default=True</em>) – If True, will return the parameters for this estimator and
 contained subobjects that are estimators.</p>
 </dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>params</strong> <span class="classifier-delimiter">:</span> <span class="classifier">mapping of string to any</span></dt>
-<dd><p class="first last">Parameter names mapped to their values.</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>params</strong> (<em>mapping of string to any</em>) – Parameter names mapped to their values.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="verde.VectorSpline2D.grid">
-<code class="descclassname">VectorSpline2D.</code><code class="descname">grid</code><span class="sig-paren">(</span><em>self</em>, <em>region=None</em>, <em>shape=None</em>, <em>spacing=None</em>, <em>dims=None</em>, <em>data_names=None</em>, <em>projection=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.grid" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">VectorSpline2D.</code><code class="sig-name descname">grid</code><span class="sig-paren">(</span><em class="sig-param">region=None</em>, <em class="sig-param">shape=None</em>, <em class="sig-param">spacing=None</em>, <em class="sig-param">dims=None</em>, <em class="sig-param">data_names=None</em>, <em class="sig-param">projection=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate the data onto a regular grid.</p>
-<p>The grid can be specified by either the number of points in each dimension (the
-<em>shape</em>) or by the grid node spacing. See <a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> for
-details. Other arguments for <a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> can be passed as
-extra keyword arguments (<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this method.</p>
-<p>If the interpolator collected the input data region, then it will be used if
-<code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
-<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the dimensions
-and the data field(s) in the output <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.12.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>. Default names will
-be provided if none are given.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>region</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list = [W, E, S, N]</span></dt>
-<dd><p class="first last">The boundaries of a given region in Cartesian or geographic coordinates.</p>
-</dd>
-<dt><strong>shape</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple = (n_north, n_east) or None</span></dt>
-<dd><p class="first last">The number of points in the South-North and West-East directions,
-respectively.</p>
-</dd>
-<dt><strong>spacing</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple = (s_north, s_east) or None</span></dt>
-<dd><p class="first last">The grid spacing in the South-North and West-East directions, respectively.</p>
-</dd>
-<dt><strong>dims</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list or None</span></dt>
-<dd><p class="first last">The names of the northing and easting data dimensions, respectively, in the
-output grid. Defaults to <code class="docutils literal notranslate"><span class="pre">['northing',</span> <span class="pre">'easting']</span></code>. <strong>NOTE: This is an
-exception to the “easting” then “northing” pattern but is required for
-compatibility with xarray.</strong></p>
-</dd>
-<dt><strong>data_names</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of None</span></dt>
-<dd><p class="first last">The name(s) of the data variables in the output grid. Defaults to
+<p>The grid can be specified by either the number of points in each
+dimension (the <em>shape</em>) or by the grid node spacing. See
+<a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> for details. Other arguments for
+<a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> can be passed as extra keyword arguments
+(<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this method.</p>
+<p>If the interpolator collected the input data region, then it will be
+used if <code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
+<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
+dimensions and the data field(s) in the output <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.
+Default names will be provided if none are given.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region</strong> (<em>list =</em><em> [</em><em>W</em><em>, </em><em>E</em><em>, </em><em>S</em><em>, </em><em>N</em><em>]</em>) – The boundaries of a given region in Cartesian or geographic
+coordinates.</p></li>
+<li><p><strong>shape</strong> (<em>tuple =</em><em> (</em><em>n_north</em><em>, </em><em>n_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – The number of points in the South-North and West-East directions,
+respectively.</p></li>
+<li><p><strong>spacing</strong> (<em>tuple =</em><em> (</em><em>s_north</em><em>, </em><em>s_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – The grid spacing in the South-North and West-East directions,
+respectively.</p></li>
+<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – The names of the northing and easting data dimensions,
+respectively, in the output grid. Defaults to <code class="docutils literal notranslate"><span class="pre">['northing',</span>
+<span class="pre">'easting']</span></code>. <strong>NOTE: This is an exception to the “easting” then
+“northing” pattern but is required for compatibility with xarray.</strong></p></li>
+<li><p><strong>data_names</strong> (<em>list of None</em>) – The name(s) of the data variables in the output grid. Defaults to
 <code class="docutils literal notranslate"><span class="pre">['scalars']</span></code> for scalar data,
 <code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component']</span></code> for 2D vector data, and
 <code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component',</span> <span class="pre">'vertical_component']</span></code> for
-3D vector data.</p>
-</dd>
-<dt><strong>projection</strong> <span class="classifier-delimiter">:</span> <span class="classifier">callable or None</span></dt>
-<dd><p class="first last">If not None, then should be a callable object
+3D vector data.</p></li>
+<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – If not None, then should be a callable object
 <code class="docutils literal notranslate"><span class="pre">projection(easting,</span> <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code>
 that takes in easting and northing coordinate arrays and returns
 projected northing and easting coordinate arrays. This function
 will be used to project the generated grid coordinates before
 passing them into <code class="docutils literal notranslate"><span class="pre">predict</span></code>. For example, you can use this to
-generate a geographic grid from a Cartesian gridder.</p>
+generate a geographic grid from a Cartesian gridder.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>grid</strong> (<em>xarray.Dataset</em>) – The interpolated grid. Metadata about the interpolator is written
+to the <code class="docutils literal notranslate"><span class="pre">attrs</span></code> attribute.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>grid</strong> <span class="classifier-delimiter">:</span> <span class="classifier">xarray.Dataset</span></dt>
-<dd><p class="first last">The interpolated grid. Metadata about the interpolator is written to the
-<code class="docutils literal notranslate"><span class="pre">attrs</span></code> attribute.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<dl class="last docutils">
-<dt><a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a></dt>
-<dd>Generate the coordinate values for the grid.</dd>
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a></dt><dd><p>Generate the coordinate values for the grid.</p>
+</dd>
 </dl>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="verde.VectorSpline2D.jacobian">
-<code class="descclassname">VectorSpline2D.</code><code class="descname">jacobian</code><span class="sig-paren">(</span><em>self</em>, <em>coordinates</em>, <em>force_coords</em>, <em>dtype='float64'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/vector.html#VectorSpline2D.jacobian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.VectorSpline2D.jacobian" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">VectorSpline2D.</code><code class="sig-name descname">jacobian</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">force_coords</em>, <em class="sig-param">dtype='float64'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/vector.html#VectorSpline2D.jacobian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.VectorSpline2D.jacobian" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make the Jacobian matrix for the 2D coupled elastic deformation.</p>
-<p>The Jacobian is segmented into 4 parts, each relating a force component to a
-data component <a class="reference internal" href="../../references.html#sandwellwessel2016" id="id3">[SandwellWessel2016]</a>:</p>
+<p>The Jacobian is segmented into 4 parts, each relating a force component
+to a data component <a class="reference internal" href="../../references.html#sandwellwessel2016" id="id3"><span>[SandwellWessel2016]</span></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">|</span> <span class="n">J_ee</span>  <span class="n">J_ne</span> <span class="o">|*|</span><span class="n">f_e</span><span class="o">|</span> <span class="o">=</span> <span class="o">|</span><span class="n">d_e</span><span class="o">|</span>
 <span class="o">|</span> <span class="n">J_ne</span>  <span class="n">J_nn</span> <span class="o">|</span> <span class="o">|</span><span class="n">f_n</span><span class="o">|</span>   <span class="o">|</span><span class="n">d_n</span><span class="o">|</span>
 </pre></div>
 </div>
-<p>The forces and data are assumed to be stacked into 1D arrays with the east
-component on top of the north component.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>coordinates</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of arrays</span></dt>
-<dd><p class="first last">Arrays with the coordinates of each data point. Should be in the
-following order: (easting, northing, vertical, …). Only easting and
-northing will be used, all subsequent coordinates will be ignored.</p>
+<p>The forces and data are assumed to be stacked into 1D arrays with the
+east component on top of the north component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Arrays with the coordinates of each data point. Should be in the
+following order: (easting, northing, vertical, …). Only easting
+and northing will be used, all subsequent coordinates will be
+ignored.</p></li>
+<li><p><strong>force_coords</strong> (<em>tuple of arrays</em>) – Arrays with the coordinates for the forces. Should be in the same
+order as the coordinate arrays.</p></li>
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><em>numpy dtype</em>) – The type of the Jacobian array.</p></li>
+</ul>
 </dd>
-<dt><strong>force_coords</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of arrays</span></dt>
-<dd><p class="first last">Arrays with the coordinates for the forces. Should be in the same order as
-the coordinate arrays.</p>
-</dd>
-<dt><strong>dtype</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str or numpy dtype</span></dt>
-<dd><p class="first last">The type of the Jacobian array.</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>jacobian</strong> (<em>2D array</em>) – The (n_data*2, n_forces*2) Jacobian matrix.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>jacobian</strong> <span class="classifier-delimiter">:</span> <span class="classifier">2D array</span></dt>
-<dd><p class="first last">The (n_data*2, n_forces*2) Jacobian matrix.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="verde.VectorSpline2D.predict">
-<code class="descclassname">VectorSpline2D.</code><code class="descname">predict</code><span class="sig-paren">(</span><em>self</em>, <em>coordinates</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/vector.html#VectorSpline2D.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.VectorSpline2D.predict" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">VectorSpline2D.</code><code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/vector.html#VectorSpline2D.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.VectorSpline2D.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate the fitted gridder on the given set of points.</p>
 <p>Requires a fitted estimator (see <a class="reference internal" href="#verde.VectorSpline2D.fit" title="verde.VectorSpline2D.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a>).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>coordinates</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of arrays</span></dt>
-<dd><p class="first last">Arrays with the coordinates of each data point. Should be in the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Arrays with the coordinates of each data point. Should be in the
 following order: (easting, northing, vertical, …). Only easting
 and northing will be used, all subsequent coordinates will be
 ignored.</p>
 </dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>data</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of arrays</span></dt>
-<dd><p class="first last">A tuple <code class="docutils literal notranslate"><span class="pre">(east_component,</span> <span class="pre">north_component)</span></code> of arrays with the
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>data</strong> (<em>tuple of arrays</em>) – A tuple <code class="docutils literal notranslate"><span class="pre">(east_component,</span> <span class="pre">north_component)</span></code> of arrays with the
 predicted vector data values at each point.</p>
 </dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="verde.VectorSpline2D.profile">
-<code class="descclassname">VectorSpline2D.</code><code class="descname">profile</code><span class="sig-paren">(</span><em>self</em>, <em>point1</em>, <em>point2</em>, <em>size</em>, <em>dims=None</em>, <em>data_names=None</em>, <em>projection=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.profile" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">VectorSpline2D.</code><code class="sig-name descname">profile</code><span class="sig-paren">(</span><em class="sig-param">point1</em>, <em class="sig-param">point2</em>, <em class="sig-param">size</em>, <em class="sig-param">dims=None</em>, <em class="sig-param">data_names=None</em>, <em class="sig-param">projection=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.profile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate data along a profile between two points.</p>
-<p>Generates the profile along a straight line assuming Cartesian distances. Point
-coordinates are generated by <a class="reference internal" href="verde.profile_coordinates.html#verde.profile_coordinates" title="verde.profile_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.profile_coordinates</span></code></a>. Other arguments
-for this function can be passed as extra keyword arguments (<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this
-method.</p>
-<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the dimensions
-and the data field(s) in the output <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are
-provided.</p>
-<p>Includes the calculated Cartesian distance from <em>point1</em> for each data point in
-the profile.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>point1</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple</span></dt>
-<dd><p class="first last">The easting and northing coordinates, respectively, of the first point.</p>
-</dd>
-<dt><strong>point2</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple</span></dt>
-<dd><p class="first last">The easting and northing coordinates, respectively, of the second point.</p>
-</dd>
-<dt><strong>size</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">The number of points to generate.</p>
-</dd>
-<dt><strong>dims</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list or None</span></dt>
-<dd><p class="first last">The names of the northing and easting data dimensions, respectively, in the
-output dataframe. Defaults to <code class="docutils literal notranslate"><span class="pre">['northing',</span> <span class="pre">'easting']</span></code>. <strong>NOTE: This
-is an exception to the “easting” then “northing” pattern but is required for
-compatibility with xarray.</strong></p>
-</dd>
-<dt><strong>data_names</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of None</span></dt>
-<dd><p class="first last">The name(s) of the data variables in the output dataframe. Defaults
+<p>Generates the profile along a straight line assuming Cartesian
+distances. Point coordinates are generated by
+<a class="reference internal" href="verde.profile_coordinates.html#verde.profile_coordinates" title="verde.profile_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.profile_coordinates</span></code></a>. Other arguments for this function
+can be passed as extra keyword arguments (<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this method.</p>
+<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
+dimensions and the data field(s) in the output
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
+<p>Includes the calculated Cartesian distance from <em>point1</em> for each data
+point in the profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point1</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – The easting and northing coordinates, respectively, of the first
+point.</p></li>
+<li><p><strong>point2</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – The easting and northing coordinates, respectively, of the second
+point.</p></li>
+<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The number of points to generate.</p></li>
+<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – The names of the northing and easting data dimensions,
+respectively, in the output dataframe. Defaults to <code class="docutils literal notranslate"><span class="pre">['northing',</span>
+<span class="pre">'easting']</span></code>. <strong>NOTE: This is an exception to the “easting” then
+“northing” pattern but is required for compatibility with xarray.</strong></p></li>
+<li><p><strong>data_names</strong> (<em>list of None</em>) – The name(s) of the data variables in the output dataframe. Defaults
 to <code class="docutils literal notranslate"><span class="pre">['scalars']</span></code> for scalar data,
 <code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component']</span></code> for 2D vector data, and
 <code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component',</span> <span class="pre">'vertical_component']</span></code> for
-3D vector data.</p>
-</dd>
-<dt><strong>projection</strong> <span class="classifier-delimiter">:</span> <span class="classifier">callable or None</span></dt>
-<dd><p class="first last">If not None, then should be a callable object
+3D vector data.</p></li>
+<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – If not None, then should be a callable object
 <code class="docutils literal notranslate"><span class="pre">projection(easting,</span> <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code>
 that takes in easting and northing coordinate arrays and returns
 projected northing and easting coordinate arrays. This function
 will be used to project the generated profile coordinates before
 passing them into <code class="docutils literal notranslate"><span class="pre">predict</span></code>. For example, you can use this to
-generate a geographic profile from a Cartesian gridder.</p>
+generate a geographic profile from a Cartesian gridder.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>table</strong> (<em>pandas.DataFrame</em>) – The interpolated values along the profile.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>table</strong> <span class="classifier-delimiter">:</span> <span class="classifier">pandas.DataFrame</span></dt>
-<dd><p class="first last">The interpolated values along the profile.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="verde.VectorSpline2D.scatter">
-<code class="descclassname">VectorSpline2D.</code><code class="descname">scatter</code><span class="sig-paren">(</span><em>self</em>, <em>region=None</em>, <em>size=300</em>, <em>random_state=0</em>, <em>dims=None</em>, <em>data_names=None</em>, <em>projection=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.scatter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">VectorSpline2D.</code><code class="sig-name descname">scatter</code><span class="sig-paren">(</span><em class="sig-param">region=None</em>, <em class="sig-param">size=300</em>, <em class="sig-param">random_state=0</em>, <em class="sig-param">dims=None</em>, <em class="sig-param">data_names=None</em>, <em class="sig-param">projection=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.scatter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate values onto a random scatter of points.</p>
-<p>Point coordinates are generated by <a class="reference internal" href="verde.scatter_points.html#verde.scatter_points" title="verde.scatter_points"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.scatter_points</span></code></a>. Other arguments
-for this function can be passed as extra keyword arguments (<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this
-method.</p>
-<p>If the interpolator collected the input data region, then it will be used if
-<code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
-<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the dimensions
-and the data field(s) in the output <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are
-provided.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>region</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list = [W, E, S, N]</span></dt>
-<dd><p class="first last">The boundaries of a given region in Cartesian or geographic
-coordinates.</p>
-</dd>
-<dt><strong>size</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">The number of points to generate.</p>
-</dd>
-<dt><strong>random_state</strong> <span class="classifier-delimiter">:</span> <span class="classifier">numpy.random.RandomState or an int seed</span></dt>
-<dd><p class="first last">A random number generator used to define the state of the random
+<p>Point coordinates are generated by <a class="reference internal" href="verde.scatter_points.html#verde.scatter_points" title="verde.scatter_points"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.scatter_points</span></code></a>. Other
+arguments for this function can be passed as extra keyword arguments
+(<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this method.</p>
+<p>If the interpolator collected the input data region, then it will be
+used if <code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
+<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
+dimensions and the data field(s) in the output
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region</strong> (<em>list =</em><em> [</em><em>W</em><em>, </em><em>E</em><em>, </em><em>S</em><em>, </em><em>N</em><em>]</em>) – The boundaries of a given region in Cartesian or geographic
+coordinates.</p></li>
+<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The number of points to generate.</p></li>
+<li><p><strong>random_state</strong> (<em>numpy.random.RandomState</em><em> or </em><em>an int seed</em>) – A random number generator used to define the state of the random
 permutations. Use a fixed seed to make sure computations are
 reproducible. Use <code class="docutils literal notranslate"><span class="pre">None</span></code> to choose a seed automatically
-(resulting in different numbers with each run).</p>
-</dd>
-<dt><strong>dims</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list or None</span></dt>
-<dd><p class="first last">The names of the northing and easting data dimensions, respectively, in the
-output dataframe. Defaults to <code class="docutils literal notranslate"><span class="pre">['northing',</span> <span class="pre">'easting']</span></code>. <strong>NOTE: This
-is an exception to the “easting” then “northing” pattern but is required for
-compatibility with xarray.</strong></p>
-</dd>
-<dt><strong>data_names</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list of None</span></dt>
-<dd><p class="first last">The name(s) of the data variables in the output dataframe. Defaults
+(resulting in different numbers with each run).</p></li>
+<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – The names of the northing and easting data dimensions,
+respectively, in the output dataframe. Defaults to <code class="docutils literal notranslate"><span class="pre">['northing',</span>
+<span class="pre">'easting']</span></code>. <strong>NOTE: This is an exception to the “easting” then
+“northing” pattern but is required for compatibility with xarray.</strong></p></li>
+<li><p><strong>data_names</strong> (<em>list of None</em>) – The name(s) of the data variables in the output dataframe. Defaults
 to <code class="docutils literal notranslate"><span class="pre">['scalars']</span></code> for scalar data,
 <code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component']</span></code> for 2D vector data, and
 <code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component',</span> <span class="pre">'vertical_component']</span></code> for
-3D vector data.</p>
-</dd>
-<dt><strong>projection</strong> <span class="classifier-delimiter">:</span> <span class="classifier">callable or None</span></dt>
-<dd><p class="first last">If not None, then should be a callable object
+3D vector data.</p></li>
+<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – If not None, then should be a callable object
 <code class="docutils literal notranslate"><span class="pre">projection(easting,</span> <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code>
 that takes in easting and northing coordinate arrays and returns
 projected northing and easting coordinate arrays. This function
 will be used to project the generated scatter coordinates before
 passing them into <code class="docutils literal notranslate"><span class="pre">predict</span></code>. For example, you can use this to
-generate a geographic scatter from a Cartesian gridder.</p>
+generate a geographic scatter from a Cartesian gridder.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>table</strong> (<em>pandas.DataFrame</em>) – The interpolated values on a random set of points.</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>table</strong> <span class="classifier-delimiter">:</span> <span class="classifier">pandas.DataFrame</span></dt>
-<dd><p class="first last">The interpolated values on a random set of points.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="verde.VectorSpline2D.score">
-<code class="descclassname">VectorSpline2D.</code><code class="descname">score</code><span class="sig-paren">(</span><em>self</em>, <em>coordinates</em>, <em>data</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">VectorSpline2D.</code><code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">data</em>, <em class="sig-param">weights=None</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Score the gridder predictions against the given data.</p>
 <p>Calculates the R^2 coefficient of determination of between the
 predicted values and the given data values. A maximum score of 1 means
 a perfect fit. The score can be negative.</p>
 <p>If the data has more than 1 component, the scores of each component
 will be averaged.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>coordinates</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple of arrays</span></dt>
-<dd><p class="first last">Arrays with the coordinates of each data point. Should be in the
-following order: (easting, northing, vertical, …).</p>
-</dd>
-<dt><strong>data</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array or tuple of arrays</span></dt>
-<dd><p class="first last">The data values of each data point. If the data has more than one
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Arrays with the coordinates of each data point. Should be in the
+following order: (easting, northing, vertical, …).</p></li>
+<li><p><strong>data</strong> (<em>array</em><em> or </em><em>tuple of arrays</em>) – The data values of each data point. If the data has more than one
 component, <em>data</em> must be a tuple of arrays (one for each
-component).</p>
-</dd>
-<dt><strong>weights</strong> <span class="classifier-delimiter">:</span> <span class="classifier">None or array or tuple of arrays</span></dt>
-<dd><p class="first last">If not None, then the weights assigned to each data point. If more
+component).</p></li>
+<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – If not None, then the weights assigned to each data point. If more
 than one data component is provided, you must provide a weights
-array for each data component (if not None).</p>
+array for each data component (if not None).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>score</strong> (<em>float</em>) – The R^2 score</p>
 </dd>
 </dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>score</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">The R^2 score</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="verde.VectorSpline2D.set_params">
-<code class="descclassname">VectorSpline2D.</code><code class="descname">set_params</code><span class="sig-paren">(</span><em>self</em>, <em>**params</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.set_params" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">VectorSpline2D.</code><code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.VectorSpline2D.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
 (such as pipelines). The latter have parameters of the form
 <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s possible to update each
 component of a nested object.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt>self</dt>
-<dd></dd>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Estimator parameters.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>self</strong> (<em>object</em>) – Estimator instance.</p>
+</dd>
 </dl>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
-<div style='clear:both'></div></div>
+<div class="section" id="examples-using-verde-vectorspline2d">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">verde.VectorSpline2D</span></code><a class="headerlink" href="#examples-using-verde-vectorspline2d" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Some datasets have multiple vector components measured for each location, like the East and Wes..."><div class="figure align-default" id="id4">
+<img alt="../../_images/sphx_glr_vectors_thumb.png" src="../../_images/sphx_glr_vectors_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/vectors.html#sphx-glr-tutorials-vectors-py"><span class="std std-ref">Vector Data</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
 </div>
 
 
@@ -863,9 +707,9 @@ component of a nested object.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>

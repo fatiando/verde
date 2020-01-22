@@ -153,7 +153,7 @@
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
             
-                <li class="toctree-l1"><a href="https://gitter.im/fatiando/fatiando"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
             
                 <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
             
@@ -227,10 +227,10 @@
 <span class="sd">Functions for generating and manipulating coordinates.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="k">import</span> <span class="n">check_random_state</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_random_state</span>
 
-<span class="kn">from</span> <span class="nn">.base.utils</span> <span class="k">import</span> <span class="n">n_1d_arrays</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">kdtree</span>
+<span class="kn">from</span> <span class="nn">.base.utils</span> <span class="kn">import</span> <span class="n">n_1d_arrays</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">kdtree</span>
 
 
 <span class="k">def</span> <span class="nf">check_region</span><span class="p">(</span><span class="n">region</span><span class="p">):</span>
@@ -386,18 +386,19 @@
 <span class="sd">        reproducible. Use ``None`` to choose a seed automatically (resulting in</span>
 <span class="sd">        different numbers with each run).</span>
 <span class="sd">    extra_coords : None, scalar, or list</span>
-<span class="sd">        If not None, then value(s) of extra coordinate arrays to be generated. These</span>
-<span class="sd">        extra arrays will have the same *size* as the others but will contain a</span>
-<span class="sd">        constant value. Will generate an extra array per value given in *extra_coords*.</span>
-<span class="sd">        Use this to generate arrays of constant heights or times, for example, that</span>
-<span class="sd">        might be needed to evaluate a gridder.</span>
+<span class="sd">        If not None, then value(s) of extra coordinate arrays to be generated.</span>
+<span class="sd">        These extra arrays will have the same *size* as the others but will</span>
+<span class="sd">        contain a constant value. Will generate an extra array per value given</span>
+<span class="sd">        in *extra_coords*. Use this to generate arrays of constant heights or</span>
+<span class="sd">        times, for example, that might be needed to evaluate a gridder.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    coordinates : tuple of arrays</span>
-<span class="sd">        Arrays with coordinates of each point in the grid. Each array contains values</span>
-<span class="sd">        for a dimension in the order: easting, northing, vertical, and any extra</span>
-<span class="sd">        dimensions given in *extra_coords*. All arrays will have the specified *size*.</span>
+<span class="sd">        Arrays with coordinates of each point in the grid. Each array contains</span>
+<span class="sd">        values for a dimension in the order: easting, northing, vertical, and</span>
+<span class="sd">        any extra dimensions given in *extra_coords*. All arrays will have the</span>
+<span class="sd">        specified *size*.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -409,8 +410,9 @@
 <span class="sd">    5.4881, 7.1519, 6.0276, 5.4488</span>
 <span class="sd">    &gt;&gt;&gt; print(&#39;, &#39;.join([&#39;{:.4f}&#39;.format(i) for i in northing]))</span>
 <span class="sd">    -1.5763, -1.3541, -1.5624, -1.1082</span>
-<span class="sd">    &gt;&gt;&gt; easting, northing, height = scatter_points((0, 10, -2, -1), 4, random_state=0,</span>
-<span class="sd">    ...                                            extra_coords=12)</span>
+<span class="sd">    &gt;&gt;&gt; easting, northing, height = scatter_points(</span>
+<span class="sd">    ...     (0, 10, -2, -1), 4, random_state=0, extra_coords=12</span>
+<span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; print(height)</span>
 <span class="sd">    [12. 12. 12. 12.]</span>
 <span class="sd">    &gt;&gt;&gt; easting, northing, height, time = scatter_points(</span>
@@ -448,44 +450,50 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate the coordinates for each point on a regular grid.</span>
 
-<span class="sd">    The grid can be specified by either the number of points in each dimension (the</span>
-<span class="sd">    *shape*) or by the grid node spacing.</span>
+<span class="sd">    The grid can be specified by either the number of points in each dimension</span>
+<span class="sd">    (the *shape*) or by the grid node spacing.</span>
 
-<span class="sd">    If the given region is not divisible by the desired spacing, either the region or</span>
-<span class="sd">    the spacing will have to be adjusted. By default, the spacing will be rounded to the</span>
-<span class="sd">    nearest multiple. Optionally, the East and North boundaries of the region can be</span>
-<span class="sd">    adjusted to fit the exact spacing given. See the examples below.</span>
+<span class="sd">    If the given region is not divisible by the desired spacing, either the</span>
+<span class="sd">    region or the spacing will have to be adjusted. By default, the spacing</span>
+<span class="sd">    will be rounded to the nearest multiple. Optionally, the East and North</span>
+<span class="sd">    boundaries of the region can be adjusted to fit the exact spacing given.</span>
+<span class="sd">    See the examples below.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    region : list = [W, E, S, N]</span>
-<span class="sd">        The boundaries of a given region in Cartesian or geographic coordinates.</span>
+<span class="sd">        The boundaries of a given region in Cartesian or geographic</span>
+<span class="sd">        coordinates.</span>
 <span class="sd">    shape : tuple = (n_north, n_east) or None</span>
-<span class="sd">        The number of points in the South-North and West-East directions, respectively.</span>
+<span class="sd">        The number of points in the South-North and West-East directions,</span>
+<span class="sd">        respectively.</span>
 <span class="sd">    spacing : float, tuple = (s_north, s_east), or None</span>
-<span class="sd">        The grid spacing in the South-North and West-East directions, respectively. A</span>
-<span class="sd">        single value means that the spacing is equal in both directions.</span>
+<span class="sd">        The grid spacing in the South-North and West-East directions,</span>
+<span class="sd">        respectively. A single value means that the spacing is equal in both</span>
+<span class="sd">        directions.</span>
 <span class="sd">    adjust : {&#39;spacing&#39;, &#39;region&#39;}</span>
-<span class="sd">        Whether to adjust the spacing or the region if required. Ignored if *shape* is</span>
-<span class="sd">        given instead of *spacing*. Defaults to adjusting the spacing.</span>
+<span class="sd">        Whether to adjust the spacing or the region if required. Ignored if</span>
+<span class="sd">        *shape* is given instead of *spacing*. Defaults to adjusting the</span>
+<span class="sd">        spacing.</span>
 <span class="sd">    pixel_register : bool</span>
-<span class="sd">        If True, the coordinates will refer to the center of each grid pixel instead of</span>
-<span class="sd">        the grid lines. In practice, this means that there will be one less element per</span>
-<span class="sd">        dimension of the grid when compared to grid line registered (only if given</span>
-<span class="sd">        *spacing* and not *shape*). Default is False.</span>
+<span class="sd">        If True, the coordinates will refer to the center of each grid pixel</span>
+<span class="sd">        instead of the grid lines. In practice, this means that there will be</span>
+<span class="sd">        one less element per dimension of the grid when compared to grid line</span>
+<span class="sd">        registered (only if given *spacing* and not *shape*). Default is False.</span>
 <span class="sd">    extra_coords : None, scalar, or list</span>
-<span class="sd">        If not None, then value(s) of extra coordinate arrays to be generated. These</span>
-<span class="sd">        extra arrays will have the same *shape* as the others but will contain a</span>
-<span class="sd">        constant value. Will generate an extra array per value given in *extra_coords*.</span>
-<span class="sd">        Use this to generate arrays of constant heights or times, for example, that</span>
-<span class="sd">        might be needed to evaluate a gridder.</span>
+<span class="sd">        If not None, then value(s) of extra coordinate arrays to be generated.</span>
+<span class="sd">        These extra arrays will have the same *shape* as the others but will</span>
+<span class="sd">        contain a constant value. Will generate an extra array per value given</span>
+<span class="sd">        in *extra_coords*. Use this to generate arrays of constant heights or</span>
+<span class="sd">        times, for example, that might be needed to evaluate a gridder.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    coordinates : tuple of arrays</span>
-<span class="sd">        Arrays with coordinates of each point in the grid. Each array contains values</span>
-<span class="sd">        for a dimension in the order: easting, northing, vertical, and any extra</span>
-<span class="sd">        dimensions given in *extra_coords*. All arrays will have the specified *shape*.</span>
+<span class="sd">        Arrays with coordinates of each point in the grid. Each array contains</span>
+<span class="sd">        values for a dimension in the order: easting, northing, vertical, and</span>
+<span class="sd">        any extra dimensions given in *extra_coords*. All arrays will have the</span>
+<span class="sd">        specified *shape*.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -508,8 +516,8 @@
 <span class="sd">     [ 7.5  7.5  7.5]</span>
 <span class="sd">     [10.  10.  10. ]]</span>
 
-<span class="sd">    The grid can also be specified using the spacing between points instead of the</span>
-<span class="sd">    shape:</span>
+<span class="sd">    The grid can also be specified using the spacing between points instead of</span>
+<span class="sd">    the shape:</span>
 
 <span class="sd">    &gt;&gt;&gt; east, north = grid_coordinates(region=(0, 5, 0, 10), spacing=2.5)</span>
 <span class="sd">    &gt;&gt;&gt; print(east.shape, north.shape)</span>
@@ -545,8 +553,8 @@
 <span class="sd">     [ 7.5  7.5  7.5  7.5  7.5  7.5  7.5]</span>
 <span class="sd">     [10.  10.  10.  10.  10.  10.  10. ]]</span>
 
-<span class="sd">    If the region can&#39;t be divided into the desired spacing, the spacing will be</span>
-<span class="sd">    adjusted to conform to the region:</span>
+<span class="sd">    If the region can&#39;t be divided into the desired spacing, the spacing will</span>
+<span class="sd">    be adjusted to conform to the region:</span>
 
 <span class="sd">    &gt;&gt;&gt; east, north = grid_coordinates(region=(-5, 0, 0, 5), spacing=2.6)</span>
 <span class="sd">    &gt;&gt;&gt; print(east.shape, north.shape)</span>
@@ -571,7 +579,8 @@
 <span class="sd">     [2.5 2.5 2.5]</span>
 <span class="sd">     [5.  5.  5. ]]</span>
 
-<span class="sd">    You can choose to adjust the East and North boundaries of the region instead:</span>
+<span class="sd">    You can choose to adjust the East and North boundaries of the region</span>
+<span class="sd">    instead:</span>
 
 <span class="sd">    &gt;&gt;&gt; east, north = grid_coordinates(region=(-5, 0, 0, 5), spacing=2.6,</span>
 <span class="sd">    ...                                adjust=&#39;region&#39;)</span>
@@ -598,8 +607,8 @@
 <span class="sd">     [2.4 2.4 2.4]</span>
 <span class="sd">     [4.8 4.8 4.8]]</span>
 
-<span class="sd">    We can optionally generate coordinates for the center of each grid pixel instead of</span>
-<span class="sd">    the corner (default):</span>
+<span class="sd">    We can optionally generate coordinates for the center of each grid pixel</span>
+<span class="sd">    instead of the corner (default):</span>
 
 <span class="sd">    &gt;&gt;&gt; east, north = grid_coordinates(region=(0, 5, 0, 10), spacing=2.5,</span>
 <span class="sd">    ...                                pixel_register=True)</span>
@@ -633,8 +642,9 @@
 
 <span class="sd">    Generate arrays for other coordinates that have a constant value:</span>
 
-<span class="sd">    &gt;&gt;&gt; east, north, height = grid_coordinates(region=(0, 5, 0, 10), spacing=2.5,</span>
-<span class="sd">    ...                                        extra_coords=57)</span>
+<span class="sd">    &gt;&gt;&gt; east, north, height = grid_coordinates(</span>
+<span class="sd">    ...     region=(0, 5, 0, 10), spacing=2.5, extra_coords=57</span>
+<span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; print(east.shape, north.shape, height.shape)</span>
 <span class="sd">    (5, 3) (5, 3) (5, 3)</span>
 <span class="sd">    &gt;&gt;&gt; print(height)</span>
@@ -643,8 +653,9 @@
 <span class="sd">     [57. 57. 57.]</span>
 <span class="sd">     [57. 57. 57.]</span>
 <span class="sd">     [57. 57. 57.]]</span>
-<span class="sd">    &gt;&gt;&gt; east, north, height, time = grid_coordinates(region=(0, 5, 0, 10), spacing=2.5,</span>
-<span class="sd">    ...                                              extra_coords=[57, 0.1])</span>
+<span class="sd">    &gt;&gt;&gt; east, north, height, time = grid_coordinates(</span>
+<span class="sd">    ...     region=(0, 5, 0, 10), spacing=2.5, extra_coords=[57, 0.1]</span>
+<span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; print(east.shape, north.shape, height.shape, time.shape)</span>
 <span class="sd">    (5, 3) (5, 3) (5, 3) (5, 3)</span>
 <span class="sd">    &gt;&gt;&gt; print(height)</span>
@@ -674,9 +685,10 @@
     <span class="k">if</span> <span class="n">spacing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">shape</span><span class="p">,</span> <span class="n">region</span> <span class="o">=</span> <span class="n">spacing_to_shape</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">adjust</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">pixel_register</span><span class="p">:</span>
-        <span class="c1"># Starts by generating grid-line registered coordinates and shifting them to the</span>
-        <span class="c1"># center of the pixel. Need 1 more point if given a shape so that we can do</span>
-        <span class="c1"># that because we discard the last point when shifting the coordinates.</span>
+        <span class="c1"># Starts by generating grid-line registered coordinates and shifting</span>
+        <span class="c1"># them to the center of the pixel. Need 1 more point if given a shape</span>
+        <span class="c1"># so that we can do that because we discard the last point when</span>
+        <span class="c1"># shifting the coordinates.</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">shape</span><span class="p">)</span>
     <span class="n">east_lines</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">north_lines</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">region</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">region</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -762,17 +774,17 @@
 <span class="sd">    size : int</span>
 <span class="sd">        Number of points to sample along the line.</span>
 <span class="sd">    extra_coords : None, scalar, or list</span>
-<span class="sd">        If not None, then value(s) of extra coordinate arrays to be generated. These</span>
-<span class="sd">        extra arrays will have the same *size* as the others but will contain a</span>
-<span class="sd">        constant value. Will generate an extra array per value given in *extra_coords*.</span>
-<span class="sd">        Use this to generate arrays of constant heights or times, for example, that</span>
-<span class="sd">        might be needed to evaluate a gridder.</span>
+<span class="sd">        If not None, then value(s) of extra coordinate arrays to be generated.</span>
+<span class="sd">        These extra arrays will have the same *size* as the others but will</span>
+<span class="sd">        contain a constant value. Will generate an extra array per value given</span>
+<span class="sd">        in *extra_coords*. Use this to generate arrays of constant heights or</span>
+<span class="sd">        times, for example, that might be needed to evaluate a gridder.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    coordinates, distances : tuple and 1d array</span>
-<span class="sd">        The coordinates of points along the straight line and the distances from the</span>
-<span class="sd">        first point.</span>
+<span class="sd">        The coordinates of points along the straight line and the distances</span>
+<span class="sd">        from the first point.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -862,7 +874,8 @@
 <span class="sd">     [False  True  True]</span>
 <span class="sd">     [False False False]]</span>
 
-<span class="sd">    Geographic coordinates are also supported using :func:`verde.longitude_continuity`:</span>
+<span class="sd">    Geographic coordinates are also supported using</span>
+<span class="sd">    :func:`verde.longitude_continuity`:</span>
 
 <span class="sd">    &gt;&gt;&gt; from verde import longitude_continuity</span>
 <span class="sd">    &gt;&gt;&gt; east, north = grid_coordinates([0, 350, -20, 20], spacing=10)</span>
@@ -900,12 +913,13 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Split a region into blocks and label points according to where they fall.</span>
 
-<span class="sd">    The labels are integers corresponding to the index of the block. Also returns the</span>
-<span class="sd">    coordinates of the center of each block (following the same index as the labels).</span>
+<span class="sd">    The labels are integers corresponding to the index of the block. Also</span>
+<span class="sd">    returns the coordinates of the center of each block (following the same</span>
+<span class="sd">    index as the labels).</span>
 
-<span class="sd">    The size of the blocks can be specified by the *spacing* parameter. Alternatively,</span>
-<span class="sd">    the number of blocks in the South-North and West-East directions can be specified</span>
-<span class="sd">    using the *shape* parameter.</span>
+<span class="sd">    The size of the blocks can be specified by the *spacing* parameter.</span>
+<span class="sd">    Alternatively, the number of blocks in the South-North and West-East</span>
+<span class="sd">    directions can be specified using the *shape* parameter.</span>
 
 <span class="sd">    .. note::</span>
 
@@ -919,7 +933,8 @@
 <span class="sd">        following order: (easting, northing, vertical, ...). Only easting and</span>
 <span class="sd">        northing will be used, all subsequent coordinates will be ignored.</span>
 <span class="sd">    shape : tuple = (n_north, n_east) or None</span>
-<span class="sd">        The number of blocks in the South-North and West-East directions, respectively.</span>
+<span class="sd">        The number of blocks in the South-North and West-East directions,</span>
+<span class="sd">        respectively.</span>
 <span class="sd">    spacing : float, tuple = (s_north, s_east), or None</span>
 <span class="sd">        The block size in the South-North and West-East directions,</span>
 <span class="sd">        respectively. A single value means that the size is equal in both</span>
@@ -995,8 +1010,9 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Modify coordinates and region boundaries to ensure longitude continuity.</span>
 
-<span class="sd">    Longitudinal boundaries of the region are moved to the ``[0, 360)`` or ``[-180, 180)``</span>
-<span class="sd">    degrees interval depending which one is better suited for that specific region.</span>
+<span class="sd">    Longitudinal boundaries of the region are moved to the ``[0, 360)`` or</span>
+<span class="sd">    ``[-180, 180)`` degrees interval depending which one is better suited for</span>
+<span class="sd">    that specific region.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1004,16 +1020,16 @@
 <span class="sd">        Set of geographic coordinates that will be moved to the same degrees</span>
 <span class="sd">        interval as the one of the modified region.</span>
 <span class="sd">    region : list or array</span>
-<span class="sd">        List or array containing the boundary coordinates `w`, `e`, `s`, `n` of the</span>
-<span class="sd">        region in degrees.</span>
+<span class="sd">        List or array containing the boundary coordinates `w`, `e`, `s`, `n` of</span>
+<span class="sd">        the region in degrees.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    modified_coordinates : array</span>
 <span class="sd">        Modified set of extra geographic coordinates.</span>
 <span class="sd">    modified_region : array</span>
-<span class="sd">        List containing the modified boundary coordinates `w, `e`, `s`, `n` of the</span>
-<span class="sd">        region.</span>
+<span class="sd">        List containing the modified boundary coordinates `w, `e`, `s`, `n` of</span>
+<span class="sd">        the region.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -1026,7 +1042,9 @@
 <span class="sd">    &gt;&gt;&gt; from verde import grid_coordinates</span>
 <span class="sd">    &gt;&gt;&gt; region = [-70, -60, -40, -30]</span>
 <span class="sd">    &gt;&gt;&gt; coordinates = grid_coordinates([270, 320, -50, -20], spacing=5)</span>
-<span class="sd">    &gt;&gt;&gt; [longitude, latitude], region = longitude_continuity(coordinates, region)</span>
+<span class="sd">    &gt;&gt;&gt; [longitude, latitude], region = longitude_continuity(</span>
+<span class="sd">    ...     coordinates, region</span>
+<span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; print(region)</span>
 <span class="sd">    [290 300 -40 -30]</span>
 <span class="sd">    &gt;&gt;&gt; print(longitude.min(), longitude.max())</span>
@@ -1034,7 +1052,9 @@
 <span class="sd">    &gt;&gt;&gt; # Another example</span>
 <span class="sd">    &gt;&gt;&gt; region = [-20, 20, -20, 20]</span>
 <span class="sd">    &gt;&gt;&gt; coordinates = grid_coordinates([0, 350, -90, 90], spacing=10)</span>
-<span class="sd">    &gt;&gt;&gt; [longitude, latitude], region = longitude_continuity(coordinates, region)</span>
+<span class="sd">    &gt;&gt;&gt; [longitude, latitude], region = longitude_continuity(</span>
+<span class="sd">    ...     coordinates, region</span>
+<span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; print(region)</span>
 <span class="sd">    [-20  20 -20  20]</span>
 <span class="sd">    &gt;&gt;&gt; print(longitude.min(), longitude.max())</span>
@@ -1089,7 +1109,9 @@
 
 
 <span class="k">def</span> <span class="nf">_check_geographic_region</span><span class="p">(</span><span class="n">region</span><span class="p">):</span>
-    <span class="s2">&quot;Check if region in geographic coordinates are within accepted degree intervals&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if region is in geographic coordinates are within accepted intervals.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">region</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
     <span class="c1"># Check if coordinates are within accepted degrees intervals</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">360</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">])</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">180</span><span class="p">):</span>
@@ -1102,7 +1124,8 @@
             <span class="s2">&quot;Invalid region &#39;</span><span class="si">{}</span><span class="s2">&#39; (W, E, S, N). &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
             <span class="o">+</span> <span class="s2">&quot;Latitudinal coordinates should be &lt; 90 and &gt; -90 degrees.&quot;</span>
         <span class="p">)</span>
-    <span class="c1"># Check if longitude boundaries do not involve more than one spin around the globe</span>
+    <span class="c1"># Check if longitude boundaries do not involve more than one spin around</span>
+    <span class="c1"># the globe</span>
     <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">360</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="s2">&quot;Invalid region &#39;</span><span class="si">{}</span><span class="s2">&#39; (W, E, S, N). &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
@@ -1121,9 +1144,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2019, The Verde Developers
+        &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jul 23, 2019.
+        Last updated on Jan 22, 2020.
       </span>
 
     </p>
