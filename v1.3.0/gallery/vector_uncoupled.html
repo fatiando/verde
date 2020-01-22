@@ -1,0 +1,451 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    
+        <title>Gridding 2D vectors &mdash; Verde</title>
+    
+
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sample Data" href="../sample_data/index.html" />
+    <link rel="prev" title="Trends in vector data" href="vector_trend.html" />
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/verde-logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Verde</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Gallery</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="blockreduce.html">Blocked reduction operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blockreduce_weights.html">Using weights in blocked reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blockreduce_weights_mean.html">Using weights in blocked means</a></li>
+<li class="toctree-l2"><a class="reference internal" href="distance_mask.html">Mask grid points by distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scipygridder.html">Gridding with Scipy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spline.html">Gridding with splines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spline_cv.html">Gridding with splines (cross-validated)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spline_weights.html">Gridding with splines and weights</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trend.html">Polynomial trend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vector_trend.html">Trends in vector data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Gridding 2D vectors</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/grid_coordinates.html">Grid Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/model_evaluation.html">Evaluating Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+
+            
+          
+
+    
+        <p class="caption">
+            <span class="caption-text">
+            
+                Getting help and contributing
+            
+            </span>
+        </p>
+        <ul>
+            
+                <li class="toctree-l1"><a href="https://www.fatiando.org"><i class="fa fa-external-link-square fa-fw"></i> Fatiando a Terra</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md"><i class="fa fa-users fa-fw"></i> Contributing</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
+            
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
+            
+        </ul>
+    
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Verde</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Gallery</a> &raquo;</li>
+        
+      <li>Gridding 2D vectors</li>
+    
+    
+    <li class="source-link">
+        
+            
+                
+                
+                
+                    
+                
+                <a href="https://github.com/fatiando/verde/edit/master/doc/../examples/vector_uncoupled.py"
+                   class="fa fa-github"> Improve this page</a>
+            
+        
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-gallery-vector-uncoupled-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="gridding-2d-vectors">
+<span id="sphx-glr-gallery-vector-uncoupled-py"></span><h1>Gridding 2D vectors<a class="headerlink" href="#gridding-2d-vectors" title="Permalink to this headline">¶</a></h1>
+<p>We can use <a class="reference internal" href="../api/generated/verde.Vector.html#verde.Vector" title="verde.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Vector</span></code></a> to simultaneously process and grid all
+components of vector data. Each component is processed and gridded separately
+(see <a class="reference external" href="https://github.com/fatiando/erizo">Erizo</a> for an elastically coupled
+alternative) but we have the convenience of dealing with a single estimator.
+<a class="reference internal" href="../api/generated/verde.Vector.html#verde.Vector" title="verde.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Vector</span></code></a> can be combined with <a class="reference internal" href="../api/generated/verde.Trend.html#verde.Trend" title="verde.Trend"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Trend</span></code></a>,
+<a class="reference internal" href="../api/generated/verde.Spline.html#verde.Spline" title="verde.Spline"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Spline</span></code></a>, and <a class="reference internal" href="../api/generated/verde.Chain.html#verde.Chain" title="verde.Chain"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Chain</span></code></a> to create a full processing
+pipeline.</p>
+<img alt="../_images/sphx_glr_vector_uncoupled_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_vector_uncoupled_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  station_id  longitude  ...  wind_speed_east_knots  wind_speed_north_knots
+0        0F2   -97.7756  ...               1.032920               -2.357185
+1        11R   -96.3742  ...               1.692155                2.982564
+2        2F5  -101.9018  ...              -1.110056               -0.311412
+3        3T5   -96.9500  ...               1.695097                3.018448
+4        5C1   -98.6946  ...               1.271400                1.090743
+
+[5 rows x 6 columns]
+Chain(steps=[(&#39;mean&#39;,
+              BlockReduce(adjust=&#39;spacing&#39;, center_coordinates=False,
+                          drop_coords=True,
+                          reduction=&lt;function mean at 0x7f4998c62ea0&gt;,
+                          region=None, shape=None, spacing=37000.0)),
+             (&#39;trend&#39;, Vector(components=[Trend(degree=1), Trend(degree=1)])),
+             (&#39;spline&#39;,
+              Vector(components=[Spline(damping=1e-10, engine=&#39;auto&#39;,
+                                        force_coords=None, mindist=500000.0),
+                                 Spline(damping=1e-10, engine=&#39;auto&#39;,
+                                        force_coords=None,
+                                        mindist=500000.0)]))])
+Cross-validation R^2 score: 0.78
+/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:1752: RuntimeWarning: invalid value encountered in less
+  u, v = self.projection.transform_vectors(t, x, y, u, v)
+/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:1752: RuntimeWarning: invalid value encountered in greater
+  u, v = self.projection.transform_vectors(t, x, y, u, v)
+/home/travis/build/fatiando/verde/examples/vector_uncoupled.py:101: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
+  plt.tight_layout()
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pyproj</span>
+<span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
+
+
+<span class="c1"># Fetch the wind speed data from Texas.</span>
+<span class="n">data</span> <span class="o">=</span> <a href="../api/generated/verde.datasets.fetch_texas_wind.html#verde.datasets.fetch_texas_wind" title="View documentation for verde.datasets.fetch_texas_wind"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">fetch_texas_wind</span></a><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+
+<span class="c1"># Separate out some of the data into utility variables</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">region</span></a> <span class="o">=</span> <a href="../api/generated/verde.get_region.html#verde.get_region" title="View documentation for verde.get_region"><span class="n">vd</span><span class="o">.</span><span class="n">get_region</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="p">)</span>
+<span class="c1"># Use a Mercator projection because Spline is a Cartesian gridder</span>
+<span class="n">projection</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span><span class="p">(</span><span class="n">proj</span><span class="o">=</span><span class="s2">&quot;merc&quot;</span><span class="p">,</span> <span class="n">lat_ts</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+
+<span class="c1"># Split the data into a training and testing set. We&#39;ll fit the gridder on the training</span>
+<span class="c1"># set and use the testing set to evaluate how well the gridder is performing.</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">train</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">test</span></a> <span class="o">=</span> <a href="../api/generated/verde.train_test_split.html#verde.train_test_split" title="View documentation for verde.train_test_split"><span class="n">vd</span><span class="o">.</span><span class="n">train_test_split</span></a><span class="p">(</span>
+    <span class="n">projection</span><span class="p">(</span><span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="p">),</span>
+    <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">wind_speed_east_knots</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">wind_speed_north_knots</span><span class="p">),</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># We&#39;ll make a 20 arc-minute grid</span>
+<a href="https://docs.python.org/3/library/functions.html#float" title="View documentation for builtins.float"><span class="n">spacing</span></a> <span class="o">=</span> <span class="mi">20</span> <span class="o">/</span> <span class="mi">60</span>
+
+<span class="c1"># Chain together a blocked mean to avoid aliasing, a polynomial trend (Spline usually</span>
+<span class="c1"># requires de-trended data), and finally a Spline for each component. Notice that</span>
+<span class="c1"># BlockReduce can work on multicomponent data without the use of Vector.</span>
+<a href="../api/generated/verde.Chain.html#verde.Chain" title="View documentation for verde.Chain"><span class="n">chain</span></a> <span class="o">=</span> <a href="../api/generated/verde.Chain.html#verde.Chain" title="View documentation for verde.Chain"><span class="n">vd</span><span class="o">.</span><span class="n">Chain</span></a><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <a href="../api/generated/verde.BlockReduce.html#verde.BlockReduce" title="View documentation for verde.BlockReduce"><span class="n">vd</span><span class="o">.</span><span class="n">BlockReduce</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html#numpy.mean" title="View documentation for numpy.mean"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#float" title="View documentation for builtins.float"><span class="n">spacing</span></a> <span class="o">*</span> <span class="mf">111e3</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s2">&quot;trend&quot;</span><span class="p">,</span> <a href="../api/generated/verde.Vector.html#verde.Vector" title="View documentation for verde.Vector"><span class="n">vd</span><span class="o">.</span><span class="n">Vector</span></a><span class="p">([</span><a href="../api/generated/verde.Trend.html#verde.Trend" title="View documentation for verde.Trend"><span class="n">vd</span><span class="o">.</span><span class="n">Trend</span></a><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)])),</span>
+        <span class="p">(</span>
+            <span class="s2">&quot;spline&quot;</span><span class="p">,</span>
+            <a href="../api/generated/verde.Vector.html#verde.Vector" title="View documentation for verde.Vector"><span class="n">vd</span><span class="o">.</span><span class="n">Vector</span></a><span class="p">([</span><a href="../api/generated/verde.Spline.html#verde.Spline" title="View documentation for verde.Spline"><span class="n">vd</span><span class="o">.</span><span class="n">Spline</span></a><span class="p">(</span><span class="n">damping</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">,</span> <span class="n">mindist</span><span class="o">=</span><span class="mf">500e3</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]),</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="../api/generated/verde.Chain.html#verde.Chain" title="View documentation for verde.Chain"><span class="n">chain</span></a><span class="p">)</span>
+
+<span class="c1"># Fit on the training data</span>
+<a href="../api/generated/verde.Chain.html#verde.Chain" title="View documentation for verde.Chain"><span class="n">chain</span></a><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">train</span></a><span class="p">)</span>
+<span class="c1"># And score on the testing data. The best possible score is 1, meaning a perfect</span>
+<span class="c1"># prediction of the test data.</span>
+<span class="n">score</span> <span class="o">=</span> <a href="../api/generated/verde.Chain.html#verde.Chain" title="View documentation for verde.Chain"><span class="n">chain</span></a><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">test</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cross-validation R^2 score: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">score</span><span class="p">))</span>
+
+<span class="c1"># Interpolate the wind speed onto a regular geographic grid and mask the data that are</span>
+<span class="c1"># far from the observation points</span>
+<span class="n">grid_full</span> <span class="o">=</span> <a href="../api/generated/verde.Chain.html#verde.Chain" title="View documentation for verde.Chain"><span class="n">chain</span></a><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">region</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#float" title="View documentation for builtins.float"><span class="n">spacing</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="View documentation for builtins.float"><span class="n">spacing</span></a><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">grid</span> <span class="o">=</span> <a href="../api/generated/verde.distance_mask.html#verde.distance_mask" title="View documentation for verde.distance_mask"><span class="n">vd</span><span class="o">.</span><span class="n">distance_mask</span></a><span class="p">(</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="p">,</span> <span class="n">maxdist</span><span class="o">=</span><span class="mi">3</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#float" title="View documentation for builtins.float"><span class="n">spacing</span></a> <span class="o">*</span> <span class="mf">111e3</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">grid_full</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">projection</span>
+<span class="p">)</span>
+
+<span class="c1"># Make maps of the original and gridded wind speed</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="View documentation for matplotlib.pyplot.axes"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">(</span><span class="n">projection</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.Mercator" title="View documentation for cartopy.crs.Mercator"><span class="n">ccrs</span><span class="o">.</span><span class="n">Mercator</span></a><span class="p">())</span>
+<a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Uncoupled spline gridding of wind speed&quot;</span><span class="p">)</span>
+<span class="n">tmp</span> <span class="o">=</span> <a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+    <span class="n">grid</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="n">grid</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="n">grid</span><span class="o">.</span><span class="n">east_component</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="n">grid</span><span class="o">.</span><span class="n">north_component</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="n">width</span><span class="o">=</span><span class="mf">0.0015</span><span class="p">,</span>
+    <span class="n">scale</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:blue&quot;</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">(),</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Interpolated&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+    <span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="p">,</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">wind_speed_east_knots</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">wind_speed_north_knots</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="n">width</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>
+    <span class="n">scale</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:red&quot;</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">(),</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Original&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">.</span><span class="n">quiverkey</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="mf">0.17</span><span class="p">,</span> <span class="mf">0.23</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;5 knots&quot;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="o">=</span><span class="s2">&quot;figure&quot;</span><span class="p">)</span>
+<a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower left&quot;</span><span class="p">)</span>
+<span class="c1"># Use an utility function to add tick labels and land and ocean features to the map.</span>
+<a href="../api/generated/verde.datasets.setup_texas_wind_map.html#verde.datasets.setup_texas_wind_map" title="View documentation for verde.datasets.setup_texas_wind_map"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">setup_texas_wind_map</span></a><span class="p">(</span><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.226 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-vector-uncoupled-py">
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/e45971ded674b67a36eb99a34c5f747b/vector_uncoupled.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">vector_uncoupled.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/b7f1f56f79deb3904a931d46f6d14e69/vector_uncoupled.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">vector_uncoupled.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../sample_data/index.html" class="btn btn-neutral float-right" title="Sample Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="vector_trend.html" class="btn btn-neutral float-left" title="Trends in vector data" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2020, The Verde Developers
+      <span class="lastupdated">
+        Last updated on Jan 22, 2020.
+      </span>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

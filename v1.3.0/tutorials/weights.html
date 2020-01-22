@@ -1,0 +1,624 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    
+        <title>Using Weights &mdash; Verde</title>
+    
+
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Vector Data" href="vectors.html" />
+    <link rel="prev" title="Model Selection" href="model_selection.html" />
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/verde-logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.3.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Verde</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gallery/index.html">Gallery</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grid_coordinates.html">Grid Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_evaluation.html">Evaluating Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_selection.html">Model Selection</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using Weights</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#weights-in-data-decimation">Weights in data decimation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#option-1-no-input-weights">Option 1: No input weights</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#option-2-input-weights-are-not-related-to-the-uncertainty-of-the-data">Option 2: Input weights are not related to the uncertainty of the data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#option-3-input-weights-are-1-over-the-data-uncertainty-squared">Option 3: Input weights are 1 over the data uncertainty squared</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#interpolation-with-weights">Interpolation with weights</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+
+            
+          
+
+    
+        <p class="caption">
+            <span class="caption-text">
+            
+                Getting help and contributing
+            
+            </span>
+        </p>
+        <ul>
+            
+                <li class="toctree-l1"><a href="https://www.fatiando.org"><i class="fa fa-external-link-square fa-fw"></i> Fatiando a Terra</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md"><i class="fa fa-users fa-fw"></i> Contributing</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
+            
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
+            
+        </ul>
+    
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Verde</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Using Weights</li>
+    
+    
+    <li class="source-link">
+        
+            
+                
+                
+                
+                    
+                
+                <a href="https://github.com/fatiando/verde/edit/master/doc/../tutorials/weights.py"
+                   class="fa fa-github"> Improve this page</a>
+            
+        
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-tutorials-weights-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="using-weights">
+<span id="sphx-glr-tutorials-weights-py"></span><h1>Using Weights<a class="headerlink" href="#using-weights" title="Permalink to this headline">¶</a></h1>
+<p>One of the advantages of using a Green’s functions approach to interpolation is that we
+can easily weight the data to give each point more or less influence over the results.
+This is a good way to not let data points with large uncertainties bias the
+interpolation or the data decimation.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># The weights vary a lot so it&#39;s better to plot them using a logarithmic color scale</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.colors.LogNorm.html#matplotlib.colors.LogNorm" title="View documentation for matplotlib.colors.LogNorm"><span class="n">LogNorm</span></a>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
+</pre></div>
+</div>
+<p>We’ll use some sample GPS vertical ground velocity which has some variable
+uncertainties associated with each data point. The data are loaded as a
+pandas.DataFrame:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <a href="../api/generated/verde.datasets.fetch_california_gps.html#verde.datasets.fetch_california_gps" title="View documentation for verde.datasets.fetch_california_gps"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">fetch_california_gps</span></a><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>    latitude   longitude     height  ...  std_north  std_east   std_up
+0  34.116409  242.906804  762.11978  ...     0.0002   0.00037  0.00053
+1  34.116409  242.906804  762.10883  ...     0.0002   0.00037  0.00053
+2  34.116409  242.906805  762.09364  ...     0.0002   0.00037  0.00053
+3  34.116409  242.906805  762.09073  ...     0.0002   0.00037  0.00053
+4  34.116409  242.906805  762.07699  ...     0.0002   0.00037  0.00053
+
+[5 rows x 9 columns]
+</pre></div>
+</div>
+<p>Let’s plot our data using Cartopy to see what the vertical velocities and their
+uncertainties look like. We’ll make a function for this so we can reuse it later on.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_data</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="p">,</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">velocity</span></a><span class="p">,</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">weights</span></a><span class="p">,</span> <span class="n">title_data</span><span class="p">,</span> <span class="n">title_weights</span><span class="p">):</span>
+    <span class="s2">&quot;Make two maps of our data, one with the data and one with the weights/uncertainty&quot;</span>
+    <a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="View documentation for matplotlib.figure.Figure"><span class="n">fig</span></a><span class="p">,</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">axes</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span>
+        <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.Mercator" title="View documentation for cartopy.crs.Mercator"><span class="n">ccrs</span><span class="o">.</span><span class="n">Mercator</span></a><span class="p">())</span>
+    <span class="p">)</span>
+    <a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">crs</span></a> <span class="o">=</span> <a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">()</span>
+    <a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">axes</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title_data</span><span class="p">)</span>
+    <span class="n">maxabs</span> <span class="o">=</span> <a href="../api/generated/verde.maxabs.html#verde.maxabs" title="View documentation for verde.maxabs"><span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">velocity</span></a><span class="p">)</span>
+    <a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.QuadMesh" title="View documentation for matplotlib.collections.QuadMesh"><span class="n">pc</span></a> <span class="o">=</span> <a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+        <span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="p">,</span>
+        <span class="n">c</span><span class="o">=</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">velocity</span></a><span class="p">,</span>
+        <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+        <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;seismic&quot;</span><span class="p">,</span>
+        <span class="n">vmin</span><span class="o">=-</span><span class="n">maxabs</span><span class="p">,</span>
+        <span class="n">vmax</span><span class="o">=</span><span class="n">maxabs</span><span class="p">,</span>
+        <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">crs</span></a><span class="p">,</span>
+    <span class="p">)</span>
+    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.QuadMesh" title="View documentation for matplotlib.collections.QuadMesh"><span class="n">pc</span></a><span class="p">,</span> <a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;m/yr&quot;</span><span class="p">)</span>
+    <a href="../api/generated/verde.datasets.setup_california_gps_map.html#verde.datasets.setup_california_gps_map" title="View documentation for verde.datasets.setup_california_gps_map"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">setup_california_gps_map</span></a><span class="p">(</span><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="p">)</span>
+    <a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">axes</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title_weights</span><span class="p">)</span>
+    <a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.QuadMesh" title="View documentation for matplotlib.collections.QuadMesh"><span class="n">pc</span></a> <span class="o">=</span> <a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+        <span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="p">,</span> <span class="n">c</span><span class="o">=</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">weights</span></a><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;magma&quot;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">crs</span></a><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><a href="https://matplotlib.org/api/_as_gen/matplotlib.colors.LogNorm.html#matplotlib.colors.LogNorm" title="View documentation for matplotlib.colors.LogNorm"><span class="n">LogNorm</span></a><span class="p">()</span>
+    <span class="p">)</span>
+    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.QuadMesh" title="View documentation for matplotlib.collections.QuadMesh"><span class="n">pc</span></a><span class="p">,</span> <a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+    <a href="../api/generated/verde.datasets.setup_california_gps_map.html#verde.datasets.setup_california_gps_map" title="View documentation for verde.datasets.setup_california_gps_map"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">setup_california_gps_map</span></a><span class="p">(</span><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="p">)</span>
+    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
+    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+
+
+<span class="c1"># Plot the data and the uncertainties</span>
+<a href="https://docs.python.org/3/library/functions.html#object" title="View documentation for builtins.object"><span class="n">plot_data</span></a><span class="p">(</span>
+    <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">),</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">velocity_up</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">std_up</span><span class="p">,</span>
+    <span class="s2">&quot;Vertical GPS velocity&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Uncertainty (m/yr)&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_weights_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_weights_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/build/fatiando/verde/tutorials/weights.py:56: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
+  plt.tight_layout()
+</pre></div>
+</div>
+<div class="section" id="weights-in-data-decimation">
+<h2>Weights in data decimation<a class="headerlink" href="#weights-in-data-decimation" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="../api/generated/verde.BlockReduce.html#verde.BlockReduce" title="verde.BlockReduce"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockReduce</span></code></a> can’t output weights for each data point because it
+doesn’t know which reduction operation it’s using. If you want to do a weighted
+interpolation, like <a class="reference internal" href="../api/generated/verde.Spline.html#verde.Spline" title="verde.Spline"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Spline</span></code></a>, <a class="reference internal" href="../api/generated/verde.BlockReduce.html#verde.BlockReduce" title="verde.BlockReduce"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockReduce</span></code></a> won’t propagate
+the weights to the interpolation function. If your data are relatively smooth, you can
+use <a class="reference internal" href="../api/generated/verde.BlockMean.html#verde.BlockMean" title="verde.BlockMean"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.BlockMean</span></code></a> instead to decimated data and produce weights. It can
+calculate different kinds of weights, depending on configuration options and what you
+give it as input.</p>
+<p>Let’s explore all of the possibilities.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../api/generated/verde.BlockMean.html#verde.BlockMean" title="View documentation for verde.BlockMean"><span class="n">mean</span></a> <span class="o">=</span> <a href="../api/generated/verde.BlockMean.html#verde.BlockMean" title="View documentation for verde.BlockMean"><span class="n">vd</span><span class="o">.</span><span class="n">BlockMean</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#float" title="View documentation for builtins.float"><span class="n">spacing</span></a><span class="o">=</span><span class="mi">15</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="../api/generated/verde.BlockMean.html#verde.BlockMean" title="View documentation for verde.BlockMean"><span class="n">mean</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>BlockMean(adjust=&#39;spacing&#39;, center_coordinates=False, drop_coords=True,
+          region=None, shape=None, spacing=0.25, uncertainty=False)
+</pre></div>
+</div>
+<div class="section" id="option-1-no-input-weights">
+<h3>Option 1: No input weights<a class="headerlink" href="#option-1-no-input-weights" title="Permalink to this headline">¶</a></h3>
+<p>In this case, we’ll get a standard mean and the output weights will be 1 over the
+variance of the data in each block:</p>
+<div class="math notranslate nohighlight">
+\[\bar{d} = \dfrac{\sum\limits_{i=1}^N d_i}{N}
+\: , \qquad
+\sigma^2 = \dfrac{\sum\limits_{i=1}^N (d_i - \bar{d})^2}{N}
+\: , \qquad
+w = \dfrac{1}{\sigma^2}\]</div>
+<p>in which <span class="math notranslate nohighlight">\(N\)</span> is the number of data points in the block, <span class="math notranslate nohighlight">\(d_i\)</span> are the
+data values in the block, and the output values for the block are the mean data
+<span class="math notranslate nohighlight">\(\bar{d}\)</span> and the weight <span class="math notranslate nohighlight">\(w\)</span>.</p>
+<p>Notice that data points that are more uncertain don’t necessarily have smaller
+weights. Instead, the blocks that contain data with sharper variations end up having
+smaller weights, like the data points in the south.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="p">,</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">velocity</span></a><span class="p">,</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">weights</span></a> <span class="o">=</span> <a href="../api/generated/verde.BlockMean.html#verde.BlockMean" title="View documentation for verde.BlockMean"><span class="n">mean</span></a><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="o">=</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">velocity_up</span>
+<span class="p">)</span>
+
+<a href="https://docs.python.org/3/library/functions.html#object" title="View documentation for builtins.object"><span class="n">plot_data</span></a><span class="p">(</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="p">,</span>
+    <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">velocity</span></a><span class="p">,</span>
+    <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">weights</span></a><span class="p">,</span>
+    <span class="s2">&quot;Mean vertical GPS velocity&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Weights based on data variance&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_weights_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_weights_002.png" />
+</div>
+<div class="section" id="option-2-input-weights-are-not-related-to-the-uncertainty-of-the-data">
+<h3>Option 2: Input weights are not related to the uncertainty of the data<a class="headerlink" href="#option-2-input-weights-are-not-related-to-the-uncertainty-of-the-data" title="Permalink to this headline">¶</a></h3>
+<p>This is the case when data weights are chosen by the user, not based on the
+measurement uncertainty. For example, when you need to give less importance to a
+portion of the data and no uncertainties are available. The mean will be weighted and
+the output weights will be 1 over the weighted variance of the data in each block:</p>
+<div class="math notranslate nohighlight">
+\[\bar{d}^* = \dfrac{\sum\limits_{i=1}^N w_i d_i}{\sum\limits_{i=1}^N w_i}
+\: , \qquad
+\sigma^2_w = \dfrac{\sum\limits_{i=1}^N w_i(d_i - \bar{d}*)^2}{
+    \sum\limits_{i=1}^N w_i}
+\: , \qquad
+w = \dfrac{1}{\sigma^2_w}\]</div>
+<p>in which <span class="math notranslate nohighlight">\(w_i\)</span> are the input weights in the block.</p>
+<p>The output will be similar to the one above but points with larger initial weights
+will have a smaller influence on the mean and also on the output weights.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># We&#39;ll use 1 over the squared data uncertainty as our input weights.</span>
+<span class="n">data</span><span class="p">[</span><span class="s2">&quot;weights&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">data</span><span class="o">.</span><span class="n">std_up</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="c1"># By default, BlockMean assumes that weights are not related to uncertainties</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="p">,</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">velocity</span></a><span class="p">,</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">weights</span></a> <span class="o">=</span> <a href="../api/generated/verde.BlockMean.html#verde.BlockMean" title="View documentation for verde.BlockMean"><span class="n">mean</span></a><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="o">=</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">),</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">velocity_up</span><span class="p">,</span>
+    <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">weights</span></a><span class="o">=</span><span class="n">data</span><span class="o">.</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">weights</span></a><span class="p">,</span>
+<span class="p">)</span>
+
+<a href="https://docs.python.org/3/library/functions.html#object" title="View documentation for builtins.object"><span class="n">plot_data</span></a><span class="p">(</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="p">,</span>
+    <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">velocity</span></a><span class="p">,</span>
+    <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">weights</span></a><span class="p">,</span>
+    <span class="s2">&quot;Weighted mean vertical GPS velocity&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Weights based on weighted data variance&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_weights_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_weights_003.png" />
+</div>
+<div class="section" id="option-3-input-weights-are-1-over-the-data-uncertainty-squared">
+<h3>Option 3: Input weights are 1 over the data uncertainty squared<a class="headerlink" href="#option-3-input-weights-are-1-over-the-data-uncertainty-squared" title="Permalink to this headline">¶</a></h3>
+<p>If input weights are 1 over the data uncertainty squared, we can use uncertainty
+propagation to calculate the uncertainty of the weighted mean and use it to define our
+output weights. Use option <code class="docutils literal notranslate"><span class="pre">uncertainty=True</span></code> to tell <a class="reference internal" href="../api/generated/verde.BlockMean.html#verde.BlockMean" title="verde.BlockMean"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockMean</span></code></a> to
+calculate weights based on the propagated uncertainty of the data. The output weights
+will be 1 over the propagated uncertainty squared. In this case, the <strong>input weights
+must not be normalized</strong>. This is preferable if you know the uncertainty of the data.</p>
+<div class="math notranslate nohighlight">
+\[w_i = \dfrac{1}{\sigma_i^2}
+\: , \qquad
+\sigma_{\bar{d}^*}^2 = \dfrac{1}{\sum\limits_{i=1}^N w_i}
+\: , \qquad
+w = \dfrac{1}{\sigma_{\bar{d}^*}^2}\]</div>
+<p>in which <span class="math notranslate nohighlight">\(\sigma_i\)</span> are the input data uncertainties in the block and
+<span class="math notranslate nohighlight">\(\sigma_{\bar{d}^*}\)</span> is the propagated uncertainty of the weighted mean in the
+block.</p>
+<p>Notice that in this case the output weights reflect the input data uncertainties. Less
+weight is given to the data points that had larger uncertainties from the start.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Configure BlockMean to assume that the input weights are 1/uncertainty**2</span>
+<a href="../api/generated/verde.BlockMean.html#verde.BlockMean" title="View documentation for verde.BlockMean"><span class="n">mean</span></a> <span class="o">=</span> <a href="../api/generated/verde.BlockMean.html#verde.BlockMean" title="View documentation for verde.BlockMean"><span class="n">vd</span><span class="o">.</span><span class="n">BlockMean</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#float" title="View documentation for builtins.float"><span class="n">spacing</span></a><span class="o">=</span><span class="mi">15</span> <span class="o">/</span> <span class="mi">60</span><span class="p">,</span> <span class="n">uncertainty</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="p">,</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">velocity</span></a><span class="p">,</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">weights</span></a> <span class="o">=</span> <a href="../api/generated/verde.BlockMean.html#verde.BlockMean" title="View documentation for verde.BlockMean"><span class="n">mean</span></a><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="o">=</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">),</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">velocity_up</span><span class="p">,</span>
+    <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">weights</span></a><span class="o">=</span><span class="n">data</span><span class="o">.</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">weights</span></a><span class="p">,</span>
+<span class="p">)</span>
+
+<a href="https://docs.python.org/3/library/functions.html#object" title="View documentation for builtins.object"><span class="n">plot_data</span></a><span class="p">(</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="p">,</span>
+    <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">velocity</span></a><span class="p">,</span>
+    <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">weights</span></a><span class="p">,</span>
+    <span class="s2">&quot;Weighted mean vertical GPS velocity&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Weights based on data uncertainty&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_weights_004.png" class="sphx-glr-single-img" src="../_images/sphx_glr_weights_004.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Output weights are always normalized to the ]0, 1] range. See
+<a class="reference internal" href="../api/generated/verde.variance_to_weights.html#verde.variance_to_weights" title="verde.variance_to_weights"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.variance_to_weights</span></code></a>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="interpolation-with-weights">
+<h2>Interpolation with weights<a class="headerlink" href="#interpolation-with-weights" title="Permalink to this headline">¶</a></h2>
+<p>The Green’s functions based interpolation classes in Verde, like
+<a class="reference internal" href="../api/generated/verde.Spline.html#verde.Spline" title="verde.Spline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spline</span></code></a>, can take input weights if you want to give less importance to
+some data points. In our case, the points with larger uncertainties shouldn’t have the
+same influence in our gridded solution as the points with lower uncertainties.</p>
+<p>Let’s setup a projection to grid our geographic data using the Cartesian spline
+gridder.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyproj</span>
+
+<span class="n">projection</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span><span class="p">(</span><span class="n">proj</span><span class="o">=</span><span class="s2">&quot;merc&quot;</span><span class="p">,</span> <span class="n">lat_ts</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><a href="../api/generated/verde.BlockMean.html#verde.BlockMean" title="View documentation for verde.BlockMean"><span class="n">mean</span></a><span class="p">())</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">proj_coords</span></a> <span class="o">=</span> <span class="n">projection</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">region</span></a> <span class="o">=</span> <a href="../api/generated/verde.get_region.html#verde.get_region" title="View documentation for verde.get_region"><span class="n">vd</span><span class="o">.</span><span class="n">get_region</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="p">)</span>
+<a href="https://docs.python.org/3/library/functions.html#float" title="View documentation for builtins.float"><span class="n">spacing</span></a> <span class="o">=</span> <span class="mi">5</span> <span class="o">/</span> <span class="mi">60</span>
+</pre></div>
+</div>
+<p>Now we can grid our data using a weighted spline. We’ll use the block mean results
+with uncertainty based weights.</p>
+<p>Note that the weighted spline solution will only work on a non-exact interpolation. So
+we’ll need to use some damping regularization or not use the data locations for the
+point forces. Here, we’ll apply a bit of damping.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../api/generated/verde.Chain.html#verde.Chain" title="View documentation for verde.Chain"><span class="n">spline</span></a> <span class="o">=</span> <a href="../api/generated/verde.Chain.html#verde.Chain" title="View documentation for verde.Chain"><span class="n">vd</span><span class="o">.</span><span class="n">Chain</span></a><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="c1"># Convert the spacing to meters because Spline is a Cartesian gridder</span>
+        <span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <a href="../api/generated/verde.BlockMean.html#verde.BlockMean" title="View documentation for verde.BlockMean"><span class="n">vd</span><span class="o">.</span><span class="n">BlockMean</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#float" title="View documentation for builtins.float"><span class="n">spacing</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="View documentation for builtins.float"><span class="n">spacing</span></a> <span class="o">*</span> <span class="mf">111e3</span><span class="p">,</span> <span class="n">uncertainty</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s2">&quot;spline&quot;</span><span class="p">,</span> <a href="../api/generated/verde.Spline.html#verde.Spline" title="View documentation for verde.Spline"><span class="n">vd</span><span class="o">.</span><span class="n">Spline</span></a><span class="p">(</span><span class="n">damping</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">)),</span>
+    <span class="p">]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">proj_coords</span></a><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">velocity_up</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">weights</span></a><span class="p">)</span>
+<span class="n">grid</span> <span class="o">=</span> <a href="../api/generated/verde.Chain.html#verde.Chain" title="View documentation for verde.Chain"><span class="n">spline</span></a><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">region</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">region</span></a><span class="p">,</span>
+    <a href="https://docs.python.org/3/library/functions.html#float" title="View documentation for builtins.float"><span class="n">spacing</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="View documentation for builtins.float"><span class="n">spacing</span></a><span class="p">,</span>
+    <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
+    <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span>
+    <span class="n">data_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;velocity&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Calculate an unweighted spline as well for comparison.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../api/generated/verde.Chain.html#verde.Chain" title="View documentation for verde.Chain"><span class="n">spline_unweighted</span></a> <span class="o">=</span> <a href="../api/generated/verde.Chain.html#verde.Chain" title="View documentation for verde.Chain"><span class="n">vd</span><span class="o">.</span><span class="n">Chain</span></a><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <a href="../api/generated/verde.BlockReduce.html#verde.BlockReduce" title="View documentation for verde.BlockReduce"><span class="n">vd</span><span class="o">.</span><span class="n">BlockReduce</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html#numpy.mean" title="View documentation for numpy.mean"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#float" title="View documentation for builtins.float"><span class="n">spacing</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="View documentation for builtins.float"><span class="n">spacing</span></a> <span class="o">*</span> <span class="mf">111e3</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s2">&quot;spline&quot;</span><span class="p">,</span> <a href="../api/generated/verde.Spline.html#verde.Spline" title="View documentation for verde.Spline"><span class="n">vd</span><span class="o">.</span><span class="n">Spline</span></a><span class="p">()),</span>
+    <span class="p">]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">proj_coords</span></a><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">velocity_up</span><span class="p">)</span>
+<span class="n">grid_unweighted</span> <span class="o">=</span> <a href="../api/generated/verde.Chain.html#verde.Chain" title="View documentation for verde.Chain"><span class="n">spline_unweighted</span></a><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">region</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">region</span></a><span class="p">,</span>
+    <a href="https://docs.python.org/3/library/functions.html#float" title="View documentation for builtins.float"><span class="n">spacing</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="View documentation for builtins.float"><span class="n">spacing</span></a><span class="p">,</span>
+    <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
+    <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span>
+    <span class="n">data_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;velocity&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, plot the weighted and unweighted grids side by side.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="View documentation for matplotlib.figure.Figure"><span class="n">fig</span></a><span class="p">,</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">axes</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span>
+    <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">9.5</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.Mercator" title="View documentation for cartopy.crs.Mercator"><span class="n">ccrs</span><span class="o">.</span><span class="n">Mercator</span></a><span class="p">())</span>
+<span class="p">)</span>
+<a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">crs</span></a> <span class="o">=</span> <a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">()</span>
+<a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">axes</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Spline interpolation with weights&quot;</span><span class="p">)</span>
+<span class="n">maxabs</span> <span class="o">=</span> <a href="../api/generated/verde.maxabs.html#verde.maxabs" title="View documentation for verde.maxabs"><span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">velocity_up</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.QuadMesh" title="View documentation for matplotlib.collections.QuadMesh"><span class="n">pc</span></a> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">velocity</span></a><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+    <a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;seismic&quot;</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=-</span><span class="n">maxabs</span><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><span class="n">maxabs</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">crs</span></a><span class="p">,</span>
+    <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">add_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.QuadMesh" title="View documentation for matplotlib.collections.QuadMesh"><span class="n">pc</span></a><span class="p">,</span> <a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;m/yr&quot;</span><span class="p">)</span>
+<a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="s2">&quot;.k&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">crs</span></a><span class="p">)</span>
+<a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
+<a href="../api/generated/verde.datasets.setup_california_gps_map.html#verde.datasets.setup_california_gps_map" title="View documentation for verde.datasets.setup_california_gps_map"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">setup_california_gps_map</span></a><span class="p">(</span><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="p">)</span>
+<a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">axes</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Spline interpolation without weights&quot;</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.QuadMesh" title="View documentation for matplotlib.collections.QuadMesh"><span class="n">pc</span></a> <span class="o">=</span> <span class="n">grid_unweighted</span><span class="o">.</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="View documentation for numpy.ndarray"><span class="n">velocity</span></a><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+    <a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;seismic&quot;</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=-</span><span class="n">maxabs</span><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><span class="n">maxabs</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">crs</span></a><span class="p">,</span>
+    <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">add_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.QuadMesh" title="View documentation for matplotlib.collections.QuadMesh"><span class="n">pc</span></a><span class="p">,</span> <a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;m/yr&quot;</span><span class="p">)</span>
+<a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="s2">&quot;.k&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="View documentation for cartopy.crs.PlateCarree"><span class="n">crs</span></a><span class="p">)</span>
+<a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
+<a href="../api/generated/verde.datasets.setup_california_gps_map.html#verde.datasets.setup_california_gps_map" title="View documentation for verde.datasets.setup_california_gps_map"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">setup_california_gps_map</span></a><span class="p">(</span><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="View documentation for cartopy.mpl.geoaxes.GeoAxesSubplot"><span class="n">ax</span></a><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_weights_005.png" class="sphx-glr-single-img" src="../_images/sphx_glr_weights_005.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/build/fatiando/verde/tutorials/weights.py:303: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
+  plt.tight_layout()
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.221 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-weights-py">
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/7b3b0274656e7f482f545c777c23411c/weights.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">weights.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/b23a5b5441b74fcab6bae36fdc19ae7b/weights.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">weights.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="vectors.html" class="btn btn-neutral float-right" title="Vector Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="model_selection.html" class="btn btn-neutral float-left" title="Model Selection" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2020, The Verde Developers
+      <span class="lastupdated">
+        Last updated on Jan 22, 2020.
+      </span>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
