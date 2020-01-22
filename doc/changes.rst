@@ -6,7 +6,7 @@ Changelog
 Version 1.3.0
 -------------
 
-*Released on: 2020/01/21*
+*Released on: 2020/01/22*
 
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3620851.svg
    :target: https://doi.org/10.5281/zenodo.3620851
