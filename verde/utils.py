@@ -237,6 +237,11 @@ def grid_to_table(grid):
     ...     coords=(np.arange(4), np.arange(5, 10)),
     ...     dims=['northing', 'easting']
     ... )
+    >>> print(temperature.values)
+    [[ 0  1  2  3  4]
+     [ 5  6  7  8  9]
+     [10 11 12 13 14]
+     [15 16 17 18 19]]
     >>> grid = xr.Dataset({"temperature": temperature})
     >>> table  = grid_to_table(grid)
     >>> list(sorted(table.columns))
@@ -267,23 +272,17 @@ def grid_to_table(grid):
     [20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39]
 
     """
-    coordinate_names = list(grid.dims.keys())
-    coord_north = grid.coords[coordinate_names[0]].values
-    coord_east = grid.coords[coordinate_names[1]].values
-    coordinates = [i.ravel() for i in np.meshgrid(coord_east, coord_north)]
-    coord_dict = {
-        coordinate_names[0]: coordinates[1],
-        coordinate_names[1]: coordinates[0],
-    }
-    variable_name = [*grid.data_vars.keys()]
-    variable_data = grid.to_array().values
-    variable_arrays = variable_data.reshape(
-        len(variable_name), int(len(variable_data.ravel()) / len(variable_name))
-    )
-    var_dict = dict(zip(variable_name, variable_arrays))
-    coord_dict.update(var_dict)
-    data = pd.DataFrame(coord_dict)
-    return data
+    data_names = list(grid.data_vars.keys())
+    data_arrays = [grid[name].values.ravel() for name in data_names]
+    coordinate_names = list(grid[data_names[0]].dims)
+    north = grid.coords[coordinate_names[0]].values
+    east = grid.coords[coordinate_names[1]].values
+    # Need to flip the coordinates because the names are in northing and
+    # easting order
+    coordinates = [i.ravel() for i in np.meshgrid(east, north)][::-1]
+    data_dict = dict(zip(coordinate_names, coordinates))
+    data_dict.update(dict(zip(data_names, data_arrays)))
+    return pd.DataFrame(data_dict)
 
 
 def kdtree(coordinates, use_pykdtree=True, **kwargs):
