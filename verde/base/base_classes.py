@@ -427,7 +427,10 @@ class BaseGridder(BaseEstimator):
             projected northing and easting coordinate arrays. This function
             will be used to project the generated profile coordinates before
             passing them into ``predict``. For example, you can use this to
-            generate a geographic profile from a Cartesian gridder.
+            specify geographic coordinates for the profile points to a
+            Cartesian gridder. The profile will be a straight line in the
+            projected coordinates. Distances returned are also in the projected
+            coordinates.
 
         Returns
         -------
@@ -440,7 +443,13 @@ class BaseGridder(BaseEstimator):
         if projection is None:
             data = check_data(self.predict(coordinates))
         else:
-            data = check_data(self.predict(projection(*coordinates)))
+            proj_coords = projection(*coordinates)
+            data = check_data(self.predict(proj_coords))
+            # Calculate the distances in projected coordinates. Otherwise, we
+            # would have distances in degrees instead of meters when creating
+            # profiles in geodetic coordinates.
+            diffs = [coord[1:] - coord[0] for coord in proj_coords]
+            distances[1:] = np.sqrt(sum(diff**2 for diff in diffs))
         data_names = get_data_names(data, data_names)
         columns = [
             (dims[0], coordinates[1]),
