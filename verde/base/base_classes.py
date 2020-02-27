@@ -449,7 +449,7 @@ class BaseGridder(BaseEstimator):
             # would have distances in degrees instead of meters when creating
             # profiles in geodetic coordinates.
             diffs = [coord[1:] - coord[0] for coord in proj_coords]
-            distances[1:] = np.sqrt(sum(diff**2 for diff in diffs))
+            distances[1:] = np.sqrt(sum(diff ** 2 for diff in diffs))
         data_names = get_data_names(data, data_names)
         columns = [
             (dims[0], coordinates[1]),
