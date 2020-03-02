@@ -226,8 +226,8 @@ def grid_to_table(grid):
     table : :class:`pandas.DataFrame`
         Table with coordinates and variable values for each point in the grid.
         Column names are taken from the grid. If *grid* is a
-        :class:`xarray.DataArray`, the column with data values will be called
-        ``"scalars"``.
+        :class:`xarray.DataArray` that doesn't have a ``name`` attribute
+        defined, the column with data values will be called ``"scalars"``.
 
     Examples
     --------
@@ -245,7 +245,7 @@ def grid_to_table(grid):
      [ 5  6  7  8  9]
      [10 11 12 13 14]
      [15 16 17 18 19]]
-    >>> # When converting DataArrays, the data column will be "scalars"
+    >>> # For DataArrays, the data column will be "scalars" by default
     >>> table = grid_to_table(temperature)
     >>> list(sorted(table.columns))
     ['easting', 'northing', 'scalars']
@@ -255,6 +255,11 @@ def grid_to_table(grid):
     [0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]
     >>> print(table.easting.values)
     [5 6 7 8 9 5 6 7 8 9 5 6 7 8 9 5 6 7 8 9]
+    >>> # If the DataArray defines a "name", we will use that instead
+    >>> temperature.name = "temperature_K"
+    >>> table = grid_to_table(temperature)
+    >>> list(sorted(table.columns))
+    ['easting', 'northing', 'temperature_K']
     >>> # Conversion of Datasets will preserve the data variable names
     >>> grid = xr.Dataset({"temperature": temperature})
     >>> table  = grid_to_table(grid)
@@ -293,7 +298,7 @@ def grid_to_table(grid):
         coordinate_names = list(grid[data_names[0]].dims)
     else:
         # It's a DataArray
-        data_names = ["scalars"]
+        data_names = [grid.name if grid.name is not None else "scalars"]
         data_arrays = [grid.values.ravel()]
         coordinate_names = list(grid.dims)
     north = grid.coords[coordinate_names[0]].values
