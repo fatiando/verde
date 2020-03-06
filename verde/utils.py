@@ -218,13 +218,16 @@ def grid_to_table(grid):
 
     Parameters
     ----------
-    grid : :class:`xarray.Dataset`
+    grid : :class:`xarray.Dataset` or :class:`xarray.DataArray`
         A 2D grid with one or more data variables.
 
     Returns
     -------
     table : :class:`pandas.DataFrame`
         Table with coordinates and variable values for each point in the grid.
+        Column names are taken from the grid. If *grid* is a
+        :class:`xarray.DataArray` that doesn't have a ``name`` attribute
+        defined, the column with data values will be called ``"scalars"``.
 
     Examples
     --------
@@ -242,16 +245,32 @@ def grid_to_table(grid):
      [ 5  6  7  8  9]
      [10 11 12 13 14]
      [15 16 17 18 19]]
-    >>> grid = xr.Dataset({"temperature": temperature})
-    >>> table  = grid_to_table(grid)
+    >>> # For DataArrays, the data column will be "scalars" by default
+    >>> table = grid_to_table(temperature)
     >>> list(sorted(table.columns))
-    ['easting', 'northing', 'temperature']
+    ['easting', 'northing', 'scalars']
+    >>> print(table.scalars.values)
+    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]
     >>> print(table.northing.values)
     [0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]
     >>> print(table.easting.values)
     [5 6 7 8 9 5 6 7 8 9 5 6 7 8 9 5 6 7 8 9]
+    >>> # If the DataArray defines a "name", we will use that instead
+    >>> temperature.name = "temperature_K"
+    >>> table = grid_to_table(temperature)
+    >>> list(sorted(table.columns))
+    ['easting', 'northing', 'temperature_K']
+    >>> # Conversion of Datasets will preserve the data variable names
+    >>> grid = xr.Dataset({"temperature": temperature})
+    >>> table  = grid_to_table(grid)
+    >>> list(sorted(table.columns))
+    ['easting', 'northing', 'temperature']
     >>> print(table.temperature.values)
     [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]
+    >>> print(table.northing.values)
+    [0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]
+    >>> print(table.easting.values)
+    [5 6 7 8 9 5 6 7 8 9 5 6 7 8 9 5 6 7 8 9]
     >>> # Grids with multiple data variables will have more columns.
     >>> wind_speed = xr.DataArray(
     ...     np.arange(20, 40).reshape((4, 5)),
@@ -272,9 +291,16 @@ def grid_to_table(grid):
     [20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39]
 
     """
-    data_names = list(grid.data_vars.keys())
-    data_arrays = [grid[name].values.ravel() for name in data_names]
-    coordinate_names = list(grid[data_names[0]].dims)
+    if hasattr(grid, "data_vars"):
+        # It's a Dataset
+        data_names = list(grid.data_vars.keys())
+        data_arrays = [grid[name].values.ravel() for name in data_names]
+        coordinate_names = list(grid[data_names[0]].dims)
+    else:
+        # It's a DataArray
+        data_names = [grid.name if grid.name is not None else "scalars"]
+        data_arrays = [grid.values.ravel()]
+        coordinate_names = list(grid.dims)
     north = grid.coords[coordinate_names[0]].values
     east = grid.coords[coordinate_names[1]].values
     # Need to flip the coordinates because the names are in northing and
