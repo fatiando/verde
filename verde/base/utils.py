@@ -25,6 +25,21 @@ def check_data(data):
     return data
 
 
+def check_coordinates(coordinates):
+    """
+    Check that the given coordinate arrays are what we expect them to be.
+    Should be a tuple with arrays of the same shape.
+    """
+    shapes = [coord.shape for coord in coordinates]
+    if not all(shape == shapes[0] for shape in shapes):
+        raise ValueError(
+            "Coordinate arrays must have the same shape. Coordinate shapes: {}".format(
+                shapes
+            )
+        )
+    return coordinates
+
+
 def check_fit_input(coordinates, data, weights, unpack=True):
     """
     Validate the inputs to the fit method of gridders.
@@ -59,8 +74,13 @@ def check_fit_input(coordinates, data, weights, unpack=True):
     """
     data = check_data(data)
     weights = check_data(weights)
-    if any(i.shape != j.shape for i in coordinates for j in data):
-        raise ValueError("Coordinate and data arrays must have the same shape.")
+    coordinates = check_coordinates(coordinates)
+    if any(i.shape != coordinates[0].shape for i in data):
+        raise ValueError(
+            "Data arrays must have the same shape {} as coordinates. Data shapes: {}.".format(
+                coordinates[0].shape, [i.shape for i in data]
+            )
+        )
     if any(w is not None for w in weights):
         if len(weights) != len(data):
             raise ValueError(
