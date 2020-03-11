@@ -863,14 +863,24 @@ def rolling_split(
     7.0, 7.0, 9.0, 9.0
     >>> # The points in the first window. Indices are 2D positions because the
     >>> # coordinate arrays are 2D.
-    >>> print(indices[0])
-    (array([0, 0, 0, 1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2, 0, 1, 2]))
-    >>> print(indices[1])
-    (array([0, 0, 0, 1, 1, 1, 2, 2, 2]), array([2, 3, 4, 2, 3, 4, 2, 3, 4]))
-    >>> print(indices[2])
-    (array([2, 2, 2, 3, 3, 3, 4, 4, 4]), array([0, 1, 2, 0, 1, 2, 0, 1, 2]))
-    >>> print(indices[3])
-    (array([2, 2, 2, 3, 3, 3, 4, 4, 4]), array([2, 3, 4, 2, 3, 4, 2, 3, 4]))
+    >>> print(len(indices[0]))
+    2
+    >>> for dimension in indices[0]:
+    ...     print(dimension)
+    [0 0 0 1 1 1 2 2 2]
+    [0 1 2 0 1 2 0 1 2]
+    >>> for dimension in indices[1]:
+    ...     print(dimension)
+    [0 0 0 1 1 1 2 2 2]
+    [2 3 4 2 3 4 2 3 4]
+    >>> for dimension in indices[2]:
+    ...     print(dimension)
+    [2 2 2 3 3 3 4 4 4]
+    [0 1 2 0 1 2 0 1 2]
+    >>> for dimension in indices[3]:
+    ...     print(dimension)
+    [2 2 2 3 3 3 4 4 4]
+    [2 3 4 2 3 4 2 3 4]
     >>> # To get the coordinates for each window, use indexing
     >>> print(coords[0][indices[0]])
     [-5. -4. -3. -5. -4. -3. -5. -4. -3.]
@@ -881,14 +891,16 @@ def rolling_split(
 
     >>> coords1d = [coord.ravel() for coord in coords]
     >>> window_coords, indices = rolling_split(coords1d, size=2, spacing=2)
-    >>> print(indices[0])
-    (array([ 0,  1,  2,  5,  6,  7, 10, 11, 12]),)
-    >>> print(indices[1])
-    (array([ 2,  3,  4,  7,  8,  9, 12, 13, 14]),)
-    >>> print(indices[2])
-    (array([10, 11, 12, 15, 16, 17, 20, 21, 22]),)
-    >>> print(indices[3])
-    (array([12, 13, 14, 17, 18, 19, 22, 23, 24]),)
+    >>> print(len(indices[0]))
+    1
+    >>> print(indices[0][0])
+    [ 0  1  2  5  6  7 10 11 12]
+    >>> print(indices[1][0])
+    [ 2  3  4  7  8  9 12 13 14]
+    >>> print(indices[2][0])
+    [10 11 12 15 16 17 20 21 22]
+    >>> print(indices[3][0])
+    [12 13 14 17 18 19 22 23 24]
     >>> # The returned indices can be used in the same way as before
     >>> print(coords1d[0][indices[0]])
     [-5. -4. -3. -5. -4. -3. -5. -4. -3.]
