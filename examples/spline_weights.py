@@ -62,12 +62,7 @@ grid_full = chain.grid(
     dims=["latitude", "longitude"],
     data_names=["velocity"],
 )
-grid = vd.distance_mask(
-    (data.longitude, data.latitude),
-    maxdist=5 * spacing * 111e3,
-    grid=grid_full,
-    projection=projection,
-)
+grid = vd.convexhull_mask((data.longitude, data.latitude), grid=grid_full)
 
 fig, axes = plt.subplots(
     1, 2, figsize=(9, 7), subplot_kw=dict(projection=ccrs.Mercator())
