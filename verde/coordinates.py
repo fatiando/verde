@@ -735,6 +735,7 @@ def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=
     See also
     --------
     BlockReduce : Apply a reduction operation to the data in blocks (windows).
+    rolling_split : Split the given points on a rolling (moving) window.
 
     Examples
     --------
@@ -770,15 +771,174 @@ def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=
     """
     if region is None:
         region = get_region(coordinates)
-    block_coords = tuple(
-        i.ravel()
-        for i in grid_coordinates(
-            region, spacing=spacing, shape=shape, adjust=adjust, pixel_register=True
-        )
+    block_coords = grid_coordinates(
+        region, spacing=spacing, shape=shape, adjust=adjust, pixel_register=True
     )
     tree = kdtree(block_coords)
     labels = tree.query(np.transpose(n_1d_arrays(coordinates, 2)))[1]
-    return block_coords, labels
+    return n_1d_arrays(block_coords, len(block_coords)), labels
+
+
+def rolling_split(
+    coordinates, size, spacing=None, shape=None, region=None, adjust="spacing"
+):
+    """
+    Split the given points on a rolling (moving) window.
+
+    A window of the given size is moved across the region at a given step
+    (specified by *spacing* or *shape*). Returns the indices of points falling
+    inside each window step. You can use the indices to select points falling
+    inside a given window.
+
+    The size of the windows can be specified by the *spacing* parameter.
+    Alternatively, the number of windows in the South-North and West-East
+    directions can be specified using the *shape* parameter. One of the two
+    must be given.
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+        Arrays with the coordinates of each data point. Should be in the
+        following order: (easting, northing, vertical, ...). Only easting and
+        northing will be used, all subsequent coordinates will be ignored.
+    spacing : float, tuple = (s_north, s_east), or None
+        The window size in the South-North and West-East directions,
+        respectively. A single value means that the size is equal in both
+        directions.
+    shape : tuple = (n_north, n_east) or None
+        The number of blocks in the South-North and West-East directions,
+        respectively.
+    region : list = [W, E, S, N]
+        The boundaries of a given region in Cartesian or geographic
+        coordinates. If not region is given, will use the bounding region of
+        the given points.
+    adjust : {'spacing', 'region'}
+        Whether to adjust the spacing or the region if required. Ignored if
+        *shape* is given instead of *spacing*. Defaults to adjusting the
+        spacing.
+
+    Returns
+    -------
+    window_coordinates : tuple of arrays
+        (easting, northing) arrays with the coordinates of the center of each
+        window.
+    indices : list
+        Each element of the list corresponds to a window. Each contains the
+        indices of points falling inside the respective window. Use them to
+        index the coordinates for each window. The indices will depend on the
+        number of dimensions in the input coordinates. For example, if the
+        coordinates are 2D arrays, each window will contain indices for 2
+        dimensions (row, column).
+
+    See also
+    --------
+    block_split : Split a region into blocks and label points accordingly.
+
+    Examples
+    --------
+
+    Generate a set of sample coordinates on a grid and determine the indices
+    of points for each rolling window:
+
+    >>> from verde import grid_coordinates
+    >>> coords = grid_coordinates((-5, -1, 6, 10), spacing=1)
+    >>> print(coords[0])
+    [[-5. -4. -3. -2. -1.]
+     [-5. -4. -3. -2. -1.]
+     [-5. -4. -3. -2. -1.]
+     [-5. -4. -3. -2. -1.]
+     [-5. -4. -3. -2. -1.]]
+    >>> print(coords[1])
+    [[ 6.  6.  6.  6.  6.]
+     [ 7.  7.  7.  7.  7.]
+     [ 8.  8.  8.  8.  8.]
+     [ 9.  9.  9.  9.  9.]
+     [10. 10. 10. 10. 10.]]
+    >>> # Get the rolling window indices
+    >>> window_coords, indices = rolling_split(coords, size=2, spacing=2)
+    >>> # The coordinates are the center of each rolling window
+    >>> for coord in window_coords:
+    ...     print(', '.join(['{:.1f}'.format(i) for i in coord]))
+    -4.0, -2.0, -4.0, -2.0
+    7.0, 7.0, 9.0, 9.0
+    >>> # The points in the first window. Indices are 2D positions because the
+    >>> # coordinate arrays are 2D.
+    >>> print(indices[0])
+    (array([0, 0, 0, 1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2, 0, 1, 2]))
+    >>> print(indices[1])
+    (array([0, 0, 0, 1, 1, 1, 2, 2, 2]), array([2, 3, 4, 2, 3, 4, 2, 3, 4]))
+    >>> print(indices[2])
+    (array([2, 2, 2, 3, 3, 3, 4, 4, 4]), array([0, 1, 2, 0, 1, 2, 0, 1, 2]))
+    >>> print(indices[3])
+    (array([2, 2, 2, 3, 3, 3, 4, 4, 4]), array([2, 3, 4, 2, 3, 4, 2, 3, 4]))
+    >>> # To get the coordinates for each window, use indexing
+    >>> print(coords[0][indices[0]])
+    [-5. -4. -3. -5. -4. -3. -5. -4. -3.]
+    >>> print(coords[1][indices[0]])
+    [6. 6. 6. 7. 7. 7. 8. 8. 8.]
+
+    If the coordinates are 1D, the indices will also be 1D:
+
+    >>> coords1d = [coord.ravel() for coord in coords]
+    >>> window_coords, indices = rolling_split(coords1d, size=2, spacing=2)
+    >>> print(indices[0])
+    (array([ 0,  1,  2,  5,  6,  7, 10, 11, 12]),)
+    >>> print(indices[1])
+    (array([ 2,  3,  4,  7,  8,  9, 12, 13, 14]),)
+    >>> print(indices[2])
+    (array([10, 11, 12, 15, 16, 17, 20, 21, 22]),)
+    >>> print(indices[3])
+    (array([12, 13, 14, 17, 18, 19, 22, 23, 24]),)
+    >>> # The returned indices can be used in the same way as before
+    >>> print(coords1d[0][indices[0]])
+    [-5. -4. -3. -5. -4. -3. -5. -4. -3.]
+    >>> print(coords1d[1][indices[0]])
+    [6. 6. 6. 7. 7. 7. 8. 8. 8.]
+
+    By default, the windows will span the entire data region. You can also
+    control the specific region you'd like the windows to cover:
+
+    >>> # Coordinates on a larger region but with the same spacing as before
+    >>> coords = grid_coordinates((-10, 5, 0, 20), spacing=1)
+    >>> # Get the rolling window indices but limited to the region from before
+    >>> window_coords, indices = rolling_split(
+    ...     coords, size=2, spacing=2, region=(-5, -1, 6, 10),
+    ... )
+    >>> # The windows should still be in the same place as before
+    >>> for coord in window_coords:
+    ...     print(', '.join(['{:.1f}'.format(i) for i in coord]))
+    -4.0, -2.0, -4.0, -2.0
+    7.0, 7.0, 9.0, 9.0
+    >>> # And indexing the coordinates should also provide the same result
+    >>> print(coords[0][indices[0]])
+    [-5. -4. -3. -5. -4. -3. -5. -4. -3.]
+    >>> print(coords[1][indices[0]])
+    [6. 6. 6. 7. 7. 7. 8. 8. 8.]
+
+    """
+    shapes = [coord.shape for coord in coordinates]
+    if not all(shape == shapes[0] for shape in shapes):
+        raise ValueError(
+            "Coordinate arrays must have the same shape. Given shapes: {}".format(
+                shapes
+            )
+        )
+    if region is None:
+        region = get_region(coordinates)
+    # Calculate the region spanning the centers of the rolling windows
+    window_region = [
+        dimension + (-1) ** (i % 2) * size / 2 for i, dimension in enumerate(region)
+    ]
+    centers = grid_coordinates(
+        window_region, spacing=spacing, shape=shape, adjust=adjust
+    )
+    # pykdtree doesn't support query_ball_point yet and we need that
+    tree = kdtree(coordinates, use_pykdtree=False)
+    indices1d = tree.query_ball_point(
+        np.transpose(n_1d_arrays(centers, 2)), r=size / 2, p=np.inf
+    )
+    indices = [np.unravel_index(i, shape=shapes[0]) for i in indices1d]
+    return n_1d_arrays(centers, len(centers)), indices
 
 
 def longitude_continuity(coordinates, region):

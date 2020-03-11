@@ -11,7 +11,15 @@ from ..coordinates import (
     profile_coordinates,
     grid_coordinates,
     longitude_continuity,
+    rolling_split,
 )
+
+
+def test_rolling_split_invalid_coordinate_shapes():
+    "Shapes of input coordinates must all be the same"
+    coordinates = [np.arange(10), np.arange(10).reshape((5, 2))]
+    with pytest.raises(ValueError):
+        rolling_split(coordinates, size=2, spacing=1)
 
 
 def test_spacing_to_shape():
