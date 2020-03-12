@@ -8,7 +8,7 @@ from .coordinates import (
     inside,
     block_split,
     rolling_window,
-    expanding_split,
+    expanding_window,
     profile_coordinates,
     get_region,
     pad_region,

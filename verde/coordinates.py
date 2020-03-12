@@ -1006,12 +1006,11 @@ def _check_rolling_window_overlap(region, size, shape, spacing):
         )
 
 
-def expanding_split(coordinates, center, sizes):
+def expanding_window(coordinates, center, sizes):
     """
-    Split the given points on an expanding window.
+    Select points on windows of changing size around a center point.
 
-    Returns the indices of points falling inside a window of expanding size
-    centered on a given point.
+    Returns the indices of points falling inside each window.
 
     Parameters
     ----------
@@ -1029,12 +1028,11 @@ def expanding_split(coordinates, center, sizes):
     Returns
     -------
     indices : list
-        Each element of the list corresponds to a window. Each contains the
-        indices of points falling inside the respective window. Use them to
-        index the coordinates for each window. The indices will depend on the
-        number of dimensions in the input coordinates. For example, if the
-        coordinates are 2D arrays, each window will contain indices for 2
-        dimensions (row, column).
+        Each element of the list corresponds to  the indices of points falling
+        inside a window. Use them to index the coordinates for each window. The
+        indices will depend on the number of dimensions in the input
+        coordinates. For example, if the coordinates are 2D arrays, each window
+        will contain indices for 2 dimensions (row, column).
 
     See also
     --------
@@ -1061,7 +1059,7 @@ def expanding_split(coordinates, center, sizes):
      [ 9.  9.  9.  9.  9.]
      [10. 10. 10. 10. 10.]]
     >>> # Get the expanding window indices
-    >>> indices = expanding_split(coords, center=(-3, 8), sizes=[1, 2, 4])
+    >>> indices = expanding_window(coords, center=(-3, 8), sizes=[1, 2, 4])
     >>> # There is one index per window
     >>> print(len(indices))
     3
@@ -1094,7 +1092,7 @@ def expanding_split(coordinates, center, sizes):
     If the coordinates are 1D, the indices will also be 1D:
 
     >>> coords1d = [coord.ravel() for coord in coords]
-    >>> indices = expanding_split(coords1d, center=(-3, 8), sizes=[1, 2, 4])
+    >>> indices = expanding_window(coords1d, center=(-3, 8), sizes=[1, 2, 4])
     >>> print(len(indices))
     3
     >>> # Since coordinates are 1D, there is only one index
@@ -1120,7 +1118,9 @@ def expanding_split(coordinates, center, sizes):
     for size in sizes:
         # Use p=inf (infinity norm) to get square windows instead of circular
         index1d = tree.query_ball_point(center, r=size / 2, p=np.inf)[0]
-        indices.append(np.unravel_index(index1d, shape=shape))
+        # Convert indices to an array to avoid errors when the index is empty
+        # (no points in the window). unravel_index doesn't like empty lists.
+        indices.append(np.unravel_index(np.array(index1d, dtype="int"), shape=shape))
     return indices
 
 
