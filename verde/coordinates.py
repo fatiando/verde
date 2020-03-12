@@ -737,7 +737,7 @@ def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=
     See also
     --------
     BlockReduce : Apply a reduction operation to the data in blocks (windows).
-    rolling_split : Split the given points on a rolling (moving) window.
+    rolling_window : Select points on a rolling (moving) window.
 
     Examples
     --------
@@ -781,11 +781,11 @@ def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=
     return n_1d_arrays(block_coords, len(block_coords)), labels
 
 
-def rolling_split(
+def rolling_window(
     coordinates, size, spacing=None, shape=None, region=None, adjust="spacing"
 ):
     """
-    Split the given points on a rolling (moving) window.
+    Select points on a rolling (moving) window.
 
     A window of the given size is moved across the region at a given step
     (specified by *spacing* or *shape*). Returns the indices of points falling
@@ -858,10 +858,10 @@ def rolling_split(
      [ 9.  9.  9.  9.  9.]
      [10. 10. 10. 10. 10.]]
     >>> # Get the rolling window indices
-    >>> window_coords, indices = rolling_split(coords, size=2, spacing=2)
+    >>> window_coords, indices = rolling_window(coords, size=2, spacing=2)
     >>> # Window coordinates will be 2D arrays. Their shape is the number of
     >>> # windows in each dimension
-    >>> print(window_coords[0].shape, window_coords[0].shape)
+    >>> print(window_coords[0].shape, window_coords[1].shape)
     (2, 2) (2, 2)
     >>> # The there are the easting and northing coordinates for the center of
     >>> # each rolling window
@@ -904,7 +904,7 @@ def rolling_split(
     If the coordinates are 1D, the indices will also be 1D:
 
     >>> coords1d = [coord.ravel() for coord in coords]
-    >>> window_coords, indices = rolling_split(coords1d, size=2, spacing=2)
+    >>> window_coords, indices = rolling_window(coords1d, size=2, spacing=2)
     >>> print(len(indices[0, 0]))
     1
     >>> print(indices[0, 0][0])
@@ -927,7 +927,7 @@ def rolling_split(
     >>> # Coordinates on a larger region but with the same spacing as before
     >>> coords = grid_coordinates((-10, 5, 0, 20), spacing=1)
     >>> # Get the rolling window indices but limited to the region from before
-    >>> window_coords, indices = rolling_split(
+    >>> window_coords, indices = rolling_window(
     ...     coords, size=2, spacing=2, region=(-5, -1, 6, 10),
     ... )
     >>> # The windows should still be in the same place as before
