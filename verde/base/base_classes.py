@@ -422,9 +422,12 @@ class BaseGridder(BaseEstimator):
         size : int
             The number of points to generate.
         dims : list or None
-            The names of the northing and easting data dimensions,
-            respectively, in the output dataframe. Defaults to ``['northing',
-            'easting']``. **NOTE: This is an exception to the "easting" then
+            The names of the northing/latitude and easting/longitude data
+            dimensions, respectively, in the output grid. Defaults are set
+            though ``dims`` class variable. Dims must be defined in the
+            following order: ``["northing", "easting"]`` or
+            ``["latitude", "longitude"]``.
+            **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
         data_names : list of None
             The name(s) of the data variables in the output dataframe. Defaults
