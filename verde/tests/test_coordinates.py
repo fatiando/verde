@@ -1,6 +1,8 @@
 """
 Test the coordinate generation functions
 """
+import warnings
+
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -20,6 +22,30 @@ def test_rolling_split_invalid_coordinate_shapes():
     coordinates = [np.arange(10), np.arange(10).reshape((5, 2))]
     with pytest.raises(ValueError):
         rolling_split(coordinates, size=2, spacing=1)
+
+
+def test_rolling_split_empty():
+    "Make sure empty windows return an empty index"
+    coords = grid_coordinates((-5, -1, 6, 10), spacing=1)
+    # Use a larger region to make sure the first window is empty
+    windows = rolling_split(coords, size=0.001, spacing=1, region=(-7, 1, 4, 12))[1]
+    assert windows[0][0].size == 0 and windows[0][1].size == 0
+
+
+def test_rolling_split_warnings():
+    "Should warn users if the windows don't overlap"
+    coords = grid_coordinates((-5, -1, 6, 10), spacing=1)
+    # For exact same size there will be 1 point overlapping so should not warn
+    with warnings.catch_warnings(record=True) as warn:
+        rolling_split(coords, size=2, spacing=2)
+        assert not warn
+    args = [dict(spacing=3), dict(spacing=(4, 1)), dict(shape=(1, 2))]
+    for arg in args:
+        with warnings.catch_warnings(record=True) as warn:
+            rolling_split(coords, size=2, **arg)
+            assert len(warn) == 1
+            assert issubclass(warn[-1].category, UserWarning)
+            assert str(warn[-1].message).split()[0] == "Rolling"
 
 
 def test_spacing_to_shape():

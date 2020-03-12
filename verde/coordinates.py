@@ -799,8 +799,7 @@ def rolling_split(
     ----------
     coordinates : tuple of arrays
         Arrays with the coordinates of each data point. Should be in the
-        following order: (easting, northing, vertical, ...). Only easting and
-        northing will be used, all subsequent coordinates will be ignored.
+        following order: (easting, northing, vertical, ...).
     size : float
         The size of the windows. Units should match the units of *coordinates*.
     spacing : float, tuple = (s_north, s_east), or None
@@ -946,6 +945,7 @@ def rolling_split(
     centers = grid_coordinates(
         window_region, spacing=spacing, shape=shape, adjust=adjust
     )
+    step = centers[0][0]
     # pykdtree doesn't support query_ball_point yet and we need that
     tree = kdtree(coordinates, use_pykdtree=False)
     # Coordinates must be transposed because the kd-tree wants them as columns
