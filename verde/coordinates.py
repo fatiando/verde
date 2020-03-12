@@ -823,15 +823,14 @@ def rolling_window(
     Returns
     -------
     window_coordinates : tuple of arrays
-        (easting, northing) arrays with the coordinates of the center of each
-        window.
-    indices : list
-        Each element of the list corresponds to a window. Each contains the
-        indices of points falling inside the respective window. Use them to
-        index the coordinates for each window. The indices will depend on the
-        number of dimensions in the input coordinates. For example, if the
-        coordinates are 2D arrays, each window will contain indices for 2
-        dimensions (row, column).
+        Coordinate arrays for the center of each window.
+    indices : array
+        Each element of the array corresponds the indices of points falling
+        inside a window. The array will have the same shape as the
+        *window_coordinates*. Use the array elements to index the coordinates
+        for each window. The indices will depend on the number of dimensions in
+        the input coordinates. For example, if the coordinates are 2D arrays,
+        each window will contain indices for 2 dimensions (row, column).
 
     See also
     --------
