@@ -263,8 +263,8 @@ class BaseGridder(BaseEstimator):
             The names of the northing/latitude and easting/longitude data
             dimensions, respectively, in the output grid. Defaults are set
             though ``dims`` class variable. Dims must be defined in the
-            following order: ["northing", "easting"] or
-            ["latitude", "longitude"].
+            following order: ``["northing", "easting"]`` or
+            ``["latitude", "longitude"]``.
             **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
         data_names : list of None
@@ -348,8 +348,8 @@ class BaseGridder(BaseEstimator):
             The names of the northing/latitude and easting/longitude data
             dimensions, respectively, in the output grid. Defaults are set
             though ``dims`` class variable. Dims must be defined in the
-            following order: ["northing", "easting"] or
-            ["latitude", "longitude"].
+            following order: ``["northing", "easting"]`` or
+            ``["latitude", "longitude"]``.
             **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
         data_names : list of None
