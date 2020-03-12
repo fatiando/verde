@@ -954,7 +954,12 @@ def rolling_split(
     indices1d = tree.query_ball_point(
         np.transpose(n_1d_arrays(centers, 2)), r=size / 2, p=np.inf
     )
-    indices = [np.unravel_index(i, shape=shapes[0]) for i in indices1d]
+    # Need to convert the indices to int arrays because unravel_index doesn't
+    # like empty lists but can handle empty integer arrays in case a window has
+    # no points inside it.
+    indices = [
+        np.unravel_index(np.array(i, dtype="int"), shape=shapes[0]) for i in indices1d
+    ]
     return n_1d_arrays(centers, len(centers)), indices
 
 
