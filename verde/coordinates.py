@@ -948,6 +948,9 @@ def rolling_split(
     )
     # pykdtree doesn't support query_ball_point yet and we need that
     tree = kdtree(coordinates, use_pykdtree=False)
+    # Coordinates must be transposed because the kd-tree wants them as columns
+    # of a matrix
+    # Use p=inf (infinity norm) to get square windows instead of circular ones
     indices1d = tree.query_ball_point(
         np.transpose(n_1d_arrays(centers, 2)), r=size / 2, p=np.inf
     )
