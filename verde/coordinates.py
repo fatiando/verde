@@ -1,6 +1,8 @@
 """
 Functions for generating and manipulating coordinates.
 """
+import warnings
+
 import numpy as np
 from sklearn.utils import check_random_state
 
@@ -942,10 +944,10 @@ def rolling_split(
     window_region = [
         dimension + (-1) ** (i % 2) * size / 2 for i, dimension in enumerate(region)
     ]
+    _check_rolling_window_overlap(window_region, size, shape, spacing)
     centers = grid_coordinates(
         window_region, spacing=spacing, shape=shape, adjust=adjust
     )
-    step = centers[0][0]
     # pykdtree doesn't support query_ball_point yet and we need that
     tree = kdtree(coordinates, use_pykdtree=False)
     # Coordinates must be transposed because the kd-tree wants them as columns
@@ -961,6 +963,25 @@ def rolling_split(
         np.unravel_index(np.array(i, dtype="int"), shape=shapes[0]) for i in indices1d
     ]
     return n_1d_arrays(centers, len(centers)), indices
+
+
+def _check_rolling_window_overlap(region, size, shape, spacing):
+    """
+    Warn the user if there is no overlap between neighboring windows.
+    """
+    if shape is not None:
+        ndims = len(shape)
+        dimensions = [region[i * ndims + 1] - region[i * ndims] for i in range(ndims)]
+        # The - 1 is because we need to divide by the number of intervals, not
+        # the number of nodes.
+        spacing = tuple(dim / (n - 1) for dim, n in zip(dimensions, shape))
+    spacing = np.atleast_1d(spacing)
+    if np.any(spacing > size):
+        warnings.warn(
+            f"Rolling windows do not overlap (size '{size}' and spacing '{spacing}'). "
+            "Some data points may not be included in any window. "
+            "Increase size or decrease spacing to avoid this."
+        )
 
 
 def longitude_continuity(coordinates, region):

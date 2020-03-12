@@ -28,7 +28,10 @@ def test_rolling_split_empty():
     "Make sure empty windows return an empty index"
     coords = grid_coordinates((-5, -1, 6, 10), spacing=1)
     # Use a larger region to make sure the first window is empty
-    windows = rolling_split(coords, size=0.001, spacing=1, region=(-7, 1, 4, 12))[1]
+    # Doing this will raise a warning for non-overlapping windows. Capture it
+    # so it doesn't pollute the test log.
+    with warnings.catch_warnings(record=True):
+        windows = rolling_split(coords, size=0.001, spacing=1, region=(-7, 1, 4, 12))[1]
     assert windows[0][0].size == 0 and windows[0][1].size == 0
     # Make sure we can still index with an empty array
     assert coords[0][windows[0]].size == 0
@@ -40,14 +43,17 @@ def test_rolling_split_warnings():
     # For exact same size there will be 1 point overlapping so should not warn
     with warnings.catch_warnings(record=True) as warn:
         rolling_split(coords, size=2, spacing=2)
-        assert not warn
+        assert not any(issubclass(w.category, UserWarning) for w in warn)
     args = [dict(spacing=3), dict(spacing=(4, 1)), dict(shape=(1, 2))]
     for arg in args:
         with warnings.catch_warnings(record=True) as warn:
             rolling_split(coords, size=2, **arg)
-            assert len(warn) == 1
-            assert issubclass(warn[-1].category, UserWarning)
-            assert str(warn[-1].message).split()[0] == "Rolling"
+            # Filter out the user warnings from some deprecation warnings that
+            # might be thrown by other packages.
+            userwarnings = [w for w in warn if issubclass(w.category, UserWarning)]
+            assert len(userwarnings) == 1
+            assert issubclass(userwarnings[-1].category, UserWarning)
+            assert str(userwarnings[-1].message).split()[0] == "Rolling"
 
 
 def test_spacing_to_shape():
