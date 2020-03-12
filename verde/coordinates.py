@@ -859,55 +859,66 @@ def rolling_split(
      [10. 10. 10. 10. 10.]]
     >>> # Get the rolling window indices
     >>> window_coords, indices = rolling_split(coords, size=2, spacing=2)
-    >>> # The coordinates are the center of each rolling window
+    >>> # Window coordinates will be 2D arrays. Their shape is the number of
+    >>> # windows in each dimension
+    >>> print(window_coords[0].shape, window_coords[0].shape)
+    (2, 2) (2, 2)
+    >>> # The there are the easting and northing coordinates for the center of
+    >>> # each rolling window
     >>> for coord in window_coords:
-    ...     print(', '.join(['{:.1f}'.format(i) for i in coord]))
-    -4.0, -2.0, -4.0, -2.0
-    7.0, 7.0, 9.0, 9.0
+    ...     print(coord)
+    [[-4. -2.]
+     [-4. -2.]]
+    [[7. 7.]
+     [9. 9.]]
+    >>> # The indices of points falling on each window will have the same shape
+    >>> # as the window center coordinates
+    >>> print(indices.shape)
+    (2, 2)
     >>> # The points in the first window. Indices are 2D positions because the
     >>> # coordinate arrays are 2D.
-    >>> print(len(indices[0]))
+    >>> print(len(indices[0, 0]))
     2
-    >>> for dimension in indices[0]:
+    >>> for dimension in indices[0, 0]:
     ...     print(dimension)
     [0 0 0 1 1 1 2 2 2]
     [0 1 2 0 1 2 0 1 2]
-    >>> for dimension in indices[1]:
+    >>> for dimension in indices[0, 1]:
     ...     print(dimension)
     [0 0 0 1 1 1 2 2 2]
     [2 3 4 2 3 4 2 3 4]
-    >>> for dimension in indices[2]:
+    >>> for dimension in indices[1, 0]:
     ...     print(dimension)
     [2 2 2 3 3 3 4 4 4]
     [0 1 2 0 1 2 0 1 2]
-    >>> for dimension in indices[3]:
+    >>> for dimension in indices[1, 1]:
     ...     print(dimension)
     [2 2 2 3 3 3 4 4 4]
     [2 3 4 2 3 4 2 3 4]
     >>> # To get the coordinates for each window, use indexing
-    >>> print(coords[0][indices[0]])
+    >>> print(coords[0][indices[0, 0]])
     [-5. -4. -3. -5. -4. -3. -5. -4. -3.]
-    >>> print(coords[1][indices[0]])
+    >>> print(coords[1][indices[0, 0]])
     [6. 6. 6. 7. 7. 7. 8. 8. 8.]
 
     If the coordinates are 1D, the indices will also be 1D:
 
     >>> coords1d = [coord.ravel() for coord in coords]
     >>> window_coords, indices = rolling_split(coords1d, size=2, spacing=2)
-    >>> print(len(indices[0]))
+    >>> print(len(indices[0, 0]))
     1
-    >>> print(indices[0][0])
+    >>> print(indices[0, 0][0])
     [ 0  1  2  5  6  7 10 11 12]
-    >>> print(indices[1][0])
+    >>> print(indices[0, 1][0])
     [ 2  3  4  7  8  9 12 13 14]
-    >>> print(indices[2][0])
+    >>> print(indices[1, 0][0])
     [10 11 12 15 16 17 20 21 22]
-    >>> print(indices[3][0])
+    >>> print(indices[1, 1][0])
     [12 13 14 17 18 19 22 23 24]
     >>> # The returned indices can be used in the same way as before
-    >>> print(coords1d[0][indices[0]])
+    >>> print(coords1d[0][indices[0, 0]])
     [-5. -4. -3. -5. -4. -3. -5. -4. -3.]
-    >>> print(coords1d[1][indices[0]])
+    >>> print(coords1d[1][indices[0, 0]])
     [6. 6. 6. 7. 7. 7. 8. 8. 8.]
 
     By default, the windows will span the entire data region. You can also
@@ -921,13 +932,15 @@ def rolling_split(
     ... )
     >>> # The windows should still be in the same place as before
     >>> for coord in window_coords:
-    ...     print(', '.join(['{:.1f}'.format(i) for i in coord]))
-    -4.0, -2.0, -4.0, -2.0
-    7.0, 7.0, 9.0, 9.0
+    ...     print(coord)
+    [[-4. -2.]
+     [-4. -2.]]
+    [[7. 7.]
+     [9. 9.]]
     >>> # And indexing the coordinates should also provide the same result
-    >>> print(coords[0][indices[0]])
+    >>> print(coords[0][indices[0, 0]])
     [-5. -4. -3. -5. -4. -3. -5. -4. -3.]
-    >>> print(coords[1][indices[0]])
+    >>> print(coords[1][indices[0, 0]])
     [6. 6. 6. 7. 7. 7. 8. 8. 8.]
 
     """
@@ -956,13 +969,22 @@ def rolling_split(
     indices1d = tree.query_ball_point(
         np.transpose(n_1d_arrays(centers, 2)), r=size / 2, p=np.inf
     )
+    # Make the indices array the same shape as the center coordinates array.
+    # That preserves the information of the number of windows in each
+    # dimension. Need to first create an empty array of object type because
+    # otherwise numpy tries to use the index tuples as dimensions (even if
+    # given ndim=1 explicitly). Can't make it 1D and then reshape because the
+    # reshape is ignored for some reason. The workaround is to create the array
+    # with the correct shape and assign the values to a raveled view of the
+    # array.
+    indices = np.empty(centers[0].shape, dtype="object")
     # Need to convert the indices to int arrays because unravel_index doesn't
     # like empty lists but can handle empty integer arrays in case a window has
     # no points inside it.
-    indices = [
+    indices.ravel()[:] = [
         np.unravel_index(np.array(i, dtype="int"), shape=shapes[0]) for i in indices1d
     ]
-    return n_1d_arrays(centers, len(centers)), indices
+    return centers, indices
 
 
 def _check_rolling_window_overlap(region, size, shape, spacing):

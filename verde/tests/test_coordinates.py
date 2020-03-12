@@ -32,9 +32,9 @@ def test_rolling_split_empty():
     # so it doesn't pollute the test log.
     with warnings.catch_warnings(record=True):
         windows = rolling_split(coords, size=0.001, spacing=1, region=(-7, 1, 4, 12))[1]
-    assert windows[0][0].size == 0 and windows[0][1].size == 0
+    assert windows[0, 0][0].size == 0 and windows[0, 0][1].size == 0
     # Make sure we can still index with an empty array
-    assert coords[0][windows[0]].size == 0
+    assert coords[0][windows[0, 0]].size == 0
 
 
 def test_rolling_split_warnings():
