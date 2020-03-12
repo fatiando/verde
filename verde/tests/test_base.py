@@ -18,8 +18,11 @@ from ..coordinates import grid_coordinates, scatter_points
 
 def test_get_dims():
     "Tests that get_dims returns the expected results"
-    assert get_dims(dims=None) == ("northing", "easting")
-    assert get_dims(dims=("john", "paul")) == ("john", "paul")
+    gridder = BaseGridder()
+    assert get_dims(gridder, dims=None) == ("northing", "easting")
+    assert get_dims(gridder, dims=("john", "paul")) == ("john", "paul")
+    gridder.dims = ("latitude", "longitude")
+    assert get_dims(gridder, dims=None) == ("latitude", "longitude")
 
 
 def test_get_data_names():
