@@ -790,10 +790,10 @@ def rolling_split(
     inside each window step. You can use the indices to select points falling
     inside a given window.
 
-    The size of the windows can be specified by the *spacing* parameter.
-    Alternatively, the number of windows in the South-North and West-East
-    directions can be specified using the *shape* parameter. One of the two
-    must be given.
+    The size of the step when moving the windows can be specified by the
+    *spacing* parameter. Alternatively, the number of windows in the
+    South-North and West-East directions can be specified using the *shape*
+    parameter. **One of the two must be given.**
 
     Parameters
     ----------
@@ -801,6 +801,8 @@ def rolling_split(
         Arrays with the coordinates of each data point. Should be in the
         following order: (easting, northing, vertical, ...). Only easting and
         northing will be used, all subsequent coordinates will be ignored.
+    size : float
+        The size of the windows. Units should match the units of *coordinates*.
     spacing : float, tuple = (s_north, s_east), or None
         The window size in the South-North and West-East directions,
         respectively. A single value means that the size is equal in both
