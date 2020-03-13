@@ -295,7 +295,7 @@ class BaseGridder(BaseEstimator):
         verde.grid_coordinates : Generate the coordinate values for the grid.
 
         """
-        dims = get_dims(self, dims)
+        dims = self._get_dims(dims)
         region = get_instance_region(self, region)
         coordinates = grid_coordinates(region, shape=shape, spacing=spacing, **kwargs)
         if projection is None:
@@ -374,7 +374,7 @@ class BaseGridder(BaseEstimator):
             The interpolated values on a random set of points.
 
         """
-        dims = get_dims(self, dims)
+        dims = self._get_dims(dims)
         region = get_instance_region(self, region)
         coordinates = scatter_points(region, size, random_state=random_state, **kwargs)
         if projection is None:
@@ -449,7 +449,7 @@ class BaseGridder(BaseEstimator):
             The interpolated values along the profile.
 
         """
-        dims = get_dims(self, dims)
+        dims = self._get_dims(dims)
         coordinates, distances = profile_coordinates(point1, point2, size, **kwargs)
         if projection is None:
             data = check_data(self.predict(coordinates))
@@ -464,24 +464,23 @@ class BaseGridder(BaseEstimator):
         columns.extend(zip(data_names, data))
         return pd.DataFrame(dict(columns), columns=[c[0] for c in columns])
 
+    def _get_dims(self, dims):
+        """
+        Get default dimension names.
 
-def get_dims(gridder, dims):
-    """
-    Get default dimension names.
+        Examples
+        --------
 
-    Examples
-    --------
+        >>> gridder = BaseGridder()
+        >>> gridder._get_dims(dims=None)
+        ('northing', 'easting')
+        >>> gridder._get_dims(dims=('john', 'paul'))
+        ('john', 'paul')
 
-    >>> gridder = BaseGridder()
-    >>> get_dims(gridder, dims=None)
-    ('northing', 'easting')
-    >>> get_dims(gridder, dims=('john', 'paul'))
-    ('john', 'paul')
-
-    """
-    if dims is not None:
-        return dims
-    return gridder.dims
+        """
+        if dims is not None:
+            return dims
+        return self.dims
 
 
 def get_data_names(data, data_names):

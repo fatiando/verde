@@ -9,7 +9,6 @@ import pytest
 from ..base.utils import check_fit_input
 from ..base.base_classes import (
     BaseGridder,
-    get_dims,
     get_data_names,
     get_instance_region,
 )
@@ -19,10 +18,10 @@ from ..coordinates import grid_coordinates, scatter_points
 def test_get_dims():
     "Tests that get_dims returns the expected results"
     gridder = BaseGridder()
-    assert get_dims(gridder, dims=None) == ("northing", "easting")
-    assert get_dims(gridder, dims=("john", "paul")) == ("john", "paul")
+    assert gridder._get_dims(dims=None) == ("northing", "easting")
+    assert gridder._get_dims(dims=("john", "paul")) == ("john", "paul")
     gridder.dims = ("latitude", "longitude")
-    assert get_dims(gridder, dims=None) == ("latitude", "longitude")
+    assert gridder._get_dims(dims=None) == ("latitude", "longitude")
 
 
 def test_get_data_names():
