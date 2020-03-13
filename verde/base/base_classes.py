@@ -338,7 +338,7 @@ class BaseGridder(BaseEstimator):
         Parameters
         ----------
         region : list = [W, E, S, N]
-            The boundaries of a given region.
+            The west, east, south, and north boundaries of a given region.
         size : int
             The number of points to generate.
         random_state : numpy.random.RandomState or an int seed
