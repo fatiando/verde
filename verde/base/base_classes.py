@@ -82,7 +82,7 @@ class BaseGridder(BaseEstimator):
     -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2
 
     """
-
+# The default dimension names for generated outputs (pd.DataFrame, xr.Dataset, etc)
     dims = ("northing", "easting")
 
     def predict(self, coordinates):
