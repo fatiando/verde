@@ -6,7 +6,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from ..base.utils import check_fit_input
+from ..base.utils import check_fit_input, check_coordinates
 from ..base.base_classes import (
     BaseGridder,
     get_dims,
@@ -14,6 +14,20 @@ from ..base.base_classes import (
     get_instance_region,
 )
 from ..coordinates import grid_coordinates, scatter_points
+
+
+def test_check_coordinates():
+    "Should raise a ValueError is the coordinates have different shapes."
+    # Should not raise an error
+    check_coordinates([np.arange(10), np.arange(10)])
+    check_coordinates([np.arange(10).reshape((5, 2)), np.arange(10).reshape((5, 2))])
+    # Should raise an error
+    with pytest.raises(ValueError):
+        check_coordinates([np.arange(10), np.arange(10).reshape((5, 2))])
+    with pytest.raises(ValueError):
+        check_coordinates(
+            [np.arange(10).reshape((2, 5)), np.arange(10).reshape((5, 2))]
+        )
 
 
 def test_get_dims():

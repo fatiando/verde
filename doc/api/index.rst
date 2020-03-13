@@ -61,6 +61,7 @@ Coordinate Manipulation
     inside
     block_split
     rolling_window
+    expanding_window
 
 Utilities
 ---------
