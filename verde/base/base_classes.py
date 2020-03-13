@@ -252,7 +252,7 @@ class BaseGridder(BaseEstimator):
         Parameters
         ----------
         region : list = [W, E, S, N]
-            The boundaries of a given region.
+            The west, east, south, and north boundaries of a given region.
         shape : tuple = (n_north, n_east) or None
             The number of points in the South-North and West-East directions,
             respectively.
