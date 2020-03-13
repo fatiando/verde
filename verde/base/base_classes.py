@@ -195,9 +195,9 @@ class BaseGridder(BaseEstimator):
         ----------
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
-            following order: (easting, northing, vertical, ...)
-            or (longitude, latitude, height, ...)
-            or (longitude, latitude, radius, ...).
+            following order: (easting, northing, vertical, ...).
+            For the specific definition of coordinate systems and what these
+            names mean, see the class docstring.
         data : array or tuple of arrays
             The data values of each data point. If the data has more than one
             component, *data* must be a tuple of arrays (one for each
