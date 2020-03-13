@@ -60,7 +60,7 @@ Coordinate Manipulation
     project_region
     inside
     block_split
-	rolling_window
+    rolling_window
     expanding_window
 
 Utilities
