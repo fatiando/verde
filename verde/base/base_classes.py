@@ -276,8 +276,7 @@ class BaseGridder(BaseEstimator):
             3D vector data.
         projection : callable or None
             If not None, then should be a callable object
-            ``projection(longitude, latitude) ->
-            (proj_easting, proj_northing)``
+            ``projection(easting, northing) -> (proj_easting, proj_northing)``
             that takes in easting and northing coordinate arrays and returns
             projected northing and easting coordinate arrays. This function
             will be used to project the generated grid coordinates before
@@ -360,8 +359,7 @@ class BaseGridder(BaseEstimator):
             3D vector data.
         projection : callable or None
             If not None, then should be a callable object
-            ``projection(longitude, latitude) ->
-            (proj_easting, proj_northing)``
+            ``projection(easting, northing) -> (proj_easting, proj_northing)``
             that takes in easting and northing coordinate arrays and returns
             projected northing and easting coordinate arrays. This function
             will be used to project the generated scatter coordinates before
