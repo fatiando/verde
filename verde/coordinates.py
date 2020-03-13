@@ -738,6 +738,7 @@ def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=
     --------
     BlockReduce : Apply a reduction operation to the data in blocks (windows).
     rolling_window : Select points on a rolling (moving) window.
+    expanding_window : Select points on windows of changing size.
 
     Examples
     --------
@@ -836,6 +837,7 @@ def rolling_window(
     See also
     --------
     block_split : Split a region into blocks and label points accordingly.
+    expanding_window : Select points on windows of changing size.
 
     Examples
     --------
@@ -944,13 +946,7 @@ def rolling_window(
     [6. 6. 6. 7. 7. 7. 8. 8. 8.]
 
     """
-    shapes = [coord.shape for coord in coordinates]
-    if not all(shape == shapes[0] for shape in shapes):
-        raise ValueError(
-            "Coordinate arrays must have the same shape. Given shapes: {}".format(
-                shapes
-            )
-        )
+    coordinates = check_coordinates(coordinates)
     if region is None:
         region = get_region(coordinates)
     # Calculate the region spanning the centers of the rolling windows
@@ -982,7 +978,8 @@ def rolling_window(
     # like empty lists but can handle empty integer arrays in case a window has
     # no points inside it.
     indices.ravel()[:] = [
-        np.unravel_index(np.array(i, dtype="int"), shape=shapes[0]) for i in indices1d
+        np.unravel_index(np.array(i, dtype="int"), shape=coordinates[0].shape)
+        for i in indices1d
     ]
     return centers, indices
 
@@ -1037,6 +1034,7 @@ def expanding_window(coordinates, center, sizes):
     See also
     --------
     block_split : Split a region into blocks and label points accordingly.
+    rolling_window : Select points on a rolling (moving) window.
 
     Examples
     --------
