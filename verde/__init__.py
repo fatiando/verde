@@ -7,6 +7,7 @@ from .coordinates import (
     grid_coordinates,
     inside,
     block_split,
+    rolling_window,
     profile_coordinates,
     get_region,
     pad_region,
