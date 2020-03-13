@@ -109,7 +109,7 @@ def distance_mask(
 
 
 def convexhull_mask(
-    data_coordinates, coordinates=None, grid=None,
+    data_coordinates, coordinates=None, grid=None, projection=None,
 ):
     """
     Mask grid points that are outside the convex hull of the given data points.
@@ -134,6 +134,13 @@ def convexhull_mask(
         the grid as northing and easting coordinates, respectively. The mask
         will be applied to *grid* using the :meth:`xarray.Dataset.where`
         method.
+    projection : callable or None
+        If not None, then should be a callable object ``projection(easting,
+        northing) -> (proj_easting, proj_northing)`` that takes in easting and
+        northing coordinate arrays and returns projected easting and northing
+        coordinate arrays. This function will be used to project the given
+        coordinates (or the ones extracted from the grid) before calculating
+        distances.
 
     Returns
     -------
@@ -176,13 +183,27 @@ def convexhull_mask(
 
     """
     coordinates, shape = _get_grid_coordinates(coordinates, grid)
-    n_coordinates = len(data_coordinates)
-    triangles = Delaunay(np.transpose(n_1d_arrays(data_coordinates, n_coordinates)))
+    n_coordinates = 2
+    # Make sure they are arrays so we can normalize
+    data_coordinates = n_1d_arrays(data_coordinates, n_coordinates)
+    coordinates = n_1d_arrays(coordinates, n_coordinates)
+    if projection is not None:
+        data_coordinates = projection(*data_coordinates)
+        coordinates = projection(*coordinates)
+    # Normalize the coordinates to avoid errors from qhull when values are very
+    # large (as occurs when projections are used).
+    means = [coord.mean() for coord in data_coordinates]
+    stds = [coord.std() for coord in data_coordinates]
+    data_coordinates = tuple(
+        (coord - mean) / std for coord, mean, std in zip(data_coordinates, means, stds)
+    )
+    coordinates = tuple(
+        (coord - mean) / std for coord, mean, std in zip(coordinates, means, stds)
+    )
+    triangles = Delaunay(np.transpose(data_coordinates))
     # Find the triangle that contains each grid point.
     # -1 indicates that it's not in any triangle.
-    in_triangle = triangles.find_simplex(
-        np.transpose(n_1d_arrays(coordinates, n_coordinates))
-    )
+    in_triangle = triangles.find_simplex(np.transpose(coordinates))
     mask = (in_triangle != -1).reshape(shape)
     if grid is not None:
         return grid.where(mask)

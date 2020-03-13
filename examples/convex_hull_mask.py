@@ -14,17 +14,23 @@ import numpy as np
 import verde as vd
 
 # The Baja California bathymetry dataset has big gaps on land. We want to mask
-# these gaps on a dummy grid that we'll generate over the region.
+# these gaps on a dummy grid that we'll generate over the region just to show
+# what that looks like.
 data = vd.datasets.fetch_baja_bathymetry()
 region = vd.get_region((data.longitude, data.latitude))
 
 # Generate the coordinates for a regular grid mask
-spacing = 2 / 60
+spacing = 10 / 60
 coordinates = vd.grid_coordinates(region, spacing=spacing)
 
 # Generate a mask for points. The mask is True for points that are within the
-# convex hull.
-mask = vd.convexhull_mask((data.longitude, data.latitude), coordinates=coordinates)
+# convex hull. We can provide a projection function to convert the coordinates
+# before the convex hull is calculated (Mercator in this case).
+mask = vd.convexhull_mask(
+    data_coordinates=(data.longitude, data.latitude),
+    coordinates=coordinates,
+    projection=pyproj.Proj(proj="merc", lat_ts=data.latitude.mean()),
+)
 print(mask)
 
 # Create a dummy grid with ones that we can mask to show the results. Turn
