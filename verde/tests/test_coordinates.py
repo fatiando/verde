@@ -1,6 +1,8 @@
 """
 Test the coordinate generation functions
 """
+import warnings
+
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -11,7 +13,49 @@ from ..coordinates import (
     profile_coordinates,
     grid_coordinates,
     longitude_continuity,
+    rolling_window,
 )
+
+
+def test_rolling_window_invalid_coordinate_shapes():
+    "Shapes of input coordinates must all be the same"
+    coordinates = [np.arange(10), np.arange(10).reshape((5, 2))]
+    with pytest.raises(ValueError):
+        rolling_window(coordinates, size=2, spacing=1)
+
+
+def test_rolling_window_empty():
+    "Make sure empty windows return an empty index"
+    coords = grid_coordinates((-5, -1, 6, 10), spacing=1)
+    # Use a larger region to make sure the first window is empty
+    # Doing this will raise a warning for non-overlapping windows. Capture it
+    # so it doesn't pollute the test log.
+    with warnings.catch_warnings(record=True):
+        windows = rolling_window(coords, size=0.001, spacing=1, region=(-7, 1, 4, 12))[
+            1
+        ]
+    assert windows[0, 0][0].size == 0 and windows[0, 0][1].size == 0
+    # Make sure we can still index with an empty array
+    assert coords[0][windows[0, 0]].size == 0
+
+
+def test_rolling_window_warnings():
+    "Should warn users if the windows don't overlap"
+    coords = grid_coordinates((-5, -1, 6, 10), spacing=1)
+    # For exact same size there will be 1 point overlapping so should not warn
+    with warnings.catch_warnings(record=True) as warn:
+        rolling_window(coords, size=2, spacing=2)
+        assert not any(issubclass(w.category, UserWarning) for w in warn)
+    args = [dict(spacing=3), dict(spacing=(4, 1)), dict(shape=(1, 2))]
+    for arg in args:
+        with warnings.catch_warnings(record=True) as warn:
+            rolling_window(coords, size=2, **arg)
+            # Filter out the user warnings from some deprecation warnings that
+            # might be thrown by other packages.
+            userwarnings = [w for w in warn if issubclass(w.category, UserWarning)]
+            assert len(userwarnings) == 1
+            assert issubclass(userwarnings[-1].category, UserWarning)
+            assert str(userwarnings[-1].message).split()[0] == "Rolling"
 
 
 def test_spacing_to_shape():
