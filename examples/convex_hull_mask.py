@@ -19,7 +19,7 @@ data = vd.datasets.fetch_baja_bathymetry()
 region = vd.get_region((data.longitude, data.latitude))
 
 # Generate the coordinates for a regular grid mask
-spacing = 10 / 60
+spacing = 2 / 60
 coordinates = vd.grid_coordinates(region, spacing=spacing)
 
 # Generate a mask for points. The mask is True for points that are within the
