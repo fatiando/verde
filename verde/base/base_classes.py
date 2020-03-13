@@ -262,10 +262,10 @@ class BaseGridder(BaseEstimator):
             The grid spacing in the South-North and West-East directions,
             respectively.
         dims : list or None
-            The names of the northing/latitude and easting/longitude data
-            dimensions, respectively, in the output grid. Default is determined 
-            from the ``dims`` attribute of the class. Must be defined in the
-            following order: northing dimension, easting dimension.
+            The names of the northing and easting data dimensions,
+            respectively, in the output grid. Default is determined from the
+            ``dims`` attribute of the class. Must be defined in the following
+            order: northing dimension, easting dimension.
             **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
         data_names : list of None
@@ -346,11 +346,10 @@ class BaseGridder(BaseEstimator):
             reproducible. Use ``None`` to choose a seed automatically
             (resulting in different numbers with each run).
         dims : list or None
-            The names of the northing/latitude and easting/longitude data
-            dimensions, respectively, in the output grid. Defaults are set
-            though ``dims`` class variable. Dims must be defined in the
-            following order: ``["northing", "easting"]`` or
-            ``["latitude", "longitude"]``.
+            The names of the northing and easting data dimensions,
+            respectively, in the output dataframe. Default is determined from
+            the ``dims`` attribute of the class. Must be defined in the
+            following order: northing dimension, easting dimension.
             **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
         data_names : list of None
@@ -423,11 +422,10 @@ class BaseGridder(BaseEstimator):
         size : int
             The number of points to generate.
         dims : list or None
-            The names of the northing/latitude and easting/longitude data
-            dimensions, respectively, in the output grid. Defaults are set
-            though ``dims`` class variable. Dims must be defined in the
-            following order: ``["northing", "easting"]`` or
-            ``["latitude", "longitude"]``.
+            The names of the northing and easting data dimensions,
+            respectively, in the output dataframe. Default is determined from
+            the ``dims`` attribute of the class. Must be defined in the
+            following order: northing dimension, easting dimension.
             **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
         data_names : list of None
