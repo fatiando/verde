@@ -1,4 +1,4 @@
-# pylint: disable=unused-argument,too-many-locals
+# pylint: disable=unused-argument,too-many-locals,protected-access
 """
 Test the base classes and their utility functions.
 """
