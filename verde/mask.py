@@ -6,7 +6,7 @@ import numpy as np
 # pylint doesn't pick up on this import for some reason
 from scipy.spatial import Delaunay  # pylint: disable=no-name-in-module
 
-from .base import n_1d_arrays
+from .base.utils import n_1d_arrays, check_coordinates
 from .utils import kdtree
 
 
@@ -222,7 +222,6 @@ def _get_grid_coordinates(coordinates, grid):
     if coordinates is None:
         dims = [grid[var].dims for var in grid.data_vars][0]
         coordinates = np.meshgrid(grid.coords[dims[1]], grid.coords[dims[0]])
-    if len(set(i.shape for i in coordinates)) != 1:
-        raise ValueError("Coordinate arrays must have the same shape.")
+    check_coordinates(coordinates)
     shape = coordinates[0].shape
     return coordinates, shape
