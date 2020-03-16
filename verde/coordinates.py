@@ -1183,11 +1183,11 @@ def expanding_window(coordinates, center, sizes):
     [-3.]
     >>> print(coords[1][indices[0]])
     [8.]
-    >>> print(coords[2][indices[1]])
+    >>> print(coords[2][indices[0]])
     [15.]
 
     """
-    coordinates = check_coordinates(coordinates)
+    coordinates = check_coordinates(coordinates[:2])
     shape = coordinates[0].shape
     center = np.atleast_2d(center)
     # pykdtree doesn't support query_ball_point yet and we need that
