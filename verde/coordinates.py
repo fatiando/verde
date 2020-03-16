@@ -6,7 +6,7 @@ import warnings
 import numpy as np
 from sklearn.utils import check_random_state
 
-from .base.utils import n_1d_arrays
+from .base.utils import n_1d_arrays, check_coordinates
 from .utils import kdtree
 
 
@@ -738,6 +738,7 @@ def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=
     --------
     BlockReduce : Apply a reduction operation to the data in blocks (windows).
     rolling_window : Select points on a rolling (moving) window.
+    expanding_window : Select points on windows of changing size.
 
     Examples
     --------
@@ -771,6 +772,9 @@ def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=
      [6 6 6 7 7 7]]
 
     """
+    # Select the coordinates after checking to make sure indexing will still
+    # work on the ignored coordinates.
+    coordinates = check_coordinates(coordinates)[:2]
     if region is None:
         region = get_region(coordinates)
     block_coords = grid_coordinates(
@@ -801,7 +805,8 @@ def rolling_window(
     ----------
     coordinates : tuple of arrays
         Arrays with the coordinates of each data point. Should be in the
-        following order: (easting, northing, vertical, ...).
+        following order: (easting, northing, vertical, ...). Only easting and
+        northing will be used, all subsequent coordinates will be ignored.
     size : float
         The size of the windows. Units should match the units of *coordinates*.
     spacing : float, tuple = (s_north, s_east), or None
@@ -835,6 +840,7 @@ def rolling_window(
     See also
     --------
     block_split : Split a region into blocks and label points accordingly.
+    expanding_window : Select points on windows of changing size.
 
     Examples
     --------
@@ -942,14 +948,54 @@ def rolling_window(
     >>> print(coords[1][indices[0, 0]])
     [6. 6. 6. 7. 7. 7. 8. 8. 8.]
 
+    Only the first 2 coordinates are considered (assumed to be the horizontal
+    ones). All others will be ignored by the function.
+
+    >>> coords = grid_coordinates((-5, -1, 6, 10), spacing=1, extra_coords=20)
+    >>> print(coords[2])
+    [[20. 20. 20. 20. 20.]
+     [20. 20. 20. 20. 20.]
+     [20. 20. 20. 20. 20.]
+     [20. 20. 20. 20. 20.]
+     [20. 20. 20. 20. 20.]]
+    >>> window_coords, indices = rolling_window(coords, size=2, spacing=2)
+    >>> # The windows would be the same in this case since coords[2] is ignored
+    >>> for coord in window_coords:
+    ...     print(coord)
+    [[-4. -2.]
+     [-4. -2.]]
+    [[7. 7.]
+     [9. 9.]]
+    >>> print(indices.shape)
+    (2, 2)
+    >>> for dimension in indices[0, 0]:
+    ...     print(dimension)
+    [0 0 0 1 1 1 2 2 2]
+    [0 1 2 0 1 2 0 1 2]
+    >>> for dimension in indices[0, 1]:
+    ...     print(dimension)
+    [0 0 0 1 1 1 2 2 2]
+    [2 3 4 2 3 4 2 3 4]
+    >>> for dimension in indices[1, 0]:
+    ...     print(dimension)
+    [2 2 2 3 3 3 4 4 4]
+    [0 1 2 0 1 2 0 1 2]
+    >>> for dimension in indices[1, 1]:
+    ...     print(dimension)
+    [2 2 2 3 3 3 4 4 4]
+    [2 3 4 2 3 4 2 3 4]
+    >>> # The indices can still be used with the third coordinate
+    >>> print(coords[0][indices[0, 0]])
+    [-5. -4. -3. -5. -4. -3. -5. -4. -3.]
+    >>> print(coords[1][indices[0, 0]])
+    [6. 6. 6. 7. 7. 7. 8. 8. 8.]
+    >>> print(coords[2][indices[0, 0]])
+    [20. 20. 20. 20. 20. 20. 20. 20. 20.]
+
     """
-    shapes = [coord.shape for coord in coordinates]
-    if not all(shape == shapes[0] for shape in shapes):
-        raise ValueError(
-            "Coordinate arrays must have the same shape. Given shapes: {}".format(
-                shapes
-            )
-        )
+    # Select the coordinates after checking to make sure indexing will still
+    # work on the ignored coordinates.
+    coordinates = check_coordinates(coordinates)[:2]
     if region is None:
         region = get_region(coordinates)
     # Calculate the region spanning the centers of the rolling windows
@@ -981,7 +1027,8 @@ def rolling_window(
     # like empty lists but can handle empty integer arrays in case a window has
     # no points inside it.
     indices.ravel()[:] = [
-        np.unravel_index(np.array(i, dtype="int"), shape=shapes[0]) for i in indices1d
+        np.unravel_index(np.array(i, dtype="int"), shape=coordinates[0].shape)
+        for i in indices1d
     ]
     return centers, indices
 
@@ -1003,6 +1050,162 @@ def _check_rolling_window_overlap(region, size, shape, spacing):
             "Some data points may not be included in any window. "
             "Increase size or decrease spacing to avoid this."
         )
+
+
+def expanding_window(coordinates, center, sizes):
+    """
+    Select points on windows of changing size around a center point.
+
+    Returns the indices of points falling inside each window.
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+        Arrays with the coordinates of each data point. Should be in the
+        following order: (easting, northing, vertical, ...). Only easting and
+        northing will be used, all subsequent coordinates will be ignored.
+    center : tuple
+        The coordinates of the center of the window. Should be in the
+        following order: (easting, northing, vertical, ...).
+    sizes : array
+        The sizes of the windows. Does not have to be in any particular order.
+        The order of indices returned will match the order of window sizes
+        given. Units should match the units of *coordinates* and *center*.
+
+    Returns
+    -------
+    indices : list
+        Each element of the list corresponds to  the indices of points falling
+        inside a window. Use them to index the coordinates for each window. The
+        indices will depend on the number of dimensions in the input
+        coordinates. For example, if the coordinates are 2D arrays, each window
+        will contain indices for 2 dimensions (row, column).
+
+    See also
+    --------
+    block_split : Split a region into blocks and label points accordingly.
+    rolling_window : Select points on a rolling (moving) window.
+
+    Examples
+    --------
+
+    Generate a set of sample coordinates on a grid and determine the indices
+    of points for each expanding window:
+
+    >>> from verde import grid_coordinates
+    >>> coords = grid_coordinates((-5, -1, 6, 10), spacing=1)
+    >>> print(coords[0])
+    [[-5. -4. -3. -2. -1.]
+     [-5. -4. -3. -2. -1.]
+     [-5. -4. -3. -2. -1.]
+     [-5. -4. -3. -2. -1.]
+     [-5. -4. -3. -2. -1.]]
+    >>> print(coords[1])
+    [[ 6.  6.  6.  6.  6.]
+     [ 7.  7.  7.  7.  7.]
+     [ 8.  8.  8.  8.  8.]
+     [ 9.  9.  9.  9.  9.]
+     [10. 10. 10. 10. 10.]]
+    >>> # Get the expanding window indices
+    >>> indices = expanding_window(coords, center=(-3, 8), sizes=[1, 2, 4])
+    >>> # There is one index per window
+    >>> print(len(indices))
+    3
+    >>> # The points in the first window. Indices are 2D positions because the
+    >>> # coordinate arrays are 2D.
+    >>> print(len(indices[0]))
+    2
+    >>> for dimension in indices[0]:
+    ...     print(dimension)
+    [2]
+    [2]
+    >>> for dimension in indices[1]:
+    ...     print(dimension)
+    [1 1 1 2 2 2 3 3 3]
+    [1 2 3 1 2 3 1 2 3]
+    >>> for dimension in indices[2]:
+    ...     print(dimension)
+    [0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3 4 4 4 4 4]
+    [0 1 2 3 4 0 1 2 3 4 0 1 2 3 4 0 1 2 3 4 0 1 2 3 4]
+    >>> # To get the coordinates for each window, use indexing
+    >>> print(coords[0][indices[0]])
+    [-3.]
+    >>> print(coords[1][indices[0]])
+    [8.]
+    >>> print(coords[0][indices[1]])
+    [-4. -3. -2. -4. -3. -2. -4. -3. -2.]
+    >>> print(coords[1][indices[1]])
+    [7. 7. 7. 8. 8. 8. 9. 9. 9.]
+
+    If the coordinates are 1D, the indices will also be 1D:
+
+    >>> coords1d = [coord.ravel() for coord in coords]
+    >>> indices = expanding_window(coords1d, center=(-3, 8), sizes=[1, 2, 4])
+    >>> print(len(indices))
+    3
+    >>> # Since coordinates are 1D, there is only one index
+    >>> print(len(indices[0]))
+    1
+    >>> print(indices[0][0])
+    [12]
+    >>> print(indices[1][0])
+    [ 6  7  8 11 12 13 16 17 18]
+    >>> # The returned indices can be used in the same way as before
+    >>> print(coords1d[0][indices[0]])
+    [-3.]
+    >>> print(coords1d[1][indices[0]])
+    [8.]
+
+    Only the first 2 coordinates are considered (assumed to be the horizontal
+    ones). All others will be ignored by the function.
+
+    >>> coords = grid_coordinates((-5, -1, 6, 10), spacing=1, extra_coords=15)
+    >>> print(coords[2])
+    [[15. 15. 15. 15. 15.]
+     [15. 15. 15. 15. 15.]
+     [15. 15. 15. 15. 15.]
+     [15. 15. 15. 15. 15.]
+     [15. 15. 15. 15. 15.]]
+    >>> indices = expanding_window(coords, center=(-3, 8), sizes=[1, 2, 4])
+    >>> # The returned indices should be the same as before, ignoring coords[2]
+    >>> print(len(indices[0]))
+    2
+    >>> for dimension in indices[0]:
+    ...     print(dimension)
+    [2]
+    [2]
+    >>> for dimension in indices[1]:
+    ...     print(dimension)
+    [1 1 1 2 2 2 3 3 3]
+    [1 2 3 1 2 3 1 2 3]
+    >>> for dimension in indices[2]:
+    ...     print(dimension)
+    [0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3 4 4 4 4 4]
+    [0 1 2 3 4 0 1 2 3 4 0 1 2 3 4 0 1 2 3 4 0 1 2 3 4]
+    >>> # The indices can be used to index all 3 coordinates
+    >>> print(coords[0][indices[0]])
+    [-3.]
+    >>> print(coords[1][indices[0]])
+    [8.]
+    >>> print(coords[2][indices[0]])
+    [15.]
+
+    """
+    # Select the coordinates after checking to make sure indexing will still
+    # work on the ignored coordinates.
+    coordinates = check_coordinates(coordinates)[:2]
+    shape = coordinates[0].shape
+    center = np.atleast_2d(center)
+    # pykdtree doesn't support query_ball_point yet and we need that
+    tree = kdtree(coordinates, use_pykdtree=False)
+    indices = []
+    for size in sizes:
+        # Use p=inf (infinity norm) to get square windows instead of circular
+        index1d = tree.query_ball_point(center, r=size / 2, p=np.inf)[0]
+        # Convert indices to an array to avoid errors when the index is empty
+        # (no points in the window). unravel_index doesn't like empty lists.
+        indices.append(np.unravel_index(np.array(index1d, dtype="int"), shape=shape))
+    return indices
 
 
 def longitude_continuity(coordinates, region):
