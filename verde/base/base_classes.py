@@ -465,16 +465,6 @@ class BaseGridder(BaseEstimator):
     def _get_dims(self, dims):
         """
         Get default dimension names.
-
-        Examples
-        --------
-
-        >>> gridder = BaseGridder()
-        >>> gridder._get_dims(dims=None)
-        ('northing', 'easting')
-        >>> gridder._get_dims(dims=('john', 'paul'))
-        ('john', 'paul')
-
         """
         if dims is not None:
             return dims
