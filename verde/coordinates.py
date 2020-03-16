@@ -990,7 +990,7 @@ def rolling_window(
     [20. 20. 20. 20. 20. 20. 20. 20. 20.]
 
     """
-    coordinates = check_coordinates(coordinates)
+    coordinates = check_coordinates(coordinates[:2])
     if region is None:
         region = get_region(coordinates)
     # Calculate the region spanning the centers of the rolling windows
