@@ -945,6 +945,50 @@ def rolling_window(
     >>> print(coords[1][indices[0, 0]])
     [6. 6. 6. 7. 7. 7. 8. 8. 8.]
 
+    Only the first 2 coordinates are considered (horizontal). All others will
+    be ignored by the function.
+
+    >>> coords = grid_coordinates((-5, -1, 6, 10), spacing=1, extra_coords=20)
+    >>> print(coords[2])
+    [[20. 20. 20. 20. 20.]
+     [20. 20. 20. 20. 20.]
+     [20. 20. 20. 20. 20.]
+     [20. 20. 20. 20. 20.]
+     [20. 20. 20. 20. 20.]]
+    >>> window_coords, indices = rolling_window(coords, size=2, spacing=2)
+    >>> # The windows would be the same in this case since coords[2] is ignored
+    >>> for coord in window_coords:
+    ...     print(coord)
+    [[-4. -2.]
+     [-4. -2.]]
+    [[7. 7.]
+     [9. 9.]]
+    >>> print(indices.shape)
+    (2, 2)
+    >>> for dimension in indices[0, 0]:
+    ...     print(dimension)
+    [0 0 0 1 1 1 2 2 2]
+    [0 1 2 0 1 2 0 1 2]
+    >>> for dimension in indices[0, 1]:
+    ...     print(dimension)
+    [0 0 0 1 1 1 2 2 2]
+    [2 3 4 2 3 4 2 3 4]
+    >>> for dimension in indices[1, 0]:
+    ...     print(dimension)
+    [2 2 2 3 3 3 4 4 4]
+    [0 1 2 0 1 2 0 1 2]
+    >>> for dimension in indices[1, 1]:
+    ...     print(dimension)
+    [2 2 2 3 3 3 4 4 4]
+    [2 3 4 2 3 4 2 3 4]
+    >>> # The indices can still be used with the third coordinate
+    >>> print(coords[0][indices[0, 0]])
+    [-5. -4. -3. -5. -4. -3. -5. -4. -3.]
+    >>> print(coords[1][indices[0, 0]])
+    [6. 6. 6. 7. 7. 7. 8. 8. 8.]
+    >>> print(coords[2][indices[0, 0]])
+    [20. 20. 20. 20. 20. 20. 20. 20. 20.]
+
     """
     coordinates = check_coordinates(coordinates)
     if region is None:
