@@ -46,9 +46,10 @@ def distance_mask(
         northing will be used, all subsequent coordinates will be ignored.
     grid : None or :class:`xarray.Dataset`
         2D grid with values to be masked. Will use the first two dimensions of
-        the grid as northing and easting coordinates, respectively. The mask
-        will be applied to *grid* using the :meth:`xarray.Dataset.where`
-        method.
+        the grid as northing and easting coordinates, respectively. For this to
+        work, the grid dimensions **must be ordered as northing then easting**.
+        The mask will be applied to *grid* using the
+        :meth:`xarray.Dataset.where` method.
     projection : callable or None
         If not None, then should be a callable object ``projection(easting,
         northing) -> (proj_easting, proj_northing)`` that takes in easting and
@@ -131,9 +132,10 @@ def convexhull_mask(
         northing will be used, all subsequent coordinates will be ignored.
     grid : None or :class:`xarray.Dataset`
         2D grid with values to be masked. Will use the first two dimensions of
-        the grid as northing and easting coordinates, respectively. The mask
-        will be applied to *grid* using the :meth:`xarray.Dataset.where`
-        method.
+        the grid as northing and easting coordinates, respectively. For this to
+        work, the grid dimensions **must be ordered as northing then easting**.
+        The mask will be applied to *grid* using the
+        :meth:`xarray.Dataset.where` method.
     projection : callable or None
         If not None, then should be a callable object ``projection(easting,
         northing) -> (proj_easting, proj_northing)`` that takes in easting and
