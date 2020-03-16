@@ -772,7 +772,7 @@ def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=
      [6 6 6 7 7 7]]
 
     """
-    coordinates = check_coordinates(coordinates)
+    coordinates = check_coordinates(coordinates[:2])
     if region is None:
         region = get_region(coordinates)
     block_coords = grid_coordinates(
@@ -803,7 +803,8 @@ def rolling_window(
     ----------
     coordinates : tuple of arrays
         Arrays with the coordinates of each data point. Should be in the
-        following order: (easting, northing, vertical, ...).
+        following order: (easting, northing, vertical, ...). Only easting and
+        northing will be used, all subsequent coordinates will be ignored.
     size : float
         The size of the windows. Units should match the units of *coordinates*.
     spacing : float, tuple = (s_north, s_east), or None
@@ -945,8 +946,8 @@ def rolling_window(
     >>> print(coords[1][indices[0, 0]])
     [6. 6. 6. 7. 7. 7. 8. 8. 8.]
 
-    Only the first 2 coordinates are considered (horizontal). All others will
-    be ignored by the function.
+    Only the first 2 coordinates are considered (assumed to be the horizontal
+    ones). All others will be ignored by the function.
 
     >>> coords = grid_coordinates((-5, -1, 6, 10), spacing=1, extra_coords=20)
     >>> print(coords[2])
@@ -1057,7 +1058,8 @@ def expanding_window(coordinates, center, sizes):
     ----------
     coordinates : tuple of arrays
         Arrays with the coordinates of each data point. Should be in the
-        following order: (easting, northing, vertical, ...).
+        following order: (easting, northing, vertical, ...). Only easting and
+        northing will be used, all subsequent coordinates will be ignored.
     center : tuple
         The coordinates of the center of the window. Should be in the
         following order: (easting, northing, vertical, ...).
@@ -1149,6 +1151,40 @@ def expanding_window(coordinates, center, sizes):
     [-3.]
     >>> print(coords1d[1][indices[0]])
     [8.]
+
+    Only the first 2 coordinates are considered (assumed to be the horizontal
+    ones). All others will be ignored by the function.
+
+    >>> coords = grid_coordinates((-5, -1, 6, 10), spacing=1, extra_coords=15)
+    >>> print(coords[2])
+    [[15. 15. 15. 15. 15.]
+     [15. 15. 15. 15. 15.]
+     [15. 15. 15. 15. 15.]
+     [15. 15. 15. 15. 15.]
+     [15. 15. 15. 15. 15.]]
+    >>> indices = expanding_window(coords, center=(-3, 8), sizes=[1, 2, 4])
+    >>> # The returned indices should be the same as before, ignoring coords[2]
+    >>> print(len(indices[0]))
+    2
+    >>> for dimension in indices[0]:
+    ...     print(dimension)
+    [2]
+    [2]
+    >>> for dimension in indices[1]:
+    ...     print(dimension)
+    [1 1 1 2 2 2 3 3 3]
+    [1 2 3 1 2 3 1 2 3]
+    >>> for dimension in indices[2]:
+    ...     print(dimension)
+    [0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3 4 4 4 4 4]
+    [0 1 2 3 4 0 1 2 3 4 0 1 2 3 4 0 1 2 3 4 0 1 2 3 4]
+    >>> # The indices can be used to index all 3 coordinates
+    >>> print(coords[0][indices[0]])
+    [-3.]
+    >>> print(coords[1][indices[0]])
+    [8.]
+    >>> print(coords[2][indices[1]])
+    [15.]
 
     """
     coordinates = check_coordinates(coordinates)
