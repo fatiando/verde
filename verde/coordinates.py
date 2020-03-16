@@ -772,7 +772,9 @@ def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=
      [6 6 6 7 7 7]]
 
     """
-    coordinates = check_coordinates(coordinates[:2])
+    # Select the coordinates after checking to make sure indexing will still
+    # work on the ignored coordinates.
+    coordinates = check_coordinates(coordinates)[:2]
     if region is None:
         region = get_region(coordinates)
     block_coords = grid_coordinates(
@@ -991,7 +993,9 @@ def rolling_window(
     [20. 20. 20. 20. 20. 20. 20. 20. 20.]
 
     """
-    coordinates = check_coordinates(coordinates[:2])
+    # Select the coordinates after checking to make sure indexing will still
+    # work on the ignored coordinates.
+    coordinates = check_coordinates(coordinates)[:2]
     if region is None:
         region = get_region(coordinates)
     # Calculate the region spanning the centers of the rolling windows
@@ -1187,7 +1191,9 @@ def expanding_window(coordinates, center, sizes):
     [15.]
 
     """
-    coordinates = check_coordinates(coordinates[:2])
+    # Select the coordinates after checking to make sure indexing will still
+    # work on the ignored coordinates.
+    coordinates = check_coordinates(coordinates)[:2]
     shape = coordinates[0].shape
     center = np.atleast_2d(center)
     # pykdtree doesn't support query_ball_point yet and we need that
