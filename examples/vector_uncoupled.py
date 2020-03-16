@@ -65,7 +65,7 @@ print("Cross-validation R^2 score: {:.2f}".format(score))
 grid_full = chain.grid(
     region, spacing=spacing, projection=projection, dims=["latitude", "longitude"]
 )
-grid = vd.convexhull_mask(coordinates, grid=grid_full)
+grid = vd.convexhull_mask(coordinates, grid=grid_full, projection=projection)
 
 # Make maps of the original and gridded wind speed
 plt.figure(figsize=(6, 6))
