@@ -9,6 +9,12 @@ trigger:
     - master
     - refs/tags/*
 
+# Make sure triggers are set for PRs to any branch.
+pr:
+  branches:
+    include:
+    - '*'
+
 
 jobs:
 
@@ -71,7 +77,7 @@ jobs:
   displayName: 'Mac'
 
   pool:
-    vmImage: 'macOS-10.13'
+    vmImage: 'macOS-10.15'
 
   variables:
     CONDA_REQUIREMENTS: requirements.txt

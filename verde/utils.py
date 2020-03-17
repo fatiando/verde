@@ -218,13 +218,16 @@ def grid_to_table(grid):
 
     Parameters
     ----------
-    grid : :class:`xarray.Dataset`
+    grid : :class:`xarray.Dataset` or :class:`xarray.DataArray`
         A 2D grid with one or more data variables.
 
     Returns
     -------
     table : :class:`pandas.DataFrame`
         Table with coordinates and variable values for each point in the grid.
+        Column names are taken from the grid. If *grid* is a
+        :class:`xarray.DataArray` that doesn't have a ``name`` attribute
+        defined, the column with data values will be called ``"scalars"``.
 
     Examples
     --------
@@ -237,16 +240,37 @@ def grid_to_table(grid):
     ...     coords=(np.arange(4), np.arange(5, 10)),
     ...     dims=['northing', 'easting']
     ... )
-    >>> grid = xr.Dataset({"temperature": temperature})
-    >>> table  = grid_to_table(grid)
+    >>> print(temperature.values)
+    [[ 0  1  2  3  4]
+     [ 5  6  7  8  9]
+     [10 11 12 13 14]
+     [15 16 17 18 19]]
+    >>> # For DataArrays, the data column will be "scalars" by default
+    >>> table = grid_to_table(temperature)
     >>> list(sorted(table.columns))
-    ['easting', 'northing', 'temperature']
+    ['easting', 'northing', 'scalars']
+    >>> print(table.scalars.values)
+    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]
     >>> print(table.northing.values)
     [0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]
     >>> print(table.easting.values)
     [5 6 7 8 9 5 6 7 8 9 5 6 7 8 9 5 6 7 8 9]
+    >>> # If the DataArray defines a "name", we will use that instead
+    >>> temperature.name = "temperature_K"
+    >>> table = grid_to_table(temperature)
+    >>> list(sorted(table.columns))
+    ['easting', 'northing', 'temperature_K']
+    >>> # Conversion of Datasets will preserve the data variable names
+    >>> grid = xr.Dataset({"temperature": temperature})
+    >>> table  = grid_to_table(grid)
+    >>> list(sorted(table.columns))
+    ['easting', 'northing', 'temperature']
     >>> print(table.temperature.values)
     [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]
+    >>> print(table.northing.values)
+    [0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]
+    >>> print(table.easting.values)
+    [5 6 7 8 9 5 6 7 8 9 5 6 7 8 9 5 6 7 8 9]
     >>> # Grids with multiple data variables will have more columns.
     >>> wind_speed = xr.DataArray(
     ...     np.arange(20, 40).reshape((4, 5)),
@@ -267,23 +291,24 @@ def grid_to_table(grid):
     [20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39]
 
     """
-    coordinate_names = [*grid.coords.keys()]
-    coord_north = grid.coords[coordinate_names[0]].values
-    coord_east = grid.coords[coordinate_names[1]].values
-    coordinates = [i.ravel() for i in np.meshgrid(coord_east, coord_north)]
-    coord_dict = {
-        coordinate_names[0]: coordinates[1],
-        coordinate_names[1]: coordinates[0],
-    }
-    variable_name = [*grid.data_vars.keys()]
-    variable_data = grid.to_array().values
-    variable_arrays = variable_data.reshape(
-        len(variable_name), int(len(variable_data.ravel()) / len(variable_name))
-    )
-    var_dict = dict(zip(variable_name, variable_arrays))
-    coord_dict.update(var_dict)
-    data = pd.DataFrame(coord_dict)
-    return data
+    if hasattr(grid, "data_vars"):
+        # It's a Dataset
+        data_names = list(grid.data_vars.keys())
+        data_arrays = [grid[name].values.ravel() for name in data_names]
+        coordinate_names = list(grid[data_names[0]].dims)
+    else:
+        # It's a DataArray
+        data_names = [grid.name if grid.name is not None else "scalars"]
+        data_arrays = [grid.values.ravel()]
+        coordinate_names = list(grid.dims)
+    north = grid.coords[coordinate_names[0]].values
+    east = grid.coords[coordinate_names[1]].values
+    # Need to flip the coordinates because the names are in northing and
+    # easting order
+    coordinates = [i.ravel() for i in np.meshgrid(east, north)][::-1]
+    data_dict = dict(zip(coordinate_names, coordinates))
+    data_dict.update(dict(zip(data_names, data_arrays)))
+    return pd.DataFrame(data_dict)
 
 
 def kdtree(coordinates, use_pykdtree=True, **kwargs):

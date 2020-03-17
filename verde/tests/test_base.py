@@ -1,4 +1,4 @@
-# pylint: disable=unused-argument,too-many-locals
+# pylint: disable=unused-argument,too-many-locals,protected-access
 """
 Test the base classes and their utility functions.
 """
@@ -6,20 +6,36 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from ..base.utils import check_fit_input
+from ..base.utils import check_fit_input, check_coordinates
 from ..base.base_classes import (
     BaseGridder,
-    get_dims,
     get_data_names,
     get_instance_region,
 )
 from ..coordinates import grid_coordinates, scatter_points
 
 
+def test_check_coordinates():
+    "Should raise a ValueError is the coordinates have different shapes."
+    # Should not raise an error
+    check_coordinates([np.arange(10), np.arange(10)])
+    check_coordinates([np.arange(10).reshape((5, 2)), np.arange(10).reshape((5, 2))])
+    # Should raise an error
+    with pytest.raises(ValueError):
+        check_coordinates([np.arange(10), np.arange(10).reshape((5, 2))])
+    with pytest.raises(ValueError):
+        check_coordinates(
+            [np.arange(10).reshape((2, 5)), np.arange(10).reshape((5, 2))]
+        )
+
+
 def test_get_dims():
     "Tests that get_dims returns the expected results"
-    assert get_dims(dims=None) == ("northing", "easting")
-    assert get_dims(dims=("john", "paul")) == ("john", "paul")
+    gridder = BaseGridder()
+    assert gridder._get_dims(dims=None) == ("northing", "easting")
+    assert gridder._get_dims(dims=("john", "paul")) == ("john", "paul")
+    gridder.dims = ("latitude", "longitude")
+    assert gridder._get_dims(dims=None) == ("latitude", "longitude")
 
 
 def test_get_data_names():
@@ -144,7 +160,7 @@ def test_basegridder_projection():
     coordinates = scatter_points(region, 1000, random_state=0)
     data = angular * coordinates[0] + linear
     # Project before passing to our Cartesian gridder
-    grd = PolyGridder().fit(proj(*coordinates), data)
+    grd = PolyGridder().fit(proj(coordinates[0], coordinates[1]), data)
 
     # Check the estimated coefficients
     # The grid is estimated in projected coordinates (which are twice as large)
