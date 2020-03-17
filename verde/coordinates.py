@@ -772,7 +772,9 @@ def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=
      [6 6 6 7 7 7]]
 
     """
-    coordinates = check_coordinates(coordinates)
+    # Select the coordinates after checking to make sure indexing will still
+    # work on the ignored coordinates.
+    coordinates = check_coordinates(coordinates)[:2]
     if region is None:
         region = get_region(coordinates)
     block_coords = grid_coordinates(
@@ -803,7 +805,8 @@ def rolling_window(
     ----------
     coordinates : tuple of arrays
         Arrays with the coordinates of each data point. Should be in the
-        following order: (easting, northing, vertical, ...).
+        following order: (easting, northing, vertical, ...). Only easting and
+        northing will be used, all subsequent coordinates will be ignored.
     size : float
         The size of the windows. Units should match the units of *coordinates*.
     spacing : float, tuple = (s_north, s_east), or None
@@ -945,8 +948,54 @@ def rolling_window(
     >>> print(coords[1][indices[0, 0]])
     [6. 6. 6. 7. 7. 7. 8. 8. 8.]
 
+    Only the first 2 coordinates are considered (assumed to be the horizontal
+    ones). All others will be ignored by the function.
+
+    >>> coords = grid_coordinates((-5, -1, 6, 10), spacing=1, extra_coords=20)
+    >>> print(coords[2])
+    [[20. 20. 20. 20. 20.]
+     [20. 20. 20. 20. 20.]
+     [20. 20. 20. 20. 20.]
+     [20. 20. 20. 20. 20.]
+     [20. 20. 20. 20. 20.]]
+    >>> window_coords, indices = rolling_window(coords, size=2, spacing=2)
+    >>> # The windows would be the same in this case since coords[2] is ignored
+    >>> for coord in window_coords:
+    ...     print(coord)
+    [[-4. -2.]
+     [-4. -2.]]
+    [[7. 7.]
+     [9. 9.]]
+    >>> print(indices.shape)
+    (2, 2)
+    >>> for dimension in indices[0, 0]:
+    ...     print(dimension)
+    [0 0 0 1 1 1 2 2 2]
+    [0 1 2 0 1 2 0 1 2]
+    >>> for dimension in indices[0, 1]:
+    ...     print(dimension)
+    [0 0 0 1 1 1 2 2 2]
+    [2 3 4 2 3 4 2 3 4]
+    >>> for dimension in indices[1, 0]:
+    ...     print(dimension)
+    [2 2 2 3 3 3 4 4 4]
+    [0 1 2 0 1 2 0 1 2]
+    >>> for dimension in indices[1, 1]:
+    ...     print(dimension)
+    [2 2 2 3 3 3 4 4 4]
+    [2 3 4 2 3 4 2 3 4]
+    >>> # The indices can still be used with the third coordinate
+    >>> print(coords[0][indices[0, 0]])
+    [-5. -4. -3. -5. -4. -3. -5. -4. -3.]
+    >>> print(coords[1][indices[0, 0]])
+    [6. 6. 6. 7. 7. 7. 8. 8. 8.]
+    >>> print(coords[2][indices[0, 0]])
+    [20. 20. 20. 20. 20. 20. 20. 20. 20.]
+
     """
-    coordinates = check_coordinates(coordinates)
+    # Select the coordinates after checking to make sure indexing will still
+    # work on the ignored coordinates.
+    coordinates = check_coordinates(coordinates)[:2]
     if region is None:
         region = get_region(coordinates)
     # Calculate the region spanning the centers of the rolling windows
@@ -1013,7 +1062,8 @@ def expanding_window(coordinates, center, sizes):
     ----------
     coordinates : tuple of arrays
         Arrays with the coordinates of each data point. Should be in the
-        following order: (easting, northing, vertical, ...).
+        following order: (easting, northing, vertical, ...). Only easting and
+        northing will be used, all subsequent coordinates will be ignored.
     center : tuple
         The coordinates of the center of the window. Should be in the
         following order: (easting, northing, vertical, ...).
@@ -1106,8 +1156,44 @@ def expanding_window(coordinates, center, sizes):
     >>> print(coords1d[1][indices[0]])
     [8.]
 
+    Only the first 2 coordinates are considered (assumed to be the horizontal
+    ones). All others will be ignored by the function.
+
+    >>> coords = grid_coordinates((-5, -1, 6, 10), spacing=1, extra_coords=15)
+    >>> print(coords[2])
+    [[15. 15. 15. 15. 15.]
+     [15. 15. 15. 15. 15.]
+     [15. 15. 15. 15. 15.]
+     [15. 15. 15. 15. 15.]
+     [15. 15. 15. 15. 15.]]
+    >>> indices = expanding_window(coords, center=(-3, 8), sizes=[1, 2, 4])
+    >>> # The returned indices should be the same as before, ignoring coords[2]
+    >>> print(len(indices[0]))
+    2
+    >>> for dimension in indices[0]:
+    ...     print(dimension)
+    [2]
+    [2]
+    >>> for dimension in indices[1]:
+    ...     print(dimension)
+    [1 1 1 2 2 2 3 3 3]
+    [1 2 3 1 2 3 1 2 3]
+    >>> for dimension in indices[2]:
+    ...     print(dimension)
+    [0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3 4 4 4 4 4]
+    [0 1 2 3 4 0 1 2 3 4 0 1 2 3 4 0 1 2 3 4 0 1 2 3 4]
+    >>> # The indices can be used to index all 3 coordinates
+    >>> print(coords[0][indices[0]])
+    [-3.]
+    >>> print(coords[1][indices[0]])
+    [8.]
+    >>> print(coords[2][indices[0]])
+    [15.]
+
     """
-    coordinates = check_coordinates(coordinates)
+    # Select the coordinates after checking to make sure indexing will still
+    # work on the ignored coordinates.
+    coordinates = check_coordinates(coordinates)[:2]
     shape = coordinates[0].shape
     center = np.atleast_2d(center)
     # pykdtree doesn't support query_ball_point yet and we need that
