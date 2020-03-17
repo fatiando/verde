@@ -15,6 +15,7 @@ from .coordinates import (
     project_region,
     longitude_continuity,
 )
+from .gradient import Gradient
 from .mask import distance_mask, convexhull_mask
 from .utils import variance_to_weights, maxabs, grid_to_table
 from .io import load_surfer
