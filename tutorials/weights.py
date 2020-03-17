@@ -246,7 +246,7 @@ grid = spline.grid(
     dims=["latitude", "longitude"],
     data_names=["velocity"],
 )
-# Avoid showing interpolation too far away data points.
+# Avoid showing interpolation outside of the convex hull of the data points.
 grid = vd.convexhull_mask(coordinates, grid=grid, projection=projection)
 
 ########################################################################################
