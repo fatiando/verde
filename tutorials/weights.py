@@ -246,6 +246,8 @@ grid = spline.grid(
     dims=["latitude", "longitude"],
     data_names=["velocity"],
 )
+# Avoid showing interpolation outside of the convex hull of the data points.
+grid = vd.convexhull_mask(coordinates, grid=grid, projection=projection)
 
 ########################################################################################
 # Calculate an unweighted spline as well for comparison.
@@ -261,6 +263,9 @@ grid_unweighted = spline_unweighted.grid(
     projection=projection,
     dims=["latitude", "longitude"],
     data_names=["velocity"],
+)
+grid_unweighted = vd.convexhull_mask(
+    coordinates, grid=grid_unweighted, projection=projection
 )
 
 ########################################################################################

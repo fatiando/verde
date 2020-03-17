@@ -63,6 +63,15 @@ Coordinate Manipulation
     rolling_window
     expanding_window
 
+Masking
+-------
+
+.. autosummary::
+   :toctree: generated/
+
+    distance_mask
+    convexhull_mask
+
 Utilities
 ---------
 
@@ -71,7 +80,6 @@ Utilities
 
     test
     maxabs
-    distance_mask
     variance_to_weights
     grid_to_table
     median_distance
