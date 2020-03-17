@@ -421,16 +421,21 @@ class BaseGridder(BaseEstimator):
             ``['east_component', 'north_component', 'vertical_component']`` for
             3D vector data.
         projection : callable or None
-            If not None, then should be a callable object
-            ``projection(easting, northing) -> (proj_easting, proj_northing)``
-            that takes in easting and northing coordinate arrays and returns
-            projected northing and easting coordinate arrays. This function
-            will be used to project the generated profile coordinates before
-            passing them into ``predict``. For example, you can use this to
-            specify geographic coordinates for the profile points to a
-            Cartesian gridder. The profile will be a straight line in the
-            projected coordinates. Distances returned are also in the projected
-            coordinates.
+            If not None, then should be a callable object ``projection(easting,
+            northing, inverse=False) -> (proj_easting, proj_northing)`` that
+            takes in easting and northing coordinate arrays and returns
+            projected northing and easting coordinate arrays. Should also take
+            an optional keyword argument ``inverse`` (default to False) that if
+            True will cause the function to the inverse transform. This
+            function will be used to project the profile end points before
+            generating coordinates and passing them into ``predict``. For
+            example, you can use this to specify geographic coordinates for the
+            profile points to a Cartesian gridder. The profile will be evenly
+            spaced and a straight line in the projected coordinates. Distances
+            returned are also in the projected coordinates. The returned
+            profile coordinates will be in the original (unprojected)
+            coordinate system (which is why the projection needs to support
+            ``inverse``).
 
         Returns
         -------
@@ -439,17 +444,19 @@ class BaseGridder(BaseEstimator):
 
         """
         dims = get_dims(dims)
+        # Project the input points to generate the profile in Cartesian
+        # coordinates (the distance calculation doesn't make sense in
+        # geographic coordinates since we don't do actual distances on a
+        # sphere).
+        if projection is not None:
+            point1 = projection(*point1)
+            point2 = projection(*point2)
         coordinates, distances = profile_coordinates(point1, point2, size, **kwargs)
-        if projection is None:
-            data = check_data(self.predict(coordinates))
-        else:
-            proj_coords = projection(*coordinates)
-            data = check_data(self.predict(proj_coords))
-            # Calculate the distances in projected coordinates. Otherwise, we
-            # would have distances in degrees instead of meters when creating
-            # profiles in geodetic coordinates.
-            diffs = [coord[1:] - coord[0] for coord in proj_coords]
-            distances[1:] = np.sqrt(sum(diff ** 2 for diff in diffs))
+        data = check_data(self.predict(coordinates))
+        # Project the coordinates back to have geographic coordinates for the
+        # profile but Cartesian distances.
+        if projection is not None:
+            coordinates = projection(*coordinates, inverse=True)
         data_names = get_data_names(data, data_names)
         columns = [
             (dims[0], coordinates[1]),
