@@ -83,6 +83,10 @@ class BaseGridder(BaseEstimator):
 
     """
 
+    # The default dimension names for generated outputs
+    # (pd.DataFrame, xr.Dataset, etc)
+    dims = ("northing", "easting")
+
     def predict(self, coordinates):
         """
         Predict data on the given coordinate values. NOT IMPLEMENTED.
@@ -148,6 +152,8 @@ class BaseGridder(BaseEstimator):
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
             following order: (easting, northing, vertical, ...).
+            For the specific definition of coordinate systems and what these
+            names mean, see the class docstring.
         data : array or tuple of arrays
             The data values of each data point. If the data has more than one
             component, *data* must be a tuple of arrays (one for each
@@ -190,6 +196,8 @@ class BaseGridder(BaseEstimator):
         coordinates : tuple of arrays
             Arrays with the coordinates of each data point. Should be in the
             following order: (easting, northing, vertical, ...).
+            For the specific definition of coordinate systems and what these
+            names mean, see the class docstring.
         data : array or tuple of arrays
             The data values of each data point. If the data has more than one
             component, *data* must be a tuple of arrays (one for each
@@ -246,8 +254,7 @@ class BaseGridder(BaseEstimator):
         Parameters
         ----------
         region : list = [W, E, S, N]
-            The boundaries of a given region in Cartesian or geographic
-            coordinates.
+            The west, east, south, and north boundaries of a given region.
         shape : tuple = (n_north, n_east) or None
             The number of points in the South-North and West-East directions,
             respectively.
@@ -256,8 +263,10 @@ class BaseGridder(BaseEstimator):
             respectively.
         dims : list or None
             The names of the northing and easting data dimensions,
-            respectively, in the output grid. Defaults to ``['northing',
-            'easting']``. **NOTE: This is an exception to the "easting" then
+            respectively, in the output grid. Default is determined from the
+            ``dims`` attribute of the class. Must be defined in the following
+            order: northing dimension, easting dimension.
+            **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
         data_names : list of None
             The name(s) of the data variables in the output grid. Defaults to
@@ -285,7 +294,7 @@ class BaseGridder(BaseEstimator):
         verde.grid_coordinates : Generate the coordinate values for the grid.
 
         """
-        dims = get_dims(dims)
+        dims = self._get_dims(dims)
         region = get_instance_region(self, region)
         coordinates = grid_coordinates(region, shape=shape, spacing=spacing, **kwargs)
         if projection is None:
@@ -327,8 +336,7 @@ class BaseGridder(BaseEstimator):
         Parameters
         ----------
         region : list = [W, E, S, N]
-            The boundaries of a given region in Cartesian or geographic
-            coordinates.
+            The west, east, south, and north boundaries of a given region.
         size : int
             The number of points to generate.
         random_state : numpy.random.RandomState or an int seed
@@ -338,8 +346,10 @@ class BaseGridder(BaseEstimator):
             (resulting in different numbers with each run).
         dims : list or None
             The names of the northing and easting data dimensions,
-            respectively, in the output dataframe. Defaults to ``['northing',
-            'easting']``. **NOTE: This is an exception to the "easting" then
+            respectively, in the output dataframe. Default is determined from
+            the ``dims`` attribute of the class. Must be defined in the
+            following order: northing dimension, easting dimension.
+            **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
         data_names : list of None
             The name(s) of the data variables in the output dataframe. Defaults
@@ -362,7 +372,7 @@ class BaseGridder(BaseEstimator):
             The interpolated values on a random set of points.
 
         """
-        dims = get_dims(dims)
+        dims = self._get_dims(dims)
         region = get_instance_region(self, region)
         coordinates = scatter_points(region, size, random_state=random_state, **kwargs)
         if projection is None:
@@ -411,8 +421,10 @@ class BaseGridder(BaseEstimator):
             The number of points to generate.
         dims : list or None
             The names of the northing and easting data dimensions,
-            respectively, in the output dataframe. Defaults to ``['northing',
-            'easting']``. **NOTE: This is an exception to the "easting" then
+            respectively, in the output dataframe. Default is determined from
+            the ``dims`` attribute of the class. Must be defined in the
+            following order: northing dimension, easting dimension.
+            **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
         data_names : list of None
             The name(s) of the data variables in the output dataframe. Defaults
@@ -435,7 +447,7 @@ class BaseGridder(BaseEstimator):
             The interpolated values along the profile.
 
         """
-        dims = get_dims(dims)
+        dims = self._get_dims(dims)
         coordinates, distances = profile_coordinates(point1, point2, size, **kwargs)
         if projection is None:
             data = check_data(self.predict(coordinates))
@@ -450,23 +462,13 @@ class BaseGridder(BaseEstimator):
         columns.extend(zip(data_names, data))
         return pd.DataFrame(dict(columns), columns=[c[0] for c in columns])
 
-
-def get_dims(dims):
-    """
-    Get default dimension names.
-
-    Examples
-    --------
-
-    >>> get_dims(dims=None)
-    ('northing', 'easting')
-    >>> get_dims(dims=('john', 'paul'))
-    ('john', 'paul')
-
-    """
-    if dims is not None:
-        return dims
-    return ("northing", "easting")
+    def _get_dims(self, dims):
+        """
+        Get default dimension names.
+        """
+        if dims is not None:
+            return dims
+        return self.dims
 
 
 def get_data_names(data, data_names):
