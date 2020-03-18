@@ -17,9 +17,16 @@ class Gradient(BaseGridder):
 
     @property
     def region_(self):
+        "The region of the data used to fit this estimator."
         return self.estimator.region_
 
     def _normalized_direction(self):
+        """
+        Transform the direction into a numpy array and normalize it.
+        """
+        # Casting to float is required for the division to work if the original
+        # numbers are integers. Since this is always small, it doesn't matter
+        # much.
         direction = np.atleast_1d(self.direction).astype("float64")
         direction /= np.linalg.norm(direction)
         return direction
@@ -42,3 +49,10 @@ class Gradient(BaseGridder):
         backward = self.estimator.predict(backward_coords)
         derivative = (forward - backward) / self.step
         return derivative
+
+    def fit(self, *args, **kwargs):
+        """
+        Fit the estimator to
+        """
+        self.estimator.fit(*args, **kwargs)
+        return self
