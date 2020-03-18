@@ -38,8 +38,8 @@ def test_gradient(polynomial):
     east_deriv = Gradient(trend, step=10, direction=(1, 0)).predict(coordinates)
     north_deriv = Gradient(trend, step=10, direction=(0, 1)).predict(coordinates)
 
-    npt.assert_allclose(true_east_deriv, east_deriv)
-    npt.assert_allclose(true_north_deriv, north_deriv)
+    npt.assert_allclose(true_east_deriv, east_deriv, atol=1e-2)
+    npt.assert_allclose(true_north_deriv, north_deriv, atol=1e-2)
 
 
 def test_gradient_fails_wrong_dimensions(polynomial):
@@ -60,7 +60,7 @@ def test_gradient_grid(polynomial):
     trend = Trend(degree=2).fit(coordinates, data)
     deriv = Gradient(trend, step=10, direction=(1, 0)).grid(spacing=50)
 
-    npt.assert_allclose(true_east_deriv, deriv.scalars.values)
+    npt.assert_allclose(true_east_deriv, deriv.scalars.values, atol=1e-2)
 
 
 def test_gradient_direction(polynomial):
@@ -71,7 +71,7 @@ def test_gradient_direction(polynomial):
         direction = (np.sin(azimuth), np.cos(azimuth))
         true_deriv = true_east_deriv * direction[0] + true_north_deriv * direction[1]
         deriv = Gradient(trend, step=10, direction=direction).predict(coordinates)
-        npt.assert_allclose(true_deriv, deriv)
+        npt.assert_allclose(true_deriv, deriv, atol=1e-2)
 
 
 def test_gradient_fit(polynomial):
@@ -90,8 +90,8 @@ def test_gradient_fit(polynomial):
         .predict(coordinates)
     )
 
-    npt.assert_allclose(true_east_deriv, east_deriv)
-    npt.assert_allclose(true_north_deriv, north_deriv)
+    npt.assert_allclose(true_east_deriv, east_deriv, atol=1e-2)
+    npt.assert_allclose(true_north_deriv, north_deriv, atol=1e-2)
 
 
 def test_gradient_vector(polynomial):
@@ -110,8 +110,8 @@ def test_gradient_vector(polynomial):
     gradient.fit(coordinates, (data, data))
     deriv = gradient.grid(spacing=50)
 
-    npt.assert_allclose(true_east_deriv, deriv.east_component.values)
-    npt.assert_allclose(true_north_deriv, deriv.north_component.values)
+    npt.assert_allclose(true_east_deriv, deriv.east_component.values, atol=1e-2)
+    npt.assert_allclose(true_north_deriv, deriv.north_component.values, atol=1e-2)
 
 
 def test_gradient_chain(polynomial):
@@ -122,4 +122,4 @@ def test_gradient_chain(polynomial):
     gradient = Chain([("east", Gradient(trend, step=10, direction=(1, 0)))])
     gradient.fit(coordinates, data)
     deriv = gradient.predict(coordinates)
-    npt.assert_allclose(true_east_deriv, deriv)
+    npt.assert_allclose(true_east_deriv, deriv, atol=1e-2)
