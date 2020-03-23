@@ -61,13 +61,11 @@ score = chain.score(*test)
 print("Cross-validation R^2 score: {:.2f}".format(score))
 
 # Interpolate the wind speed onto a regular geographic grid and mask the data that are
-# far from the observation points
+# outside of the convex hull of the data points.
 grid_full = chain.grid(
     region, spacing=spacing, projection=projection, dims=["latitude", "longitude"]
 )
-grid = vd.distance_mask(
-    coordinates, maxdist=3 * spacing * 111e3, grid=grid_full, projection=projection
-)
+grid = vd.convexhull_mask(coordinates, grid=grid_full, projection=projection)
 
 # Make maps of the original and gridded wind speed
 plt.figure(figsize=(6, 6))
