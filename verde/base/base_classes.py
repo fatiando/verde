@@ -409,6 +409,30 @@ class BaseGridder(BaseEstimator):
         Includes the calculated Cartesian distance from *point1* for each data
         point in the profile.
 
+        To specify *point1* and *point2* in a coordinate system that would
+        require projection to Cartesian (geographic longitude and latitude, for
+        example), use the ``projection`` argument. With this option, the input
+        points will be projected using the given projection function prior to
+        computations. The generated Cartesian profile coordinates will be
+        projected back to the original coordinate system. **Note that the
+        profile points are evenly spaced in projected coordinates, not the
+        original system (e.g., geographic)**.
+
+        .. warning::
+
+            **The profile calculation method with a projection has changed in
+            Verde 1.4.0**. Previous versions generated coordinates (assuming
+            they were Cartesian) and projected them afterwards. This led to
+            "distances" being incorrectly handled and returned in unprojected
+            coordinates. For example, if ``projection`` is from geographic to
+            Mercator, the distances would be "angles" (incorrectly calculated
+            as if they were Cartesian). After 1.4.0, *point1* and *point2* are
+            projected prior to generating coordinates for the profile,
+            guaranteeing that distances are properly handled in a Cartesian
+            system. **With this change, the profile points are now evenly
+            spaced in projected coordinates and the distances are returned in
+            projected coordinates as well.**
+
         Parameters
         ----------
         point1 : tuple
@@ -440,14 +464,8 @@ class BaseGridder(BaseEstimator):
             an optional keyword argument ``inverse`` (default to False) that if
             True will cause the function to the inverse transform. This
             function will be used to project the profile end points before
-            generating coordinates and passing them into ``predict``. For
-            example, you can use this to specify geographic coordinates for the
-            profile points to a Cartesian gridder. The profile will be evenly
-            spaced and a straight line in the projected coordinates. Distances
-            returned are also in the projected coordinates. The returned
-            profile coordinates will be in the original (unprojected)
-            coordinate system (which is why the projection needs to support
-            ``inverse``).
+            generating coordinates and passing them into ``predict``.
+
 
         Returns
         -------
