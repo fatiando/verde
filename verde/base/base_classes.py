@@ -462,10 +462,11 @@ class BaseGridder(BaseEstimator):
             takes in easting and northing coordinate arrays and returns
             projected northing and easting coordinate arrays. Should also take
             an optional keyword argument ``inverse`` (default to False) that if
-            True will cause the function to the inverse transform. This
-            function will be used to project the profile end points before
-            generating coordinates and passing them into ``predict``.
-
+            True will calculate the inverse transform instead. This function
+            will be used to project the profile end points before generating
+            coordinates and passing them into ``predict``. It will also be used
+            to undo the projection of the coordinates before returning the
+            results.
 
         Returns
         -------
