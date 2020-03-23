@@ -43,7 +43,7 @@
   <link rel="stylesheet" href="../_static/style.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Mask grid points by distance" href="distance_mask.html" />
+    <link rel="next" title="Mask grid points by convex hull" href="convex_hull_mask.html" />
     <link rel="prev" title="Using weights in blocked reduction" href="blockreduce_weights.html" />
     <!-- Google Analytics tracking code -->
     <script>
@@ -118,6 +118,7 @@
 <li class="toctree-l2"><a class="reference internal" href="blockreduce.html">Blocked reduction operations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="blockreduce_weights.html">Using weights in blocked reduction</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Using weights in blocked means</a></li>
+<li class="toctree-l2"><a class="reference internal" href="convex_hull_mask.html">Mask grid points by convex hull</a></li>
 <li class="toctree-l2"><a class="reference internal" href="distance_mask.html">Mask grid points by distance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="scipygridder.html">Gridding with Scipy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spline.html">Gridding with splines</a></li>
@@ -271,7 +272,15 @@ a lot of variability in the data that isn’t due to the uncertainties. This is 
 best choice if your data weights aren’t <code class="docutils literal notranslate"><span class="pre">1/uncertainty**2</span></code>.</p>
 <img alt="../_images/sphx_glr_blockreduce_weights_mean_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_blockreduce_weights_mean_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/build/fatiando/verde/examples/blockreduce_weights_mean.py:86: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:782: MatplotlibDeprecationWarning: Passing the minor parameter of set_xticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
+  return super(GeoAxes, self).set_xticks(xticks, minor)
+/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:829: MatplotlibDeprecationWarning: Passing the minor parameter of set_yticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
+  return super(GeoAxes, self).set_yticks(yticks, minor)
+/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:782: MatplotlibDeprecationWarning: Passing the minor parameter of set_xticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
+  return super(GeoAxes, self).set_xticks(xticks, minor)
+/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:829: MatplotlibDeprecationWarning: Passing the minor parameter of set_yticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
+  return super(GeoAxes, self).set_yticks(yticks, minor)
+/home/travis/build/fatiando/verde/examples/blockreduce_weights_mean.py:86: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
   plt.tight_layout()
 </pre></div>
 </div>
@@ -343,7 +352,7 @@ best choice if your data weights aren’t <code class="docutils literal notransl
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.998 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.092 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-blockreduce-weights-mean-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/8090da9a29970a5fadf377c6a5783dc7/blockreduce_weights_mean.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">blockreduce_weights_mean.py</span></code></a></p>
@@ -363,7 +372,7 @@ best choice if your data weights aren’t <code class="docutils literal notransl
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="distance_mask.html" class="btn btn-neutral float-right" title="Mask grid points by distance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="convex_hull_mask.html" class="btn btn-neutral float-right" title="Mask grid points by convex hull" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="blockreduce_weights.html" class="btn btn-neutral float-left" title="Using weights in blocked reduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -377,7 +386,7 @@ best choice if your data weights aren’t <code class="docutils literal notransl
     <p>
         &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jan 22, 2020.
+        Last updated on Mar 23, 2020.
       </span>
 
     </p>

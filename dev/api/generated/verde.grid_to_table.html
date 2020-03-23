@@ -137,10 +137,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#composite-estimators">Composite Estimators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#model-selection">Model Selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#coordinate-manipulation">Coordinate Manipulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#masking">Masking</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#utilities">Utilities</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="verde.test.html">verde.test</a></li>
 <li class="toctree-l3"><a class="reference internal" href="verde.maxabs.html">verde.maxabs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="verde.distance_mask.html">verde.distance_mask</a></li>
 <li class="toctree-l3"><a class="reference internal" href="verde.variance_to_weights.html">verde.variance_to_weights</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">verde.grid_to_table</a></li>
 <li class="toctree-l3"><a class="reference internal" href="verde.median_distance.html">verde.median_distance</a></li>
@@ -260,10 +260,13 @@ number of variables. Use cases includes passing gridded data to functions
 that expect data in XYZ format, such as <a class="reference internal" href="verde.BlockReduce.html#verde.BlockReduce" title="verde.BlockReduce"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.BlockReduce</span></code></a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>grid</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – A 2D grid with one or more data variables.</p>
+<dd class="field-odd"><p><strong>grid</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – A 2D grid with one or more data variables.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>table</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – Table with coordinates and variable values for each point in the grid.</p>
+<dd class="field-even"><p><strong>table</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – Table with coordinates and variable values for each point in the grid.
+Column names are taken from the grid. If <em>grid</em> is a
+<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> that doesn’t have a <code class="docutils literal notranslate"><span class="pre">name</span></code> attribute
+defined, the column with data values will be called <code class="docutils literal notranslate"><span class="pre">&quot;scalars&quot;</span></code>.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -275,16 +278,37 @@ that expect data in XYZ format, such as <a class="reference internal" href="verd
 <span class="gp">... </span>    <span class="n">coords</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)),</span>
 <span class="gp">... </span>    <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;northing&#39;</span><span class="p">,</span> <span class="s1">&#39;easting&#39;</span><span class="p">]</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">({</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="n">temperature</span><span class="p">})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span>  <span class="o">=</span> <span class="n">grid_to_table</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">temperature</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="go">[[ 0  1  2  3  4]</span>
+<span class="go"> [ 5  6  7  8  9]</span>
+<span class="go"> [10 11 12 13 14]</span>
+<span class="go"> [15 16 17 18 19]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># For DataArrays, the data column will be &quot;scalars&quot; by default</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">grid_to_table</span><span class="p">(</span><span class="n">temperature</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
-<span class="go">[&#39;easting&#39;, &#39;northing&#39;, &#39;temperature&#39;]</span>
+<span class="go">[&#39;easting&#39;, &#39;northing&#39;, &#39;scalars&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">scalars</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="go">[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">northing</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <span class="go">[0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">easting</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <span class="go">[5 6 7 8 9 5 6 7 8 9 5 6 7 8 9 5 6 7 8 9]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># If the DataArray defines a &quot;name&quot;, we will use that instead</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">temperature</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;temperature_K&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">grid_to_table</span><span class="p">(</span><span class="n">temperature</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+<span class="go">[&#39;easting&#39;, &#39;northing&#39;, &#39;temperature_K&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Conversion of Datasets will preserve the data variable names</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">({</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="n">temperature</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span>  <span class="o">=</span> <span class="n">grid_to_table</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+<span class="go">[&#39;easting&#39;, &#39;northing&#39;, &#39;temperature&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">temperature</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <span class="go">[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">northing</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="go">[0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">easting</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="go">[5 6 7 8 9 5 6 7 8 9 5 6 7 8 9 5 6 7 8 9]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Grids with multiple data variables will have more columns.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">wind_speed</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span>
@@ -331,7 +355,7 @@ that expect data in XYZ format, such as <a class="reference internal" href="verd
     <p>
         &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jan 22, 2020.
+        Last updated on Mar 23, 2020.
       </span>
 
     </p>

@@ -41,7 +41,7 @@ pipeline.
     Chain(steps=[('mean',
                   BlockReduce(adjust='spacing', center_coordinates=False,
                               drop_coords=True,
-                              reduction=<function mean at 0x7f2925ae4e18>,
+                              reduction=<function mean at 0x7f942d1818c8>,
                               region=None, shape=None, spacing=37000.0)),
                  ('trend', Vector(components=[Trend(degree=1), Trend(degree=1)])),
                  ('spline',
@@ -55,7 +55,11 @@ pipeline.
       u, v = self.projection.transform_vectors(t, x, y, u, v)
     /home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:1752: RuntimeWarning: invalid value encountered in greater
       u, v = self.projection.transform_vectors(t, x, y, u, v)
-    /home/travis/build/fatiando/verde/examples/vector_uncoupled.py:101: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations. 
+    /home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:782: MatplotlibDeprecationWarning: Passing the minor parameter of set_xticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
+      return super(GeoAxes, self).set_xticks(xticks, minor)
+    /home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:829: MatplotlibDeprecationWarning: Passing the minor parameter of set_yticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
+      return super(GeoAxes, self).set_yticks(yticks, minor)
+    /home/travis/build/fatiando/verde/examples/vector_uncoupled.py:99: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations. 
       plt.tight_layout()
 
 
@@ -119,13 +123,11 @@ pipeline.
     print("Cross-validation R^2 score: {:.2f}".format(score))
 
     # Interpolate the wind speed onto a regular geographic grid and mask the data that are
-    # far from the observation points
+    # outside of the convex hull of the data points.
     grid_full = chain.grid(
         region, spacing=spacing, projection=projection, dims=["latitude", "longitude"]
     )
-    grid = vd.distance_mask(
-        coordinates, maxdist=3 * spacing * 111e3, grid=grid_full, projection=projection
-    )
+    grid = vd.convexhull_mask(coordinates, grid=grid_full, projection=projection)
 
     # Make maps of the original and gridded wind speed
     plt.figure(figsize=(6, 6))
@@ -162,7 +164,7 @@ pipeline.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.224 seconds)
+   **Total running time of the script:** ( 0 minutes  0.238 seconds)
 
 
 .. _sphx_glr_download_gallery_vector_uncoupled.py:

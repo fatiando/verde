@@ -443,13 +443,16 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    grid : :class:`xarray.Dataset`</span>
+<span class="sd">    grid : :class:`xarray.Dataset` or :class:`xarray.DataArray`</span>
 <span class="sd">        A 2D grid with one or more data variables.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    table : :class:`pandas.DataFrame`</span>
 <span class="sd">        Table with coordinates and variable values for each point in the grid.</span>
+<span class="sd">        Column names are taken from the grid. If *grid* is a</span>
+<span class="sd">        :class:`xarray.DataArray` that doesn&#39;t have a ``name`` attribute</span>
+<span class="sd">        defined, the column with data values will be called ``&quot;scalars&quot;``.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -462,16 +465,37 @@
 <span class="sd">    ...     coords=(np.arange(4), np.arange(5, 10)),</span>
 <span class="sd">    ...     dims=[&#39;northing&#39;, &#39;easting&#39;]</span>
 <span class="sd">    ... )</span>
-<span class="sd">    &gt;&gt;&gt; grid = xr.Dataset({&quot;temperature&quot;: temperature})</span>
-<span class="sd">    &gt;&gt;&gt; table  = grid_to_table(grid)</span>
+<span class="sd">    &gt;&gt;&gt; print(temperature.values)</span>
+<span class="sd">    [[ 0  1  2  3  4]</span>
+<span class="sd">     [ 5  6  7  8  9]</span>
+<span class="sd">     [10 11 12 13 14]</span>
+<span class="sd">     [15 16 17 18 19]]</span>
+<span class="sd">    &gt;&gt;&gt; # For DataArrays, the data column will be &quot;scalars&quot; by default</span>
+<span class="sd">    &gt;&gt;&gt; table = grid_to_table(temperature)</span>
 <span class="sd">    &gt;&gt;&gt; list(sorted(table.columns))</span>
-<span class="sd">    [&#39;easting&#39;, &#39;northing&#39;, &#39;temperature&#39;]</span>
+<span class="sd">    [&#39;easting&#39;, &#39;northing&#39;, &#39;scalars&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; print(table.scalars.values)</span>
+<span class="sd">    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]</span>
 <span class="sd">    &gt;&gt;&gt; print(table.northing.values)</span>
 <span class="sd">    [0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]</span>
 <span class="sd">    &gt;&gt;&gt; print(table.easting.values)</span>
 <span class="sd">    [5 6 7 8 9 5 6 7 8 9 5 6 7 8 9 5 6 7 8 9]</span>
+<span class="sd">    &gt;&gt;&gt; # If the DataArray defines a &quot;name&quot;, we will use that instead</span>
+<span class="sd">    &gt;&gt;&gt; temperature.name = &quot;temperature_K&quot;</span>
+<span class="sd">    &gt;&gt;&gt; table = grid_to_table(temperature)</span>
+<span class="sd">    &gt;&gt;&gt; list(sorted(table.columns))</span>
+<span class="sd">    [&#39;easting&#39;, &#39;northing&#39;, &#39;temperature_K&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; # Conversion of Datasets will preserve the data variable names</span>
+<span class="sd">    &gt;&gt;&gt; grid = xr.Dataset({&quot;temperature&quot;: temperature})</span>
+<span class="sd">    &gt;&gt;&gt; table  = grid_to_table(grid)</span>
+<span class="sd">    &gt;&gt;&gt; list(sorted(table.columns))</span>
+<span class="sd">    [&#39;easting&#39;, &#39;northing&#39;, &#39;temperature&#39;]</span>
 <span class="sd">    &gt;&gt;&gt; print(table.temperature.values)</span>
 <span class="sd">    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]</span>
+<span class="sd">    &gt;&gt;&gt; print(table.northing.values)</span>
+<span class="sd">    [0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]</span>
+<span class="sd">    &gt;&gt;&gt; print(table.easting.values)</span>
+<span class="sd">    [5 6 7 8 9 5 6 7 8 9 5 6 7 8 9 5 6 7 8 9]</span>
 <span class="sd">    &gt;&gt;&gt; # Grids with multiple data variables will have more columns.</span>
 <span class="sd">    &gt;&gt;&gt; wind_speed = xr.DataArray(</span>
 <span class="sd">    ...     np.arange(20, 40).reshape((4, 5)),</span>
@@ -492,23 +516,24 @@
 <span class="sd">    [20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39]</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">coordinate_names</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">grid</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
-    <span class="n">coord_north</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">coordinate_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
-    <span class="n">coord_east</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">coordinate_names</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
-    <span class="n">coordinates</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">coord_east</span><span class="p">,</span> <span class="n">coord_north</span><span class="p">)]</span>
-    <span class="n">coord_dict</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">coordinate_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-        <span class="n">coordinate_names</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-    <span class="p">}</span>
-    <span class="n">variable_name</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">grid</span><span class="o">.</span><span class="n">data_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
-    <span class="n">variable_data</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">to_array</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
-    <span class="n">variable_arrays</span> <span class="o">=</span> <span class="n">variable_data</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
-        <span class="nb">len</span><span class="p">(</span><span class="n">variable_name</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">variable_data</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">variable_name</span><span class="p">))</span>
-    <span class="p">)</span>
-    <span class="n">var_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">variable_name</span><span class="p">,</span> <span class="n">variable_arrays</span><span class="p">))</span>
-    <span class="n">coord_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">var_dict</span><span class="p">)</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">coord_dict</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">data</span></div>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="s2">&quot;data_vars&quot;</span><span class="p">):</span>
+        <span class="c1"># It&#39;s a Dataset</span>
+        <span class="n">data_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">data_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">data_arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">grid</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">data_names</span><span class="p">]</span>
+        <span class="n">coordinate_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">data_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># It&#39;s a DataArray</span>
+        <span class="n">data_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">grid</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">grid</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;scalars&quot;</span><span class="p">]</span>
+        <span class="n">data_arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">grid</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]</span>
+        <span class="n">coordinate_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
+    <span class="n">north</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">coordinate_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">east</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">coordinate_names</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+    <span class="c1"># Need to flip the coordinates because the names are in northing and</span>
+    <span class="c1"># easting order</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">)][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">data_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">coordinate_names</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">))</span>
+    <span class="n">data_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">data_names</span><span class="p">,</span> <span class="n">data_arrays</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">kdtree</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">use_pykdtree</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -562,7 +587,7 @@
     <p>
         &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jan 22, 2020.
+        Last updated on Mar 23, 2020.
       </span>
 
     </p>

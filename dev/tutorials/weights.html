@@ -320,7 +320,11 @@ uncertainties look like. We’ll make a function for this so we can reuse it lat
 </div>
 <img alt="../_images/sphx_glr_weights_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_weights_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/build/fatiando/verde/tutorials/weights.py:56: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:782: MatplotlibDeprecationWarning: Passing the minor parameter of set_xticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
+  return super(GeoAxes, self).set_xticks(xticks, minor)
+/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:829: MatplotlibDeprecationWarning: Passing the minor parameter of set_yticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
+  return super(GeoAxes, self).set_yticks(yticks, minor)
+/home/travis/build/fatiando/verde/tutorials/weights.py:56: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
   plt.tight_layout()
 </pre></div>
 </div>
@@ -492,6 +496,8 @@ point forces. Here, we’ll apply a bit of damping.</p>
     <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span>
     <span class="n">data_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;velocity&quot;</span><span class="p">],</span>
 <span class="p">)</span>
+<span class="c1"># Avoid showing interpolation outside of the convex hull of the data points.</span>
+<span class="n">grid</span> <span class="o">=</span> <a href="../api/generated/verde.convexhull_mask.html#verde.convexhull_mask" title="View documentation for verde.convexhull_mask"><span class="n">vd</span><span class="o">.</span><span class="n">convexhull_mask</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Calculate an unweighted spline as well for comparison.</p>
@@ -507,6 +513,9 @@ point forces. Here, we’ll apply a bit of damping.</p>
     <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
     <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span>
     <span class="n">data_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;velocity&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">grid_unweighted</span> <span class="o">=</span> <a href="../api/generated/verde.convexhull_mask.html#verde.convexhull_mask" title="View documentation for verde.convexhull_mask"><span class="n">vd</span><span class="o">.</span><span class="n">convexhull_mask</span></a><span class="p">(</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="View documentation for builtins.tuple"><span class="n">coordinates</span></a><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">grid_unweighted</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">projection</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -552,11 +561,19 @@ point forces. Here, we’ll apply a bit of damping.</p>
 </div>
 <img alt="../_images/sphx_glr_weights_005.png" class="sphx-glr-single-img" src="../_images/sphx_glr_weights_005.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/build/fatiando/verde/tutorials/weights.py:303: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:782: MatplotlibDeprecationWarning: Passing the minor parameter of set_xticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
+  return super(GeoAxes, self).set_xticks(xticks, minor)
+/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:829: MatplotlibDeprecationWarning: Passing the minor parameter of set_yticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
+  return super(GeoAxes, self).set_yticks(yticks, minor)
+/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:782: MatplotlibDeprecationWarning: Passing the minor parameter of set_xticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
+  return super(GeoAxes, self).set_xticks(xticks, minor)
+/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:829: MatplotlibDeprecationWarning: Passing the minor parameter of set_yticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
+  return super(GeoAxes, self).set_yticks(yticks, minor)
+/home/travis/build/fatiando/verde/tutorials/weights.py:308: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
   plt.tight_layout()
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.253 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.532 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-weights-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/7b3b0274656e7f482f545c777c23411c/weights.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">weights.py</span></code></a></p>
@@ -591,7 +608,7 @@ point forces. Here, we’ll apply a bit of damping.</p>
     <p>
         &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jan 22, 2020.
+        Last updated on Mar 23, 2020.
       </span>
 
     </p>
