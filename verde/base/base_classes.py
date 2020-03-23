@@ -409,6 +409,30 @@ class BaseGridder(BaseEstimator):
         Includes the calculated Cartesian distance from *point1* for each data
         point in the profile.
 
+        To specify *point1* and *point2* in a coordinate system that would
+        require projection to Cartesian (geographic longitude and latitude, for
+        example), use the ``projection`` argument. With this option, the input
+        points will be projected using the given projection function prior to
+        computations. The generated Cartesian profile coordinates will be
+        projected back to the original coordinate system. **Note that the
+        profile points are evenly spaced in projected coordinates, not the
+        original system (e.g., geographic)**.
+
+        .. warning::
+
+            **The profile calculation method with a projection has changed in
+            Verde 1.4.0**. Previous versions generated coordinates (assuming
+            they were Cartesian) and projected them afterwards. This led to
+            "distances" being incorrectly handled and returned in unprojected
+            coordinates. For example, if ``projection`` is from geographic to
+            Mercator, the distances would be "angles" (incorrectly calculated
+            as if they were Cartesian). After 1.4.0, *point1* and *point2* are
+            projected prior to generating coordinates for the profile,
+            guaranteeing that distances are properly handled in a Cartesian
+            system. **With this change, the profile points are now evenly
+            spaced in projected coordinates and the distances are returned in
+            projected coordinates as well.**
+
         Parameters
         ----------
         point1 : tuple
@@ -433,13 +457,16 @@ class BaseGridder(BaseEstimator):
             ``['east_component', 'north_component', 'vertical_component']`` for
             3D vector data.
         projection : callable or None
-            If not None, then should be a callable object
-            ``projection(easting, northing) -> (proj_easting, proj_northing)``
-            that takes in easting and northing coordinate arrays and returns
-            projected northing and easting coordinate arrays. This function
-            will be used to project the generated profile coordinates before
-            passing them into ``predict``. For example, you can use this to
-            generate a geographic profile from a Cartesian gridder.
+            If not None, then should be a callable object ``projection(easting,
+            northing, inverse=False) -> (proj_easting, proj_northing)`` that
+            takes in easting and northing coordinate arrays and returns
+            projected northing and easting coordinate arrays. Should also take
+            an optional keyword argument ``inverse`` (default to False) that if
+            True will calculate the inverse transform instead. This function
+            will be used to project the profile end points before generating
+            coordinates and passing them into ``predict``. It will also be used
+            to undo the projection of the coordinates before returning the
+            results.
 
         Returns
         -------
@@ -448,11 +475,19 @@ class BaseGridder(BaseEstimator):
 
         """
         dims = self._get_dims(dims)
+        # Project the input points to generate the profile in Cartesian
+        # coordinates (the distance calculation doesn't make sense in
+        # geographic coordinates since we don't do actual distances on a
+        # sphere).
+        if projection is not None:
+            point1 = projection(*point1)
+            point2 = projection(*point2)
         coordinates, distances = profile_coordinates(point1, point2, size, **kwargs)
-        if projection is None:
-            data = check_data(self.predict(coordinates))
-        else:
-            data = check_data(self.predict(projection(*coordinates)))
+        data = check_data(self.predict(coordinates))
+        # Project the coordinates back to have geographic coordinates for the
+        # profile but Cartesian distances.
+        if projection is not None:
+            coordinates = projection(*coordinates, inverse=True)
         data_names = get_data_names(data, data_names)
         columns = [
             (dims[0], coordinates[1]),
