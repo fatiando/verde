@@ -110,40 +110,6 @@ def pad_region(region, pad):
     return padded
 
 
-def project_region(region, projection):
-    """
-    Calculate the bounding box of a region in projected coordinates.
-
-    Parameters
-    ----------
-    region : list = [W, E, S, N]
-        The boundaries of a given region in Cartesian or geographic
-        coordinates.
-    projection : callable or None
-        If not None, then should be a callable object (like a function)
-        ``projection(easting, northing) -> (proj_easting, proj_northing)`` that
-        takes in easting and northing coordinate arrays and returns projected
-        northing and easting coordinate arrays.
-
-    Returns
-    -------
-    proj_region : list = [W, E, S, N]
-        The bounding box of the projected region.
-
-    Examples
-    --------
-
-    >>> def projection(x, y):
-    ...     return (2*x, -1*y)
-    >>> project_region((3, 5, -9, -4), projection)
-    (6.0, 10.0, 4.0, 9.0)
-
-    """
-    east, north = grid_coordinates(region, shape=(101, 101))
-    east, north = projection(east.ravel(), north.ravel())
-    return (east.min(), east.max(), north.min(), north.max())
-
-
 def scatter_points(region, size, random_state=None, extra_coords=None):
     """
     Generate the coordinates for a random scatter of points.
@@ -534,6 +500,29 @@ def spacing_to_shape(region, spacing, adjust):
         n = s + (nnorth - 1) * dnorth
         e = w + (neast - 1) * deast
     return (nnorth, neast), (w, e, s, n)
+
+
+def shape_to_spacing(region, shape):
+    """
+
+    Examples
+    --------
+
+    >>> spacing = shape_to_spacing([0, 10, -5, 1], (7, 11))
+    >>> print("{:.1f}, {:.1f}".format(*spacing))
+    1.0, 1.0
+    >>> spacing = shape_to_spacing([0, 10, -5, 1], (14, 11))
+    >>> print("{:.1f}, {:.1f}".format(*spacing))
+    0.5, 1.0
+    >>> spacing = shape_to_spacing([0, 10, -5, 1], (7, 21))
+    >>> print("{:.1f}, {:.1f}".format(*spacing))
+    1.0, 0.5
+
+    """
+    spacing = []
+    for i, n_points in enumerate(reversed(shape)):
+        spacing.append((region[2 * i + 1] - region[2 * i]) / (n_points - 1))
+    return tuple(reversed(spacing))
 
 
 def profile_coordinates(point1, point2, size, extra_coords=None):
