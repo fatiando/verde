@@ -502,8 +502,29 @@ def spacing_to_shape(region, spacing, adjust):
     return (nnorth, neast), (w, e, s, n)
 
 
-def shape_to_spacing(region, shape):
+def shape_to_spacing(region, shape, pixel_register=False):
     """
+    Calculate the spacing of a grid given region and shape.
+
+    Parameters
+    ----------
+    region : list = [W, E, S, N]
+        The boundaries of a given region in Cartesian or geographic
+        coordinates.
+    shape : tuple = (n_north, n_east) or None
+        The number of points in the South-North and West-East directions,
+        respectively.
+    pixel_register : bool
+        If True, the coordinates will refer to the center of each grid pixel
+        instead of the grid lines. In practice, this means that there will be
+        one less element per dimension of the grid when compared to grid line
+        registered (only if given *spacing* and not *shape*). Default is False.
+
+    Returns
+    -------
+    spacing : tuple = (s_north, s_east)
+        The grid spacing in the South-North and West-East directions,
+        respectively.
 
     Examples
     --------
@@ -517,11 +538,23 @@ def shape_to_spacing(region, shape):
     >>> spacing = shape_to_spacing([0, 10, -5, 1], (7, 21))
     >>> print("{:.1f}, {:.1f}".format(*spacing))
     1.0, 0.5
+    >>> spacing = shape_to_spacing(
+    ...     [-0.5, 10.5, -5.5, 1.5], (7, 11), pixel_register=True,
+    ... )
+    >>> print("{:.1f}, {:.1f}".format(*spacing))
+    1.0, 1.0
+    >>> spacing = shape_to_spacing(
+    ...     [-0.25, 10.25, -5.5, 1.5], (7, 21), pixel_register=True,
+    ... )
+    >>> print("{:.1f}, {:.1f}".format(*spacing))
+    1.0, 0.5
 
     """
     spacing = []
     for i, n_points in enumerate(reversed(shape)):
-        spacing.append((region[2 * i + 1] - region[2 * i]) / (n_points - 1))
+        if not pixel_register:
+            n_points -= 1
+        spacing.append((region[2 * i + 1] - region[2 * i]) / n_points)
     return tuple(reversed(spacing))
 
 
