@@ -20,11 +20,11 @@ def project_region(region, projection):
     region : list = [W, E, S, N]
         The boundaries of a given region in Cartesian or geographic
         coordinates.
-    projection : callable or None
-        If not None, then should be a callable object (like a function)
-        ``projection(easting, northing) -> (proj_easting, proj_northing)`` that
-        takes in easting and northing coordinate arrays and returns projected
-        northing and easting coordinate arrays.
+    projection : callable
+        Should be a callable object (like a function) ``projection(easting,
+        northing) -> (proj_easting, proj_northing)`` that takes in easting and
+        northing coordinate arrays and returns projected northing and easting
+        coordinate arrays.
 
     Returns
     -------
@@ -47,7 +47,59 @@ def project_region(region, projection):
 
 def project_grid(grid, projection, method="linear", antialias=True, **kwargs):
     """
-    Transform a grid using the given map projection.
+    Transform a grid using the given map projection by re-sampling.
+
+    Creates a new grid in the projected coordinates by interpolating the
+    original values using the chosen *method* (linear by default). Before
+    interpolation, apply a blocked mean operation (:class:`~verde.BlockReduce`)
+    to avoid aliasing when the projected coordinates become oversampled in some
+    regions (which would cause the interpolation to down-sample the original
+    data). For example, applying a polar projection results in oversampled data
+    close to the pole.
+
+    Points that fall outside the convex hull of the original data will be
+    masked (see :func:`~verde.convexhull_mask`) since they are not constrained
+    by any data points.
+
+    Any arguments that can be passed to the
+    :meth:`~verde.base.BaseGridder.grid` method of Verde gridders can be passed
+    to this function as well. Use this to set a region and spacing (or shape)
+    for the projected grid. The region and spacing must be in *projected
+    coordinates*.
+
+    If no region is provided, the bounding box of the projected data will be
+    used. If no spacing or shape is provided, the shape of the input *grid*
+    will be used for the projected grid.
+
+    By default, the ``data_names`` argument will be set to the name of the data
+    variable of the input *grid* (if it has been set).
+
+    Parameters
+    ----------
+    grid : :class:`xarray.DataArray`
+        A single 2D grid of values. The first dimension is assumed to be the
+        northing/latitude dimension while the second is assumed to be the
+        easting/longitude dimension.
+    projection : callable
+        Should be a callable object (like a function) ``projection(easting,
+        northing) -> (proj_easting, proj_northing)`` that takes in easting and
+        northing coordinate arrays and returns projected northing and easting
+        coordinate arrays.
+    method : string or Verde gridder
+        If a string, will use it to create a :class:`~verde.ScipyGridder` with
+        the corresponding method (nearest, linear, or cubic). Otherwise, should
+        be a gridder/estimator object, like :class:`~verde.Spline`. Default is
+        ``"linear"``.
+    antialias : bool
+        If True, will run a :class:`~verde.BlockReduce` with a mean function to
+        avoid aliasing when the projection results in oversampling of the data
+        in some areas (for example, in polar projections). If False, will not
+        run the blocked mean.
+
+    Returns
+    -------
+    projected_grid : :class:`xarray.DataArray`
+        The projected grid, interpolated with the given parameters.
 
     """
     if hasattr(grid, "data_vars"):
