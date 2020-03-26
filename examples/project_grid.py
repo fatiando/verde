@@ -54,6 +54,8 @@ data = checkerboard.grid(
     data_names=["checkerboard"],
     dims=("latitude", "longitude"),
 )
+print("Geographic grid:")
+print(data)
 
 # Do the projection setting the output grid spacing (in projected meters). Set
 # the coordinates names to x and y since they aren't really "northing" or
@@ -61,6 +63,8 @@ data = checkerboard.grid(
 polar_data = vd.project_grid(
     data.checkerboard, projection, spacing=0.5 * 1e5, dims=("y", "x")
 )
+print("\nProjected grid:")
+print(polar_data)
 
 # Plot the original and projected grids
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 6))

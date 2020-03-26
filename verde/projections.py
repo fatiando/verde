@@ -47,7 +47,7 @@ def project_region(region, projection):
 
 def project_grid(grid, projection, method="linear", antialias=True, **kwargs):
     """
-    Transform a grid using the given map projection by re-sampling.
+    Apply the given map projection to a grid and re-sample it.
 
     Creates a new grid in the projected coordinates by interpolating the
     original values using the chosen *method* (linear by default). Before
@@ -110,11 +110,23 @@ def project_grid(grid, projection, method="linear", antialias=True, **kwargs):
 
     """
     if hasattr(grid, "data_vars"):
-        raise ValueError("No Datasets!")
+        raise ValueError(
+            "Projecting xarray.Dataset is not currently supported. "
+            "Please provide a DataArray instead."
+        )
     if len(grid.dims) != 2:
-        raise ValueError("Only 2D grids!")
+        raise ValueError(
+            "Projecting grids with number of dimensions other than 2 is not "
+            "currently supported (dimensions of the given DataArray: {}).".format(
+                len(grid.dims)
+            )
+        )
 
-    name = getattr(grid, "name", "scalars")
+    # Can be set to None for some data arrays depending on how they are created
+    # so we can't just rely on the default value for getattr.
+    name = getattr(grid, "name", None)
+    if name is None:
+        name = "scalars"
 
     data = grid_to_table(grid).dropna()
     coordinates = projection(data[grid.dims[1]].values, data[grid.dims[0]].values)
