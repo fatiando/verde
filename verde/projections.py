@@ -74,6 +74,13 @@ def project_grid(grid, projection, method="linear", antialias=True, **kwargs):
     By default, the ``data_names`` argument will be set to the name of the data
     variable of the input *grid* (if it has been set).
 
+    .. note::
+
+        The interpolation methods are limited to what is available in Verde and
+        there is only support for single 2D grids. For more sophisticated use
+        cases, you might want to try
+        `pyresample <https://github.com/pytroll/pyresample>`__ instead.
+
     Parameters
     ----------
     grid : :class:`xarray.DataArray`
