@@ -3,8 +3,8 @@
 # We use miniconda for Python so don't need any Python specific tools
 language: generic
 
-# Use the container builds so we don't need sudo priviledges
-sudo: false
+os: linux
+dist: xenial
 
 # Only build pushes to the master branch and tags. This avoids the double
 # builds than happen when working on a branch instead of a fork.
@@ -33,7 +33,7 @@ env:
         - DEPLOY_PYPI=false
 
 # Specify the build configurations. Be sure to only deploy from a single build.
-matrix:
+jobs:
     include:
         - name: "Linux - Python 3.8"
           os: linux
@@ -109,14 +109,14 @@ deploy:
     # Push the built HTML in doc/_build/html to the gh-pages branch
     - provider: script
       script: continuous-integration/travis/deploy-gh-pages.sh
-      skip_cleanup: true
+      cleanup: false
       on:
           branch: master
           condition: '$DEPLOY_DOCS == "true"'
     # Push HTML when building tags as well
     - provider: script
       script: continuous-integration/travis/deploy-gh-pages.sh
-      skip_cleanup: true
+      cleanup: false
       on:
           tags: true
           condition: '$DEPLOY_DOCS == "true"'
