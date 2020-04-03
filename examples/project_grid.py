@@ -9,7 +9,7 @@ before doing your analysis. When projecting, the data points will likely not
 fall on a regular grid anymore and must be interpolated (re-sampled) onto a new
 grid.
 
-Function :func:`verde.project_grid` automates this process using the
+The :func:`verde.project_grid` function automates this process using the
 interpolation methods available in Verde. An input grid
 (:class:`xarray.DataArray`) is interpolated onto a new grid in the given
 `pyproj <https://jswhit.github.io/pyproj/>`__ projection. The function takes
@@ -36,7 +36,7 @@ import pyproj
 import verde as vd
 
 
-# We'll use synthetic data near to South pole to highlight the effects of the
+# We'll use synthetic data near the South pole to highlight the effects of the
 # projection. EPSG 3031 is a South Polar Stereographic projection.
 projection = pyproj.Proj("epsg:3031")
 
@@ -57,7 +57,7 @@ data = checkerboard.grid(
 print("Geographic grid:")
 print(data)
 
-# Do the projection setting the output grid spacing (in projected meters). Set
+# Do the projection while setting the output grid spacing (in projected meters). Set
 # the coordinates names to x and y since they aren't really "northing" or
 # "easting".
 polar_data = vd.project_grid(
