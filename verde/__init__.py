@@ -12,7 +12,6 @@ from .coordinates import (
     profile_coordinates,
     get_region,
     pad_region,
-    project_region,
     longitude_continuity,
 )
 from .mask import distance_mask, convexhull_mask
@@ -26,6 +25,7 @@ from .chain import Chain
 from .spline import Spline, SplineCV
 from .model_selection import cross_val_score, train_test_split
 from .vector import Vector, VectorSpline2D
+from .projections import project_region, project_grid
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=True):
