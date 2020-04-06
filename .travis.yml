@@ -109,14 +109,14 @@ deploy:
     # Push the built HTML in doc/_build/html to the gh-pages branch
     - provider: script
       script: continuous-integration/travis/deploy-gh-pages.sh
-      cleanup: false
+      skip_cleanup: true
       on:
           branch: master
           condition: '$DEPLOY_DOCS == "true"'
     # Push HTML when building tags as well
     - provider: script
       script: continuous-integration/travis/deploy-gh-pages.sh
-      cleanup: false
+      skip_cleanup: true
       on:
           tags: true
           condition: '$DEPLOY_DOCS == "true"'
