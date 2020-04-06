@@ -45,14 +45,14 @@ Documentation:
 
 New features:
 
-* New function ``verde.convexhul_mask`` to mask points in a grid that fall
+* New function ``verde.convexhull_mask`` to mask points in a grid that fall
   outside the convex hull defined by data points.
   (`#237 <https://github.com/fatiando/verde/pull/237>`__)
 * New function ``verde.project_grid`` that transforms 2D gridded data using a
   given projection. It re-samples the data using ``ScipyGridder`` (by default)
   and runs a blocked mean (optional) to avoid aliasing when the points aren't
   evenly distributed in the projected coordinates (like in polar projections).
-  Finally, it applies a ``convexhul_mask`` to the grid to avoid extrapolation
+  Finally, it applies a ``convexhull_mask`` to the grid to avoid extrapolation
   to points that had no original data.
   (`#246 <https://github.com/fatiando/verde/pull/246>`__)
 * New function ``verde.expanding_window`` for selecting data that falls inside
