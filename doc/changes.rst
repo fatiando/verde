@@ -3,6 +3,81 @@
 Changelog
 =========
 
+Version 1.4.0
+-------------
+
+*Released on: 2020/04/06*
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3739449.svg
+   :target: https://doi.org/10.5281/zenodo.3739449
+
+Bug fixes:
+
+* **Profile distances are now returned in projected (Cartesian) coordinates by
+  the** ``profile`` **method of gridders if a projection is given.** The method
+  has the option to apply a projection to the coordinates before predicting so
+  we can pass geographic coordinates to Cartesian gridders. In these cases, the
+  distance along the profile is calculated by the ``profile_coordinates``
+  function with the unprojected coordinates (in the geographic case it would be
+  degrees). The profile point calculation is also done assuming that
+  coordinates are Cartesian, which is clearly wrong if inputs are longitude and
+  latitude. To fix this, we now project the input points prior to passing them
+  to ``profile_coordinates``. This means that the distances are Cartesian and
+  generation of profile points is also Cartesian (as is assumed by the
+  function). The generated coordinates are projected back so that the user gets
+  longitude and latitude but distances are still projected Cartesian meters.
+  (`#231 <https://github.com/fatiando/verde/pull/231>`__)
+* **Function** ``verde.grid_to_table`` **now sets the correct order for
+  coordinates.** We were relying on the order of the ``coords`` attribute of
+  the ``xarray.Dataset`` for the order of the coordinates. This is wrong
+  because xarray takes the coordinate order from the ``dims`` attribute
+  instead, which is what we should also have been doing.
+  (`#229 <https://github.com/fatiando/verde/pull/229>`__)
+
+Documentation:
+
+* Generalize coordinate system specifications in ``verde.base.BaseGridder``
+  docstrings. Most methods don't really depend on the coordinate system so use
+  a more generic language to allow derived classes to specify their coordinate
+  systems without having to overload the base methods just to rewrite the
+  docstrings.
+  (`#240 <https://github.com/fatiando/verde/pull/240>`__)
+
+New features:
+
+* New function ``verde.convexhull_mask`` to mask points in a grid that fall
+  outside the convex hull defined by data points.
+  (`#237 <https://github.com/fatiando/verde/pull/237>`__)
+* New function ``verde.project_grid`` that transforms 2D gridded data using a
+  given projection. It re-samples the data using ``ScipyGridder`` (by default)
+  and runs a blocked mean (optional) to avoid aliasing when the points aren't
+  evenly distributed in the projected coordinates (like in polar projections).
+  Finally, it applies a ``convexhull_mask`` to the grid to avoid extrapolation
+  to points that had no original data.
+  (`#246 <https://github.com/fatiando/verde/pull/246>`__)
+* New function ``verde.expanding_window`` for selecting data that falls inside
+  of an expanding window around a central point.
+  (`#238 <https://github.com/fatiando/verde/pull/238>`__)
+* New function ``verde.rolling_window`` for rolling window selections of
+  irregularly sampled data.
+  (`#236 <https://github.com/fatiando/verde/pull/236>`__)
+
+Improvements:
+
+* Allow ``verde.grid_to_table`` to take ``xarray.DataArray`` as input.
+  (`#235 <https://github.com/fatiando/verde/pull/235>`__)
+
+Maintenance:
+
+* Use newer MacOS images on Azure Pipelines.
+  (`#234 <https://github.com/fatiando/verde/pull/234>`__)
+
+This release contains contributions from:
+
+* Leonardo Uieda
+* Santiago Soler
+* Jesse Pisel
+
 Version 1.3.0
 -------------
 
