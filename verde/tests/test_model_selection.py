@@ -1,12 +1,14 @@
 """
 Test the model selection code (cross-validation, etc).
 """
+import pytest
 from sklearn.model_selection import ShuffleSplit
+import numpy as np
 import numpy.testing as npt
 from dask.distributed import Client
 
 from .. import Trend, grid_coordinates
-from ..model_selection import cross_val_score
+from ..model_selection import cross_val_score, BlockShuffleSplit
 
 
 def test_cross_val_score_client():
@@ -22,3 +24,40 @@ def test_cross_val_score_client():
     client.close()
     assert len(scores) == nsplits
     npt.assert_allclose(scores, 1)
+
+
+def test_blockshufflesplit_n_splits():
+    "Make sure get_n_splits returns the correct value"
+    cv = BlockShuffleSplit(spacing=1, n_splits=14)
+    assert cv.get_n_splits() == 14
+
+
+def test_blockshufflesplit_fails_spacing_shape():
+    "Should raise an exception if not given spacing or shape."
+    with pytest.raises(ValueError):
+        BlockShuffleSplit()
+
+
+def test_blockshufflesplit_fails_data_shape():
+    "Should raise an exception if the X array doesn't have 2 columns."
+    cv = BlockShuffleSplit(spacing=1)
+    with pytest.raises(ValueError):
+        next(cv.split(np.ones(shape=(10, 4))))
+    with pytest.raises(ValueError):
+        next(cv.split(np.ones(shape=(10, 1))))
+
+
+@pytest.mark.parametrize("test_size", [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.9])
+def test_blockshufflesplit_balancing(test_size):
+    "Make sure that the sets have the right number of points"
+    coords = np.random.RandomState(seed=0).multivariate_normal(
+        mean=[5, -7.5], cov=[[4, 0], [0, 9]], size=1000,
+    )
+    npoints = coords.shape[0]
+    train_size = 1 - test_size
+    cv = BlockShuffleSplit(
+        spacing=1, random_state=0, test_size=test_size, balancing_iterations=50
+    )
+    for train, test in cv.split(coords):
+        npt.assert_allclose(train.size / npoints, train_size, atol=0.01)
+        npt.assert_allclose(test.size / npoints, test_size, atol=0.01)

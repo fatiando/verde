@@ -1,3 +1,4 @@
+# pylint: disable=stop-iteration-return
 """
 Functions for automating model selection through cross-validation.
 
@@ -7,15 +8,200 @@ DummyClient is used as a serial version of the parallel client.
 import warnings
 
 import numpy as np
-from sklearn.model_selection import KFold, ShuffleSplit
+from sklearn.model_selection import KFold, ShuffleSplit, BaseCrossValidator
 from sklearn.base import clone
 
 from .base import check_fit_input
+from .coordinates import block_split
 from .utils import dispatch
 
 
 # Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
 warnings.simplefilter("default")
+
+
+class BlockShuffleSplit(BaseCrossValidator):
+    """
+    Parameters
+    ----------
+
+    Examples
+    --------
+
+    >>> from verde import grid_coordinates
+    >>> import numpy as np
+    >>> # Make a regular grid of data points
+    >>> coords = grid_coordinates(region=(0, 3, -10, -7), spacing=1)
+    >>> # Need to convert the coordinates into a feature matrix
+    >>> X = np.transpose([i.ravel() for i in coords])
+    >>> shuffle = BlockShuffleSplit(spacing=1.5, n_splits=3, random_state=0)
+    >>> # These are the 1D indices of the points belonging to each set
+    >>> for train, test in shuffle.split(X):
+    ...     print("Train: {} Test: {}".format(train, test))
+    Train: [ 0  1  2  3  4  5  6  7 10 11 14 15] Test: [ 8  9 12 13]
+    Train: [ 0  1  4  5  8  9 10 11 12 13 14 15] Test: [2 3 6 7]
+    Train: [ 2  3  6  7  8  9 10 11 12 13 14 15] Test: [0 1 4 5]
+    >>> # A better way to visualize this is to create a 2D array and put
+    >>> # "train" or "test" in the corresponding locations.
+    >>> shape = coords[0].shape
+    >>> mask = np.full(shape=shape, fill_value="     ")
+    >>> for iteration, (train, test) in enumerate(shuffle.split(X)):
+    ...     # The index needs to be converted to 2D so we can index our matrix.
+    ...     mask[np.unravel_index(train, shape)] = "train"
+    ...     mask[np.unravel_index(test, shape)] = " test"
+    ...     print("Iteration {}:".format(iteration))
+    ...     print(mask)
+    Iteration 0:
+    [['train' 'train' 'train' 'train']
+     ['train' 'train' 'train' 'train']
+     [' test' ' test' 'train' 'train']
+     [' test' ' test' 'train' 'train']]
+    Iteration 1:
+    [['train' 'train' ' test' ' test']
+     ['train' 'train' ' test' ' test']
+     ['train' 'train' 'train' 'train']
+     ['train' 'train' 'train' 'train']]
+    Iteration 2:
+    [[' test' ' test' 'train' 'train']
+     [' test' ' test' 'train' 'train']
+     ['train' 'train' 'train' 'train']
+     ['train' 'train' 'train' 'train']]
+
+
+    """
+
+    def __init__(
+        self,
+        spacing=None,
+        shape=None,
+        n_splits=10,
+        test_size=0.1,
+        train_size=None,
+        random_state=None,
+        balancing_iterations=50,
+    ):
+        if spacing is None and shape is None:
+            raise ValueError("Either 'spacing' or 'shape' must be provided.")
+        self.spacing = spacing
+        self.shape = shape
+        self.n_splits = n_splits
+        self.test_size = test_size
+        self.train_size = train_size
+        self.random_state = random_state
+        self.balancing_iterations = balancing_iterations
+
+    def _iter_test_indices(self, X=None, y=None, groups=None):
+        """
+        Generates integer indices corresponding to test sets.
+
+        Runs several iterations until a split is found that yields blocks with
+        the right amount of data points in it.
+
+        Parameters
+        ----------
+        X : array-like, shape (n_samples, 2)
+            Columns should be the easting and northing coordinates of data
+            points, respectively.
+        y : array-like, shape (n_samples,)
+            The target variable for supervised learning problems. Always
+            ignored.
+        groups : array-like, with shape (n_samples,), optional
+            Group labels for the samples used while splitting the dataset into
+            train/test set. Always ignored.
+
+        Yields
+        ------
+        test : ndarray
+            The testing set indices for that split.
+
+        """
+        labels = block_split(
+            coordinates=(X[:, 0], X[:, 1]),
+            spacing=self.spacing,
+            shape=self.shape,
+            region=None,
+            adjust="spacing",
+        )[1]
+        block_ids = np.unique(labels)
+        # Generate many more splits so that we can pick and choose the ones
+        # that have the right balance of training and testing data.
+        shuffle = ShuffleSplit(
+            n_splits=self.n_splits * self.balancing_iterations,
+            test_size=self.test_size,
+            train_size=self.train_size,
+            random_state=self.random_state,
+        ).split(block_ids)
+        for _ in range(self.n_splits):
+            test_sets, balance = [], []
+            for _ in range(self.balancing_iterations):
+                # This is a false positive in pylint which is why the warning
+                # is disabled at the top of this file:
+                # https://github.com/PyCQA/pylint/issues/1830
+                train_blocks, test_blocks = next(shuffle)
+                train_points = np.where(np.isin(labels, block_ids[train_blocks]))[0]
+                test_points = np.where(np.isin(labels, block_ids[test_blocks]))[0]
+                # The proportion of data points assigned to each group should
+                # be close the proportion of blocks assigned to each group.
+                balance.append(
+                    abs(
+                        train_points.size / test_points.size
+                        - train_blocks.size / test_blocks.size
+                    )
+                )
+                test_sets.append(test_points)
+            best = np.argmin(balance)
+            yield test_sets[best]
+
+    def split(self, X, y=None, groups=None):
+        """
+        Generate indices to split data into training and test set.
+
+        Parameters
+        ----------
+        X : array-like, shape (n_samples, 2)
+            Columns should be the easting and northing coordinates of data
+            points, respectively.
+        y : array-like, shape (n_samples,)
+            The target variable for supervised learning problems. Always
+            ignored.
+        groups : array-like, with shape (n_samples,), optional
+            Group labels for the samples used while splitting the dataset into
+            train/test set. Always ignored.
+
+        Yields
+        ------
+        train : ndarray
+            The training set indices for that split.
+        test : ndarray
+            The testing set indices for that split.
+
+        """
+        if X.shape[1] != 2:
+            raise ValueError(
+                "X must have exactly 2 columns ({} given).".format(X.shape[1])
+            )
+        for train, test in super().split(X, y, groups):
+            yield train, test
+
+    def get_n_splits(self, X=None, y=None, groups=None):
+        """
+        Returns the number of splitting iterations in the cross-validator
+
+        Parameters
+        ----------
+        X : object
+            Always ignored, exists for compatibility.
+        y : object
+            Always ignored, exists for compatibility.
+        groups : object
+            Always ignored, exists for compatibility.
+
+        Returns
+        -------
+        n_splits : int
+            Returns the number of splitting iterations in the cross-validator.
+        """
+        return self.n_splits
 
 
 def train_test_split(coordinates, data, weights=None, **kwargs):
