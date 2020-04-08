@@ -287,8 +287,9 @@ def train_test_split(coordinates, data, weights=None, **kwargs):
 
     """
     args = check_fit_input(coordinates, data, weights, unpack=False)
-    feature_matrix = np.transpose(n_1d_arrays(coordinates, 2))
-    split = next(ShuffleSplit(n_splits=1, **kwargs).split(feature_matrix))
+    ndata = args[1][0].size
+    indices = np.arange(ndata)
+    split = next(ShuffleSplit(n_splits=1, **kwargs).split(indices))
     train, test = (tuple(select(i, index) for i in args) for index in split)
     return train, test
 
