@@ -1,9 +1,5 @@
-# pylint: disable=stop-iteration-return
 """
 Functions for automating model selection through cross-validation.
-
-Supports using a dask.distributed.Client object for parallelism. The
-DummyClient is used as a serial version of the parallel client.
 """
 import warnings
 
@@ -18,6 +14,10 @@ from .utils import dispatch
 
 # Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
 warnings.simplefilter("default")
+
+
+# Pylint doesn't like X, y scikit-learn argument names.
+# pylint: disable=invalid-name,unused-argument
 
 
 class BlockShuffleSplit(BaseCrossValidator):
@@ -206,7 +206,9 @@ class BlockShuffleSplit(BaseCrossValidator):
                 # This is a false positive in pylint which is why the warning
                 # is disabled at the top of this file:
                 # https://github.com/PyCQA/pylint/issues/1830
+                # pylint: disable=stop-iteration-return
                 train_blocks, test_blocks = next(shuffle)
+                # pylint: enable=stop-iteration-return
                 train_points = np.where(np.isin(labels, block_ids[train_blocks]))[0]
                 test_points = np.where(np.isin(labels, block_ids[test_blocks]))[0]
                 # The proportion of data points assigned to each group should
@@ -271,6 +273,9 @@ class BlockShuffleSplit(BaseCrossValidator):
             Returns the number of splitting iterations in the cross-validator.
         """
         return self.n_splits
+
+
+# pylint: enable=invalid-name,unused-argument
 
 
 def train_test_split(coordinates, data, weights=None, **kwargs):
