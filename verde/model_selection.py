@@ -25,10 +25,10 @@ class BlockShuffleSplit(BaseCrossValidator):
     Random permutation of spatial blocks cross-validator.
 
     Yields indices to split data into training and test sets. Data are first
-    grouped into rectangular blocks with block size given by *spacing*.
+    grouped into rectangular blocks of size given by the *spacing* argument.
     Alternatively, blocks can be defined by the number of blocks in each
-    dimension by using the *shape* argument instead of *spacing*. The blocks
-    are then split into testing and training sets randomly.
+    dimension using the *shape* argument instead of *spacing*. The blocks are
+    then split into testing and training sets randomly.
 
     The proportion of blocks assigned to each set is controlled by *test_size*
     and/or *train_size*. However, the total amount of actual data points in
@@ -132,7 +132,6 @@ class BlockShuffleSplit(BaseCrossValidator):
      ['train' 'train' ' test' ' test']
      ['train' 'train' 'train' 'train']
      ['train' 'train' 'train' 'train']]
-
 
     """
 
