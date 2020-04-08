@@ -32,6 +32,12 @@ def test_blockshufflesplit_n_splits():
     assert cv.get_n_splits() == 14
 
 
+def test_blockshufflesplit_fails_balancing():
+    "Should raise an exception if balancing < 1."
+    with pytest.raises(ValueError):
+        BlockShuffleSplit(spacing=1, balancing=0)
+
+
 def test_blockshufflesplit_fails_spacing_shape():
     "Should raise an exception if not given spacing or shape."
     with pytest.raises(ValueError):
@@ -55,9 +61,7 @@ def test_blockshufflesplit_balancing(test_size):
     )
     npoints = coords.shape[0]
     train_size = 1 - test_size
-    cv = BlockShuffleSplit(
-        spacing=1, random_state=0, test_size=test_size, balancing_iterations=50
-    )
+    cv = BlockShuffleSplit(spacing=1, random_state=0, test_size=test_size, balancing=20)
     for train, test in cv.split(coords):
         npt.assert_allclose(train.size / npoints, train_size, atol=0.01)
         npt.assert_allclose(test.size / npoints, test_size, atol=0.01)

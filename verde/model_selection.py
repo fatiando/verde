@@ -24,9 +24,67 @@ class BlockShuffleSplit(BaseCrossValidator):
     """
     Random permutation of spatial blocks cross-validator.
 
+    Yields indices to split data into training and test sets. Data are first
+    grouped into rectangular blocks with block size given by *spacing*.
+    Alternatively, blocks can be defined by the number of blocks in each
+    dimension by using the *shape* argument instead of *spacing*. The blocks
+    are then split into testing and training sets randomly.
+
+    The proportion of blocks assigned to each set is controlled by *test_size*
+    and/or *train_size*. However, the total amount of actual data points in
+    each set could be different from these values since blocks can have
+    a different number of data points inside them. To guarantee that the
+    proportion of actual data is as close as possible to the proportion of
+    blocks, this cross-validator generates an extra number of splits and
+    selects the one with proportion of data points in each set closer to the
+    desired amount [Valavi_etal2019]_. The number of balancing splits per
+    iteration is controlled by the *balancing* argument.
+
+    This cross-validator is preferred over
+    :class:`sklearn.model_selection.ShuffleSplit` for spatial data to avoid
+    overestimating cross-validation scores. This can happen because of the
+    inherent autocorrelation that is usually associated with this type of data
+    (points that are close together are more likely to have similar values).
+    See [Roberts_etal2017]_ for an overview of this topic.
+
+    .. note::
+
+        Like :class:`sklearn.model_selection.ShuffleSplit`, this
+        cross-validator cannot guarantee that all folds will be different,
+        although this is still very likely for sizeable datasets.
 
     Parameters
     ----------
+    spacing : float, tuple = (s_north, s_east), or None
+        The block size in the South-North and West-East directions,
+        respectively. A single value means that the spacing is equal in both
+        directions. If None, then *shape* **must be provided**.
+    shape : tuple = (n_north, n_east) or None
+        The number of blocks in the South-North and West-East directions,
+        respectively. If None, then *spacing* **must be provided**.
+    n_splits : int, default 10
+        Number of re-shuffling & splitting iterations.
+    test_size : float, int, None, default=None
+        If float, should be between 0.0 and 1.0 and represent the proportion
+        of the dataset to include in the test split. If int, represents the
+        absolute number of test samples. If None, the value is set to the
+        complement of the train size. If ``train_size`` is also None, it will
+        be set to 0.1.
+    train_size : float, int, or None, default=None
+        If float, should be between 0.0 and 1.0 and represent the
+        proportion of the dataset to include in the train split. If
+        int, represents the absolute number of train samples. If None,
+        the value is automatically set to the complement of the test size.
+    random_state : int, RandomState instance or None, optional (default=None)
+        If int, random_state is the seed used by the random number generator;
+        If RandomState instance, random_state is the random number generator;
+        If None, the random number generator is the RandomState instance used
+        by `np.random`.
+    balancing : int
+        The number of splits generated per iteration to try to balance the
+        amount of data in each set so that *test_size* and *train_size* are
+        respected. If 1, then no extra splits are generated (essentially
+        disabling the balacing). Must be >= 1.
 
     See also
     --------
@@ -47,8 +105,8 @@ class BlockShuffleSplit(BaseCrossValidator):
     >>> for train, test in shuffle.split(X):
     ...     print("Train: {} Test: {}".format(train, test))
     Train: [ 0  1  2  3  4  5  6  7 10 11 14 15] Test: [ 8  9 12 13]
-    Train: [ 0  1  4  5  8  9 10 11 12 13 14 15] Test: [2 3 6 7]
     Train: [ 2  3  6  7  8  9 10 11 12 13 14 15] Test: [0 1 4 5]
+    Train: [ 0  1  4  5  8  9 10 11 12 13 14 15] Test: [2 3 6 7]
     >>> # A better way to visualize this is to create a 2D array and put
     >>> # "train" or "test" in the corresponding locations.
     >>> shape = coords[0].shape
@@ -65,13 +123,13 @@ class BlockShuffleSplit(BaseCrossValidator):
      [' test' ' test' 'train' 'train']
      [' test' ' test' 'train' 'train']]
     Iteration 1:
-    [['train' 'train' ' test' ' test']
-     ['train' 'train' ' test' ' test']
+    [[' test' ' test' 'train' 'train']
+     [' test' ' test' 'train' 'train']
      ['train' 'train' 'train' 'train']
      ['train' 'train' 'train' 'train']]
     Iteration 2:
-    [[' test' ' test' 'train' 'train']
-     [' test' ' test' 'train' 'train']
+    [['train' 'train' ' test' ' test']
+     ['train' 'train' ' test' ' test']
      ['train' 'train' 'train' 'train']
      ['train' 'train' 'train' 'train']]
 
@@ -86,17 +144,21 @@ class BlockShuffleSplit(BaseCrossValidator):
         test_size=0.1,
         train_size=None,
         random_state=None,
-        balancing_iterations=50,
+        balancing=10,
     ):
         if spacing is None and shape is None:
             raise ValueError("Either 'spacing' or 'shape' must be provided.")
+        if balancing < 1:
+            raise ValueError(
+                "The *balancing* argument must be >= 1. To disable balancing, use 1."
+            )
         self.spacing = spacing
         self.shape = shape
         self.n_splits = n_splits
         self.test_size = test_size
         self.train_size = train_size
         self.random_state = random_state
-        self.balancing_iterations = balancing_iterations
+        self.balancing = balancing
 
     def _iter_test_indices(self, X=None, y=None, groups=None):
         """
@@ -134,14 +196,14 @@ class BlockShuffleSplit(BaseCrossValidator):
         # Generate many more splits so that we can pick and choose the ones
         # that have the right balance of training and testing data.
         shuffle = ShuffleSplit(
-            n_splits=self.n_splits * self.balancing_iterations,
+            n_splits=self.n_splits * self.balancing,
             test_size=self.test_size,
             train_size=self.train_size,
             random_state=self.random_state,
         ).split(block_ids)
         for _ in range(self.n_splits):
             test_sets, balance = [], []
-            for _ in range(self.balancing_iterations):
+            for _ in range(self.balancing):
                 # This is a false positive in pylint which is why the warning
                 # is disabled at the top of this file:
                 # https://github.com/PyCQA/pylint/issues/1830
