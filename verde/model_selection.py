@@ -366,7 +366,8 @@ def cross_val_score(
 
     By default, will use :class:`sklearn.model_selection.KFold` with
     ``n_splits=5`` and ``random_state=0`` to split the dataset. Any other
-    cross-validation class can be passed in through the *cv* argument.
+    cross-validation class from scikit-learn or Verde can be passed in through
+    the *cv* argument.
 
     Can optionally run in parallel using :mod:`dask`. To do this, use
     ``delayed=True`` to dispatch computations with :func:`dask.delayed` instead
@@ -395,7 +396,7 @@ def cross_val_score(
         one data component is provided, you must provide a weights array for
         each data component (if not none).
     cv : None or cross-validation generator
-        Any scikit-learn cross-validation generator. Defaults to
+        Any scikit-learn or Verde cross-validation generator. Defaults to
         :class:`sklearn.model_selection.KFold`.
     client : None or dask.distributed.Client
         **DEPRECATED:** This option is deprecated and will be removed in Verde
