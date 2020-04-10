@@ -1,14 +1,129 @@
 """
 Base classes for all gridders.
 """
+from abc import ABCMeta, abstractmethod
+
 import xarray as xr
 import pandas as pd
 import numpy as np
 from sklearn.base import BaseEstimator
+from sklearn.model_selection import BaseCrossValidator
 from sklearn.metrics import r2_score
 
 from ..coordinates import grid_coordinates, profile_coordinates, scatter_points
 from .utils import check_data, check_fit_input
+
+
+# Pylint doesn't like X, y scikit-learn argument names.
+# pylint: disable=invalid-name,unused-argument
+
+
+class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
+    """
+    Base class for spatially blocked cross-validators.
+
+    Parameters
+    ----------
+    spacing : float, tuple = (s_north, s_east), or None
+        The block size in the South-North and West-East directions,
+        respectively. A single value means that the spacing is equal in both
+        directions. If None, then *shape* **must be provided**.
+    shape : tuple = (n_north, n_east) or None
+        The number of blocks in the South-North and West-East directions,
+        respectively. If None, then *spacing* **must be provided**.
+    n_splits : int
+        Number of splitting iterations.
+
+    """
+
+    def __init__(
+        self, spacing=None, shape=None, n_splits=10,
+    ):
+        if spacing is None and shape is None:
+            raise ValueError("Either 'spacing' or 'shape' must be provided.")
+        self.spacing = spacing
+        self.shape = shape
+        self.n_splits = n_splits
+
+    def split(self, X, y=None, groups=None):
+        """
+        Generate indices to split data into training and test set.
+
+        Parameters
+        ----------
+        X : array-like, shape (n_samples, 2)
+            Columns should be the easting and northing coordinates of data
+            points, respectively.
+        y : array-like, shape (n_samples,)
+            The target variable for supervised learning problems. Always
+            ignored.
+        groups : array-like, with shape (n_samples,), optional
+            Group labels for the samples used while splitting the dataset into
+            train/test set. Always ignored.
+
+        Yields
+        ------
+        train : ndarray
+            The training set indices for that split.
+        test : ndarray
+            The testing set indices for that split.
+
+        """
+        if X.shape[1] != 2:
+            raise ValueError(
+                "X must have exactly 2 columns ({} given).".format(X.shape[1])
+            )
+        for train, test in super().split(X, y, groups):
+            yield train, test
+
+    def get_n_splits(self, X=None, y=None, groups=None):
+        """
+        Returns the number of splitting iterations in the cross-validator
+
+        Parameters
+        ----------
+        X : object
+            Always ignored, exists for compatibility.
+        y : object
+            Always ignored, exists for compatibility.
+        groups : object
+            Always ignored, exists for compatibility.
+
+        Returns
+        -------
+        n_splits : int
+            Returns the number of splitting iterations in the cross-validator.
+        """
+        return self.n_splits
+
+    @abstractmethod
+    def _iter_test_indices(self, X=None, y=None, groups=None):
+        """
+        Generates integer indices corresponding to test sets.
+
+        MUST BE IMPLEMENTED BY DERIVED CLASSES.
+
+        Parameters
+        ----------
+        X : array-like, shape (n_samples, 2)
+            Columns should be the easting and northing coordinates of data
+            points, respectively.
+        y : array-like, shape (n_samples,)
+            The target variable for supervised learning problems. Always
+            ignored.
+        groups : array-like, with shape (n_samples,), optional
+            Group labels for the samples used while splitting the dataset into
+            train/test set. Always ignored.
+
+        Yields
+        ------
+        test : ndarray
+            The testing set indices for that split.
+
+        """
+
+
+# pylint: enable=invalid-name,unused-argument
 
 
 class BaseGridder(BaseEstimator):

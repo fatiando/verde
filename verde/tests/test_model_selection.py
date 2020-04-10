@@ -8,7 +8,7 @@ import numpy.testing as npt
 from dask.distributed import Client
 
 from .. import Trend, grid_coordinates
-from ..model_selection import cross_val_score, BlockShuffleSplit
+from ..model_selection import cross_val_score, BlockShuffleSplit, BlockKFold
 
 
 def test_cross_val_score_client():
@@ -26,31 +26,10 @@ def test_cross_val_score_client():
     npt.assert_allclose(scores, 1)
 
 
-def test_blockshufflesplit_n_splits():
-    "Make sure get_n_splits returns the correct value"
-    cv = BlockShuffleSplit(spacing=1, n_splits=14)
-    assert cv.get_n_splits() == 14
-
-
 def test_blockshufflesplit_fails_balancing():
     "Should raise an exception if balancing < 1."
     with pytest.raises(ValueError):
         BlockShuffleSplit(spacing=1, balancing=0)
-
-
-def test_blockshufflesplit_fails_spacing_shape():
-    "Should raise an exception if not given spacing or shape."
-    with pytest.raises(ValueError):
-        BlockShuffleSplit()
-
-
-def test_blockshufflesplit_fails_data_shape():
-    "Should raise an exception if the X array doesn't have 2 columns."
-    cv = BlockShuffleSplit(spacing=1)
-    with pytest.raises(ValueError):
-        next(cv.split(np.ones(shape=(10, 4))))
-    with pytest.raises(ValueError):
-        next(cv.split(np.ones(shape=(10, 1))))
 
 
 @pytest.mark.parametrize("test_size", [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.9])
@@ -65,3 +44,10 @@ def test_blockshufflesplit_balancing(test_size):
     for train, test in cv.split(coords):
         npt.assert_allclose(train.size / npoints, train_size, atol=0.01)
         npt.assert_allclose(test.size / npoints, test_size, atol=0.01)
+
+
+def test_blockkfold_fails_n_splits():
+    "Should raise an exception if n_splits < 2."
+    BlockKFold(spacing=1, n_splits=2)
+    with pytest.raises(ValueError):
+        BlockKFold(spacing=1, n_splits=1)

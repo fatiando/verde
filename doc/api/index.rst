@@ -46,6 +46,7 @@ Model Selection
     train_test_split
     cross_val_score
     BlockShuffleSplit
+    BlockKFold
 
 Coordinate Manipulation
 -----------------------
@@ -130,6 +131,7 @@ Base Classes and Functions
    :toctree: generated/
 
     base.BaseGridder
+    base.BaseBlockCrossValidator
     base.n_1d_arrays
     base.check_fit_input
     base.least_squares

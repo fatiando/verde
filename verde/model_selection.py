@@ -4,10 +4,10 @@ Functions for automating model selection through cross-validation.
 import warnings
 
 import numpy as np
-from sklearn.model_selection import KFold, ShuffleSplit, BaseCrossValidator
+from sklearn.model_selection import KFold, ShuffleSplit
 from sklearn.base import clone
 
-from .base import check_fit_input, n_1d_arrays
+from .base import check_fit_input, n_1d_arrays, BaseBlockCrossValidator
 from .coordinates import block_split
 from .utils import dispatch
 
@@ -20,7 +20,7 @@ warnings.simplefilter("default")
 # pylint: disable=invalid-name,unused-argument
 
 
-class BlockShuffleSplit(BaseCrossValidator):
+class BlockShuffleSplit(BaseBlockCrossValidator):
     """
     Random permutation of spatial blocks cross-validator.
 
@@ -145,15 +145,11 @@ class BlockShuffleSplit(BaseCrossValidator):
         random_state=None,
         balancing=10,
     ):
-        if spacing is None and shape is None:
-            raise ValueError("Either 'spacing' or 'shape' must be provided.")
+        super().__init__(spacing=spacing, shape=shape, n_splits=n_splits)
         if balancing < 1:
             raise ValueError(
                 "The *balancing* argument must be >= 1. To disable balancing, use 1."
             )
-        self.spacing = spacing
-        self.shape = shape
-        self.n_splits = n_splits
         self.test_size = test_size
         self.train_size = train_size
         self.random_state = random_state
@@ -223,9 +219,136 @@ class BlockShuffleSplit(BaseCrossValidator):
             best = np.argmin(balance)
             yield test_sets[best]
 
-    def split(self, X, y=None, groups=None):
+
+class BlockKFold(BaseBlockCrossValidator):
+    """
+    K-Folds over spatial blocks cross-validator.
+
+    Yields indices to split data into training and test sets. Data are first
+    grouped into rectangular blocks of size given by the *spacing* argument.
+    Alternatively, blocks can be defined by the number of blocks in each
+    dimension using the *shape* argument instead of *spacing*. The blocks are
+    then split into testing and training sets iteratively along k folds of the
+    data (k is given by *n_splits*).
+
+    Uses :class:`sklearn.model_selection.KFold` to generate the folds.
+
+    This cross-validator is preferred over
+    :class:`sklearn.model_selection.KFold` for spatial data to avoid
+    overestimating cross-validation scores. This can happen because of the
+    inherent autocorrelation that is usually associated with this type of data
+    (points that are close together are more likely to have similar values).
+    See [Roberts_etal2017]_ for an overview of this topic.
+
+    Parameters
+    ----------
+    spacing : float, tuple = (s_north, s_east), or None
+        The block size in the South-North and West-East directions,
+        respectively. A single value means that the spacing is equal in both
+        directions. If None, then *shape* **must be provided**.
+    shape : tuple = (n_north, n_east) or None
+        The number of blocks in the South-North and West-East directions,
+        respectively. If None, then *spacing* **must be provided**.
+    n_splits : int
+        Number of folds. Must be at least 2.
+    shuffle : bool
+        Whether to shuffle the data before splitting into batches.
+    random_state : int, RandomState instance or None, optional (default=None)
+        If int, random_state is the seed used by the random number generator;
+        If RandomState instance, random_state is the random number generator;
+        If None, the random number generator is the RandomState instance used
+        by `np.random`.
+
+    See also
+    --------
+    train_test_split : Split a dataset into a training and a testing set.
+    cross_val_score : Score an estimator/gridder using cross-validation.
+
+    Examples
+    --------
+
+    >>> from verde import grid_coordinates
+    >>> import numpy as np
+    >>> # Make a regular grid of data points
+    >>> coords = grid_coordinates(region=(0, 3, -10, -7), spacing=1)
+    >>> # Need to convert the coordinates into a feature matrix
+    >>> X = np.transpose([i.ravel() for i in coords])
+    >>> kfold = BlockKFold(spacing=1.5, n_splits=4)
+    >>> # These are the 1D indices of the points belonging to each set
+    >>> for train, test in kfold.split(X):
+    ...     print("Train: {} Test: {}".format(train, test))
+    Train: [ 2  3  6  7  8  9 10 11 12 13 14 15] Test: [0 1 4 5]
+    Train: [ 0  1  4  5  8  9 10 11 12 13 14 15] Test: [2 3 6 7]
+    Train: [ 0  1  2  3  4  5  6  7 10 11 14 15] Test: [ 8  9 12 13]
+    Train: [ 0  1  2  3  4  5  6  7  8  9 12 13] Test: [10 11 14 15]
+    >>> # A better way to visualize this is to create a 2D array and put
+    >>> # "train" or "test" in the corresponding locations.
+    >>> shape = coords[0].shape
+    >>> mask = np.full(shape=shape, fill_value="     ")
+    >>> for iteration, (train, test) in enumerate(kfold.split(X)):
+    ...     # The index needs to be converted to 2D so we can index our matrix.
+    ...     mask[np.unravel_index(train, shape)] = "train"
+    ...     mask[np.unravel_index(test, shape)] = " test"
+    ...     print("Iteration {}:".format(iteration))
+    ...     print(mask)
+    Iteration 0:
+    [[' test' ' test' 'train' 'train']
+     [' test' ' test' 'train' 'train']
+     ['train' 'train' 'train' 'train']
+     ['train' 'train' 'train' 'train']]
+    Iteration 1:
+    [['train' 'train' ' test' ' test']
+     ['train' 'train' ' test' ' test']
+     ['train' 'train' 'train' 'train']
+     ['train' 'train' 'train' 'train']]
+    Iteration 2:
+    [['train' 'train' 'train' 'train']
+     ['train' 'train' 'train' 'train']
+     [' test' ' test' 'train' 'train']
+     [' test' ' test' 'train' 'train']]
+    Iteration 3:
+    [['train' 'train' 'train' 'train']
+     ['train' 'train' 'train' 'train']
+     ['train' 'train' ' test' ' test']
+     ['train' 'train' ' test' ' test']]
+
+    For spatial data, it's often good to shuffle the blocks before assigning
+    them to folds:
+
+    >>> # Set the random_state to make sure we always get the same result.
+    >>> kfold = BlockKFold(
+    ...     spacing=1.5, n_splits=4, shuffle=True, random_state=123,
+    ... )
+    >>> for train, test in kfold.split(X):
+    ...     print("Train: {} Test: {}".format(train, test))
+    Train: [ 0  1  2  3  4  5  6  7  8  9 12 13] Test: [10 11 14 15]
+    Train: [ 2  3  6  7  8  9 10 11 12 13 14 15] Test: [0 1 4 5]
+    Train: [ 0  1  4  5  8  9 10 11 12 13 14 15] Test: [2 3 6 7]
+    Train: [ 0  1  2  3  4  5  6  7 10 11 14 15] Test: [ 8  9 12 13]
+
+    These should be the same splits as we got before but in a different order.
+    This only happens because in this example we have the number of splits
+    equal to the number of blocks (4). With real data the effects would be more
+    dramatic.
+
+    """
+
+    def __init__(
+        self, spacing=None, shape=None, n_splits=5, shuffle=False, random_state=None,
+    ):
+        super().__init__(spacing=spacing, shape=shape, n_splits=n_splits)
+        if n_splits < 2:
+            raise ValueError(
+                "Number of splits must be >=2 for BlockKFold. Given {}.".format(
+                    n_splits
+                )
+            )
+        self.shuffle = shuffle
+        self.random_state = random_state
+
+    def _iter_test_indices(self, X=None, y=None, groups=None):
         """
-        Generate indices to split data into training and test set.
+        Generates integer indices corresponding to test sets.
 
         Parameters
         ----------
@@ -241,38 +364,28 @@ class BlockShuffleSplit(BaseCrossValidator):
 
         Yields
         ------
-        train : ndarray
-            The training set indices for that split.
         test : ndarray
             The testing set indices for that split.
 
         """
-        if X.shape[1] != 2:
-            raise ValueError(
-                "X must have exactly 2 columns ({} given).".format(X.shape[1])
-            )
-        for train, test in super().split(X, y, groups):
-            yield train, test
-
-    def get_n_splits(self, X=None, y=None, groups=None):
-        """
-        Returns the number of splitting iterations in the cross-validator
-
-        Parameters
-        ----------
-        X : object
-            Always ignored, exists for compatibility.
-        y : object
-            Always ignored, exists for compatibility.
-        groups : object
-            Always ignored, exists for compatibility.
-
-        Returns
-        -------
-        n_splits : int
-            Returns the number of splitting iterations in the cross-validator.
-        """
-        return self.n_splits
+        labels = block_split(
+            coordinates=(X[:, 0], X[:, 1]),
+            spacing=self.spacing,
+            shape=self.shape,
+            region=None,
+            adjust="spacing",
+        )[1]
+        block_ids = np.unique(labels)
+        # Generate many more splits so that we can pick and choose the ones
+        # that have the right balance of training and testing data.
+        kfold = KFold(
+            n_splits=self.n_splits,
+            shuffle=self.shuffle,
+            random_state=self.random_state,
+        )
+        for _, test_blocks in kfold.split(block_ids):
+            test_points = np.where(np.isin(labels, block_ids[test_blocks]))[0]
+            yield test_points
 
 
 # pylint: enable=invalid-name,unused-argument
