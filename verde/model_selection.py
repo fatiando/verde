@@ -278,7 +278,7 @@ class BlockShuffleSplit(BaseCrossValidator):
 # pylint: enable=invalid-name,unused-argument
 
 
-def train_test_split(coordinates, data, weights=None, **kwargs):
+def train_test_split(coordinates, data, weights=None, blocked=False, **kwargs):
     r"""
     Split a dataset into a training and a testing set for cross-validation.
 
@@ -397,21 +397,27 @@ def train_test_split(coordinates, data, weights=None, **kwargs):
     ...     coordinates, data, random_state=0, blocked=True, spacing=1.5,
     ... )
     >>> # The training set:
-    >>> print("coords:", train[0][0], train[0][1])
-    coords: [0 1 2 3 0 1 2 3 2 3 2 3] [4 4 4 4 5 5 5 5 6 6 7 7]
+    >>> print("coords:", train[0][0], train[0][1], sep="\n")
+    coords:
+    [0. 1. 2. 3. 0. 1. 2. 3. 2. 3. 2. 3.]
+    [4. 4. 4. 4. 5. 5. 5. 5. 6. 6. 7. 7.]
     >>> print("data:", train[1])
-    data: (array([0, 1, 2, 3, 4, 5, 6, 7, 10, 11, 14, 15]),)
+    data: (array([ 0,  1,  2,  3,  4,  5,  6,  7, 10, 11, 14, 15]),)
     >>> # The testing set:
     >>> print("coords:", test[0][0], test[0][1])
-    coords: [0 1 0 1] [6 6 7 7]
+    coords: [0. 1. 0. 1.] [6. 6. 7. 7.]
     >>> print("data:", test[1])
-    data: (array([8, 9, 12, 13]),)
+    data: (array([ 8,  9, 12, 13]),)
 
     """
     args = check_fit_input(coordinates, data, weights, unpack=False)
-    ndata = args[1][0].size
-    indices = np.arange(ndata)
-    split = next(ShuffleSplit(n_splits=1, **kwargs).split(indices))
+    if blocked:
+        feature_matrix = np.transpose(n_1d_arrays(coordinates, 2))
+        shuffle = BlockShuffleSplit(n_splits=1, **kwargs).split(feature_matrix)
+    else:
+        indices = np.arange(args[1][0].size)
+        shuffle = ShuffleSplit(n_splits=1, **kwargs).split(indices)
+    split = next(shuffle)
     train, test = (tuple(select(i, index) for i in args) for index in split)
     return train, test
 
