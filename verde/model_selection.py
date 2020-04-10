@@ -283,11 +283,20 @@ def train_test_split(coordinates, data, weights=None, **kwargs):
     Split a dataset into a training and a testing set for cross-validation.
 
     Similar to :func:`sklearn.model_selection.train_test_split` but is tuned to
-    work on multi-component spatial data with optional weights.
+    work on single- or multi-component spatial data with optional weights.
 
-    Extra keyword arguments will be passed to
-    :class:`sklearn.model_selection.ShuffleSplit`, except for ``n_splits``
-    which is always 1.
+    Extra keyword arguments will be passed to the cross-validation class:
+    :class:`sklearn.model_selection.ShuffleSplit` (random splits) if
+    ``block=False`` or :class:`verde.BlockShuffleSplit` (spatially blocked
+    random splits) if ``block=True``. The exception is ``n_splits`` which is
+    always 1.
+
+    Using ``block=True`` is preferred over plain random splits for spatial data
+    to avoid overestimating validation scores. This can happen because of the
+    inherent autocorrelation that is usually associated with this type of data
+    (points that are close together are more likely to have similar values).
+    See [Roberts_etal2017]_ for an overview of this topic. In this case, you
+    **must provide** a *spacing* or *shape* argument as well (see below).
 
     Parameters
     ----------
@@ -301,6 +310,12 @@ def train_test_split(coordinates, data, weights=None, **kwargs):
         if not none, then the weights assigned to each data point. If more than
         one data component is provided, you must provide a weights array for
         each data component (if not none).
+    block : bool
+        If True, will use :class:`verde.BlockShuffleSplit` as a cross-validator
+        to first split the data into spatial blocks and then split the blocks
+        randomly into training and testing sets. When using this option, a
+        *spacing* or *shape* must be provided as well to specify the size (or
+        number) of the spatial blocks.
 
     Returns
     -------
@@ -316,40 +331,81 @@ def train_test_split(coordinates, data, weights=None, **kwargs):
     Examples
     --------
 
+    To randomly split the data between training and testing sets:
+
     >>> import numpy as np
-    >>> # Split 2-component data with weights
-    >>> data = (np.array([1, 3, 5, 7]), np.array([0, 2, 4, 6]))
+    >>> # Make some data
+    >>> data = np.array([10, 30, 50, 70])
     >>> coordinates = (np.arange(4), np.arange(-4, 0))
-    >>> weights = (np.array([1, 1, 2, 1]), np.array([1, 2, 1, 1]))
-    >>> train, test = train_test_split(coordinates, data, weights,
-    ...                                random_state=0)
-    >>> print("Coordinates:", train[0], test[0], sep='\n  ')
-    Coordinates:
-      (array([3, 1, 0]), array([-1, -3, -4]))
-      (array([2]), array([-2]))
-    >>> print("Data:", train[1], test[1], sep='\n  ')
-    Data:
-      (array([7, 3, 1]), array([6, 2, 0]))
-      (array([5]), array([4]))
-    >>> print("Weights:", train[2], test[2], sep='\n  ')
-    Weights:
-      (array([1, 1, 1]), array([1, 2, 1]))
-      (array([2]), array([1]))
-    >>> # Split single component data without weights
-    >>> train, test = train_test_split(coordinates, data[0], None,
-    ...                                random_state=0)
-    >>> print("Coordinates:", train[0], test[0], sep='\n  ')
-    Coordinates:
-      (array([3, 1, 0]), array([-1, -3, -4]))
-      (array([2]), array([-2]))
-    >>> print("Data:", train[1], test[1], sep='\n  ')
-    Data:
-      (array([7, 3, 1]),)
-      (array([5]),)
-    >>> print("Weights:", train[2], test[2], sep='\n  ')
-    Weights:
-      (None,)
-      (None,)
+    >>> train, test = train_test_split(coordinates, data, random_state=0)
+    >>> # The training set:
+    >>> print("coords:", train[0])
+    coords: (array([3, 1, 0]), array([-1, -3, -4]))
+    >>> print("data:", train[1])
+    data: (array([70, 30, 10]),)
+    >>> # The testing set:
+    >>> print("coords:", test[0])
+    coords: (array([2]), array([-2]))
+    >>> print("data:", test[1])
+    data: (array([50]),)
+
+    If weights are given, they will also be split among the sets:
+
+    >>> weights = np.array([4, 3, 2, 5])
+    >>> train, test = train_test_split(
+    ...     coordinates, data, weights, random_state=0,
+    ... )
+    >>> # The training set:
+    >>> print("coords:", train[0])
+    coords: (array([3, 1, 0]), array([-1, -3, -4]))
+    >>> print("data:", train[1])
+    data: (array([70, 30, 10]),)
+    >>> print("weights:", train[2])
+    weights: (array([5, 3, 4]),)
+    >>> # The testing set:
+    >>> print("coords:", test[0])
+    coords: (array([2]), array([-2]))
+    >>> print("data:", test[1])
+    data: (array([50]),)
+    >>> print("weights:", test[2])
+    weights: (array([2]),)
+
+    Data with multiple components can also be split:
+
+    >>> data = (np.array([10, 30, 50, 70]), np.array([-70, -50, -30, -10]))
+    >>> train, test = train_test_split(coordinates, data, random_state=0)
+    >>> # The training set:
+    >>> print("coords:", train[0])
+    coords: (array([3, 1, 0]), array([-1, -3, -4]))
+    >>> print("data:", train[1])
+    data: (array([70, 30, 10]), array([-10, -50, -70]))
+    >>> # The testing set:
+    >>> print("coords:", test[0])
+    coords: (array([2]), array([-2]))
+    >>> print("data:", test[1])
+    data: (array([50]), array([-30]))
+
+    To split data grouped in spatial blocks:
+
+    >>> from verde import grid_coordinates
+    >>> # Make a regular grid of data points
+    >>> coordinates = grid_coordinates(region=(0, 3, 4, 7), spacing=1)
+    >>> data = np.arange(16).reshape((4, 4))
+    >>> # We must specify the size of the blocks via the spacing argument.
+    >>> # Blocks of 1.5 will split the domain into 4 blocks.
+    >>> train, test = train_test_split(
+    ...     coordinates, data, random_state=0, blocked=True, spacing=1.5,
+    ... )
+    >>> # The training set:
+    >>> print("coords:", train[0][0], train[0][1])
+    coords: [0 1 2 3 0 1 2 3 2 3 2 3] [4 4 4 4 5 5 5 5 6 6 7 7]
+    >>> print("data:", train[1])
+    data: (array([0, 1, 2, 3, 4, 5, 6, 7, 10, 11, 14, 15]),)
+    >>> # The testing set:
+    >>> print("coords:", test[0][0], test[0][1])
+    coords: [0 1 0 1] [6 6 7 7]
+    >>> print("data:", test[1])
+    data: (array([8, 9, 12, 13]),)
 
     """
     args = check_fit_input(coordinates, data, weights, unpack=False)
