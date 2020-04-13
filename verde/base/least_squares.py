@@ -7,7 +7,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression, Ridge
 
 
-def least_squares(jacobian, data, weights, damping=None):
+def least_squares(jacobian, data, weights, damping=None, copy_jacobian=False):
     """
     Solve a weighted least-squares problem with optional damping regularization
 
@@ -16,6 +16,12 @@ def least_squares(jacobian, data, weights, damping=None):
     undone before returning the estimated parameters so that scaling isn't
     required for predictions. Doesn't normalize the column means because that
     operation can't be undone.
+
+    .. warning::
+
+        Setting `copy_jacobian` to True will copy the Jacobian matrix, doubling
+        the memory required. Use it only if Jacobian matrix is needed
+        afterwards.
 
     Parameters
     ----------
@@ -31,6 +37,9 @@ def least_squares(jacobian, data, weights, damping=None):
     damping : None or float
         The positive damping (Tikhonov 0th order) regularization parameter. If
         ``damping=None``, will use a regular least-squares fit.
+    copy_jacobian: bool
+        If False, the Jacobian matrix will be scaled inplace. If True, the
+        Jacobian matrix will be copied before scaling. Default False.
 
     Returns
     -------
@@ -44,7 +53,7 @@ def least_squares(jacobian, data, weights, damping=None):
                 jacobian.shape
             )
         )
-    scaler = StandardScaler(copy=False, with_mean=False, with_std=True)
+    scaler = StandardScaler(copy=copy_jacobian, with_mean=False, with_std=True)
     jacobian = scaler.fit_transform(jacobian)
     if damping is None:
         regr = LinearRegression(fit_intercept=False, normalize=False)
