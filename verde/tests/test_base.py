@@ -6,6 +6,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
+from ..base.least_squares import least_squares
 from ..base.utils import check_fit_input, check_coordinates
 from ..base.base_classes import (
     BaseGridder,
@@ -232,3 +233,16 @@ def test_check_fit_input_fails_weights():
         check_fit_input(coords, data, weights)
     with pytest.raises(ValueError):
         check_fit_input(coords, (data, data), weights)
+
+
+def test_least_squares_copy_jacobian():
+    """
+    Test if Jacobian matrix is copied or scaled inplace
+    """
+    jacobian = np.identity(5)
+    original_jacobian = jacobian.copy()
+    data = np.array([1, 2, 3, 4, 5], dtype=float)
+    least_squares(jacobian, data, weights=None, copy_jacobian=True)
+    npt.assert_allclose(jacobian, original_jacobian)
+    least_squares(jacobian, data, weights=None)
+    assert not np.allclose(jacobian, original_jacobian)
