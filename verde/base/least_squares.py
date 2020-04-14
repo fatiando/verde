@@ -20,7 +20,7 @@ def least_squares(jacobian, data, weights, damping=None, copy_jacobian=False):
     .. warning::
 
         Setting `copy_jacobian` to True will copy the Jacobian matrix, doubling
-        the memory required. Use it only if Jacobian matrix is needed
+        the memory required. Use it only if the Jacobian matrix is needed
         afterwards.
 
     Parameters
