@@ -13,7 +13,7 @@ data = vd.datasets.fetch_baja_bathymetry()
 coordinates = (data.longitude, data.latitude)
 values = data.bathymetry_m
 
-# Assign 30% of the data to the testing set.
+# Assign 20% of the data to the testing set.
 test_size = 0.2
 
 # Split the data randomly into training and testing. Set the random state
