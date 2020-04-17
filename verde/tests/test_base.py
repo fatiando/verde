@@ -6,6 +6,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
+from ..base.least_squares import least_squares
 from ..base.utils import check_fit_input, check_coordinates
 from ..base.base_classes import (
     BaseGridder,
@@ -273,3 +274,16 @@ def test_baseblockedcrossvalidator_fails_data_shape():
         next(cv.split(np.ones(shape=(10, 4))))
     with pytest.raises(ValueError):
         next(cv.split(np.ones(shape=(10, 1))))
+
+
+def test_least_squares_copy_jacobian():
+    """
+    Test if Jacobian matrix is copied or scaled inplace
+    """
+    jacobian = np.identity(5)
+    original_jacobian = jacobian.copy()
+    data = np.array([1, 2, 3, 4, 5], dtype=float)
+    least_squares(jacobian, data, weights=None, copy_jacobian=True)
+    npt.assert_allclose(jacobian, original_jacobian)
+    least_squares(jacobian, data, weights=None)
+    assert not np.allclose(jacobian, original_jacobian)
