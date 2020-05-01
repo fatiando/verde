@@ -58,24 +58,25 @@ def test_blockkfold_fails_n_splits_too_small():
 def test_blockkfold_fails_n_splits_too_large():
     "Should raise an exception if n_splits < number of blocks."
     coords = grid_coordinates(region=(0, 3, -10, -7), shape=(4, 4))
-    X = np.transpose([i.ravel() for i in coords])
-    next(BlockKFold(shape=(2, 2), n_splits=4).split(X))
+    features = np.transpose([i.ravel() for i in coords])
+    next(BlockKFold(shape=(2, 2), n_splits=4).split(features))
     with pytest.raises(ValueError) as error:
-        next(BlockKFold(shape=(2, 2), n_splits=5).split(X))
+        next(BlockKFold(shape=(2, 2), n_splits=5).split(features))
     assert "Number of k-fold splits (5) cannot be greater" in str(error)
 
 
 def test_blockkfold_cant_balance():
     "Should fall back to regular split if can't balance and print a warning"
     coords = scatter_points(region=(0, 3, -10, -7), size=10, random_state=2)
-    X = np.transpose([i.ravel() for i in coords])
+    features = np.transpose([i.ravel() for i in coords])
     cv = BlockKFold(shape=(4, 4), n_splits=8)
     with warnings.catch_warnings(record=True) as warn:
-        splits = list(cv._iter_test_indices(X))
+        splits = [i for _, i in cv.split(features)]
         assert len(warn) == 1
         assert issubclass(warn[-1].category, UserWarning)
         assert "Could not balance folds" in str(warn[-1].message)
     # Should revert to the unbalanced version
     cv_unbalanced = BlockKFold(shape=(4, 4), n_splits=8, balance=False)
-    for balanced, unbalanced in zip(splits, cv_unbalanced._iter_test_indices(X)):
+    splits_unbalanced = [i for _, i in cv_unbalanced.split(features)]
+    for balanced, unbalanced in zip(splits, splits_unbalanced):
         npt.assert_allclose(balanced, unbalanced)

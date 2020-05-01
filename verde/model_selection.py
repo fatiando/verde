@@ -239,6 +239,12 @@ class BlockKFold(BaseBlockCrossValidator):
     blocks, regardless of how many data points are in each block. This
     behaviour can also be disabled by setting ``balance=False``.
 
+    Shuffling the blocks prior to splitting is strongly encouraged. Not
+    shuffling will essentially lead to the creation of *n_splits* large blocks
+    since blocks are spatially adjacent when not shuffled. The default
+    behaviour is not to shuffle for compatibility with similar cross-validators
+    in scikit-learn.
+
     This cross-validator is preferred over
     :class:`sklearn.model_selection.KFold` for spatial data to avoid
     overestimating cross-validation scores. This can happen because of the
@@ -331,10 +337,10 @@ class BlockKFold(BaseBlockCrossValidator):
     ... )
     >>> for train, test in kfold.split(X):
     ...     print("Train: {} Test: {}".format(train, test))
-    Train: [ 0  1  2  3  4  5  6  7 10 11 14 15] Test: [ 8  9 12 13]
     Train: [ 0  1  2  3  4  5  6  7  8  9 12 13] Test: [10 11 14 15]
     Train: [ 2  3  6  7  8  9 10 11 12 13 14 15] Test: [0 1 4 5]
     Train: [ 0  1  4  5  8  9 10 11 12 13 14 15] Test: [2 3 6 7]
+    Train: [ 0  1  2  3  4  5  6  7 10 11 14 15] Test: [ 8  9 12 13]
 
     These should be the same splits as we got before but in a different order.
     This only happens because in this example we have the number of splits
@@ -405,7 +411,7 @@ class BlockKFold(BaseBlockCrossValidator):
             block_sizes = [np.isin(labels, i).sum() for i in block_ids]
             try:
                 split_points = partition_by_sum(block_sizes, parts=self.n_splits)
-                folds = np.split(block_ids, split_points)
+                folds = np.split(np.arange(block_ids.size), split_points)
             except ValueError:
                 warnings.warn(
                     "Could not balance folds to have approximately the same "
