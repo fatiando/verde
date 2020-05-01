@@ -6,10 +6,11 @@ import warnings
 import numpy as np
 from sklearn.model_selection import KFold, ShuffleSplit
 from sklearn.base import clone
+from sklearn.utils import check_random_state
 
 from .base import check_fit_input, n_1d_arrays, BaseBlockCrossValidator
 from .coordinates import block_split
-from .utils import dispatch
+from .utils import dispatch, partition_by_sum
 
 
 # Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
@@ -231,7 +232,12 @@ class BlockKFold(BaseBlockCrossValidator):
     then split into testing and training sets iteratively along k folds of the
     data (k is given by *n_splits*).
 
-    Uses :class:`sklearn.model_selection.KFold` to generate the folds.
+    By default, the blocks are split into folds in a way that makes each fold
+    have approximately the same number of data points. Sometimes this might not
+    be possible, which can happen if the number of splits is close to the
+    number of blocks. In these cases, each fold will have the same number of
+    blocks, regardless of how many data points are in each block. This
+    behaviour can also be disabled by setting ``balance=False``.
 
     This cross-validator is preferred over
     :class:`sklearn.model_selection.KFold` for spatial data to avoid
@@ -258,6 +264,10 @@ class BlockKFold(BaseBlockCrossValidator):
         If RandomState instance, random_state is the random number generator;
         If None, the random number generator is the RandomState instance used
         by `np.random`.
+    balance : bool
+        Whether or not to split blocks into fold with approximately equal
+        number of data points. If False, each fold will have the same number of
+        blocks (which can have different number of data points in them).
 
     See also
     --------
@@ -321,10 +331,10 @@ class BlockKFold(BaseBlockCrossValidator):
     ... )
     >>> for train, test in kfold.split(X):
     ...     print("Train: {} Test: {}".format(train, test))
+    Train: [ 0  1  2  3  4  5  6  7 10 11 14 15] Test: [ 8  9 12 13]
     Train: [ 0  1  2  3  4  5  6  7  8  9 12 13] Test: [10 11 14 15]
     Train: [ 2  3  6  7  8  9 10 11 12 13 14 15] Test: [0 1 4 5]
     Train: [ 0  1  4  5  8  9 10 11 12 13 14 15] Test: [2 3 6 7]
-    Train: [ 0  1  2  3  4  5  6  7 10 11 14 15] Test: [ 8  9 12 13]
 
     These should be the same splits as we got before but in a different order.
     This only happens because in this example we have the number of splits
@@ -334,7 +344,13 @@ class BlockKFold(BaseBlockCrossValidator):
     """
 
     def __init__(
-        self, spacing=None, shape=None, n_splits=5, shuffle=False, random_state=None,
+        self,
+        spacing=None,
+        shape=None,
+        n_splits=5,
+        shuffle=False,
+        random_state=None,
+        balance=True,
     ):
         super().__init__(spacing=spacing, shape=shape, n_splits=n_splits)
         if n_splits < 2:
@@ -345,6 +361,7 @@ class BlockKFold(BaseBlockCrossValidator):
             )
         self.shuffle = shuffle
         self.random_state = random_state
+        self.balance = balance
 
     def _iter_test_indices(self, X=None, y=None, groups=None):
         """
@@ -376,14 +393,31 @@ class BlockKFold(BaseBlockCrossValidator):
             adjust="spacing",
         )[1]
         block_ids = np.unique(labels)
-        # Generate many more splits so that we can pick and choose the ones
-        # that have the right balance of training and testing data.
-        kfold = KFold(
-            n_splits=self.n_splits,
-            shuffle=self.shuffle,
-            random_state=self.random_state,
-        )
-        for _, test_blocks in kfold.split(block_ids):
+        if self.n_splits > block_ids.size:
+            raise ValueError(
+                "Number of k-fold splits ({}) cannot be greater than the number of "
+                "blocks ({}). Either decrease n_splits or increase the number of "
+                "blocks.".format(self.n_splits, block_ids.size)
+            )
+        if self.shuffle:
+            check_random_state(self.random_state).shuffle(block_ids)
+        if self.balance:
+            block_sizes = [np.isin(labels, i).sum() for i in block_ids]
+            try:
+                split_points = partition_by_sum(block_sizes, parts=self.n_splits)
+                folds = np.split(block_ids, split_points)
+            except ValueError:
+                warnings.warn(
+                    "Could not balance folds to have approximately the same "
+                    "number of data points. Dividing into folds with equal "
+                    "number of blocks instead. Decreasing n_splits or increasing "
+                    "the number of blocks may help.",
+                    UserWarning,
+                )
+                folds = [i for _, i in KFold(n_splits=self.n_splits).split(block_ids)]
+        else:
+            folds = [i for _, i in KFold(n_splits=self.n_splits).split(block_ids)]
+        for test_blocks in folds:
             test_points = np.where(np.isin(labels, block_ids[test_blocks]))[0]
             yield test_points
 
