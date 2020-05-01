@@ -10,7 +10,7 @@ from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
 import pytest
 
 from ..coordinates import grid_coordinates
-from ..utils import parse_engine, dummy_jit, kdtree, grid_to_table
+from ..utils import parse_engine, dummy_jit, kdtree, grid_to_table, partition_by_sum
 from .. import utils
 
 
@@ -75,3 +75,17 @@ def test_grid_to_table_order():
     npt.assert_allclose(true_lat, table.latitude)
     npt.assert_allclose(true_lon, table.longitude)
     npt.assert_allclose(true_field, table.field)
+
+
+def test_partition_by_sum_fails_size():
+    "Should raise an exception if given more parts than elements."
+    with pytest.raises(ValueError) as error:
+        partition_by_sum(np.arange(10), 11)
+    assert "array of size 10 into 11 parts" in str(error)
+
+
+def test_partition_by_sum_fails_no_partitions():
+    "Should raise an exception if could not find unique partition points"
+    with pytest.raises(ValueError) as error:
+        partition_by_sum(np.arange(10), 8)
+    assert "Could not find partition points" in str(error)
