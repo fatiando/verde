@@ -1,4 +1,5 @@
 """
+Utilities for calculating gradients of input data.
 """
 import numpy as np
 
@@ -20,21 +21,10 @@ class Gradient(BaseGridder):
         "The region of the data used to fit this estimator."
         return self.estimator.region_
 
-    def _normalized_direction(self):
-        """
-        Transform the direction into a numpy array and normalize it.
-        """
-        # Casting to float is required for the division to work if the original
-        # numbers are integers. Since this is always small, it doesn't matter
-        # much.
-        direction = np.atleast_1d(self.direction).astype("float64")
-        direction /= np.linalg.norm(direction)
-        return direction
-
     def predict(self, coordinates):
         """
         """
-        direction = self._normalized_direction()
+        direction = normalize_direction(self.direction)
         if len(coordinates) != len(direction):
             raise ValueError("Wrong number of dimensions")
         forward_coords = tuple(
@@ -56,3 +46,34 @@ class Gradient(BaseGridder):
         """
         self.estimator.fit(*args, **kwargs)
         return self
+
+
+def normalize_direction(direction):
+    """
+    Transform the direction into a numpy array and normalize it.
+
+    Examples
+    --------
+
+    >>> print(normalize_direction((1, 0)))
+    [1. 0.]
+    >>> print(normalize_direction((1.5, 0)))
+    [1. 0.]
+    >>> print(normalize_direction((2, 0)))
+    [1. 0.]
+    >>> print(normalize_direction((0, 2)))
+    [0. 1.]
+    >>> print(normalize_direction((0, 2, 0)))
+    [0. 1. 0.]
+    >>> print("{:.3f} {:.3f}".format(*normalize_direction((1, 1))))
+    0.707 0.707
+    >>> print("{:.3f} {:.3f}".format(*normalize_direction((-2, 2))))
+    -0.707 0.707
+
+    """
+    # Casting to float is required for the division to work if the original
+    # numbers are integers. Since this is always small, it doesn't matter
+    # much.
+    direction = np.atleast_1d(direction).astype("float64")
+    direction /= np.linalg.norm(direction)
+    return direction
