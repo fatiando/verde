@@ -110,40 +110,6 @@ def pad_region(region, pad):
     return padded
 
 
-def project_region(region, projection):
-    """
-    Calculate the bounding box of a region in projected coordinates.
-
-    Parameters
-    ----------
-    region : list = [W, E, S, N]
-        The boundaries of a given region in Cartesian or geographic
-        coordinates.
-    projection : callable or None
-        If not None, then should be a callable object (like a function)
-        ``projection(easting, northing) -> (proj_easting, proj_northing)`` that
-        takes in easting and northing coordinate arrays and returns projected
-        northing and easting coordinate arrays.
-
-    Returns
-    -------
-    proj_region : list = [W, E, S, N]
-        The bounding box of the projected region.
-
-    Examples
-    --------
-
-    >>> def projection(x, y):
-    ...     return (2*x, -1*y)
-    >>> project_region((3, 5, -9, -4), projection)
-    (6.0, 10.0, 4.0, 9.0)
-
-    """
-    east, north = grid_coordinates(region, shape=(101, 101))
-    east, north = projection(east.ravel(), north.ravel())
-    return (east.min(), east.max(), north.min(), north.max())
-
-
 def scatter_points(region, size, random_state=None, extra_coords=None):
     """
     Generate the coordinates for a random scatter of points.
@@ -534,6 +500,62 @@ def spacing_to_shape(region, spacing, adjust):
         n = s + (nnorth - 1) * dnorth
         e = w + (neast - 1) * deast
     return (nnorth, neast), (w, e, s, n)
+
+
+def shape_to_spacing(region, shape, pixel_register=False):
+    """
+    Calculate the spacing of a grid given region and shape.
+
+    Parameters
+    ----------
+    region : list = [W, E, S, N]
+        The boundaries of a given region in Cartesian or geographic
+        coordinates.
+    shape : tuple = (n_north, n_east) or None
+        The number of points in the South-North and West-East directions,
+        respectively.
+    pixel_register : bool
+        If True, the coordinates will refer to the center of each grid pixel
+        instead of the grid lines. In practice, this means that there will be
+        one less element per dimension of the grid when compared to grid line
+        registered (only if given *spacing* and not *shape*). Default is False.
+
+    Returns
+    -------
+    spacing : tuple = (s_north, s_east)
+        The grid spacing in the South-North and West-East directions,
+        respectively.
+
+    Examples
+    --------
+
+    >>> spacing = shape_to_spacing([0, 10, -5, 1], (7, 11))
+    >>> print("{:.1f}, {:.1f}".format(*spacing))
+    1.0, 1.0
+    >>> spacing = shape_to_spacing([0, 10, -5, 1], (14, 11))
+    >>> print("{:.1f}, {:.1f}".format(*spacing))
+    0.5, 1.0
+    >>> spacing = shape_to_spacing([0, 10, -5, 1], (7, 21))
+    >>> print("{:.1f}, {:.1f}".format(*spacing))
+    1.0, 0.5
+    >>> spacing = shape_to_spacing(
+    ...     [-0.5, 10.5, -5.5, 1.5], (7, 11), pixel_register=True,
+    ... )
+    >>> print("{:.1f}, {:.1f}".format(*spacing))
+    1.0, 1.0
+    >>> spacing = shape_to_spacing(
+    ...     [-0.25, 10.25, -5.5, 1.5], (7, 21), pixel_register=True,
+    ... )
+    >>> print("{:.1f}, {:.1f}".format(*spacing))
+    1.0, 0.5
+
+    """
+    spacing = []
+    for i, n_points in enumerate(reversed(shape)):
+        if not pixel_register:
+            n_points -= 1
+        spacing.append((region[2 * i + 1] - region[2 * i]) / n_points)
+    return tuple(reversed(spacing))
 
 
 def profile_coordinates(point1, point2, size, extra_coords=None):

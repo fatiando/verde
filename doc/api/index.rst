@@ -45,6 +45,7 @@ Model Selection
 
     train_test_split
     cross_val_score
+    BlockShuffleSplit
 
 Coordinate Manipulation
 -----------------------
@@ -57,11 +58,19 @@ Coordinate Manipulation
     profile_coordinates
     get_region
     pad_region
-    project_region
     inside
     block_split
     rolling_window
     expanding_window
+
+Projection
+----------
+
+.. autosummary::
+   :toctree: generated/
+
+    project_region
+    project_grid
 
 Masking
 -------

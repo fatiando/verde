@@ -132,5 +132,66 @@ pc = grid_geo.bathymetry.plot.pcolormesh(
 )
 plt.colorbar(pc).set_label("meters")
 vd.datasets.setup_baja_bathymetry_map(ax, land=None)
+plt.show()
+
+########################################################################################
+# Profiles
+# --------
+#
+# For profiles, things are a bit different. The projection is applied to the
+# input points before coordinates are generated. So the profile will be evenly
+# spaced in *projected coordinates*, not geographic coordinates. This is to
+# avoid issues with calculating distances on a sphere.
+#
+# The coordinates returned by the ``profile`` method will be in geographic
+# coordinates, so projections given to ``profile`` must take an ``inverse``
+# argument so we can undo the projection.
+#
+# The main utility of using a projection with ``profile`` is being able to pass
+# in points in geographic coordinates and get coordinates back in that same
+# system (making it easier to plot on a map).
+#
+# To generate a profile cutting across our bathymetry data, we can use
+# longitude and latitude points taken from the map above).
+
+start = (-114.5, 24.7)
+end = (-110, 20.5)
+profile = spline.profile(
+    point1=start,
+    point2=end,
+    size=200,
+    projection=projection,
+    dims=("latitude", "longitude"),
+    data_names=["bathymetry"],
+)
+print(profile)
+
+########################################################################################
+# Plot the profile location on our geographic grid from above.
+
+plt.figure(figsize=(7, 6))
+ax = plt.axes(projection=ccrs.Mercator())
+ax.set_title("Profile location")
+pc = grid_geo.bathymetry.plot.pcolormesh(
+    ax=ax, transform=ccrs.PlateCarree(), vmax=0, zorder=-1, add_colorbar=False
+)
+plt.colorbar(pc).set_label("meters")
+ax.plot(profile.longitude, profile.latitude, "-k", transform=ccrs.PlateCarree())
+ax.text(start[0], start[1], "A", transform=ccrs.PlateCarree())
+ax.text(end[0], end[1], "B", transform=ccrs.PlateCarree())
+vd.datasets.setup_baja_bathymetry_map(ax, land=None)
+plt.show()
+
+########################################################################################
+# And finally plot the profile.
+
+plt.figure(figsize=(8, 3))
+ax = plt.axes()
+ax.set_title("Profile of bathymetry (A-B)")
+ax.plot(profile.distance, profile.bathymetry, "-k")
+ax.set_xlabel("Distance (m)")
+ax.set_ylabel("Bathymetry (m)")
+ax.set_xlim(profile.distance.min(), profile.distance.max())
+ax.grid()
 plt.tight_layout()
 plt.show()
