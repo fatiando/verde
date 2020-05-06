@@ -4,6 +4,7 @@ Utilities for calculating gradients of input data.
 import numpy as np
 
 from .base import BaseGridder
+from .base.utils import check_data
 
 
 class Gradient(BaseGridder):
@@ -35,9 +36,13 @@ class Gradient(BaseGridder):
             coordinate - component * self.step / 2
             for coordinate, component in zip(coordinates, direction)
         )
-        forward = self.estimator.predict(forward_coords)
-        backward = self.estimator.predict(backward_coords)
-        derivative = (forward - backward) / self.step
+        forward = check_data(self.estimator.predict(forward_coords))
+        backward = check_data(self.estimator.predict(backward_coords))
+        derivative = tuple(
+            (fwd - back) / self.step for fwd, back in zip(forward, backward)
+        )
+        if len(derivative) == 1:
+            derivative = derivative[0]
         return derivative
 
     def fit(self, *args, **kwargs):
