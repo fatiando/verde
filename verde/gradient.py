@@ -57,6 +57,16 @@ def normalize_direction(direction):
     """
     Transform the direction into a numpy array and normalize it.
 
+    Parameters
+    ----------
+    direction : list, tuple, or array
+        A 1D array representing a vector.
+
+    Returns
+    -------
+    normalized : array
+        The array divided by its norm, making it a unit vector.
+
     Examples
     --------
 
