@@ -1,12 +1,12 @@
 # pylint: disable=redefined-outer-name
 """
-Test the Gradient estimator
+Test the Derivative estimator
 """
 import numpy as np
 import numpy.testing as npt
 import pytest
 
-from ..gradient import Gradient
+from ..derivative import Derivative
 from ..trend import Trend
 from ..vector import Vector
 from ..chain import Chain
@@ -35,8 +35,8 @@ def test_gradient(polynomial):
     coordinates, data, true_east_deriv, true_north_deriv = polynomial
 
     trend = Trend(degree=2).fit(coordinates, data)
-    east_deriv = Gradient(trend, step=10, direction=(1, 0)).predict(coordinates)
-    north_deriv = Gradient(trend, step=10, direction=(0, 1)).predict(coordinates)
+    east_deriv = Derivative(trend, step=10, direction=(1, 0)).predict(coordinates)
+    north_deriv = Derivative(trend, step=10, direction=(0, 1)).predict(coordinates)
 
     npt.assert_allclose(true_east_deriv, east_deriv, atol=1e-2)
     npt.assert_allclose(true_north_deriv, north_deriv, atol=1e-2)
@@ -48,9 +48,9 @@ def test_gradient_fails_wrong_dimensions(polynomial):
 
     trend = Trend(degree=2).fit(coordinates, data)
     with pytest.raises(ValueError):
-        Gradient(trend, step=10, direction=(1, 0, 1)).predict(coordinates)
+        Derivative(trend, step=10, direction=(1, 0, 1)).predict(coordinates)
     with pytest.raises(ValueError):
-        Gradient(trend, step=10, direction=(1, 0)).predict((coordinates[0],))
+        Derivative(trend, step=10, direction=(1, 0)).predict((coordinates[0],))
 
 
 def test_gradient_grid(polynomial):
@@ -58,7 +58,7 @@ def test_gradient_grid(polynomial):
     coordinates, data, true_east_deriv = polynomial[:3]
 
     trend = Trend(degree=2).fit(coordinates, data)
-    deriv = Gradient(trend, step=10, direction=(1, 0)).grid(spacing=50)
+    deriv = Derivative(trend, step=10, direction=(1, 0)).grid(spacing=50)
 
     npt.assert_allclose(true_east_deriv, deriv.scalars.values, atol=1e-2)
 
@@ -70,22 +70,22 @@ def test_gradient_direction(polynomial):
     for azimuth in np.radians(np.linspace(0, 360, 60)):
         direction = (np.sin(azimuth), np.cos(azimuth))
         true_deriv = true_east_deriv * direction[0] + true_north_deriv * direction[1]
-        deriv = Gradient(trend, step=10, direction=direction).predict(coordinates)
+        deriv = Derivative(trend, step=10, direction=direction).predict(coordinates)
         npt.assert_allclose(true_deriv, deriv, atol=1e-2)
 
 
 def test_gradient_fit(polynomial):
-    "Check that calling fit on the Gradient works as expected"
+    "Check that calling fit on the Derivative works as expected"
     coordinates, data, true_east_deriv, true_north_deriv = polynomial
 
     trend = Trend(degree=2)
     east_deriv = (
-        Gradient(trend, step=10, direction=(1, 0))
+        Derivative(trend, step=10, direction=(1, 0))
         .fit(coordinates, data)
         .predict(coordinates)
     )
     north_deriv = (
-        Gradient(trend, step=10, direction=(0, 1))
+        Derivative(trend, step=10, direction=(0, 1))
         .fit(coordinates, data)
         .predict(coordinates)
     )
@@ -95,14 +95,14 @@ def test_gradient_fit(polynomial):
 
 
 def test_gradient_vector(polynomial):
-    "Make sure putting Gradients in a Vector works"
+    "Make sure putting Derivatives in a Vector works"
     coordinates, data, true_east_deriv, true_north_deriv = polynomial
 
     trend = Trend(degree=2)
     gradient = Vector(
         [
-            Gradient(trend, step=10, direction=(1, 0)),
-            Gradient(trend, step=10, direction=(0, 1)),
+            Derivative(trend, step=10, direction=(1, 0)),
+            Derivative(trend, step=10, direction=(0, 1)),
         ]
     )
     # This is wasteful because it fits the same trend twice so should not
@@ -115,11 +115,11 @@ def test_gradient_vector(polynomial):
 
 
 def test_gradient_chain(polynomial):
-    "Make sure putting Gradients in a Chain works"
+    "Make sure putting Derivatives in a Chain works"
     coordinates, data, true_east_deriv = polynomial[:3]
 
     trend = Trend(degree=2)
-    gradient = Chain([("east", Gradient(trend, step=10, direction=(1, 0)))])
+    gradient = Chain([("east", Derivative(trend, step=10, direction=(1, 0)))])
     gradient.fit(coordinates, data)
     deriv = gradient.predict(coordinates)
     npt.assert_allclose(true_east_deriv, deriv, atol=1e-2)

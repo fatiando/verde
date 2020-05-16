@@ -1,5 +1,5 @@
 """
-Gradient calculations
+Derivative calculations
 =====================
 
 
@@ -15,8 +15,8 @@ data = vd.datasets.CheckerBoard(
 ).scatter(size=700, random_state=0)
 
 spline = vd.Spline().fit((data.easting, data.northing), data.scalars)
-east_deriv = vd.Gradient(spline, step=10, direction=(1, 0)).grid(spacing=50)
-north_deriv = vd.Gradient(spline, step=10, direction=(0, 1)).grid(spacing=50)
+east_deriv = vd.Derivative(spline, step=10, direction=(1, 0)).grid(spacing=50)
+north_deriv = vd.Derivative(spline, step=10, direction=(0, 1)).grid(spacing=50)
 
 fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(9, 10), sharex=True)
 

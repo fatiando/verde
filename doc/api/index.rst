@@ -36,6 +36,7 @@ Composite Estimators
 
     Chain
     Vector
+    Derivative
 
 Model Selection
 ---------------

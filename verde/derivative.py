@@ -7,7 +7,7 @@ from .base import BaseGridder
 from .base.utils import check_data
 
 
-class Gradient(BaseGridder):
+class Derivative(BaseGridder):
     """
     """
 
