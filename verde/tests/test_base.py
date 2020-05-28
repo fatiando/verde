@@ -246,10 +246,11 @@ def test_basegridder_projection_multiple_coordinates():
 
     # Check the profile
     prof = grd.profile(
-        (region[0], region[-1], 13, 17),
-        (region[1], region[-1], 13, 17),
+        (region[0], region[-1]),
+        (region[1], region[-1]),
         shape[1],
         projection=proj,
+        extra_coords=(13, 17),
     )
     npt.assert_allclose(prof.scalars, data_true[-1, :])
     # Coordinates should still be evenly spaced since the projection is a
