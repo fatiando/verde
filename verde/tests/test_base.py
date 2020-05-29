@@ -201,6 +201,65 @@ def test_basegridder_projection():
     npt.assert_allclose(prof.distance, distance_true)
 
 
+def test_basegridder_extra_coords():
+    "Test if BaseGridder adds extra_coords to generated outputs"
+
+    grd = PolyGridder()
+    region = (0, 10, -10, -5)
+    angular, linear = 2, 100
+    coordinates = scatter_points(region, 1000, random_state=0)
+    data = angular * coordinates[0] + linear
+    grd = PolyGridder().fit(coordinates, data)
+
+    # Test grid with a single extra coord
+    extra_coords = 9
+    grid = grd.grid(region=region, spacing=1, extra_coords=extra_coords)
+    assert "extra_coord" in grid.coords
+    assert grid.coords["extra_coord"].dims == ("northing", "easting")
+    npt.assert_allclose(grid.coords["extra_coord"], extra_coords)
+
+    # Test grid with multiple extra coords
+    extra_coords = [9, 18, 27]
+    grid = grd.grid(region=region, spacing=1, extra_coords=extra_coords)
+    extra_coord_names = ["extra_coord", "extra_coord_1", "extra_coord_2"]
+    for name, coord in zip(extra_coord_names, extra_coords):
+        assert name in grid.coords
+        assert grid.coords[name].dims == ("northing", "easting")
+        npt.assert_allclose(grid.coords[name], coord)
+
+    # Test scatter with a single extra coord
+    extra_coords = 9
+    scat = grd.scatter(region, 1000, extra_coords=extra_coords)
+    assert "extra_coord" in scat.columns
+    npt.assert_allclose(scat["extra_coord"], extra_coords)
+
+    # Test scatter with multiple extra coord
+    extra_coords = [9, 18, 27]
+    scat = grd.scatter(region, 1000, extra_coords=extra_coords)
+    extra_coord_names = ["extra_coord", "extra_coord_1", "extra_coord_2"]
+    for name, coord in zip(extra_coord_names, extra_coords):
+        assert name in scat.columns
+        npt.assert_allclose(scat[name], coord)
+
+    # Test profile with a single extra coord
+    extra_coords = 9
+    prof = grd.profile(
+        (region[0], region[-1]), (region[1], region[-1]), 51, extra_coords=extra_coords,
+    )
+    assert "extra_coord" in prof.columns
+    npt.assert_allclose(prof["extra_coord"], extra_coords)
+
+    # Test profile with multiple extra coord
+    extra_coords = [9, 18, 27]
+    prof = grd.profile(
+        (region[0], region[-1]), (region[1], region[-1]), 51, extra_coords=extra_coords,
+    )
+    extra_coord_names = ["extra_coord", "extra_coord_1", "extra_coord_2"]
+    for name, coord in zip(extra_coord_names, extra_coords):
+        assert name in prof.columns
+        npt.assert_allclose(prof[name], coord)
+
+
 def test_check_fit_input():
     "Make sure no exceptions are raised for standard cases"
     size = 20
