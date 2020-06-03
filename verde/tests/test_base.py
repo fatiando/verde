@@ -111,7 +111,7 @@ def test_basegridder():
         BaseGridder().fit(None, None)
 
     grd = PolyGridder()
-    assert repr(grd) == "PolyGridder(degree=1)"
+    assert repr(grd) == "PolyGridder()"
     grd.degree = 2
     assert repr(grd) == "PolyGridder(degree=2)"
 
