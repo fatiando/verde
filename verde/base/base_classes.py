@@ -69,7 +69,7 @@ class BaseGridder(BaseEstimator):
     >>> # Fit the gridder to our synthetic data
     >>> grd = MeanGridder().fit((data.easting, data.northing), data.scalars)
     >>> grd
-    MeanGridder(multiplier=1)
+    MeanGridder()
     >>> # Interpolate on a regular grid
     >>> grid = grd.grid(region=(0, 5, -10, -8), shape=(30, 20))
     >>> np.allclose(grid.scalars, -32.2182)
