@@ -306,7 +306,9 @@ class BaseGridder(BaseEstimator):
         if projection is None:
             data = check_data(self.predict(coordinates))
         else:
-            data = check_data(self.predict(projection(*coordinates)))
+            data = check_data(
+                self.predict(project_coordinates(coordinates, projection))
+            )
         data_names = get_data_names(data, data_names)
         coords = {dims[1]: coordinates[0][0, :], dims[0]: coordinates[1][:, 0]}
         # Add extra coordinates to xr.Dataset as non-dimension coordinates
@@ -388,7 +390,9 @@ class BaseGridder(BaseEstimator):
         if projection is None:
             data = check_data(self.predict(coordinates))
         else:
-            data = check_data(self.predict(projection(*coordinates)))
+            data = check_data(
+                self.predict(project_coordinates(coordinates, projection))
+            )
         data_names = get_data_names(data, data_names)
         columns = [(dims[0], coordinates[1]), (dims[1], coordinates[0])]
         extra_coords_names = self._get_extra_coords_names(coordinates)
@@ -492,14 +496,14 @@ class BaseGridder(BaseEstimator):
         # geographic coordinates since we don't do actual distances on a
         # sphere).
         if projection is not None:
-            point1 = projection(*point1)
-            point2 = projection(*point2)
+            point1 = project_coordinates(point1, projection)
+            point2 = project_coordinates(point2, projection)
         coordinates, distances = profile_coordinates(point1, point2, size, **kwargs)
         data = check_data(self.predict(coordinates))
         # Project the coordinates back to have geographic coordinates for the
         # profile but Cartesian distances.
         if projection is not None:
-            coordinates = projection(*coordinates, inverse=True)
+            coordinates = project_coordinates(coordinates, projection, inverse=True)
         data_names = get_data_names(data, data_names)
         columns = [
             (dims[0], coordinates[1]),
@@ -545,6 +549,42 @@ class BaseGridder(BaseEstimator):
                 name += "_{}".format(i)
             names.append(name)
         return names
+
+
+def project_coordinates(coordinates, projection, **kwargs):
+    """
+    Apply projection to given coordiantes
+
+    Allows to apply projections to any number of coordinates, assuming
+    that the first ones are ``longitude`` and ``latitude``.
+
+    Examples
+    --------
+
+    >>> # Define a custom projection function
+    >>> def projection(lon, lat, inverse=False):
+    ...     "Simple projection of geographic coordinates"
+    ...     radius = 1000
+    ...     if inverse:
+    ...         return (lon / radius, lat / radius)
+    ...     return (lon * radius, lat * radius)
+
+    >>> # Apply the projection to a set of coordinates containing:
+    >>> # longitude, latitude and height
+    >>> coordinates = (1., -2., 3.)
+    >>> project_coordinates(coordinates, projection)
+    (1000.0, -2000.0, 3.0)
+
+    >>> # Apply the inverse projection
+    >>> coordinates = (-500.0, 1500.0, -19.0)
+    >>> project_coordinates(coordinates, projection, inverse=True)
+    (-0.5, 1.5, -19.0)
+
+    """
+    proj_coordinates = projection(*coordinates[:2], **kwargs)
+    if len(coordinates) > 2:
+        proj_coordinates += tuple(coordinates[2:])
+    return proj_coordinates
 
 
 def get_data_names(data, data_names):
