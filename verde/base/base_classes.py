@@ -87,8 +87,10 @@ class BaseGridder(BaseEstimator):
     # (pd.DataFrame, xr.Dataset, etc)
     dims = ("northing", "easting")
 
-    # The default extra_coords names for generated outputs
-    # (pd.DataFrame, xr.Dataset, etc)
+    # The default name for any extra coordinates given to methods below
+    # through the `extra_coords` keyword argument. Coordinates are 
+    # included in the outputs (pandas.DataFrame or xarray.Dataset) 
+    # using this name as a basis.
     extra_coords_name = "extra_coord"
 
     def predict(self, coordinates):
