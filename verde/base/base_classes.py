@@ -240,7 +240,7 @@ class BaseGridder(BaseEstimator):
         data_names=None,
         projection=None,
         **kwargs
-    ):
+    ):  # pylint: disable=too-many-locals
         """
         Interpolate the data onto a regular grid.
 
