@@ -3,6 +3,62 @@
 Changelog
 =========
 
+Version 1.5.0
+-------------
+
+*Released on: 2020/06/04*
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3877060.svg
+   :target: https://doi.org/10.5281/zenodo.3877060
+
+Bug fixes:
+
+* Apply projections using only the first two coordinates instead all given
+  coordinates. Projections only really involve the first two (horizontal)
+  coordinates. Only affects users passing ``extra_coords`` to gridder methods.
+  (`#264 <https://github.com/fatiando/verde/pull/264>`__)
+
+New features:
+
+* **New** blocked cross-validation classes ``BlockShuffleSplit`` and
+  ``BlockKFold``. These are scikit-learn compatible cross-validators that split
+  the data into spatial blocks before assigning them to folds. Blocked
+  cross-validation can help avoid overestimation of prediction accuracy for
+  spatial data (see [Roberts_etal2017]_). The classes work with
+  ``verde.cross_val_score`` and any other function/method/class that accepts a
+  scikit-learn cross-validator.
+  (`#251 <https://github.com/fatiando/verde/pull/251>`__ and
+  `#254 <https://github.com/fatiando/verde/pull/254>`__)
+* Add the option for block-wise splitting in ``verde.train_test_split`` by
+  passing in a ``spacing`` or ``shape`` parameters.
+  (`#253 <https://github.com/fatiando/verde/pull/253>`__ and
+  `#257 <https://github.com/fatiando/verde/pull/257>`__)
+
+Base classes:
+
+* Add optional argument to ``verde.base.least_squares`` to copy Jacobian
+  matrix.
+  (`#255 <https://github.com/fatiando/verde/pull/255>`__)
+* Add extra coordinates (specified by the ``extra_coords`` keyword argument
+  to outputs of ``BaseGridder`` methods.
+  (`#265 <https://github.com/fatiando/verde/pull/265>`__)
+
+Maintenance:
+
+* Update tests to ``repr`` changes in scikit-learn 0.23.0.
+  (`#267 <https://github.com/fatiando/verde/pull/267>`__)
+
+Documentation:
+
+* Fix typo in README contributing section.
+  (`#258 <https://github.com/fatiando/verde/pull/258>`__)
+
+This release contains contributions from:
+
+* Leonardo Uieda
+* Santiago Soler
+* Rowan Cockett
+
 Version 1.4.0
 -------------
 
