@@ -39,8 +39,10 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Changelog" href="../../changes.html" />
@@ -137,12 +139,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#composite-estimators">Composite Estimators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#model-selection">Model Selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#coordinate-manipulation">Coordinate Manipulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#projection">Projection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#masking">Masking</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#utilities">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#input-output">Input/Output</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#datasets">Datasets</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#base-classes-and-functions">Base Classes and Functions</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="verde.base.BaseGridder.html">verde.base.BaseGridder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="verde.base.BaseBlockCrossValidator.html">verde.base.BaseBlockCrossValidator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="verde.base.n_1d_arrays.html">verde.base.n_1d_arrays</a></li>
 <li class="toctree-l3"><a class="reference internal" href="verde.base.check_fit_input.html">verde.base.check_fit_input</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">verde.base.least_squares</a></li>
@@ -251,13 +255,19 @@
 <h1>verde.base.least_squares<a class="headerlink" href="#verde-base-least-squares" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="verde.base.least_squares">
-<code class="sig-prename descclassname">verde.base.</code><code class="sig-name descname">least_squares</code><span class="sig-paren">(</span><em class="sig-param">jacobian</em>, <em class="sig-param">data</em>, <em class="sig-param">weights</em>, <em class="sig-param">damping=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/base/least_squares.html#least_squares"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.base.least_squares" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">verde.base.</code><code class="sig-name descname">least_squares</code><span class="sig-paren">(</span><em class="sig-param">jacobian</em>, <em class="sig-param">data</em>, <em class="sig-param">weights</em>, <em class="sig-param">damping=None</em>, <em class="sig-param">copy_jacobian=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/base/least_squares.html#least_squares"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.base.least_squares" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solve a weighted least-squares problem with optional damping regularization</p>
 <p>Scales the Jacobian matrix so that each column has unit variance. This
 helps keep the regularization parameter in a sensible range. The scaling is
 undone before returning the estimated parameters so that scaling isn’t
 required for predictions. Doesn’t normalize the column means because that
 operation can’t be undone.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Setting <cite>copy_jacobian</cite> to True will copy the Jacobian matrix, doubling
+the memory required. Use it only if the Jacobian matrix is needed
+afterwards.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -269,6 +279,8 @@ the weights in the same order as the data. Use <code class="docutils literal not
 without weights.</p></li>
 <li><p><strong>damping</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – The positive damping (Tikhonov 0th order) regularization parameter. If
 <code class="docutils literal notranslate"><span class="pre">damping=None</span></code>, will use a regular least-squares fit.</p></li>
+<li><p><strong>copy_jacobian</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – If False, the Jacobian matrix will be scaled inplace. If True, the
+Jacobian matrix will be copied before scaling. Default False.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -301,7 +313,7 @@ without weights.</p></li>
     <p>
         &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Mar 23, 2020.
+        Last updated on Jun 04, 2020.
       </span>
 
     </p>

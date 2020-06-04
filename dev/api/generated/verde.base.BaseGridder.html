@@ -39,11 +39,13 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="verde.base.n_1d_arrays" href="verde.base.n_1d_arrays.html" />
+    <link rel="next" title="verde.base.BaseBlockCrossValidator" href="verde.base.BaseBlockCrossValidator.html" />
     <link rel="prev" title="verde.datasets.setup_rio_magnetic_map" href="verde.datasets.setup_rio_magnetic_map.html" />
     <!-- Google Analytics tracking code -->
     <script>
@@ -137,6 +139,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#composite-estimators">Composite Estimators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#model-selection">Model Selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#coordinate-manipulation">Coordinate Manipulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#projection">Projection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#masking">Masking</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#utilities">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#input-output">Input/Output</a></li>
@@ -146,6 +149,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#examples-using-verde-base-basegridder">Examples using <code class="docutils literal notranslate"><span class="pre">verde.base.BaseGridder</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="verde.base.BaseBlockCrossValidator.html">verde.base.BaseBlockCrossValidator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="verde.base.n_1d_arrays.html">verde.base.n_1d_arrays</a></li>
 <li class="toctree-l3"><a class="reference internal" href="verde.base.check_fit_input.html">verde.base.check_fit_input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="verde.base.least_squares.html">verde.base.least_squares</a></li>
@@ -264,7 +268,7 @@ numpy arrays for each component of vector data.</p>
 implementation of a <a class="reference internal" href="#verde.base.BaseGridder.fit" title="verde.base.BaseGridder.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a> method to fit the
 gridder model to data.</p>
 <p>Doesn’t define any new attributes.</p>
-<p>This is a subclass of <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.base.BaseEstimator.html#sklearn.base.BaseEstimator" title="(in scikit-learn v0.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code></a> and must abide by
+<p>This is a subclass of <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.base.BaseEstimator.html#sklearn.base.BaseEstimator" title="(in scikit-learn v0.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code></a> and must abide by
 the same rules of the scikit-learn classes. Mainly:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">__init__</span></code> must <strong>only</strong> assign values to attributes based on the
@@ -304,7 +308,7 @@ data to every single point (it’s not a very good interpolator).</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Fit the gridder to our synthetic data</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">grd</span> <span class="o">=</span> <span class="n">MeanGridder</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">easting</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">northing</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">scalars</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">grd</span>
-<span class="go">MeanGridder(multiplier=1)</span>
+<span class="go">MeanGridder()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Interpolate on a regular grid</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">grd</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">scalars</span><span class="p">,</span> <span class="o">-</span><span class="mf">32.2182</span><span class="p">)</span>
@@ -439,7 +443,7 @@ dimension (the <em>shape</em>) or by the grid node spacing. See
 <p>If the interpolator collected the input data region, then it will be
 used if <code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
 <p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
-dimensions and the data field(s) in the output <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.
+dimensions and the data field(s) in the output <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.
 Default names will be provided if none are given.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -509,7 +513,7 @@ distances. Point coordinates are generated by
 can be passed as extra keyword arguments (<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this method.</p>
 <p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
 dimensions and the data field(s) in the output
-<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
 <p>Includes the calculated Cartesian distance from <em>point1</em> for each data
 point in the profile.</p>
 <p>To specify <em>point1</em> and <em>point2</em> in a coordinate system that would
@@ -583,13 +587,13 @@ arguments for this function can be passed as extra keyword arguments
 used if <code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
 <p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
 dimensions and the data field(s) in the output
-<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>region</strong> (<em>list =</em><em> [</em><em>W</em><em>, </em><em>E</em><em>, </em><em>S</em><em>, </em><em>N</em><em>]</em>) – The west, east, south, and north boundaries of a given region.</p></li>
 <li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The number of points to generate.</p></li>
-<li><p><strong>random_state</strong> (<em>numpy.random.RandomState</em><em> or </em><em>an int seed</em>) – A random number generator used to define the state of the random
+<li><p><strong>random_state</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/random/legacy.html#numpy.random.RandomState" title="(in NumPy v1.18)"><em>numpy.random.RandomState</em></a><em> or </em><em>an int seed</em>) – A random number generator used to define the state of the random
 permutations. Use a fixed seed to make sure computations are
 reproducible. Use <code class="docutils literal notranslate"><span class="pre">None</span></code> to choose a seed automatically
 (resulting in different numbers with each run).</p></li>
@@ -669,9 +673,73 @@ component of a nested object.</p>
 
 <div class="section" id="examples-using-verde-base-basegridder">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">verde.base.BaseGridder</span></code><a class="headerlink" href="#examples-using-verde-base-basegridder" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Verde provides classes and functions for processing spatial data, like bathymetry, GPS, tempera..."><div class="figure align-default" id="id1">
-<img alt="../../_images/sphx_glr_overview_thumb.png" src="../../_images/sphx_glr_overview_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/overview.html#sphx-glr-tutorials-overview-py"><span class="std std-ref">Overview</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<div class="sphx-glr-thumbcontainer" tooltip="Sometimes gridded data products need to be projected before they can be used. For example, you ..."><div class="figure align-default" id="id1">
+<img alt="Projection of gridded data" src="../../_images/sphx_glr_project_grid_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/project_grid.html#sphx-glr-gallery-project-grid-py"><span class="std std-ref">Projection of gridded data</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Scipy offers a range of interpolation methods in scipy.interpolate and 3 specifically for 2D da..."><div class="figure align-default" id="id2">
+<img alt="Gridding with Scipy" src="../../_images/sphx_glr_scipygridder_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/scipygridder.html#sphx-glr-gallery-scipygridder-py"><span class="std std-ref">Gridding with Scipy</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Biharmonic spline interpolation is based on estimating vertical forces acting on an elastic she..."><div class="figure align-default" id="id3">
+<img alt="Gridding with splines" src="../../_images/sphx_glr_spline_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline.html#sphx-glr-gallery-spline-py"><span class="std std-ref">Gridding with splines</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The verde.Spline has two main parameters that need to be configured:"><div class="figure align-default" id="id4">
+<img alt="Gridding with splines (cross-validated)" src="../../_images/sphx_glr_spline_cv_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline_cv.html#sphx-glr-gallery-spline-cv-py"><span class="std std-ref">Gridding with splines (cross-validated)</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="An advantage of using the Green&#x27;s functions based verde.Spline over verde.ScipyGridder is that ..."><div class="figure align-default" id="id5">
+<img alt="Gridding with splines and weights" src="../../_images/sphx_glr_spline_weights_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline_weights.html#sphx-glr-gallery-spline-weights-py"><span class="std std-ref">Gridding with splines and weights</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Verde offers the verde.Trend class to fit a 2D polynomial trend to your data. This can be usefu..."><div class="figure align-default" id="id6">
+<img alt="Polynomial trend" src="../../_images/sphx_glr_trend_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/trend.html#sphx-glr-gallery-trend-py"><span class="std std-ref">Polynomial trend</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Verde provides the verde.Trend class to estimate a polynomial trend and the verde.Vector class ..."><div class="figure align-default" id="id7">
+<img alt="Trends in vector data" src="../../_images/sphx_glr_vector_trend_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/vector_trend.html#sphx-glr-gallery-vector-trend-py"><span class="std std-ref">Trends in vector data</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="We can use verde.Vector to simultaneously process and grid all components of vector data. Each ..."><div class="figure align-default" id="id8">
+<img alt="Gridding 2D vectors" src="../../_images/sphx_glr_vector_uncoupled_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/vector_uncoupled.html#sphx-glr-gallery-vector-uncoupled-py"><span class="std std-ref">Gridding 2D vectors</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Often, a data processing pipeline looks like the following:"><div class="figure align-default" id="id9">
+<img alt="Chaining Operations" src="../../_images/sphx_glr_chain_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/chain.html#sphx-glr-tutorials-chain-py"><span class="std std-ref">Chaining Operations</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The Green&#x27;s functions based interpolations in Verde are all linear regressions under the hood. ..."><div class="figure align-default" id="id10">
+<img alt="Evaluating Performance" src="../../_images/sphx_glr_model_evaluation_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/model_evaluation.html#sphx-glr-tutorials-model-evaluation-py"><span class="std std-ref">Evaluating Performance</span></a></span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="In model_evaluation, we saw how to check the performance of an interpolator using cross-validat..."><div class="figure align-default" id="id11">
+<img alt="Model Selection" src="../../_images/sphx_glr_model_selection_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/model_selection.html#sphx-glr-tutorials-model-selection-py"><span class="std std-ref">Model Selection</span></a></span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Verde provides classes and functions for processing spatial data, like bathymetry, GPS, tempera..."><div class="figure align-default" id="id12">
+<img alt="Overview" src="../../_images/sphx_glr_overview_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/overview.html#sphx-glr-tutorials-overview-py"><span class="std std-ref">Overview</span></a></span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Most gridders and processing methods in Verde operate under the assumption that the data coordi..."><div class="figure align-default" id="id13">
+<img alt="Geographic Coordinates" src="../../_images/sphx_glr_projections_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/projections.html#sphx-glr-tutorials-projections-py"><span class="std std-ref">Geographic Coordinates</span></a></span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Trend estimation and removal is a common operation, particularly when dealing with geophysical ..."><div class="figure align-default" id="id14">
+<img alt="Trend Estimation" src="../../_images/sphx_glr_trends_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/trends.html#sphx-glr-tutorials-trends-py"><span class="std std-ref">Trend Estimation</span></a></span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Some datasets have multiple vector components measured for each location, like the East and Wes..."><div class="figure align-default" id="id15">
+<img alt="Vector Data" src="../../_images/sphx_glr_vectors_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/vectors.html#sphx-glr-tutorials-vectors-py"><span class="std std-ref">Vector Data</span></a></span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="One of the advantages of using a Green&#x27;s functions approach to interpolation is that we can eas..."><div class="figure align-default" id="id16">
+<img alt="Using Weights" src="../../_images/sphx_glr_weights_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/weights.html#sphx-glr-tutorials-weights-py"><span class="std std-ref">Using Weights</span></a></span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The verde.datasets.CheckerBoard class generates synthetic data in a checkerboard pattern. It ha..."><div class="figure align-default" id="id17">
+<img alt="Checkerboard function" src="../../_images/sphx_glr_checkerboard_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../sample_data/checkerboard.html#sphx-glr-sample-data-checkerboard-py"><span class="std std-ref">Checkerboard function</span></a></span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -684,7 +752,7 @@ component of a nested object.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="verde.base.n_1d_arrays.html" class="btn btn-neutral float-right" title="verde.base.n_1d_arrays" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="verde.base.BaseBlockCrossValidator.html" class="btn btn-neutral float-right" title="verde.base.BaseBlockCrossValidator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="verde.datasets.setup_rio_magnetic_map.html" class="btn btn-neutral float-left" title="verde.datasets.setup_rio_magnetic_map" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -698,7 +766,7 @@ component of a nested object.</p>
     <p>
         &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Mar 23, 2020.
+        Last updated on Jun 04, 2020.
       </span>
 
     </p>

@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_tutorials_chain.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_tutorials_chain.py:
+        Click :ref:`here <sphx_glr_download_tutorials_chain.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_tutorials_chain.py:
 
 
 Chaining Operations
@@ -72,6 +74,7 @@ For example, let's create a pipeline to grid our sample bathymetry data.
 
 
 .. image:: /tutorials/images/sphx_glr_chain_001.png
+    :alt: Bathymetry from Baja California
     :class: sphx-glr-single-img
 
 
@@ -118,14 +121,9 @@ trend, and then fits a standard gridder to the trend residuals.
  .. code-block:: none
 
     Chain(steps=[('reduce',
-                  BlockReduce(adjust='spacing', center_coordinates=False,
-                              drop_coords=True,
-                              reduction=<function median at 0x7f942d050378>,
-                              region=None, shape=None, spacing=18500.0)),
-                 ('trend', Trend(degree=1)),
-                 ('spline',
-                  Spline(damping=None, engine='auto', force_coords=None,
-                         mindist=1e-05))])
+                  BlockReduce(reduction=<function median at 0x7fe27a171b70>,
+                              spacing=18500.0)),
+                 ('trend', Trend(degree=1)), ('spline', Spline())])
 
 
 
@@ -154,14 +152,9 @@ Calling :meth:`verde.Chain.fit` will automatically run the data through the chai
 
 
     Chain(steps=[('reduce',
-                  BlockReduce(adjust='spacing', center_coordinates=False,
-                              drop_coords=True,
-                              reduction=<function median at 0x7f942d050378>,
-                              region=None, shape=None, spacing=18500.0)),
-                 ('trend', Trend(degree=1)),
-                 ('spline',
-                  Spline(damping=None, engine='auto', force_coords=None,
-                         mindist=1e-05))])
+                  BlockReduce(reduction=<function median at 0x7fe27a171b70>,
+                              spacing=18500.0)),
+                 ('trend', Trend(degree=1)), ('spline', Spline())])
 
 
 
@@ -191,6 +184,7 @@ data, not the original data, so the fit won't be perfect.
 
 
 .. image:: /tutorials/images/sphx_glr_chain_002.png
+    :alt: Histogram of fit residuals
     :class: sphx-glr-single-img
 
 
@@ -258,6 +252,7 @@ Finally, we can plot the resulting grid:
 
 
 .. image:: /tutorials/images/sphx_glr_chain_003.png
+    :alt: chain
     :class: sphx-glr-single-img
 
 
@@ -299,7 +294,7 @@ attribute. It's a dictionary with keys and values matching the inputs given to t
  .. code-block:: none
 
     Trend(degree=1)
-    Spline(damping=None, engine='auto', force_coords=None, mindist=1e-05)
+    Spline()
 
 
 
@@ -334,6 +329,7 @@ grids and predictions. For example, we can get a grid of the estimated trend:
 
 
 .. image:: /tutorials/images/sphx_glr_chain_004.png
+    :alt: chain
     :class: sphx-glr-single-img
 
 
@@ -361,7 +357,7 @@ grids and predictions. For example, we can get a grid of the estimated trend:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  9.259 seconds)
+   **Total running time of the script:** ( 0 minutes  11.066 seconds)
 
 
 .. _sphx_glr_download_tutorials_chain.py:
@@ -374,13 +370,13 @@ grids and predictions. For example, we can get a grid of the estimated trend:
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: chain.py <chain.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: chain.ipynb <chain.ipynb>`
 

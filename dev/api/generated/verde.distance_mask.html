@@ -39,12 +39,14 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="verde.convexhull_mask" href="verde.convexhull_mask.html" />
-    <link rel="prev" title="verde.expanding_window" href="verde.expanding_window.html" />
+    <link rel="prev" title="verde.project_grid" href="verde.project_grid.html" />
     <!-- Google Analytics tracking code -->
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -137,6 +139,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#composite-estimators">Composite Estimators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#model-selection">Model Selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#coordinate-manipulation">Coordinate Manipulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#projection">Projection</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#masking">Masking</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">verde.distance_mask</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#examples-using-verde-distance-mask">Examples using <code class="docutils literal notranslate"><span class="pre">verde.distance_mask</span></code></a></li>
@@ -263,7 +266,7 @@ calculations.</p>
 point is more than <em>maxdist</em> from the closest data point and True
 otherwise.</p></li>
 <li><p>If <em>grid</em> is not None, produces a mask and applies it to <em>grid</em> (an
-<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>).</p></li>
+<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>).</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -278,11 +281,11 @@ otherwise.</p></li>
 <li><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> or </em><em>tuple of arrays</em>) – Arrays with the coordinates of each point that will be masked. Should
 be in the following order: (easting, northing, …). Only easting and
 northing will be used, all subsequent coordinates will be ignored.</p></li>
-<li><p><strong>grid</strong> (None or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – 2D grid with values to be masked. Will use the first two dimensions of
+<li><p><strong>grid</strong> (None or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – 2D grid with values to be masked. Will use the first two dimensions of
 the grid as northing and easting coordinates, respectively. For this to
 work, the grid dimensions <strong>must be ordered as northing then easting</strong>.
 The mask will be applied to <em>grid</em> using the
-<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.where.html#xarray.Dataset.where" title="(in xarray v0.14.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">xarray.Dataset.where</span></code></a> method.</p></li>
+<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.where.html#xarray.Dataset.where" title="(in xarray v0.15.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">xarray.Dataset.where</span></code></a> method.</p></li>
 <li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – If not None, then should be a callable object <code class="docutils literal notranslate"><span class="pre">projection(easting,</span>
 <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code> that takes in easting and
 northing coordinate arrays and returns projected easting and northing
@@ -292,9 +295,9 @@ distances.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>mask</strong> (array or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – If <em>coordinates</em> was given, then a boolean array with the same shape as
+<dd class="field-even"><p><strong>mask</strong> (array or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – If <em>coordinates</em> was given, then a boolean array with the same shape as
 the elements of <em>coordinates</em>. If <em>grid</em> was given, then an
-<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> with the mask applied to it.</p>
+<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> with the mask applied to it.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -332,31 +335,31 @@ the elements of <em>coordinates</em>. If <em>grid</em> was given, then an
 <div class="section" id="examples-using-verde-distance-mask">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">verde.distance_mask</span></code><a class="headerlink" href="#examples-using-verde-distance-mask" title="Permalink to this headline">¶</a></h2>
 <div class="sphx-glr-thumbcontainer" tooltip="Sometimes, data points are unevenly distributed. In such cases, we might not want to have inter..."><div class="figure align-default" id="id1">
-<img alt="../../_images/sphx_glr_distance_mask_thumb.png" src="../../_images/sphx_glr_distance_mask_thumb.png" />
+<img alt="Mask grid points by distance" src="../../_images/sphx_glr_distance_mask_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/distance_mask.html#sphx-glr-gallery-distance-mask-py"><span class="std std-ref">Mask grid points by distance</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Biharmonic spline interpolation is based on estimating vertical forces acting on an elastic she..."><div class="figure align-default" id="id2">
-<img alt="../../_images/sphx_glr_spline_thumb.png" src="../../_images/sphx_glr_spline_thumb.png" />
+<img alt="Gridding with splines" src="../../_images/sphx_glr_spline_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline.html#sphx-glr-gallery-spline-py"><span class="std std-ref">Gridding with splines</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="The verde.Spline has two main parameters that need to be configured:"><div class="figure align-default" id="id3">
-<img alt="../../_images/sphx_glr_spline_cv_thumb.png" src="../../_images/sphx_glr_spline_cv_thumb.png" />
+<img alt="Gridding with splines (cross-validated)" src="../../_images/sphx_glr_spline_cv_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline_cv.html#sphx-glr-gallery-spline-cv-py"><span class="std std-ref">Gridding with splines (cross-validated)</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="The Green&#x27;s functions based interpolations in Verde are all linear regressions under the hood. ..."><div class="figure align-default" id="id4">
-<img alt="../../_images/sphx_glr_model_evaluation_thumb.png" src="../../_images/sphx_glr_model_evaluation_thumb.png" />
+<img alt="Evaluating Performance" src="../../_images/sphx_glr_model_evaluation_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/model_evaluation.html#sphx-glr-tutorials-model-evaluation-py"><span class="std std-ref">Evaluating Performance</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="In model_evaluation, we saw how to check the performance of an interpolator using cross-validat..."><div class="figure align-default" id="id5">
-<img alt="../../_images/sphx_glr_model_selection_thumb.png" src="../../_images/sphx_glr_model_selection_thumb.png" />
+<img alt="Model Selection" src="../../_images/sphx_glr_model_selection_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/model_selection.html#sphx-glr-tutorials-model-selection-py"><span class="std std-ref">Model Selection</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Most gridders and processing methods in Verde operate under the assumption that the data coordi..."><div class="figure align-default" id="id6">
-<img alt="../../_images/sphx_glr_projections_thumb.png" src="../../_images/sphx_glr_projections_thumb.png" />
+<img alt="Geographic Coordinates" src="../../_images/sphx_glr_projections_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/projections.html#sphx-glr-tutorials-projections-py"><span class="std std-ref">Geographic Coordinates</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Some datasets have multiple vector components measured for each location, like the East and Wes..."><div class="figure align-default" id="id7">
-<img alt="../../_images/sphx_glr_vectors_thumb.png" src="../../_images/sphx_glr_vectors_thumb.png" />
+<img alt="Vector Data" src="../../_images/sphx_glr_vectors_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/vectors.html#sphx-glr-tutorials-vectors-py"><span class="std std-ref">Vector Data</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
@@ -373,7 +376,7 @@ the elements of <em>coordinates</em>. If <em>grid</em> was given, then an
         <a href="verde.convexhull_mask.html" class="btn btn-neutral float-right" title="verde.convexhull_mask" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="verde.expanding_window.html" class="btn btn-neutral float-left" title="verde.expanding_window" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="verde.project_grid.html" class="btn btn-neutral float-left" title="verde.project_grid" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -384,7 +387,7 @@ the elements of <em>coordinates</em>. If <em>grid</em> was given, then an
     <p>
         &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Mar 23, 2020.
+        Last updated on Jun 04, 2020.
       </span>
 
     </p>

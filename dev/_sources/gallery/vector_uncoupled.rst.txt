@@ -1,10 +1,12 @@
-.. note::
-    :class: sphx-glr-download-link-note
+.. only:: html
 
-    Click :ref:`here <sphx_glr_download_gallery_vector_uncoupled.py>` to download the full example code
-.. rst-class:: sphx-glr-example-title
+    .. note::
+        :class: sphx-glr-download-link-note
 
-.. _sphx_glr_gallery_vector_uncoupled.py:
+        Click :ref:`here <sphx_glr_download_gallery_vector_uncoupled.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_gallery_vector_uncoupled.py:
 
 
 Gridding 2D vectors
@@ -21,6 +23,7 @@ pipeline.
 
 
 .. image:: /gallery/images/sphx_glr_vector_uncoupled_001.png
+    :alt: Uncoupled spline gridding of wind speed
     :class: sphx-glr-single-img
 
 
@@ -39,17 +42,12 @@ pipeline.
 
     [5 rows x 6 columns]
     Chain(steps=[('mean',
-                  BlockReduce(adjust='spacing', center_coordinates=False,
-                              drop_coords=True,
-                              reduction=<function mean at 0x7f942d1818c8>,
-                              region=None, shape=None, spacing=37000.0)),
+                  BlockReduce(reduction=<function mean at 0x7fe27a324158>,
+                              spacing=37000.0)),
                  ('trend', Vector(components=[Trend(degree=1), Trend(degree=1)])),
                  ('spline',
-                  Vector(components=[Spline(damping=1e-10, engine='auto',
-                                            force_coords=None, mindist=500000.0),
-                                     Spline(damping=1e-10, engine='auto',
-                                            force_coords=None,
-                                            mindist=500000.0)]))])
+                  Vector(components=[Spline(damping=1e-10, mindist=500000.0),
+                                     Spline(damping=1e-10, mindist=500000.0)]))])
     Cross-validation R^2 score: 0.78
     /home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:1752: RuntimeWarning: invalid value encountered in less
       u, v = self.projection.transform_vectors(t, x, y, u, v)
@@ -164,7 +162,7 @@ pipeline.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.238 seconds)
+   **Total running time of the script:** ( 0 minutes  0.270 seconds)
 
 
 .. _sphx_glr_download_gallery_vector_uncoupled.py:
@@ -177,13 +175,13 @@ pipeline.
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-python
 
      :download:`Download Python source code: vector_uncoupled.py <vector_uncoupled.py>`
 
 
 
-  .. container:: sphx-glr-download
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
 
      :download:`Download Jupyter notebook: vector_uncoupled.ipynb <vector_uncoupled.ipynb>`
 

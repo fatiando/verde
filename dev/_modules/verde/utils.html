@@ -39,8 +39,10 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <!-- Google Analytics tracking code -->
@@ -573,6 +575,124 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">tree</span> <span class="o">=</span> <span class="n">cKDTree</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">tree</span>
+
+
+<span class="k">def</span> <span class="nf">partition_by_sum</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">parts</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Partition an array into parts of approximately equal sum.</span>
+
+<span class="sd">    Does not change the order of the array elements.</span>
+
+<span class="sd">    Produces the partition indices on the array. Use :func:`numpy.split` to</span>
+<span class="sd">    divide the array along these indices.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        Depending on the input and number of parts, there might not exist</span>
+<span class="sd">        partition points. In these cases, the function will raise</span>
+<span class="sd">        ``ValueError``. This is more likely to happen as the number of parts</span>
+<span class="sd">        approaches the number of elements in the array.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    array : array or array-like</span>
+<span class="sd">        The 1D array that will be partitioned. The array will be raveled before</span>
+<span class="sd">        computations.</span>
+<span class="sd">    parts : int</span>
+<span class="sd">        Number of parts to split the array. Can be at most the number of</span>
+<span class="sd">        elements in the array.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    indices : array</span>
+<span class="sd">        The indices in which the array should be split.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+
+<span class="sd">    Solution from https://stackoverflow.com/a/54024280</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; array = np.arange(10)</span>
+<span class="sd">    &gt;&gt;&gt; split_points = partition_by_sum(array, parts=2)</span>
+<span class="sd">    &gt;&gt;&gt; print(split_points)</span>
+<span class="sd">    [7]</span>
+<span class="sd">    &gt;&gt;&gt; for part in np.split(array, split_points):</span>
+<span class="sd">    ...     print(part, part.sum())</span>
+<span class="sd">    [0 1 2 3 4 5 6] 21</span>
+<span class="sd">    [7 8 9] 24</span>
+<span class="sd">    &gt;&gt;&gt; split_points = partition_by_sum(array, parts=3)</span>
+<span class="sd">    &gt;&gt;&gt; print(split_points)</span>
+<span class="sd">    [6 8]</span>
+<span class="sd">    &gt;&gt;&gt; for part in np.split(array, split_points):</span>
+<span class="sd">    ...     print(part, part.sum())</span>
+<span class="sd">    [0 1 2 3 4 5] 15</span>
+<span class="sd">    [6 7] 13</span>
+<span class="sd">    [8 9] 17</span>
+<span class="sd">    &gt;&gt;&gt; split_points = partition_by_sum(array, parts=5)</span>
+<span class="sd">    &gt;&gt;&gt; print(split_points)</span>
+<span class="sd">    [4 6 7 9]</span>
+<span class="sd">    &gt;&gt;&gt; for part in np.split(array, split_points):</span>
+<span class="sd">    ...     print(part, part.sum())</span>
+<span class="sd">    [0 1 2 3] 6</span>
+<span class="sd">    [4 5] 9</span>
+<span class="sd">    [6] 6</span>
+<span class="sd">    [7 8] 15</span>
+<span class="sd">    [9] 9</span>
+<span class="sd">    &gt;&gt;&gt; # Use an array with a random looking element order</span>
+<span class="sd">    &gt;&gt;&gt; array = [5, 6, 4, 6, 8, 1, 2, 6, 3, 3]</span>
+<span class="sd">    &gt;&gt;&gt; split_points = partition_by_sum(array, parts=2)</span>
+<span class="sd">    &gt;&gt;&gt; print(split_points)</span>
+<span class="sd">    [4]</span>
+<span class="sd">    &gt;&gt;&gt; for part in np.split(array, split_points):</span>
+<span class="sd">    ...     print(part, part.sum())</span>
+<span class="sd">    [5 6 4 6] 21</span>
+<span class="sd">    [8 1 2 6 3 3] 23</span>
+<span class="sd">    &gt;&gt;&gt; # Splits can have very different sums but this is best that can be done</span>
+<span class="sd">    &gt;&gt;&gt; # without changing the order of the array.</span>
+<span class="sd">    &gt;&gt;&gt; split_points = partition_by_sum(array, parts=5)</span>
+<span class="sd">    &gt;&gt;&gt; print(split_points)</span>
+<span class="sd">    [1 3 4 7]</span>
+<span class="sd">    &gt;&gt;&gt; for part in np.split(array, split_points):</span>
+<span class="sd">    ...     print(part, part.sum())</span>
+<span class="sd">    [5] 5</span>
+<span class="sd">    [6 4] 10</span>
+<span class="sd">    [6] 6</span>
+<span class="sd">    [8 1 2] 11</span>
+<span class="sd">    [6 3 3] 12</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">array</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">parts</span> <span class="o">&gt;</span> <span class="n">array</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Cannot partition an array of size </span><span class="si">{}</span><span class="s2"> into </span><span class="si">{}</span><span class="s2"> parts of equal sum.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">array</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">parts</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="n">cumulative_sum</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+    <span class="c1"># Ideally, we want each part to have the same number of points (total /</span>
+    <span class="c1"># parts).</span>
+    <span class="n">ideal_sum</span> <span class="o">=</span> <span class="n">cumulative_sum</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="n">parts</span>
+    <span class="c1"># If the parts are ideal, the cumulative sum of each part will be this</span>
+    <span class="n">ideal_cumsum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">parts</span><span class="p">)</span> <span class="o">*</span> <span class="n">ideal_sum</span>
+    <span class="c1"># Find the places in the real cumulative sum where the ideal values would</span>
+    <span class="c1"># be. These are the split points. Between each split point, the sum of</span>
+    <span class="c1"># elements will be approximately the ideal sum. Need to insert to the right</span>
+    <span class="c1"># side so that we find cumsum[i - 1] &lt;= ideal &lt; cumsum[i]. This way, if a</span>
+    <span class="c1"># part has ideal sum, the last element (i - 1) will be included. Otherwise,</span>
+    <span class="c1"># we would never have ideal sums.</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">cumulative_sum</span><span class="p">,</span> <span class="n">ideal_cumsum</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+    <span class="c1"># Check for repeated split points, which indicates that there is no way to</span>
+    <span class="c1"># split the array.</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">indices</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Could not find partition points to split the array into </span><span class="si">{}</span><span class="s2"> parts &quot;</span>
+            <span class="s2">&quot;of equal sum.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">indices</span>
 </pre></div>
 
            </div>
@@ -587,7 +707,7 @@
     <p>
         &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Mar 23, 2020.
+        Last updated on Jun 04, 2020.
       </span>
 
     </p>

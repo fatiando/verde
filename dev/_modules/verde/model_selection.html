@@ -39,8 +39,10 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <!-- Google Analytics tracking code -->
@@ -225,34 +227,463 @@
   <h1>Source code for verde.model_selection</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Functions for automating model selection through cross-validation.</span>
-
-<span class="sd">Supports using a dask.distributed.Client object for parallelism. The</span>
-<span class="sd">DummyClient is used as a serial version of the parallel client.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">KFold</span><span class="p">,</span> <span class="n">ShuffleSplit</span>
 <span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">clone</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_random_state</span>
 
-<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">check_fit_input</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">dispatch</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">check_fit_input</span><span class="p">,</span> <span class="n">n_1d_arrays</span><span class="p">,</span> <span class="n">BaseBlockCrossValidator</span>
+<span class="kn">from</span> <span class="nn">.coordinates</span> <span class="kn">import</span> <span class="n">block_split</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">dispatch</span><span class="p">,</span> <span class="n">partition_by_sum</span>
 
 
 <span class="c1"># Otherwise, DeprecationWarning won&#39;t be shown, kind of defeating the purpose.</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="train_test_split"><a class="viewcode-back" href="../../api/generated/verde.train_test_split.html#verde.train_test_split">[docs]</a><span class="k">def</span> <span class="nf">train_test_split</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="c1"># Pylint doesn&#39;t like X, y scikit-learn argument names.</span>
+<span class="c1"># pylint: disable=invalid-name,unused-argument</span>
+
+
+<div class="viewcode-block" id="BlockShuffleSplit"><a class="viewcode-back" href="../../api/generated/verde.BlockShuffleSplit.html#verde.BlockShuffleSplit">[docs]</a><span class="k">class</span> <span class="nc">BlockShuffleSplit</span><span class="p">(</span><span class="n">BaseBlockCrossValidator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Random permutation of spatial blocks cross-validator.</span>
+
+<span class="sd">    Yields indices to split data into training and test sets. Data are first</span>
+<span class="sd">    grouped into rectangular blocks of size given by the *spacing* argument.</span>
+<span class="sd">    Alternatively, blocks can be defined by the number of blocks in each</span>
+<span class="sd">    dimension using the *shape* argument instead of *spacing*. The blocks are</span>
+<span class="sd">    then split into testing and training sets randomly.</span>
+
+<span class="sd">    The proportion of blocks assigned to each set is controlled by *test_size*</span>
+<span class="sd">    and/or *train_size*. However, the total amount of actual data points in</span>
+<span class="sd">    each set could be different from these values since blocks can have</span>
+<span class="sd">    a different number of data points inside them. To guarantee that the</span>
+<span class="sd">    proportion of actual data is as close as possible to the proportion of</span>
+<span class="sd">    blocks, this cross-validator generates an extra number of splits and</span>
+<span class="sd">    selects the one with proportion of data points in each set closer to the</span>
+<span class="sd">    desired amount [Valavi_etal2019]_. The number of balancing splits per</span>
+<span class="sd">    iteration is controlled by the *balancing* argument.</span>
+
+<span class="sd">    This cross-validator is preferred over</span>
+<span class="sd">    :class:`sklearn.model_selection.ShuffleSplit` for spatial data to avoid</span>
+<span class="sd">    overestimating cross-validation scores. This can happen because of the</span>
+<span class="sd">    inherent autocorrelation that is usually associated with this type of data</span>
+<span class="sd">    (points that are close together are more likely to have similar values).</span>
+<span class="sd">    See [Roberts_etal2017]_ for an overview of this topic.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Like :class:`sklearn.model_selection.ShuffleSplit`, this</span>
+<span class="sd">        cross-validator cannot guarantee that all folds will be different,</span>
+<span class="sd">        although this is still very likely for sizeable datasets.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    spacing : float, tuple = (s_north, s_east), or None</span>
+<span class="sd">        The block size in the South-North and West-East directions,</span>
+<span class="sd">        respectively. A single value means that the spacing is equal in both</span>
+<span class="sd">        directions. If None, then *shape* **must be provided**.</span>
+<span class="sd">    shape : tuple = (n_north, n_east) or None</span>
+<span class="sd">        The number of blocks in the South-North and West-East directions,</span>
+<span class="sd">        respectively. If None, then *spacing* **must be provided**.</span>
+<span class="sd">    n_splits : int, default 10</span>
+<span class="sd">        Number of re-shuffling &amp; splitting iterations.</span>
+<span class="sd">    test_size : float, int, None, default=None</span>
+<span class="sd">        If float, should be between 0.0 and 1.0 and represent the proportion</span>
+<span class="sd">        of the dataset to include in the test split. If int, represents the</span>
+<span class="sd">        absolute number of test samples. If None, the value is set to the</span>
+<span class="sd">        complement of the train size. If ``train_size`` is also None, it will</span>
+<span class="sd">        be set to 0.1.</span>
+<span class="sd">    train_size : float, int, or None, default=None</span>
+<span class="sd">        If float, should be between 0.0 and 1.0 and represent the</span>
+<span class="sd">        proportion of the dataset to include in the train split. If</span>
+<span class="sd">        int, represents the absolute number of train samples. If None,</span>
+<span class="sd">        the value is automatically set to the complement of the test size.</span>
+<span class="sd">    random_state : int, RandomState instance or None, optional (default=None)</span>
+<span class="sd">        If int, random_state is the seed used by the random number generator;</span>
+<span class="sd">        If RandomState instance, random_state is the random number generator;</span>
+<span class="sd">        If None, the random number generator is the RandomState instance used</span>
+<span class="sd">        by `np.random`.</span>
+<span class="sd">    balancing : int</span>
+<span class="sd">        The number of splits generated per iteration to try to balance the</span>
+<span class="sd">        amount of data in each set so that *test_size* and *train_size* are</span>
+<span class="sd">        respected. If 1, then no extra splits are generated (essentially</span>
+<span class="sd">        disabling the balacing). Must be &gt;= 1.</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    train_test_split : Split a dataset into a training and a testing set.</span>
+<span class="sd">    cross_val_score : Score an estimator/gridder using cross-validation.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; from verde import grid_coordinates</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; # Make a regular grid of data points</span>
+<span class="sd">    &gt;&gt;&gt; coords = grid_coordinates(region=(0, 3, -10, -7), spacing=1)</span>
+<span class="sd">    &gt;&gt;&gt; # Need to convert the coordinates into a feature matrix</span>
+<span class="sd">    &gt;&gt;&gt; X = np.transpose([i.ravel() for i in coords])</span>
+<span class="sd">    &gt;&gt;&gt; shuffle = BlockShuffleSplit(spacing=1.5, n_splits=3, random_state=0)</span>
+<span class="sd">    &gt;&gt;&gt; # These are the 1D indices of the points belonging to each set</span>
+<span class="sd">    &gt;&gt;&gt; for train, test in shuffle.split(X):</span>
+<span class="sd">    ...     print(&quot;Train: {} Test: {}&quot;.format(train, test))</span>
+<span class="sd">    Train: [ 0  1  2  3  4  5  6  7 10 11 14 15] Test: [ 8  9 12 13]</span>
+<span class="sd">    Train: [ 2  3  6  7  8  9 10 11 12 13 14 15] Test: [0 1 4 5]</span>
+<span class="sd">    Train: [ 0  1  4  5  8  9 10 11 12 13 14 15] Test: [2 3 6 7]</span>
+<span class="sd">    &gt;&gt;&gt; # A better way to visualize this is to create a 2D array and put</span>
+<span class="sd">    &gt;&gt;&gt; # &quot;train&quot; or &quot;test&quot; in the corresponding locations.</span>
+<span class="sd">    &gt;&gt;&gt; shape = coords[0].shape</span>
+<span class="sd">    &gt;&gt;&gt; mask = np.full(shape=shape, fill_value=&quot;     &quot;)</span>
+<span class="sd">    &gt;&gt;&gt; for iteration, (train, test) in enumerate(shuffle.split(X)):</span>
+<span class="sd">    ...     # The index needs to be converted to 2D so we can index our matrix.</span>
+<span class="sd">    ...     mask[np.unravel_index(train, shape)] = &quot;train&quot;</span>
+<span class="sd">    ...     mask[np.unravel_index(test, shape)] = &quot; test&quot;</span>
+<span class="sd">    ...     print(&quot;Iteration {}:&quot;.format(iteration))</span>
+<span class="sd">    ...     print(mask)</span>
+<span class="sd">    Iteration 0:</span>
+<span class="sd">    [[&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="sd">     [&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="sd">     [&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]]</span>
+<span class="sd">    Iteration 1:</span>
+<span class="sd">    [[&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="sd">     [&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]]</span>
+<span class="sd">    Iteration 2:</span>
+<span class="sd">    [[&#39;train&#39; &#39;train&#39; &#39; test&#39; &#39; test&#39;]</span>
+<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39; test&#39; &#39; test&#39;]</span>
+<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_splits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">train_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">balancing</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">balancing</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;The *balancing* argument must be &gt;= 1. To disable balancing, use 1.&quot;</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_size</span> <span class="o">=</span> <span class="n">test_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_size</span> <span class="o">=</span> <span class="n">train_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">balancing</span> <span class="o">=</span> <span class="n">balancing</span>
+
+    <span class="k">def</span> <span class="nf">_iter_test_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates integer indices corresponding to test sets.</span>
+
+<span class="sd">        Runs several iterations until a split is found that yields blocks with</span>
+<span class="sd">        the right amount of data points in it.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape (n_samples, 2)</span>
+<span class="sd">            Columns should be the easting and northing coordinates of data</span>
+<span class="sd">            points, respectively.</span>
+<span class="sd">        y : array-like, shape (n_samples,)</span>
+<span class="sd">            The target variable for supervised learning problems. Always</span>
+<span class="sd">            ignored.</span>
+<span class="sd">        groups : array-like, with shape (n_samples,), optional</span>
+<span class="sd">            Group labels for the samples used while splitting the dataset into</span>
+<span class="sd">            train/test set. Always ignored.</span>
+
+<span class="sd">        Yields</span>
+<span class="sd">        ------</span>
+<span class="sd">        test : ndarray</span>
+<span class="sd">            The testing set indices for that split.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">block_split</span><span class="p">(</span>
+            <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]),</span>
+            <span class="n">spacing</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spacing</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+            <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">adjust</span><span class="o">=</span><span class="s2">&quot;spacing&quot;</span><span class="p">,</span>
+        <span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">block_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+        <span class="c1"># Generate many more splits so that we can pick and choose the ones</span>
+        <span class="c1"># that have the right balance of training and testing data.</span>
+        <span class="n">shuffle</span> <span class="o">=</span> <span class="n">ShuffleSplit</span><span class="p">(</span>
+            <span class="n">n_splits</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">balancing</span><span class="p">,</span>
+            <span class="n">test_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">test_size</span><span class="p">,</span>
+            <span class="n">train_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">train_size</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">block_ids</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">):</span>
+            <span class="n">test_sets</span><span class="p">,</span> <span class="n">balance</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">balancing</span><span class="p">):</span>
+                <span class="c1"># This is a false positive in pylint which is why the warning</span>
+                <span class="c1"># is disabled at the top of this file:</span>
+                <span class="c1"># https://github.com/PyCQA/pylint/issues/1830</span>
+                <span class="c1"># pylint: disable=stop-iteration-return</span>
+                <span class="n">train_blocks</span><span class="p">,</span> <span class="n">test_blocks</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">shuffle</span><span class="p">)</span>
+                <span class="c1"># pylint: enable=stop-iteration-return</span>
+                <span class="n">train_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">block_ids</span><span class="p">[</span><span class="n">train_blocks</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">test_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">block_ids</span><span class="p">[</span><span class="n">test_blocks</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="c1"># The proportion of data points assigned to each group should</span>
+                <span class="c1"># be close the proportion of blocks assigned to each group.</span>
+                <span class="n">balance</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="nb">abs</span><span class="p">(</span>
+                        <span class="n">train_points</span><span class="o">.</span><span class="n">size</span> <span class="o">/</span> <span class="n">test_points</span><span class="o">.</span><span class="n">size</span>
+                        <span class="o">-</span> <span class="n">train_blocks</span><span class="o">.</span><span class="n">size</span> <span class="o">/</span> <span class="n">test_blocks</span><span class="o">.</span><span class="n">size</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="n">test_sets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_points</span><span class="p">)</span>
+            <span class="n">best</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">balance</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">test_sets</span><span class="p">[</span><span class="n">best</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="BlockKFold"><a class="viewcode-back" href="../../api/generated/verde.BlockKFold.html#verde.BlockKFold">[docs]</a><span class="k">class</span> <span class="nc">BlockKFold</span><span class="p">(</span><span class="n">BaseBlockCrossValidator</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    K-Folds over spatial blocks cross-validator.</span>
+
+<span class="sd">    Yields indices to split data into training and test sets. Data are first</span>
+<span class="sd">    grouped into rectangular blocks of size given by the *spacing* argument.</span>
+<span class="sd">    Alternatively, blocks can be defined by the number of blocks in each</span>
+<span class="sd">    dimension using the *shape* argument instead of *spacing*. The blocks are</span>
+<span class="sd">    then split into testing and training sets iteratively along k folds of the</span>
+<span class="sd">    data (k is given by *n_splits*).</span>
+
+<span class="sd">    By default, the blocks are split into folds in a way that makes each fold</span>
+<span class="sd">    have approximately the same number of data points. Sometimes this might not</span>
+<span class="sd">    be possible, which can happen if the number of splits is close to the</span>
+<span class="sd">    number of blocks. In these cases, each fold will have the same number of</span>
+<span class="sd">    blocks, regardless of how many data points are in each block. This</span>
+<span class="sd">    behaviour can also be disabled by setting ``balance=False``.</span>
+
+<span class="sd">    Shuffling the blocks prior to splitting is strongly encouraged. Not</span>
+<span class="sd">    shuffling will essentially lead to the creation of *n_splits* large blocks</span>
+<span class="sd">    since blocks are spatially adjacent when not shuffled. The default</span>
+<span class="sd">    behaviour is not to shuffle for compatibility with similar cross-validators</span>
+<span class="sd">    in scikit-learn.</span>
+
+<span class="sd">    This cross-validator is preferred over</span>
+<span class="sd">    :class:`sklearn.model_selection.KFold` for spatial data to avoid</span>
+<span class="sd">    overestimating cross-validation scores. This can happen because of the</span>
+<span class="sd">    inherent autocorrelation that is usually associated with this type of data</span>
+<span class="sd">    (points that are close together are more likely to have similar values).</span>
+<span class="sd">    See [Roberts_etal2017]_ for an overview of this topic.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    spacing : float, tuple = (s_north, s_east), or None</span>
+<span class="sd">        The block size in the South-North and West-East directions,</span>
+<span class="sd">        respectively. A single value means that the spacing is equal in both</span>
+<span class="sd">        directions. If None, then *shape* **must be provided**.</span>
+<span class="sd">    shape : tuple = (n_north, n_east) or None</span>
+<span class="sd">        The number of blocks in the South-North and West-East directions,</span>
+<span class="sd">        respectively. If None, then *spacing* **must be provided**.</span>
+<span class="sd">    n_splits : int</span>
+<span class="sd">        Number of folds. Must be at least 2.</span>
+<span class="sd">    shuffle : bool</span>
+<span class="sd">        Whether to shuffle the data before splitting into batches.</span>
+<span class="sd">    random_state : int, RandomState instance or None, optional (default=None)</span>
+<span class="sd">        If int, random_state is the seed used by the random number generator;</span>
+<span class="sd">        If RandomState instance, random_state is the random number generator;</span>
+<span class="sd">        If None, the random number generator is the RandomState instance used</span>
+<span class="sd">        by `np.random`.</span>
+<span class="sd">    balance : bool</span>
+<span class="sd">        Whether or not to split blocks into fold with approximately equal</span>
+<span class="sd">        number of data points. If False, each fold will have the same number of</span>
+<span class="sd">        blocks (which can have different number of data points in them).</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    train_test_split : Split a dataset into a training and a testing set.</span>
+<span class="sd">    cross_val_score : Score an estimator/gridder using cross-validation.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; from verde import grid_coordinates</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; # Make a regular grid of data points</span>
+<span class="sd">    &gt;&gt;&gt; coords = grid_coordinates(region=(0, 3, -10, -7), spacing=1)</span>
+<span class="sd">    &gt;&gt;&gt; # Need to convert the coordinates into a feature matrix</span>
+<span class="sd">    &gt;&gt;&gt; X = np.transpose([i.ravel() for i in coords])</span>
+<span class="sd">    &gt;&gt;&gt; kfold = BlockKFold(spacing=1.5, n_splits=4)</span>
+<span class="sd">    &gt;&gt;&gt; # These are the 1D indices of the points belonging to each set</span>
+<span class="sd">    &gt;&gt;&gt; for train, test in kfold.split(X):</span>
+<span class="sd">    ...     print(&quot;Train: {} Test: {}&quot;.format(train, test))</span>
+<span class="sd">    Train: [ 2  3  6  7  8  9 10 11 12 13 14 15] Test: [0 1 4 5]</span>
+<span class="sd">    Train: [ 0  1  4  5  8  9 10 11 12 13 14 15] Test: [2 3 6 7]</span>
+<span class="sd">    Train: [ 0  1  2  3  4  5  6  7 10 11 14 15] Test: [ 8  9 12 13]</span>
+<span class="sd">    Train: [ 0  1  2  3  4  5  6  7  8  9 12 13] Test: [10 11 14 15]</span>
+<span class="sd">    &gt;&gt;&gt; # A better way to visualize this is to create a 2D array and put</span>
+<span class="sd">    &gt;&gt;&gt; # &quot;train&quot; or &quot;test&quot; in the corresponding locations.</span>
+<span class="sd">    &gt;&gt;&gt; shape = coords[0].shape</span>
+<span class="sd">    &gt;&gt;&gt; mask = np.full(shape=shape, fill_value=&quot;     &quot;)</span>
+<span class="sd">    &gt;&gt;&gt; for iteration, (train, test) in enumerate(kfold.split(X)):</span>
+<span class="sd">    ...     # The index needs to be converted to 2D so we can index our matrix.</span>
+<span class="sd">    ...     mask[np.unravel_index(train, shape)] = &quot;train&quot;</span>
+<span class="sd">    ...     mask[np.unravel_index(test, shape)] = &quot; test&quot;</span>
+<span class="sd">    ...     print(&quot;Iteration {}:&quot;.format(iteration))</span>
+<span class="sd">    ...     print(mask)</span>
+<span class="sd">    Iteration 0:</span>
+<span class="sd">    [[&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="sd">     [&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]]</span>
+<span class="sd">    Iteration 1:</span>
+<span class="sd">    [[&#39;train&#39; &#39;train&#39; &#39; test&#39; &#39; test&#39;]</span>
+<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39; test&#39; &#39; test&#39;]</span>
+<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]]</span>
+<span class="sd">    Iteration 2:</span>
+<span class="sd">    [[&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="sd">     [&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="sd">     [&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]]</span>
+<span class="sd">    Iteration 3:</span>
+<span class="sd">    [[&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39; test&#39; &#39; test&#39;]</span>
+<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39; test&#39; &#39; test&#39;]]</span>
+
+<span class="sd">    For spatial data, it&#39;s often good to shuffle the blocks before assigning</span>
+<span class="sd">    them to folds:</span>
+
+<span class="sd">    &gt;&gt;&gt; # Set the random_state to make sure we always get the same result.</span>
+<span class="sd">    &gt;&gt;&gt; kfold = BlockKFold(</span>
+<span class="sd">    ...     spacing=1.5, n_splits=4, shuffle=True, random_state=123,</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; for train, test in kfold.split(X):</span>
+<span class="sd">    ...     print(&quot;Train: {} Test: {}&quot;.format(train, test))</span>
+<span class="sd">    Train: [ 0  1  2  3  4  5  6  7  8  9 12 13] Test: [10 11 14 15]</span>
+<span class="sd">    Train: [ 2  3  6  7  8  9 10 11 12 13 14 15] Test: [0 1 4 5]</span>
+<span class="sd">    Train: [ 0  1  4  5  8  9 10 11 12 13 14 15] Test: [2 3 6 7]</span>
+<span class="sd">    Train: [ 0  1  2  3  4  5  6  7 10 11 14 15] Test: [ 8  9 12 13]</span>
+
+<span class="sd">    These should be the same splits as we got before but in a different order.</span>
+<span class="sd">    This only happens because in this example we have the number of splits</span>
+<span class="sd">    equal to the number of blocks (4). With real data the effects would be more</span>
+<span class="sd">    dramatic.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">balance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_splits</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Number of splits must be &gt;=2 for BlockKFold. Given </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">n_splits</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span> <span class="o">=</span> <span class="n">shuffle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">balance</span> <span class="o">=</span> <span class="n">balance</span>
+
+    <span class="k">def</span> <span class="nf">_iter_test_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates integer indices corresponding to test sets.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like, shape (n_samples, 2)</span>
+<span class="sd">            Columns should be the easting and northing coordinates of data</span>
+<span class="sd">            points, respectively.</span>
+<span class="sd">        y : array-like, shape (n_samples,)</span>
+<span class="sd">            The target variable for supervised learning problems. Always</span>
+<span class="sd">            ignored.</span>
+<span class="sd">        groups : array-like, with shape (n_samples,), optional</span>
+<span class="sd">            Group labels for the samples used while splitting the dataset into</span>
+<span class="sd">            train/test set. Always ignored.</span>
+
+<span class="sd">        Yields</span>
+<span class="sd">        ------</span>
+<span class="sd">        test : ndarray</span>
+<span class="sd">            The testing set indices for that split.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">block_split</span><span class="p">(</span>
+            <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]),</span>
+            <span class="n">spacing</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spacing</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+            <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">adjust</span><span class="o">=</span><span class="s2">&quot;spacing&quot;</span><span class="p">,</span>
+        <span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">block_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span> <span class="o">&gt;</span> <span class="n">block_ids</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Number of k-fold splits (</span><span class="si">{}</span><span class="s2">) cannot be greater than the number of &quot;</span>
+                <span class="s2">&quot;blocks (</span><span class="si">{}</span><span class="s2">). Either decrease n_splits or increase the number of &quot;</span>
+                <span class="s2">&quot;blocks.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">,</span> <span class="n">block_ids</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span><span class="p">:</span>
+            <span class="n">check_random_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">block_ids</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">balance</span><span class="p">:</span>
+            <span class="n">block_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">block_ids</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">split_points</span> <span class="o">=</span> <span class="n">partition_by_sum</span><span class="p">(</span><span class="n">block_sizes</span><span class="p">,</span> <span class="n">parts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">)</span>
+                <span class="n">folds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">block_ids</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="n">split_points</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="s2">&quot;Could not balance folds to have approximately the same &quot;</span>
+                    <span class="s2">&quot;number of data points. Dividing into folds with equal &quot;</span>
+                    <span class="s2">&quot;number of blocks instead. Decreasing n_splits or increasing &quot;</span>
+                    <span class="s2">&quot;the number of blocks may help.&quot;</span><span class="p">,</span>
+                    <span class="ne">UserWarning</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">folds</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">block_ids</span><span class="p">)]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">folds</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">block_ids</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">test_blocks</span> <span class="ow">in</span> <span class="n">folds</span><span class="p">:</span>
+            <span class="n">test_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">block_ids</span><span class="p">[</span><span class="n">test_blocks</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">yield</span> <span class="n">test_points</span></div>
+
+
+<span class="c1"># pylint: enable=invalid-name,unused-argument</span>
+
+
+<div class="viewcode-block" id="train_test_split"><a class="viewcode-back" href="../../api/generated/verde.train_test_split.html#verde.train_test_split">[docs]</a><span class="k">def</span> <span class="nf">train_test_split</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Split a dataset into a training and a testing set for cross-validation.</span>
 
 <span class="sd">    Similar to :func:`sklearn.model_selection.train_test_split` but is tuned to</span>
-<span class="sd">    work on multi-component spatial data with optional weights.</span>
+<span class="sd">    work on single- or multi-component spatial data with optional weights.</span>
 
-<span class="sd">    Extra keyword arguments will be passed to</span>
-<span class="sd">    :class:`sklearn.model_selection.ShuffleSplit`, except for ``n_splits``</span>
-<span class="sd">    which is always 1.</span>
+<span class="sd">    If arguments *shape* or *spacing* are provided, will group the data by</span>
+<span class="sd">    spatial blocks before random splitting (using</span>
+<span class="sd">    :class:`verde.BlockShuffleSplit` instead of</span>
+<span class="sd">    :class:`sklearn.model_selection.ShuffleSplit`). The argument *spacing*</span>
+<span class="sd">    specifies the size of the spatial blocks. Alternatively, use *shape* to</span>
+<span class="sd">    specify the number of blocks in each dimension.</span>
+
+<span class="sd">    Extra keyword arguments will be passed to the cross-validation class. The</span>
+<span class="sd">    exception is ``n_splits`` which is always 1.</span>
+
+<span class="sd">    Grouping by spatial blocks is preferred over plain random splits for</span>
+<span class="sd">    spatial data to avoid overestimating validation scores. This can happen</span>
+<span class="sd">    because of the inherent autocorrelation that is usually associated with</span>
+<span class="sd">    this type of data (points that are close together are more likely to have</span>
+<span class="sd">    similar values). See [Roberts_etal2017]_ for an overview of this topic. To</span>
+<span class="sd">    use spatial blocking, you **must provide** a *spacing* or *shape* argument</span>
+<span class="sd">    (see below).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -266,6 +697,15 @@
 <span class="sd">        if not none, then the weights assigned to each data point. If more than</span>
 <span class="sd">        one data component is provided, you must provide a weights array for</span>
 <span class="sd">        each data component (if not none).</span>
+<span class="sd">    spacing : float, tuple = (s_north, s_east), or None</span>
+<span class="sd">        The spatial block size in the South-North and West-East directions,</span>
+<span class="sd">        respectively. A single value means that the spacing is equal in both</span>
+<span class="sd">        directions. If None, then *shape* must be provided in order to use</span>
+<span class="sd">        spatial blocking.</span>
+<span class="sd">    shape : tuple = (n_north, n_east) or None</span>
+<span class="sd">        The number of blocks in the South-North and West-East directions,</span>
+<span class="sd">        respectively. If None, then *spacing* must be provided in order to use</span>
+<span class="sd">        spatial blocking.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -273,49 +713,103 @@
 <span class="sd">        Each is a tuple = (coordinates, data, weights) generated by separating</span>
 <span class="sd">        the input values randomly.</span>
 
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    cross_val_score : Score an estimator/gridder using cross-validation.</span>
+<span class="sd">    BlockShuffleSplit : Random permutation of spatial blocks cross-validator.</span>
+
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
+<span class="sd">    To randomly split the data between training and testing sets:</span>
+
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">    &gt;&gt;&gt; # Split 2-component data with weights</span>
-<span class="sd">    &gt;&gt;&gt; data = (np.array([1, 3, 5, 7]), np.array([0, 2, 4, 6]))</span>
+<span class="sd">    &gt;&gt;&gt; # Make some data</span>
+<span class="sd">    &gt;&gt;&gt; data = np.array([10, 30, 50, 70])</span>
 <span class="sd">    &gt;&gt;&gt; coordinates = (np.arange(4), np.arange(-4, 0))</span>
-<span class="sd">    &gt;&gt;&gt; weights = (np.array([1, 1, 2, 1]), np.array([1, 2, 1, 1]))</span>
-<span class="sd">    &gt;&gt;&gt; train, test = train_test_split(coordinates, data, weights,</span>
-<span class="sd">    ...                                random_state=0)</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;Coordinates:&quot;, train[0], test[0], sep=&#39;\n  &#39;)</span>
-<span class="sd">    Coordinates:</span>
-<span class="sd">      (array([3, 1, 0]), array([-1, -3, -4]))</span>
-<span class="sd">      (array([2]), array([-2]))</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;Data:&quot;, train[1], test[1], sep=&#39;\n  &#39;)</span>
-<span class="sd">    Data:</span>
-<span class="sd">      (array([7, 3, 1]), array([6, 2, 0]))</span>
-<span class="sd">      (array([5]), array([4]))</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;Weights:&quot;, train[2], test[2], sep=&#39;\n  &#39;)</span>
-<span class="sd">    Weights:</span>
-<span class="sd">      (array([1, 1, 1]), array([1, 2, 1]))</span>
-<span class="sd">      (array([2]), array([1]))</span>
-<span class="sd">    &gt;&gt;&gt; # Split single component data without weights</span>
-<span class="sd">    &gt;&gt;&gt; train, test = train_test_split(coordinates, data[0], None,</span>
-<span class="sd">    ...                                random_state=0)</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;Coordinates:&quot;, train[0], test[0], sep=&#39;\n  &#39;)</span>
-<span class="sd">    Coordinates:</span>
-<span class="sd">      (array([3, 1, 0]), array([-1, -3, -4]))</span>
-<span class="sd">      (array([2]), array([-2]))</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;Data:&quot;, train[1], test[1], sep=&#39;\n  &#39;)</span>
-<span class="sd">    Data:</span>
-<span class="sd">      (array([7, 3, 1]),)</span>
-<span class="sd">      (array([5]),)</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;Weights:&quot;, train[2], test[2], sep=&#39;\n  &#39;)</span>
-<span class="sd">    Weights:</span>
-<span class="sd">      (None,)</span>
-<span class="sd">      (None,)</span>
+<span class="sd">    &gt;&gt;&gt; train, test = train_test_split(coordinates, data, random_state=0)</span>
+<span class="sd">    &gt;&gt;&gt; # The training set:</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;coords:&quot;, train[0])</span>
+<span class="sd">    coords: (array([3, 1, 0]), array([-1, -3, -4]))</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;data:&quot;, train[1])</span>
+<span class="sd">    data: (array([70, 30, 10]),)</span>
+<span class="sd">    &gt;&gt;&gt; # The testing set:</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;coords:&quot;, test[0])</span>
+<span class="sd">    coords: (array([2]), array([-2]))</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;data:&quot;, test[1])</span>
+<span class="sd">    data: (array([50]),)</span>
+
+<span class="sd">    If weights are given, they will also be split among the sets:</span>
+
+<span class="sd">    &gt;&gt;&gt; weights = np.array([4, 3, 2, 5])</span>
+<span class="sd">    &gt;&gt;&gt; train, test = train_test_split(</span>
+<span class="sd">    ...     coordinates, data, weights, random_state=0,</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; # The training set:</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;coords:&quot;, train[0])</span>
+<span class="sd">    coords: (array([3, 1, 0]), array([-1, -3, -4]))</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;data:&quot;, train[1])</span>
+<span class="sd">    data: (array([70, 30, 10]),)</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;weights:&quot;, train[2])</span>
+<span class="sd">    weights: (array([5, 3, 4]),)</span>
+<span class="sd">    &gt;&gt;&gt; # The testing set:</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;coords:&quot;, test[0])</span>
+<span class="sd">    coords: (array([2]), array([-2]))</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;data:&quot;, test[1])</span>
+<span class="sd">    data: (array([50]),)</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;weights:&quot;, test[2])</span>
+<span class="sd">    weights: (array([2]),)</span>
+
+<span class="sd">    Data with multiple components can also be split:</span>
+
+<span class="sd">    &gt;&gt;&gt; data = (np.array([10, 30, 50, 70]), np.array([-70, -50, -30, -10]))</span>
+<span class="sd">    &gt;&gt;&gt; train, test = train_test_split(coordinates, data, random_state=0)</span>
+<span class="sd">    &gt;&gt;&gt; # The training set:</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;coords:&quot;, train[0])</span>
+<span class="sd">    coords: (array([3, 1, 0]), array([-1, -3, -4]))</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;data:&quot;, train[1])</span>
+<span class="sd">    data: (array([70, 30, 10]), array([-10, -50, -70]))</span>
+<span class="sd">    &gt;&gt;&gt; # The testing set:</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;coords:&quot;, test[0])</span>
+<span class="sd">    coords: (array([2]), array([-2]))</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;data:&quot;, test[1])</span>
+<span class="sd">    data: (array([50]), array([-30]))</span>
+
+<span class="sd">    To split data grouped in spatial blocks:</span>
+
+<span class="sd">    &gt;&gt;&gt; from verde import grid_coordinates</span>
+<span class="sd">    &gt;&gt;&gt; # Make a regular grid of data points</span>
+<span class="sd">    &gt;&gt;&gt; coordinates = grid_coordinates(region=(0, 3, 4, 7), spacing=1)</span>
+<span class="sd">    &gt;&gt;&gt; data = np.arange(16).reshape((4, 4))</span>
+<span class="sd">    &gt;&gt;&gt; # We must specify the size of the blocks via the spacing argument.</span>
+<span class="sd">    &gt;&gt;&gt; # Blocks of 1.5 will split the domain into 4 blocks.</span>
+<span class="sd">    &gt;&gt;&gt; train, test = train_test_split(</span>
+<span class="sd">    ...     coordinates, data, random_state=0, spacing=1.5,</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; # The training set:</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;coords:&quot;, train[0][0], train[0][1], sep=&quot;\n&quot;)</span>
+<span class="sd">    coords:</span>
+<span class="sd">    [0. 1. 2. 3. 0. 1. 2. 3. 2. 3. 2. 3.]</span>
+<span class="sd">    [4. 4. 4. 4. 5. 5. 5. 5. 6. 6. 7. 7.]</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;data:&quot;, train[1])</span>
+<span class="sd">    data: (array([ 0,  1,  2,  3,  4,  5,  6,  7, 10, 11, 14, 15]),)</span>
+<span class="sd">    &gt;&gt;&gt; # The testing set:</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;coords:&quot;, test[0][0], test[0][1])</span>
+<span class="sd">    coords: [0. 1. 0. 1.] [6. 6. 7. 7.]</span>
+<span class="sd">    &gt;&gt;&gt; print(&quot;data:&quot;, test[1])</span>
+<span class="sd">    data: (array([ 8,  9, 12, 13]),)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">check_fit_input</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">ndata</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
-    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ndata</span><span class="p">)</span>
-    <span class="n">split</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">ShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">indices</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">spacing</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">shuffle</span> <span class="o">=</span> <span class="n">ShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">feature_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">shuffle</span> <span class="o">=</span> <span class="n">BlockShuffleSplit</span><span class="p">(</span>
+            <span class="n">n_splits</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">feature_matrix</span><span class="p">)</span>
+    <span class="n">split</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">shuffle</span><span class="p">)</span>
     <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">args</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">split</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span></div>
 
@@ -331,7 +825,8 @@
 
 <span class="sd">    By default, will use :class:`sklearn.model_selection.KFold` with</span>
 <span class="sd">    ``n_splits=5`` and ``random_state=0`` to split the dataset. Any other</span>
-<span class="sd">    cross-validation class can be passed in through the *cv* argument.</span>
+<span class="sd">    cross-validation class from scikit-learn or Verde can be passed in through</span>
+<span class="sd">    the *cv* argument.</span>
 
 <span class="sd">    Can optionally run in parallel using :mod:`dask`. To do this, use</span>
 <span class="sd">    ``delayed=True`` to dispatch computations with :func:`dask.delayed` instead</span>
@@ -360,7 +855,7 @@
 <span class="sd">        one data component is provided, you must provide a weights array for</span>
 <span class="sd">        each data component (if not none).</span>
 <span class="sd">    cv : None or cross-validation generator</span>
-<span class="sd">        Any scikit-learn cross-validation generator. Defaults to</span>
+<span class="sd">        Any scikit-learn or Verde cross-validation generator. Defaults to</span>
 <span class="sd">        :class:`sklearn.model_selection.KFold`.</span>
 <span class="sd">    client : None or dask.distributed.Client</span>
 <span class="sd">        **DEPRECATED:** This option is deprecated and will be removed in Verde</span>
@@ -379,6 +874,11 @@
 <span class="sd">        Array of scores for each split of the cross-validation generator. If</span>
 <span class="sd">        *delayed*, will be a list of Dask delayed objects (see the *delayed*</span>
 <span class="sd">        option). If *client* is not None, then the scores will be futures.</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    train_test_split : Split a dataset into a training and a testing set.</span>
+<span class="sd">    BlockShuffleSplit : Random permutation of spatial blocks cross-validator.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -411,6 +911,24 @@
 <span class="sd">    &gt;&gt;&gt; print(&#39;, &#39;.join([&#39;{:.2f}&#39;.format(score) for score in scores]))</span>
 <span class="sd">    1.00, 1.00, 1.00</span>
 
+<span class="sd">    Often, spatial data are autocorrelated (points that are close together are</span>
+<span class="sd">    more likely to have similar values), which can cause cross-validation with</span>
+<span class="sd">    random splits to overestimate the prediction accuracy [Roberts_etal2017]_.</span>
+<span class="sd">    To account for the autocorrelation, we can split the data in blocks rather</span>
+<span class="sd">    than randomly with :class:`verde.BlockShuffleSplit`:</span>
+
+<span class="sd">    &gt;&gt;&gt; from verde import BlockShuffleSplit</span>
+<span class="sd">    &gt;&gt;&gt; # spacing controls the size of the spatial blocks</span>
+<span class="sd">    &gt;&gt;&gt; cross_validator = BlockShuffleSplit(</span>
+<span class="sd">    ...     spacing=2, n_splits=3, random_state=0</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; scores = cross_val_score(model, coords, data, cv=cross_validator)</span>
+<span class="sd">    &gt;&gt;&gt; print(&#39;, &#39;.join([&#39;{:.2f}&#39;.format(score) for score in scores]))</span>
+<span class="sd">    1.00, 1.00, 1.00</span>
+
+<span class="sd">    We didn&#39;t see a difference here since our model and data are perfect. See</span>
+<span class="sd">    :ref:`model_evaluation` for an example with real data.</span>
+
 <span class="sd">    If using many splits, we can speed up computations by running them in</span>
 <span class="sd">    parallel with Dask:</span>
 
@@ -441,10 +959,10 @@
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">cv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">cv</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-    <span class="n">ndata</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">feature_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
     <span class="n">fit_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
     <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span> <span class="ow">in</span> <span class="n">cv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ndata</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span> <span class="ow">in</span> <span class="n">cv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">feature_matrix</span><span class="p">):</span>
         <span class="n">train</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">train_index</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">fit_args</span><span class="p">)</span>
         <span class="n">test</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">test_index</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">fit_args</span><span class="p">)</span>
         <span class="c1"># Clone the estimator to avoid fitting the same object simultaneously</span>
@@ -509,7 +1027,7 @@
     <p>
         &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Mar 23, 2020.
+        Last updated on Jun 04, 2020.
       </span>
 
     </p>

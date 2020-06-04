@@ -39,8 +39,10 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="verde.Spline" href="generated/verde.Spline.html" />
@@ -153,6 +155,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#model-selection">Model Selection</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/verde.train_test_split.html">verde.train_test_split</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/verde.cross_val_score.html">verde.cross_val_score</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/verde.BlockShuffleSplit.html">verde.BlockShuffleSplit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/verde.BlockKFold.html">verde.BlockKFold</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#coordinate-manipulation">Coordinate Manipulation</a><ul>
@@ -161,11 +165,15 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/verde.profile_coordinates.html">verde.profile_coordinates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/verde.get_region.html">verde.get_region</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/verde.pad_region.html">verde.pad_region</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/verde.project_region.html">verde.project_region</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/verde.inside.html">verde.inside</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/verde.block_split.html">verde.block_split</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/verde.rolling_window.html">verde.rolling_window</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/verde.expanding_window.html">verde.expanding_window</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#projection">Projection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/verde.project_region.html">verde.project_region</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/verde.project_grid.html">verde.project_grid</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#masking">Masking</a><ul>
@@ -200,6 +208,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#base-classes-and-functions">Base Classes and Functions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/verde.base.BaseGridder.html">verde.base.BaseGridder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/verde.base.BaseBlockCrossValidator.html">verde.base.BaseBlockCrossValidator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/verde.base.n_1d_arrays.html">verde.base.n_1d_arrays</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/verde.base.check_fit_input.html">verde.base.check_fit_input</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/verde.base.least_squares.html">verde.base.least_squares</a></li>
@@ -370,11 +379,17 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.train_test_split.html#verde.train_test_split" title="verde.train_test_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_test_split</span></code></a>(coordinates, data[, weights])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.train_test_split.html#verde.train_test_split" title="verde.train_test_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_test_split</span></code></a>(coordinates, data[, …])</p></td>
 <td><p>Split a dataset into a training and a testing set for cross-validation.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/verde.cross_val_score.html#verde.cross_val_score" title="verde.cross_val_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_val_score</span></code></a>(estimator, coordinates, data)</p></td>
 <td><p>Score an estimator/gridder using cross-validation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.BlockShuffleSplit.html#verde.BlockShuffleSplit" title="verde.BlockShuffleSplit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BlockShuffleSplit</span></code></a>([spacing, shape, …])</p></td>
+<td><p>Random permutation of spatial blocks cross-validator.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.BlockKFold.html#verde.BlockKFold" title="verde.BlockKFold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BlockKFold</span></code></a>([spacing, shape, n_splits, …])</p></td>
+<td><p>K-Folds over spatial blocks cross-validator.</p></td>
 </tr>
 </tbody>
 </table>
@@ -402,20 +417,34 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.pad_region.html#verde.pad_region" title="verde.pad_region"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pad_region</span></code></a>(region, pad)</p></td>
 <td><p>Extend the borders of a region by the given amount.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.project_region.html#verde.project_region" title="verde.project_region"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project_region</span></code></a>(region, projection)</p></td>
-<td><p>Calculate the bounding box of a region in projected coordinates.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.inside.html#verde.inside" title="verde.inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside</span></code></a>(coordinates, region)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.inside.html#verde.inside" title="verde.inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside</span></code></a>(coordinates, region)</p></td>
 <td><p>Determine which points fall inside a given region.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.block_split.html#verde.block_split" title="verde.block_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">block_split</span></code></a>(coordinates[, spacing, adjust, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.block_split.html#verde.block_split" title="verde.block_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">block_split</span></code></a>(coordinates[, spacing, adjust, …])</p></td>
 <td><p>Split a region into blocks and label points according to where they fall.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.rolling_window.html#verde.rolling_window" title="verde.rolling_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rolling_window</span></code></a>(coordinates, size[, spacing, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.rolling_window.html#verde.rolling_window" title="verde.rolling_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rolling_window</span></code></a>(coordinates, size[, spacing, …])</p></td>
 <td><p>Select points on a rolling (moving) window.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.expanding_window.html#verde.expanding_window" title="verde.expanding_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expanding_window</span></code></a>(coordinates, center, sizes)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.expanding_window.html#verde.expanding_window" title="verde.expanding_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expanding_window</span></code></a>(coordinates, center, sizes)</p></td>
 <td><p>Select points on windows of changing size around a center point.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="projection">
+<h2>Projection<a class="headerlink" href="#projection" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.project_region.html#verde.project_region" title="verde.project_region"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project_region</span></code></a>(region, projection)</p></td>
+<td><p>Calculate the bounding box of a region in projected coordinates.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.project_grid.html#verde.project_grid" title="verde.project_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project_grid</span></code></a>(grid, projection[, method, …])</p></td>
+<td><p>Apply the given map projection to a grid and re-sample it.</p></td>
 </tr>
 </tbody>
 </table>
@@ -529,13 +558,16 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.base.BaseGridder.html#verde.base.BaseGridder" title="verde.base.BaseGridder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base.BaseGridder</span></code></a></p></td>
 <td><p>Base class for gridders.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.base.n_1d_arrays.html#verde.base.n_1d_arrays" title="verde.base.n_1d_arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base.n_1d_arrays</span></code></a>(arrays, n)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.base.BaseBlockCrossValidator.html#verde.base.BaseBlockCrossValidator" title="verde.base.BaseBlockCrossValidator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base.BaseBlockCrossValidator</span></code></a>([spacing, …])</p></td>
+<td><p>Base class for spatially blocked cross-validators.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.base.n_1d_arrays.html#verde.base.n_1d_arrays" title="verde.base.n_1d_arrays"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base.n_1d_arrays</span></code></a>(arrays, n)</p></td>
 <td><p>Get the first n elements from a tuple/list, convert to arrays, and ravel.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.base.check_fit_input.html#verde.base.check_fit_input" title="verde.base.check_fit_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base.check_fit_input</span></code></a>(coordinates, data, weights)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.base.check_fit_input.html#verde.base.check_fit_input" title="verde.base.check_fit_input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base.check_fit_input</span></code></a>(coordinates, data, weights)</p></td>
 <td><p>Validate the inputs to the fit method of gridders.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.base.least_squares.html#verde.base.least_squares" title="verde.base.least_squares"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base.least_squares</span></code></a>(jacobian, data, weights)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.base.least_squares.html#verde.base.least_squares" title="verde.base.least_squares"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base.least_squares</span></code></a>(jacobian, data, weights)</p></td>
 <td><p>Solve a weighted least-squares problem with optional damping regularization</p></td>
 </tr>
 </tbody>
@@ -565,7 +597,7 @@
     <p>
         &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Mar 23, 2020.
+        Last updated on Jun 04, 2020.
       </span>
 
     </p>

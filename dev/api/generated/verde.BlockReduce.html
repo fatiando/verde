@@ -39,8 +39,10 @@
   
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="verde.BlockMean" href="verde.BlockMean.html" />
@@ -145,6 +147,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#composite-estimators">Composite Estimators</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#model-selection">Model Selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#coordinate-manipulation">Coordinate Manipulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#projection">Projection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#masking">Masking</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#utilities">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#input-output">Input/Output</a></li>
@@ -406,48 +409,56 @@ component of a nested object.</p>
 <div class="section" id="examples-using-verde-blockreduce">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">verde.BlockReduce</span></code><a class="headerlink" href="#examples-using-verde-blockreduce" title="Permalink to this headline">¶</a></h2>
 <div class="sphx-glr-thumbcontainer" tooltip="When gridding data that has been highly oversampled in a direction (shipborne and airborne data..."><div class="figure align-default" id="id1">
-<img alt="../../_images/sphx_glr_blockreduce_thumb.png" src="../../_images/sphx_glr_blockreduce_thumb.png" />
+<img alt="Blocked reduction operations" src="../../_images/sphx_glr_blockreduce_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/blockreduce.html#sphx-glr-gallery-blockreduce-py"><span class="std std-ref">Blocked reduction operations</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Sometimes data has outliers or less reliable points that might skew a blocked mean or even a me..."><div class="figure align-default" id="id2">
-<img alt="../../_images/sphx_glr_blockreduce_weights_thumb.png" src="../../_images/sphx_glr_blockreduce_weights_thumb.png" />
+<img alt="Using weights in blocked reduction" src="../../_images/sphx_glr_blockreduce_weights_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/blockreduce_weights.html#sphx-glr-gallery-blockreduce-weights-py"><span class="std std-ref">Using weights in blocked reduction</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="verde.BlockReduce is not able to output weights because we need to make assumptions about the r..."><div class="figure align-default" id="id3">
-<img alt="../../_images/sphx_glr_blockreduce_weights_mean_thumb.png" src="../../_images/sphx_glr_blockreduce_weights_mean_thumb.png" />
+<img alt="Using weights in blocked means" src="../../_images/sphx_glr_blockreduce_weights_mean_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/blockreduce_weights_mean.html#sphx-glr-gallery-blockreduce-weights-mean-py"><span class="std std-ref">Using weights in blocked means</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Scipy offers a range of interpolation methods in scipy.interpolate and 3 specifically for 2D da..."><div class="figure align-default" id="id4">
-<img alt="../../_images/sphx_glr_scipygridder_thumb.png" src="../../_images/sphx_glr_scipygridder_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/scipygridder.html#sphx-glr-gallery-scipygridder-py"><span class="std std-ref">Gridding with Scipy</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Sometimes gridded data products need to be projected before they can be used. For example, you ..."><div class="figure align-default" id="id4">
+<img alt="Projection of gridded data" src="../../_images/sphx_glr_project_grid_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/project_grid.html#sphx-glr-gallery-project-grid-py"><span class="std std-ref">Projection of gridded data</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Biharmonic spline interpolation is based on estimating vertical forces acting on an elastic she..."><div class="figure align-default" id="id5">
-<img alt="../../_images/sphx_glr_spline_thumb.png" src="../../_images/sphx_glr_spline_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline.html#sphx-glr-gallery-spline-py"><span class="std std-ref">Gridding with splines</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Scipy offers a range of interpolation methods in scipy.interpolate and 3 specifically for 2D da..."><div class="figure align-default" id="id5">
+<img alt="Gridding with Scipy" src="../../_images/sphx_glr_scipygridder_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/scipygridder.html#sphx-glr-gallery-scipygridder-py"><span class="std std-ref">Gridding with Scipy</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="We can use verde.Vector to simultaneously process and grid all components of vector data. Each ..."><div class="figure align-default" id="id6">
-<img alt="../../_images/sphx_glr_vector_uncoupled_thumb.png" src="../../_images/sphx_glr_vector_uncoupled_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/vector_uncoupled.html#sphx-glr-gallery-vector-uncoupled-py"><span class="std std-ref">Gridding 2D vectors</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Biharmonic spline interpolation is based on estimating vertical forces acting on an elastic she..."><div class="figure align-default" id="id6">
+<img alt="Gridding with splines" src="../../_images/sphx_glr_spline_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline.html#sphx-glr-gallery-spline-py"><span class="std std-ref">Gridding with splines</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Often, a data processing pipeline looks like the following:"><div class="figure align-default" id="id7">
-<img alt="../../_images/sphx_glr_chain_thumb.png" src="../../_images/sphx_glr_chain_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/chain.html#sphx-glr-tutorials-chain-py"><span class="std std-ref">Chaining Operations</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div><div class="sphx-glr-thumbcontainer" tooltip="An advantage of using the Green&#x27;s functions based verde.Spline over verde.ScipyGridder is that ..."><div class="figure align-default" id="id7">
+<img alt="Gridding with splines and weights" src="../../_images/sphx_glr_spline_weights_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline_weights.html#sphx-glr-gallery-spline-weights-py"><span class="std std-ref">Gridding with splines and weights</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Often times, raw spatial data can be highly oversampled in a direction. In these cases, we need..."><div class="figure align-default" id="id8">
-<img alt="../../_images/sphx_glr_decimation_thumb.png" src="../../_images/sphx_glr_decimation_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/decimation.html#sphx-glr-tutorials-decimation-py"><span class="std std-ref">Data Decimation</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div><div class="sphx-glr-thumbcontainer" tooltip="We can use verde.Vector to simultaneously process and grid all components of vector data. Each ..."><div class="figure align-default" id="id8">
+<img alt="Gridding 2D vectors" src="../../_images/sphx_glr_vector_uncoupled_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/vector_uncoupled.html#sphx-glr-gallery-vector-uncoupled-py"><span class="std std-ref">Gridding 2D vectors</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Most gridders and processing methods in Verde operate under the assumption that the data coordi..."><div class="figure align-default" id="id9">
-<img alt="../../_images/sphx_glr_projections_thumb.png" src="../../_images/sphx_glr_projections_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/projections.html#sphx-glr-tutorials-projections-py"><span class="std std-ref">Geographic Coordinates</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Often, a data processing pipeline looks like the following:"><div class="figure align-default" id="id9">
+<img alt="Chaining Operations" src="../../_images/sphx_glr_chain_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/chain.html#sphx-glr-tutorials-chain-py"><span class="std std-ref">Chaining Operations</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Some datasets have multiple vector components measured for each location, like the East and Wes..."><div class="figure align-default" id="id10">
-<img alt="../../_images/sphx_glr_vectors_thumb.png" src="../../_images/sphx_glr_vectors_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/vectors.html#sphx-glr-tutorials-vectors-py"><span class="std std-ref">Vector Data</span></a></span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Often times, raw spatial data can be highly oversampled in a direction. In these cases, we need..."><div class="figure align-default" id="id10">
+<img alt="Data Decimation" src="../../_images/sphx_glr_decimation_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/decimation.html#sphx-glr-tutorials-decimation-py"><span class="std std-ref">Data Decimation</span></a></span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="One of the advantages of using a Green&#x27;s functions approach to interpolation is that we can eas..."><div class="figure align-default" id="id11">
-<img alt="../../_images/sphx_glr_weights_thumb.png" src="../../_images/sphx_glr_weights_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/weights.html#sphx-glr-tutorials-weights-py"><span class="std std-ref">Using Weights</span></a></span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Most gridders and processing methods in Verde operate under the assumption that the data coordi..."><div class="figure align-default" id="id11">
+<img alt="Geographic Coordinates" src="../../_images/sphx_glr_projections_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/projections.html#sphx-glr-tutorials-projections-py"><span class="std std-ref">Geographic Coordinates</span></a></span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Some datasets have multiple vector components measured for each location, like the East and Wes..."><div class="figure align-default" id="id12">
+<img alt="Vector Data" src="../../_images/sphx_glr_vectors_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/vectors.html#sphx-glr-tutorials-vectors-py"><span class="std std-ref">Vector Data</span></a></span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="One of the advantages of using a Green&#x27;s functions approach to interpolation is that we can eas..."><div class="figure align-default" id="id13">
+<img alt="Using Weights" src="../../_images/sphx_glr_weights_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/weights.html#sphx-glr-tutorials-weights-py"><span class="std std-ref">Using Weights</span></a></span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -474,7 +485,7 @@ component of a nested object.</p>
     <p>
         &copy; Copyright 2017-2020, The Verde Developers
       <span class="lastupdated">
-        Last updated on Mar 23, 2020.
+        Last updated on Jun 04, 2020.
       </span>
 
     </p>
