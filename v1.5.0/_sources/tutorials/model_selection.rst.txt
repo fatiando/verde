@@ -1,0 +1,501 @@
+.. only:: html
+
+    .. note::
+        :class: sphx-glr-download-link-note
+
+        Click :ref:`here <sphx_glr_download_tutorials_model_selection.py>`     to download the full example code
+    .. rst-class:: sphx-glr-example-title
+
+    .. _sphx_glr_tutorials_model_selection.py:
+
+
+.. _model_selection:
+
+Model Selection
+===============
+
+In :ref:`model_evaluation`, we saw how to check the performance of an interpolator using
+cross-validation. We found that the default parameters for :class:`verde.Spline` are not
+good for predicting our sample air temperature data. Now, let's see how we can tune the
+:class:`~verde.Spline` to improve the cross-validation performance.
+
+Once again, we'll start by importing the required packages and loading our sample data.
+
+
+.. code-block:: default
+
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import cartopy.crs as ccrs
+    import itertools
+    import pyproj
+    import verde as vd
+
+    data = vd.datasets.fetch_texas_wind()
+
+    # Use Mercator projection because Spline is a Cartesian gridder
+    projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
+    proj_coords = projection(data.longitude.values, data.latitude.values)
+
+    region = vd.get_region((data.longitude, data.latitude))
+    # The desired grid spacing in degrees (converted to meters using 1 degree approx. 111km)
+    spacing = 15 / 60
+
+
+
+
+
+
+
+
+Before we begin tuning, let's reiterate what the results were with the default
+parameters.
+
+
+.. code-block:: default
+
+
+    spline_default = vd.Spline()
+    score_default = np.mean(
+        vd.cross_val_score(spline_default, proj_coords, data.air_temperature_c)
+    )
+    spline_default.fit(proj_coords, data.air_temperature_c)
+    print("R² with defaults:", score_default)
+
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    R² with defaults: 0.7960368854849694
+
+
+
+
+Tuning
+------
+
+:class:`~verde.Spline` has many parameters that can be set to modify the final result.
+Mainly the ``damping`` regularization parameter and the ``mindist`` "fudge factor"
+which smooths the solution. Would changing the default values give us a better score?
+
+We can answer these questions by changing the values in our ``spline`` and
+re-evaluating the model score repeatedly for different values of these parameters.
+Let's test the following combinations:
+
+
+.. code-block:: default
+
+
+    dampings = [None, 1e-4, 1e-3, 1e-2]
+    mindists = [5e3, 10e3, 50e3, 100e3]
+
+    # Use itertools to create a list with all combinations of parameters to test
+    parameter_sets = [
+        dict(damping=combo[0], mindist=combo[1])
+        for combo in itertools.product(dampings, mindists)
+    ]
+    print("Number of combinations:", len(parameter_sets))
+    print("Combinations:", parameter_sets)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Number of combinations: 16
+    Combinations: [{'damping': None, 'mindist': 5000.0}, {'damping': None, 'mindist': 10000.0}, {'damping': None, 'mindist': 50000.0}, {'damping': None, 'mindist': 100000.0}, {'damping': 0.0001, 'mindist': 5000.0}, {'damping': 0.0001, 'mindist': 10000.0}, {'damping': 0.0001, 'mindist': 50000.0}, {'damping': 0.0001, 'mindist': 100000.0}, {'damping': 0.001, 'mindist': 5000.0}, {'damping': 0.001, 'mindist': 10000.0}, {'damping': 0.001, 'mindist': 50000.0}, {'damping': 0.001, 'mindist': 100000.0}, {'damping': 0.01, 'mindist': 5000.0}, {'damping': 0.01, 'mindist': 10000.0}, {'damping': 0.01, 'mindist': 50000.0}, {'damping': 0.01, 'mindist': 100000.0}]
+
+
+
+
+Now we can loop over the combinations and collect the scores for each parameter set.
+
+
+.. code-block:: default
+
+
+    spline = vd.Spline()
+    scores = []
+    for params in parameter_sets:
+        spline.set_params(**params)
+        score = np.mean(vd.cross_val_score(spline, proj_coords, data.air_temperature_c))
+        scores.append(score)
+    print(scores)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    [-6.672752084450996, 0.4845403172681578, 0.8383522700290031, 0.8371988991060888, 0.8351153077295754, 0.8316607509400296, 0.849262993117369, 0.8418400888505818, 0.8371795091862098, 0.8412200336661682, 0.8529555082414106, 0.8521727667594355, 0.8401945161937409, 0.8330182923876521, 0.8441706458561657, 0.849114559135252]
+
+
+
+
+The largest score will yield the best parameter combination.
+
+
+.. code-block:: default
+
+
+    best = np.argmax(scores)
+    print("Best score:", scores[best])
+    print("Score with defaults:", score_default)
+    print("Best parameters:", parameter_sets[best])
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Best score: 0.8529555082414106
+    Score with defaults: 0.7960368854849694
+    Best parameters: {'damping': 0.001, 'mindist': 50000.0}
+
+
+
+
+**That is a nice improvement over our previous score!**
+
+This type of tuning is important and should always be performed when using a new
+gridder or a new dataset. However, the above implementation requires a lot of
+coding. Fortunately, Verde provides convenience classes that perform the
+cross-validation and tuning automatically when fitting a dataset.
+
+Cross-validated gridders
+------------------------
+
+The :class:`verde.SplineCV` class provides a cross-validated version of
+:class:`verde.Spline`. It has almost the same interface but does all of the above
+automatically when fitting a dataset. The only difference is that you must provide a
+list of ``damping`` and ``mindist`` parameters to try instead of only a single value:
+
+
+.. code-block:: default
+
+
+    spline = vd.SplineCV(dampings=dampings, mindists=mindists,)
+
+
+
+
+
+
+
+
+Calling :meth:`~verde.SplineCV.fit` will run a grid search over all parameter
+combinations to find the one that maximizes the cross-validation score.
+
+
+.. code-block:: default
+
+
+    spline.fit(proj_coords, data.air_temperature_c)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+
+    SplineCV(dampings=[None, 0.0001, 0.001, 0.01],
+             mindists=[5000.0, 10000.0, 50000.0, 100000.0])
+
+
+
+The estimated best damping and mindist, as well as the cross-validation
+scores, are stored in class attributes:
+
+
+.. code-block:: default
+
+
+    print("Highest score:", spline.scores_.max())
+    print("Best damping:", spline.damping_)
+    print("Best mindist:", spline.mindist_)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Highest score: 0.8529555082414106
+    Best damping: 0.001
+    Best mindist: 50000.0
+
+
+
+
+The cross-validated gridder can be used like any other gridder (including in
+:class:`verde.Chain` and :class:`verde.Vector`):
+
+
+.. code-block:: default
+
+
+    grid = spline.grid(
+        region=region,
+        spacing=spacing,
+        projection=projection,
+        dims=["latitude", "longitude"],
+        data_names=["temperature"],
+    )
+    print(grid)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    <xarray.Dataset>
+    Dimensions:      (latitude: 43, longitude: 51)
+    Coordinates:
+      * longitude    (longitude) float64 -106.4 -106.1 -105.9 ... -94.06 -93.8
+      * latitude     (latitude) float64 25.91 26.16 26.41 ... 35.91 36.16 36.41
+    Data variables:
+        temperature  (latitude, longitude) float64 19.42 19.42 19.43 ... 7.536 7.765
+    Attributes:
+        metadata:  Generated by SplineCV(dampings=[None, 0.0001, 0.001, 0.01],\n ...
+
+
+
+
+Like :func:`verde.cross_val_score`, :class:`~verde.SplineCV` can also run the
+grid search in parallel using `Dask <https://dask.org/>`__ by specifying the
+``delayed`` attribute:
+
+
+.. code-block:: default
+
+
+    spline = vd.SplineCV(dampings=dampings, mindists=mindists, delayed=True)
+
+
+
+
+
+
+
+
+Unlike :func:`verde.cross_val_score`, calling :meth:`~verde.SplineCV.fit`
+does **not** result in :func:`dask.delayed` objects. The full grid search is
+executed and the optimal parameters are found immediately.
+
+
+.. code-block:: default
+
+
+    spline.fit(proj_coords, data.air_temperature_c)
+
+    print("Best damping:", spline.damping_)
+    print("Best mindist:", spline.mindist_)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Best damping: 0.001
+    Best mindist: 50000.0
+
+
+
+
+The one caveat is the that the ``scores_`` attribute will be a list of
+:func:`dask.delayed` objects instead because the scores are only computed as
+intermediate values in the scheduled computations.
+
+
+.. code-block:: default
+
+
+    print("Delayed scores:", spline.scores_)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Delayed scores: [Delayed('mean-74cef09b-0faa-4121-80a1-f0957e2b86ca'), Delayed('mean-7d897507-f150-4ab2-b03f-45b4ae810c2f'), Delayed('mean-9701cc2f-081f-47f7-a7ad-15671034ece1'), Delayed('mean-062b744d-44ef-46e9-8e68-2934878e2dd0'), Delayed('mean-045c555d-2033-4ad9-a1e0-68f51dd4c7ab'), Delayed('mean-1f281e1f-00d6-457f-be28-3d50d23f4a75'), Delayed('mean-c142e5be-5970-43b3-aef5-cf02b9f399d5'), Delayed('mean-1d79f0e6-fcc0-4c63-bdf8-3a5b0f9d17bb'), Delayed('mean-effc3094-cc0b-428a-9f2b-a13d8d861f9c'), Delayed('mean-575ab525-a707-44fc-8797-3aa73b41f7bf'), Delayed('mean-8586e37d-3eb3-4f69-82e6-fadaaa9188d4'), Delayed('mean-89c0f33a-2ba0-4057-9fc4-4017ae6f2a4f'), Delayed('mean-860c13b2-3f2c-4b59-97f5-8d21afe66455'), Delayed('mean-6879dcd1-4d15-424e-9118-6a111bdd1309'), Delayed('mean-51b3399a-712c-4313-881e-75e6a3ee3659'), Delayed('mean-7b6f6f14-9d3e-4fc4-95bc-05f1d4f6ba86')]
+
+
+
+
+Calling :func:`dask.compute` on the scores will calculate their values but
+will unfortunately run the entire grid search again. So using
+``delayed=True`` is not recommended if you need the scores of each parameter
+combination.
+
+The importance of tuning
+------------------------
+
+To see the difference that tuning has on the results, we can make a grid
+with the best configuration and see how it compares to the default result.
+
+
+.. code-block:: default
+
+
+    grid_default = spline_default.grid(
+        region=region,
+        spacing=spacing,
+        projection=projection,
+        dims=["latitude", "longitude"],
+        data_names=["temperature"],
+    )
+
+
+
+
+
+
+
+
+Let's plot our grids side-by-side:
+
+
+.. code-block:: default
+
+
+    mask = vd.distance_mask(
+        (data.longitude, data.latitude),
+        maxdist=3 * spacing * 111e3,
+        coordinates=vd.grid_coordinates(region, spacing=spacing),
+        projection=projection,
+    )
+
+    grid = grid.where(mask)
+    grid_default = grid_default.where(mask)
+
+    plt.figure(figsize=(14, 8))
+    for i, title, grd in zip(range(2), ["Defaults", "Tuned"], [grid_default, grid]):
+        ax = plt.subplot(1, 2, i + 1, projection=ccrs.Mercator())
+        ax.set_title(title)
+        pc = grd.temperature.plot.pcolormesh(
+            ax=ax,
+            cmap="plasma",
+            transform=ccrs.PlateCarree(),
+            vmin=data.air_temperature_c.min(),
+            vmax=data.air_temperature_c.max(),
+            add_colorbar=False,
+            add_labels=False,
+        )
+        plt.colorbar(pc, orientation="horizontal", aspect=50, pad=0.05).set_label("C")
+        ax.plot(
+            data.longitude, data.latitude, ".k", markersize=1, transform=ccrs.PlateCarree()
+        )
+        vd.datasets.setup_texas_wind_map(ax)
+    plt.tight_layout()
+    plt.show()
+
+
+
+
+.. image:: /tutorials/images/sphx_glr_model_selection_001.png
+    :alt: Defaults, Tuned
+    :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:782: MatplotlibDeprecationWarning: Passing the minor parameter of set_xticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
+      return super(GeoAxes, self).set_xticks(xticks, minor)
+    /home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:829: MatplotlibDeprecationWarning: Passing the minor parameter of set_yticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
+      return super(GeoAxes, self).set_yticks(yticks, minor)
+    /home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:782: MatplotlibDeprecationWarning: Passing the minor parameter of set_xticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
+      return super(GeoAxes, self).set_xticks(xticks, minor)
+    /home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:829: MatplotlibDeprecationWarning: Passing the minor parameter of set_yticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
+      return super(GeoAxes, self).set_yticks(yticks, minor)
+    /home/travis/build/fatiando/verde/tutorials/model_selection.py:208: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations. 
+      plt.tight_layout()
+
+
+
+
+Notice that, for sparse data like these, **smoother models tend to be better
+predictors**. This is a sign that you should probably not trust many of the short
+wavelength features that we get from the defaults.
+
+
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** ( 0 minutes  2.878 seconds)
+
+
+.. _sphx_glr_download_tutorials_model_selection.py:
+
+
+.. only :: html
+
+ .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
+
+
+  .. container:: sphx-glr-download sphx-glr-download-python
+
+     :download:`Download Python source code: model_selection.py <model_selection.py>`
+
+
+
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+     :download:`Download Jupyter notebook: model_selection.ipynb <model_selection.ipynb>`
+
+
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_
