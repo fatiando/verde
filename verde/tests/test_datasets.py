@@ -23,6 +23,9 @@ from ..datasets.sample_data import (
 
 def test_datasets_locate():
     "Make sure the data cache location has the right package name"
+    # Fetch a dataset first to make sure that the cache folder exists. Since
+    # Pooch 1.1.1 the cache isn't created until a download is requested.
+    fetch_texas_wind()
     path = locate()
     assert os.path.exists(path)
     # This is the most we can check in a platform independent way without
