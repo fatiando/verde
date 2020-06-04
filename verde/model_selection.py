@@ -431,25 +431,32 @@ class BlockKFold(BaseBlockCrossValidator):
 # pylint: enable=invalid-name,unused-argument
 
 
-def train_test_split(coordinates, data, weights=None, blocked=False, **kwargs):
+def train_test_split(
+    coordinates, data, weights=None, spacing=None, shape=None, **kwargs
+):
     r"""
     Split a dataset into a training and a testing set for cross-validation.
 
     Similar to :func:`sklearn.model_selection.train_test_split` but is tuned to
     work on single- or multi-component spatial data with optional weights.
 
-    Extra keyword arguments will be passed to the cross-validation class:
-    :class:`sklearn.model_selection.ShuffleSplit` (random splits) if
-    ``block=False`` or :class:`verde.BlockShuffleSplit` (spatially blocked
-    random splits) if ``block=True``. The exception is ``n_splits`` which is
-    always 1.
+    If arguments *shape* or *spacing* are provided, will group the data by
+    spatial blocks before random splitting (using
+    :class:`verde.BlockShuffleSplit` instead of
+    :class:`sklearn.model_selection.ShuffleSplit`). The argument *spacing*
+    specifies the size of the spatial blocks. Alternatively, use *shape* to
+    specify the number of blocks in each dimension.
 
-    Using ``block=True`` is preferred over plain random splits for spatial data
-    to avoid overestimating validation scores. This can happen because of the
-    inherent autocorrelation that is usually associated with this type of data
-    (points that are close together are more likely to have similar values).
-    See [Roberts_etal2017]_ for an overview of this topic. In this case, you
-    **must provide** a *spacing* or *shape* argument as well (see below).
+    Extra keyword arguments will be passed to the cross-validation class. The
+    exception is ``n_splits`` which is always 1.
+
+    Grouping by spatial blocks is preferred over plain random splits for
+    spatial data to avoid overestimating validation scores. This can happen
+    because of the inherent autocorrelation that is usually associated with
+    this type of data (points that are close together are more likely to have
+    similar values). See [Roberts_etal2017]_ for an overview of this topic. To
+    use spatial blocking, you **must provide** a *spacing* or *shape* argument
+    (see below).
 
     Parameters
     ----------
@@ -463,12 +470,15 @@ def train_test_split(coordinates, data, weights=None, blocked=False, **kwargs):
         if not none, then the weights assigned to each data point. If more than
         one data component is provided, you must provide a weights array for
         each data component (if not none).
-    block : bool
-        If True, will use :class:`verde.BlockShuffleSplit` as a cross-validator
-        to first split the data into spatial blocks and then split the blocks
-        randomly into training and testing sets. When using this option, a
-        *spacing* or *shape* must be provided as well to specify the size (or
-        number) of the spatial blocks.
+    spacing : float, tuple = (s_north, s_east), or None
+        The spatial block size in the South-North and West-East directions,
+        respectively. A single value means that the spacing is equal in both
+        directions. If None, then *shape* must be provided in order to use
+        spatial blocking.
+    shape : tuple = (n_north, n_east) or None
+        The number of blocks in the South-North and West-East directions,
+        respectively. If None, then *spacing* must be provided in order to use
+        spatial blocking.
 
     Returns
     -------
@@ -547,7 +557,7 @@ def train_test_split(coordinates, data, weights=None, blocked=False, **kwargs):
     >>> # We must specify the size of the blocks via the spacing argument.
     >>> # Blocks of 1.5 will split the domain into 4 blocks.
     >>> train, test = train_test_split(
-    ...     coordinates, data, random_state=0, blocked=True, spacing=1.5,
+    ...     coordinates, data, random_state=0, spacing=1.5,
     ... )
     >>> # The training set:
     >>> print("coords:", train[0][0], train[0][1], sep="\n")
@@ -564,12 +574,14 @@ def train_test_split(coordinates, data, weights=None, blocked=False, **kwargs):
 
     """
     args = check_fit_input(coordinates, data, weights, unpack=False)
-    if blocked:
-        feature_matrix = np.transpose(n_1d_arrays(coordinates, 2))
-        shuffle = BlockShuffleSplit(n_splits=1, **kwargs).split(feature_matrix)
-    else:
+    if spacing is None and shape is None:
         indices = np.arange(args[1][0].size)
         shuffle = ShuffleSplit(n_splits=1, **kwargs).split(indices)
+    else:
+        feature_matrix = np.transpose(n_1d_arrays(coordinates, 2))
+        shuffle = BlockShuffleSplit(
+            n_splits=1, spacing=spacing, shape=shape, **kwargs
+        ).split(feature_matrix)
     split = next(shuffle)
     train, test = (tuple(select(i, index) for i in args) for index in split)
     return train, test

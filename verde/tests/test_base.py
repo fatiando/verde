@@ -112,7 +112,7 @@ def test_basegridder():
         BaseGridder().fit(None, None)
 
     grd = PolyGridder()
-    assert repr(grd) == "PolyGridder(degree=1)"
+    assert repr(grd) == "PolyGridder()"
     grd.degree = 2
     assert repr(grd) == "PolyGridder(degree=2)"
 
@@ -188,6 +188,70 @@ def test_basegridder_projection():
     # Check the profile
     prof = grd.profile(
         (region[0], region[-1]), (region[1], region[-1]), shape[1], projection=proj
+    )
+    npt.assert_allclose(prof.scalars, data_true[-1, :])
+    # Coordinates should still be evenly spaced since the projection is a
+    # multiplication.
+    npt.assert_allclose(prof.easting, coordinates_true[0][0, :])
+    npt.assert_allclose(prof.northing, coordinates_true[1][-1, :])
+    # Distance should still be in the projected coordinates. If the projection
+    # is from geographic, we shouldn't be returning distances in degrees but in
+    # projected meters. The distances will be evenly spaced in unprojected
+    # coordinates.
+    distance_true = np.linspace(region[0] * 2, region[1] * 2, shape[1])
+    npt.assert_allclose(prof.distance, distance_true)
+
+
+def test_basegridder_projection_multiple_coordinates():
+    "Test BaseGridder when passing in a projection with multiple coordinates"
+
+    # Lets say the projection is doubling the coordinates
+    def proj(lon, lat, inverse=False):
+        "Project from the new coordinates to the original"
+        if inverse:
+            return (lon / 2, lat / 2)
+        return (lon * 2, lat * 2)
+
+    # Values in "geographic" coordinates
+    region = (0, 10, -10, -5)
+    shape = (51, 31)
+    angular, linear = 2, 100
+    coordinates = scatter_points(region, 1000, random_state=0, extra_coords=(1, 2))
+    data = angular * coordinates[0] + linear
+    # Project before passing to our Cartesian gridder
+    proj_coordinates = proj(coordinates[0], coordinates[1]) + coordinates[2:]
+    grd = PolyGridder().fit(proj_coordinates, data)
+
+    # Check the estimated coefficients
+    # The grid is estimated in projected coordinates (which are twice as large)
+    # so the rate of change (angular) should be half to get the same values.
+    npt.assert_allclose(grd.coefs_, [linear, angular / 2])
+
+    # The actual values for a grid
+    coordinates_true = grid_coordinates(region, shape, extra_coords=(13, 17))
+    data_true = angular * coordinates_true[0] + linear
+
+    # Check the scatter
+    scat = grd.scatter(
+        region, 1000, random_state=0, projection=proj, extra_coords=(13, 17)
+    )
+    npt.assert_allclose(scat.scalars, data)
+    npt.assert_allclose(scat.easting, coordinates[0])
+    npt.assert_allclose(scat.northing, coordinates[1])
+
+    # Check the grid
+    grid = grd.grid(region, shape, projection=proj, extra_coords=(13, 17))
+    npt.assert_allclose(grid.scalars.values, data_true)
+    npt.assert_allclose(grid.easting.values, coordinates_true[0][0, :])
+    npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0])
+
+    # Check the profile
+    prof = grd.profile(
+        (region[0], region[-1]),
+        (region[1], region[-1]),
+        shape[1],
+        projection=proj,
+        extra_coords=(13, 17),
     )
     npt.assert_allclose(prof.scalars, data_true[-1, :])
     # Coordinates should still be evenly spaced since the projection is a
