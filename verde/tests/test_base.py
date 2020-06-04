@@ -10,6 +10,7 @@ from ..base.least_squares import least_squares
 from ..base.utils import check_fit_input, check_coordinates
 from ..base.base_classes import (
     BaseGridder,
+    BaseBlockCrossValidator,
     get_data_names,
     get_instance_region,
 )
@@ -356,6 +357,46 @@ def test_check_fit_input_fails_weights():
         check_fit_input(coords, data, weights)
     with pytest.raises(ValueError):
         check_fit_input(coords, (data, data), weights)
+
+
+# Pylint doesn't like X, y scikit-learn argument names.
+# pylint: disable=invalid-name,unused-argument
+
+
+class DummyCrossValidator(BaseBlockCrossValidator):
+    """
+    Dummy class to test the base cross-validator.
+    """
+
+    def _iter_test_indices(self, X=None, y=None, groups=None):
+        """
+        Yields a list of indices for the entire X.
+        """
+        yield list(range(X.shape[0]))
+
+
+# pylint: enable=invalid-name,unused-argument
+
+
+def test_baseblockedcrossvalidator_n_splits():
+    "Make sure get_n_splits returns the correct value"
+    cv = DummyCrossValidator(spacing=1, n_splits=14)
+    assert cv.get_n_splits() == 14
+
+
+def test_baseblockedcrossvalidator_fails_spacing_shape():
+    "Should raise an exception if not given spacing or shape."
+    with pytest.raises(ValueError):
+        DummyCrossValidator()
+
+
+def test_baseblockedcrossvalidator_fails_data_shape():
+    "Should raise an exception if the X array doesn't have 2 columns."
+    cv = DummyCrossValidator(spacing=1)
+    with pytest.raises(ValueError):
+        next(cv.split(np.ones(shape=(10, 4))))
+    with pytest.raises(ValueError):
+        next(cv.split(np.ones(shape=(10, 1))))
 
 
 def test_least_squares_copy_jacobian():
