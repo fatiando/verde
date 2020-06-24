@@ -64,18 +64,23 @@ class DummyEstimator:
     Dummy estimator that does nothing but pass along the predicted data.
     Used to fool the scikit-learn scorer functions to fit our API
     (multi-component estimators return a tuple on .predict).
+
+    >>> est = DummyEstimator([1, 2, 3])
+    >>> print(est.fit().predict())
+    [1, 2, 3]
+
     """
 
     def __init__(self, predicted):
         self._predicted = predicted
 
-    def predict(self, *args, **kwargs):
+    def predict(self, *args, **kwargs):  # pylint: disable=unused-argument
         "Return the stored predicted values"
         return self._predicted
 
-    def fit(self, *args, **kwards):
+    def fit(self, *args, **kwards):  # pylint: disable=unused-argument
         "Does nothing. Just here to satisfy the API."
-        pass
+        return self
 
 
 def check_data(data):

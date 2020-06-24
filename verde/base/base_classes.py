@@ -5,12 +5,11 @@ from abc import ABCMeta, abstractmethod
 
 import xarray as xr
 import pandas as pd
-import numpy as np
 from sklearn.base import BaseEstimator
 from sklearn.model_selection import BaseCrossValidator
 
 from ..coordinates import grid_coordinates, profile_coordinates, scatter_points
-from .utils import check_data, check_fit_input, score_estimator
+from .utils import check_data, score_estimator
 
 
 # Pylint doesn't like X, y scikit-learn argument names.
