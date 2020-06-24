@@ -9,6 +9,7 @@ from sklearn.base import clone
 from sklearn.utils import check_random_state
 
 from .base import check_fit_input, n_1d_arrays, BaseBlockCrossValidator
+from .base.utils import score_estimator
 from .coordinates import block_split
 from .utils import dispatch, partition_by_sum
 
@@ -588,7 +589,14 @@ def train_test_split(
 
 
 def cross_val_score(
-    estimator, coordinates, data, weights=None, cv=None, client=None, delayed=False
+    estimator,
+    coordinates,
+    data,
+    weights=None,
+    cv=None,
+    client=None,
+    delayed=False,
+    scoring=None,
 ):
     """
     Score an estimator/gridder using cross-validation.
@@ -640,6 +648,9 @@ def cross_val_score(
         actually executing them. The returned scores will be a list of delayed
         objects. Call `.compute()` on each score or :func:`dask.compute` on the
         entire list to trigger the actual computations.
+    scoring : str or callable
+        A scoring specification known to scikit-learn. See
+        :func:`sklearn.metrics.check_scoring`.
 
     Returns
     -------
@@ -741,7 +752,7 @@ def cross_val_score(
         # Clone the estimator to avoid fitting the same object simultaneously
         # when delayed=True.
         score = dispatch(fit_score, client=client, delayed=delayed)(
-            clone(estimator), train, test
+            clone(estimator), train, test, scoring
         )
         scores.append(score)
     if not delayed and client is None:
@@ -749,11 +760,16 @@ def cross_val_score(
     return scores
 
 
-def fit_score(estimator, train_data, test_data):
+def fit_score(estimator, train_data, test_data, scoring):
     """
     Fit an estimator on the training data and then score it on the testing data
     """
-    return estimator.fit(*train_data).score(*test_data)
+    estimator.fit(*train_data)
+    if scoring is None:
+        score = estimator.score(*test_data)
+    else:
+        score = score_estimator(scoring, estimator, *test_data)
+    return score
 
 
 def select(arrays, index):

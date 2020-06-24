@@ -5,6 +5,7 @@ import warnings
 
 import pytest
 from sklearn.model_selection import ShuffleSplit
+from sklearn.metrics import get_scorer
 import numpy as np
 import numpy.testing as npt
 from dask.distributed import Client
@@ -22,20 +23,30 @@ def fixtute_trend():
     return coords, data, coefs
 
 
-def test_cross_val_score(trend):
+@pytest.mark.parametrize(
+    "metric,expected",
+    [(None, 1), ("r2", 1), (get_scorer("neg_mean_squared_error"), 0)],
+    ids=["none", "R2", "MSE"],
+)
+def test_cross_val_score(trend, metric, expected):
     "Check that CV scores are perfect on a perfect model"
     coords, data = trend[:2]
     model = Trend(degree=1)
-    scores = cross_val_score(model, coords, data)
-    npt.assert_allclose(scores, 1)
+    scores = cross_val_score(model, coords, data, scoring=metric)
+    npt.assert_allclose(scores, expected, atol=1e-10)
 
 
-def test_cross_val_score_vector(trend):
+@pytest.mark.parametrize(
+    "metric,expected",
+    [(None, 1), ("r2", 1), (get_scorer("neg_mean_squared_error"), 0)],
+    ids=["none", "R2", "MSE"],
+)
+def test_cross_val_score_vector(trend, metric, expected):
     "Check that CV works on Vector data types as well"
     coords, data = trend[:2]
     model = Vector([Trend(degree=1), Trend(degree=1)])
-    scores = cross_val_score(model, coords, (data, data))
-    npt.assert_allclose(scores, 1)
+    scores = cross_val_score(model, coords, (data, data), scoring=metric)
+    npt.assert_allclose(scores, expected, atol=1e-10)
 
 
 def test_cross_val_score_client(trend):
