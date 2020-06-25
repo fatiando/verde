@@ -5,18 +5,53 @@ import warnings
 
 import pytest
 from sklearn.model_selection import ShuffleSplit
+from sklearn.metrics import get_scorer
 import numpy as np
 import numpy.testing as npt
 from dask.distributed import Client
 
-from .. import Trend, grid_coordinates, scatter_points
+from .. import Vector, Trend, grid_coordinates, scatter_points
 from ..model_selection import cross_val_score, BlockShuffleSplit, BlockKFold
 
 
-def test_cross_val_score_client():
-    "Test the deprecated dask Client interface"
+@pytest.fixture(name="trend")
+def fixture_trend():
+    "Coordinates and data for a 1-degree trend"
     coords = grid_coordinates((0, 10, -10, -5), spacing=0.1)
-    data = 10 - coords[0] + 0.5 * coords[1]
+    coefs = (10, -1, 0.5)
+    data = coefs[0] + coefs[1] * coords[0] + coefs[2] * coords[1]
+    return coords, data, coefs
+
+
+@pytest.mark.parametrize(
+    "metric,expected",
+    [(None, 1), ("r2", 1), (get_scorer("neg_mean_squared_error"), 0)],
+    ids=["none", "R2", "MSE"],
+)
+def test_cross_val_score(trend, metric, expected):
+    "Check that CV scores are perfect on a perfect model"
+    coords, data = trend[:2]
+    model = Trend(degree=1)
+    scores = cross_val_score(model, coords, data, scoring=metric)
+    npt.assert_allclose(scores, expected, atol=1e-10)
+
+
+@pytest.mark.parametrize(
+    "metric,expected",
+    [(None, 1), ("r2", 1), (get_scorer("neg_mean_squared_error"), 0)],
+    ids=["none", "R2", "MSE"],
+)
+def test_cross_val_score_vector(trend, metric, expected):
+    "Check that CV works on Vector data types as well"
+    coords, data = trend[:2]
+    model = Vector([Trend(degree=1), Trend(degree=1)])
+    scores = cross_val_score(model, coords, (data, data), scoring=metric)
+    npt.assert_allclose(scores, expected, atol=1e-10)
+
+
+def test_cross_val_score_client(trend):
+    "Test the deprecated dask Client interface"
+    coords, data = trend[:2]
     model = Trend(degree=1)
     nsplits = 5
     cross_validator = ShuffleSplit(n_splits=nsplits, random_state=0)

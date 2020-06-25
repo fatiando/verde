@@ -9,6 +9,7 @@ from sklearn.base import clone
 from sklearn.utils import check_random_state
 
 from .base import check_fit_input, n_1d_arrays, BaseBlockCrossValidator
+from .base.utils import score_estimator
 from .coordinates import block_split
 from .utils import dispatch, partition_by_sum
 
@@ -588,7 +589,14 @@ def train_test_split(
 
 
 def cross_val_score(
-    estimator, coordinates, data, weights=None, cv=None, client=None, delayed=False
+    estimator,
+    coordinates,
+    data,
+    weights=None,
+    cv=None,
+    client=None,
+    delayed=False,
+    scoring=None,
 ):
     """
     Score an estimator/gridder using cross-validation.
@@ -600,6 +608,10 @@ def cross_val_score(
     ``n_splits=5`` and ``random_state=0`` to split the dataset. Any other
     cross-validation class from scikit-learn or Verde can be passed in through
     the *cv* argument.
+
+    The score is calculated using the estimator/gridder's ``.score`` method by
+    default. Alternatively, use the *scoring* parameter to specify a different
+    scoring function (e.g., mean square error, mean absolute error, etc).
 
     Can optionally run in parallel using :mod:`dask`. To do this, use
     ``delayed=True`` to dispatch computations with :func:`dask.delayed` instead
@@ -640,6 +652,11 @@ def cross_val_score(
         actually executing them. The returned scores will be a list of delayed
         objects. Call `.compute()` on each score or :func:`dask.compute` on the
         entire list to trigger the actual computations.
+    scoring : None, str, or callable
+        A scoring function (or name of a function) known to scikit-learn. See
+        the description of *scoring* in
+        :func:`sklearn.model_selection.cross_val_score` for details. If None,
+        will fall back to the estimator's ``.score`` method.
 
     Returns
     -------
@@ -673,6 +690,22 @@ def cross_val_score(
 
     There are 5 scores because the default cross-validator is
     :class:`sklearn.model_selection.KFold` with ``n_splits=5``.
+
+    To calculate the score with a different metric, use the *scoring* argument:
+
+    >>> scores = cross_val_score(
+    ...     model, coords, data, scoring="neg_mean_squared_error",
+    ... )
+    >>> print(', '.join(['{:.2f}'.format(-score) for score in scores]))
+    0.00, 0.00, 0.00, 0.00, 0.00
+
+    In this case, we calculated the (negative) mean squared error (MSE) which
+    measures the distance between test data and predictions. This way, 0 is the
+    best possible value meaning that the data and prediction are the same. The
+    "neg" part indicates that this is the negative mean square error. This is
+    required because scikit-learn assumes that higher scores are always treated
+    as better (which is the opposite for MSE). For display, we take the
+    negative of the score to get the actual MSE.
 
     We can use different cross-validators by assigning them to the ``cv``
     argument:
@@ -736,12 +769,13 @@ def cross_val_score(
     fit_args = (coordinates, data, weights)
     scores = []
     for train_index, test_index in cv.split(feature_matrix):
-        train = tuple(select(i, train_index) for i in fit_args)
-        test = tuple(select(i, test_index) for i in fit_args)
         # Clone the estimator to avoid fitting the same object simultaneously
         # when delayed=True.
         score = dispatch(fit_score, client=client, delayed=delayed)(
-            clone(estimator), train, test
+            clone(estimator),
+            tuple(select(i, train_index) for i in fit_args),
+            tuple(select(i, test_index) for i in fit_args),
+            scoring,
         )
         scores.append(score)
     if not delayed and client is None:
@@ -749,11 +783,16 @@ def cross_val_score(
     return scores
 
 
-def fit_score(estimator, train_data, test_data):
+def fit_score(estimator, train_data, test_data, scoring):
     """
     Fit an estimator on the training data and then score it on the testing data
     """
-    return estimator.fit(*train_data).score(*test_data)
+    estimator.fit(*train_data)
+    if scoring is None:
+        score = estimator.score(*test_data)
+    else:
+        score = score_estimator(scoring, estimator, *test_data)
+    return score
 
 
 def select(arrays, index):

@@ -5,13 +5,11 @@ from abc import ABCMeta, abstractmethod
 
 import xarray as xr
 import pandas as pd
-import numpy as np
 from sklearn.base import BaseEstimator
 from sklearn.model_selection import BaseCrossValidator
-from sklearn.metrics import r2_score
 
 from ..coordinates import grid_coordinates, profile_coordinates, scatter_points
-from .utils import check_data, check_fit_input
+from .utils import check_data, score_estimator
 
 
 # Pylint doesn't like X, y scikit-learn argument names.
@@ -334,17 +332,7 @@ class BaseGridder(BaseEstimator):
             The R^2 score
 
         """
-        coordinates, data, weights = check_fit_input(
-            coordinates, data, weights, unpack=False
-        )
-        pred = check_data(self.predict(coordinates))
-        result = np.mean(
-            [
-                r2_score(datai.ravel(), predi.ravel(), sample_weight=weighti)
-                for datai, predi, weighti in zip(data, pred, weights)
-            ]
-        )
-        return result
+        return score_estimator("r2", self, coordinates, data, weights=weights)
 
     def grid(
         self,
