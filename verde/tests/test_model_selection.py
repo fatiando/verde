@@ -15,7 +15,7 @@ from ..model_selection import cross_val_score, BlockShuffleSplit, BlockKFold
 
 
 @pytest.fixture(name="trend")
-def fixtute_trend():
+def fixture_trend():
     "Coordinates and data for a 1-degree trend"
     coords = grid_coordinates((0, 10, -10, -5), spacing=0.1)
     coefs = (10, -1, 0.5)
