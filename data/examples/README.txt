@@ -6,6 +6,12 @@ Sample Data
 Verde provides some sample data and ways of generating synthetic data through
 the :mod:`verde.datasets` module.
 
+.. warning::
+
+    All sample datasets in Verde have been moved to Rockhound and
+    **these functions will be removed in Verde v2.0.0**.
+    Please, use Rockhoud to fetch these dataset instead.
+
 Where are my data files?
 ------------------------
 

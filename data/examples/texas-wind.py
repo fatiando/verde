@@ -1,6 +1,12 @@
 """
-Wind speed data from Texas
-==========================
+[DEPRECATED] Wind speed data from Texas
+=======================================
+
+.. warning::
+
+    All sample datasets in Verde have been moved to Rockhound and
+    **this function will be removed in Verde v2.0.0**.
+    Please, use Rockhoud to fetch this dataset instead.
 
 This is average wind speed and air temperature for data for the state of Texas, USA, on
 February 26 2018. The original data was downloaded from `Iowa State University

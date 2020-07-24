@@ -1,6 +1,12 @@
 """
-GPS velocities from California
-==============================
+[DEPRECATED] GPS velocities from California
+===========================================
+
+.. warning::
+
+    All sample datasets in Verde have been moved to Rockhound and
+    **this function will be removed in Verde v2.0.0**.
+    Please, use Rockhoud to fetch this dataset instead.
 
 We provide sample 3-component GPS velocity data from the West coast of the U.S. The data
 were cut from EarthScope Plate Boundary Observatory data provided by UNAVCO. The

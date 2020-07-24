@@ -32,6 +32,15 @@ with pkg_resources.resource_stream("verde.datasets", "registry.txt") as registry
     REGISTRY.load_registry(registry_file)
 
 
+def _datasets_deprecation_warning():
+    warnings.warn(
+        "All sample datasets in Verde have been moved to Rockhound and "
+        + "this function will be removed in Verde v2.0.0. "
+        + "Please, use Rockhoud to fetch this dataset instead.",
+        DeprecationWarning,
+    )
+
+
 def locate():
     r"""
     The absolute path to the sample data storage location on disk.
@@ -80,6 +89,12 @@ def fetch_baja_bathymetry():
     """
     Fetch sample bathymetry data from Baja California.
 
+    .. warning::
+
+        All sample datasets in Verde have been moved to Rockhound and
+        **this function will be removed in Verde v2.0.0**.
+        Please, use Rockhoud to fetch this dataset instead.
+
     This is the ``@tut_ship.xyz`` sample data from the `GMT
     <http://gmt.soest.hawaii.edu/>`__ tutorial.
 
@@ -97,6 +112,7 @@ def fetch_baja_bathymetry():
     setup_baja_bathymetry_map: Utility function to help setup a Cartopy map.
 
     """
+    _datasets_deprecation_warning()
     data_file = REGISTRY.fetch("baja-bathymetry.csv.xz")
     data = pd.read_csv(data_file, compression="xz")
     return data
@@ -107,6 +123,11 @@ def setup_baja_bathymetry_map(
 ):
     """
     Setup a Cartopy map for the Baja California bathymetry dataset.
+
+    .. warning::
+
+        All sample datasets in Verde have been moved to Rockhound and
+        **this function will be removed in Verde v2.0.0**.
 
     Parameters
     ----------
@@ -235,6 +256,12 @@ def fetch_california_gps():
     """
     Fetch sample GPS velocity data from California (the U.S. West coast).
 
+    .. warning::
+
+        All sample datasets in Verde have been moved to Rockhound and
+        **this function will be removed in Verde v2.0.0**.
+        Please, use Rockhoud to fetch this dataset instead.
+
     Velocities and their standard deviations are in meters/year. Height is
     geometric height above WGS84 in meters. Velocities are referenced to the
     North American tectonic plate (NAM08). The average velocities were released
@@ -262,6 +289,7 @@ def fetch_california_gps():
     setup_california_gps_map: Utility function to help setup a Cartopy map.
 
     """
+    _datasets_deprecation_warning()
     data_file = REGISTRY.fetch("california-gps.csv.xz")
     data = pd.read_csv(data_file, compression="xz")
     return data
@@ -272,6 +300,11 @@ def setup_california_gps_map(
 ):
     """
     Setup a Cartopy map for the California GPS velocity dataset.
+
+    .. warning::
+
+        All sample datasets in Verde have been moved to Rockhound and
+        **this function will be removed in Verde v2.0.0**.
 
     Parameters
     ----------
@@ -304,6 +337,12 @@ def fetch_texas_wind():
     """
     Fetch sample wind speed and air temperature data for Texas, USA.
 
+    .. warning::
+
+        All sample datasets in Verde have been moved to Rockhound and
+        **this function will be removed in Verde v2.0.0**.
+        Please, use Rockhoud to fetch this dataset instead.
+
     Data are average wind speed and air temperature for data for February 26
     2018. The original data was downloaded from `Iowa State University
     <https://mesonet.agron.iastate.edu/request/download.phtml>`__.
@@ -323,6 +362,7 @@ def fetch_texas_wind():
     setup_texas_wind_map: Utility function to help setup a Cartopy map.
 
     """
+    _datasets_deprecation_warning()
     data_file = REGISTRY.fetch("texas-wind.csv")
     data = pd.read_csv(data_file)
     return data
@@ -333,6 +373,11 @@ def setup_texas_wind_map(
 ):
     """
     Setup a Cartopy map for the Texas wind speed and air temperature dataset.
+
+    .. warning::
+
+        All sample datasets in Verde have been moved to Rockhound and
+        **this function will be removed in Verde v2.0.0**.
 
     Parameters
     ----------
