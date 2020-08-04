@@ -1015,6 +1015,9 @@ def rolling_window(
     [20. 20. 20. 20. 20. 20. 20. 20. 20.]
 
     """
+    # Check if shape or spacing were passed
+    if shape is None and spacing is None:
+        raise ValueError("Either a shape or a spacing must be provided.")
     # Select the coordinates after checking to make sure indexing will still
     # work on the ignored coordinates.
     coordinates = check_coordinates(coordinates)[:2]
