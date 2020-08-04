@@ -1024,7 +1024,7 @@ def rolling_window(
     if region is None:
         region = get_region(coordinates)
     # Check if window size is bigger than the minimum dimension of the region
-    region_min_width = min(region[1] - region[0], region[3] - region[1])
+    region_min_width = min(region[1] - region[0], region[3] - region[2])
     if region_min_width < size:
         raise ValueError(
             "Window size '{}' is larger ".format(size)
