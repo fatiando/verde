@@ -68,6 +68,27 @@ def test_rolling_window_no_shape_or_spacing():
         rolling_window(coords, size=2)
 
 
+def test_rolling_window_oversized_window():
+    """
+    Check if error is raised if size larger than region is passed
+    """
+    region = (-5, -1, 6, 11)
+    oversize = 100
+    coords = grid_coordinates(region, spacing=1)
+    # The expected error message with regex
+    # (the long expressions intend to capture floats and ints)
+    err_msg = (
+        r"Window size '[+-]?([0-9]*[.])?[0-9]+' is larger "
+        + r"than dimensions of the region "
+        + r"'\([+-]?([0-9]*[.])?[0-9]+, "
+        + r"[+-]?([0-9]*[.])?[0-9]+, "
+        + r"[+-]?([0-9]*[.])?[0-9]+, "
+        + r"[+-]?([0-9]*[.])?[0-9]+\)'."
+    )
+    with pytest.raises(ValueError, match=err_msg):
+        rolling_window(coords, size=oversize, spacing=2)
+
+
 def test_spacing_to_shape():
     "Check that correct spacing and region are returned"
     region = (-10, 0, 0, 5)

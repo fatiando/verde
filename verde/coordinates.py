@@ -1023,6 +1023,13 @@ def rolling_window(
     coordinates = check_coordinates(coordinates)[:2]
     if region is None:
         region = get_region(coordinates)
+    # Check if window size is bigger than the minimum dimension of the region
+    region_min_width = min(region[1] - region[0], region[3] - region[1])
+    if region_min_width < size:
+        raise ValueError(
+            "Window size '{}' is larger ".format(size)
+            + "than dimensions of the region '{}'.".format(region)
+        )
     # Calculate the region spanning the centers of the rolling windows
     window_region = [
         dimension + (-1) ** (i % 2) * size / 2 for i, dimension in enumerate(region)
