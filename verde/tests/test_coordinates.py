@@ -81,14 +81,12 @@ def test_rolling_window_oversized_window():
     for region in regions:
         coords = grid_coordinates(region, spacing=1)
         # The expected error message with regex
-        # (the long expressions intend to capture floats and ints)
+        # (the long expression intends to capture floats and ints)
+        float_regex = r"[+-]?([0-9]*[.])?[0-9]+"
         err_msg = (
-            r"Window size '[+-]?([0-9]*[.])?[0-9]+' is larger "
+            r"Window size '{}' is larger ".format(float_regex)
             + r"than dimensions of the region "
-            + r"'\([+-]?([0-9]*[.])?[0-9]+, "
-            + r"[+-]?([0-9]*[.])?[0-9]+, "
-            + r"[+-]?([0-9]*[.])?[0-9]+, "
-            + r"[+-]?([0-9]*[.])?[0-9]+\)'."
+            + r"'\({0}, {0}, {0}, {0}\)'.".format(float_regex)
         )
         with pytest.raises(ValueError, match=err_msg):
             rolling_window(coords, size=oversize, spacing=2)
