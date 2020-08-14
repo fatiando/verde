@@ -10,7 +10,14 @@ from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
 import pytest
 
 from ..coordinates import grid_coordinates
-from ..utils import parse_engine, dummy_jit, kdtree, grid_to_table, partition_by_sum
+from ..utils import (
+    parse_engine,
+    dummy_jit,
+    kdtree,
+    grid_to_table,
+    partition_by_sum,
+    build_grid,
+)
 from .. import utils
 
 
@@ -89,3 +96,111 @@ def test_partition_by_sum_fails_no_partitions():
     with pytest.raises(ValueError) as error:
         partition_by_sum(np.arange(10), 8)
     assert "Could not find partition points" in str(error)
+
+
+def test_build_grid():
+    """
+    Check if xarray.Dataset is correctly created
+    """
+    region = (-10, -5, 6, 10)
+    spacing = 1
+    coordinates = grid_coordinates(region, spacing=spacing)
+    data = np.ones_like(coordinates[0])
+    grid = build_grid(coordinates, data, data_name="dummy")
+    npt.assert_allclose(grid.easting, [-10, -9, -8, -7, -6, -5])
+    npt.assert_allclose(grid.northing, [6, 7, 8, 9, 10])
+    npt.assert_allclose(grid.dummy, 1)
+    assert grid.dummy.shape == (5, 6)
+    # Change dims
+    grid = build_grid(
+        coordinates, data, data_name="dummy", dims=("latitude", "longitude")
+    )
+    npt.assert_allclose(grid.longitude, [-10, -9, -8, -7, -6, -5])
+    npt.assert_allclose(grid.latitude, [6, 7, 8, 9, 10])
+    npt.assert_allclose(grid.dummy, 1)
+    assert grid.dummy.shape == (5, 6)
+
+
+def test_build_grid_multiple_data():
+    """
+    Check if xarray.Dataset with multiple data is correctly created
+    """
+    region = (-10, -5, 6, 10)
+    spacing = 1
+    coordinates = grid_coordinates(region, spacing=spacing)
+    data_arrays = tuple(i * np.ones_like(coordinates[0]) for i in range(1, 4))
+    data_names = tuple("data_{}".format(i) for i in range(1, 4))
+    dataset = build_grid(coordinates, data_arrays, data_name=data_names)
+    npt.assert_allclose(dataset.easting, [-10, -9, -8, -7, -6, -5])
+    npt.assert_allclose(dataset.northing, [6, 7, 8, 9, 10])
+    for i in range(1, 4):
+        npt.assert_allclose(dataset["data_{}".format(i)], i)
+        assert dataset["data_{}".format(i)].shape == (5, 6)
+
+
+def test_build_grid_extra_coords():
+    """
+    Check if xarray.Dataset with extra coords is correctly created
+    """
+    region = (-10, -5, 6, 10)
+    spacing = 1
+    extra_coords = [1, 2]
+    coordinates = grid_coordinates(region, spacing=spacing, extra_coords=extra_coords)
+    data = np.ones_like(coordinates[0])
+    dataset = build_grid(
+        coordinates, data, data_name="dummy", extra_coords_name=["upward", "time"],
+    )
+    npt.assert_allclose(dataset.easting, [-10, -9, -8, -7, -6, -5])
+    npt.assert_allclose(dataset.northing, [6, 7, 8, 9, 10])
+    npt.assert_allclose(dataset.upward, 1)
+    npt.assert_allclose(dataset.time, 2)
+    npt.assert_allclose(dataset.dummy, 1)
+    assert dataset.dummy.shape == (5, 6)
+    assert dataset.upward.shape == (5, 6)
+    assert dataset.time.shape == (5, 6)
+
+
+def test_build_grid_invalid_names():
+    """
+    Check if errors are raise after invalid data names
+    """
+    region = (-10, -5, 6, 10)
+    spacing = 1
+    coordinates = grid_coordinates(region, spacing=spacing)
+    # Single data, multiple data_name
+    data = np.ones_like(coordinates[0])
+    with pytest.raises(ValueError):
+        build_grid(coordinates, data, data_name=["bla_1", "bla_2"])
+    # Multiple data, single data_name
+    data = tuple(i * np.ones_like(coordinates[0]) for i in (1, 2))
+    with pytest.raises(ValueError):
+        build_grid(coordinates, data, data_name="blabla")
+
+
+def test_build_grid_invalid_extra_coords():
+    """
+    Check if errors are raise after invalid extra coords
+    """
+    region = (-10, -5, 6, 10)
+    spacing = 1
+    # No extra coords, extra_coords_name should be ignored
+    coordinates = grid_coordinates(region, spacing=spacing)
+    data = np.ones_like(coordinates[0])
+    build_grid(coordinates, data, data_name="dummy", extra_coords_name="upward")
+    # Single extra coords, extra_coords_name equal to None
+    coordinates = grid_coordinates(region, spacing=spacing, extra_coords=1)
+    data = np.ones_like(coordinates[0])
+    with pytest.raises(ValueError):
+        build_grid(coordinates, data, data_name="dummy", extra_coords_name=None)
+    # Multiple extra coords, single extra_coords_name as a str
+    coordinates = grid_coordinates(region, spacing=spacing, extra_coords=[1, 2])
+    data = np.ones_like(coordinates[0])
+    with pytest.raises(ValueError):
+        build_grid(coordinates, data, data_name="dummy", extra_coords_name="upward")
+    # Multiple extra coords, multiple extra_coords_name but not equal
+    coordinates = grid_coordinates(region, spacing=spacing, extra_coords=[1, 2, 3])
+    data = np.ones_like(coordinates[0])
+    with pytest.raises(ValueError):
+        build_grid(
+            coordinates, data, data_name="dummy", extra_coords_name=["upward", "time"]
+        )
