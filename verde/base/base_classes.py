@@ -377,7 +377,7 @@ class BaseGridder(BaseEstimator):
             order: northing dimension, easting dimension.
             **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
-        data_names : list of None
+        data_names : list or None
             The name(s) of the data variables in the output grid. Defaults to
             ``['scalars']`` for scalar data,
             ``['east_component', 'north_component']`` for 2D vector data, and
