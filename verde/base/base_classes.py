@@ -656,7 +656,7 @@ class BaseGridder(BaseEstimator):
 
 def project_coordinates(coordinates, projection, **kwargs):
     """
-    Apply projection to given coordiantes
+    Apply projection to given coordinates
 
     Allows to apply projections to any number of coordinates, assuming
     that the first ones are ``longitude`` and ``latitude``.
