@@ -138,7 +138,8 @@ def test_basegridder():
     npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0])
     npt.assert_allclose(grd.scatter(region, 1000, random_state=0).scalars, data)
     npt.assert_allclose(
-        prof.scalars, angular * coordinates_true[0][0, :] + linear,
+        prof.scalars,
+        angular * coordinates_true[0][0, :] + linear,
     )
     npt.assert_allclose(prof.easting, coordinates_true[0][0, :])
     npt.assert_allclose(prof.northing, coordinates_true[1][0, :])
@@ -245,7 +246,10 @@ def test_basegridder_extra_coords():
     # Test profile with a single extra coord
     extra_coords = 9
     prof = grd.profile(
-        (region[0], region[-1]), (region[1], region[-1]), 51, extra_coords=extra_coords,
+        (region[0], region[-1]),
+        (region[1], region[-1]),
+        51,
+        extra_coords=extra_coords,
     )
     assert "extra_coord" in prof.columns
     npt.assert_allclose(prof["extra_coord"], extra_coords)
@@ -253,7 +257,10 @@ def test_basegridder_extra_coords():
     # Test profile with multiple extra coord
     extra_coords = [9, 18, 27]
     prof = grd.profile(
-        (region[0], region[-1]), (region[1], region[-1]), 51, extra_coords=extra_coords,
+        (region[0], region[-1]),
+        (region[1], region[-1]),
+        51,
+        extra_coords=extra_coords,
     )
     extra_coord_names = ["extra_coord", "extra_coord_1", "extra_coord_2"]
     for name, coord in zip(extra_coord_names, extra_coords):
