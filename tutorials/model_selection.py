@@ -205,7 +205,6 @@ for i, title, grd in zip(range(2), ["Defaults", "Tuned"], [grid_default, grid]):
         data.longitude, data.latitude, ".k", markersize=1, transform=ccrs.PlateCarree()
     )
     vd.datasets.setup_texas_wind_map(ax)
-plt.tight_layout()
 plt.show()
 
 ########################################################################################
