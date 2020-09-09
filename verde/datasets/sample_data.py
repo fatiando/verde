@@ -9,7 +9,6 @@ import pandas as pd
 import pooch
 
 try:
-    import cartopy.feature as cfeature
     import cartopy.crs as ccrs
     from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 except ImportError:
@@ -54,20 +53,13 @@ def locate():
 
 
 def _setup_map(
-    ax, xticks, yticks, crs, region, land=None, ocean=None, borders=None, states=None
+    ax, xticks, yticks, crs, region, coastlines=False,
 ):
     """
-    Setup a Cartopy map with land and ocean features and proper tick labels.
+    Setup a Cartopy map with coastlines and proper tick labels.
     """
-
-    if land is not None:
-        ax.add_feature(cfeature.LAND, facecolor=land)
-    if ocean is not None:
-        ax.add_feature(cfeature.OCEAN, facecolor=ocean)
-    if borders is not None:
-        ax.add_feature(cfeature.BORDERS, linewidth=borders)
-    if states is not None:
-        ax.add_feature(cfeature.STATES, linewidth=states)
+    if coastlines:
+        ax.coastlines()
     ax.set_extent(region, crs=crs)
     # Set the proper ticks for a Cartopy map
     ax.set_xticks(xticks, crs=crs)
@@ -103,7 +95,7 @@ def fetch_baja_bathymetry():
 
 
 def setup_baja_bathymetry_map(
-    ax, region=(245.0, 254.705, 20.0, 29.99), land="gray", ocean=None
+    ax, region=(245.0, 254.705, 20.0, 29.99), coastlines=True, **kwargs
 ):
     """
     Setup a Cartopy map for the Baja California bathymetry dataset.
@@ -114,22 +106,27 @@ def setup_baja_bathymetry_map(
         The axes where the map is being plotted.
     region : list = [W, E, S, N]
         The boundaries of the map region in the coordinate system of the data.
-    land : str or None
-        The name of the color of the land feature or None to omit it.
-    ocean : str or None
-        The name of the color of the ocean feature or None to omit it.
+    coastlines : bool
+        If True the coastlines will be added to the plot.
+    kwargs :
+        All additional key-word arguments will be ignored. ``kwargs`` are
+        accepted to guarantee backward compatibility.
 
     See also
     --------
     fetch_baja_bathymetry: Sample bathymetry data from Baja California.
 
     """
+    if kwargs:
+        warnings.warn(
+            "All kwargs are being ignored. They are accepted to "
+            + "guarantee backward compatibility."
+        )
     _setup_map(
         ax,
         xticks=np.arange(-114, -105, 2),
         yticks=np.arange(21, 30, 2),
-        land=land,
-        ocean=ocean,
+        coastlines=coastlines,
         region=region,
         crs=ccrs.PlateCarree(),
     )
@@ -205,10 +202,6 @@ def setup_rio_magnetic_map(ax, region=(-42.6, -42, -22.5, -22)):
         The axes where the map is being plotted.
     region : list = [W, E, S, N]
         The boundaries of the map region in the coordinate system of the data.
-    land : str or None
-        The name of the color of the land feature or None to omit it.
-    ocean : str or None
-        The name of the color of the ocean feature or None to omit it.
 
     See also
     --------
@@ -224,8 +217,6 @@ def setup_rio_magnetic_map(ax, region=(-42.6, -42, -22.5, -22)):
         ax,
         xticks=np.arange(-42.5, -42, 0.1),
         yticks=np.arange(-22.5, -21.99, 0.1),
-        land=None,
-        ocean=None,
         region=region,
         crs=ccrs.PlateCarree(),
     )
@@ -268,7 +259,7 @@ def fetch_california_gps():
 
 
 def setup_california_gps_map(
-    ax, region=(235.2, 245.3, 31.9, 42.3), land="gray", ocean="skyblue"
+    ax, region=(235.2, 245.3, 31.9, 42.3), coastlines=True, **kwargs
 ):
     """
     Setup a Cartopy map for the California GPS velocity dataset.
@@ -279,22 +270,27 @@ def setup_california_gps_map(
         The axes where the map is being plotted.
     region : list = [W, E, S, N]
         The boundaries of the map region in the coordinate system of the data.
-    land : str or None
-        The name of the color of the land feature or None to omit it.
-    ocean : str or None
-        The name of the color of the ocean feature or None to omit it.
+    coastlines : bool
+        If True the coastlines will be added to the plot.
+    kwargs :
+        All additional key-word arguments will be ignored. ``kwargs`` are
+        accepted to guarantee backward compatibility.
 
     See also
     --------
     fetch_california_gps: Sample GPS velocity data from California.
 
     """
+    if kwargs:
+        warnings.warn(
+            "All kwargs are being ignored. They are accepted to "
+            + "guarantee backward compatibility."
+        )
     _setup_map(
         ax,
         xticks=np.arange(-124, -115, 4),
         yticks=np.arange(33, 42, 2),
-        land=land,
-        ocean=ocean,
+        coastlines=coastlines,
         region=region,
         crs=ccrs.PlateCarree(),
     )
@@ -328,9 +324,7 @@ def fetch_texas_wind():
     return data
 
 
-def setup_texas_wind_map(
-    ax, region=(-107, -93, 25.5, 37), land="#dddddd", borders=0.5, states=0.1
-):
+def setup_texas_wind_map(ax, region=(-107, -93, 25.5, 37), coastlines=True, **kwargs):
     """
     Setup a Cartopy map for the Texas wind speed and air temperature dataset.
 
@@ -340,27 +334,27 @@ def setup_texas_wind_map(
         The axes where the map is being plotted.
     region : list = [W, E, S, N]
         The boundaries of the map region in the coordinate system of the data.
-    land : str or None
-        The name of the color of the land feature or None to omit it.
-    borders : float or None
-        Line width of the country borders.
-    states : float or None
-        Line width of the state borders.
+    coastlines : bool
+        If True the coastlines will be added to the plot.
+    kwargs :
+        All additional key-word arguments will be ignored. ``kwargs`` are
+        accepted to guarantee backward compatibility.
 
     See also
     --------
     fetch_texas_wind: Sample wind speed and air temperature data for Texas.
 
     """
-
+    if kwargs:
+        warnings.warn(
+            "All kwargs are being ignored. They are accepted to "
+            + "guarantee backward compatibility."
+        )
     _setup_map(
         ax,
         xticks=np.arange(-106, -92, 3),
         yticks=np.arange(27, 38, 3),
-        land=land,
-        ocean=None,
+        coastlines=coastlines,
         region=region,
-        borders=borders,
-        states=states,
         crs=ccrs.PlateCarree(),
     )
