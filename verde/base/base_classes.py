@@ -35,7 +35,10 @@ class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
     """
 
     def __init__(
-        self, spacing=None, shape=None, n_splits=10,
+        self,
+        spacing=None,
+        shape=None,
+        n_splits=10,
     ):
         if spacing is None and shape is None:
             raise ValueError("Either 'spacing' or 'shape' must be provided.")
