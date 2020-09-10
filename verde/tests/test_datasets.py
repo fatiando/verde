@@ -2,6 +2,7 @@
 Test data fetching routines.
 """
 import os
+import warnings
 
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
@@ -130,3 +131,21 @@ def test_setup_california_gps():
     ax = plt.subplot(111, projection=ccrs.Mercator())
     setup_california_gps_map(ax)
     return fig
+
+
+def test_setup_cartopy_backward():
+    """
+    Test backward compatibility of setup map functions
+
+    Check if a warning is raise after passing deprecated parameters like ocean,
+    land, borders and states to functions to setup maps.
+    """
+    ax = plt.subplot(111, projection=ccrs.Mercator())
+    with warnings.catch_warnings(record=True):
+        setup_texas_wind_map(ax, land="#dddddd", borders=0.5, states=0.1)
+    ax = plt.subplot(111, projection=ccrs.Mercator())
+    with warnings.catch_warnings(record=True):
+        setup_california_gps_map(ax, land="gray", ocean="skyblue")
+    ax = plt.subplot(111, projection=ccrs.Mercator())
+    with warnings.catch_warnings(record=True):
+        setup_baja_bathymetry_map(ax, land="gray", ocean=None)

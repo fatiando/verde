@@ -81,5 +81,4 @@ plt.colorbar(pc).set_label("meters")
 ax.plot(*coordinates, ".k", markersize=0.5, transform=crs)
 # Use an utility function to setup the tick labels and the land feature
 vd.datasets.setup_baja_bathymetry_map(ax)
-plt.tight_layout()
 plt.show()
