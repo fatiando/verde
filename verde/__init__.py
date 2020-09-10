@@ -15,7 +15,7 @@ from .coordinates import (
     longitude_continuity,
 )
 from .mask import distance_mask, convexhull_mask
-from .utils import variance_to_weights, maxabs, grid_to_table, build_grid
+from .utils import variance_to_weights, maxabs, grid_to_table, make_xarray_grid
 from .io import load_surfer
 from .distances import median_distance
 from .blockreduce import BlockReduce, BlockMean

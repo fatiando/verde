@@ -209,7 +209,7 @@ def maxabs(*args, nan=True):
     return npmax(absolute)
 
 
-def build_grid(
+def make_xarray_grid(
     coordinates,
     data,
     data_name,
@@ -217,7 +217,7 @@ def build_grid(
     extra_coords_name=None,
 ):
     """
-    Convert gridded data to :class:`xarray.Dataset`
+    Create a :class:`xarray.Dataset` out of gridded data
 
     Parameters
     ----------
