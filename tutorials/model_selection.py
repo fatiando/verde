@@ -100,7 +100,10 @@ print("Best parameters:", parameter_sets[best])
 # automatically when fitting a dataset. The only difference is that you must provide a
 # list of ``damping`` and ``mindist`` parameters to try instead of only a single value:
 
-spline = vd.SplineCV(dampings=dampings, mindists=mindists,)
+spline = vd.SplineCV(
+    dampings=dampings,
+    mindists=mindists,
+)
 
 ########################################################################################
 # Calling :meth:`~verde.SplineCV.fit` will run a grid search over all parameter

@@ -36,7 +36,9 @@ def test_convexhull_mask_projection():
     # For a linear projection, the result should be the same since there is no
     # area change in the data.
     mask = convexhull_mask(
-        data_coords, coordinates=coords, projection=lambda e, n: (10 * e, 10 * n),
+        data_coords,
+        coordinates=coords,
+        projection=lambda e, n: (10 * e, 10 * n),
     )
     true = [
         [False, False, False, False, False, False],
