@@ -257,7 +257,7 @@ def make_xarray_grid(
     >>> # And some dummy data for each point of the grid
     >>> data = np.ones_like(coordinates[0])
     >>> # Create the grid
-    >>> grid = build_grid(coordinates, data, data_name="dummy")
+    >>> grid = make_xarray_grid(coordinates, data, data_name="dummy")
     >>> print(grid)
     <xarray.Dataset>
     Dimensions:   (easting: 3, northing: 2)
