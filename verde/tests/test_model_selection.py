@@ -73,9 +73,7 @@ def test_blockshufflesplit_fails_balancing():
 def test_blockshufflesplit_balancing(test_size):
     "Make sure that the sets have the right number of points"
     coords = np.random.RandomState(seed=0).multivariate_normal(
-        mean=[5, -7.5],
-        cov=[[4, 0], [0, 9]],
-        size=1000,
+        mean=[5, -7.5], cov=[[4, 0], [0, 9]], size=1000,
     )
     npoints = coords.shape[0]
     train_size = 1 - test_size

@@ -53,12 +53,7 @@ def locate():
 
 
 def _setup_map(
-    ax,
-    xticks,
-    yticks,
-    crs,
-    region,
-    coastlines=False,
+    ax, xticks, yticks, crs, region, coastlines=False,
 ):
     """
     Setup a Cartopy map with coastlines and proper tick labels.
