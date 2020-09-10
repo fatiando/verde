@@ -32,5 +32,4 @@ plt.scatter(
 plt.colorbar().set_label("meters")
 # Use an utility function to add tick labels and land and ocean features to the map.
 vd.datasets.setup_baja_bathymetry_map(ax)
-plt.tight_layout()
 plt.show()

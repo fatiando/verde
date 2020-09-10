@@ -53,7 +53,6 @@ def plot_data(coordinates, velocity, weights, title_data, title_weights):
     )
     plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.05)
     vd.datasets.setup_california_gps_map(ax)
-    plt.tight_layout()
     plt.show()
 
 
@@ -305,5 +304,4 @@ plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.05).set_label("m/yr")
 ax.plot(data.longitude, data.latitude, ".k", markersize=0.1, transform=crs)
 ax.coastlines()
 vd.datasets.setup_california_gps_map(ax)
-plt.tight_layout()
 plt.show()
