@@ -79,5 +79,4 @@ cb = plt.colorbar(
 )
 cb.set_label("C")
 
-plt.tight_layout()
 plt.show()
