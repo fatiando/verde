@@ -219,13 +219,18 @@ def make_xarray_grid(
     """
     Create a :class:`xarray.Dataset` out of gridded data
 
+    The functions creates a :class:`xarray.Dataset` out of 2d gridded data
+    including easting and northing coordinates, any extra coordinates (like
+    upward) and data arrays.
+
     Parameters
     ----------
     coordinates : tuple of arrays
         Arrays with coordinates of each point in the grid. Each array must
         contain values for a dimension in the order: easting, northing,
-        vertical, etc. All arrays need to have the same *shape*. These
-        coordinates can be generated through :func:`verde.grid_coordinates`.
+        vertical, etc. All arrays must be 2d and need to have the same *shape*.
+        These coordinates can be generated through
+        :func:`verde.grid_coordinates`.
     data : array or tuple of arrays
         Array or tuple of arrays with data values on each point in the grid.
         Each array must contain values for a dimension in the same order as
@@ -238,8 +243,11 @@ def make_xarray_grid(
         dimension, easting dimension.
         **NOTE: This is an exception to the "easting" then
         "northing" pattern but is required for compatibility with xarray.**
+        The easting and northing coordinates in the :class:`xarray.Dataset`
+        will have the same names as the passed dimensions.
     extra_coords_name : str or list
-        Name or list of names for extra coordinates. Ignored if coordinates has
+        Name or list of names for any additional coordinates besides the
+        easting and northing ones. Ignored if coordinates has
         only two elements.
 
     Returns
@@ -264,6 +272,26 @@ def make_xarray_grid(
     Coordinates:
       * easting   (easting) float64 -10.0 -8.0 -6.0
       * northing  (northing) float64 8.0 10.0
+    Data variables:
+        dummy     (northing, easting) float64 1.0 1.0 1.0 1.0 1.0 1.0
+
+    >>> # Create a grid with an extra coordinate
+    >>> coordinates = vd.grid_coordinates(
+    ...     (-10, -6, 8, 10), spacing=2, extra_coords=5
+    ... )
+    >>> # And some dummy data for each point of the grid
+    >>> data = np.ones_like(coordinates[0])
+    >>> # Create the grid
+    >>> grid = make_xarray_grid(
+    ...     coordinates, data, data_name="dummy", extra_coords_name="upward"
+    ... )
+    >>> print(grid)
+    <xarray.Dataset>
+    Dimensions:   (easting: 3, northing: 2)
+    Coordinates:
+      * easting   (easting) float64 -10.0 -8.0 -6.0
+      * northing  (northing) float64 8.0 10.0
+        upward    (northing, easting) float64 5.0 5.0 5.0 5.0 5.0 5.0
     Data variables:
         dummy     (northing, easting) float64 1.0 1.0 1.0 1.0 1.0 1.0
 
