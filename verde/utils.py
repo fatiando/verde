@@ -215,7 +215,6 @@ def build_grid(
     data_name,
     dims=("northing", "easting"),
     extra_coords_name=None,
-    attrs=None,
 ):
     """
     Convert gridded data to :class:`xarray.Dataset`
@@ -242,8 +241,6 @@ def build_grid(
     extra_coords_name : str or list
         Name or list of names for extra coordinates. Ignored if coordinates has
         only two elements.
-    attrs : dict or None
-        Metadata attributes of the :class:`xarray.Dataset`.
 
     Returns
     -------
@@ -290,7 +287,7 @@ def build_grid(
             + "data arrays ('{}').".format(len(data))
         )
     data_vars = {name: (dims, value) for name, value in zip(data_name, data)}
-    return xr.Dataset(data_vars, coords, attrs=attrs)
+    return xr.Dataset(data_vars, coords)
 
 
 def _check_extra_coords_name(coordinates, extra_coords_name):
