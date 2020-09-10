@@ -39,5 +39,4 @@ ax.quiver(
 )
 # Use an utility function to add tick labels and land and ocean features to the map.
 vd.datasets.setup_texas_wind_map(ax)
-plt.tight_layout()
 plt.show()

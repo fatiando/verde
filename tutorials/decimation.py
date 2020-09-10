@@ -24,7 +24,6 @@ ax.set_title("Locations of bathymetry measurements from Baja California")
 # Plot the bathymetry data locations as black dots
 plt.plot(data.longitude, data.latitude, ".k", markersize=1, transform=crs)
 vd.datasets.setup_baja_bathymetry_map(ax)
-plt.tight_layout()
 plt.show()
 
 ########################################################################################
@@ -57,7 +56,6 @@ ax.set_title("Locations of decimated data")
 # Plot the bathymetry data locations as black dots
 plt.plot(*coordinates, ".k", markersize=1, transform=crs)
 vd.datasets.setup_baja_bathymetry_map(ax)
-plt.tight_layout()
 plt.show()
 
 
@@ -79,7 +77,6 @@ ax.set_title("Locations of decimated data using block centers")
 # Plot the bathymetry data locations as black dots
 plt.plot(*coordinates_center, ".k", markersize=1, transform=crs)
 vd.datasets.setup_baja_bathymetry_map(ax)
-plt.tight_layout()
 plt.show()
 
 ########################################################################################
