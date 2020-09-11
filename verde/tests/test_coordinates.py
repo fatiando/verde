@@ -58,6 +58,40 @@ def test_rolling_window_warnings():
             assert str(userwarnings[-1].message).split()[0] == "Rolling"
 
 
+def test_rolling_window_no_shape_or_spacing():
+    """
+    Check if error is raise if no shape or spacing is passed
+    """
+    coords = grid_coordinates((-5, -1, 6, 10), spacing=1)
+    err_msg = "Either a shape or a spacing must be provided."
+    with pytest.raises(ValueError, match=err_msg):
+        rolling_window(coords, size=2)
+
+
+def test_rolling_window_oversized_window():
+    """
+    Check if error is raised if size larger than region is passed
+    """
+    oversize = 5
+    regions = [
+        (-5, -1, 6, 20),  # window larger than west-east
+        (-20, -1, 6, 10),  # window larger than south-north
+        (-5, -1, 6, 10),  # window larger than both dims
+    ]
+    for region in regions:
+        coords = grid_coordinates(region, spacing=1)
+        # The expected error message with regex
+        # (the long expression intends to capture floats and ints)
+        float_regex = r"[+-]?([0-9]*[.])?[0-9]+"
+        err_msg = (
+            r"Window size '{}' is larger ".format(float_regex)
+            + r"than dimensions of the region "
+            + r"'\({0}, {0}, {0}, {0}\)'.".format(float_regex)
+        )
+        with pytest.raises(ValueError, match=err_msg):
+            rolling_window(coords, size=oversize, spacing=2)
+
+
 def test_spacing_to_shape():
     "Check that correct spacing and region are returned"
     region = (-10, 0, 0, 5)
