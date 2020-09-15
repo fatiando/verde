@@ -2,6 +2,7 @@
 """
 Test the base classes and their utility functions.
 """
+import xarray as xr
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -138,8 +139,7 @@ def test_basegridder():
     npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0])
     npt.assert_allclose(grd.scatter(region, 1000, random_state=0).scalars, data)
     npt.assert_allclose(
-        prof.scalars,
-        angular * coordinates_true[0][0, :] + linear,
+        prof.scalars, angular * coordinates_true[0][0, :] + linear,
     )
     npt.assert_allclose(prof.easting, coordinates_true[0][0, :])
     npt.assert_allclose(prof.northing, coordinates_true[1][0, :])
@@ -246,10 +246,7 @@ def test_basegridder_extra_coords():
     # Test profile with a single extra coord
     extra_coords = 9
     prof = grd.profile(
-        (region[0], region[-1]),
-        (region[1], region[-1]),
-        51,
-        extra_coords=extra_coords,
+        (region[0], region[-1]), (region[1], region[-1]), 51, extra_coords=extra_coords,
     )
     assert "extra_coord" in prof.columns
     npt.assert_allclose(prof["extra_coord"], extra_coords)
@@ -257,10 +254,7 @@ def test_basegridder_extra_coords():
     # Test profile with multiple extra coord
     extra_coords = [9, 18, 27]
     prof = grd.profile(
-        (region[0], region[-1]),
-        (region[1], region[-1]),
-        51,
-        extra_coords=extra_coords,
+        (region[0], region[-1]), (region[1], region[-1]), 51, extra_coords=extra_coords,
     )
     extra_coord_names = ["extra_coord", "extra_coord_1", "extra_coord_2"]
     for name, coord in zip(extra_coord_names, extra_coords):
@@ -330,6 +324,132 @@ def test_basegridder_projection_multiple_coordinates():
     # coordinates.
     distance_true = np.linspace(region[0] * 2, region[1] * 2, shape[1])
     npt.assert_allclose(prof.distance, distance_true)
+
+
+def test_basegridder_predict_onto_grid():
+    "Test predicting onto a preexisting grid"
+    # Create some scattered data
+    region = (0, 10, -10, -5)
+    angular, linear = 2, 100
+    coordinates = scatter_points(region, 1000, random_state=0)
+    data = angular * coordinates[0] + linear
+    # Create a preexisting dataset
+    spacing = 1
+    grid_coords = grid_coordinates(region, spacing=spacing)
+    grid = xr.Dataset(
+        data_vars=None,
+        coords={"easting": grid_coords[0][0, :], "northing": grid_coords[1][:, 0]},
+    )
+    # Predict onto the preexisting grid
+    gridder = PolyGridder().fit(coordinates, data)
+    gridder.predict_onto_grid(grid, dims=("northing", "easting"))
+    # Check if predicted data is correct
+    assert "scalars" in grid
+    assert grid.scalars.dims == ("northing", "easting")
+    npt.assert_allclose(grid.scalars, gridder.predict(grid_coords))
+
+
+def test_basegridder_predict_onto_grid_errors():
+    "Test errors raising when predicting onto a preexisting grid"
+    # Create some scattered data
+    region = (0, 10, -10, -5)
+    angular, linear = 2, 100
+    coordinates = scatter_points(region, 1000, random_state=0)
+    data = angular * coordinates[0] + linear
+    # Create a preexisting dataset with dummy data
+    spacing = 1
+    grid_coords = grid_coordinates(region, spacing=spacing)
+    dummy_data = np.ones_like(grid_coords[0])
+    grid = xr.Dataset(
+        data_vars={"dummy": (("northing", "easting"), dummy_data)},
+        coords={"easting": grid_coords[0][0, :], "northing": grid_coords[1][:, 0]},
+    )
+    # Fit gridder
+    gridder = PolyGridder().fit(coordinates, data)
+    # Check if error is raised afeter wrong dimension(s)
+    with pytest.raises(ValueError):
+        gridder.predict_onto_grid(grid, data_names=["data"], dims=("blabla", "easting"))
+    with pytest.raises(ValueError):
+        gridder.predict_onto_grid(
+            grid, data_names=["data"], dims=("northing", "blabla")
+        )
+    with pytest.raises(ValueError):
+        gridder.predict_onto_grid(grid, data_names=["data"], dims=("blabla", "blabla2"))
+    # Check if error is raised if data already exists in dataset
+    with pytest.raises(ValueError):
+        gridder.predict_onto_grid(
+            grid, data_names=["dummy"], dims=("northing", "easting")
+        )
+
+
+def test_basegridder_predict_onto_grid_extra_coords():
+    "Test extra_coords when predicting onto a preexisting grid"
+    # Create some scattered data
+    region = (0, 10, -10, -5)
+    angular, linear = 2, 100
+    coordinates = scatter_points(region, 1000, random_state=0)
+    data = angular * coordinates[0] + linear
+    # Create a preexisting dataset with extra coords
+    spacing = 1
+    grid_coords = grid_coordinates(region, spacing=spacing, extra_coords=10)
+    grid = xr.Dataset(
+        data_vars=None,
+        coords={
+            "easting": grid_coords[0][0, :],
+            "northing": grid_coords[1][:, 0],
+            "upward": (("northing", "easting"), grid_coords[2]),
+        },
+    )
+    # Fit gridder
+    gridder = PolyGridder().fit(coordinates, data)
+    # Check error after missing extra_coord
+    with pytest.raises(ValueError):
+        gridder.predict_onto_grid(
+            grid, dims=("northing", "easting"), extra_coords=["blabla"],
+        )
+    # Predict onto the preexisting grid
+    gridder = PolyGridder().fit(coordinates, data)
+    gridder.predict_onto_grid(
+        grid, dims=("northing", "easting"), data_names=["data"], extra_coords=["upward"]
+    )
+    # Check if predicted data is correct
+    assert "data" in grid
+    assert "upward" in grid.coords
+    assert grid.data.dims == ("northing", "easting")
+    assert grid.upward.dims == ("northing", "easting")
+    npt.assert_allclose(grid.data, gridder.predict(grid_coords))
+
+
+def test_basegridder_predict_onto_grid_projection():
+    "Test projection when predicting onto a preexisting grid"
+
+    # Lets say the projection is doubling the coordinates
+    def proj(lon, lat, inverse=False):
+        "Project from the new coordinates to the original"
+        if inverse:
+            return (lon / 2, lat / 2)
+        return (lon * 2, lat * 2)
+
+    # Create some scattered data in geodetic coordinates
+    region = (0, 10, -10, -5)
+    angular, linear = 2, 100
+    coordinates = scatter_points(region, 1000, random_state=0)
+    data = angular * coordinates[0] + linear
+    # Create a preexisting dataset in geodetic coordinates
+    spacing = 1
+    grid_coords = grid_coordinates(region, spacing=spacing)
+    grid = xr.Dataset(
+        data_vars=None,
+        coords={"longitude": grid_coords[0][0, :], "latitude": grid_coords[1][:, 0]},
+    )
+    # Project coordinates so we can fit the gridder
+    proj_coordinates = proj(*coordinates)
+    gridder = PolyGridder().fit(proj_coordinates, data)
+    # Predict onto the preexisting grid while passing the projection
+    gridder.predict_onto_grid(grid, dims=("latitude", "longitude"), projection=proj)
+    # Check if predicted data is correct
+    assert grid.scalars.dims == ("latitude", "longitude")
+    npt.assert_allclose(grid.scalars, gridder.predict(proj(*grid_coords)))
 
 
 def test_check_fit_input():
