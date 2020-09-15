@@ -36,10 +36,7 @@ class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
     """
 
     def __init__(
-        self,
-        spacing=None,
-        shape=None,
-        n_splits=10,
+        self, spacing=None, shape=None, n_splits=10,
     ):
         if spacing is None and shape is None:
             raise ValueError("Either 'spacing' or 'shape' must be provided.")
@@ -474,7 +471,7 @@ class BaseGridder(BaseEstimator):
             predict on a geographic grid from a Cartesian gridder.
         """
         # Check if passed dims and extra_coords are present in the grid
-        self._check_coords_in_grid(grid, dims, extra_coords)
+        check_coords_in_grid(grid, dims, extra_coords)
         # Create tuple of coordinates as 2d arrays
         coordinates = np.meshgrid(grid[dims[1]], grid[dims[0]])
         if extra_coords:
@@ -729,21 +726,20 @@ class BaseGridder(BaseEstimator):
             names.append(name)
         return names
 
-    def _check_coords_in_grid(self, grid, dims, extra_coords):
-        """
-        Check if dims and extra_coords are present in grid
-        """
-        for dim in dims:
-            if dim not in grid.coords:
+
+def check_coords_in_grid(grid, dims, extra_coords):
+    """
+    Check if dims and extra_coords are present in grid
+    """
+    for dim in dims:
+        if dim not in grid.coords:
+            raise ValueError("Dimension '{}' not found on the passed grid".format(dim))
+    if extra_coords:
+        for coord in extra_coords:
+            if coord not in grid.coords:
                 raise ValueError(
-                    "Dimension '{}' not found on the passed grid".format(dim)
+                    "Extra coord '{}' not found on the passed grid".format(coord)
                 )
-        if extra_coords:
-            for coord in extra_coords:
-                if coord not in grid.coords:
-                    raise ValueError(
-                        "Extra coord '{}' not found on the passed grid".format(coord)
-                    )
 
 
 def project_coordinates(coordinates, projection, **kwargs):
