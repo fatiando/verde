@@ -139,8 +139,7 @@ def test_basegridder():
     npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0])
     npt.assert_allclose(grd.scatter(region, 1000, random_state=0).scalars, data)
     npt.assert_allclose(
-        prof.scalars,
-        angular * coordinates_true[0][0, :] + linear,
+        prof.scalars, angular * coordinates_true[0][0, :] + linear,
     )
     npt.assert_allclose(prof.easting, coordinates_true[0][0, :])
     npt.assert_allclose(prof.northing, coordinates_true[1][0, :])
@@ -247,10 +246,7 @@ def test_basegridder_extra_coords():
     # Test profile with a single extra coord
     extra_coords = 9
     prof = grd.profile(
-        (region[0], region[-1]),
-        (region[1], region[-1]),
-        51,
-        extra_coords=extra_coords,
+        (region[0], region[-1]), (region[1], region[-1]), 51, extra_coords=extra_coords,
     )
     assert "extra_coord" in prof.columns
     npt.assert_allclose(prof["extra_coord"], extra_coords)
@@ -258,10 +254,7 @@ def test_basegridder_extra_coords():
     # Test profile with multiple extra coord
     extra_coords = [9, 18, 27]
     prof = grd.profile(
-        (region[0], region[-1]),
-        (region[1], region[-1]),
-        51,
-        extra_coords=extra_coords,
+        (region[0], region[-1]), (region[1], region[-1]), 51, extra_coords=extra_coords,
     )
     extra_coord_names = ["extra_coord", "extra_coord_1", "extra_coord_2"]
     for name, coord in zip(extra_coord_names, extra_coords):
@@ -412,9 +405,7 @@ def test_basegridder_predict_onto_grid_extra_coords():
     # Check error after missing extra_coord
     with pytest.raises(ValueError):
         gridder.predict_onto_grid(
-            grid,
-            dims=("northing", "easting"),
-            extra_coords=["blabla"],
+            grid, dims=("northing", "easting"), extra_coords=["blabla"],
         )
     # Predict onto the preexisting grid
     gridder = PolyGridder().fit(coordinates, data)
@@ -452,7 +443,7 @@ def test_basegridder_predict_onto_grid_projection():
         coords={"longitude": grid_coords[0][0, :], "latitude": grid_coords[1][:, 0]},
     )
     # Project coordinates so we can fit the gridder
-    proj_coordinates = proj(*coordinates)
+    proj_coordinates = proj(lon=coordinates[0], lat=coordinates[1])
     gridder = PolyGridder().fit(proj_coordinates, data)
     # Predict onto the preexisting grid while passing the projection
     gridder.predict_onto_grid(grid, dims=("latitude", "longitude"), projection=proj)
