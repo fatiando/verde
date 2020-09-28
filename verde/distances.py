@@ -15,7 +15,7 @@ def median_distance(coordinates, k_nearest=1, projection=None):
     distance to its *k_nearest* neighbors among the other points in the
     dataset. Sparse uniformly spaced datasets can use *k_nearest* of 1.
     Datasets with points clustered into tight groups (e.g., densely sampled
-    along a flight line or ship treck) will have very small distances to the
+    along a flight line or ship wreck) will have very small distances to the
     closest neighbors, which is not representative of the actual median spacing
     because it doesn't take the spacing between lines into account. In these
     cases, a median of the 10 or 20 nearest neighbors might be more
