@@ -174,6 +174,9 @@ def maxabs(*args, nan=True):
     args
         One or more arrays. If more than one are given, a single maximum will
         be calculated across all arrays.
+    
+    nan
+        This is an optional argument to specify whether or not to allow for NaN values.
 
     Returns
     -------
