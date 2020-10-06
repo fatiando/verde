@@ -348,3 +348,121 @@ def kdtree(coordinates, use_pykdtree=True, **kwargs):
     else:
         tree = cKDTree(points, **kwargs)
     return tree
+
+
+def partition_by_sum(array, parts):
+    """
+    Partition an array into parts of approximately equal sum.
+
+    Does not change the order of the array elements.
+
+    Produces the partition indices on the array. Use :func:`numpy.split` to
+    divide the array along these indices.
+
+    .. warning::
+
+        Depending on the input and number of parts, there might not exist
+        partition points. In these cases, the function will raise
+        ``ValueError``. This is more likely to happen as the number of parts
+        approaches the number of elements in the array.
+
+    Parameters
+    ----------
+    array : array or array-like
+        The 1D array that will be partitioned. The array will be raveled before
+        computations.
+    parts : int
+        Number of parts to split the array. Can be at most the number of
+        elements in the array.
+
+    Returns
+    -------
+    indices : array
+        The indices in which the array should be split.
+
+    Notes
+    -----
+
+    Solution from https://stackoverflow.com/a/54024280
+
+    Examples
+    --------
+
+    >>> import numpy as np
+    >>> array = np.arange(10)
+    >>> split_points = partition_by_sum(array, parts=2)
+    >>> print(split_points)
+    [7]
+    >>> for part in np.split(array, split_points):
+    ...     print(part, part.sum())
+    [0 1 2 3 4 5 6] 21
+    [7 8 9] 24
+    >>> split_points = partition_by_sum(array, parts=3)
+    >>> print(split_points)
+    [6 8]
+    >>> for part in np.split(array, split_points):
+    ...     print(part, part.sum())
+    [0 1 2 3 4 5] 15
+    [6 7] 13
+    [8 9] 17
+    >>> split_points = partition_by_sum(array, parts=5)
+    >>> print(split_points)
+    [4 6 7 9]
+    >>> for part in np.split(array, split_points):
+    ...     print(part, part.sum())
+    [0 1 2 3] 6
+    [4 5] 9
+    [6] 6
+    [7 8] 15
+    [9] 9
+    >>> # Use an array with a random looking element order
+    >>> array = [5, 6, 4, 6, 8, 1, 2, 6, 3, 3]
+    >>> split_points = partition_by_sum(array, parts=2)
+    >>> print(split_points)
+    [4]
+    >>> for part in np.split(array, split_points):
+    ...     print(part, part.sum())
+    [5 6 4 6] 21
+    [8 1 2 6 3 3] 23
+    >>> # Splits can have very different sums but this is best that can be done
+    >>> # without changing the order of the array.
+    >>> split_points = partition_by_sum(array, parts=5)
+    >>> print(split_points)
+    [1 3 4 7]
+    >>> for part in np.split(array, split_points):
+    ...     print(part, part.sum())
+    [5] 5
+    [6 4] 10
+    [6] 6
+    [8 1 2] 11
+    [6 3 3] 12
+
+    """
+    array = np.atleast_1d(array).ravel()
+    if parts > array.size:
+        raise ValueError(
+            "Cannot partition an array of size {} into {} parts of equal sum.".format(
+                array.size, parts
+            )
+        )
+    cumulative_sum = array.cumsum()
+    # Ideally, we want each part to have the same number of points (total /
+    # parts).
+    ideal_sum = cumulative_sum[-1] // parts
+    # If the parts are ideal, the cumulative sum of each part will be this
+    ideal_cumsum = np.arange(1, parts) * ideal_sum
+    # Find the places in the real cumulative sum where the ideal values would
+    # be. These are the split points. Between each split point, the sum of
+    # elements will be approximately the ideal sum. Need to insert to the right
+    # side so that we find cumsum[i - 1] <= ideal < cumsum[i]. This way, if a
+    # part has ideal sum, the last element (i - 1) will be included. Otherwise,
+    # we would never have ideal sums.
+    indices = np.searchsorted(cumulative_sum, ideal_cumsum, side="right")
+    # Check for repeated split points, which indicates that there is no way to
+    # split the array.
+    if np.unique(indices).size != indices.size:
+        raise ValueError(
+            "Could not find partition points to split the array into {} parts "
+            "of equal sum.".format(parts)
+        )
+    return indices

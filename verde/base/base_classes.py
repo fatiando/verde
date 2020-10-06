@@ -1,14 +1,130 @@
 """
 Base classes for all gridders.
 """
+from abc import ABCMeta, abstractmethod
+
 import xarray as xr
 import pandas as pd
-import numpy as np
 from sklearn.base import BaseEstimator
-from sklearn.metrics import r2_score
+from sklearn.model_selection import BaseCrossValidator
 
 from ..coordinates import grid_coordinates, profile_coordinates, scatter_points
-from .utils import check_data, check_fit_input
+from .utils import check_data, score_estimator
+
+
+# Pylint doesn't like X, y scikit-learn argument names.
+# pylint: disable=invalid-name,unused-argument
+
+
+class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
+    """
+    Base class for spatially blocked cross-validators.
+
+    Parameters
+    ----------
+    spacing : float, tuple = (s_north, s_east), or None
+        The block size in the South-North and West-East directions,
+        respectively. A single value means that the spacing is equal in both
+        directions. If None, then *shape* **must be provided**.
+    shape : tuple = (n_north, n_east) or None
+        The number of blocks in the South-North and West-East directions,
+        respectively. If None, then *spacing* **must be provided**.
+    n_splits : int
+        Number of splitting iterations.
+
+    """
+
+    def __init__(
+        self,
+        spacing=None,
+        shape=None,
+        n_splits=10,
+    ):
+        if spacing is None and shape is None:
+            raise ValueError("Either 'spacing' or 'shape' must be provided.")
+        self.spacing = spacing
+        self.shape = shape
+        self.n_splits = n_splits
+
+    def split(self, X, y=None, groups=None):
+        """
+        Generate indices to split data into training and test set.
+
+        Parameters
+        ----------
+        X : array-like, shape (n_samples, 2)
+            Columns should be the easting and northing coordinates of data
+            points, respectively.
+        y : array-like, shape (n_samples,)
+            The target variable for supervised learning problems. Always
+            ignored.
+        groups : array-like, with shape (n_samples,), optional
+            Group labels for the samples used while splitting the dataset into
+            train/test set. Always ignored.
+
+        Yields
+        ------
+        train : ndarray
+            The training set indices for that split.
+        test : ndarray
+            The testing set indices for that split.
+
+        """
+        if X.shape[1] != 2:
+            raise ValueError(
+                "X must have exactly 2 columns ({} given).".format(X.shape[1])
+            )
+        for train, test in super().split(X, y, groups):
+            yield train, test
+
+    def get_n_splits(self, X=None, y=None, groups=None):
+        """
+        Returns the number of splitting iterations in the cross-validator
+
+        Parameters
+        ----------
+        X : object
+            Always ignored, exists for compatibility.
+        y : object
+            Always ignored, exists for compatibility.
+        groups : object
+            Always ignored, exists for compatibility.
+
+        Returns
+        -------
+        n_splits : int
+            Returns the number of splitting iterations in the cross-validator.
+        """
+        return self.n_splits
+
+    @abstractmethod
+    def _iter_test_indices(self, X=None, y=None, groups=None):
+        """
+        Generates integer indices corresponding to test sets.
+
+        MUST BE IMPLEMENTED BY DERIVED CLASSES.
+
+        Parameters
+        ----------
+        X : array-like, shape (n_samples, 2)
+            Columns should be the easting and northing coordinates of data
+            points, respectively.
+        y : array-like, shape (n_samples,)
+            The target variable for supervised learning problems. Always
+            ignored.
+        groups : array-like, with shape (n_samples,), optional
+            Group labels for the samples used while splitting the dataset into
+            train/test set. Always ignored.
+
+        Yields
+        ------
+        test : ndarray
+            The testing set indices for that split.
+
+        """
+
+
+# pylint: enable=invalid-name,unused-argument
 
 
 class BaseGridder(BaseEstimator):
@@ -69,7 +185,7 @@ class BaseGridder(BaseEstimator):
     >>> # Fit the gridder to our synthetic data
     >>> grd = MeanGridder().fit((data.easting, data.northing), data.scalars)
     >>> grd
-    MeanGridder(multiplier=1)
+    MeanGridder()
     >>> # Interpolate on a regular grid
     >>> grid = grd.grid(region=(0, 5, -10, -8), shape=(30, 20))
     >>> np.allclose(grid.scalars, -32.2182)
@@ -86,6 +202,12 @@ class BaseGridder(BaseEstimator):
     # The default dimension names for generated outputs
     # (pd.DataFrame, xr.Dataset, etc)
     dims = ("northing", "easting")
+
+    # The default name for any extra coordinates given to methods below
+    # through the `extra_coords` keyword argument. Coordinates are
+    # included in the outputs (pandas.DataFrame or xarray.Dataset)
+    # using this name as a basis.
+    extra_coords_name = "extra_coord"
 
     def predict(self, coordinates):
         """
@@ -213,17 +335,7 @@ class BaseGridder(BaseEstimator):
             The R^2 score
 
         """
-        coordinates, data, weights = check_fit_input(
-            coordinates, data, weights, unpack=False
-        )
-        pred = check_data(self.predict(coordinates))
-        result = np.mean(
-            [
-                r2_score(datai.ravel(), predi.ravel(), sample_weight=weighti)
-                for datai, predi, weighti in zip(data, pred, weights)
-            ]
-        )
-        return result
+        return score_estimator("r2", self, coordinates, data, weights=weights)
 
     def grid(
         self,
@@ -234,7 +346,7 @@ class BaseGridder(BaseEstimator):
         data_names=None,
         projection=None,
         **kwargs
-    ):
+    ):  # pylint: disable=too-many-locals
         """
         Interpolate the data onto a regular grid.
 
@@ -268,7 +380,7 @@ class BaseGridder(BaseEstimator):
             order: northing dimension, easting dimension.
             **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
-        data_names : list of None
+        data_names : list or None
             The name(s) of the data variables in the output grid. Defaults to
             ``['scalars']`` for scalar data,
             ``['east_component', 'north_component']`` for 2D vector data, and
@@ -300,9 +412,15 @@ class BaseGridder(BaseEstimator):
         if projection is None:
             data = check_data(self.predict(coordinates))
         else:
-            data = check_data(self.predict(projection(*coordinates)))
+            data = check_data(
+                self.predict(project_coordinates(coordinates, projection))
+            )
         data_names = get_data_names(data, data_names)
         coords = {dims[1]: coordinates[0][0, :], dims[0]: coordinates[1][:, 0]}
+        # Add extra coordinates to xr.Dataset as non-dimension coordinates
+        extra_coords_names = self._get_extra_coords_names(coordinates)
+        for name, extra_coord in zip(extra_coords_names, coordinates[2:]):
+            coords[name] = (dims, extra_coord)
         attrs = {"metadata": "Generated by {}".format(repr(self))}
         data_vars = {
             name: (dims, value, attrs) for name, value in zip(data_names, data)
@@ -378,9 +496,13 @@ class BaseGridder(BaseEstimator):
         if projection is None:
             data = check_data(self.predict(coordinates))
         else:
-            data = check_data(self.predict(projection(*coordinates)))
+            data = check_data(
+                self.predict(project_coordinates(coordinates, projection))
+            )
         data_names = get_data_names(data, data_names)
         columns = [(dims[0], coordinates[1]), (dims[1], coordinates[0])]
+        extra_coords_names = self._get_extra_coords_names(coordinates)
+        columns.extend(zip(extra_coords_names, coordinates[2:]))
         columns.extend(zip(data_names, data))
         return pd.DataFrame(dict(columns), columns=[c[0] for c in columns])
 
@@ -480,20 +602,22 @@ class BaseGridder(BaseEstimator):
         # geographic coordinates since we don't do actual distances on a
         # sphere).
         if projection is not None:
-            point1 = projection(*point1)
-            point2 = projection(*point2)
+            point1 = project_coordinates(point1, projection)
+            point2 = project_coordinates(point2, projection)
         coordinates, distances = profile_coordinates(point1, point2, size, **kwargs)
         data = check_data(self.predict(coordinates))
         # Project the coordinates back to have geographic coordinates for the
         # profile but Cartesian distances.
         if projection is not None:
-            coordinates = projection(*coordinates, inverse=True)
+            coordinates = project_coordinates(coordinates, projection, inverse=True)
         data_names = get_data_names(data, data_names)
         columns = [
             (dims[0], coordinates[1]),
             (dims[1], coordinates[0]),
             ("distance", distances),
         ]
+        extra_coords_names = self._get_extra_coords_names(coordinates)
+        columns.extend(zip(extra_coords_names, coordinates[2:]))
         columns.extend(zip(data_names, data))
         return pd.DataFrame(dict(columns), columns=[c[0] for c in columns])
 
@@ -504,6 +628,69 @@ class BaseGridder(BaseEstimator):
         if dims is not None:
             return dims
         return self.dims
+
+    def _get_extra_coords_names(self, coordinates):
+        """
+        Return names for extra coordinates
+
+        Examples
+        --------
+
+        >>> coordinates = (-5, 4, 3, 5, 1)
+        >>> grd = BaseGridder()
+        >>> grd._get_extra_coords_names(coordinates)
+        ['extra_coord', 'extra_coord_1', 'extra_coord_2']
+
+        >>> coordinates = (-5, 4, 3)
+        >>> grd = BaseGridder()
+        >>> grd.extra_coords_name = "upward"
+        >>> grd._get_extra_coords_names(coordinates)
+        ['upward']
+
+        """
+        names = []
+        for i in range(len(coordinates[2:])):
+            name = self.extra_coords_name
+            if i > 0:
+                name += "_{}".format(i)
+            names.append(name)
+        return names
+
+
+def project_coordinates(coordinates, projection, **kwargs):
+    """
+    Apply projection to given coordinates
+
+    Allows to apply projections to any number of coordinates, assuming
+    that the first ones are ``longitude`` and ``latitude``.
+
+    Examples
+    --------
+
+    >>> # Define a custom projection function
+    >>> def projection(lon, lat, inverse=False):
+    ...     "Simple projection of geographic coordinates"
+    ...     radius = 1000
+    ...     if inverse:
+    ...         return (lon / radius, lat / radius)
+    ...     return (lon * radius, lat * radius)
+
+    >>> # Apply the projection to a set of coordinates containing:
+    >>> # longitude, latitude and height
+    >>> coordinates = (1., -2., 3.)
+    >>> project_coordinates(coordinates, projection)
+    (1000.0, -2000.0, 3.0)
+
+    >>> # Apply the inverse projection
+    >>> coordinates = (-500.0, 1500.0, -19.0)
+    >>> project_coordinates(coordinates, projection, inverse=True)
+    (-0.5, 1.5, -19.0)
+
+    """
+    proj_coordinates = projection(*coordinates[:2], **kwargs)
+    if len(coordinates) > 2:
+        proj_coordinates += tuple(coordinates[2:])
+    return proj_coordinates
 
 
 def get_data_names(data, data_names):

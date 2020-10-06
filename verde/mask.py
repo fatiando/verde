@@ -110,7 +110,10 @@ def distance_mask(
 
 
 def convexhull_mask(
-    data_coordinates, coordinates=None, grid=None, projection=None,
+    data_coordinates,
+    coordinates=None,
+    grid=None,
+    projection=None,
 ):
     """
     Mask grid points that are outside the convex hull of the given data points.
