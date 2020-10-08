@@ -223,6 +223,14 @@ def make_xarray_grid(
     including easting and northing coordinates, any extra coordinates (like
     upward elevation, time, etc) and data arrays.
 
+    Use this to transform the outputs of :func:`verde.grid_coordinates` and
+    the ``predict`` method of a gridder into an :class:`xarray.Dataset`. 
+    
+    .. note::
+    
+        This is a utility function to help create 2D grids (i.e., grids with two ``dims`` 
+        coordinates). For arbitrary N-dimensional arrays, use :mod:`xarray` directly.
+
     Parameters
     ----------
     coordinates : tuple of arrays
