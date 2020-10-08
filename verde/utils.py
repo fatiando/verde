@@ -256,7 +256,8 @@ def make_xarray_grid(
     extra_coords_name : str or list
         Name or list of names for any additional coordinates besides the
         easting and northing ones. Ignored if coordinates has
-        only two elements.
+        only two elements. The extra coordinates are non-index coordinates of
+        the grid array.
 
     Returns
     -------
