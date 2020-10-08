@@ -309,7 +309,8 @@ def make_xarray_grid(
     data = check_data(data)
     if isinstance(data_name, str):
         data_name = (data_name,)
-    # Create coordinates dictionary (with dims)
+    # dims is like shape with order (rows, cols) for the array
+    # so the first element is northing and second is easting
     coords = {dims[1]: coordinates[0][0, :], dims[0]: coordinates[1][:, 0]}
     # Add any extra_coords to the dictionary
     if coordinates[2:]:
