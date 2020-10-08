@@ -219,9 +219,9 @@ def make_xarray_grid(
     """
     Create an :class:`xarray.Dataset` grid from numpy arrays
 
-    The functions creates a :class:`xarray.Dataset` out of 2d gridded data
+    This functions creates an :class:`xarray.Dataset` out of 2d gridded data
     including easting and northing coordinates, any extra coordinates (like
-    upward) and data arrays.
+    upward elevation, time, etc) and data arrays.
 
     Parameters
     ----------
