@@ -128,7 +128,7 @@ grid = spline.grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["temperature"],
+    data_names="temperature",
 )
 print(grid)
 
@@ -174,7 +174,7 @@ grid_default = spline_default.grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["temperature"],
+    data_names="temperature",
 )
 
 ########################################################################################

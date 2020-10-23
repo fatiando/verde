@@ -58,7 +58,7 @@ grid = grd.grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["bathymetry_m"],
+    data_names="bathymetry_m",
 )
 print("Generated geographic grid:")
 print(grid)
