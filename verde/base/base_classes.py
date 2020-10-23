@@ -478,7 +478,7 @@ class BaseGridder(BaseEstimator):
             "northing" pattern but is required for compatibility with xarray.**
         data_names : str, list or None
             The name(s) of the data variables in the output dataframe. Defaults
-            to ``['scalars']`` for scalar data,
+            to ``'scalars'`` for scalar data,
             ``['east_component', 'north_component']`` for 2D vector data, and
             ``['east_component', 'north_component', 'vertical_component']`` for
             3D vector data.
