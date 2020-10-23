@@ -20,10 +20,6 @@ except ImportError:
     from .utils import dummy_jit as jit
 
 
-# Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
-warnings.simplefilter("default")
-
-
 class SplineCV(BaseGridder):
     r"""
     Cross-validated biharmonic spline interpolation.
@@ -141,12 +137,18 @@ class SplineCV(BaseGridder):
         self.client = client
         self.delayed = delayed
         if client is not None:
-            warnings.warn(
-                "The 'client' parameter of 'verde.SplineCV' is "
-                "deprecated and will be removed in Verde 2.0.0. "
-                "Use the 'delayed' parameter instead.",
-                DeprecationWarning,
-            )
+            with warnings.catch_warnings():
+                # DeprecationWarning won't be shown if we don't set
+                # simplefilter, kind of defeating the purpose. We don't want to
+                # globally modify simplefilter and thus affecting every
+                # library.
+                warnings.simplefilter("default")
+                warnings.warn(
+                    "The 'client' parameter of 'verde.SplineCV' is "
+                    "deprecated and will be removed in Verde 2.0.0. "
+                    "Use the 'delayed' parameter instead.",
+                    DeprecationWarning,
+                )
 
     def fit(self, coordinates, data, weights=None):
         """

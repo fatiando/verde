@@ -17,9 +17,6 @@ except ImportError:
 from ..version import full_version
 
 
-# Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
-warnings.simplefilter("default")
-
 REGISTRY = pooch.create(
     path=pooch.os_cache("verde"),
     base_url="https://github.com/fatiando/verde/raw/{version}/data/",
@@ -180,11 +177,16 @@ def fetch_rio_magnetic():
     setup_rio_magnetic_map: Utility function to help setup a Cartopy map.
 
     """
-    warnings.warn(
-        "The Rio magnetic anomaly dataset is deprecated and will be removed "
-        "in Verde v2.0.0. Use a different dataset instead.",
-        DeprecationWarning,
-    )
+    with warnings.catch_warnings():
+        # DeprecationWarning won't be shown if we don't set simplefilter, kind
+        # of defeating the purpose. We don't want to globally modify
+        # simplefilter and thus affecting every library.
+        warnings.simplefilter("default")
+        warnings.warn(
+            "The Rio magnetic anomaly dataset is deprecated and will be removed "
+            "in Verde v2.0.0. Use a different dataset instead.",
+            DeprecationWarning,
+        )
     data_file = REGISTRY.fetch("rio-magnetic.csv.xz")
     data = pd.read_csv(data_file, compression="xz")
     return data
@@ -213,11 +215,16 @@ def setup_rio_magnetic_map(ax, region=(-42.6, -42, -22.5, -22)):
     fetch_rio_magnetic: Magnetic anomaly data from Rio de Janeiro, Brazil.
 
     """
-    warnings.warn(
-        "The Rio magnetic anomaly dataset is deprecated and will be removed "
-        "in Verde v2.0.0. Use a different dataset instead.",
-        DeprecationWarning,
-    )
+    with warnings.catch_warnings():
+        # DeprecationWarning won't be shown if we don't set simplefilter, kind
+        # of defeating the purpose. We don't want to globally modify
+        # simplefilter and thus affecting every library.
+        warnings.simplefilter("default")
+        warnings.warn(
+            "The Rio magnetic anomaly dataset is deprecated and will be removed "
+            "in Verde v2.0.0. Use a different dataset instead.",
+            DeprecationWarning,
+        )
     _setup_map(
         ax,
         xticks=np.arange(-42.5, -42, 0.1),

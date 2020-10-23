@@ -14,10 +14,6 @@ from .coordinates import block_split
 from .utils import dispatch, partition_by_sum
 
 
-# Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
-warnings.simplefilter("default")
-
-
 # Pylint doesn't like X, y scikit-learn argument names.
 # pylint: disable=invalid-name,unused-argument
 
@@ -754,12 +750,17 @@ def cross_val_score(
 
     """
     if client is not None:
-        warnings.warn(
-            "The 'client' parameter of 'verde.cross_val_score' is deprecated "
-            "and will be removed in Verde 2.0.0. "
-            "Use the 'delayed' parameter instead.",
-            DeprecationWarning,
-        )
+        with warnings.catch_warnings():
+            # DeprecationWarning won't be shown if we don't set simplefilter,
+            # kind of defeating the purpose. We don't want to globally modify
+            # simplefilter and thus affecting every library.
+            warnings.simplefilter("default")
+            warnings.warn(
+                "The 'client' parameter of 'verde.cross_val_score' is deprecated "
+                "and will be removed in Verde 2.0.0. "
+                "Use the 'delayed' parameter instead.",
+                DeprecationWarning,
+            )
     coordinates, data, weights = check_fit_input(
         coordinates, data, weights, unpack=False
     )
