@@ -19,7 +19,7 @@ try:
 except ImportError:
     numba = None
 
-from .base.utils import check_data, n_1d_arrays
+from .base.utils import check_data, check_data_name, n_1d_arrays
 from .coordinates import check_coordinates
 
 
@@ -308,8 +308,7 @@ def make_xarray_grid(
     """
     coordinates = check_coordinates(coordinates)
     data = check_data(data)
-    if isinstance(data_name, str):
-        data_name = (data_name,)
+    data_name = check_data_name(data_name)
     # dims is like shape with order (rows, cols) for the array
     # so the first element is northing and second is easting
     coords = {dims[1]: coordinates[0][0, :], dims[0]: coordinates[1][:, 0]}

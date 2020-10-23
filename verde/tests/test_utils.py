@@ -129,7 +129,7 @@ def test_build_grid_multiple_data():
     spacing = 1
     coordinates = grid_coordinates(region, spacing=spacing)
     data_arrays = tuple(i * np.ones_like(coordinates[0]) for i in range(1, 4))
-    data_names = tuple("data_{}".format(i) for i in range(1, 4))
+    data_names = list("data_{}".format(i) for i in range(1, 4))
     dataset = make_xarray_grid(coordinates, data_arrays, data_name=data_names)
     npt.assert_allclose(dataset.easting, [-10, -9, -8, -7, -6, -5])
     npt.assert_allclose(dataset.northing, [6, 7, 8, 9, 10])
