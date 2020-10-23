@@ -104,28 +104,28 @@ def check_data(data):
     return data
 
 
-def check_data_name(data_name):
+def check_data_names(data_names):
     """
-    Check the *data_name* argument and make sure it's a list.
-    If ``data_name`` is a single string, return it as a list with a single
+    Check the *data_names* argument and make sure it's a list.
+    If ``data_names`` is a single string, return it as a list with a single
     element.
 
     This is the default form accepted by gridders and functions that require
-    the ``data_name`` argument.
+    the ``data_names`` argument.
 
     Examples
     --------
 
-    >>> check_data_name("dummy")
+    >>> check_data_names("dummy")
     ['dummy']
-    >>> check_data_name(["component_x", "component_y"])
+    >>> check_data_names(["component_x", "component_y"])
     ['component_x', 'component_y']
     """
-    if not isinstance(data_name, list):
-        data_name = [
-            data_name,
+    if not isinstance(data_names, list):
+        data_names = [
+            data_names,
         ]
-    return data_name
+    return data_names
 
 
 def check_coordinates(coordinates):

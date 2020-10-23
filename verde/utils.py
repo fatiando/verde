@@ -19,7 +19,7 @@ try:
 except ImportError:
     numba = None
 
-from .base.utils import check_data, check_data_name, n_1d_arrays
+from .base.utils import check_data, check_data_names, n_1d_arrays
 from .coordinates import check_coordinates
 
 
@@ -212,7 +212,7 @@ def maxabs(*args, nan=True):
 def make_xarray_grid(
     coordinates,
     data,
-    data_name,
+    data_names,
     dims=("northing", "easting"),
     extra_coords_name=None,
 ):
@@ -244,7 +244,7 @@ def make_xarray_grid(
         Array or tuple of arrays with data values on each point in the grid.
         Each array must contain values for a dimension in the same order as
         the coordinates. All arrays need to have the same *shape*.
-    data_name : str or list
+    data_names : str or list
         String or list containing strings with the names of the data arrays.
     dims : list or None
         The names of the northing and easting data dimensions, respectively,
@@ -308,7 +308,7 @@ def make_xarray_grid(
     """
     coordinates = check_coordinates(coordinates)
     data = check_data(data)
-    data_name = check_data_name(data_name)
+    data_names = check_data_names(data_names)
     # dims is like shape with order (rows, cols) for the array
     # so the first element is northing and second is easting
     coords = {dims[1]: coordinates[0][0, :], dims[0]: coordinates[1][:, 0]}
@@ -319,13 +319,13 @@ def make_xarray_grid(
         for name, extra_coord in zip(extra_coords_name, coordinates[2:]):
             coords[name] = (dims, extra_coord)
     # Generate object
-    if len(data) != len(data_name):
+    if len(data) != len(data_names):
         raise ValueError(
-            "Invalid data_names '{}'. ".format(data_name)
+            "Invalid data_names '{}'. ".format(data_names)
             + "Number of data names must match the number of "
             + "data arrays ('{}').".format(len(data))
         )
-    data_vars = {name: (dims, value) for name, value in zip(data_name, data)}
+    data_vars = {name: (dims, value) for name, value in zip(data_names, data)}
     return xr.Dataset(data_vars, coords)
 
 
