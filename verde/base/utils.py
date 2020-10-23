@@ -108,7 +108,7 @@ def check_data_names(data_names):
     """
     Check the *data_names* argument and make sure it's a list.
     If ``data_names`` is a single string, return it as a list with a single
-    element.
+    element. If ``data_names`` is a tuple, return it as a list.
 
     This is the default form accepted by gridders and functions that require
     the ``data_names`` argument.
@@ -120,7 +120,13 @@ def check_data_names(data_names):
     ['dummy']
     >>> check_data_names(["component_x", "component_y"])
     ['component_x', 'component_y']
+    >>> check_data_names(("dummy",))
+    ['dummy']
+    >>> check_data_names(("component_x", "component_y"))
+    ['component_x', 'component_y']
     """
+    if isinstance(data_names, tuple):
+        data_names = list(data_names)
     if not isinstance(data_names, list):
         data_names = [
             data_names,
