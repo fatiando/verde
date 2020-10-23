@@ -214,7 +214,7 @@ def make_xarray_grid(
     data,
     data_names,
     dims=("northing", "easting"),
-    extra_coords_name=None,
+    extra_coords_names=None,
 ):
     """
     Create an :class:`xarray.Dataset` grid from numpy arrays
@@ -254,7 +254,7 @@ def make_xarray_grid(
         "northing" pattern but is required for compatibility with xarray.**
         The easting and northing coordinates in the :class:`xarray.Dataset`
         will have the same names as the passed dimensions.
-    extra_coords_name : str or list
+    extra_coords_names : str or list
         Name or list of names for any additional coordinates besides the
         easting and northing ones. Ignored if coordinates has
         only two elements. The extra coordinates are non-index coordinates of
@@ -275,7 +275,7 @@ def make_xarray_grid(
     >>> # And some dummy data for each point of the grid
     >>> data = np.ones_like(coordinates[0])
     >>> # Create the grid
-    >>> grid = make_xarray_grid(coordinates, data, data_name="dummy")
+    >>> grid = make_xarray_grid(coordinates, data, data_names="dummy")
     >>> print(grid)
     <xarray.Dataset>
     Dimensions:   (easting: 3, northing: 2)
@@ -293,7 +293,7 @@ def make_xarray_grid(
     >>> data = np.ones_like(coordinates[0])
     >>> # Create the grid
     >>> grid = make_xarray_grid(
-    ...     coordinates, data, data_name="dummy", extra_coords_name="upward"
+    ...     coordinates, data, data_names="dummy", extra_coords_names="upward"
     ... )
     >>> print(grid)
     <xarray.Dataset>
@@ -315,8 +315,8 @@ def make_xarray_grid(
     # Extra coordinates are handled like 2D data arrays with
     # the same dims and the data.
     if coordinates[2:]:
-        extra_coords_name = _check_extra_coords_name(coordinates, extra_coords_name)
-        for name, extra_coord in zip(extra_coords_name, coordinates[2:]):
+        extra_coords_names = _check_extra_coords_names(coordinates, extra_coords_names)
+        for name, extra_coord in zip(extra_coords_names, coordinates[2:]):
             coords[name] = (dims, extra_coord)
     # Generate object
     if len(data) != len(data_names):
@@ -329,30 +329,30 @@ def make_xarray_grid(
     return xr.Dataset(data_vars, coords)
 
 
-def _check_extra_coords_name(coordinates, extra_coords_name):
+def _check_extra_coords_names(coordinates, extra_coords_names):
     """
-    Sanity checks for extra_coords_name against coordinates
+    Sanity checks for extra_coords_names against coordinates
 
     Assuming that there are extra coordinates on the ``coordinates`` tuple.
     """
     # Convert to tuple if it's a str
-    if isinstance(extra_coords_name, str):
-        extra_coords_name = (extra_coords_name,)
+    if isinstance(extra_coords_names, str):
+        extra_coords_names = (extra_coords_names,)
     # Check if it's not None
-    if extra_coords_name is None:
+    if extra_coords_names is None:
         raise ValueError(
-            "Invalid extra_coords_name equal to None. "
+            "Invalid extra_coords_names equal to None. "
             + "When passing one or more extra coordinate, "
-            + "extra_coords_name cannot be None."
+            + "extra_coords_names cannot be None."
         )
     # Check if there are the same number of extra_coords than extra_coords_name
-    if len(coordinates[2:]) != len(extra_coords_name):
+    if len(coordinates[2:]) != len(extra_coords_names):
         raise ValueError(
-            "Invalid extra_coords_name '{}'. ".format(extra_coords_name)
+            "Invalid extra_coords_names '{}'. ".format(extra_coords_names)
             + "Number of extra coordinates names must match the number of "
             + "additional coordinates ('{}').".format(len(coordinates[2:]))
         )
-    return extra_coords_name
+    return extra_coords_names
 
 
 def grid_to_table(grid):

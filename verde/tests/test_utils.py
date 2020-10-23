@@ -151,7 +151,7 @@ def test_build_grid_extra_coords():
         coordinates,
         data,
         data_names="dummy",
-        extra_coords_name=["upward", "time"],
+        extra_coords_names=["upward", "time"],
     )
     npt.assert_allclose(dataset.easting, [-10, -9, -8, -7, -6, -5])
     npt.assert_allclose(dataset.northing, [6, 7, 8, 9, 10])
@@ -189,23 +189,23 @@ def test_build_grid_invalid_extra_coords():
     # No extra coords, extra_coords_name should be ignored
     coordinates = grid_coordinates(region, spacing=spacing)
     data = np.ones_like(coordinates[0])
-    make_xarray_grid(coordinates, data, data_names="dummy", extra_coords_name="upward")
+    make_xarray_grid(coordinates, data, data_names="dummy", extra_coords_names="upward")
     # Single extra coords, extra_coords_name equal to None
     coordinates = grid_coordinates(region, spacing=spacing, extra_coords=1)
     data = np.ones_like(coordinates[0])
     with pytest.raises(ValueError):
-        make_xarray_grid(coordinates, data, data_names="dummy", extra_coords_name=None)
+        make_xarray_grid(coordinates, data, data_names="dummy", extra_coords_names=None)
     # Multiple extra coords, single extra_coords_name as a str
     coordinates = grid_coordinates(region, spacing=spacing, extra_coords=[1, 2])
     data = np.ones_like(coordinates[0])
     with pytest.raises(ValueError):
         make_xarray_grid(
-            coordinates, data, data_names="dummy", extra_coords_name="upward"
+            coordinates, data, data_names="dummy", extra_coords_names="upward"
         )
     # Multiple extra coords, multiple extra_coords_name but not equal
     coordinates = grid_coordinates(region, spacing=spacing, extra_coords=[1, 2, 3])
     data = np.ones_like(coordinates[0])
     with pytest.raises(ValueError):
         make_xarray_grid(
-            coordinates, data, data_names="dummy", extra_coords_name=["upward", "time"]
+            coordinates, data, data_names="dummy", extra_coords_names=["upward", "time"]
         )
