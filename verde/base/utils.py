@@ -120,6 +120,8 @@ def check_data_names(data_names):
     ('dummy',)
     >>> check_data_names(("component_x", "component_y"))
     ('component_x', 'component_y')
+    >>> check_data_names(["dummy"])
+    ['dummy']
     """
     if isinstance(data_names, str):
         data_names = (data_names,)
