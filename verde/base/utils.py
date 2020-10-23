@@ -127,7 +127,7 @@ def check_data_names(data_names):
     """
     if isinstance(data_names, tuple):
         data_names = list(data_names)
-    if not isinstance(data_names, list):
+    if isinstance(data_names, str):
         data_names = [
             data_names,
         ]
