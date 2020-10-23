@@ -8,7 +8,7 @@ from sklearn.base import BaseEstimator
 from sklearn.model_selection import BaseCrossValidator
 
 from ..coordinates import grid_coordinates, profile_coordinates, scatter_points
-from .utils import check_data, score_estimator
+from .utils import check_data, check_data_names, score_estimator
 from ..utils import make_xarray_grid
 
 
@@ -380,7 +380,7 @@ class BaseGridder(BaseEstimator):
             order: northing dimension, easting dimension.
             **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
-        data_names : str or list or None
+        data_names : str, list or None
             The name(s) of the data variables in the output grid. Defaults to
             ``'scalars'`` for scalar data,
             ``['east_component', 'north_component']`` for 2D vector data, and
@@ -416,6 +416,7 @@ class BaseGridder(BaseEstimator):
                 self.predict(project_coordinates(coordinates, projection))
             )
         # Get names for data and any extra coordinates
+        data_names = check_data_names(data_names)
         data_names = get_data_names(data, data_names)
         extra_coords_names = self._get_extra_coords_names(coordinates)
         # Create xarray.Dataset
@@ -475,7 +476,7 @@ class BaseGridder(BaseEstimator):
             following order: northing dimension, easting dimension.
             **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
-        data_names : list of None
+        data_names : str, list or None
             The name(s) of the data variables in the output dataframe. Defaults
             to ``['scalars']`` for scalar data,
             ``['east_component', 'north_component']`` for 2D vector data, and
@@ -505,6 +506,7 @@ class BaseGridder(BaseEstimator):
             data = check_data(
                 self.predict(project_coordinates(coordinates, projection))
             )
+        data_names = check_data_names(data_names)
         data_names = get_data_names(data, data_names)
         columns = [(dims[0], coordinates[1]), (dims[1], coordinates[0])]
         extra_coords_names = self._get_extra_coords_names(coordinates)
@@ -578,7 +580,7 @@ class BaseGridder(BaseEstimator):
             following order: northing dimension, easting dimension.
             **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
-        data_names : list of None
+        data_names : str, list or None
             The name(s) of the data variables in the output dataframe. Defaults
             to ``['scalars']`` for scalar data,
             ``['east_component', 'north_component']`` for 2D vector data, and
@@ -616,6 +618,7 @@ class BaseGridder(BaseEstimator):
         # profile but Cartesian distances.
         if projection is not None:
             coordinates = project_coordinates(coordinates, projection, inverse=True)
+        data_names = check_data_names(data_names)
         data_names = get_data_names(data, data_names)
         columns = [
             (dims[0], coordinates[1]),

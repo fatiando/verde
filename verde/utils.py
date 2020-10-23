@@ -244,8 +244,8 @@ def make_xarray_grid(
         Array or tuple of arrays with data values on each point in the grid.
         Each array must contain values for a dimension in the same order as
         the coordinates. All arrays need to have the same *shape*.
-    data_names : str or list or tuple
-        String or list containing strings with the names of the data arrays.
+    data_names : str, list or None
+        The name(s) of the data variables in the output grid.
     dims : list or None
         The names of the northing and easting data dimensions, respectively,
         in the output grid. Must be defined in the following order: northing
