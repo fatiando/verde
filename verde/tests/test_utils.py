@@ -174,6 +174,9 @@ def test_make_xarray_grid_invalid_names():
     data = np.ones_like(coordinates[0])
     with pytest.raises(ValueError):
         make_xarray_grid(coordinates, data, data_names=["bla_1", "bla_2"])
+    # data_names equal to None
+    with pytest.raises(ValueError):
+        make_xarray_grid(coordinates, data, data_names=None)
     # Multiple data, single data_name
     data = tuple(i * np.ones_like(coordinates[0]) for i in (1, 2))
     with pytest.raises(ValueError):

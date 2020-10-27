@@ -19,8 +19,13 @@ try:
 except ImportError:
     numba = None
 
-from .base.utils import check_data, check_data_names, n_1d_arrays
-from .coordinates import check_coordinates
+from .base.utils import (
+    check_coordinates,
+    check_extra_coords_names,
+    check_data,
+    check_data_names,
+    n_1d_arrays,
+)
 
 
 def dispatch(function, delayed=False, client=None):
@@ -315,37 +320,11 @@ def make_xarray_grid(
     # Extra coordinates are handled like 2D data arrays with
     # the same dims and the data.
     if coordinates[2:]:
-        extra_coords_names = _check_extra_coords_names(coordinates, extra_coords_names)
+        extra_coords_names = check_extra_coords_names(coordinates, extra_coords_names)
         for name, extra_coord in zip(extra_coords_names, coordinates[2:]):
             coords[name] = (dims, extra_coord)
     data_vars = {name: (dims, value) for name, value in zip(data_names, data)}
     return xr.Dataset(data_vars, coords)
-
-
-def _check_extra_coords_names(coordinates, extra_coords_names):
-    """
-    Sanity checks for extra_coords_names against coordinates
-
-    Assuming that there are extra coordinates on the ``coordinates`` tuple.
-    """
-    # Convert to tuple if it's a str
-    if isinstance(extra_coords_names, str):
-        extra_coords_names = (extra_coords_names,)
-    # Check if it's not None
-    if extra_coords_names is None:
-        raise ValueError(
-            "Invalid extra_coords_names equal to None. "
-            + "When passing one or more extra coordinate, "
-            + "extra_coords_names cannot be None."
-        )
-    # Check if there are the same number of extra_coords than extra_coords_name
-    if len(coordinates[2:]) != len(extra_coords_names):
-        raise ValueError(
-            "Invalid extra_coords_names '{}'. ".format(extra_coords_names)
-            + "Number of extra coordinates names must match the number of "
-            + "additional coordinates ('{}').".format(len(coordinates[2:]))
-        )
-    return extra_coords_names
 
 
 def grid_to_table(grid):
