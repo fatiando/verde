@@ -424,7 +424,7 @@ class BaseGridder(BaseEstimator):
                 self.predict(project_coordinates(coordinates, projection))
             )
         # Get names for data and any extra coordinates
-        data_names = self.get_data_names(data, data_names)
+        data_names = self._get_data_names(data, data_names)
         extra_coords_names = self._get_extra_coords_names(coordinates)
         # Create xarray.Dataset
         dataset = make_xarray_grid(
@@ -513,7 +513,7 @@ class BaseGridder(BaseEstimator):
             data = check_data(
                 self.predict(project_coordinates(coordinates, projection))
             )
-        data_names = self.get_data_names(data, data_names)
+        data_names = self._get_data_names(data, data_names)
         columns = [(dims[0], coordinates[1]), (dims[1], coordinates[0])]
         extra_coords_names = self._get_extra_coords_names(coordinates)
         columns.extend(zip(extra_coords_names, coordinates[2:]))
@@ -624,7 +624,7 @@ class BaseGridder(BaseEstimator):
         # profile but Cartesian distances.
         if projection is not None:
             coordinates = project_coordinates(coordinates, projection, inverse=True)
-        data_names = self.get_data_names(data, data_names)
+        data_names = self._get_data_names(data, data_names)
         columns = [
             (dims[0], coordinates[1]),
             (dims[1], coordinates[0]),
@@ -670,7 +670,7 @@ class BaseGridder(BaseEstimator):
             names.append(name)
         return names
 
-    def get_data_names(self, data, data_names):
+    def _get_data_names(self, data, data_names):
         """
         Get default names for data fields if none are given based on the data.
 

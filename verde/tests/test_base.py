@@ -46,29 +46,29 @@ def test_get_data_names():
     data3 = tuple([np.arange(10)] * 3)
     # Test the default names
     gridder = BaseGridder()
-    assert gridder.get_data_names(data1, data_names=None) == ("scalars",)
-    assert gridder.get_data_names(data2, data_names=None) == (
+    assert gridder._get_data_names(data1, data_names=None) == ("scalars",)
+    assert gridder._get_data_names(data2, data_names=None) == (
         "east_component",
         "north_component",
     )
-    assert gridder.get_data_names(data3, data_names=None) == (
+    assert gridder._get_data_names(data3, data_names=None) == (
         "east_component",
         "north_component",
         "vertical_component",
     )
     # Test custom names
-    assert gridder.get_data_names(data1, data_names=("a",)) == ("a",)
-    assert gridder.get_data_names(data2, data_names=("a", "b")) == ("a", "b")
-    assert gridder.get_data_names(data3, data_names=("a", "b", "c")) == ("a", "b", "c")
+    assert gridder._get_data_names(data1, data_names=("a",)) == ("a",)
+    assert gridder._get_data_names(data2, data_names=("a", "b")) == ("a", "b")
+    assert gridder._get_data_names(data3, data_names=("a", "b", "c")) == ("a", "b", "c")
 
 
 def test_get_data_names_fails():
     "Check if fails for invalid data types"
     gridder = BaseGridder()
     with pytest.raises(ValueError):
-        gridder.get_data_names(tuple([np.arange(5)] * 4), data_names=None)
+        gridder._get_data_names(tuple([np.arange(5)] * 4), data_names=None)
     with pytest.raises(ValueError):
-        gridder.get_data_names(tuple([np.arange(5)] * 2), data_names=("meh",))
+        gridder._get_data_names(tuple([np.arange(5)] * 2), data_names=("meh",))
 
 
 def test_get_instance_region():
