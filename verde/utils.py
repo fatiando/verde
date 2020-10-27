@@ -6,6 +6,7 @@ import functools
 import dask
 import numpy as np
 import pandas as pd
+import xarray as xr
 from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
 
 try:
@@ -18,7 +19,8 @@ try:
 except ImportError:
     numba = None
 
-from .base.utils import check_data, n_1d_arrays
+from .base.utils import check_data, check_data_names, n_1d_arrays
+from .coordinates import check_coordinates
 
 
 def dispatch(function, delayed=False, client=None):
@@ -205,6 +207,152 @@ def maxabs(*args, nan=True):
         npmin, npmax = np.min, np.max
     absolute = [npmax(np.abs([npmin(i), npmax(i)])) for i in arrays]
     return npmax(absolute)
+
+
+def make_xarray_grid(
+    coordinates,
+    data,
+    data_names,
+    dims=("northing", "easting"),
+    extra_coords_names=None,
+):
+    """
+    Create an :class:`xarray.Dataset` grid from numpy arrays
+
+    This functions creates an :class:`xarray.Dataset` out of 2d gridded data
+    including easting and northing coordinates, any extra coordinates (like
+    upward elevation, time, etc) and data arrays.
+
+    Use this to transform the outputs of :func:`verde.grid_coordinates` and
+    the ``predict`` method of a gridder into an :class:`xarray.Dataset`.
+
+    .. note::
+
+        This is a utility function to help create 2D grids (i.e., grids with
+        two ``dims`` coordinates). For arbitrary N-dimensional arrays, use
+        :mod:`xarray` directly.
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+        Arrays with coordinates of each point in the grid. Each array must
+        contain values for a dimension in the order: easting, northing,
+        vertical, etc. All arrays must be 2d and need to have the same *shape*.
+        These coordinates can be generated through
+        :func:`verde.grid_coordinates`.
+    data : array or tuple of arrays
+        Array or tuple of arrays with data values on each point in the grid.
+        Each array must contain values for a dimension in the same order as
+        the coordinates. All arrays need to have the same *shape*.
+    data_names : str, list or None
+        The name(s) of the data variables in the output grid.
+    dims : list or None
+        The names of the northing and easting data dimensions, respectively,
+        in the output grid. Must be defined in the following order: northing
+        dimension, easting dimension.
+        **NOTE: This is an exception to the "easting" then
+        "northing" pattern but is required for compatibility with xarray.**
+        The easting and northing coordinates in the :class:`xarray.Dataset`
+        will have the same names as the passed dimensions.
+    extra_coords_names : str or list
+        Name or list of names for any additional coordinates besides the
+        easting and northing ones. Ignored if coordinates has
+        only two elements. The extra coordinates are non-index coordinates of
+        the grid array.
+
+    Returns
+    -------
+    grid : :class:`xarray.Dataset`
+        A 2D grid with one or more data variables.
+
+    Examples
+    --------
+
+    >>> import numpy as np
+    >>> import verde as vd
+    >>> # Create the coordinates of the regular grid
+    >>> coordinates = vd.grid_coordinates((-10, -6, 8, 10), spacing=2)
+    >>> # And some dummy data for each point of the grid
+    >>> data = np.ones_like(coordinates[0])
+    >>> # Create the grid
+    >>> grid = make_xarray_grid(coordinates, data, data_names="dummy")
+    >>> print(grid)
+    <xarray.Dataset>
+    Dimensions:   (easting: 3, northing: 2)
+    Coordinates:
+      * easting   (easting) float64 -10.0 -8.0 -6.0
+      * northing  (northing) float64 8.0 10.0
+    Data variables:
+        dummy     (northing, easting) float64 1.0 1.0 1.0 1.0 1.0 1.0
+
+    >>> # Create a grid with an extra coordinate
+    >>> coordinates = vd.grid_coordinates(
+    ...     (-10, -6, 8, 10), spacing=2, extra_coords=5
+    ... )
+    >>> # And some dummy data for each point of the grid
+    >>> data = np.ones_like(coordinates[0])
+    >>> # Create the grid
+    >>> grid = make_xarray_grid(
+    ...     coordinates, data, data_names="dummy", extra_coords_names="upward"
+    ... )
+    >>> print(grid)
+    <xarray.Dataset>
+    Dimensions:   (easting: 3, northing: 2)
+    Coordinates:
+      * easting   (easting) float64 -10.0 -8.0 -6.0
+      * northing  (northing) float64 8.0 10.0
+        upward    (northing, easting) float64 5.0 5.0 5.0 5.0 5.0 5.0
+    Data variables:
+        dummy     (northing, easting) float64 1.0 1.0 1.0 1.0 1.0 1.0
+
+    """
+    coordinates = check_coordinates(coordinates)
+    data = check_data(data)
+    data_names = check_data_names(data_names)
+    # dims is like shape with order (rows, cols) for the array
+    # so the first element is northing and second is easting
+    coords = {dims[1]: coordinates[0][0, :], dims[0]: coordinates[1][:, 0]}
+    # Extra coordinates are handled like 2D data arrays with
+    # the same dims and the data.
+    if coordinates[2:]:
+        extra_coords_names = _check_extra_coords_names(coordinates, extra_coords_names)
+        for name, extra_coord in zip(extra_coords_names, coordinates[2:]):
+            coords[name] = (dims, extra_coord)
+    # Generate object
+    if len(data) != len(data_names):
+        raise ValueError(
+            "Invalid data_names '{}'. ".format(data_names)
+            + "Number of data names must match the number of "
+            + "data arrays ('{}').".format(len(data))
+        )
+    data_vars = {name: (dims, value) for name, value in zip(data_names, data)}
+    return xr.Dataset(data_vars, coords)
+
+
+def _check_extra_coords_names(coordinates, extra_coords_names):
+    """
+    Sanity checks for extra_coords_names against coordinates
+
+    Assuming that there are extra coordinates on the ``coordinates`` tuple.
+    """
+    # Convert to tuple if it's a str
+    if isinstance(extra_coords_names, str):
+        extra_coords_names = (extra_coords_names,)
+    # Check if it's not None
+    if extra_coords_names is None:
+        raise ValueError(
+            "Invalid extra_coords_names equal to None. "
+            + "When passing one or more extra coordinate, "
+            + "extra_coords_names cannot be None."
+        )
+    # Check if there are the same number of extra_coords than extra_coords_name
+    if len(coordinates[2:]) != len(extra_coords_names):
+        raise ValueError(
+            "Invalid extra_coords_names '{}'. ".format(extra_coords_names)
+            + "Number of extra coordinates names must match the number of "
+            + "additional coordinates ('{}').".format(len(coordinates[2:]))
+        )
+    return extra_coords_names
 
 
 def grid_to_table(grid):

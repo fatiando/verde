@@ -121,7 +121,7 @@ print(grid)
 # and "northing") and data variables ("scalars"). You can overwrite these names by
 # setting the ``dims`` and ``data_names`` arguments.
 
-grid = spline.grid(spacing=30, dims=["latitude", "longitude"], data_names=["gravity"])
+grid = spline.grid(spacing=30, dims=["latitude", "longitude"], data_names="gravity")
 print(grid)
 
 plt.figure()

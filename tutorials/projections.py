@@ -60,7 +60,7 @@ spline = vd.Spline().fit(filter_coords, filter_bathy)
 ########################################################################################
 # If we now call :meth:`verde.Spline.grid` we'll get back a grid evenly spaced in
 # projected Cartesian coordinates.
-grid = spline.grid(spacing=spacing * 111e3, data_names=["bathymetry"])
+grid = spline.grid(spacing=spacing * 111e3, data_names="bathymetry")
 print("Cartesian grid:")
 print(grid)
 
@@ -105,7 +105,7 @@ grid_geo = spline.grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["bathymetry"],
+    data_names="bathymetry",
 )
 print("Geographic grid:")
 print(grid_geo)

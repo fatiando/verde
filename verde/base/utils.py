@@ -104,6 +104,30 @@ def check_data(data):
     return data
 
 
+def check_data_names(data_names):
+    """
+    Check the *data_names* argument and make sure it's a tuple.
+    If ``data_names`` is a single string, return it as a tuple with a single
+    element.
+
+    This is the default form accepted by gridders and functions that require
+    the ``data_names`` argument.
+
+    Examples
+    --------
+
+    >>> check_data_names("dummy")
+    ('dummy',)
+    >>> check_data_names(("component_x", "component_y"))
+    ('component_x', 'component_y')
+    >>> check_data_names(["dummy"])
+    ['dummy']
+    """
+    if isinstance(data_names, str):
+        data_names = (data_names,)
+    return data_names
+
+
 def check_coordinates(coordinates):
     """
     Check that the given coordinate arrays are what we expect them to be.

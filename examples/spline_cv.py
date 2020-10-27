@@ -59,7 +59,7 @@ grid_full = spline.grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["temperature"],
+    data_names="temperature",
 )
 grid = vd.distance_mask(
     coordinates, maxdist=3 * spacing * 111e3, grid=grid_full, projection=projection

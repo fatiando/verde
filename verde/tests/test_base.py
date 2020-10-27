@@ -146,6 +146,23 @@ def test_basegridder():
     npt.assert_allclose(prof.distance, coordinates_true[0][0, :])
 
 
+def test_basegridder_data_names():
+    """
+    Test default values for data_names
+    """
+    region = (0, 10, -10, -5)
+    shape = (50, 30)
+    angular, linear = 2, 100
+    coordinates = scatter_points(region, 1000, random_state=0)
+    data = angular * coordinates[0] + linear
+    grd = PolyGridder().fit(coordinates, data)
+    grid = grd.grid(region, shape)
+    prof = grd.profile((0, -10), (10, -10), 30)
+    # Check if default name for data_names was applied correctly
+    assert "scalars" in grid
+    assert "scalars" in prof
+
+
 def test_basegridder_projection():
     "Test basic functionality of BaseGridder when passing in a projection"
 
