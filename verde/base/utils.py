@@ -127,6 +127,7 @@ def check_data_names(data, data_names):
     # Convert single string to tuple
     if isinstance(data_names, str):
         data_names = (data_names,)
+    # Raise error if data_names is None
     if data_names is None:
         raise ValueError("Invalid data_names equal to None.")
     # Raise error if data and data_names don't have the same number of elements
