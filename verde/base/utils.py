@@ -104,11 +104,10 @@ def check_data(data):
     return data
 
 
-def check_data_names(data_names):
+def check_data_names(data, data_names):
     """
-    Check the *data_names* argument and make sure it's a tuple.
-    If ``data_names`` is a single string, return it as a tuple with a single
-    element.
+    Check *data_names* and *data* have the same number of elements.
+    Also, convert ``data_names`` to a tuple if it's a single string.
 
     This is the default form accepted by gridders and functions that require
     the ``data_names`` argument.
@@ -116,15 +115,28 @@ def check_data_names(data_names):
     Examples
     --------
 
-    >>> check_data_names("dummy")
+    >>> import numpy as np
+    >>> east, north, scalar = [np.array(10)]*3
+    >>> check_data_names((scalar,), "dummy")
     ('dummy',)
-    >>> check_data_names(("component_x", "component_y"))
-    ('component_x', 'component_y')
-    >>> check_data_names(["dummy"])
+    >>> check_data_names((scalar,), ("dummy",))
+    ('dummy',)
+    >>> check_data_names((scalar,), ["dummy"])
     ['dummy']
+    >>> check_data_names((east, north), ("component_x", "component_y"))
+    ('component_x', 'component_y')
+    >>> check_data_names((east, north, scalar), None)
     """
+    # Convert single string to tuple
     if isinstance(data_names, str):
         data_names = (data_names,)
+    # Raise error if data and data_names don't have the same number of elements
+    if data_names is not None and len(data) != len(data_names):
+        raise ValueError(
+            "Data has {} components but only {} names provided: {}".format(
+                len(data), len(data_names), str(data_names)
+            )
+        )
     return data_names
 
 

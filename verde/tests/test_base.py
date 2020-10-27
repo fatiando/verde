@@ -11,7 +11,6 @@ from ..base.utils import check_fit_input, check_coordinates
 from ..base.base_classes import (
     BaseGridder,
     BaseBlockCrossValidator,
-    get_data_names,
     get_instance_region,
 )
 from ..coordinates import grid_coordinates, scatter_points
@@ -46,28 +45,30 @@ def test_get_data_names():
     data2 = tuple([np.arange(10)] * 2)
     data3 = tuple([np.arange(10)] * 3)
     # Test the default names
-    assert get_data_names(data1, data_names=None) == ("scalars",)
-    assert get_data_names(data2, data_names=None) == (
+    gridder = BaseGridder()
+    assert gridder.get_data_names(data1, data_names=None) == ("scalars",)
+    assert gridder.get_data_names(data2, data_names=None) == (
         "east_component",
         "north_component",
     )
-    assert get_data_names(data3, data_names=None) == (
+    assert gridder.get_data_names(data3, data_names=None) == (
         "east_component",
         "north_component",
         "vertical_component",
     )
     # Test custom names
-    assert get_data_names(data1, data_names=("a",)) == ("a",)
-    assert get_data_names(data2, data_names=("a", "b")) == ("a", "b")
-    assert get_data_names(data3, data_names=("a", "b", "c")) == ("a", "b", "c")
+    assert gridder.get_data_names(data1, data_names=("a",)) == ("a",)
+    assert gridder.get_data_names(data2, data_names=("a", "b")) == ("a", "b")
+    assert gridder.get_data_names(data3, data_names=("a", "b", "c")) == ("a", "b", "c")
 
 
 def test_get_data_names_fails():
     "Check if fails for invalid data types"
+    gridder = BaseGridder()
     with pytest.raises(ValueError):
-        get_data_names(tuple([np.arange(5)] * 4), data_names=None)
+        gridder.get_data_names(tuple([np.arange(5)] * 4), data_names=None)
     with pytest.raises(ValueError):
-        get_data_names(tuple([np.arange(5)] * 2), data_names=("meh",))
+        gridder.get_data_names(tuple([np.arange(5)] * 2), data_names=("meh",))
 
 
 def test_get_instance_region():

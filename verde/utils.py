@@ -308,7 +308,7 @@ def make_xarray_grid(
     """
     coordinates = check_coordinates(coordinates)
     data = check_data(data)
-    data_names = check_data_names(data_names)
+    data_names = check_data_names(data, data_names)
     # dims is like shape with order (rows, cols) for the array
     # so the first element is northing and second is easting
     coords = {dims[1]: coordinates[0][0, :], dims[0]: coordinates[1][:, 0]}
@@ -318,13 +318,6 @@ def make_xarray_grid(
         extra_coords_names = _check_extra_coords_names(coordinates, extra_coords_names)
         for name, extra_coord in zip(extra_coords_names, coordinates[2:]):
             coords[name] = (dims, extra_coord)
-    # Generate object
-    if len(data) != len(data_names):
-        raise ValueError(
-            "Invalid data_names '{}'. ".format(data_names)
-            + "Number of data names must match the number of "
-            + "data arrays ('{}').".format(len(data))
-        )
     data_vars = {name: (dims, value) for name, value in zip(data_names, data)}
     return xr.Dataset(data_vars, coords)
 
