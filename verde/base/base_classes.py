@@ -680,19 +680,21 @@ class BaseGridder(BaseEstimator):
         >>> import numpy as np
         >>> east, north, up = [np.arange(10)]*3
         >>> gridder = BaseGridder()
-        >>> gridder.get_data_names((east,), data_names=None)
+        >>> gridder._get_data_names((east,), data_names=None)
         ('scalars',)
-        >>> gridder.get_data_names((east, north), data_names=None)
+        >>> gridder._get_data_names((east, north), data_names=None)
         ('east_component', 'north_component')
-        >>> gridder.get_data_names((east, north, up), data_names=None)
+        >>> gridder._get_data_names((east, north, up), data_names=None)
         ('east_component', 'north_component', 'vertical_component')
-        >>> gridder.get_data_names((east,), data_names="john")
+        >>> gridder._get_data_names((east,), data_names="john")
         ('john',)
-        >>> gridder.get_data_names((east,), data_names=("paul",))
+        >>> gridder._get_data_names((east,), data_names=("paul",))
         ('paul',)
-        >>> gridder.get_data_names((up, north), data_names=('ringo', 'george'))
+        >>> gridder._get_data_names(
+        ...     (up, north), data_names=('ringo', 'george')
+        ... )
         ('ringo', 'george')
-        >>> gridder.get_data_names((north,), data_names=["brian"])
+        >>> gridder._get_data_names((north,), data_names=["brian"])
         ['brian']
 
         """
