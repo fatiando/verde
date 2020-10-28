@@ -106,7 +106,7 @@ grid = chain.grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["bathymetry"],
+    data_names="bathymetry",
 )
 print(grid)
 
@@ -140,7 +140,7 @@ grid_trend = chain.named_steps["trend"].grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["bathymetry"],
+    data_names="bathymetry",
 )
 print(grid_trend)
 
