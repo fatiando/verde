@@ -98,7 +98,7 @@ def test_partition_by_sum_fails_no_partitions():
     assert "Could not find partition points" in str(error)
 
 
-def test_build_grid():
+def test_make_xarray_grid():
     """
     Check if xarray.Dataset is correctly created
     """
@@ -121,7 +121,7 @@ def test_build_grid():
     assert grid.dummy.shape == (5, 6)
 
 
-def test_build_grid_multiple_data():
+def test_make_xarray_grid_multiple_data():
     """
     Check if xarray.Dataset with multiple data is correctly created
     """
@@ -138,7 +138,7 @@ def test_build_grid_multiple_data():
         assert dataset["data_{}".format(i)].shape == (5, 6)
 
 
-def test_build_grid_extra_coords():
+def test_make_xarray_grid_extra_coords():
     """
     Check if xarray.Dataset with extra coords is correctly created
     """
@@ -163,7 +163,7 @@ def test_build_grid_extra_coords():
     assert dataset.time.shape == (5, 6)
 
 
-def test_build_grid_invalid_names():
+def test_make_xarray_grid_invalid_names():
     """
     Check if errors are raise after invalid data names
     """
@@ -174,13 +174,16 @@ def test_build_grid_invalid_names():
     data = np.ones_like(coordinates[0])
     with pytest.raises(ValueError):
         make_xarray_grid(coordinates, data, data_names=["bla_1", "bla_2"])
+    # data_names equal to None
+    with pytest.raises(ValueError):
+        make_xarray_grid(coordinates, data, data_names=None)
     # Multiple data, single data_name
     data = tuple(i * np.ones_like(coordinates[0]) for i in (1, 2))
     with pytest.raises(ValueError):
         make_xarray_grid(coordinates, data, data_names="blabla")
 
 
-def test_build_grid_invalid_extra_coords():
+def test_make_xarray_grid_invalid_extra_coords():
     """
     Check if errors are raise after invalid extra coords
     """

@@ -209,6 +209,14 @@ class BaseGridder(BaseEstimator):
     # using this name as a basis.
     extra_coords_name = "extra_coord"
 
+    # Define default values for data_names depending on the number of data
+    # arrays returned by predict method.
+    data_names_defaults = [
+        ("scalars",),
+        ("east_component", "north_component"),
+        ("east_component", "north_component", "vertical_component"),
+    ]
+
     def predict(self, coordinates):
         """
         Predict data on the given coordinate values. NOT IMPLEMENTED.
@@ -416,8 +424,7 @@ class BaseGridder(BaseEstimator):
                 self.predict(project_coordinates(coordinates, projection))
             )
         # Get names for data and any extra coordinates
-        data_names = check_data_names(data_names)
-        data_names = get_data_names(data, data_names)
+        data_names = self._get_data_names(data, data_names)
         extra_coords_names = self._get_extra_coords_names(coordinates)
         # Create xarray.Dataset
         dataset = make_xarray_grid(
@@ -506,8 +513,7 @@ class BaseGridder(BaseEstimator):
             data = check_data(
                 self.predict(project_coordinates(coordinates, projection))
             )
-        data_names = check_data_names(data_names)
-        data_names = get_data_names(data, data_names)
+        data_names = self._get_data_names(data, data_names)
         columns = [(dims[0], coordinates[1]), (dims[1], coordinates[0])]
         extra_coords_names = self._get_extra_coords_names(coordinates)
         columns.extend(zip(extra_coords_names, coordinates[2:]))
@@ -618,8 +624,7 @@ class BaseGridder(BaseEstimator):
         # profile but Cartesian distances.
         if projection is not None:
             coordinates = project_coordinates(coordinates, projection, inverse=True)
-        data_names = check_data_names(data_names)
-        data_names = get_data_names(data, data_names)
+        data_names = self._get_data_names(data, data_names)
         columns = [
             (dims[0], coordinates[1]),
             (dims[1], coordinates[0]),
@@ -665,6 +670,46 @@ class BaseGridder(BaseEstimator):
             names.append(name)
         return names
 
+    def _get_data_names(self, data, data_names):
+        """
+        Get default names for data fields if none are given based on the data.
+
+        Examples
+        --------
+
+        >>> import numpy as np
+        >>> east, north, up = [np.arange(10)]*3
+        >>> gridder = BaseGridder()
+        >>> gridder._get_data_names((east,), data_names=None)
+        ('scalars',)
+        >>> gridder._get_data_names((east, north), data_names=None)
+        ('east_component', 'north_component')
+        >>> gridder._get_data_names((east, north, up), data_names=None)
+        ('east_component', 'north_component', 'vertical_component')
+        >>> gridder._get_data_names((east,), data_names="john")
+        ('john',)
+        >>> gridder._get_data_names((east,), data_names=("paul",))
+        ('paul',)
+        >>> gridder._get_data_names(
+        ...     (up, north), data_names=('ringo', 'george')
+        ... )
+        ('ringo', 'george')
+        >>> gridder._get_data_names((north,), data_names=["brian"])
+        ['brian']
+
+        """
+        # Return the defaults data_names for the class
+        if data_names is None:
+            if len(data) > len(self.data_names_defaults):
+                raise ValueError(
+                    "Default data names only available for up to 3 components. "
+                    + "Must provide custom names through the 'data_names' argument."
+                )
+            return self.data_names_defaults[len(data) - 1]
+        # Return the passed data_names if valid
+        data_names = check_data_names(data, data_names)
+        return data_names
+
 
 def project_coordinates(coordinates, projection, **kwargs):
     """
@@ -700,50 +745,6 @@ def project_coordinates(coordinates, projection, **kwargs):
     if len(coordinates) > 2:
         proj_coordinates += tuple(coordinates[2:])
     return proj_coordinates
-
-
-def get_data_names(data, data_names):
-    """
-    Get default names for data fields if none are given based on the data.
-
-    Examples
-    --------
-
-    >>> import numpy as np
-    >>> east, north, up = [np.arange(10)]*3
-    >>> get_data_names((east,), data_names=None)
-    ('scalars',)
-    >>> get_data_names((east, north), data_names=None)
-    ('east_component', 'north_component')
-    >>> get_data_names((east, north, up), data_names=None)
-    ('east_component', 'north_component', 'vertical_component')
-    >>> get_data_names((up, north), data_names=('ringo', 'george'))
-    ('ringo', 'george')
-
-    """
-    if data_names is not None:
-        if len(data) != len(data_names):
-            raise ValueError(
-                "Data has {} components but only {} names provided: {}".format(
-                    len(data), len(data_names), str(data_names)
-                )
-            )
-        return data_names
-    data_types = [
-        ("scalars",),
-        ("east_component", "north_component"),
-        ("east_component", "north_component", "vertical_component"),
-    ]
-    if len(data) > len(data_types):
-        raise ValueError(
-            " ".join(
-                [
-                    "Default data names only available for up to 3 components.",
-                    "Must provide custom names through the 'data_names' argument.",
-                ]
-            )
-        )
-    return data_types[len(data) - 1]
 
 
 def get_instance_region(instance, region):

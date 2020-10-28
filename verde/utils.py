@@ -19,8 +19,13 @@ try:
 except ImportError:
     numba = None
 
-from .base.utils import check_data, check_data_names, n_1d_arrays
-from .coordinates import check_coordinates
+from .base.utils import (
+    check_coordinates,
+    check_extra_coords_names,
+    check_data,
+    check_data_names,
+    n_1d_arrays,
+)
 
 
 def dispatch(function, delayed=False, client=None):
@@ -244,9 +249,9 @@ def make_xarray_grid(
         Array or tuple of arrays with data values on each point in the grid.
         Each array must contain values for a dimension in the same order as
         the coordinates. All arrays need to have the same *shape*.
-    data_names : str, list or None
+    data_names : str or list
         The name(s) of the data variables in the output grid.
-    dims : list or None
+    dims : list
         The names of the northing and easting data dimensions, respectively,
         in the output grid. Must be defined in the following order: northing
         dimension, easting dimension.
@@ -308,51 +313,18 @@ def make_xarray_grid(
     """
     coordinates = check_coordinates(coordinates)
     data = check_data(data)
-    data_names = check_data_names(data_names)
+    data_names = check_data_names(data, data_names)
     # dims is like shape with order (rows, cols) for the array
     # so the first element is northing and second is easting
     coords = {dims[1]: coordinates[0][0, :], dims[0]: coordinates[1][:, 0]}
     # Extra coordinates are handled like 2D data arrays with
     # the same dims and the data.
     if coordinates[2:]:
-        extra_coords_names = _check_extra_coords_names(coordinates, extra_coords_names)
+        extra_coords_names = check_extra_coords_names(coordinates, extra_coords_names)
         for name, extra_coord in zip(extra_coords_names, coordinates[2:]):
             coords[name] = (dims, extra_coord)
-    # Generate object
-    if len(data) != len(data_names):
-        raise ValueError(
-            "Invalid data_names '{}'. ".format(data_names)
-            + "Number of data names must match the number of "
-            + "data arrays ('{}').".format(len(data))
-        )
     data_vars = {name: (dims, value) for name, value in zip(data_names, data)}
     return xr.Dataset(data_vars, coords)
-
-
-def _check_extra_coords_names(coordinates, extra_coords_names):
-    """
-    Sanity checks for extra_coords_names against coordinates
-
-    Assuming that there are extra coordinates on the ``coordinates`` tuple.
-    """
-    # Convert to tuple if it's a str
-    if isinstance(extra_coords_names, str):
-        extra_coords_names = (extra_coords_names,)
-    # Check if it's not None
-    if extra_coords_names is None:
-        raise ValueError(
-            "Invalid extra_coords_names equal to None. "
-            + "When passing one or more extra coordinate, "
-            + "extra_coords_names cannot be None."
-        )
-    # Check if there are the same number of extra_coords than extra_coords_name
-    if len(coordinates[2:]) != len(extra_coords_names):
-        raise ValueError(
-            "Invalid extra_coords_names '{}'. ".format(extra_coords_names)
-            + "Number of extra coordinates names must match the number of "
-            + "additional coordinates ('{}').".format(len(coordinates[2:]))
-        )
-    return extra_coords_names
 
 
 def grid_to_table(grid):
