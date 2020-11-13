@@ -311,12 +311,23 @@ def make_xarray_grid(
         dummy     (northing, easting) float64 1.0 1.0 1.0 1.0 1.0 1.0
 
     """
-    coordinates = check_coordinates(coordinates)
+    # Check dimensions of the horizontal coordinates of the regular grid
+    ndim = np.ndim(coordinates[0])
+    if ndim != np.ndim(coordinates[1]):
+        raise ValueError(
+            "Incompatible dimensions between horizontal coordinates of a regular grid: "
+            + f"'{ndim}' and '{np.ndim(coordinates[1])}'. "
+            + "Horizontal coordinates of a regular grid must have the same "
+            + "number of dimensions"
+        )
+    # Convert 2d horizontal coordinates to 1d arrays if needed
+    if ndim == 2:
+        coordinates = meshgrid_to_1d(coordinates)
     data = check_data(data)
     data_names = check_data_names(data, data_names)
     # dims is like shape with order (rows, cols) for the array
     # so the first element is northing and second is easting
-    coords = {dims[1]: coordinates[0][0, :], dims[0]: coordinates[1][:, 0]}
+    coords = {dims[1]: coordinates[0], dims[0]: coordinates[1]}
     # Extra coordinates are handled like 2D data arrays with
     # the same dims and the data.
     if coordinates[2:]:
@@ -325,6 +336,82 @@ def make_xarray_grid(
             coords[name] = (dims, extra_coord)
     data_vars = {name: (dims, value) for name, value in zip(data_names, data)}
     return xr.Dataset(data_vars, coords)
+
+
+def meshgrid_to_1d(coordinates):
+    """
+    Convert horizontal coordinates of 2d grids into 1d-arrays
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+        Arrays with coordinates of each point in the grid. Each array must
+        contain values for a dimension in the order: easting, northing,
+        vertical, etc. All arrays must be 2d and need to have the same
+        *shape*. The horizontal coordinates should be actual meshgrids.
+
+    Returns
+    -------
+    coordinates : tuple of arrays
+        Arrays with coordinates of each point in the grid. The horizontal
+        coordinates have been converted to 1d-arrays, having only a single
+        coordinate point per its corresponding axis.
+        All extra coordinates have not been modified.
+
+    Examples
+    --------
+
+    >>> import verde as vd
+    >>> coordinates = vd.grid_coordinates(
+    ...     region=(0, 4, -3, 3), spacing=1, extra_coords=2
+    ... )
+    >>> easting, northing, height = meshgrid_to_1d(coordinates)
+    >>> print(easting)
+    [0. 1. 2. 3. 4.]
+    >>> print(northing)
+    [-3. -2. -1.  0.  1.  2.  3.]
+    >>> print(height)
+    [[2. 2. 2. 2. 2.]
+     [2. 2. 2. 2. 2.]
+     [2. 2. 2. 2. 2.]
+     [2. 2. 2. 2. 2.]
+     [2. 2. 2. 2. 2.]
+     [2. 2. 2. 2. 2.]
+     [2. 2. 2. 2. 2.]]
+    """
+    check_coordinates(coordinates)
+    _check_meshgrid(coordinates)
+    easting, northing = coordinates[0][0, :], coordinates[1][:, 0]
+    coordinates = (easting, northing, *coordinates[2:])
+    return coordinates
+
+
+def _check_meshgrid(coordinates):
+    """
+    Check if the horizontal coordiantes of a regular grid are meshgrids
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+        Arrays with coordinates of each point in the grid. Each array must
+        contain values for a dimension in the order: easting, northing,
+        vertical, etc. Only easting and northing will be checked, the other
+        ones will be ignored. All arrays must be 2d and need to have the same
+        *shape*.
+    """
+    # Get the two first arrays as easting and northing
+    easting, northing = coordinates[:2]
+    # Check if all elements of easting along the zeroth axis are equal
+    msg = (
+        "Invalid coordinate array. The arrays for the horizontal "
+        + "coordinates of a regular grid must be meshgrids."
+    )
+    if not np.allclose(easting[0, :], easting):
+        raise ValueError(msg)
+    # Check if all elements of northing along the first axis are equal
+    # (need to make northing[:, 0] a vertical array so numpy can compare)
+    if not np.allclose(northing[:, 0][:, None], northing):
+        raise ValueError(msg)
 
 
 def grid_to_table(grid):
