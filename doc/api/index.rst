@@ -93,6 +93,7 @@ Utilities
     variance_to_weights
     grid_to_table
     make_xarray_grid
+    meshgrid_to_1d
     median_distance
 
 Input/Output
