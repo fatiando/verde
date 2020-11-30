@@ -86,7 +86,7 @@ class BlockShuffleSplit(BaseBlockCrossValidator):
         The number of splits generated per iteration to try to balance the
         amount of data in each set so that *test_size* and *train_size* are
         respected. If 1, then no extra splits are generated (essentially
-        disabling the balacing). Must be >= 1.
+        disabling the balancing). Must be >= 1.
 
     See also
     --------
