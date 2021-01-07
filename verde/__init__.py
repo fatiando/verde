@@ -20,7 +20,6 @@ from .utils import (
     maxabs,
     grid_to_table,
     make_xarray_grid,
-    meshgrid_to_1d,
 )
 from .io import load_surfer
 from .distances import median_distance
