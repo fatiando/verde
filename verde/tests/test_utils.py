@@ -215,9 +215,9 @@ def test_make_xarray_grid_invalid_extra_coords():
         )
 
 
-def test_make_xarray_grid_invalid_2d_coordiantes():
+def test_make_xarray_grid_invalid_2d_coordinates():
     """
-    Check if error is raised if invaild 2d coordiantes array are passed
+    Check if error is raised if invaild 2d coordinates array are passed
     """
     region = (-10, -5, 6, 10)
     spacing = 1

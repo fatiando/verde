@@ -388,7 +388,7 @@ def meshgrid_to_1d(coordinates):
 
 def _check_meshgrid(coordinates):
     """
-    Check if the horizontal coordiantes of a regular grid are meshgrids
+    Check if the horizontal coordinates of a regular grid are meshgrids
 
     Parameters
     ----------
