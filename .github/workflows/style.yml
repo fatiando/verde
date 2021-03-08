@@ -1,0 +1,86 @@
+# Linting and style checks with GitHub Actions
+#
+# NOTE: Pin actions to a specific commit to avoid having the authentication
+# token stolen if the Action is compromised. See the comments and links here:
+# https://github.com/pypa/gh-action-pypi-publish/issues/27
+#
+name: code-style
+
+# Only build PRs and the master branch. Pushes to branches will only be built
+# when a PR is opened.
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+###############################################################################
+jobs:
+  black:
+    name: black [format]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+
+      - name: Install requirements
+        run: pip install black>=20.8b1
+
+      - name: List installed packages
+        run: pip freeze
+
+      - name: Check code format
+        run: make black-check
+
+  flake8:
+    name: flake8 [style]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+
+      - name: Install requirements
+        run: pip install flake8
+
+      - name: List installed packages
+        run: pip freeze
+
+      - name: Check code style
+        run: make flake8
+
+  pylint:
+    name: pylint [style]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+
+      - name: Install requirements
+        run: pip install pylint==2.4.*
+
+      - name: List installed packages
+        run: pip freeze
+
+      - name: Linting (pylint)
+        run: make lint
