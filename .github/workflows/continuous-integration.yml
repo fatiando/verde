@@ -43,14 +43,19 @@ jobs:
         include:
           - os: ubuntu
             python: 3.8
+            dependencies: optional
           - os: macos
             python: 3.8
+            dependencies: optional
           - os: windows
             python: 3.8
+            dependencies: optional
     env:
       CONDA_REQUIREMENTS: requirements.txt
       CONDA_REQUIREMENTS_DEV: requirements-dev.txt
+      CONDA_REQUIREMENTS_OPTIONAL: requirements-optional.txt
       CONDA_INSTALL_EXTRA:
+      DEPENDENCIES: ${{ matrix.dependencies }}
       # Used to tag codecov submissions
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
@@ -109,6 +114,10 @@ jobs:
           if [ ! -z "$CONDA_REQUIREMENTS_DEV" ]; then
               echo "Capturing dependencies from $CONDA_REQUIREMENTS_DEV"
               cat $CONDA_REQUIREMENTS_DEV >> $requirements_file
+          fi
+          if [ "$DEPENDENCIES" == "optional" ]; then
+              echo "Capturing optional dependencies from $CONDA_REQUIREMENTS_OPTIONAL"
+              cat $CONDA_REQUIREMENTS_OPTIONAL >> $requirements_file
           fi
           if [ ! -z "$CONDA_INSTALL_EXTRA" ]; then
               echo "Capturing extra dependencies: $CONDA_INSTALL_EXTRA"
