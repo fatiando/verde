@@ -168,7 +168,7 @@ class BaseGridder(BaseEstimator):
     ...     def __init__(self, multiplier=1):
     ...         # Init should only assign the parameters to attributes
     ...         self.multiplier = multiplier
-    ...     def fit(self, coordiantes, data):
+    ...     def fit(self, coordinates, data):
     ...         # Argument checking should be done in fit
     ...         if self.multiplier <= 0:
     ...             raise ValueError('Invalid multiplier {}'

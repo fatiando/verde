@@ -169,7 +169,7 @@ def test_check_region():
         check_region([-2, -1, -2, -3])
 
 
-def test_profile_coordiantes_fails():
+def test_profile_coordinates_fails():
     "Should raise an exception for invalid input"
     with pytest.raises(ValueError):
         profile_coordinates((0, 1), (1, 2), size=0)

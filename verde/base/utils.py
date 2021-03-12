@@ -160,7 +160,7 @@ def check_coordinates(coordinates):
 
 def check_extra_coords_names(coordinates, extra_coords_names):
     """
-    Check extra_coords_names against coordiantes.
+    Check extra_coords_names against coordinates.
 
     Also, convert ``extra_coords_names`` to a tuple if it's a single string.
     Assume that there are extra coordinates on the ``coordinates`` tuple.
