@@ -36,5 +36,4 @@ plt.scatter(lon, lat, c=bathymetry, s=5, transform=ccrs.PlateCarree())
 plt.colorbar().set_label("meters")
 # Use a utility function to setup the tick labels and land feature
 vd.datasets.setup_baja_bathymetry_map(ax)
-plt.tight_layout()
 plt.show()

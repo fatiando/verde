@@ -51,7 +51,7 @@ data = checkerboard.grid(
     region=region,
     spacing=spacing,
     projection=projection,
-    data_names=["checkerboard"],
+    data_names="checkerboard",
     dims=("latitude", "longitude"),
 )
 print("Geographic grid:")

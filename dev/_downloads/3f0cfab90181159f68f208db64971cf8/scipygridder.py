@@ -58,7 +58,7 @@ grid = grd.grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["bathymetry_m"],
+    data_names="bathymetry_m",
 )
 print("Generated geographic grid:")
 print(grid)
@@ -81,5 +81,4 @@ plt.colorbar(pc).set_label("meters")
 ax.plot(*coordinates, ".k", markersize=0.5, transform=crs)
 # Use an utility function to setup the tick labels and the land feature
 vd.datasets.setup_baja_bathymetry_map(ax)
-plt.tight_layout()
 plt.show()

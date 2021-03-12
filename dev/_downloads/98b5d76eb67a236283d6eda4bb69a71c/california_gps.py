@@ -51,5 +51,4 @@ tmp = ax.scatter(
 )
 plt.colorbar(tmp, ax=ax).set_label("meters/year")
 vd.datasets.setup_california_gps_map(ax)
-plt.tight_layout(w_pad=0)
 plt.show()

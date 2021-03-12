@@ -96,5 +96,4 @@ ax.quiverkey(tmp, 0.17, 0.23, 5, label="5 knots", coordinates="figure")
 ax.legend(loc="lower left")
 # Use an utility function to add tick labels and land and ocean features to the map.
 vd.datasets.setup_texas_wind_map(ax)
-plt.tight_layout()
 plt.show()

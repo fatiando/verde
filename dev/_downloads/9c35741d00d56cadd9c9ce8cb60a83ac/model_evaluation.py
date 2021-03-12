@@ -74,7 +74,6 @@ ax.plot(train[0][0], train[0][1], ".r", label="train")
 ax.plot(test[0][0], test[0][1], ".b", label="test")
 ax.legend()
 ax.set_aspect("equal")
-plt.tight_layout()
 plt.show()
 
 ########################################################################################
@@ -92,7 +91,7 @@ grid = spline.grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["temperature"],
+    data_names="temperature",
 )
 print(grid)
 
@@ -120,7 +119,6 @@ pc = grid.temperature.plot.pcolormesh(
 plt.colorbar(pc).set_label("C")
 ax.plot(data.longitude, data.latitude, ".k", markersize=1, transform=ccrs.PlateCarree())
 vd.datasets.setup_texas_wind_map(ax)
-plt.tight_layout()
 plt.show()
 
 ########################################################################################

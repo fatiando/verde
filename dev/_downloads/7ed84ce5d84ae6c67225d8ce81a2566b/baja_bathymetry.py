@@ -3,9 +3,9 @@ Bathymetry data from Baja California
 ====================================
 
 We provide sample bathymetry data from Baja California to test the gridding
-methods. This is the ``@tut_ship.xyz`` sample data from the `GMT
-<http://gmt.soest.hawaii.edu/>`__ tutorial. The data is downloaded to a local
-directory if it's not there already.
+methods. This is the ``@tut_ship.xyz`` sample data provided by `GMT
+<https://www.generic-mapping-tools.org/>`__ for their tutorials and gallery.
+The data is downloaded to a local directory if it's not there already.
 """
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
@@ -32,5 +32,4 @@ plt.scatter(
 plt.colorbar().set_label("meters")
 # Use an utility function to add tick labels and land and ocean features to the map.
 vd.datasets.setup_baja_bathymetry_map(ax)
-plt.tight_layout()
 plt.show()

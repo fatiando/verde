@@ -86,5 +86,4 @@ for ax, component, title in zip(axes, components, titles):
     )
     ax.coastlines(color="white")
 axes[0].legend(loc="lower left")
-plt.tight_layout()
 plt.show()

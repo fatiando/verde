@@ -77,7 +77,6 @@ tmp = ax.scatter(
 )
 plt.colorbar(tmp, ax=ax, orientation="horizontal", pad=0.08)
 vd.datasets.setup_texas_wind_map(ax)
-plt.tight_layout()
 plt.show()
 
 ########################################################################################

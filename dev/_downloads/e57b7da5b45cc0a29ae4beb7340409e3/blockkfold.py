@@ -42,7 +42,10 @@ kfold = vd.BlockKFold(spacing=spacing, shuffle=True, random_state=random_state)
 # balancing, the folds can have very different number of data points in them
 # (which may bias the scores).
 kfold_unbalanced = vd.BlockKFold(
-    spacing=spacing, shuffle=True, random_state=random_state, balance=False,
+    spacing=spacing,
+    shuffle=True,
+    random_state=random_state,
+    balance=False,
 )
 
 # The BlockKFold is compatible with scikit-learn, so instead of giving it a

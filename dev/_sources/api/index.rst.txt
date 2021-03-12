@@ -92,6 +92,7 @@ Utilities
     maxabs
     variance_to_weights
     grid_to_table
+    make_xarray_grid
     median_distance
 
 Input/Output

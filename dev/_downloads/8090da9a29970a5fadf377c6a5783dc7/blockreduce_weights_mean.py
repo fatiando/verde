@@ -83,5 +83,4 @@ pc = ax.scatter(
 )
 plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.05).set_label("mm/yr")
 vd.datasets.setup_california_gps_map(ax)
-plt.tight_layout()
 plt.show()

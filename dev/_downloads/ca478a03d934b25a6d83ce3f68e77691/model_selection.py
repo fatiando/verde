@@ -100,7 +100,10 @@ print("Best parameters:", parameter_sets[best])
 # automatically when fitting a dataset. The only difference is that you must provide a
 # list of ``damping`` and ``mindist`` parameters to try instead of only a single value:
 
-spline = vd.SplineCV(dampings=dampings, mindists=mindists,)
+spline = vd.SplineCV(
+    dampings=dampings,
+    mindists=mindists,
+)
 
 ########################################################################################
 # Calling :meth:`~verde.SplineCV.fit` will run a grid search over all parameter
@@ -125,7 +128,7 @@ grid = spline.grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["temperature"],
+    data_names="temperature",
 )
 print(grid)
 
@@ -171,7 +174,7 @@ grid_default = spline_default.grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["temperature"],
+    data_names="temperature",
 )
 
 ########################################################################################
@@ -205,7 +208,6 @@ for i, title, grd in zip(range(2), ["Defaults", "Tuned"], [grid_default, grid]):
         data.longitude, data.latitude, ".k", markersize=1, transform=ccrs.PlateCarree()
     )
     vd.datasets.setup_texas_wind_map(ax)
-plt.tight_layout()
 plt.show()
 
 ########################################################################################

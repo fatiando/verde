@@ -67,5 +67,4 @@ for ax, title, velocity in zip(axes, titles, (no_weights, with_weights)):
     cb.set_label("vertical velocity [m/yr]")
     vd.datasets.setup_california_gps_map(ax)
 ax.legend(loc="lower left")
-plt.tight_layout()
 plt.show()

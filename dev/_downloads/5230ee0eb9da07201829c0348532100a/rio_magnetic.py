@@ -47,5 +47,4 @@ plt.scatter(
 plt.colorbar(pad=0.01).set_label("nT")
 # Set the proper ticks for a Cartopy map
 vd.datasets.setup_rio_magnetic_map(ax)
-plt.tight_layout()
 plt.show()

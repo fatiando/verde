@@ -54,7 +54,6 @@ plt.scatter(
 )
 plt.colorbar().set_label("meters")
 vd.datasets.setup_baja_bathymetry_map(ax)
-plt.tight_layout()
 plt.show()
 
 ########################################################################################
@@ -95,7 +94,6 @@ plt.title("Histogram of fit residuals")
 plt.hist(residuals, bins="auto", density=True)
 plt.xlabel("residuals (m)")
 plt.xlim(-1500, 1500)
-plt.tight_layout()
 plt.show()
 
 ########################################################################################
@@ -108,7 +106,7 @@ grid = chain.grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["bathymetry"],
+    data_names="bathymetry",
 )
 print(grid)
 
@@ -123,7 +121,6 @@ pc = grid.bathymetry.plot.pcolormesh(
 )
 plt.colorbar(pc).set_label("meters")
 vd.datasets.setup_baja_bathymetry_map(ax)
-plt.tight_layout()
 plt.show()
 
 ########################################################################################
@@ -143,7 +140,7 @@ grid_trend = chain.named_steps["trend"].grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["bathymetry"],
+    data_names="bathymetry",
 )
 print(grid_trend)
 
@@ -155,5 +152,4 @@ pc = grid_trend.bathymetry.plot.pcolormesh(
 )
 plt.colorbar(pc).set_label("meters")
 vd.datasets.setup_baja_bathymetry_map(ax)
-plt.tight_layout()
 plt.show()
