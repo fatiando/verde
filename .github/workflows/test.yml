@@ -1,4 +1,4 @@
-# Configuration for testing and deploying with GitHub Actions
+# Run tests and upload to Codecov with GitHub Actions
 #
 # NOTE: Pin actions to a specific commit to avoid having the authentication
 # token stolen if the Action is compromised. See the comments and links here:
@@ -22,11 +22,13 @@ on:
 defaults:
   run:
     # The -l {0} is necessary for conda environments to be activated
+    # But this breaks on MacOS if using actions/setup-python:
+    # https://github.com/actions/setup-python/issues/132
     shell: bash -l {0}
 
 jobs:
   #############################################################################
-  # Run tests, build the docs, and deploy if needed
+  # Run tests and upload to codecov
   test:
     name: ${{ matrix.os }} py${{ matrix.python }} ${{ matrix.dependencies }}
     runs-on: ${{ matrix.os }}-latest
@@ -165,32 +167,10 @@ jobs:
           # Define directory where sample data have been copied
           VERDE_DATA_DIR: ${{ runner.temp }}/cache/verde
 
-      # -----------------------------------------------------------
-      # The following steps will run only on Ubuntu with Python 3.8
-      # -----------------------------------------------------------
-
-      - name: Build the documentation
-        if: ${{ matrix.os == 'ubuntu' && matrix.python == 3.8 }}
-        run: make -C doc clean all
-        env:
-          # Define directory where sample data have been copied
-          VERDE_DATA_DIR: ${{ runner.temp }}/cache/verde
-
-      # Store the docs as a build artifact on GitHub so we can check it if
-      # needed.
-      - name: Upload HTML documentation as an artifact
-        if: ${{ matrix.os == 'ubuntu' && matrix.python == 3.8 }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: docs-${{ matrix.os }}-${{ matrix.python }}${{ matrix.dependencies }}-{{ github.sha }}
-          path: doc/_build/html
-
       - name: Convert coverage report to XML for codecov
-        if: ${{ matrix.os == 'ubuntu' && matrix.python == 3.8 }}
         run: coverage xml
 
       - name: Upload coverage to Codecov
-        if: ${{ matrix.os == 'ubuntu' && matrix.python == 3.8 }}
         uses: codecov/codecov-action@v1
         with:
           file: ./coverage.xml
