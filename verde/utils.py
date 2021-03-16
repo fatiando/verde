@@ -379,13 +379,13 @@ def meshgrid_to_1d(coordinates):
      [2. 2. 2. 2. 2.]]
     """
     check_coordinates(coordinates)
-    _check_meshgrid(coordinates)
+    check_regular_grid(coordinates)
     easting, northing = coordinates[0][0, :], coordinates[1][:, 0]
     coordinates = (easting, northing, *coordinates[2:])
     return coordinates
 
 
-def _check_meshgrid(coordinates):
+def check_regular_grid(coordinates):
     """
     Check if the horizontal coordinates given define a regular grid
     
