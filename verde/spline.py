@@ -20,10 +20,6 @@ except ImportError:
     from .utils import dummy_jit as jit
 
 
-# Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
-warnings.simplefilter("default")
-
-
 class SplineCV(BaseGridder):
     r"""
     Cross-validated biharmonic spline interpolation.
@@ -145,7 +141,7 @@ class SplineCV(BaseGridder):
                 "The 'client' parameter of 'verde.SplineCV' is "
                 "deprecated and will be removed in Verde 2.0.0. "
                 "Use the 'delayed' parameter instead.",
-                DeprecationWarning,
+                FutureWarning,
             )
 
     def fit(self, coordinates, data, weights=None):
