@@ -251,16 +251,13 @@ def test_make_xarray_grid_invalid_mixed_coordinates():
     region = (-10, -5, 6, 10)
     spacing = 1
     easting, northing = grid_coordinates(region, spacing=spacing)
+    data = np.ones_like(easting)
     # easting is 1d, but northing is 2d
-    easting = easting[0, :]
-    data = np.ones_like(easting)
     with pytest.raises(ValueError):
-        make_xarray_grid((easting, northing), data, data_names="dummy")
+        make_xarray_grid((easting[0, :], northing), data, data_names="dummy")
     # northing is 1d, but easting is 2d
-    northing = northing[:, 0]
-    data = np.ones_like(easting)
     with pytest.raises(ValueError):
-        make_xarray_grid((easting, northing), data, data_names="dummy")
+        make_xarray_grid((easting, northing[:, 0]), data, data_names="dummy")
 
 
 def test_meshgrid_to_1d_invalid():
