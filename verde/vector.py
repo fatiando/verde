@@ -22,10 +22,6 @@ except ImportError:
     from .utils import dummy_jit as jit
 
 
-# Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
-warnings.simplefilter("default")
-
-
 class Vector(BaseGridder):
     """
     Fit an estimator to each component of multi-component vector data.
@@ -237,7 +233,7 @@ class VectorSpline2D(BaseGridder):
             "VectorSpline2D is deprecated and will be removed in Verde v2.0.0."
             " Please use the implementation in the Erizo package instead "
             "(https://github.com/fatiando/erizo).",
-            DeprecationWarning,
+            FutureWarning,
         )
 
     def fit(self, coordinates, data, weights=None):

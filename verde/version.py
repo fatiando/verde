@@ -3,10 +3,12 @@
 # SPDX-License-Identifier: BSD-3-Clause
 # pylint: disable=invalid-name
 """
-Get the version number and commit hash from versioneer.
+Get the version number and commit hash from setuptools-scm.
 """
-from ._version import get_versions
+from pkg_resources import get_distribution
 
 
-full_version = get_versions()["version"]
-git_revision = get_versions()["full-revisionid"]
+# Get semantic version through setuptools-scm
+version = get_distribution("verde").version
+# Append a "v" before the semver version so it looks like: v0.1.0
+full_version = "v" + version

@@ -4,11 +4,9 @@
 """
 Build and install the project.
 
-Uses versioneer to manage version numbers using git tags.
+Uses setuptools-scm to manage version numbers using git tags.
 """
 from setuptools import setup, find_packages
-
-import versioneer
 
 
 NAME = "verde"
@@ -23,8 +21,6 @@ DESCRIPTION = "Processing and gridding spatial data"
 KEYWORDS = ""
 with open("README.rst") as f:
     LONG_DESCRIPTION = "".join(f.readlines())
-VERSION = versioneer.get_version()
-CMDCLASS = versioneer.get_cmdclass()
 CLASSIFIERS = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Science/Research",
@@ -49,6 +45,12 @@ PACKAGE_DATA = {
 with open("requirements.txt") as f:
     INSTALL_REQUIRES = f.readlines()
 PYTHON_REQUIRES = ">=3.6"
+# Configuration for setuptools-scm
+SETUP_REQUIRES = ["setuptools_scm"]
+USE_SCM_VERSION = {
+    "relative_to": __file__,
+    "local_scheme": "node-and-date",
+}
 
 if __name__ == "__main__":
     setup(
@@ -56,7 +58,7 @@ if __name__ == "__main__":
         fullname=FULLNAME,
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
-        version=VERSION,
+        use_scm_version=USE_SCM_VERSION,
         author=AUTHOR,
         author_email=AUTHOR_EMAIL,
         maintainer=MAINTAINER,
@@ -71,5 +73,5 @@ if __name__ == "__main__":
         keywords=KEYWORDS,
         install_requires=INSTALL_REQUIRES,
         python_requires=PYTHON_REQUIRES,
-        cmdclass=CMDCLASS,
+        setup_requires=SETUP_REQUIRES,
     )
