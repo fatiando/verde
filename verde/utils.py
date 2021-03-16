@@ -387,7 +387,11 @@ def meshgrid_to_1d(coordinates):
 
 def _check_meshgrid(coordinates):
     """
-    Check if the horizontal coordinates of a regular grid are meshgrids
+    Check if the horizontal coordinates given define a regular grid
+    
+    Does not check if the grid is evenly spaced. Instead, check if
+    the easting coordinates don't vary with rows and that the 
+    northing don't vary with columns of the respective arrays. 
 
     Parameters
     ----------
