@@ -315,7 +315,7 @@ def make_xarray_grid(
     ndim = np.ndim(coordinates[0])
     if ndim != np.ndim(coordinates[1]):
         raise ValueError(
-            "Incompatible dimensions between horizontal coordinates of a regular grid: "
+            "Incompatible dimensions between horizontal coordinates of the regular grid: "
             + f"'{ndim}' and '{np.ndim(coordinates[1])}'. "
             + "Horizontal coordinates of a regular grid must have the same "
             + "number of dimensions"
