@@ -1,6 +1,9 @@
 # Copyright (c) 2017 The Verde Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Add license notice to every source file if not present
 """
@@ -16,6 +19,9 @@ NOTICE = f"""
 # Copyright (c) {YEAR} The {PROJECT.title()} Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """.strip()
 CHECK_HELP = """
 Don't write the files, just return the status. Return code 0 means
