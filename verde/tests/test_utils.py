@@ -235,28 +235,6 @@ def test_make_xarray_grid_invalid_2d_coordinates():
         make_xarray_grid((easting, northing), data, data_names="dummy")
 
 
-def test_make_xarray_grid_not_evenly_spaced():
-    """
-    Check if error is raised if coordinates are not evenly spaced
-    """
-    # Create non-evenly spaced easting coordinates
-    easting = [-10, -8, -4, -2, 0]
-    northing = np.linspace(0, 5, 6)
-    # Convert them into 2d-arrays with np.meshgrid
-    easting, northing = np.meshgrid(easting, northing)
-    data = np.ones_like(easting)
-    with pytest.raises(ValueError):
-        make_xarray_grid((easting, northing), data, data_names="dummy")
-    # Create non-evenly spaced easting coordinates
-    easting = np.linspace(-10, -5, 6)
-    northing = [6, 9, 13, 16]
-    # Convert them into 2d-arrays with np.meshgrid
-    easting, northing = np.meshgrid(easting, northing)
-    data = np.ones_like(easting)
-    with pytest.raises(ValueError):
-        make_xarray_grid((easting, northing), data, data_names="dummy")
-
-
 def test_make_xarray_grid_coordinates_as_1d_arrays():
     """
     Check if it can handle coordinates as 1d-arrays

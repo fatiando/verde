@@ -395,9 +395,9 @@ def check_regular_grid(coordinates):
     """
     Check if the given horizontal coordinates define a regular grid
 
-    Check if the rows of the easting 2d-array are identical.
-    Check if the columns of the northing 2d-array are identical.
-    Check if the easting and northing coordinates are evenly spaced.
+    Does not check if the grid is evenly spaced. Instead, check if
+    the easting coordinates don't vary with rows and that the
+    northing don't vary with columns of the respective arrays.
 
     Parameters
     ----------
@@ -420,16 +420,6 @@ def check_regular_grid(coordinates):
     # Check if all elements of northing along the first axis are equal
     # (need to make northing[:, 0] a vertical array so numpy can compare)
     if not np.allclose(northing[:, 0][:, None], northing):
-        raise ValueError(msg)
-    # Check if the grid is regular (equally spaced axes)
-    msg = "The horizontal coordiantes of a regular grid must be evenly spaced."
-    # Check if easting coordinates are evenly spaced
-    diffs = easting[0, 1:] - easting[0, :-1]
-    if not np.allclose(diffs[0], diffs):
-        raise ValueError(msg)
-    # Check if northing coordinates are evenly spaced
-    diffs = northing[1:, 0] - northing[:-1, 0]
-    if not np.allclose(diffs[0], diffs):
         raise ValueError(msg)
 
 
