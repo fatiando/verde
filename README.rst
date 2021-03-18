@@ -159,6 +159,7 @@ Documentation for other versions
 * `Development <http://www.fatiando.org/verde/dev>`__ (reflects the *master* branch on
   Github)
 * `Latest release <http://www.fatiando.org/verde/latest>`__
+* `v1.6.0 <http://www.fatiando.org/verde/v1.6.0>`__
 * `v1.5.0 <http://www.fatiando.org/verde/v1.5.0>`__
 * `v1.4.0 <http://www.fatiando.org/verde/v1.4.0>`__
 * `v1.3.0 <http://www.fatiando.org/verde/v1.3.0>`__
