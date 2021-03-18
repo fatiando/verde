@@ -23,6 +23,7 @@ from ..utils import (
     grid_to_table,
     partition_by_sum,
     make_xarray_grid,
+    meshgrid_to_1d,
 )
 from .. import utils
 
@@ -218,3 +219,75 @@ def test_make_xarray_grid_invalid_extra_coords():
         make_xarray_grid(
             coordinates, data, data_names="dummy", extra_coords_names=["upward", "time"]
         )
+
+
+def test_make_xarray_grid_invalid_2d_coordinates():
+    """
+    Check if error is raised if invaild 2d coordinates array are passed
+    """
+    region = (-10, -5, 6, 10)
+    spacing = 1
+    easting, northing = grid_coordinates(region, spacing=spacing)
+    # Change only one element of the easting array
+    easting[2, 2] = -1000
+    data = np.ones_like(easting)
+    with pytest.raises(ValueError):
+        make_xarray_grid((easting, northing), data, data_names="dummy")
+
+
+def test_make_xarray_grid_coordinates_as_1d_arrays():
+    """
+    Check if it can handle coordinates as 1d-arrays
+    """
+    region = (-10, -5, 6, 10)
+    easting = np.linspace(*region[:2], 6, dtype=float)
+    northing = np.linspace(*region[2:], 5, dtype=float)
+    data = np.ones((northing.size, easting.size))
+    grid = make_xarray_grid((easting, northing), data, data_names="dummy")
+    npt.assert_allclose(grid.easting, [-10, -9, -8, -7, -6, -5])
+    npt.assert_allclose(grid.northing, [6, 7, 8, 9, 10])
+    npt.assert_allclose(grid.dummy, 1)
+    assert grid.dummy.shape == (5, 6)
+
+
+def test_make_xarray_grid_invalid_mixed_coordinates():
+    """
+    Check if error is raised when horizontal coordinates have mixed dimensions
+    """
+    region = (-10, -5, 6, 10)
+    spacing = 1
+    easting, northing = grid_coordinates(region, spacing=spacing)
+    data = np.ones_like(easting)
+    # easting is 1d, but northing is 2d
+    with pytest.raises(ValueError):
+        make_xarray_grid((easting[0, :], northing), data, data_names="dummy")
+    # northing is 1d, but easting is 2d
+    with pytest.raises(ValueError):
+        make_xarray_grid((easting, northing[:, 0]), data, data_names="dummy")
+
+
+def test_meshgrid_to_1d_invalid():
+    """
+    Check if error is raised after invalid meshgrid
+    """
+    region = (-10, -5, 6, 10)
+    # Modify one element of easting
+    easting, northing = grid_coordinates(region=region, spacing=1)
+    easting[2, 2] = -9999
+    with pytest.raises(ValueError):
+        meshgrid_to_1d((easting, northing))
+    # Modify one element of northing
+    easting, northing = grid_coordinates(region=region, spacing=1)
+    northing[2, 3] = -9999
+    with pytest.raises(ValueError):
+        meshgrid_to_1d((easting, northing))
+    # Pass invalid shapes
+    easting = np.arange(16).reshape(4, 4)
+    northing = np.arange(9).reshape(3, 3)
+    with pytest.raises(ValueError):
+        meshgrid_to_1d((easting, northing))
+    # Pass 1d arrays
+    easting = np.linspace(0, 10, 11)
+    northing = np.linspace(-4, -4, 9)
+    with pytest.raises(ValueError):
+        meshgrid_to_1d((easting, northing))
