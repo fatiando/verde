@@ -385,19 +385,19 @@ def meshgrid_to_1d(coordinates):
      [2. 2. 2. 2. 2.]]
     """
     check_coordinates(coordinates)
-    check_regular_grid(coordinates)
+    check_meshgrid(coordinates)
     easting, northing = coordinates[0][0, :], coordinates[1][:, 0]
     coordinates = (easting, northing, *coordinates[2:])
     return coordinates
 
 
-def check_regular_grid(coordinates):
+def check_meshgrid(coordinates):
     """
-    Check if the given horizontal coordinates define a regular grid
+    Check if the given horizontal coordinates define a meshgrid
 
-    Does not check if the grid is evenly spaced. Instead, check if
-    the easting coordinates don't vary with rows and that the
-    northing don't vary with columns of the respective arrays.
+    Check if the rows of the easting 2d-array are identical. Check if the
+    columns of the northing 2d-array are identical. This function does not
+    check if the easting and northing coordinates are evenly spaced.
 
     Parameters
     ----------
