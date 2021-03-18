@@ -1,0 +1,501 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    
+        <title>verde.BlockKFold &mdash; Verde</title>
+    
+
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="verde.grid_coordinates" href="verde.grid_coordinates.html" />
+    <link rel="prev" title="verde.BlockShuffleSplit" href="verde.BlockShuffleSplit.html" />
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/verde-logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.6.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Verde</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/grid_coordinates.html">Grid Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_evaluation.html">Evaluating Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#interpolators">Interpolators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#data-processing">Data Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#composite-estimators">Composite Estimators</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#model-selection">Model Selection</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="verde.train_test_split.html">verde.train_test_split</a></li>
+<li class="toctree-l3"><a class="reference internal" href="verde.cross_val_score.html">verde.cross_val_score</a></li>
+<li class="toctree-l3"><a class="reference internal" href="verde.BlockShuffleSplit.html">verde.BlockShuffleSplit</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">verde.BlockKFold</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#examples-using-verde-blockkfold">Examples using <code class="docutils literal notranslate"><span class="pre">verde.BlockKFold</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#coordinate-manipulation">Coordinate Manipulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#projection">Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#masking">Masking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#utilities">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#input-output">Input/Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#datasets">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#base-classes-and-functions">Base Classes and Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+
+    
+        <p class="caption">
+            <span class="caption-text">
+            
+                Getting help and contributing
+            
+            </span>
+        </p>
+        <ul>
+            
+                <li class="toctree-l1"><a href="https://www.fatiando.org"><i class="fa fa-external-link-square fa-fw"></i> Fatiando a Terra</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md"><i class="fa fa-users fa-fw"></i> Contributing</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
+            
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
+            
+        </ul>
+    
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Verde</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+      <li>verde.BlockKFold</li>
+    
+    
+    <li class="source-link">
+        
+            
+                
+                
+                <a href="https://github.com/fatiando/verde/issues/new?title=Suggested%20improvement%20for%20api/generated/verde.BlockKFold&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                   class="fa fa-github"> Improve this page</a>
+            
+        
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="verde-blockkfold">
+<h1>verde.BlockKFold<a class="headerlink" href="#verde-blockkfold" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="verde.BlockKFold">
+<em class="property">class </em><code class="sig-prename descclassname">verde.</code><code class="sig-name descname">BlockKFold</code><span class="sig-paren">(</span><em class="sig-param">spacing=None</em>, <em class="sig-param">shape=None</em>, <em class="sig-param">n_splits=5</em>, <em class="sig-param">shuffle=False</em>, <em class="sig-param">random_state=None</em>, <em class="sig-param">balance=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/model_selection.html#BlockKFold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.BlockKFold" title="Permalink to this definition">¶</a></dt>
+<dd><p>K-Folds over spatial blocks cross-validator.</p>
+<p>Yields indices to split data into training and test sets. Data are first
+grouped into rectangular blocks of size given by the <em>spacing</em> argument.
+Alternatively, blocks can be defined by the number of blocks in each
+dimension using the <em>shape</em> argument instead of <em>spacing</em>. The blocks are
+then split into testing and training sets iteratively along k folds of the
+data (k is given by <em>n_splits</em>).</p>
+<p>By default, the blocks are split into folds in a way that makes each fold
+have approximately the same number of data points. Sometimes this might not
+be possible, which can happen if the number of splits is close to the
+number of blocks. In these cases, each fold will have the same number of
+blocks, regardless of how many data points are in each block. This
+behaviour can also be disabled by setting <code class="docutils literal notranslate"><span class="pre">balance=False</span></code>.</p>
+<p>Shuffling the blocks prior to splitting is strongly encouraged. Not
+shuffling will essentially lead to the creation of <em>n_splits</em> large blocks
+since blocks are spatially adjacent when not shuffled. The default
+behaviour is not to shuffle for compatibility with similar cross-validators
+in scikit-learn.</p>
+<p>This cross-validator is preferred over
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html#sklearn.model_selection.KFold" title="(in scikit-learn v0.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.KFold</span></code></a> for spatial data to avoid
+overestimating cross-validation scores. This can happen because of the
+inherent autocorrelation that is usually associated with this type of data
+(points that are close together are more likely to have similar values).
+See <a class="reference internal" href="../../references.html#roberts-etal2017" id="id1"><span>[Roberts_etal2017]</span></a> for an overview of this topic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><em>tuple =</em><em> (</em><em>s_north</em><em>, </em><em>s_east</em><em>)</em><em>, or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The block size in the South-North and West-East directions,
+respectively. A single value means that the spacing is equal in both
+directions. If None, then <em>shape</em> <strong>must be provided</strong>.</p></li>
+<li><p><strong>shape</strong> (<em>tuple =</em><em> (</em><em>n_north</em><em>, </em><em>n_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The number of blocks in the South-North and West-East directions,
+respectively. If None, then <em>spacing</em> <strong>must be provided</strong>.</p></li>
+<li><p><strong>n_splits</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Number of folds. Must be at least 2.</p></li>
+<li><p><strong>shuffle</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Whether to shuffle the data before splitting into batches.</p></li>
+<li><p><strong>random_state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>RandomState instance</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – If int, random_state is the seed used by the random number generator;
+If RandomState instance, random_state is the random number generator;
+If None, the random number generator is the RandomState instance used
+by <cite>np.random</cite>.</p></li>
+<li><p><strong>balance</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Whether or not to split blocks into fold with approximately equal
+number of data points. If False, each fold will have the same number of
+blocks (which can have different number of data points in them).</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="verde.train_test_split.html#verde.train_test_split" title="verde.train_test_split"><code class="xref py py-class docutils literal notranslate"><span class="pre">train_test_split</span></code></a></dt><dd><p>Split a dataset into a training and a testing set.</p>
+</dd>
+<dt><a class="reference internal" href="verde.cross_val_score.html#verde.cross_val_score" title="verde.cross_val_score"><code class="xref py py-class docutils literal notranslate"><span class="pre">cross_val_score</span></code></a></dt><dd><p>Score an estimator/gridder using cross-validation.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">verde</span> <span class="kn">import</span> <span class="n">grid_coordinates</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Make a regular grid of data points</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coords</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">7</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Need to convert the coordinates into a feature matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kfold</span> <span class="o">=</span> <span class="n">BlockKFold</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># These are the 1D indices of the points belonging to each set</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="ow">in</span> <span class="n">kfold</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Train: </span><span class="si">{}</span><span class="s2"> Test: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">))</span>
+<span class="go">Train: [ 2  3  6  7  8  9 10 11 12 13 14 15] Test: [0 1 4 5]</span>
+<span class="go">Train: [ 0  1  4  5  8  9 10 11 12 13 14 15] Test: [2 3 6 7]</span>
+<span class="go">Train: [ 0  1  2  3  4  5  6  7 10 11 14 15] Test: [ 8  9 12 13]</span>
+<span class="go">Train: [ 0  1  2  3  4  5  6  7  8  9 12 13] Test: [10 11 14 15]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># A better way to visualize this is to create a 2D array and put</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># &quot;train&quot; or &quot;test&quot; in the corresponding locations.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shape</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;     &quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">iteration</span><span class="p">,</span> <span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">kfold</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="c1"># The index needs to be converted to 2D so we can index our matrix.</span>
+<span class="gp">... </span>    <span class="n">mask</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">shape</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span>
+<span class="gp">... </span>    <span class="n">mask</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">shape</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">&quot; test&quot;</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Iteration </span><span class="si">{}</span><span class="s2">:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+<span class="go">Iteration 0:</span>
+<span class="go">[[&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="go"> [&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="go"> [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="go"> [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]]</span>
+<span class="go">Iteration 1:</span>
+<span class="go">[[&#39;train&#39; &#39;train&#39; &#39; test&#39; &#39; test&#39;]</span>
+<span class="go"> [&#39;train&#39; &#39;train&#39; &#39; test&#39; &#39; test&#39;]</span>
+<span class="go"> [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="go"> [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]]</span>
+<span class="go">Iteration 2:</span>
+<span class="go">[[&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="go"> [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="go"> [&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="go"> [&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]]</span>
+<span class="go">Iteration 3:</span>
+<span class="go">[[&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="go"> [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
+<span class="go"> [&#39;train&#39; &#39;train&#39; &#39; test&#39; &#39; test&#39;]</span>
+<span class="go"> [&#39;train&#39; &#39;train&#39; &#39; test&#39; &#39; test&#39;]]</span>
+</pre></div>
+</div>
+<p>For spatial data, it’s often good to shuffle the blocks before assigning
+them to folds:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Set the random_state to make sure we always get the same result.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kfold</span> <span class="o">=</span> <span class="n">BlockKFold</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">spacing</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="ow">in</span> <span class="n">kfold</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Train: </span><span class="si">{}</span><span class="s2"> Test: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">))</span>
+<span class="go">Train: [ 0  1  2  3  4  5  6  7  8  9 12 13] Test: [10 11 14 15]</span>
+<span class="go">Train: [ 2  3  6  7  8  9 10 11 12 13 14 15] Test: [0 1 4 5]</span>
+<span class="go">Train: [ 0  1  4  5  8  9 10 11 12 13 14 15] Test: [2 3 6 7]</span>
+<span class="go">Train: [ 0  1  2  3  4  5  6  7 10 11 14 15] Test: [ 8  9 12 13]</span>
+</pre></div>
+</div>
+<p>These should be the same splits as we got before but in a different order.
+This only happens because in this example we have the number of splits
+equal to the number of blocks (4). With real data the effects would be more
+dramatic.</p>
+</dd></dl>
+
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#verde.BlockKFold.get_n_splits" title="verde.BlockKFold.get_n_splits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BlockKFold.get_n_splits</span></code></a>([X, y, groups])</p></td>
+<td><p>Returns the number of splitting iterations in the cross-validator</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#verde.BlockKFold.split" title="verde.BlockKFold.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BlockKFold.split</span></code></a>(X[, y, groups])</p></td>
+<td><p>Generate indices to split data into training and test set.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<dl class="method">
+<dt id="verde.BlockKFold.get_n_splits">
+<code class="sig-prename descclassname">BlockKFold.</code><code class="sig-name descname">get_n_splits</code><span class="sig-paren">(</span><em class="sig-param">X=None</em>, <em class="sig-param">y=None</em>, <em class="sig-param">groups=None</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.BlockKFold.get_n_splits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of splitting iterations in the cross-validator</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – Always ignored, exists for compatibility.</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – Always ignored, exists for compatibility.</p></li>
+<li><p><strong>groups</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – Always ignored, exists for compatibility.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>n_splits</strong> (<em>int</em>) – Returns the number of splitting iterations in the cross-validator.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="verde.BlockKFold.split">
+<code class="sig-prename descclassname">BlockKFold.</code><code class="sig-name descname">split</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y=None</em>, <em class="sig-param">groups=None</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.BlockKFold.split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate indices to split data into training and test set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>array-like</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>, </em><em>2</em><em>)</em>) – Columns should be the easting and northing coordinates of data
+points, respectively.</p></li>
+<li><p><strong>y</strong> (<em>array-like</em><em>, </em><em>shape</em><em> (</em><em>n_samples</em><em>,</em><em>)</em>) – The target variable for supervised learning problems. Always
+ignored.</p></li>
+<li><p><strong>groups</strong> (<em>array-like</em><em>, </em><em>with shape</em><em> (</em><em>n_samples</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – Group labels for the samples used while splitting the dataset into
+train/test set. Always ignored.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>train</strong> (<em>ndarray</em>) – The training set indices for that split.</p></li>
+<li><p><strong>test</strong> (<em>ndarray</em>) – The testing set indices for that split.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="examples-using-verde-blockkfold">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">verde.BlockKFold</span></code><a class="headerlink" href="#examples-using-verde-blockkfold" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Cross-validation scores for spatial data can be biased because observations are commonly spatia..."><div class="figure align-default" id="id2">
+<img alt="K-Fold cross-validation with blocks" src="../../_images/sphx_glr_blockkfold_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/blockkfold.html#sphx-glr-gallery-blockkfold-py"><span class="std std-ref">K-Fold cross-validation with blocks</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="verde.grid_coordinates.html" class="btn btn-neutral float-right" title="verde.grid_coordinates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="verde.BlockShuffleSplit.html" class="btn btn-neutral float-left" title="verde.BlockShuffleSplit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The Verde Developers
+      <span class="lastupdated">
+        Last updated on Mar 18, 2021.
+      </span>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
