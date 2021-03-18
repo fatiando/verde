@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Gridding with splines
 =====================
@@ -66,7 +72,7 @@ grid_full = chain.grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["temperature"],
+    data_names="temperature",
 )
 grid = vd.distance_mask(
     coordinates, maxdist=3 * spacing * 111e3, grid=grid_full, projection=projection
@@ -84,5 +90,4 @@ tmp = grid.temperature.plot.pcolormesh(
 plt.colorbar(tmp).set_label("Air temperature (C)")
 # Use an utility function to add tick labels and land and ocean features to the map.
 vd.datasets.setup_texas_wind_map(ax, region=region)
-plt.tight_layout()
 plt.show()

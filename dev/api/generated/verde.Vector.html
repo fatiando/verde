@@ -43,6 +43,7 @@
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="verde.train_test_split" href="verde.train_test_split.html" />
@@ -272,14 +273,14 @@ list comprehension instead: <code class="docutils literal notranslate"><span cla
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>components</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a>) – A tuple or list of the estimator/gridder instances used for each
+<dd class="field-odd"><p><strong>components</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – A tuple or list of the estimator/gridder instances used for each
 component. The estimators will be applied for each data component in
 the same order that they are given here.</p>
 </dd>
 <dt class="field-even">Variables</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>components</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – Tuple of the fitted estimators on each component of the data.</p></li>
-<li><p><strong>region_</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – The boundaries (<code class="docutils literal notranslate"><span class="pre">[W,</span> <span class="pre">E,</span> <span class="pre">S,</span> <span class="pre">N]</span></code>) of the data used to fit the
+<li><p><strong>components</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a>) – Tuple of the fitted estimators on each component of the data.</p></li>
+<li><p><strong>region_</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a>) – The boundaries (<code class="docutils literal notranslate"><span class="pre">[W,</span> <span class="pre">E,</span> <span class="pre">S,</span> <span class="pre">N]</span></code>) of the data used to fit the
 interpolator. Used as the default region for the
 <a class="reference internal" href="#verde.Vector.grid" title="verde.Vector.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a> and <a class="reference internal" href="#verde.Vector.scatter" title="verde.Vector.scatter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scatter</span></code></a> methods.</p></li>
 </ul>
@@ -351,7 +352,7 @@ names mean, see the class docstring.</p></li>
 <li><p><strong>data</strong> (<em>array</em><em> or </em><em>tuple of arrays</em>) – The data values of each data point. If the data has more than one
 component, <em>data</em> must be a tuple of arrays (one for each
 component).</p></li>
-<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – If not None, then the weights assigned to each data point. If more
+<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – If not None, then the weights assigned to each data point. If more
 than one data component is provided, you must provide a weights
 array for each data component (if not None).</p></li>
 </ul>
@@ -380,7 +381,7 @@ and northing will be used, all subsequent coordinates will be
 ignored.</p></li>
 <li><p><strong>data</strong> (<em>tuple of array</em>) – The data values of each component at each data point. Must be a
 tuple.</p></li>
-<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> or </em><em>tuple of array</em>) – If not None, then the weights assigned to each data point of each
+<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em> or </em><em>tuple of array</em>) – If not None, then the weights assigned to each data point of each
 data component. Typically, this should be 1 over the data
 uncertainty squared.</p></li>
 </ul>
@@ -397,11 +398,11 @@ uncertainty squared.</p></li>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>deep</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>default=True</em>) – If True, will return the parameters for this estimator and
+<dd class="field-odd"><p><strong>deep</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>default=True</em>) – If True, will return the parameters for this estimator and
 contained subobjects that are estimators.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>params</strong> (<em>mapping of string to any</em>) – Parameter names mapped to their values.</p>
+<dd class="field-even"><p><strong>params</strong> (<em>dict</em>) – Parameter names mapped to their values.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -418,28 +419,28 @@ dimension (the <em>shape</em>) or by the grid node spacing. See
 <p>If the interpolator collected the input data region, then it will be
 used if <code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
 <p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
-dimensions and the data field(s) in the output <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.
+dimensions and the data field(s) in the output <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.
 Default names will be provided if none are given.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>region</strong> (<em>list =</em><em> [</em><em>W</em><em>, </em><em>E</em><em>, </em><em>S</em><em>, </em><em>N</em><em>]</em>) – The west, east, south, and north boundaries of a given region.</p></li>
-<li><p><strong>shape</strong> (<em>tuple =</em><em> (</em><em>n_north</em><em>, </em><em>n_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – The number of points in the South-North and West-East directions,
+<li><p><strong>shape</strong> (<em>tuple =</em><em> (</em><em>n_north</em><em>, </em><em>n_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The number of points in the South-North and West-East directions,
 respectively.</p></li>
-<li><p><strong>spacing</strong> (<em>tuple =</em><em> (</em><em>s_north</em><em>, </em><em>s_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – The grid spacing in the South-North and West-East directions,
+<li><p><strong>spacing</strong> (<em>tuple =</em><em> (</em><em>s_north</em><em>, </em><em>s_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The grid spacing in the South-North and West-East directions,
 respectively.</p></li>
-<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – The names of the northing and easting data dimensions,
+<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The names of the northing and easting data dimensions,
 respectively, in the output grid. Default is determined from the
 <code class="docutils literal notranslate"><span class="pre">dims</span></code> attribute of the class. Must be defined in the following
 order: northing dimension, easting dimension.
 <strong>NOTE: This is an exception to the “easting” then
 “northing” pattern but is required for compatibility with xarray.</strong></p></li>
-<li><p><strong>data_names</strong> (<em>list of None</em>) – The name(s) of the data variables in the output grid. Defaults to
-<code class="docutils literal notranslate"><span class="pre">['scalars']</span></code> for scalar data,
+<li><p><strong>data_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The name(s) of the data variables in the output grid. Defaults to
+<code class="docutils literal notranslate"><span class="pre">'scalars'</span></code> for scalar data,
 <code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component']</span></code> for 2D vector data, and
 <code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component',</span> <span class="pre">'vertical_component']</span></code> for
 3D vector data.</p></li>
-<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – If not None, then should be a callable object
+<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – If not None, then should be a callable object
 <code class="docutils literal notranslate"><span class="pre">projection(easting,</span> <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code>
 that takes in easting and northing coordinate arrays and returns
 projected northing and easting coordinate arrays. This function
@@ -492,7 +493,7 @@ distances. Point coordinates are generated by
 can be passed as extra keyword arguments (<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this method.</p>
 <p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
 dimensions and the data field(s) in the output
-<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
 <p>Includes the calculated Cartesian distance from <em>point1</em> for each data
 point in the profile.</p>
 <p>To specify <em>point1</em> and <em>point2</em> in a coordinate system that would
@@ -521,23 +522,23 @@ projected coordinates as well.</strong></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>point1</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – The easting and northing coordinates, respectively, of the first
+<li><p><strong>point1</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a>) – The easting and northing coordinates, respectively, of the first
 point.</p></li>
-<li><p><strong>point2</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – The easting and northing coordinates, respectively, of the second
+<li><p><strong>point2</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a>) – The easting and northing coordinates, respectively, of the second
 point.</p></li>
-<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The number of points to generate.</p></li>
-<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – The names of the northing and easting data dimensions,
+<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The number of points to generate.</p></li>
+<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The names of the northing and easting data dimensions,
 respectively, in the output dataframe. Default is determined from
 the <code class="docutils literal notranslate"><span class="pre">dims</span></code> attribute of the class. Must be defined in the
 following order: northing dimension, easting dimension.
 <strong>NOTE: This is an exception to the “easting” then
 “northing” pattern but is required for compatibility with xarray.</strong></p></li>
-<li><p><strong>data_names</strong> (<em>list of None</em>) – The name(s) of the data variables in the output dataframe. Defaults
-to <code class="docutils literal notranslate"><span class="pre">['scalars']</span></code> for scalar data,
+<li><p><strong>data_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The name(s) of the data variables in the output dataframe. Defaults
+to <code class="docutils literal notranslate"><span class="pre">'scalars'</span></code> for scalar data,
 <code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component']</span></code> for 2D vector data, and
 <code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component',</span> <span class="pre">'vertical_component']</span></code> for
 3D vector data.</p></li>
-<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – If not None, then should be a callable object <code class="docutils literal notranslate"><span class="pre">projection(easting,</span>
+<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – If not None, then should be a callable object <code class="docutils literal notranslate"><span class="pre">projection(easting,</span>
 <span class="pre">northing,</span> <span class="pre">inverse=False)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code> that
 takes in easting and northing coordinate arrays and returns
 projected northing and easting coordinate arrays. Should also take
@@ -566,28 +567,28 @@ arguments for this function can be passed as extra keyword arguments
 used if <code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
 <p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
 dimensions and the data field(s) in the output
-<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>region</strong> (<em>list =</em><em> [</em><em>W</em><em>, </em><em>E</em><em>, </em><em>S</em><em>, </em><em>N</em><em>]</em>) – The west, east, south, and north boundaries of a given region.</p></li>
-<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The number of points to generate.</p></li>
-<li><p><strong>random_state</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/random/legacy.html#numpy.random.RandomState" title="(in NumPy v1.18)"><em>numpy.random.RandomState</em></a><em> or </em><em>an int seed</em>) – A random number generator used to define the state of the random
+<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The number of points to generate.</p></li>
+<li><p><strong>random_state</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/random/legacy.html#numpy.random.RandomState" title="(in NumPy v1.20)"><em>numpy.random.RandomState</em></a><em> or </em><em>an int seed</em>) – A random number generator used to define the state of the random
 permutations. Use a fixed seed to make sure computations are
 reproducible. Use <code class="docutils literal notranslate"><span class="pre">None</span></code> to choose a seed automatically
 (resulting in different numbers with each run).</p></li>
-<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – The names of the northing and easting data dimensions,
+<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The names of the northing and easting data dimensions,
 respectively, in the output dataframe. Default is determined from
 the <code class="docutils literal notranslate"><span class="pre">dims</span></code> attribute of the class. Must be defined in the
 following order: northing dimension, easting dimension.
 <strong>NOTE: This is an exception to the “easting” then
 “northing” pattern but is required for compatibility with xarray.</strong></p></li>
-<li><p><strong>data_names</strong> (<em>list of None</em>) – The name(s) of the data variables in the output dataframe. Defaults
-to <code class="docutils literal notranslate"><span class="pre">['scalars']</span></code> for scalar data,
+<li><p><strong>data_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The name(s) of the data variables in the output dataframe. Defaults
+to <code class="docutils literal notranslate"><span class="pre">'scalars'</span></code> for scalar data,
 <code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component']</span></code> for 2D vector data, and
 <code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component',</span> <span class="pre">'vertical_component']</span></code> for
 3D vector data.</p></li>
-<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – If not None, then should be a callable object
+<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – If not None, then should be a callable object
 <code class="docutils literal notranslate"><span class="pre">projection(easting,</span> <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code>
 that takes in easting and northing coordinate arrays and returns
 projected northing and easting coordinate arrays. This function
@@ -621,7 +622,7 @@ names mean, see the class docstring.</p></li>
 <li><p><strong>data</strong> (<em>array</em><em> or </em><em>tuple of arrays</em>) – The data values of each data point. If the data has more than one
 component, <em>data</em> must be a tuple of arrays (one for each
 component).</p></li>
-<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – If not None, then the weights assigned to each data point. If more
+<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – If not None, then the weights assigned to each data point. If more
 than one data component is provided, you must provide a weights
 array for each data component (if not None).</p></li>
 </ul>
@@ -637,15 +638,15 @@ array for each data component (if not None).</p></li>
 <code class="sig-prename descclassname">Vector.</code><code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Vector.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
-(such as pipelines). The latter have parameters of the form
-<code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s possible to update each
-component of a nested object.</p>
+(such as <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v0.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>). The latter have
+parameters of the form <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s
+possible to update each component of a nested object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>**params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Estimator parameters.</p>
+<dd class="field-odd"><p><strong>**params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Estimator parameters.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>self</strong> (<em>object</em>) – Estimator instance.</p>
+<dd class="field-even"><p><strong>self</strong> (<em>estimator instance</em>) – Estimator instance.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -691,9 +692,9 @@ component of a nested object.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2020, The Verde Developers
+        &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jun 04, 2020.
+        Last updated on Mar 18, 2021.
       </span>
 
     </p>

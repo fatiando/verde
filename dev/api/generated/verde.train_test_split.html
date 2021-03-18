@@ -43,6 +43,7 @@
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="verde.cross_val_score" href="verde.cross_val_score.html" />
@@ -259,12 +260,12 @@
 <dt id="verde.train_test_split">
 <code class="sig-prename descclassname">verde.</code><code class="sig-name descname">train_test_split</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">data</em>, <em class="sig-param">weights=None</em>, <em class="sig-param">spacing=None</em>, <em class="sig-param">shape=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/model_selection.html#train_test_split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.train_test_split" title="Permalink to this definition">¶</a></dt>
 <dd><p>Split a dataset into a training and a testing set for cross-validation.</p>
-<p>Similar to <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="(in scikit-learn v0.23)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.model_selection.train_test_split</span></code></a> but is tuned to
+<p>Similar to <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="(in scikit-learn v0.24)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.model_selection.train_test_split</span></code></a> but is tuned to
 work on single- or multi-component spatial data with optional weights.</p>
 <p>If arguments <em>shape</em> or <em>spacing</em> are provided, will group the data by
 spatial blocks before random splitting (using
 <a class="reference internal" href="verde.BlockShuffleSplit.html#verde.BlockShuffleSplit" title="verde.BlockShuffleSplit"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.BlockShuffleSplit</span></code></a> instead of
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html#sklearn.model_selection.ShuffleSplit" title="(in scikit-learn v0.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.ShuffleSplit</span></code></a>). The argument <em>spacing</em>
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html#sklearn.model_selection.ShuffleSplit" title="(in scikit-learn v0.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.ShuffleSplit</span></code></a>). The argument <em>spacing</em>
 specifies the size of the spatial blocks. Alternatively, use <em>shape</em> to
 specify the number of blocks in each dimension.</p>
 <p>Extra keyword arguments will be passed to the cross-validation class. The
@@ -286,11 +287,11 @@ component, <em>data</em> must be a tuple of arrays (one for each component).</p>
 <li><p><strong>weights</strong> (<em>none</em><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – if not none, then the weights assigned to each data point. If more than
 one data component is provided, you must provide a weights array for
 each data component (if not none).</p></li>
-<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><em>tuple =</em><em> (</em><em>s_north</em><em>, </em><em>s_east</em><em>)</em><em>, or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – The spatial block size in the South-North and West-East directions,
+<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><em>tuple =</em><em> (</em><em>s_north</em><em>, </em><em>s_east</em><em>)</em><em>, or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The spatial block size in the South-North and West-East directions,
 respectively. A single value means that the spacing is equal in both
 directions. If None, then <em>shape</em> must be provided in order to use
 spatial blocking.</p></li>
-<li><p><strong>shape</strong> (<em>tuple =</em><em> (</em><em>n_north</em><em>, </em><em>n_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – The number of blocks in the South-North and West-East directions,
+<li><p><strong>shape</strong> (<em>tuple =</em><em> (</em><em>n_north</em><em>, </em><em>n_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The number of blocks in the South-North and West-East directions,
 respectively. If None, then <em>spacing</em> must be provided in order to use
 spatial blocking.</p></li>
 </ul>
@@ -439,9 +440,9 @@ the input values randomly.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2020, The Verde Developers
+        &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jun 04, 2020.
+        Last updated on Mar 18, 2021.
       </span>
 
     </p>

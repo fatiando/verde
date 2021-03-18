@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Trends in vector data
 =====================
@@ -86,5 +92,4 @@ for ax, component, title in zip(axes, components, titles):
     )
     ax.coastlines(color="white")
 axes[0].legend(loc="lower left")
-plt.tight_layout()
 plt.show()

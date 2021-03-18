@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Splitting data into train and test sets
 =======================================
@@ -47,7 +53,11 @@ print("Train and test size for random splits:", train[0][0].size, test[0][0].siz
 # blocks randomly. To do this, specify the size of the blocks using the
 # 'spacing' argument.
 train_block, test_block = vd.train_test_split(
-    coordinates, values, spacing=10 / 60, test_size=test_size, random_state=213,
+    coordinates,
+    values,
+    spacing=10 / 60,
+    test_size=test_size,
+    random_state=213,
 )
 # Verde will automatically attempt to balance the data between the splits so
 # that the desired amount is assigned to the test set. It won't be exact since

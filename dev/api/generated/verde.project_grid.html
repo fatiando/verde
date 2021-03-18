@@ -43,6 +43,7 @@
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="verde.distance_mask" href="verde.distance_mask.html" />
@@ -287,7 +288,7 @@ cases, you might want to try
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>grid</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – A single 2D grid of values. The first dimension is assumed to be the
+<li><p><strong>grid</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – A single 2D grid of values. The first dimension is assumed to be the
 northing/latitude dimension while the second is assumed to be the
 easting/longitude dimension.</p></li>
 <li><p><strong>projection</strong> (<em>callable</em>) – Should be a callable object (like a function) <code class="docutils literal notranslate"><span class="pre">projection(easting,</span>
@@ -298,14 +299,14 @@ coordinate arrays.</p></li>
 the corresponding method (nearest, linear, or cubic). Otherwise, should
 be a gridder/estimator object, like <a class="reference internal" href="verde.Spline.html#verde.Spline" title="verde.Spline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spline</span></code></a>. Default is
 <code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code>.</p></li>
-<li><p><strong>antialias</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – If True, will run a <a class="reference internal" href="verde.BlockReduce.html#verde.BlockReduce" title="verde.BlockReduce"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockReduce</span></code></a> with a mean function to
+<li><p><strong>antialias</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – If True, will run a <a class="reference internal" href="verde.BlockReduce.html#verde.BlockReduce" title="verde.BlockReduce"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockReduce</span></code></a> with a mean function to
 avoid aliasing when the projection results in oversampling of the data
 in some areas (for example, in polar projections). If False, will not
 run the blocked mean.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>projected_grid</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The projected grid, interpolated with the given parameters.</p>
+<dd class="field-even"><p><strong>projected_grid</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The projected grid, interpolated with the given parameters.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -339,9 +340,9 @@ run the blocked mean.</p></li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2020, The Verde Developers
+        &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jun 04, 2020.
+        Last updated on Mar 18, 2021.
       </span>
 
     </p>

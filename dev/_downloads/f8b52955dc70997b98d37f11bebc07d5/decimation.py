@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Data Decimation
 ===============
@@ -24,7 +30,6 @@ ax.set_title("Locations of bathymetry measurements from Baja California")
 # Plot the bathymetry data locations as black dots
 plt.plot(data.longitude, data.latitude, ".k", markersize=1, transform=crs)
 vd.datasets.setup_baja_bathymetry_map(ax)
-plt.tight_layout()
 plt.show()
 
 ########################################################################################
@@ -57,7 +62,6 @@ ax.set_title("Locations of decimated data")
 # Plot the bathymetry data locations as black dots
 plt.plot(*coordinates, ".k", markersize=1, transform=crs)
 vd.datasets.setup_baja_bathymetry_map(ax)
-plt.tight_layout()
 plt.show()
 
 
@@ -79,7 +83,6 @@ ax.set_title("Locations of decimated data using block centers")
 # Plot the bathymetry data locations as black dots
 plt.plot(*coordinates_center, ".k", markersize=1, transform=crs)
 vd.datasets.setup_baja_bathymetry_map(ax)
-plt.tight_layout()
 plt.show()
 
 ########################################################################################

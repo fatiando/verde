@@ -43,6 +43,7 @@
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="verde.test" href="verde.test.html" />
@@ -262,21 +263,21 @@
 <li><p>If <em>coordinates</em> is not None, produces an array that is False when a
 point is outside the convex hull and True otherwise.</p></li>
 <li><p>If <em>grid</em> is not None, produces a mask and applies it to <em>grid</em> (an
-<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>).</p></li>
+<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>).</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data_coordinates</strong> (<em>tuple of arrays</em>) – Same as <em>coordinates</em> but for the data points.</p></li>
-<li><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> or </em><em>tuple of arrays</em>) – Arrays with the coordinates of each point that will be masked. Should
+<li><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em> or </em><em>tuple of arrays</em>) – Arrays with the coordinates of each point that will be masked. Should
 be in the following order: (easting, northing, …). Only easting and
 northing will be used, all subsequent coordinates will be ignored.</p></li>
-<li><p><strong>grid</strong> (None or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – 2D grid with values to be masked. Will use the first two dimensions of
+<li><p><strong>grid</strong> (None or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – 2D grid with values to be masked. Will use the first two dimensions of
 the grid as northing and easting coordinates, respectively. For this to
 work, the grid dimensions <strong>must be ordered as northing then easting</strong>.
 The mask will be applied to <em>grid</em> using the
-<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.where.html#xarray.Dataset.where" title="(in xarray v0.15.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">xarray.Dataset.where</span></code></a> method.</p></li>
-<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – If not None, then should be a callable object <code class="docutils literal notranslate"><span class="pre">projection(easting,</span>
+<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.where.html#xarray.Dataset.where" title="(in xarray v0.17.1.dev0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">xarray.Dataset.where</span></code></a> method.</p></li>
+<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – If not None, then should be a callable object <code class="docutils literal notranslate"><span class="pre">projection(easting,</span>
 <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code> that takes in easting and
 northing coordinate arrays and returns projected easting and northing
 coordinate arrays. This function will be used to project the given
@@ -285,9 +286,9 @@ distances.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>mask</strong> (array or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – If <em>coordinates</em> was given, then a boolean array with the same shape as
+<dd class="field-even"><p><strong>mask</strong> (array or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – If <em>coordinates</em> was given, then a boolean array with the same shape as
 the elements of <em>coordinates</em>. If <em>grid</em> was given, then an
-<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> with the mask applied to it.</p>
+<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> with the mask applied to it.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -368,9 +369,9 @@ the elements of <em>coordinates</em>. If <em>grid</em> was given, then an
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2020, The Verde Developers
+        &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jun 04, 2020.
+        Last updated on Mar 18, 2021.
       </span>
 
     </p>

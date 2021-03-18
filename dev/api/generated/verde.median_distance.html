@@ -43,10 +43,11 @@
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="verde.load_surfer" href="verde.load_surfer.html" />
-    <link rel="prev" title="verde.grid_to_table" href="verde.grid_to_table.html" />
+    <link rel="prev" title="verde.make_xarray_grid" href="verde.make_xarray_grid.html" />
     <!-- Google Analytics tracking code -->
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -146,6 +147,7 @@
 <li class="toctree-l3"><a class="reference internal" href="verde.maxabs.html">verde.maxabs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="verde.variance_to_weights.html">verde.variance_to_weights</a></li>
 <li class="toctree-l3"><a class="reference internal" href="verde.grid_to_table.html">verde.grid_to_table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="verde.make_xarray_grid.html">verde.make_xarray_grid</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">verde.median_distance</a></li>
 </ul>
 </li>
@@ -261,7 +263,7 @@
 distance to its <em>k_nearest</em> neighbors among the other points in the
 dataset. Sparse uniformly spaced datasets can use <em>k_nearest</em> of 1.
 Datasets with points clustered into tight groups (e.g., densely sampled
-along a flight line or ship treck) will have very small distances to the
+along a flight line or ship track) will have very small distances to the
 closest neighbors, which is not representative of the actual median spacing
 because it doesn’t take the spacing between lines into account. In these
 cases, a median of the 10 or 20 nearest neighbors might be more
@@ -273,7 +275,7 @@ Cartesian before doing the computations.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If installed, package <code class="docutils literal notranslate"><span class="pre">pykdtree</span></code> will be used instead of
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.cKDTree.html#scipy.spatial.cKDTree" title="(in SciPy v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.spatial.cKDTree</span></code></a> for better performance.</p>
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.cKDTree.html#scipy.spatial.cKDTree" title="(in SciPy v1.6.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.spatial.cKDTree</span></code></a> for better performance.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -282,10 +284,10 @@ Cartesian before doing the computations.</p>
 following order: (easting, northing, vertical, …). Only the first two
 coordinates (assumed to be the horizontal) will be used in the distance
 computations.</p></li>
-<li><p><strong>k_nearest</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Will calculate the median of the <em>k</em> nearest neighbors of each point. A
+<li><p><strong>k_nearest</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Will calculate the median of the <em>k</em> nearest neighbors of each point. A
 value of 1 will result in the distance to nearest neighbor of each data
 point.</p></li>
-<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – If not None, then should be a callable object (like a function)
+<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – If not None, then should be a callable object (like a function)
 <code class="docutils literal notranslate"><span class="pre">projection(easting,</span> <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code> that
 takes in easting and northing coordinate arrays and returns projected
 northing and easting coordinate arrays.</p></li>
@@ -345,7 +347,7 @@ arrays.</p>
         <a href="verde.load_surfer.html" class="btn btn-neutral float-right" title="verde.load_surfer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="verde.grid_to_table.html" class="btn btn-neutral float-left" title="verde.grid_to_table" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="verde.make_xarray_grid.html" class="btn btn-neutral float-left" title="verde.make_xarray_grid" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -354,9 +356,9 @@ arrays.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2020, The Verde Developers
+        &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jun 04, 2020.
+        Last updated on Mar 18, 2021.
       </span>
 
     </p>

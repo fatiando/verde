@@ -43,6 +43,7 @@
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <!-- Google Analytics tracking code -->
@@ -223,7 +224,13 @@
            <div itemprop="articleBody">
             
   <h1>Source code for verde</h1><div class="highlight"><pre>
-<span></span><span class="c1"># pylint: disable=missing-docstring,import-outside-toplevel</span>
+<span></span><span class="c1"># Copyright (c) 2017 The Verde Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="c1"># pylint: disable=missing-docstring,import-outside-toplevel</span>
 <span class="c1"># Import functions/classes to make the public API</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">datasets</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">version</span>
@@ -240,7 +247,12 @@
     <span class="n">longitude_continuity</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.mask</span> <span class="kn">import</span> <span class="n">distance_mask</span><span class="p">,</span> <span class="n">convexhull_mask</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">variance_to_weights</span><span class="p">,</span> <span class="n">maxabs</span><span class="p">,</span> <span class="n">grid_to_table</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">variance_to_weights</span><span class="p">,</span>
+    <span class="n">maxabs</span><span class="p">,</span>
+    <span class="n">grid_to_table</span><span class="p">,</span>
+    <span class="n">make_xarray_grid</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.io</span> <span class="kn">import</span> <span class="n">load_surfer</span>
 <span class="kn">from</span> <span class="nn">.distances</span> <span class="kn">import</span> <span class="n">median_distance</span>
 <span class="kn">from</span> <span class="nn">.blockreduce</span> <span class="kn">import</span> <span class="n">BlockReduce</span><span class="p">,</span> <span class="n">BlockMean</span>
@@ -256,6 +268,10 @@
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.vector</span> <span class="kn">import</span> <span class="n">Vector</span><span class="p">,</span> <span class="n">VectorSpline2D</span>
 <span class="kn">from</span> <span class="nn">.projections</span> <span class="kn">import</span> <span class="n">project_region</span><span class="p">,</span> <span class="n">project_grid</span>
+
+
+<span class="c1"># Get the version number through setuptools-scm</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="n">version</span><span class="o">.</span><span class="n">version</span>
 
 
 <div class="viewcode-block" id="test"><a class="viewcode-back" href="../api/generated/verde.test.html#verde.test">[docs]</a><span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">doctest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">coverage</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">figures</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -316,9 +332,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2020, The Verde Developers
+        &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jun 04, 2020.
+        Last updated on Mar 18, 2021.
       </span>
 
     </p>

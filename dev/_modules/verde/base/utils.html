@@ -43,6 +43,7 @@
   <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <!-- Google Analytics tracking code -->
@@ -225,10 +226,95 @@
            <div itemprop="articleBody">
             
   <h1>Source code for verde.base.utils</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="c1"># Copyright (c) 2017 The Verde Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Utility functions for building gridders and checking arguments.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">check_scoring</span>
+
+
+<span class="k">def</span> <span class="nf">score_estimator</span><span class="p">(</span><span class="n">scoring</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Score the given gridder against the given data using the given metric.</span>
+
+<span class="sd">    If the data and predictions have more than 1 component, the scores of each</span>
+<span class="sd">    component will be averaged.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    scoring : str or callable</span>
+<span class="sd">        A scoring specification known to scikit-learn. See</span>
+<span class="sd">        :func:`sklearn.metrics.check_scoring`.</span>
+<span class="sd">    estimator : a Verde gridder</span>
+<span class="sd">        The gridder to score. Usually derived from</span>
+<span class="sd">        :class:`verde.base.BaseGridder`.</span>
+<span class="sd">    coordinates : tuple of arrays</span>
+<span class="sd">        Arrays with the coordinates of each data point. Should be in the</span>
+<span class="sd">        following order: (easting, northing, vertical, ...).</span>
+<span class="sd">        For the specific definition of coordinate systems and what these</span>
+<span class="sd">        names mean, see the class docstring.</span>
+<span class="sd">    data : array or tuple of arrays</span>
+<span class="sd">        The data values of each data point. If the data has more than one</span>
+<span class="sd">        component, *data* must be a tuple of arrays (one for each</span>
+<span class="sd">        component).</span>
+<span class="sd">    weights : None or array or tuple of arrays</span>
+<span class="sd">        If not None, then the weights assigned to each data point. If more</span>
+<span class="sd">        than one data component is provided, you must provide a weights</span>
+<span class="sd">        array for each data component (if not None).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    score : float</span>
+<span class="sd">        The score.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">check_fit_input</span><span class="p">(</span>
+        <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">predicted</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="n">estimator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
+    <span class="n">scorer</span> <span class="o">=</span> <span class="n">check_scoring</span><span class="p">(</span><span class="n">DummyEstimator</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="n">scoring</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">scorer</span><span class="p">(</span>
+                <span class="n">DummyEstimator</span><span class="p">(</span><span class="n">pred</span><span class="o">.</span><span class="n">ravel</span><span class="p">()),</span>
+                <span class="n">coordinates</span><span class="p">,</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="n">sample_weight</span><span class="o">=</span><span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pred</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">predicted</span><span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">class</span> <span class="nc">DummyEstimator</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Dummy estimator that does nothing but pass along the predicted data.</span>
+<span class="sd">    Used to fool the scikit-learn scorer functions to fit our API</span>
+<span class="sd">    (multi-component estimators return a tuple on .predict).</span>
+
+<span class="sd">    &gt;&gt;&gt; est = DummyEstimator([1, 2, 3])</span>
+<span class="sd">    &gt;&gt;&gt; print(est.fit().predict())</span>
+<span class="sd">    [1, 2, 3]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicted</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_predicted</span> <span class="o">=</span> <span class="n">predicted</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+        <span class="s2">&quot;Return the stored predicted values&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predicted</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwards</span><span class="p">):</span>  <span class="c1"># pylint: disable=unused-argument</span>
+        <span class="s2">&quot;Does nothing. Just here to satisfy the API.&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span>
 
 
 <span class="k">def</span> <span class="nf">check_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
@@ -252,6 +338,42 @@
     <span class="k">return</span> <span class="n">data</span>
 
 
+<span class="k">def</span> <span class="nf">check_data_names</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_names</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check *data_names* against *data*.</span>
+
+<span class="sd">    Also, convert ``data_names`` to a tuple if it&#39;s a single string.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; east, north, scalar = [np.array(10)]*3</span>
+<span class="sd">    &gt;&gt;&gt; check_data_names((scalar,), &quot;dummy&quot;)</span>
+<span class="sd">    (&#39;dummy&#39;,)</span>
+<span class="sd">    &gt;&gt;&gt; check_data_names((scalar,), (&quot;dummy&quot;,))</span>
+<span class="sd">    (&#39;dummy&#39;,)</span>
+<span class="sd">    &gt;&gt;&gt; check_data_names((scalar,), [&quot;dummy&quot;])</span>
+<span class="sd">    [&#39;dummy&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; check_data_names((east, north), (&quot;component_x&quot;, &quot;component_y&quot;))</span>
+<span class="sd">    (&#39;component_x&#39;, &#39;component_y&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Convert single string to tuple</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_names</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">data_names</span> <span class="o">=</span> <span class="p">(</span><span class="n">data_names</span><span class="p">,)</span>
+    <span class="c1"># Raise error if data_names is None</span>
+    <span class="k">if</span> <span class="n">data_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid data_names equal to None.&quot;</span><span class="p">)</span>
+    <span class="c1"># Raise error if data and data_names don&#39;t have the same number of elements</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_names</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Data has </span><span class="si">{}</span><span class="s2"> components but only </span><span class="si">{}</span><span class="s2"> names provided: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_names</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">data_names</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">data_names</span>
+
+
 <span class="k">def</span> <span class="nf">check_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check that the given coordinate arrays are what we expect them to be.</span>
@@ -265,6 +387,46 @@
             <span class="p">)</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">coordinates</span>
+
+
+<span class="k">def</span> <span class="nf">check_extra_coords_names</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">extra_coords_names</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check extra_coords_names against coordinates.</span>
+
+<span class="sd">    Also, convert ``extra_coords_names`` to a tuple if it&#39;s a single string.</span>
+<span class="sd">    Assume that there are extra coordinates on the ``coordinates`` tuple.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; coordinates = [np.array(10)]*3</span>
+<span class="sd">    &gt;&gt;&gt; check_extra_coords_names(coordinates, &quot;upward&quot;)</span>
+<span class="sd">    (&#39;upward&#39;,)</span>
+<span class="sd">    &gt;&gt;&gt; check_extra_coords_names(coordinates, (&quot;upward&quot;,))</span>
+<span class="sd">    (&#39;upward&#39;,)</span>
+<span class="sd">    &gt;&gt;&gt; coordinates = [np.array(10)]*4</span>
+<span class="sd">    &gt;&gt;&gt; check_extra_coords_names(coordinates, (&quot;upward&quot;, &quot;time&quot;))</span>
+<span class="sd">    (&#39;upward&#39;, &#39;time&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Convert single string to a tuple</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">extra_coords_names</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">extra_coords_names</span> <span class="o">=</span> <span class="p">(</span><span class="n">extra_coords_names</span><span class="p">,)</span>
+    <span class="c1"># Check if it&#39;s not None</span>
+    <span class="k">if</span> <span class="n">extra_coords_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Invalid extra_coords_names equal to None. &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;When passing one or more extra coordinate, &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;extra_coords_names cannot be None.&quot;</span>
+        <span class="p">)</span>
+    <span class="c1"># Check if there are the same number of extra_coords than extra_coords_name</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">extra_coords_names</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Invalid extra_coords_names &#39;</span><span class="si">{}</span><span class="s2">&#39;. &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extra_coords_names</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;Number of extra coordinates names must match the number of &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;additional coordinates (&#39;</span><span class="si">{}</span><span class="s2">&#39;).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:]))</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">extra_coords_names</span>
 
 
 <div class="viewcode-block" id="check_fit_input"><a class="viewcode-back" href="../../../api/generated/verde.base.check_fit_input.html#verde.base.check_fit_input">[docs]</a><span class="k">def</span> <span class="nf">check_fit_input</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -370,9 +532,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2020, The Verde Developers
+        &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jun 04, 2020.
+        Last updated on Mar 18, 2021.
       </span>
 
     </p>

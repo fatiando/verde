@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 [DEPRECATED] Magnetic data from Rio de Janeiro
 ==============================================
@@ -47,5 +53,4 @@ plt.scatter(
 plt.colorbar(pad=0.01).set_label("nT")
 # Set the proper ticks for a Cartopy map
 vd.datasets.setup_rio_magnetic_map(ax)
-plt.tight_layout()
 plt.show()

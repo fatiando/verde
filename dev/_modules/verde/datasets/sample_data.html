@@ -43,6 +43,7 @@
   <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <!-- Google Analytics tracking code -->
@@ -225,7 +226,13 @@
            <div itemprop="articleBody">
             
   <h1>Source code for verde.datasets.sample_data</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="c1"># Copyright (c) 2017 The Verde Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Functions to load sample data</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -236,7 +243,6 @@
 <span class="kn">import</span> <span class="nn">pooch</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
     <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
     <span class="kn">from</span> <span class="nn">cartopy.mpl.ticker</span> <span class="kn">import</span> <span class="n">LongitudeFormatter</span><span class="p">,</span> <span class="n">LatitudeFormatter</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
@@ -244,9 +250,6 @@
 
 <span class="kn">from</span> <span class="nn">..version</span> <span class="kn">import</span> <span class="n">full_version</span>
 
-
-<span class="c1"># Otherwise, DeprecationWarning won&#39;t be shown, kind of defeating the purpose.</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
 
 <span class="n">REGISTRY</span> <span class="o">=</span> <span class="n">pooch</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
     <span class="n">path</span><span class="o">=</span><span class="n">pooch</span><span class="o">.</span><span class="n">os_cache</span><span class="p">(</span><span class="s2">&quot;verde&quot;</span><span class="p">),</span>
@@ -281,20 +284,18 @@
 
 
 <span class="k">def</span> <span class="nf">_setup_map</span><span class="p">(</span>
-    <span class="n">ax</span><span class="p">,</span> <span class="n">xticks</span><span class="p">,</span> <span class="n">yticks</span><span class="p">,</span> <span class="n">crs</span><span class="p">,</span> <span class="n">region</span><span class="p">,</span> <span class="n">land</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ocean</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">borders</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">states</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">ax</span><span class="p">,</span>
+    <span class="n">xticks</span><span class="p">,</span>
+    <span class="n">yticks</span><span class="p">,</span>
+    <span class="n">crs</span><span class="p">,</span>
+    <span class="n">region</span><span class="p">,</span>
+    <span class="n">coastlines</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Setup a Cartopy map with land and ocean features and proper tick labels.</span>
+<span class="sd">    Setup a Cartopy map with coastlines and proper tick labels.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">if</span> <span class="n">land</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">LAND</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">land</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">ocean</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">OCEAN</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">ocean</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">borders</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">BORDERS</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">borders</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">states</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">states</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">coastlines</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
     <span class="c1"># Set the proper ticks for a Cartopy map</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">xticks</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
@@ -330,7 +331,7 @@
 
 
 <div class="viewcode-block" id="setup_baja_bathymetry_map"><a class="viewcode-back" href="../../../api/generated/verde.datasets.setup_baja_bathymetry_map.html#verde.datasets.setup_baja_bathymetry_map">[docs]</a><span class="k">def</span> <span class="nf">setup_baja_bathymetry_map</span><span class="p">(</span>
-    <span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mf">245.0</span><span class="p">,</span> <span class="mf">254.705</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">29.99</span><span class="p">),</span> <span class="n">land</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">ocean</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mf">245.0</span><span class="p">,</span> <span class="mf">254.705</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">29.99</span><span class="p">),</span> <span class="n">coastlines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Setup a Cartopy map for the Baja California bathymetry dataset.</span>
@@ -341,22 +342,27 @@
 <span class="sd">        The axes where the map is being plotted.</span>
 <span class="sd">    region : list = [W, E, S, N]</span>
 <span class="sd">        The boundaries of the map region in the coordinate system of the data.</span>
-<span class="sd">    land : str or None</span>
-<span class="sd">        The name of the color of the land feature or None to omit it.</span>
-<span class="sd">    ocean : str or None</span>
-<span class="sd">        The name of the color of the ocean feature or None to omit it.</span>
+<span class="sd">    coastlines : bool</span>
+<span class="sd">        If True the coastlines will be added to the plot.</span>
+<span class="sd">    kwargs :</span>
+<span class="sd">        All additional key-word arguments will be ignored. ``kwargs`` are</span>
+<span class="sd">        accepted to guarantee backward compatibility.</span>
 
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
 <span class="sd">    fetch_baja_bathymetry: Sample bathymetry data from Baja California.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;All kwargs are being ignored. They are accepted to &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;guarantee backward compatibility.&quot;</span>
+        <span class="p">)</span>
     <span class="n">_setup_map</span><span class="p">(</span>
         <span class="n">ax</span><span class="p">,</span>
         <span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">114</span><span class="p">,</span> <span class="o">-</span><span class="mi">105</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
         <span class="n">yticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
-        <span class="n">land</span><span class="o">=</span><span class="n">land</span><span class="p">,</span>
-        <span class="n">ocean</span><span class="o">=</span><span class="n">ocean</span><span class="p">,</span>
+        <span class="n">coastlines</span><span class="o">=</span><span class="n">coastlines</span><span class="p">,</span>
         <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
         <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
     <span class="p">)</span></div>
@@ -408,7 +414,7 @@
     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
         <span class="s2">&quot;The Rio magnetic anomaly dataset is deprecated and will be removed &quot;</span>
         <span class="s2">&quot;in Verde v2.0.0. Use a different dataset instead.&quot;</span><span class="p">,</span>
-        <span class="ne">DeprecationWarning</span><span class="p">,</span>
+        <span class="ne">FutureWarning</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">data_file</span> <span class="o">=</span> <span class="n">REGISTRY</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;rio-magnetic.csv.xz&quot;</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;xz&quot;</span><span class="p">)</span>
@@ -432,10 +438,6 @@
 <span class="sd">        The axes where the map is being plotted.</span>
 <span class="sd">    region : list = [W, E, S, N]</span>
 <span class="sd">        The boundaries of the map region in the coordinate system of the data.</span>
-<span class="sd">    land : str or None</span>
-<span class="sd">        The name of the color of the land feature or None to omit it.</span>
-<span class="sd">    ocean : str or None</span>
-<span class="sd">        The name of the color of the ocean feature or None to omit it.</span>
 
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
@@ -445,14 +447,12 @@
     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
         <span class="s2">&quot;The Rio magnetic anomaly dataset is deprecated and will be removed &quot;</span>
         <span class="s2">&quot;in Verde v2.0.0. Use a different dataset instead.&quot;</span><span class="p">,</span>
-        <span class="ne">DeprecationWarning</span><span class="p">,</span>
+        <span class="ne">FutureWarning</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">_setup_map</span><span class="p">(</span>
         <span class="n">ax</span><span class="p">,</span>
         <span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">42.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">42</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
         <span class="n">yticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">22.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">21.99</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
-        <span class="n">land</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">ocean</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
         <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
     <span class="p">)</span></div>
@@ -495,7 +495,7 @@
 
 
 <div class="viewcode-block" id="setup_california_gps_map"><a class="viewcode-back" href="../../../api/generated/verde.datasets.setup_california_gps_map.html#verde.datasets.setup_california_gps_map">[docs]</a><span class="k">def</span> <span class="nf">setup_california_gps_map</span><span class="p">(</span>
-    <span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mf">235.2</span><span class="p">,</span> <span class="mf">245.3</span><span class="p">,</span> <span class="mf">31.9</span><span class="p">,</span> <span class="mf">42.3</span><span class="p">),</span> <span class="n">land</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">ocean</span><span class="o">=</span><span class="s2">&quot;skyblue&quot;</span>
+    <span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mf">235.2</span><span class="p">,</span> <span class="mf">245.3</span><span class="p">,</span> <span class="mf">31.9</span><span class="p">,</span> <span class="mf">42.3</span><span class="p">),</span> <span class="n">coastlines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Setup a Cartopy map for the California GPS velocity dataset.</span>
@@ -506,22 +506,27 @@
 <span class="sd">        The axes where the map is being plotted.</span>
 <span class="sd">    region : list = [W, E, S, N]</span>
 <span class="sd">        The boundaries of the map region in the coordinate system of the data.</span>
-<span class="sd">    land : str or None</span>
-<span class="sd">        The name of the color of the land feature or None to omit it.</span>
-<span class="sd">    ocean : str or None</span>
-<span class="sd">        The name of the color of the ocean feature or None to omit it.</span>
+<span class="sd">    coastlines : bool</span>
+<span class="sd">        If True the coastlines will be added to the plot.</span>
+<span class="sd">    kwargs :</span>
+<span class="sd">        All additional key-word arguments will be ignored. ``kwargs`` are</span>
+<span class="sd">        accepted to guarantee backward compatibility.</span>
 
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
 <span class="sd">    fetch_california_gps: Sample GPS velocity data from California.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;All kwargs are being ignored. They are accepted to &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;guarantee backward compatibility.&quot;</span>
+        <span class="p">)</span>
     <span class="n">_setup_map</span><span class="p">(</span>
         <span class="n">ax</span><span class="p">,</span>
         <span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">124</span><span class="p">,</span> <span class="o">-</span><span class="mi">115</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
         <span class="n">yticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
-        <span class="n">land</span><span class="o">=</span><span class="n">land</span><span class="p">,</span>
-        <span class="n">ocean</span><span class="o">=</span><span class="n">ocean</span><span class="p">,</span>
+        <span class="n">coastlines</span><span class="o">=</span><span class="n">coastlines</span><span class="p">,</span>
         <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
         <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
     <span class="p">)</span></div>
@@ -555,9 +560,7 @@
     <span class="k">return</span> <span class="n">data</span></div>
 
 
-<div class="viewcode-block" id="setup_texas_wind_map"><a class="viewcode-back" href="../../../api/generated/verde.datasets.setup_texas_wind_map.html#verde.datasets.setup_texas_wind_map">[docs]</a><span class="k">def</span> <span class="nf">setup_texas_wind_map</span><span class="p">(</span>
-    <span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">107</span><span class="p">,</span> <span class="o">-</span><span class="mi">93</span><span class="p">,</span> <span class="mf">25.5</span><span class="p">,</span> <span class="mi">37</span><span class="p">),</span> <span class="n">land</span><span class="o">=</span><span class="s2">&quot;#dddddd&quot;</span><span class="p">,</span> <span class="n">borders</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">states</span><span class="o">=</span><span class="mf">0.1</span>
-<span class="p">):</span>
+<div class="viewcode-block" id="setup_texas_wind_map"><a class="viewcode-back" href="../../../api/generated/verde.datasets.setup_texas_wind_map.html#verde.datasets.setup_texas_wind_map">[docs]</a><span class="k">def</span> <span class="nf">setup_texas_wind_map</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">107</span><span class="p">,</span> <span class="o">-</span><span class="mi">93</span><span class="p">,</span> <span class="mf">25.5</span><span class="p">,</span> <span class="mi">37</span><span class="p">),</span> <span class="n">coastlines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Setup a Cartopy map for the Texas wind speed and air temperature dataset.</span>
 
@@ -567,28 +570,28 @@
 <span class="sd">        The axes where the map is being plotted.</span>
 <span class="sd">    region : list = [W, E, S, N]</span>
 <span class="sd">        The boundaries of the map region in the coordinate system of the data.</span>
-<span class="sd">    land : str or None</span>
-<span class="sd">        The name of the color of the land feature or None to omit it.</span>
-<span class="sd">    borders : float or None</span>
-<span class="sd">        Line width of the country borders.</span>
-<span class="sd">    states : float or None</span>
-<span class="sd">        Line width of the state borders.</span>
+<span class="sd">    coastlines : bool</span>
+<span class="sd">        If True the coastlines will be added to the plot.</span>
+<span class="sd">    kwargs :</span>
+<span class="sd">        All additional key-word arguments will be ignored. ``kwargs`` are</span>
+<span class="sd">        accepted to guarantee backward compatibility.</span>
 
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
 <span class="sd">    fetch_texas_wind: Sample wind speed and air temperature data for Texas.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
+    <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;All kwargs are being ignored. They are accepted to &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;guarantee backward compatibility.&quot;</span>
+        <span class="p">)</span>
     <span class="n">_setup_map</span><span class="p">(</span>
         <span class="n">ax</span><span class="p">,</span>
         <span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">106</span><span class="p">,</span> <span class="o">-</span><span class="mi">92</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
         <span class="n">yticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">27</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
-        <span class="n">land</span><span class="o">=</span><span class="n">land</span><span class="p">,</span>
-        <span class="n">ocean</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">coastlines</span><span class="o">=</span><span class="n">coastlines</span><span class="p">,</span>
         <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
-        <span class="n">borders</span><span class="o">=</span><span class="n">borders</span><span class="p">,</span>
-        <span class="n">states</span><span class="o">=</span><span class="n">states</span><span class="p">,</span>
         <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
     <span class="p">)</span></div>
 </pre></div>
@@ -603,9 +606,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2020, The Verde Developers
+        &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jun 04, 2020.
+        Last updated on Mar 18, 2021.
       </span>
 
     </p>

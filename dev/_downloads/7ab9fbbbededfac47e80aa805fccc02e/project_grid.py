@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Projection of gridded data
 ==========================
@@ -51,7 +57,7 @@ data = checkerboard.grid(
     region=region,
     spacing=spacing,
     projection=projection,
-    data_names=["checkerboard"],
+    data_names="checkerboard",
     dims=("latitude", "longitude"),
 )
 print("Geographic grid:")

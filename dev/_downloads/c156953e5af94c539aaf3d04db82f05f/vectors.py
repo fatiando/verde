@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Vector Data
 ===========
@@ -35,7 +41,6 @@ tmp = ax.quiver(
 ax.quiverkey(tmp, 0.2, 0.15, 0.05, label="0.05 m/yr", coordinates="figure")
 ax.set_title("GPS horizontal velocities")
 vd.datasets.setup_california_gps_map(ax)
-plt.tight_layout()
 plt.show()
 
 
@@ -87,7 +92,6 @@ tmp = ax.quiver(
 ax.quiverkey(tmp, 0.2, 0.15, 0.05, label="0.05 m/yr", coordinates="figure")
 ax.set_title("Block mean velocities")
 vd.datasets.setup_california_gps_map(ax)
-plt.tight_layout()
 plt.show()
 
 ########################################################################################
@@ -142,7 +146,6 @@ ax.hist(data.velocity_north - pred_north, bins="auto", label="North", alpha=0.7)
 ax.hist(data.velocity_east - pred_east, bins="auto", label="East", alpha=0.7)
 ax.legend()
 ax.set_xlabel("Velocity (m/yr)")
-plt.tight_layout()
 plt.show()
 
 ########################################################################################
@@ -190,7 +193,6 @@ for ax, component, title in zip(axes, components, titles):
     cb.set_label("meters/year")
     vd.datasets.setup_california_gps_map(ax, land=None, ocean=None)
     ax.coastlines(color="white")
-plt.tight_layout()
 plt.show()
 
 ########################################################################################
@@ -277,7 +279,6 @@ tmp = ax.quiver(
 ax.quiverkey(tmp, 0.2, 0.15, 0.05, label="0.05 m/yr", coordinates="figure")
 ax.set_title("Gridded velocities")
 vd.datasets.setup_california_gps_map(ax)
-plt.tight_layout()
 plt.show()
 
 ########################################################################################

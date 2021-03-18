@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Gridding with splines and weights
 =================================
@@ -104,5 +110,4 @@ cb.set_label("vertical velocity [mm/yr]")
 ax.scatter(*coordinates, c="black", s=0.5, alpha=0.1, transform=crs)
 vd.datasets.setup_california_gps_map(ax, region=region)
 ax.coastlines()
-plt.tight_layout()
 plt.show()

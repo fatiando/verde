@@ -43,6 +43,7 @@
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Model Selection" href="model_selection.html" />
@@ -241,13 +242,14 @@
             
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-tutorials-model-evaluation-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-tutorials-model-evaluation-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="evaluating-performance">
 <span id="model-evaluation"></span><span id="sphx-glr-tutorials-model-evaluation-py"></span><h1>Evaluating Performance<a class="headerlink" href="#evaluating-performance" title="Permalink to this headline">¶</a></h1>
 <p>The Green’s functions based interpolations in Verde are all linear regressions under the
 hood. This means that we can use some of the same tactics from
-<a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_selection" title="(in scikit-learn v0.23)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.model_selection</span></code></a> to evaluate our interpolator’s performance. Once we have
+<a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_selection" title="(in scikit-learn v0.24)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.model_selection</span></code></a> to evaluate our interpolator’s performance. Once we have
 a quantified measure of the quality of a given fitted gridder, we can use it to tune the
 gridder’s parameters, like <code class="docutils literal notranslate"><span class="pre">damping</span></code> for a <a class="reference internal" href="../api/generated/verde.Spline.html#verde.Spline" title="verde.Spline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spline</span></code></a> (see
 <a class="reference internal" href="model_selection.html#model-selection"><span class="std std-ref">Model Selection</span></a>).</p>
@@ -275,7 +277,7 @@ our sample air temperature data.</p>
 <h2>Splitting the data<a class="headerlink" href="#splitting-the-data" title="Permalink to this headline">¶</a></h2>
 <p>We can’t evaluate a gridder on the data that went into fitting it. The true test of a
 model is if it can correctly predict data that it hasn’t seen before. scikit-learn has
-the <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="(in scikit-learn v0.23)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.model_selection.train_test_split</span></code></a> function to separate a dataset
+the <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split" title="(in scikit-learn v0.24)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.model_selection.train_test_split</span></code></a> function to separate a dataset
 into two parts: one for fitting the model (called <em>training</em> data) and a separate one
 for evaluating the model (called <em>testing</em> data). Using it with spatial data would
 involve some tedious array conversions so Verde implements
@@ -310,7 +312,7 @@ the tuple will be <code class="docutils literal notranslate"><span class="pre">N
         -9113314.23851832,  -9581641.24134595,  -9051780.41245142,
         -9151620.1904154 ,  -9526253.16341599,  -9370920.33356321,
         -9422548.43514848,  -9363887.07831951,  -9926719.2733836 ,
-        -9263865.98169933, -10151535.32091524,  -9105488.90703954,
+        -9263865.98169933, -10151535.32091524,  -9105488.90703955,
         -9399024.72527645,  -9275584.89274308,  -9287132.02821771,
         -9254036.60191507,  -9356519.81502484,  -9300826.35830558,
         -9088836.21992941,  -9329331.55967991,  -9705882.69320157,
@@ -335,9 +337,9 @@ the tuple will be <code class="docutils literal notranslate"><span class="pre">N
         -9291378.70200816,  -9717038.56210237,  -9108943.50459486,
         -9187130.01777196,  -9178474.43770947,  -9821430.39264604,
         -9676089.17505937,  -9590325.45066986,  -9334752.033192  ,
-        -9349658.33535028,  -9217667.89671333,  -9192989.47329381,
+        -9349658.33535028,  -9217667.89671332,  -9192989.47329381,
         -9735189.51389807,  -9062249.17907602,  -9332852.95884533,
-        -9455815.63702027,  -9796236.64251932,  -9443505.05457202,
+        -9455815.63702027,  -9796236.64251933,  -9443505.05457202,
         -9320723.69505337,  -9754266.14514927,  -9765097.54908629,
         -9081077.6900608 ,  -9042075.09280036,  -9433427.55452137,
         -9587615.21391383]), array([2657710.28293861, 3302077.73567252, 2899046.15133399,
@@ -347,8 +349,8 @@ the tuple will be <code class="docutils literal notranslate"><span class="pre">N
        3287606.04132201, 3103141.68482877, 3197876.76156001,
        3149242.24908431, 3067381.83156894, 3400585.90023853,
        3243911.5995015 , 3290869.09139339, 2992634.70248073,
-       3169418.17605082, 3246497.10552017, 2817264.46474637,
-       3252930.02674656, 3200327.43647367, 3459184.29516942,
+       3169418.17605082, 3246497.10552016, 2817264.46474637,
+       3252930.02674656, 3200327.43647367, 3459184.29516943,
        3112292.18628403, 2917869.77563751, 3197809.62807528,
        3290225.42947942, 3652939.53050434, 3222645.66433888,
        2963817.97546003, 2824339.57488837, 3107155.82534808,
@@ -418,7 +420,7 @@ the tuple will be <code class="docutils literal notranslate"><span class="pre">N
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>((array([ -9355174.23973406,  -9305731.50511056,  -9378946.06987249,
         -9894654.50049513,  -9357159.20186525,  -9310436.24708494,
         -9176098.20900436,  -9848465.95859632,  -9657890.50782771,
-        -9408987.70828107,  -9592090.92179618,  -9397058.84931958,
+        -9408987.70828107,  -9592090.92179618,  -9397058.84931957,
         -9614660.3229513 ,  -9438991.174341  ,  -9220530.82286406,
         -9464280.35533937,  -9148327.82534205,  -9254885.93667311,
         -9284574.48085645,  -9103675.72047743,  -9617332.38735867,
@@ -428,7 +430,7 @@ the tuple will be <code class="docutils literal notranslate"><span class="pre">N
         -9418511.70927591,  -9312192.17512406,  -9633794.21272551,
         -9386466.02256181,  -9298192.46624686, -10151936.13057628,
         -9335849.48821648,  -9334064.93091582,  -8951759.31583123,
-        -9066696.25769683,  -9086927.60249552,  -9399253.75936852,
+        -9066696.25769684,  -9086927.60249552,  -9399253.75936852,
         -9167595.31833663,  -9052610.66103518,  -9401849.47907855,
         -9332280.37361521,  -8991029.11953241,  -8973832.47645352,
         -9529249.69278712,  -9266070.43483542,  -9429505.34569483,
@@ -437,7 +439,7 @@ the tuple will be <code class="docutils literal notranslate"><span class="pre">N
        3027361.13101297, 2757426.84021469, 3028296.78889616,
        2903724.5557224 , 3182157.20869187, 3066100.23492454,
        3255225.28091213, 2860584.19616269, 2934171.90242784,
-       3714012.76916745, 3011874.16439619, 3080991.84629854,
+       3714012.76916745, 3011874.16439619, 3080991.84629853,
        2915167.81938923, 2873187.46869299, 3003831.55941359,
        2735051.95799933, 2953788.49303643, 2915178.71303919,
        3249859.25595487, 2916780.19714376, 3182123.69352164,
@@ -473,7 +475,6 @@ the tuple will be <code class="docutils literal notranslate"><span class="pre">N
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.plot.html#matplotlib.axes.Axes.plot" title="matplotlib.axes.Axes.plot" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">test</span></a><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">test</span></a><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;.b&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.legend.html#matplotlib.axes.Axes.legend" title="matplotlib.axes.Axes.legend" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">legend</span></a><span class="p">()</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.set_aspect.html#matplotlib.axes.Axes.set_aspect" title="matplotlib.axes.Axes.set_aspect" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span></a><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="matplotlib.pyplot.tight_layout" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
@@ -495,7 +496,7 @@ geographic grid:</p>
     <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">spacing</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">spacing</span></a><span class="p">,</span>
     <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
     <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span>
-    <span class="n">data_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;temperature&quot;</span><span class="p">],</span>
+    <span class="n">data_names</span><span class="o">=</span><span class="s2">&quot;temperature&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><a href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="p">)</span>
 </pre></div>
@@ -525,7 +526,7 @@ the grid:</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="cartopy.mpl.geoaxes.GeoAxesSubplot" class="sphx-glr-backref-module-cartopy-mpl-geoaxes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="matplotlib.pyplot.axes" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">(</span><span class="n">projection</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.Mercator" title="cartopy.crs.Mercator" class="sphx-glr-backref-module-cartopy-crs sphx-glr-backref-type-py-class"><span class="n">ccrs</span><span class="o">.</span><span class="n">Mercator</span></a><span class="p">())</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.set_title.html#matplotlib.axes.Axes.set_title" title="matplotlib.axes.Axes.set_title" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span></a><span class="p">(</span><span class="s2">&quot;Gridded temperature&quot;</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.QuadMesh" title="matplotlib.collections.QuadMesh" class="sphx-glr-backref-module-matplotlib-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pc</span></a> <span class="o">=</span> <a href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.plot.html#xarray.DataArray.plot" title="xarray.DataArray.plot" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">grid</span><span class="o">.</span><span class="n">temperature</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span></a><span class="p">(</span>
+<a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.QuadMesh" title="matplotlib.collections.QuadMesh" class="sphx-glr-backref-module-matplotlib-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pc</span></a> <span class="o">=</span> <a href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="o">.</span><span class="n">temperature</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
     <a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="cartopy.mpl.geoaxes.GeoAxesSubplot" class="sphx-glr-backref-module-cartopy-mpl-geoaxes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="cartopy.mpl.geoaxes.GeoAxesSubplot" class="sphx-glr-backref-module-cartopy-mpl-geoaxes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="p">,</span>
     <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;plasma&quot;</span><span class="p">,</span>
     <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="cartopy.crs.PlateCarree" class="sphx-glr-backref-module-cartopy-crs sphx-glr-backref-type-py-class"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">(),</span>
@@ -535,20 +536,10 @@ the grid:</p>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="matplotlib.pyplot.colorbar" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.QuadMesh" title="matplotlib.collections.QuadMesh" class="sphx-glr-backref-module-matplotlib-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pc</span></a><span class="p">)</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.plot.html#matplotlib.axes.Axes.plot" title="matplotlib.axes.Axes.plot" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.Series" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">longitude</span></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.Series" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">latitude</span></a><span class="p">,</span> <span class="s2">&quot;.k&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="cartopy.crs.PlateCarree" class="sphx-glr-backref-module-cartopy-crs sphx-glr-backref-type-py-class"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">())</span>
 <a href="../api/generated/verde.datasets.setup_texas_wind_map.html#verde.datasets.setup_texas_wind_map" title="verde.datasets.setup_texas_wind_map" class="sphx-glr-backref-module-verde-datasets sphx-glr-backref-type-py-function"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">setup_texas_wind_map</span></a><span class="p">(</span><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="cartopy.mpl.geoaxes.GeoAxesSubplot" class="sphx-glr-backref-module-cartopy-mpl-geoaxes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="matplotlib.pyplot.tight_layout" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="Gridded temperature" class="sphx-glr-single-img" src="../_images/sphx_glr_model_evaluation_002.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:782: MatplotlibDeprecationWarning: Passing the minor parameter of set_xticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
-  return super(GeoAxes, self).set_xticks(xticks, minor)
-/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:829: MatplotlibDeprecationWarning: Passing the minor parameter of set_yticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
-  return super(GeoAxes, self).set_yticks(yticks, minor)
-/home/travis/build/fatiando/verde/tutorials/model_evaluation.py:123: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
-  plt.tight_layout()
-</pre></div>
-</div>
 </div>
 <div class="section" id="scoring">
 <h2>Scoring<a class="headerlink" href="#scoring" title="Permalink to this headline">¶</a></h2>
@@ -556,12 +547,12 @@ the grid:</p>
 calculates the <a class="reference external" href="https://en.wikipedia.org/wiki/Coefficient_of_determination">R² coefficient of determination</a>
 for a given comparison dataset (<code class="docutils literal notranslate"><span class="pre">test</span></code> in our case). The R² score is at most 1,
 meaning a perfect prediction, but has no lower bound.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">score</span> <span class="o">=</span> <a href="../api/generated/verde.Spline.html#verde.Spline.score" title="verde.Spline.score" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-method"><span class="n">spline</span><span class="o">.</span><span class="n">score</span></a><span class="p">(</span><span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">test</span></a><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;R² score:&quot;</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">score</span></a> <span class="o">=</span> <a href="../api/generated/verde.Spline.html#verde.Spline.score" title="verde.Spline.score" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-method"><span class="n">spline</span><span class="o">.</span><span class="n">score</span></a><span class="p">(</span><span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">test</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;R² score:&quot;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">score</span></a><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>R² score: 0.8404552994988748
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>R² score: 0.840455299499375
 </pre></div>
 </div>
 <p>That’s a good score meaning that our gridder is able to accurately predict data that
@@ -577,11 +568,11 @@ that we made. Changing the random number generator seed in
     <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">proj_coords</span></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.Series" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">air_temperature_c</span></a><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span>
 <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;R² score with seed 1:&quot;</span><span class="p">,</span> <a href="../api/generated/verde.Spline.html#verde.Spline" title="verde.Spline" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-class"><span class="n">vd</span><span class="o">.</span><span class="n">Spline</span></a><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">train_other</span></a><span class="p">)</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">test_other</span></a><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;R² score with seed 1:&quot;</span><span class="p">,</span> <a href="../api/generated/verde.Spline.html#verde.Spline" title="verde.Spline" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-class"><span class="n">vd</span><span class="o">.</span><span class="n">Spline</span></a><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">train_other</span></a><span class="p">)</span><span class="o">.</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">score</span></a><span class="p">(</span><span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">test_other</span></a><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>R² score with seed 1: 0.7832246926703487
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>R² score with seed 1: 0.7832246926676265
 </pre></div>
 </div>
 </div>
@@ -598,13 +589,13 @@ can then take a mean of these scores.</p>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>k-fold scores: [0.81655898 0.72019255 0.81596348 0.87740087 0.75006854]
-Mean score: 0.7960368854849694
+Mean score: 0.7960368854799368
 </pre></div>
 </div>
 <p>You can also use most cross-validation splitter classes from
-<a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_selection" title="(in scikit-learn v0.23)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.model_selection</span></code></a> by specifying the <code class="docutils literal notranslate"><span class="pre">cv</span></code> argument. For example, if we
+<a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_selection" title="(in scikit-learn v0.24)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.model_selection</span></code></a> by specifying the <code class="docutils literal notranslate"><span class="pre">cv</span></code> argument. For example, if we
 want to shuffle then split the data <em>n</em> times
-(<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html#sklearn.model_selection.ShuffleSplit" title="(in scikit-learn v0.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.ShuffleSplit</span></code></a>):</p>
+(<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html#sklearn.model_selection.ShuffleSplit" title="(in scikit-learn v0.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.ShuffleSplit</span></code></a>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html#sklearn.model_selection.ShuffleSplit" title="sklearn.model_selection.ShuffleSplit" class="sphx-glr-backref-module-sklearn-model_selection sphx-glr-backref-type-py-class"><span class="n">ShuffleSplit</span></a>
 
 <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html#sklearn.model_selection.ShuffleSplit" title="sklearn.model_selection.ShuffleSplit" class="sphx-glr-backref-module-sklearn-model_selection sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">shuffle</span></a> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html#sklearn.model_selection.ShuffleSplit" title="sklearn.model_selection.ShuffleSplit" class="sphx-glr-backref-module-sklearn-model_selection sphx-glr-backref-type-py-class"><span class="n">ShuffleSplit</span></a><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -619,7 +610,7 @@ want to shuffle then split the data <em>n</em> times
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>shuffle scores: [0.8404553  0.79219264 0.60098099 0.73123421 0.67325199 0.70560489
  0.68905622 0.83517217 0.86908658 0.84133251]
-Mean score: 0.7578367516988477
+Mean score: 0.757836751698671
 </pre></div>
 </div>
 </div>
@@ -637,7 +628,7 @@ library for parallel execution.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Delayed k-fold scores: [Delayed(&#39;fit_score-f68b98ce-b9db-4d81-ac08-dee6a3bc4029&#39;), Delayed(&#39;fit_score-40108b11-e941-4342-a0ab-160a0af18065&#39;), Delayed(&#39;fit_score-45ae31ae-73bb-4029-bf5e-4bf790a777dd&#39;), Delayed(&#39;fit_score-7f17538c-12a0-4b77-8fc2-9614f8df4167&#39;), Delayed(&#39;fit_score-c68750f9-773b-439f-bc7e-c56aded4a7a9&#39;)]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Delayed k-fold scores: [Delayed(&#39;fit_score-5c25a29f-9ce1-4412-a756-33304bcaaac3&#39;), Delayed(&#39;fit_score-00f0a461-93e0-4cd7-9d73-5d79e4056c37&#39;), Delayed(&#39;fit_score-a0f88107-c67d-4dad-9e24-7d81f712d17d&#39;), Delayed(&#39;fit_score-5dd6153e-b5e4-45ca-92a5-b00df6923157&#39;), Delayed(&#39;fit_score-c290a6d3-af58-4194-b2af-e0c8902c33af&#39;)]
 </pre></div>
 </div>
 <p>In this case, the scores haven’t actually been computed yet (hence the
@@ -646,23 +637,23 @@ are interested only in the mean score, we can schedule the mean as well using
 <code class="xref py py-func docutils literal notranslate"><span class="pre">dask.delayed</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dask</span>
 
-<span class="n">mean_score</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html#numpy.mean" title="numpy.mean" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">)(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">scores</span></a><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Delayed mean:&quot;</span><span class="p">,</span> <span class="n">mean_score</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">mean_score</span></a> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html#numpy.mean" title="numpy.mean" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">)(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">scores</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Delayed mean:&quot;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">mean_score</span></a><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Delayed mean: Delayed(&#39;mean-768696ae-1438-45dd-bdfd-97333884177b&#39;)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Delayed mean: Delayed(&#39;mean-0b6be230-2f21-4d42-9eba-2ab593fe6f27&#39;)
 </pre></div>
 </div>
 <p>To run the scheduled computations and get the mean score, use
-<a class="reference external" href="https://docs.dask.org/en/latest/api.html#dask.compute" title="(in Dask v2.17.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dask.compute</span></code></a> or <code class="docutils literal notranslate"><span class="pre">.compute()</span></code>. Dask will automatically execute
+<a class="reference external" href="https://docs.dask.org/en/latest/api.html#dask.compute" title="(in Dask)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dask.compute</span></code></a> or <code class="docutils literal notranslate"><span class="pre">.compute()</span></code>. Dask will automatically execute
 things in parallel.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mean_score</span> <span class="o">=</span> <span class="n">mean_score</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean score:&quot;</span><span class="p">,</span> <span class="n">mean_score</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">mean_score</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">mean_score</span><span class="o">.</span><span class="n">compute</span></a><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mean score:&quot;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">mean_score</span></a><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Mean score: 0.7960368854849694
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Mean score: 0.7960368854799368
 </pre></div>
 </div>
 <div class="admonition note">
@@ -678,7 +669,7 @@ intensive. Make sure you have enough RAM to run multiple fits.</p>
 different combinations manually until we get a good score. A better way is to
 do this automatically. In <a class="reference internal" href="model_selection.html#model-selection"><span class="std std-ref">Model Selection</span></a> we’ll go over how to do just
 that.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.700 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.427 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-model-evaluation-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/9c35741d00d56cadd9c9ce8cb60a83ac/model_evaluation.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">model_evaluation.py</span></code></a></p>
@@ -711,9 +702,9 @@ that.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2020, The Verde Developers
+        &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jun 04, 2020.
+        Last updated on Mar 18, 2021.
       </span>
 
     </p>

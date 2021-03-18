@@ -43,6 +43,7 @@
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <!-- Google Analytics tracking code -->
@@ -225,7 +226,13 @@
            <div itemprop="articleBody">
             
   <h1>Source code for verde.model_selection</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="c1"># Copyright (c) 2017 The Verde Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Functions for automating model selection through cross-validation.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -236,12 +243,9 @@
 <span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_random_state</span>
 
 <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">check_fit_input</span><span class="p">,</span> <span class="n">n_1d_arrays</span><span class="p">,</span> <span class="n">BaseBlockCrossValidator</span>
+<span class="kn">from</span> <span class="nn">.base.utils</span> <span class="kn">import</span> <span class="n">score_estimator</span>
 <span class="kn">from</span> <span class="nn">.coordinates</span> <span class="kn">import</span> <span class="n">block_split</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">dispatch</span><span class="p">,</span> <span class="n">partition_by_sum</span>
-
-
-<span class="c1"># Otherwise, DeprecationWarning won&#39;t be shown, kind of defeating the purpose.</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
 
 
 <span class="c1"># Pylint doesn&#39;t like X, y scikit-learn argument names.</span>
@@ -312,7 +316,7 @@
 <span class="sd">        The number of splits generated per iteration to try to balance the</span>
 <span class="sd">        amount of data in each set so that *test_size* and *train_size* are</span>
 <span class="sd">        respected. If 1, then no extra splits are generated (essentially</span>
-<span class="sd">        disabling the balacing). Must be &gt;= 1.</span>
+<span class="sd">        disabling the balancing). Must be &gt;= 1.</span>
 
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
@@ -815,7 +819,14 @@
 
 
 <div class="viewcode-block" id="cross_val_score"><a class="viewcode-back" href="../../api/generated/verde.cross_val_score.html#verde.cross_val_score">[docs]</a><span class="k">def</span> <span class="nf">cross_val_score</span><span class="p">(</span>
-    <span class="n">estimator</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">delayed</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">estimator</span><span class="p">,</span>
+    <span class="n">coordinates</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">,</span>
+    <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">cv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">delayed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Score an estimator/gridder using cross-validation.</span>
@@ -827,6 +838,10 @@
 <span class="sd">    ``n_splits=5`` and ``random_state=0`` to split the dataset. Any other</span>
 <span class="sd">    cross-validation class from scikit-learn or Verde can be passed in through</span>
 <span class="sd">    the *cv* argument.</span>
+
+<span class="sd">    The score is calculated using the estimator/gridder&#39;s ``.score`` method by</span>
+<span class="sd">    default. Alternatively, use the *scoring* parameter to specify a different</span>
+<span class="sd">    scoring function (e.g., mean square error, mean absolute error, etc).</span>
 
 <span class="sd">    Can optionally run in parallel using :mod:`dask`. To do this, use</span>
 <span class="sd">    ``delayed=True`` to dispatch computations with :func:`dask.delayed` instead</span>
@@ -867,6 +882,11 @@
 <span class="sd">        actually executing them. The returned scores will be a list of delayed</span>
 <span class="sd">        objects. Call `.compute()` on each score or :func:`dask.compute` on the</span>
 <span class="sd">        entire list to trigger the actual computations.</span>
+<span class="sd">    scoring : None, str, or callable</span>
+<span class="sd">        A scoring function (or name of a function) known to scikit-learn. See</span>
+<span class="sd">        the description of *scoring* in</span>
+<span class="sd">        :func:`sklearn.model_selection.cross_val_score` for details. If None,</span>
+<span class="sd">        will fall back to the estimator&#39;s ``.score`` method.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -900,6 +920,22 @@
 
 <span class="sd">    There are 5 scores because the default cross-validator is</span>
 <span class="sd">    :class:`sklearn.model_selection.KFold` with ``n_splits=5``.</span>
+
+<span class="sd">    To calculate the score with a different metric, use the *scoring* argument:</span>
+
+<span class="sd">    &gt;&gt;&gt; scores = cross_val_score(</span>
+<span class="sd">    ...     model, coords, data, scoring=&quot;neg_mean_squared_error&quot;,</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; print(&#39;, &#39;.join([&#39;{:.2f}&#39;.format(-score) for score in scores]))</span>
+<span class="sd">    0.00, 0.00, 0.00, 0.00, 0.00</span>
+
+<span class="sd">    In this case, we calculated the (negative) mean squared error (MSE) which</span>
+<span class="sd">    measures the distance between test data and predictions. This way, 0 is the</span>
+<span class="sd">    best possible value meaning that the data and prediction are the same. The</span>
+<span class="sd">    &quot;neg&quot; part indicates that this is the negative mean square error. This is</span>
+<span class="sd">    required because scikit-learn assumes that higher scores are always treated</span>
+<span class="sd">    as better (which is the opposite for MSE). For display, we take the</span>
+<span class="sd">    negative of the score to get the actual MSE.</span>
 
 <span class="sd">    We can use different cross-validators by assigning them to the ``cv``</span>
 <span class="sd">    argument:</span>
@@ -952,7 +988,7 @@
             <span class="s2">&quot;The &#39;client&#39; parameter of &#39;verde.cross_val_score&#39; is deprecated &quot;</span>
             <span class="s2">&quot;and will be removed in Verde 2.0.0. &quot;</span>
             <span class="s2">&quot;Use the &#39;delayed&#39; parameter instead.&quot;</span><span class="p">,</span>
-            <span class="ne">DeprecationWarning</span><span class="p">,</span>
+            <span class="ne">FutureWarning</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">check_fit_input</span><span class="p">(</span>
         <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="kc">False</span>
@@ -963,12 +999,13 @@
     <span class="n">fit_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
     <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span> <span class="ow">in</span> <span class="n">cv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">feature_matrix</span><span class="p">):</span>
-        <span class="n">train</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">train_index</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">fit_args</span><span class="p">)</span>
-        <span class="n">test</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">test_index</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">fit_args</span><span class="p">)</span>
         <span class="c1"># Clone the estimator to avoid fitting the same object simultaneously</span>
         <span class="c1"># when delayed=True.</span>
         <span class="n">score</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">fit_score</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span> <span class="n">delayed</span><span class="o">=</span><span class="n">delayed</span><span class="p">)(</span>
-            <span class="n">clone</span><span class="p">(</span><span class="n">estimator</span><span class="p">),</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span>
+            <span class="n">clone</span><span class="p">(</span><span class="n">estimator</span><span class="p">),</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">train_index</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">fit_args</span><span class="p">),</span>
+            <span class="nb">tuple</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">test_index</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">fit_args</span><span class="p">),</span>
+            <span class="n">scoring</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">delayed</span> <span class="ow">and</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -976,11 +1013,16 @@
     <span class="k">return</span> <span class="n">scores</span></div>
 
 
-<span class="k">def</span> <span class="nf">fit_score</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">fit_score</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">,</span> <span class="n">scoring</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Fit an estimator on the training data and then score it on the testing data</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="o">*</span><span class="n">train_data</span><span class="p">)</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
+    <span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="o">*</span><span class="n">train_data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">scoring</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">score_estimator</span><span class="p">(</span><span class="n">scoring</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">score</span>
 
 
 <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
@@ -1025,9 +1067,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2020, The Verde Developers
+        &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jun 04, 2020.
+        Last updated on Mar 18, 2021.
       </span>
 
     </p>

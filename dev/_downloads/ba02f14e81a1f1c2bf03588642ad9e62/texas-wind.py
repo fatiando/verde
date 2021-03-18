@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Wind speed data from Texas
 ==========================
@@ -39,5 +45,4 @@ ax.quiver(
 )
 # Use an utility function to add tick labels and land and ocean features to the map.
 vd.datasets.setup_texas_wind_map(ax)
-plt.tight_layout()
 plt.show()

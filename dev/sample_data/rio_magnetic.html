@@ -43,6 +43,7 @@
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Wind speed data from Texas" href="texas-wind.html" />
@@ -247,7 +248,8 @@
             
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-sample-data-rio-magnetic-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-sample-data-rio-magnetic-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="deprecated-magnetic-data-from-rio-de-janeiro">
 <span id="sphx-glr-sample-data-rio-magnetic-py"></span><h1>[DEPRECATED] Magnetic data from Rio de Janeiro<a class="headerlink" href="#deprecated-magnetic-data-from-rio-de-janeiro" title="Permalink to this headline">¶</a></h1>
@@ -264,8 +266,8 @@ Brazil (CPRM) through their <a class="reference external" href="http://geosgb.cp
 documentation for <a class="reference internal" href="../api/generated/verde.datasets.fetch_rio_magnetic.html#verde.datasets.fetch_rio_magnetic" title="verde.datasets.fetch_rio_magnetic"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.datasets.fetch_rio_magnetic</span></code></a> for more details.</p>
 <img alt="Total-field Magnetic Anomaly of Rio de Janeiro" class="sphx-glr-single-img" src="../_images/sphx_glr_rio_magnetic_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/verde/datasets/sample_data.py:184: DeprecationWarning: The Rio magnetic anomaly dataset is deprecated and will be removed in Verde v2.0.0. Use a different dataset instead.
-  DeprecationWarning,
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda3/envs/testing/lib/python3.8/site-packages/verde/datasets/sample_data.py:186: FutureWarning: The Rio magnetic anomaly dataset is deprecated and will be removed in Verde v2.0.0. Use a different dataset instead.
+  warnings.warn(
    longitude   latitude  ...  line_type  line_number
 0 -42.590424 -22.499878  ...       LINE         2902
 1 -42.590485 -22.498978  ...       LINE         2902
@@ -274,14 +276,8 @@ documentation for <a class="reference internal" href="../api/generated/verde.dat
 4 -42.590652 -22.496277  ...       LINE         2902
 
 [5 rows x 6 columns]
-/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/verde/datasets/sample_data.py:221: DeprecationWarning: The Rio magnetic anomaly dataset is deprecated and will be removed in Verde v2.0.0. Use a different dataset instead.
-  DeprecationWarning,
-/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:782: MatplotlibDeprecationWarning: Passing the minor parameter of set_xticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
-  return super(GeoAxes, self).set_xticks(xticks, minor)
-/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:829: MatplotlibDeprecationWarning: Passing the minor parameter of set_yticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
-  return super(GeoAxes, self).set_yticks(yticks, minor)
-/home/travis/build/fatiando/verde/data/examples/rio_magnetic.py:50: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
-  plt.tight_layout()
+/usr/share/miniconda3/envs/testing/lib/python3.8/site-packages/verde/datasets/sample_data.py:219: FutureWarning: The Rio magnetic anomaly dataset is deprecated and will be removed in Verde v2.0.0. Use a different dataset instead.
+  warnings.warn(
 </pre></div>
 </div>
 <div class="line-block">
@@ -304,7 +300,7 @@ documentation for <a class="reference internal" href="../api/generated/verde.dat
 <span class="c1"># Since the data is diverging (going from negative to positive) we need to center our</span>
 <span class="c1"># colorbar on 0. To do this, we calculate the maximum absolute value of the data to set</span>
 <span class="c1"># vmin and vmax.</span>
-<span class="n">maxabs</span> <span class="o">=</span> <a href="../api/generated/verde.maxabs.html#verde.maxabs" title="verde.maxabs" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-function"><span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span></a><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.Series" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span></a><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">maxabs</span></a> <span class="o">=</span> <a href="../api/generated/verde.maxabs.html#verde.maxabs" title="verde.maxabs" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-function"><span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span></a><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.Series" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span></a><span class="p">)</span>
 <span class="c1"># Cartopy requires setting the projection of the original data through the transform</span>
 <span class="c1"># argument. Use PlateCarree for geographic data.</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.scatter.html#matplotlib.pyplot.scatter" title="matplotlib.pyplot.scatter" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span></a><span class="p">(</span>
@@ -313,18 +309,17 @@ documentation for <a class="reference internal" href="../api/generated/verde.dat
     <span class="n">c</span><span class="o">=</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.Series" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">total_field_anomaly_nt</span></a><span class="p">,</span>
     <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;seismic&quot;</span><span class="p">,</span>
-    <span class="n">vmin</span><span class="o">=-</span><span class="n">maxabs</span><span class="p">,</span>
-    <span class="n">vmax</span><span class="o">=</span><span class="n">maxabs</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=-</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">maxabs</span></a><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">maxabs</span></a><span class="p">,</span>
     <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/crs/projections.html#cartopy.crs.PlateCarree" title="cartopy.crs.PlateCarree" class="sphx-glr-backref-module-cartopy-crs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">crs</span></a><span class="p">,</span>
 <span class="p">)</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="matplotlib.pyplot.colorbar" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">pad</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s2">&quot;nT&quot;</span><span class="p">)</span>
 <span class="c1"># Set the proper ticks for a Cartopy map</span>
 <a href="../api/generated/verde.datasets.setup_rio_magnetic_map.html#verde.datasets.setup_rio_magnetic_map" title="verde.datasets.setup_rio_magnetic_map" class="sphx-glr-backref-module-verde-datasets sphx-glr-backref-type-py-function"><span class="n">vd</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">setup_rio_magnetic_map</span></a><span class="p">(</span><a href="https://scitools.org.uk/cartopy/docs/latest/matplotlib/geoaxes.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="cartopy.mpl.geoaxes.GeoAxesSubplot" class="sphx-glr-backref-module-cartopy-mpl-geoaxes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="matplotlib.pyplot.tight_layout" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.760 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.017 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-sample-data-rio-magnetic-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/5230ee0eb9da07201829c0348532100a/rio_magnetic.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">rio_magnetic.py</span></code></a></p>
@@ -356,9 +351,9 @@ documentation for <a class="reference internal" href="../api/generated/verde.dat
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2020, The Verde Developers
+        &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jun 04, 2020.
+        Last updated on Mar 18, 2021.
       </span>
 
     </p>

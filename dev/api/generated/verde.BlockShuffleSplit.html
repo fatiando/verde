@@ -43,6 +43,7 @@
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="verde.BlockKFold" href="verde.BlockKFold.html" />
@@ -271,43 +272,43 @@ selects the one with proportion of data points in each set closer to the
 desired amount <a class="reference internal" href="../../references.html#valavi-etal2019" id="id1"><span>[Valavi_etal2019]</span></a>. The number of balancing splits per
 iteration is controlled by the <em>balancing</em> argument.</p>
 <p>This cross-validator is preferred over
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html#sklearn.model_selection.ShuffleSplit" title="(in scikit-learn v0.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.ShuffleSplit</span></code></a> for spatial data to avoid
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html#sklearn.model_selection.ShuffleSplit" title="(in scikit-learn v0.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.ShuffleSplit</span></code></a> for spatial data to avoid
 overestimating cross-validation scores. This can happen because of the
 inherent autocorrelation that is usually associated with this type of data
 (points that are close together are more likely to have similar values).
 See <a class="reference internal" href="../../references.html#roberts-etal2017" id="id2"><span>[Roberts_etal2017]</span></a> for an overview of this topic.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Like <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html#sklearn.model_selection.ShuffleSplit" title="(in scikit-learn v0.23)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.ShuffleSplit</span></code></a>, this
+<p>Like <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html#sklearn.model_selection.ShuffleSplit" title="(in scikit-learn v0.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.ShuffleSplit</span></code></a>, this
 cross-validator cannot guarantee that all folds will be different,
 although this is still very likely for sizeable datasets.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><em>tuple =</em><em> (</em><em>s_north</em><em>, </em><em>s_east</em><em>)</em><em>, or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – The block size in the South-North and West-East directions,
+<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><em>tuple =</em><em> (</em><em>s_north</em><em>, </em><em>s_east</em><em>)</em><em>, or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The block size in the South-North and West-East directions,
 respectively. A single value means that the spacing is equal in both
 directions. If None, then <em>shape</em> <strong>must be provided</strong>.</p></li>
-<li><p><strong>shape</strong> (<em>tuple =</em><em> (</em><em>n_north</em><em>, </em><em>n_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a>) – The number of blocks in the South-North and West-East directions,
+<li><p><strong>shape</strong> (<em>tuple =</em><em> (</em><em>n_north</em><em>, </em><em>n_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The number of blocks in the South-North and West-East directions,
 respectively. If None, then <em>spacing</em> <strong>must be provided</strong>.</p></li>
-<li><p><strong>n_splits</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>default 10</em>) – Number of re-shuffling &amp; splitting iterations.</p></li>
-<li><p><strong>test_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em>, </em><em>default=None</em>) – If float, should be between 0.0 and 1.0 and represent the proportion
+<li><p><strong>n_splits</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>default 10</em>) – Number of re-shuffling &amp; splitting iterations.</p></li>
+<li><p><strong>test_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>, </em><em>default=None</em>) – If float, should be between 0.0 and 1.0 and represent the proportion
 of the dataset to include in the test split. If int, represents the
 absolute number of test samples. If None, the value is set to the
 complement of the train size. If <code class="docutils literal notranslate"><span class="pre">train_size</span></code> is also None, it will
 be set to 0.1.</p></li>
-<li><p><strong>train_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em>, </em><em>default=None</em>) – If float, should be between 0.0 and 1.0 and represent the
+<li><p><strong>train_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>, </em><em>default=None</em>) – If float, should be between 0.0 and 1.0 and represent the
 proportion of the dataset to include in the train split. If
 int, represents the absolute number of train samples. If None,
 the value is automatically set to the complement of the test size.</p></li>
-<li><p><strong>random_state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>RandomState instance</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – If int, random_state is the seed used by the random number generator;
+<li><p><strong>random_state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>RandomState instance</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – If int, random_state is the seed used by the random number generator;
 If RandomState instance, random_state is the random number generator;
 If None, the random number generator is the RandomState instance used
 by <cite>np.random</cite>.</p></li>
-<li><p><strong>balancing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The number of splits generated per iteration to try to balance the
+<li><p><strong>balancing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The number of splits generated per iteration to try to balance the
 amount of data in each set so that <em>test_size</em> and <em>train_size</em> are
 respected. If 1, then no extra splits are generated (essentially
-disabling the balacing). Must be &gt;= 1.</p></li>
+disabling the balancing). Must be &gt;= 1.</p></li>
 </ul>
 </dd>
 </dl>
@@ -386,9 +387,9 @@ disabling the balacing). Must be &gt;= 1.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>X</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><em>object</em></a>) – Always ignored, exists for compatibility.</p></li>
-<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><em>object</em></a>) – Always ignored, exists for compatibility.</p></li>
-<li><p><strong>groups</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><em>object</em></a>) – Always ignored, exists for compatibility.</p></li>
+<li><p><strong>X</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – Always ignored, exists for compatibility.</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – Always ignored, exists for compatibility.</p></li>
+<li><p><strong>groups</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><em>object</em></a>) – Always ignored, exists for compatibility.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -443,9 +444,9 @@ train/test set. Always ignored.</p></li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2020, The Verde Developers
+        &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jun 04, 2020.
+        Last updated on Mar 18, 2021.
       </span>
 
     </p>

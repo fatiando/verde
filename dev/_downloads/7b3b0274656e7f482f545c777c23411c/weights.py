@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Using Weights
 =============
@@ -53,7 +59,6 @@ def plot_data(coordinates, velocity, weights, title_data, title_weights):
     )
     plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.05)
     vd.datasets.setup_california_gps_map(ax)
-    plt.tight_layout()
     plt.show()
 
 
@@ -244,7 +249,7 @@ grid = spline.grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["velocity"],
+    data_names="velocity",
 )
 # Avoid showing interpolation outside of the convex hull of the data points.
 grid = vd.convexhull_mask(coordinates, grid=grid, projection=projection)
@@ -262,7 +267,7 @@ grid_unweighted = spline_unweighted.grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["velocity"],
+    data_names="velocity",
 )
 grid_unweighted = vd.convexhull_mask(
     coordinates, grid=grid_unweighted, projection=projection
@@ -305,5 +310,4 @@ plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.05).set_label("m/yr")
 ax.plot(data.longitude, data.latitude, ".k", markersize=0.1, transform=crs)
 ax.coastlines()
 vd.datasets.setup_california_gps_map(ax)
-plt.tight_layout()
 plt.show()

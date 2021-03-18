@@ -43,9 +43,10 @@
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="verde.median_distance" href="verde.median_distance.html" />
+    <link rel="next" title="verde.make_xarray_grid" href="verde.make_xarray_grid.html" />
     <link rel="prev" title="verde.variance_to_weights" href="verde.variance_to_weights.html" />
     <!-- Google Analytics tracking code -->
     <script>
@@ -146,6 +147,7 @@
 <li class="toctree-l3"><a class="reference internal" href="verde.maxabs.html">verde.maxabs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="verde.variance_to_weights.html">verde.variance_to_weights</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">verde.grid_to_table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="verde.make_xarray_grid.html">verde.make_xarray_grid</a></li>
 <li class="toctree-l3"><a class="reference internal" href="verde.median_distance.html">verde.median_distance</a></li>
 </ul>
 </li>
@@ -258,17 +260,17 @@
 <code class="sig-prename descclassname">verde.</code><code class="sig-name descname">grid_to_table</code><span class="sig-paren">(</span><em class="sig-param">grid</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/utils.html#grid_to_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.grid_to_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a grid to a table with the values and coordinates of each point.</p>
 <p>Takes a 2D grid as input, extracts the coordinates and runs them through
-<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html#numpy.meshgrid" title="(in NumPy v1.18)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.meshgrid</span></code></a> to create a 2D table. Works for 2D grids and any
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html#numpy.meshgrid" title="(in NumPy v1.20)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.meshgrid</span></code></a> to create a 2D table. Works for 2D grids and any
 number of variables. Use cases includes passing gridded data to functions
 that expect data in XYZ format, such as <a class="reference internal" href="verde.BlockReduce.html#verde.BlockReduce" title="verde.BlockReduce"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.BlockReduce</span></code></a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>grid</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – A 2D grid with one or more data variables.</p>
+<dd class="field-odd"><p><strong>grid</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – A 2D grid with one or more data variables.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>table</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – Table with coordinates and variable values for each point in the grid.
+<dd class="field-even"><p><strong>table</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>) – Table with coordinates and variable values for each point in the grid.
 Column names are taken from the grid. If <em>grid</em> is a
-<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> that doesn’t have a <code class="docutils literal notranslate"><span class="pre">name</span></code> attribute
+<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> that doesn’t have a <code class="docutils literal notranslate"><span class="pre">name</span></code> attribute
 defined, the column with data values will be called <code class="docutils literal notranslate"><span class="pre">&quot;scalars&quot;</span></code>.</p>
 </dd>
 </dl>
@@ -344,7 +346,7 @@ defined, the column with data values will be called <code class="docutils litera
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="verde.median_distance.html" class="btn btn-neutral float-right" title="verde.median_distance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="verde.make_xarray_grid.html" class="btn btn-neutral float-right" title="verde.make_xarray_grid" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="verde.variance_to_weights.html" class="btn btn-neutral float-left" title="verde.variance_to_weights" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -356,9 +358,9 @@ defined, the column with data values will be called <code class="docutils litera
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2020, The Verde Developers
+        &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jun 04, 2020.
+        Last updated on Mar 18, 2021.
       </span>
 
     </p>

@@ -43,6 +43,7 @@
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="References" href="references.html" />
@@ -135,6 +136,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-6-0">Version 1.6.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-5-0">Version 1.5.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-4-0">Version 1.4.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-1-3-0">Version 1.3.0</a></li>
@@ -238,6 +240,45 @@
             
   <div class="section" id="changelog">
 <span id="changes"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-1-6-0">
+<h2>Version 1.6.0<a class="headerlink" href="#version-1-6-0" title="Permalink to this headline">¶</a></h2>
+<p><em>Released on: 2021/03/18</em></p>
+<a class="reference external image-reference" href="https://doi.org/10.5281/zenodo.4617252"><img alt="https://zenodo.org/badge/DOI/10.5281/zenodo.4617252.svg" src="https://zenodo.org/badge/DOI/10.5281/zenodo.4617252.svg" /></a>
+<p>New features:</p>
+<ul class="simple">
+<li><p>Allow specifing the scoring function in <code class="docutils literal notranslate"><span class="pre">cross_val_score</span></code> instead of always using the <code class="docutils literal notranslate"><span class="pre">.score</span></code> method of the gridder (<a class="reference external" href="https://github.com/fatiando/verde/pull/273">#273</a>)</p></li>
+<li><p>New function <code class="docutils literal notranslate"><span class="pre">verde.make_xarray_grid</span></code> to simplify the creation of <code class="docutils literal notranslate"><span class="pre">xarray.Dataset</span></code> from individual numpy arrays that represent a 2D grid (<a class="reference external" href="https://github.com/fatiando/verde/pull/282">#282</a> and <a class="reference external" href="https://github.com/fatiando/verde/pull/300">#300</a>)</p></li>
+</ul>
+<p>Enhancements:</p>
+<ul class="simple">
+<li><p>Raise informative errors for invalid <code class="docutils literal notranslate"><span class="pre">verde.rolling_window</span></code> arguments, like missing <code class="docutils literal notranslate"><span class="pre">spacing</span></code> or <code class="docutils literal notranslate"><span class="pre">shape</span></code> and invalid window sizes (<a class="reference external" href="https://github.com/fatiando/verde/pull/280">#280</a>)</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">DeprecationWarning</span></code> with <code class="docutils literal notranslate"><span class="pre">FutureWarning</span></code> since these are intended for end-users, which allows us to avoid having to set <code class="docutils literal notranslate"><span class="pre">warning.simplefilter</span></code> (<a class="reference external" href="https://github.com/fatiando/verde/pull/305">#305</a> and <a class="reference external" href="https://github.com/fatiando/verde/pull/293">#293</a>)</p></li>
+</ul>
+<p>Documentation:</p>
+<ul class="simple">
+<li><p>Several typo fixes (<a class="reference external" href="https://github.com/fatiando/verde/pull/306">#306</a> <a class="reference external" href="https://github.com/fatiando/verde/pull/303">#303</a> <a class="reference external" href="https://github.com/fatiando/verde/pull/281">#281</a>)</p></li>
+<li><p>Update link to the GMT website in the Baja bathymetry example (<a class="reference external" href="https://github.com/fatiando/verde/pull/298">#298</a>)</p></li>
+<li><p>Fix issue with Cartopy 0.17 and require versions &gt;= 0.18 for building the docs (<a class="reference external" href="https://github.com/fatiando/verde/pull/283">#283</a>)</p></li>
+</ul>
+<p>Maintenance:</p>
+<ul class="simple">
+<li><p>Refactor internal function <code class="docutils literal notranslate"><span class="pre">get_data_names</span></code> and related check functions to simplify their logic and make them more useful (<a class="reference external" href="https://github.com/fatiando/verde/pull/295">#295</a>)</p></li>
+<li><p>Require Black &gt;=20.8b1 (<a class="reference external" href="https://github.com/fatiando/verde/pull/284">#284</a>)</p></li>
+<li><p>Format the <code class="docutils literal notranslate"><span class="pre">doc/conf.py</span></code> sphinx configuration file with Black (<a class="reference external" href="https://github.com/fatiando/verde/pull/275">#275</a>)</p></li>
+<li><p>Add a license and copyright notice to every source file (<a class="reference external" href="https://github.com/fatiando/verde/pull/308">#308</a>)</p></li>
+<li><p>Replace versioneer for setuptools-scm (<a class="reference external" href="https://github.com/fatiando/verde/pull/307">#307</a>)</p></li>
+<li><p>Replace Travis and Azure with GitHub Actions (<a class="reference external" href="https://github.com/fatiando/verde/pull/309">#309</a>)</p></li>
+<li><p>Exclude Dask 2021.03.0 as a dependency. This release was causing the tests to fail under Python 3.8 on every OS. The problem seems to be originated in <code class="docutils literal notranslate"><span class="pre">dask.distributed</span></code> (<a class="reference external" href="https://github.com/fatiando/verde/pull/311">#311</a>)</p></li>
+<li><p>Use the OSI version of item 3 in the license (<a class="reference external" href="https://github.com/fatiando/verde/pull/299">#299</a>)</p></li>
+</ul>
+<p>This release contains contributions from:</p>
+<ul class="simple">
+<li><p>Santiago Soler</p></li>
+<li><p>Leonardo Uieda</p></li>
+<li><p>Federico Esteban</p></li>
+<li><p>DC Slagel</p></li>
+</ul>
+</div>
 <div class="section" id="version-1-5-0">
 <h2>Version 1.5.0<a class="headerlink" href="#version-1-5-0" title="Permalink to this headline">¶</a></h2>
 <p><em>Released on: 2020/06/04</em></p>
@@ -595,9 +636,9 @@ chaining operations to form a pipeline, and more.</p></li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2020, The Verde Developers
+        &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jun 04, 2020.
+        Last updated on Mar 18, 2021.
       </span>
 
     </p>

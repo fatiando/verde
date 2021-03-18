@@ -43,6 +43,7 @@
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <!-- Google Analytics tracking code -->
@@ -225,7 +226,13 @@
            <div itemprop="articleBody">
             
   <h1>Source code for verde.coordinates</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="c1"># Copyright (c) 2017 The Verde Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Functions for generating and manipulating coordinates.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -1242,11 +1249,21 @@
 <span class="sd">    [20. 20. 20. 20. 20. 20. 20. 20. 20.]</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check if shape or spacing were passed</span>
+    <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">spacing</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either a shape or a spacing must be provided.&quot;</span><span class="p">)</span>
     <span class="c1"># Select the coordinates after checking to make sure indexing will still</span>
     <span class="c1"># work on the ignored coordinates.</span>
     <span class="n">coordinates</span> <span class="o">=</span> <span class="n">check_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">region</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">region</span> <span class="o">=</span> <span class="n">get_region</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+    <span class="c1"># Check if window size is bigger than the minimum dimension of the region</span>
+    <span class="n">region_min_width</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">region</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">region</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">region_min_width</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Window size &#39;</span><span class="si">{}</span><span class="s2">&#39; is larger &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;than dimensions of the region &#39;</span><span class="si">{}</span><span class="s2">&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
+        <span class="p">)</span>
     <span class="c1"># Calculate the region spanning the centers of the rolling windows</span>
     <span class="n">window_region</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">dimension</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">size</span> <span class="o">/</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dimension</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
@@ -1595,9 +1612,9 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2020, The Verde Developers
+        &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jun 04, 2020.
+        Last updated on Mar 18, 2021.
       </span>
 
     </p>

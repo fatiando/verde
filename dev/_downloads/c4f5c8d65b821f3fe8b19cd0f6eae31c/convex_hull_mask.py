@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Mask grid points by convex hull
 ===============================
@@ -47,5 +53,4 @@ ax.set_title("Only keep grid points that inside of the convex hull")
 ax.plot(data.longitude, data.latitude, ".y", markersize=0.5, transform=crs)
 ax.pcolormesh(*coordinates, dummy_data, transform=crs)
 vd.datasets.setup_baja_bathymetry_map(ax, land=None)
-plt.tight_layout()
 plt.show()

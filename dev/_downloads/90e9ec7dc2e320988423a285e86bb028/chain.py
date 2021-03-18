@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Chaining Operations
 ===================
@@ -54,7 +60,6 @@ plt.scatter(
 )
 plt.colorbar().set_label("meters")
 vd.datasets.setup_baja_bathymetry_map(ax)
-plt.tight_layout()
 plt.show()
 
 ########################################################################################
@@ -95,7 +100,6 @@ plt.title("Histogram of fit residuals")
 plt.hist(residuals, bins="auto", density=True)
 plt.xlabel("residuals (m)")
 plt.xlim(-1500, 1500)
-plt.tight_layout()
 plt.show()
 
 ########################################################################################
@@ -108,7 +112,7 @@ grid = chain.grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["bathymetry"],
+    data_names="bathymetry",
 )
 print(grid)
 
@@ -123,7 +127,6 @@ pc = grid.bathymetry.plot.pcolormesh(
 )
 plt.colorbar(pc).set_label("meters")
 vd.datasets.setup_baja_bathymetry_map(ax)
-plt.tight_layout()
 plt.show()
 
 ########################################################################################
@@ -143,7 +146,7 @@ grid_trend = chain.named_steps["trend"].grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["bathymetry"],
+    data_names="bathymetry",
 )
 print(grid_trend)
 
@@ -155,5 +158,4 @@ pc = grid_trend.bathymetry.plot.pcolormesh(
 )
 plt.colorbar(pc).set_label("meters")
 vd.datasets.setup_baja_bathymetry_map(ax)
-plt.tight_layout()
 plt.show()

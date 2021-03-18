@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Polynomial trend
 ================
@@ -72,8 +78,11 @@ ax.set_xlabel("Air temperature (C)")
 
 # Add a single colorbar on top of the histogram plot where there is some space
 cax = plt.axes((0.35, 0.44, 0.10, 0.01))
-cb = plt.colorbar(mappable, cax=cax, orientation="horizontal",)
+cb = plt.colorbar(
+    mappable,
+    cax=cax,
+    orientation="horizontal",
+)
 cb.set_label("C")
 
-plt.tight_layout()
 plt.show()

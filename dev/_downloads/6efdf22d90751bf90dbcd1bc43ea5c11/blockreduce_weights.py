@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Using weights in blocked reduction
 ==================================
@@ -67,5 +73,4 @@ for ax, title, velocity in zip(axes, titles, (no_weights, with_weights)):
     cb.set_label("vertical velocity [m/yr]")
     vd.datasets.setup_california_gps_map(ax)
 ax.legend(loc="lower left")
-plt.tight_layout()
 plt.show()

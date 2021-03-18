@@ -43,6 +43,7 @@
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Installing" href="../install.html" />
@@ -241,7 +242,8 @@
             
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-tutorials-overview-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-tutorials-overview-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="overview">
 <span id="sphx-glr-tutorials-overview-py"></span><span id="id1"></span><h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
@@ -303,7 +305,7 @@ common to all classes and functions in Verde.</p>
 </pre></div>
 </div>
 <p>The data are random points taken from a checkerboard function and returned to us in a
-<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>:</p>
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
@@ -340,6 +342,11 @@ can use the spline to predict values anywhere:</p>
 </pre></div>
 </div>
 <img alt="overview" class="sphx-glr-single-img" src="../_images/sphx_glr_overview_002.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/runner/work/verde/verde/tutorials/overview.py:102: MatplotlibDeprecationWarning: shading=&#39;flat&#39; when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading=&#39;auto&#39;, &#39;nearest&#39; or &#39;gouraud&#39;, or set rcParams[&#39;pcolor.shading&#39;].  This will become an error two minor releases later.
+  plt.pcolormesh(grid_coords[0], grid_coords[1], gridded_scalars, cmap=&quot;RdBu_r&quot;)
+</pre></div>
+</div>
 <p>We can compare our predictions with the true values for the checkerboard function
 using the <a class="reference internal" href="../api/generated/verde.Spline.html#verde.Spline.score" title="verde.Spline.score"><code class="xref py py-meth docutils literal notranslate"><span class="pre">score</span></code></a> method to calculate the <a class="reference external" href="https://en.wikipedia.org/wiki/Coefficient_of_determination">R² coefficient of
 determination</a>.</p>
@@ -348,7 +355,7 @@ determination</a>.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9950450871662229
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>0.9950450871661976
 </pre></div>
 </div>
 </div>
@@ -356,7 +363,7 @@ determination</a>.</p>
 <h2>Generating grids and profiles<a class="headerlink" href="#generating-grids-and-profiles" title="Permalink to this headline">¶</a></h2>
 <p>A more convenient way of generating grids is through the
 <a class="reference internal" href="../api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.grid" title="verde.base.BaseGridder.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a> method. It will automatically generate
-coordinates and output an <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.</p>
+coordinates and output an <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a> <span class="o">=</span> <a href="../api/generated/verde.Spline.html#verde.Spline.grid" title="verde.Spline.grid" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-method"><span class="n">spline</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><a href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="p">)</span>
 </pre></div>
@@ -376,11 +383,11 @@ Attributes:
 <p><a class="reference internal" href="../api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.grid" title="verde.base.BaseGridder.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a> uses default names for the coordinates (“easting”
 and “northing”) and data variables (“scalars”). You can overwrite these names by
 setting the <code class="docutils literal notranslate"><span class="pre">dims</span></code> and <code class="docutils literal notranslate"><span class="pre">data_names</span></code> arguments.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a> <span class="o">=</span> <a href="../api/generated/verde.Spline.html#verde.Spline.grid" title="verde.Spline.grid" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-method"><span class="n">spline</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span> <span class="n">data_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;gravity&quot;</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a> <span class="o">=</span> <a href="../api/generated/verde.Spline.html#verde.Spline.grid" title="verde.Spline.grid" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-method"><span class="n">spline</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span> <span class="n">data_names</span><span class="o">=</span><span class="s2">&quot;gravity&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><a href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="p">)</span>
 
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">()</span>
-<a href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.plot.html#xarray.DataArray.plot" title="xarray.DataArray.plot" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">grid</span><span class="o">.</span><span class="n">gravity</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span></a><span class="p">()</span>
+<a href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="o">.</span><span class="n">gravity</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">()</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
@@ -399,7 +406,7 @@ Attributes:
 </div>
 <p>Gridders can also be used to interpolate data on a straight line between two points
 using the <a class="reference internal" href="../api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.profile" title="verde.base.BaseGridder.profile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">profile</span></code></a> method. The profile data are
-returned as a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.0.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>.</p>
+returned as a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">prof</span></a> <span class="o">=</span> <a href="../api/generated/verde.Spline.html#verde.Spline.profile" title="verde.Spline.profile" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-method"><span class="n">spline</span><span class="o">.</span><span class="n">profile</span></a><span class="p">(</span><span class="n">point1</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">point2</span><span class="o">=</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="o">-</span><span class="mi">5000</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.head.html#pandas.DataFrame.head" title="pandas.DataFrame.head" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">prof</span><span class="o">.</span><span class="n">head</span></a><span class="p">())</span>
 
@@ -430,7 +437,7 @@ documentation will involve some variation of the following workflow:</p>
 <li><p>Predict new values (using <a class="reference internal" href="../api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.predict" title="verde.base.BaseGridder.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict</span></code></a> or
 <a class="reference internal" href="../api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.grid" title="verde.base.BaseGridder.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a>)</p></li>
 </ol>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.712 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.843 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-overview-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/ebb5519668b799fc9e6596d299314e5a/overview.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">overview.py</span></code></a></p>
@@ -463,9 +470,9 @@ documentation will involve some variation of the following workflow:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2020, The Verde Developers
+        &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jun 04, 2020.
+        Last updated on Mar 18, 2021.
       </span>
 
     </p>

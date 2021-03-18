@@ -43,6 +43,7 @@
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Trends in vector data" href="vector_trend.html" />
@@ -253,7 +254,8 @@
             
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-gallery-trend-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-gallery-trend-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="polynomial-trend">
 <span id="sphx-glr-gallery-trend-py"></span><h1>Polynomial trend<a class="headerlink" href="#polynomial-trend" title="Permalink to this headline">¶</a></h1>
@@ -285,14 +287,6 @@ Updated DataFrame:
 4        5C1   -98.6946   29.7239  ...                1.090743  14.434636 -1.476303
 
 [5 rows x 8 columns]
-/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:782: MatplotlibDeprecationWarning: Passing the minor parameter of set_xticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
-  return super(GeoAxes, self).set_xticks(xticks, minor)
-/home/travis/miniconda/envs/testing/lib/python3.6/site-packages/cartopy/mpl/geoaxes.py:829: MatplotlibDeprecationWarning: Passing the minor parameter of set_yticks() positionally is deprecated since Matplotlib 3.2; the parameter will become keyword-only two minor releases later.
-  return super(GeoAxes, self).set_yticks(yticks, minor)
-/home/travis/build/fatiando/verde/examples/trend.py:78: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
-  plt.tight_layout()
-/home/travis/build/fatiando/verde/examples/trend.py:78: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
-  plt.tight_layout()
 </pre></div>
 </div>
 <div class="line-block">
@@ -362,14 +356,17 @@ Updated DataFrame:
 
 <span class="c1"># Add a single colorbar on top of the histogram plot where there is some space</span>
 <a href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="matplotlib.axes.Axes" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cax</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="matplotlib.pyplot.axes" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">((</span><span class="mf">0.35</span><span class="p">,</span> <span class="mf">0.44</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">))</span>
-<a href="https://matplotlib.org/api/colorbar_api.html#matplotlib.colorbar.Colorbar" title="matplotlib.colorbar.Colorbar" class="sphx-glr-backref-module-matplotlib-colorbar sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cb</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="matplotlib.pyplot.colorbar" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.PathCollection" title="matplotlib.collections.PathCollection" class="sphx-glr-backref-module-matplotlib-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">mappable</span></a><span class="p">,</span> <a href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="matplotlib.axes.Axes" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cax</span></a><span class="o">=</span><a href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="matplotlib.axes.Axes" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cax</span></a><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,)</span>
+<a href="https://matplotlib.org/api/colorbar_api.html#matplotlib.colorbar.Colorbar" title="matplotlib.colorbar.Colorbar" class="sphx-glr-backref-module-matplotlib-colorbar sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cb</span></a> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="matplotlib.pyplot.colorbar" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span>
+    <a href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.PathCollection" title="matplotlib.collections.PathCollection" class="sphx-glr-backref-module-matplotlib-collections sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">mappable</span></a><span class="p">,</span>
+    <a href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="matplotlib.axes.Axes" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cax</span></a><span class="o">=</span><a href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="matplotlib.axes.Axes" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">cax</span></a><span class="p">,</span>
+    <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 <a href="https://matplotlib.org/api/colorbar_api.html#matplotlib.colorbar.ColorbarBase.set_label" title="matplotlib.colorbar.ColorbarBase.set_label" class="sphx-glr-backref-module-matplotlib-colorbar sphx-glr-backref-type-py-method"><span class="n">cb</span><span class="o">.</span><span class="n">set_label</span></a><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
 
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.tight_layout.html#matplotlib.pyplot.tight_layout" title="matplotlib.pyplot.tight_layout" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.518 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.405 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-trend-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/6fe7ea01f08a8c9270c041b3bfbeb4c9/trend.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">trend.py</span></code></a></p>
@@ -401,9 +398,9 @@ Updated DataFrame:
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2020, The Verde Developers
+        &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Jun 04, 2020.
+        Last updated on Mar 18, 2021.
       </span>
 
     </p>
