@@ -319,6 +319,26 @@ def make_xarray_grid(
     Data variables:
         dummy     (northing, easting) float64 1.0 1.0 1.0 1.0 1.0 1.0
 
+    >>> # Create a grid containing only coordinates and no data
+    >>> coordinates = vd.grid_coordinates(
+    ...     (-10, -6, 8, 10), spacing=2, extra_coords=-7
+    ... )
+    >>> grid = make_xarray_grid(
+    ...     coordinates,
+    ...     data=None,
+    ...     data_names=None,
+    ...     extra_coords_names="upward",
+    ... )
+    >>> print(grid)
+    <xarray.Dataset>
+    Dimensions:   (easting: 3, northing: 2)
+    Coordinates:
+      * easting   (easting) float64 -10.0 -8.0 -6.0
+      * northing  (northing) float64 8.0 10.0
+        upward    (northing, easting) float64 -7.0 -7.0 -7.0 -7.0 -7.0 -7.0
+    Data variables:
+        *empty*
+
     """
     # Check dimensions of the horizontal coordinates of the regular grid
     ndim = np.ndim(coordinates[0])
