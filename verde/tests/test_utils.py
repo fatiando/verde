@@ -145,6 +145,21 @@ def test_make_xarray_grid_multiple_data():
         assert dataset["data_{}".format(i)].shape == (5, 6)
 
 
+def test_make_xarray_grid_no_data():
+    """
+    Check if the function creates a xarray.Dataset with no data
+    """
+    region = (-10, -5, 6, 10)
+    spacing = 1
+    coordinates = grid_coordinates(region, spacing=spacing)
+    dataset = make_xarray_grid(coordinates, data=None, data_names=None)
+    # Check if no data is present in the grid
+    assert len(dataset.data_vars) == 0
+    # Check if coordinates are in the grid
+    npt.assert_allclose(dataset.easting, [-10, -9, -8, -7, -6, -5])
+    npt.assert_allclose(dataset.northing, [6, 7, 8, 9, 10])
+
+
 def test_make_xarray_grid_extra_coords():
     """
     Check if xarray.Dataset with extra coords is correctly created
