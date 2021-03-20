@@ -251,13 +251,16 @@ def make_xarray_grid(
         vertical, etc. All arrays must be 2d and need to have the same *shape*.
         These coordinates can be generated through
         :func:`verde.grid_coordinates`.
-    data : array or tuple of arrays
+    data : array, tuple of arrays or None
         Array or tuple of arrays with data values on each point in the grid.
         Each array must contain values for a dimension in the same order as
         the coordinates. All arrays need to have the same *shape*.
+        If None, the :class:`xarray.Dataset` will not have any ``data_var``
+        array.
     data_names : str or list
         The name(s) of the data variables in the output grid.
-    dims : list
+        Ignored if ``data`` is None.
+    dims : list (optional)
         The names of the northing and easting data dimensions, respectively,
         in the output grid. Must be defined in the following order: northing
         dimension, easting dimension.
@@ -265,7 +268,7 @@ def make_xarray_grid(
         "northing" pattern but is required for compatibility with xarray.**
         The easting and northing coordinates in the :class:`xarray.Dataset`
         will have the same names as the passed dimensions.
-    extra_coords_names : str or list
+    extra_coords_names : str or list (optional)
         Name or list of names for any additional coordinates besides the
         easting and northing ones. Ignored if coordinates has
         only two elements. The extra coordinates are non-index coordinates of
@@ -316,6 +319,26 @@ def make_xarray_grid(
     Data variables:
         dummy     (northing, easting) float64 1.0 1.0 1.0 1.0 1.0 1.0
 
+    >>> # Create a grid containing only coordinates and no data
+    >>> coordinates = vd.grid_coordinates(
+    ...     (-10, -6, 8, 10), spacing=2, extra_coords=-7
+    ... )
+    >>> grid = make_xarray_grid(
+    ...     coordinates,
+    ...     data=None,
+    ...     data_names=None,
+    ...     extra_coords_names="upward",
+    ... )
+    >>> print(grid)
+    <xarray.Dataset>
+    Dimensions:   (easting: 3, northing: 2)
+    Coordinates:
+      * easting   (easting) float64 -10.0 -8.0 -6.0
+      * northing  (northing) float64 8.0 10.0
+        upward    (northing, easting) float64 -7.0 -7.0 -7.0 -7.0 -7.0 -7.0
+    Data variables:
+        *empty*
+
     """
     # Check dimensions of the horizontal coordinates of the regular grid
     ndim = np.ndim(coordinates[0])
@@ -328,8 +351,6 @@ def make_xarray_grid(
     # Convert 2d horizontal coordinates to 1d arrays if needed
     if ndim == 2:
         coordinates = meshgrid_to_1d(coordinates)
-    data = check_data(data)
-    data_names = check_data_names(data, data_names)
     # dims is like shape with order (rows, cols) for the array
     # so the first element is northing and second is easting
     coords = {dims[1]: coordinates[0], dims[0]: coordinates[1]}
@@ -339,7 +360,13 @@ def make_xarray_grid(
         extra_coords_names = check_extra_coords_names(coordinates, extra_coords_names)
         for name, extra_coord in zip(extra_coords_names, coordinates[2:]):
             coords[name] = (dims, extra_coord)
-    data_vars = {name: (dims, value) for name, value in zip(data_names, data)}
+    # Initialize data_vars as None. If data is not None, build data_vars as
+    # a dirctionary to be passed to xr.Dataset constructor.
+    data_vars = None
+    if data is not None:
+        data = check_data(data)
+        data_names = check_data_names(data, data_names)
+        data_vars = {name: (dims, value) for name, value in zip(data_names, data)}
     return xr.Dataset(data_vars, coords)
 
 
