@@ -1,0 +1,739 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+    
+        <title>verde.Chain &mdash; Verde</title>
+    
+
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.png"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="verde.Vector" href="verde.Vector.html" />
+    <link rel="prev" title="verde.Trend" href="verde.Trend.html" />
+    <!-- Google Analytics tracking code -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+            Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-38125837-1', 'auto', {'storage': 'none'});
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/verde-logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.6.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Verde</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery/index.html">Gallery</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../sample_data/index.html">Sample Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/grid_coordinates.html">Grid Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_evaluation.html">Evaluating Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/vectors.html">Vector Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#interpolators">Interpolators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#data-processing">Data Processing</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#composite-estimators">Composite Estimators</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">verde.Chain</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#examples-using-verde-chain">Examples using <code class="docutils literal notranslate"><span class="pre">verde.Chain</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="verde.Vector.html">verde.Vector</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#model-selection">Model Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#coordinate-manipulation">Coordinate Manipulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#projection">Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#masking">Masking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#utilities">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#input-output">Input/Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#datasets">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#base-classes-and-functions">Base Classes and Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+
+    
+        <p class="caption">
+            <span class="caption-text">
+            
+                Getting help and contributing
+            
+            </span>
+        </p>
+        <ul>
+            
+                <li class="toctree-l1"><a href="https://www.fatiando.org"><i class="fa fa-external-link-square fa-fw"></i> Fatiando a Terra</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md"><i class="fa fa-users fa-fw"></i> Contributing</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md"><i class="fa fa-gavel fa-fw"></i> Code of Conduct</a></li>
+            
+                <li class="toctree-l1"><a href="http://contact.fatiando.org"><i class="fa fa-comment fa-fw"></i> Contact</a></li>
+            
+                <li class="toctree-l1"><a href="https://github.com/fatiando/verde"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
+            
+        </ul>
+    
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Verde</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">API Reference</a> &raquo;</li>
+        
+      <li>verde.Chain</li>
+    
+    
+    <li class="source-link">
+        
+            
+                
+                
+                <a href="https://github.com/fatiando/verde/issues/new?title=Suggested%20improvement%20for%20api/generated/verde.Chain&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                   class="fa fa-github"> Improve this page</a>
+            
+        
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="verde-chain">
+<h1>verde.Chain<a class="headerlink" href="#verde-chain" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="verde.Chain">
+<em class="property">class </em><code class="sig-prename descclassname">verde.</code><code class="sig-name descname">Chain</code><span class="sig-paren">(</span><em class="sig-param">steps</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/chain.html#Chain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.Chain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Chain filtering operations to fit on each subsequent output.</p>
+<p>The <a class="reference internal" href="verde.base.BaseGridder.html#verde.base.BaseGridder.filter" title="verde.base.BaseGridder.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter</span></code></a> method of each element of the
+set is called with the outputs of the previous one. For gridders and trend
+estimators this means that each element fits the residuals (input data
+minus predicted data) of the previous one.</p>
+<p>When predicting data, the predictions of each step in the chain are added
+together. Steps that don’t implement a
+<a class="reference internal" href="verde.base.BaseGridder.html#verde.base.BaseGridder.predict" title="verde.base.BaseGridder.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict</span></code></a> method are ignored.</p>
+<p>This provides a convenient way to chaining operations like trend estimation
+to a given gridder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>steps</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – A list of <code class="docutils literal notranslate"><span class="pre">('name',</span> <span class="pre">step)</span></code> pairs where <code class="docutils literal notranslate"><span class="pre">step</span></code> is any verde
+class that implements a <code class="docutils literal notranslate"><span class="pre">filter(coordinates,</span> <span class="pre">data,</span> <span class="pre">weights)</span></code> method
+(including <code class="docutils literal notranslate"><span class="pre">Chain</span></code> itself).</p>
+</dd>
+<dt class="field-even">Variables</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>region_</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a>) – The boundaries (<code class="docutils literal notranslate"><span class="pre">[W,</span> <span class="pre">E,</span> <span class="pre">S,</span> <span class="pre">N]</span></code>) of the data used to fit the chain.
+Used as the default region for the <a class="reference internal" href="#verde.Chain.grid" title="verde.Chain.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a> and
+<a class="reference internal" href="#verde.Chain.scatter" title="verde.Chain.scatter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scatter</span></code></a> methods.</p></li>
+<li><p><strong>named_steps</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – A dictionary version of <em>steps</em> where the <code class="docutils literal notranslate"><span class="pre">'name'</span></code>  strings are keys
+and the estimator/gridder/processor objects are the values.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="verde.Vector.html#verde.Vector" title="verde.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Vector</span></code></a></dt><dd><p>Fit an estimator to each component of vector data</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<p class="rubric">Methods Summary</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#verde.Chain.filter" title="verde.Chain.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Chain.filter</span></code></a>(coordinates, data[, weights])</p></td>
+<td><p>Filter the data through the gridder and produce residuals.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#verde.Chain.fit" title="verde.Chain.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Chain.fit</span></code></a>(coordinates, data[, weights])</p></td>
+<td><p>Fit the chained estimators to the given data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#verde.Chain.get_params" title="verde.Chain.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Chain.get_params</span></code></a>([deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#verde.Chain.grid" title="verde.Chain.grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Chain.grid</span></code></a>([region, shape, spacing, dims, …])</p></td>
+<td><p>Interpolate the data onto a regular grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#verde.Chain.predict" title="verde.Chain.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Chain.predict</span></code></a>(coordinates)</p></td>
+<td><p>Evaluates the data predicted by the chain on the given set of points.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#verde.Chain.profile" title="verde.Chain.profile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Chain.profile</span></code></a>(point1, point2, size[, dims, …])</p></td>
+<td><p>Interpolate data along a profile between two points.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#verde.Chain.scatter" title="verde.Chain.scatter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Chain.scatter</span></code></a>([region, size, random_state, …])</p></td>
+<td><p>Interpolate values onto a random scatter of points.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#verde.Chain.score" title="verde.Chain.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Chain.score</span></code></a>(coordinates, data[, weights])</p></td>
+<td><p>Score the gridder predictions against the given data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#verde.Chain.set_params" title="verde.Chain.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Chain.set_params</span></code></a>(**params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils" />
+<dl class="method">
+<dt id="verde.Chain.filter">
+<code class="sig-prename descclassname">Chain.</code><code class="sig-name descname">filter</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">data</em>, <em class="sig-param">weights=None</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Chain.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter the data through the gridder and produce residuals.</p>
+<p>Calls <code class="docutils literal notranslate"><span class="pre">fit</span></code> on the data, evaluates the residuals (data - predicted
+data), and returns the coordinates, residuals, and weights.</p>
+<p>No very useful by itself but this interface makes gridders compatible
+with other processing operations and is used by <a class="reference internal" href="#verde.Chain" title="verde.Chain"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Chain</span></code></a> to
+join them together (for example, so you can fit a spline on the
+residuals of a trend).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Arrays with the coordinates of each data point. Should be in the
+following order: (easting, northing, vertical, …).
+For the specific definition of coordinate systems and what these
+names mean, see the class docstring.</p></li>
+<li><p><strong>data</strong> (<em>array</em><em> or </em><em>tuple of arrays</em>) – The data values of each data point. If the data has more than one
+component, <em>data</em> must be a tuple of arrays (one for each
+component).</p></li>
+<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – If not None, then the weights assigned to each data point. If more
+than one data component is provided, you must provide a weights
+array for each data component (if not None).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>coordinates, residuals, weights</em> – The coordinates and weights are same as the input. Residuals are
+the input data minus the predicted data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="verde.Chain.fit">
+<code class="sig-prename descclassname">Chain.</code><code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">data</em>, <em class="sig-param">weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/chain.html#Chain.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.Chain.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the chained estimators to the given data.</p>
+<p>Each estimator in the chain is fitted to the residuals of the previous
+estimator. The coordinates are preserved. Only the data values are
+changed.</p>
+<p>The data region is captured and used as default for the
+<a class="reference internal" href="#verde.Chain.grid" title="verde.Chain.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a> and <a class="reference internal" href="#verde.Chain.scatter" title="verde.Chain.scatter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scatter</span></code></a> methods.</p>
+<p>All input arrays must have the same shape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Arrays with the coordinates of each data point. Should be in the
+following order: (easting, northing, vertical, …).</p></li>
+<li><p><strong>data</strong> (<em>array</em><em> or </em><em>tuple of arrays</em>) – the data values of each data point. if the data has more than one
+component, <em>data</em> must be a tuple of arrays (one for each
+component).</p></li>
+<li><p><strong>weights</strong> (<em>none</em><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – if not none, then the weights assigned to each data point. if more
+than one data component is provided, you must provide a weights
+array for each data component (if not none).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>self</em> – Returns this estimator instance for chaining operations.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="verde.Chain.get_params">
+<code class="sig-prename descclassname">Chain.</code><code class="sig-name descname">get_params</code><span class="sig-paren">(</span><em class="sig-param">deep=True</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Chain.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parameters for this estimator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>deep</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>default=True</em>) – If True, will return the parameters for this estimator and
+contained subobjects that are estimators.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>params</strong> (<em>dict</em>) – Parameter names mapped to their values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="verde.Chain.grid">
+<code class="sig-prename descclassname">Chain.</code><code class="sig-name descname">grid</code><span class="sig-paren">(</span><em class="sig-param">region=None</em>, <em class="sig-param">shape=None</em>, <em class="sig-param">spacing=None</em>, <em class="sig-param">dims=None</em>, <em class="sig-param">data_names=None</em>, <em class="sig-param">projection=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Chain.grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolate the data onto a regular grid.</p>
+<p>The grid can be specified by either the number of points in each
+dimension (the <em>shape</em>) or by the grid node spacing. See
+<a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> for details. Other arguments for
+<a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> can be passed as extra keyword arguments
+(<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this method.</p>
+<p>If the interpolator collected the input data region, then it will be
+used if <code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
+<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
+dimensions and the data field(s) in the output <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.
+Default names will be provided if none are given.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region</strong> (<em>list =</em><em> [</em><em>W</em><em>, </em><em>E</em><em>, </em><em>S</em><em>, </em><em>N</em><em>]</em>) – The west, east, south, and north boundaries of a given region.</p></li>
+<li><p><strong>shape</strong> (<em>tuple =</em><em> (</em><em>n_north</em><em>, </em><em>n_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The number of points in the South-North and West-East directions,
+respectively.</p></li>
+<li><p><strong>spacing</strong> (<em>tuple =</em><em> (</em><em>s_north</em><em>, </em><em>s_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The grid spacing in the South-North and West-East directions,
+respectively.</p></li>
+<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The names of the northing and easting data dimensions,
+respectively, in the output grid. Default is determined from the
+<code class="docutils literal notranslate"><span class="pre">dims</span></code> attribute of the class. Must be defined in the following
+order: northing dimension, easting dimension.
+<strong>NOTE: This is an exception to the “easting” then
+“northing” pattern but is required for compatibility with xarray.</strong></p></li>
+<li><p><strong>data_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The name(s) of the data variables in the output grid. Defaults to
+<code class="docutils literal notranslate"><span class="pre">'scalars'</span></code> for scalar data,
+<code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component']</span></code> for 2D vector data, and
+<code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component',</span> <span class="pre">'vertical_component']</span></code> for
+3D vector data.</p></li>
+<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – If not None, then should be a callable object
+<code class="docutils literal notranslate"><span class="pre">projection(easting,</span> <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code>
+that takes in easting and northing coordinate arrays and returns
+projected northing and easting coordinate arrays. This function
+will be used to project the generated grid coordinates before
+passing them into <code class="docutils literal notranslate"><span class="pre">predict</span></code>. For example, you can use this to
+generate a geographic grid from a Cartesian gridder.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>grid</strong> (<em>xarray.Dataset</em>) – The interpolated grid. Metadata about the interpolator is written
+to the <code class="docutils literal notranslate"><span class="pre">attrs</span></code> attribute.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a></dt><dd><p>Generate the coordinate values for the grid.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="verde.Chain.predict">
+<code class="sig-prename descclassname">Chain.</code><code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/chain.html#Chain.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#verde.Chain.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the data predicted by the chain on the given set of points.</p>
+<p>Predictions from each step in the chain are added together. Any step
+that doesn’t implement a <code class="docutils literal notranslate"><span class="pre">predict</span></code> method is ignored.</p>
+<p>Requires a fitted gridder (see <a class="reference internal" href="#verde.Chain.fit" title="verde.Chain.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Arrays with the coordinates of each data point. Should be in the
+following order: (easting, northing, vertical, …).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>data</strong> (<em>array</em>) – The data values predicted on the given points.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="verde.Chain.profile">
+<code class="sig-prename descclassname">Chain.</code><code class="sig-name descname">profile</code><span class="sig-paren">(</span><em class="sig-param">point1</em>, <em class="sig-param">point2</em>, <em class="sig-param">size</em>, <em class="sig-param">dims=None</em>, <em class="sig-param">data_names=None</em>, <em class="sig-param">projection=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Chain.profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolate data along a profile between two points.</p>
+<p>Generates the profile along a straight line assuming Cartesian
+distances. Point coordinates are generated by
+<a class="reference internal" href="verde.profile_coordinates.html#verde.profile_coordinates" title="verde.profile_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.profile_coordinates</span></code></a>. Other arguments for this function
+can be passed as extra keyword arguments (<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this method.</p>
+<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
+dimensions and the data field(s) in the output
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
+<p>Includes the calculated Cartesian distance from <em>point1</em> for each data
+point in the profile.</p>
+<p>To specify <em>point1</em> and <em>point2</em> in a coordinate system that would
+require projection to Cartesian (geographic longitude and latitude, for
+example), use the <code class="docutils literal notranslate"><span class="pre">projection</span></code> argument. With this option, the input
+points will be projected using the given projection function prior to
+computations. The generated Cartesian profile coordinates will be
+projected back to the original coordinate system. <strong>Note that the
+profile points are evenly spaced in projected coordinates, not the
+original system (e.g., geographic)</strong>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>The profile calculation method with a projection has changed in
+Verde 1.4.0</strong>. Previous versions generated coordinates (assuming
+they were Cartesian) and projected them afterwards. This led to
+“distances” being incorrectly handled and returned in unprojected
+coordinates. For example, if <code class="docutils literal notranslate"><span class="pre">projection</span></code> is from geographic to
+Mercator, the distances would be “angles” (incorrectly calculated
+as if they were Cartesian). After 1.4.0, <em>point1</em> and <em>point2</em> are
+projected prior to generating coordinates for the profile,
+guaranteeing that distances are properly handled in a Cartesian
+system. <strong>With this change, the profile points are now evenly
+spaced in projected coordinates and the distances are returned in
+projected coordinates as well.</strong></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>point1</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a>) – The easting and northing coordinates, respectively, of the first
+point.</p></li>
+<li><p><strong>point2</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a>) – The easting and northing coordinates, respectively, of the second
+point.</p></li>
+<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The number of points to generate.</p></li>
+<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The names of the northing and easting data dimensions,
+respectively, in the output dataframe. Default is determined from
+the <code class="docutils literal notranslate"><span class="pre">dims</span></code> attribute of the class. Must be defined in the
+following order: northing dimension, easting dimension.
+<strong>NOTE: This is an exception to the “easting” then
+“northing” pattern but is required for compatibility with xarray.</strong></p></li>
+<li><p><strong>data_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The name(s) of the data variables in the output dataframe. Defaults
+to <code class="docutils literal notranslate"><span class="pre">'scalars'</span></code> for scalar data,
+<code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component']</span></code> for 2D vector data, and
+<code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component',</span> <span class="pre">'vertical_component']</span></code> for
+3D vector data.</p></li>
+<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – If not None, then should be a callable object <code class="docutils literal notranslate"><span class="pre">projection(easting,</span>
+<span class="pre">northing,</span> <span class="pre">inverse=False)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code> that
+takes in easting and northing coordinate arrays and returns
+projected northing and easting coordinate arrays. Should also take
+an optional keyword argument <code class="docutils literal notranslate"><span class="pre">inverse</span></code> (default to False) that if
+True will calculate the inverse transform instead. This function
+will be used to project the profile end points before generating
+coordinates and passing them into <code class="docutils literal notranslate"><span class="pre">predict</span></code>. It will also be used
+to undo the projection of the coordinates before returning the
+results.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>table</strong> (<em>pandas.DataFrame</em>) – The interpolated values along the profile.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="verde.Chain.scatter">
+<code class="sig-prename descclassname">Chain.</code><code class="sig-name descname">scatter</code><span class="sig-paren">(</span><em class="sig-param">region=None</em>, <em class="sig-param">size=300</em>, <em class="sig-param">random_state=0</em>, <em class="sig-param">dims=None</em>, <em class="sig-param">data_names=None</em>, <em class="sig-param">projection=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Chain.scatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolate values onto a random scatter of points.</p>
+<p>Point coordinates are generated by <a class="reference internal" href="verde.scatter_points.html#verde.scatter_points" title="verde.scatter_points"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.scatter_points</span></code></a>. Other
+arguments for this function can be passed as extra keyword arguments
+(<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this method.</p>
+<p>If the interpolator collected the input data region, then it will be
+used if <code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
+<p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
+dimensions and the data field(s) in the output
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>region</strong> (<em>list =</em><em> [</em><em>W</em><em>, </em><em>E</em><em>, </em><em>S</em><em>, </em><em>N</em><em>]</em>) – The west, east, south, and north boundaries of a given region.</p></li>
+<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – The number of points to generate.</p></li>
+<li><p><strong>random_state</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/random/legacy.html#numpy.random.RandomState" title="(in NumPy v1.20)"><em>numpy.random.RandomState</em></a><em> or </em><em>an int seed</em>) – A random number generator used to define the state of the random
+permutations. Use a fixed seed to make sure computations are
+reproducible. Use <code class="docutils literal notranslate"><span class="pre">None</span></code> to choose a seed automatically
+(resulting in different numbers with each run).</p></li>
+<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The names of the northing and easting data dimensions,
+respectively, in the output dataframe. Default is determined from
+the <code class="docutils literal notranslate"><span class="pre">dims</span></code> attribute of the class. Must be defined in the
+following order: northing dimension, easting dimension.
+<strong>NOTE: This is an exception to the “easting” then
+“northing” pattern but is required for compatibility with xarray.</strong></p></li>
+<li><p><strong>data_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The name(s) of the data variables in the output dataframe. Defaults
+to <code class="docutils literal notranslate"><span class="pre">'scalars'</span></code> for scalar data,
+<code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component']</span></code> for 2D vector data, and
+<code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component',</span> <span class="pre">'vertical_component']</span></code> for
+3D vector data.</p></li>
+<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – If not None, then should be a callable object
+<code class="docutils literal notranslate"><span class="pre">projection(easting,</span> <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code>
+that takes in easting and northing coordinate arrays and returns
+projected northing and easting coordinate arrays. This function
+will be used to project the generated scatter coordinates before
+passing them into <code class="docutils literal notranslate"><span class="pre">predict</span></code>. For example, you can use this to
+generate a geographic scatter from a Cartesian gridder.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>table</strong> (<em>pandas.DataFrame</em>) – The interpolated values on a random set of points.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="verde.Chain.score">
+<code class="sig-prename descclassname">Chain.</code><code class="sig-name descname">score</code><span class="sig-paren">(</span><em class="sig-param">coordinates</em>, <em class="sig-param">data</em>, <em class="sig-param">weights=None</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Chain.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Score the gridder predictions against the given data.</p>
+<p>Calculates the R^2 coefficient of determination of between the
+predicted values and the given data values. A maximum score of 1 means
+a perfect fit. The score can be negative.</p>
+<p>If the data has more than 1 component, the scores of each component
+will be averaged.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Arrays with the coordinates of each data point. Should be in the
+following order: (easting, northing, vertical, …).
+For the specific definition of coordinate systems and what these
+names mean, see the class docstring.</p></li>
+<li><p><strong>data</strong> (<em>array</em><em> or </em><em>tuple of arrays</em>) – The data values of each data point. If the data has more than one
+component, <em>data</em> must be a tuple of arrays (one for each
+component).</p></li>
+<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – If not None, then the weights assigned to each data point. If more
+than one data component is provided, you must provide a weights
+array for each data component (if not None).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>score</strong> (<em>float</em>) – The R^2 score</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="verde.Chain.set_params">
+<code class="sig-prename descclassname">Chain.</code><code class="sig-name descname">set_params</code><span class="sig-paren">(</span><em class="sig-param">**params</em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Chain.set_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the parameters of this estimator.</p>
+<p>The method works on simple estimators as well as on nested objects
+(such as <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v0.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>). The latter have
+parameters of the form <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s
+possible to update each component of a nested object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>**params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Estimator parameters.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>self</strong> (<em>estimator instance</em>) – Estimator instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="examples-using-verde-chain">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">verde.Chain</span></code><a class="headerlink" href="#examples-using-verde-chain" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Biharmonic spline interpolation is based on estimating vertical forces acting on an elastic she..."><div class="figure align-default" id="id1">
+<img alt="Gridding with splines" src="../../_images/sphx_glr_spline_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline.html#sphx-glr-gallery-spline-py"><span class="std std-ref">Gridding with splines</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="An advantage of using the Green&#x27;s functions based verde.Spline over verde.ScipyGridder is that ..."><div class="figure align-default" id="id2">
+<img alt="Gridding with splines and weights" src="../../_images/sphx_glr_spline_weights_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline_weights.html#sphx-glr-gallery-spline-weights-py"><span class="std std-ref">Gridding with splines and weights</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Verde provides the verde.Trend class to estimate a polynomial trend and the verde.Vector class ..."><div class="figure align-default" id="id3">
+<img alt="Trends in vector data" src="../../_images/sphx_glr_vector_trend_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/vector_trend.html#sphx-glr-gallery-vector-trend-py"><span class="std std-ref">Trends in vector data</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="We can use verde.Vector to simultaneously process and grid all components of vector data. Each ..."><div class="figure align-default" id="id4">
+<img alt="Gridding 2D vectors" src="../../_images/sphx_glr_vector_uncoupled_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/vector_uncoupled.html#sphx-glr-gallery-vector-uncoupled-py"><span class="std std-ref">Gridding 2D vectors</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Often, a data processing pipeline looks like the following:"><div class="figure align-default" id="id5">
+<img alt="Chaining Operations" src="../../_images/sphx_glr_chain_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/chain.html#sphx-glr-tutorials-chain-py"><span class="std std-ref">Chaining Operations</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="In model_evaluation, we saw how to check the performance of an interpolator using cross-validat..."><div class="figure align-default" id="id6">
+<img alt="Model Selection" src="../../_images/sphx_glr_model_selection_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/model_selection.html#sphx-glr-tutorials-model-selection-py"><span class="std std-ref">Model Selection</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Some datasets have multiple vector components measured for each location, like the East and Wes..."><div class="figure align-default" id="id7">
+<img alt="Vector Data" src="../../_images/sphx_glr_vectors_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/vectors.html#sphx-glr-tutorials-vectors-py"><span class="std std-ref">Vector Data</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="One of the advantages of using a Green&#x27;s functions approach to interpolation is that we can eas..."><div class="figure align-default" id="id8">
+<img alt="Using Weights" src="../../_images/sphx_glr_weights_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/weights.html#sphx-glr-tutorials-weights-py"><span class="std std-ref">Using Weights</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="verde.Vector.html" class="btn btn-neutral float-right" title="verde.Vector" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="verde.Trend.html" class="btn btn-neutral float-left" title="verde.Trend" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2021, The Verde Developers
+      <span class="lastupdated">
+        Last updated on Mar 22, 2021.
+      </span>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
