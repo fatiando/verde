@@ -3,6 +3,27 @@
 Changelog
 =========
 
+Version 1.6.1
+-------------
+
+*Released on: 2021/03/22*
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.4626786.svg
+   :target: https://doi.org/10.5281/zenodo.4626786
+
+Minor changes:
+
+* Allow ``make_xarray_grid`` to receive ``data=None`` instead of raising an error. This is used to create an empty ``xarray.Dataset`` (`#318 <https://github.com/fatiando/verde/pull/318>`__)
+
+Maintenance:
+
+* Fix use of wrong version numbers for PyPI releases (`#317 <https://github.com/fatiando/verde/pull/317>`__)
+
+This release contains contributions from:
+
+* Santiago Soler
+* Leonardo Uieda
+
 Version 1.6.0
 -------------
 
