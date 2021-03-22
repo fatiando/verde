@@ -479,13 +479,16 @@
 <span class="sd">        vertical, etc. All arrays must be 2d and need to have the same *shape*.</span>
 <span class="sd">        These coordinates can be generated through</span>
 <span class="sd">        :func:`verde.grid_coordinates`.</span>
-<span class="sd">    data : array or tuple of arrays</span>
+<span class="sd">    data : array, tuple of arrays or None</span>
 <span class="sd">        Array or tuple of arrays with data values on each point in the grid.</span>
 <span class="sd">        Each array must contain values for a dimension in the same order as</span>
 <span class="sd">        the coordinates. All arrays need to have the same *shape*.</span>
+<span class="sd">        If None, the :class:`xarray.Dataset` will not have any ``data_var``</span>
+<span class="sd">        array.</span>
 <span class="sd">    data_names : str or list</span>
 <span class="sd">        The name(s) of the data variables in the output grid.</span>
-<span class="sd">    dims : list</span>
+<span class="sd">        Ignored if ``data`` is None.</span>
+<span class="sd">    dims : list (optional)</span>
 <span class="sd">        The names of the northing and easting data dimensions, respectively,</span>
 <span class="sd">        in the output grid. Must be defined in the following order: northing</span>
 <span class="sd">        dimension, easting dimension.</span>
@@ -493,7 +496,7 @@
 <span class="sd">        &quot;northing&quot; pattern but is required for compatibility with xarray.**</span>
 <span class="sd">        The easting and northing coordinates in the :class:`xarray.Dataset`</span>
 <span class="sd">        will have the same names as the passed dimensions.</span>
-<span class="sd">    extra_coords_names : str or list</span>
+<span class="sd">    extra_coords_names : str or list (optional)</span>
 <span class="sd">        Name or list of names for any additional coordinates besides the</span>
 <span class="sd">        easting and northing ones. Ignored if coordinates has</span>
 <span class="sd">        only two elements. The extra coordinates are non-index coordinates of</span>
@@ -544,6 +547,26 @@
 <span class="sd">    Data variables:</span>
 <span class="sd">        dummy     (northing, easting) float64 1.0 1.0 1.0 1.0 1.0 1.0</span>
 
+<span class="sd">    &gt;&gt;&gt; # Create a grid containing only coordinates and no data</span>
+<span class="sd">    &gt;&gt;&gt; coordinates = vd.grid_coordinates(</span>
+<span class="sd">    ...     (-10, -6, 8, 10), spacing=2, extra_coords=-7</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; grid = make_xarray_grid(</span>
+<span class="sd">    ...     coordinates,</span>
+<span class="sd">    ...     data=None,</span>
+<span class="sd">    ...     data_names=None,</span>
+<span class="sd">    ...     extra_coords_names=&quot;upward&quot;,</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; print(grid)</span>
+<span class="sd">    &lt;xarray.Dataset&gt;</span>
+<span class="sd">    Dimensions:   (easting: 3, northing: 2)</span>
+<span class="sd">    Coordinates:</span>
+<span class="sd">      * easting   (easting) float64 -10.0 -8.0 -6.0</span>
+<span class="sd">      * northing  (northing) float64 8.0 10.0</span>
+<span class="sd">        upward    (northing, easting) float64 -7.0 -7.0 -7.0 -7.0 -7.0 -7.0</span>
+<span class="sd">    Data variables:</span>
+<span class="sd">        *empty*</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Check dimensions of the horizontal coordinates of the regular grid</span>
     <span class="n">ndim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -556,8 +579,6 @@
     <span class="c1"># Convert 2d horizontal coordinates to 1d arrays if needed</span>
     <span class="k">if</span> <span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
         <span class="n">coordinates</span> <span class="o">=</span> <span class="n">meshgrid_to_1d</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="n">data_names</span> <span class="o">=</span> <span class="n">check_data_names</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_names</span><span class="p">)</span>
     <span class="c1"># dims is like shape with order (rows, cols) for the array</span>
     <span class="c1"># so the first element is northing and second is easting</span>
     <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span>
@@ -567,7 +588,13 @@
         <span class="n">extra_coords_names</span> <span class="o">=</span> <span class="n">check_extra_coords_names</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">extra_coords_names</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">extra_coord</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">extra_coords_names</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:]):</span>
             <span class="n">coords</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">extra_coord</span><span class="p">)</span>
-    <span class="n">data_vars</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data_names</span><span class="p">,</span> <span class="n">data</span><span class="p">)}</span>
+    <span class="c1"># Initialize data_vars as None. If data is not None, build data_vars as</span>
+    <span class="c1"># a dirctionary to be passed to xr.Dataset constructor.</span>
+    <span class="n">data_vars</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">data_names</span> <span class="o">=</span> <span class="n">check_data_names</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_names</span><span class="p">)</span>
+        <span class="n">data_vars</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data_names</span><span class="p">,</span> <span class="n">data</span><span class="p">)}</span>
     <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">data_vars</span><span class="p">,</span> <span class="n">coords</span><span class="p">)</span></div>
 
 
@@ -924,7 +951,7 @@
     <p>
         &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Mar 18, 2021.
+        Last updated on Mar 22, 2021.
       </span>
 
     </p>

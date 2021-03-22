@@ -278,18 +278,21 @@ contain values for a dimension in the order: easting, northing,
 vertical, etc. All arrays must be 2d and need to have the same <em>shape</em>.
 These coordinates can be generated through
 <a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a>.</p></li>
-<li><p><strong>data</strong> (<em>array</em><em> or </em><em>tuple of arrays</em>) – Array or tuple of arrays with data values on each point in the grid.
+<li><p><strong>data</strong> (<em>array</em><em>, </em><em>tuple of arrays</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – Array or tuple of arrays with data values on each point in the grid.
 Each array must contain values for a dimension in the same order as
-the coordinates. All arrays need to have the same <em>shape</em>.</p></li>
-<li><p><strong>data_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – The name(s) of the data variables in the output grid.</p></li>
-<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – The names of the northing and easting data dimensions, respectively,
+the coordinates. All arrays need to have the same <em>shape</em>.
+If None, the <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> will not have any <code class="docutils literal notranslate"><span class="pre">data_var</span></code>
+array.</p></li>
+<li><p><strong>data_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – The name(s) of the data variables in the output grid.
+Ignored if <code class="docutils literal notranslate"><span class="pre">data</span></code> is None.</p></li>
+<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> (</em><em>optional</em><em>)</em>) – The names of the northing and easting data dimensions, respectively,
 in the output grid. Must be defined in the following order: northing
 dimension, easting dimension.
 <strong>NOTE: This is an exception to the “easting” then
 “northing” pattern but is required for compatibility with xarray.</strong>
 The easting and northing coordinates in the <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.17.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>
 will have the same names as the passed dimensions.</p></li>
-<li><p><strong>extra_coords_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – Name or list of names for any additional coordinates besides the
+<li><p><strong>extra_coords_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> (</em><em>optional</em><em>)</em>) – Name or list of names for any additional coordinates besides the
 easting and northing ones. Ignored if coordinates has
 only two elements. The extra coordinates are non-index coordinates of
 the grid array.</p></li>
@@ -339,6 +342,27 @@ the grid array.</p></li>
 <span class="go">    dummy     (northing, easting) float64 1.0 1.0 1.0 1.0 1.0 1.0</span>
 </pre></div>
 </div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a grid containing only coordinates and no data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">extra_coords</span><span class="o">=-</span><span class="mi">7</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">make_xarray_grid</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">coordinates</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">data_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">extra_coords_names</span><span class="o">=</span><span class="s2">&quot;upward&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+<span class="go">&lt;xarray.Dataset&gt;</span>
+<span class="go">Dimensions:   (easting: 3, northing: 2)</span>
+<span class="go">Coordinates:</span>
+<span class="go">  * easting   (easting) float64 -10.0 -8.0 -6.0</span>
+<span class="go">  * northing  (northing) float64 8.0 10.0</span>
+<span class="go">    upward    (northing, easting) float64 -7.0 -7.0 -7.0 -7.0 -7.0 -7.0</span>
+<span class="go">Data variables:</span>
+<span class="go">    *empty*</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -365,7 +389,7 @@ the grid array.</p></li>
     <p>
         &copy; Copyright 2017-2021, The Verde Developers
       <span class="lastupdated">
-        Last updated on Mar 18, 2021.
+        Last updated on Mar 22, 2021.
       </span>
 
     </p>
