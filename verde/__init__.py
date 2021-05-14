@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 # pylint: disable=missing-docstring,import-outside-toplevel
 # Import functions/classes to make the public API
 from . import datasets
@@ -15,7 +21,12 @@ from .coordinates import (
     longitude_continuity,
 )
 from .mask import distance_mask, convexhull_mask
-from .utils import variance_to_weights, maxabs, grid_to_table
+from .utils import (
+    variance_to_weights,
+    maxabs,
+    grid_to_table,
+    make_xarray_grid,
+)
 from .io import load_surfer
 from .distances import median_distance
 from .blockreduce import BlockReduce, BlockMean
@@ -31,6 +42,10 @@ from .model_selection import (
 )
 from .vector import Vector, VectorSpline2D
 from .projections import project_region, project_grid
+
+
+# Get the version number through setuptools-scm
+__version__ = version.version
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=True):

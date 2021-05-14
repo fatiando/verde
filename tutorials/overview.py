@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 .. _overview:
 
@@ -121,7 +127,7 @@ print(grid)
 # and "northing") and data variables ("scalars"). You can overwrite these names by
 # setting the ``dims`` and ``data_names`` arguments.
 
-grid = spline.grid(spacing=30, dims=["latitude", "longitude"], data_names=["gravity"])
+grid = spline.grid(spacing=30, dims=["latitude", "longitude"], data_names="gravity")
 print(grid)
 
 plt.figure()

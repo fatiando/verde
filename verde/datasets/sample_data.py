@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Functions to load sample data
 """
@@ -16,9 +22,6 @@ except ImportError:
 
 from ..version import full_version
 
-
-# Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
-warnings.simplefilter("default")
 
 REGISTRY = pooch.create(
     path=pooch.os_cache("verde"),
@@ -183,7 +186,7 @@ def fetch_rio_magnetic():
     warnings.warn(
         "The Rio magnetic anomaly dataset is deprecated and will be removed "
         "in Verde v2.0.0. Use a different dataset instead.",
-        DeprecationWarning,
+        FutureWarning,
     )
     data_file = REGISTRY.fetch("rio-magnetic.csv.xz")
     data = pd.read_csv(data_file, compression="xz")
@@ -216,7 +219,7 @@ def setup_rio_magnetic_map(ax, region=(-42.6, -42, -22.5, -22)):
     warnings.warn(
         "The Rio magnetic anomaly dataset is deprecated and will be removed "
         "in Verde v2.0.0. Use a different dataset instead.",
-        DeprecationWarning,
+        FutureWarning,
     )
     _setup_map(
         ax,

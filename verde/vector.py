@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Classes for dealing with vector data.
 """
@@ -17,10 +23,6 @@ try:
 except ImportError:
     numba = None
     from .utils import dummy_jit as jit
-
-
-# Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
-warnings.simplefilter("default")
 
 
 class Vector(BaseGridder):
@@ -234,7 +236,7 @@ class VectorSpline2D(BaseGridder):
             "VectorSpline2D is deprecated and will be removed in Verde v2.0.0."
             " Please use the implementation in the Erizo package instead "
             "(https://github.com/fatiando/erizo).",
-            DeprecationWarning,
+            FutureWarning,
         )
 
     def fit(self, coordinates, data, weights=None):

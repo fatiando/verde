@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Chaining Operations
 ===================
@@ -106,7 +112,7 @@ grid = chain.grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["bathymetry"],
+    data_names="bathymetry",
 )
 print(grid)
 
@@ -140,7 +146,7 @@ grid_trend = chain.named_steps["trend"].grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["bathymetry"],
+    data_names="bathymetry",
 )
 print(grid_trend)
 

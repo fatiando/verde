@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Test the coordinate generation functions
 """
@@ -166,7 +172,7 @@ def test_check_region():
         check_region([-2, -1, -2, -3])
 
 
-def test_profile_coordiantes_fails():
+def test_profile_coordinates_fails():
     "Should raise an exception for invalid input"
     with pytest.raises(ValueError):
         profile_coordinates((0, 1), (1, 2), size=0)

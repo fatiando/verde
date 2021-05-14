@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Biharmonic splines in 2D.
 """
@@ -18,10 +24,6 @@ try:
 except ImportError:
     numba = None
     from .utils import dummy_jit as jit
-
-
-# Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
-warnings.simplefilter("default")
 
 
 class SplineCV(BaseGridder):
@@ -145,7 +147,7 @@ class SplineCV(BaseGridder):
                 "The 'client' parameter of 'verde.SplineCV' is "
                 "deprecated and will be removed in Verde 2.0.0. "
                 "Use the 'delayed' parameter instead.",
-                DeprecationWarning,
+                FutureWarning,
             )
 
     def fit(self, coordinates, data, weights=None):

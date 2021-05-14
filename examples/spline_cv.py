@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Gridding with splines (cross-validated)
 =======================================
@@ -59,7 +65,7 @@ grid_full = spline.grid(
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["temperature"],
+    data_names="temperature",
 )
 grid = vd.distance_mask(
     coordinates, maxdist=3 * spacing * 111e3, grid=grid_full, projection=projection

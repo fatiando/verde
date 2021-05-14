@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Functions for automating model selection through cross-validation.
 """
@@ -12,10 +18,6 @@ from .base import check_fit_input, n_1d_arrays, BaseBlockCrossValidator
 from .base.utils import score_estimator
 from .coordinates import block_split
 from .utils import dispatch, partition_by_sum
-
-
-# Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
-warnings.simplefilter("default")
 
 
 # Pylint doesn't like X, y scikit-learn argument names.
@@ -86,7 +88,7 @@ class BlockShuffleSplit(BaseBlockCrossValidator):
         The number of splits generated per iteration to try to balance the
         amount of data in each set so that *test_size* and *train_size* are
         respected. If 1, then no extra splits are generated (essentially
-        disabling the balacing). Must be >= 1.
+        disabling the balancing). Must be >= 1.
 
     See also
     --------
@@ -758,7 +760,7 @@ def cross_val_score(
             "The 'client' parameter of 'verde.cross_val_score' is deprecated "
             "and will be removed in Verde 2.0.0. "
             "Use the 'delayed' parameter instead.",
-            DeprecationWarning,
+            FutureWarning,
         )
     coordinates, data, weights = check_fit_input(
         coordinates, data, weights, unpack=False
