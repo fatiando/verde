@@ -341,13 +341,7 @@ def make_xarray_grid(
 
     """
     # Check dimensions of the horizontal coordinates of the regular grid
-    ndim = np.ndim(coordinates[0])
-    if ndim != np.ndim(coordinates[1]):
-        raise ValueError(
-            "Incompatible dimensions between horizontal coordinates of the regular grid: "
-            + f"'{ndim}' and '{np.ndim(coordinates[1])}'. "
-            + "Both coordinates must have the same number of dimensions."
-        )
+    ndim = check_ndim_easting_northing(*coordinates[:2])
     # Convert 2d horizontal coordinates to 1d arrays if needed
     if ndim == 2:
         coordinates = meshgrid_to_1d(coordinates)
@@ -416,6 +410,78 @@ def meshgrid_to_1d(coordinates):
     easting, northing = coordinates[0][0, :], coordinates[1][:, 0]
     coordinates = (easting, northing, *coordinates[2:])
     return coordinates
+
+
+def meshgrid_from_1d(coordinates):
+    """
+    Convert horizontal coordinates of 2d grids from 1d-arrays to 2d-arrays
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+        Arrays with coordinates of each point in the grid. Each array must
+        contain values for a dimension in the order: easting, northing,
+        vertical, etc. The horizontal coordinates (easting and northing) should
+        be 1d arrays, any extra coordinate should be an array with a shape of
+        ``(northing.size, easting.size)``.
+
+    Returns
+    -------
+    coordinates : tuple of arrays
+        Arrays with coordinates of each point in the grid.
+        The horizontal coordinates have been converted to 2d-arrays with the
+        same shape, forming a meshgrid. All extra coordinates have not been
+        modified.
+
+    Examples
+    --------
+
+    >>> easting = np.linspace(0, 4, 5)
+    >>> northing = np.linspace(-3, 3, 7)
+    >>> height = 2 * np.ones((7, 5))
+    >>> coordinates = (easting, northing, height)
+    >>> easting, northing, height = meshgrid_from_1d(coordinates)
+    >>> print(easting)
+    [[0. 1. 2. 3. 4.]
+     [0. 1. 2. 3. 4.]
+     [0. 1. 2. 3. 4.]
+     [0. 1. 2. 3. 4.]
+     [0. 1. 2. 3. 4.]
+     [0. 1. 2. 3. 4.]
+     [0. 1. 2. 3. 4.]]
+    >>> print(northing)
+    [[-3. -3. -3. -3. -3.]
+     [-2. -2. -2. -2. -2.]
+     [-1. -1. -1. -1. -1.]
+     [ 0.  0.  0.  0.  0.]
+     [ 1.  1.  1.  1.  1.]
+     [ 2.  2.  2.  2.  2.]
+     [ 3.  3.  3.  3.  3.]]
+
+    """
+    ndim = check_ndim_easting_northing(*coordinates[:2])
+    if ndim != 1:
+        raise ValueError(
+            "Horizontal coordinates must be 1d-arrays. " + f"{ndim}d-arrays provided."
+        )
+    easting, northing = np.meshgrid(coordinates[0], coordinates[1])
+    coordinates = (easting, northing, *coordinates[2:])
+    coordinates = check_coordinates(coordinates)
+    return coordinates
+
+
+def check_ndim_easting_northing(easting, northing):
+    """
+    Check if easting and northing coordinates have the same dimensions
+    """
+    ndim = np.ndim(easting)
+    if ndim != np.ndim(northing):
+        raise ValueError(
+            "Horizontal coordinates dimensions mismatch. "
+            + f"The easting coordinate has {easting.ndim} dimensions "
+            + f"while the northing has {northing.ndim}."
+        )
+    return ndim
 
 
 def check_meshgrid(coordinates):

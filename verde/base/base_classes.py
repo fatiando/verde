@@ -7,6 +7,7 @@
 """
 Base classes for all gridders.
 """
+import warnings
 from abc import ABCMeta, abstractmethod
 
 import pandas as pd
@@ -15,7 +16,12 @@ from sklearn.model_selection import BaseCrossValidator
 
 from ..coordinates import grid_coordinates, profile_coordinates, scatter_points
 from .utils import check_data, check_data_names, score_estimator
-from ..utils import make_xarray_grid
+from ..utils import (
+    make_xarray_grid,
+    meshgrid_from_1d,
+    check_ndim_easting_northing,
+    check_meshgrid,
+)
 
 
 # Pylint doesn't like X, y scikit-learn argument names.
@@ -353,25 +359,28 @@ class BaseGridder(BaseEstimator):
 
     def grid(
         self,
+        coordinates=None,
         region=None,
         shape=None,
         spacing=None,
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
+        **kwargs,
     ):  # pylint: disable=too-many-locals
         """
         Interpolate the data onto a regular grid.
 
-        The grid can be specified by either the number of points in each
-        dimension (the *shape*) or by the grid node spacing. See
-        :func:`verde.grid_coordinates` for details. Other arguments for
-        :func:`verde.grid_coordinates` can be passed as extra keyword arguments
-        (``kwargs``) to this method.
+        The grid can be specified by two methods:
 
-        If the interpolator collected the input data region, then it will be
-        used if ``region=None``. Otherwise, you must specify the grid region.
+        - Pass the actual ``coordinates`` of the grid.
+        - Let the method define a new grid by either passing the number of
+          points in each dimension (the *shape*) or by the grid node *spacing*.
+          If the interpolator collected the input data region, then it will be
+          used if ``region=None``. Otherwise, you must specify the grid region.
+          See :func:`verde.grid_coordinates` for details. Other arguments for
+          :func:`verde.grid_coordinates` can be passed as extra keyword
+          arguments (``kwargs``) to this method.
 
         Use the *dims* and *data_names* arguments to set custom names for the
         dimensions and the data field(s) in the output :class:`xarray.Dataset`.
@@ -379,14 +388,26 @@ class BaseGridder(BaseEstimator):
 
         Parameters
         ----------
+        coordinates : tuple of arrays
+            Tuple of arrays containing the coordinates of the grid in the
+            following order: (easting, northing, vertical, ...).
+            The easting and northing arrays could be 1d or 2d arrays, if
+            they are 2d they must be part of a meshgrid. Any extra coordinate
+            should be a 2d dimensional grid with a shape of ``(northing.shape,
+            easting.shape)``. The arrays could either be Numpy arrays or
+            :class:`xarray.DataArray`s. If ``coordinates`` are passed, no
+            ``region``, ``shape`` nor ``spacing`` is needed.
         region : list = [W, E, S, N]
             The west, east, south, and north boundaries of a given region.
+            Use only if ``coordinates`` is None.
         shape : tuple = (n_north, n_east) or None
             The number of points in the South-North and West-East directions,
             respectively.
+            Use only if ``coordinates`` is None.
         spacing : tuple = (s_north, s_east) or None
             The grid spacing in the South-North and West-East directions,
             respectively.
+            Use only if ``coordinates`` is None.
         dims : list or None
             The names of the northing and easting data dimensions,
             respectively, in the output grid. Default is determined from the
@@ -420,16 +441,39 @@ class BaseGridder(BaseEstimator):
         verde.grid_coordinates : Generate the coordinate values for the grid.
 
         """
-        dims = self._get_dims(dims)
-        region = get_instance_region(self, region)
-        coordinates = grid_coordinates(region, shape=shape, spacing=spacing, **kwargs)
+        if coordinates is not None and (spacing is not None or shape is not None):
+            raise ValueError(
+                "Both coordinates and spacing or shape were provided. "
+                + "Please pass only coordinates or either the spacing or the shape."
+            )
+        if coordinates is not None and region is not None:
+            warnings.warn(
+                "Both coordinates and region were provided. "
+                + "The region parameter will be ignored."
+            )
+        # Get grid coordinates from coordinates parameter
+        if coordinates is not None:
+            ndim = check_ndim_easting_northing(*coordinates[:2])
+            if ndim == 1:
+                # Build a meshgrid if easting and northing are 1d
+                coordinates = meshgrid_from_1d(coordinates)
+            else:
+                check_meshgrid(coordinates)
+        # Build the grid coordinates though vd.grid_coordinates
+        else:
+            region = get_instance_region(self, region)
+            coordinates = grid_coordinates(
+                region, shape=shape, spacing=spacing, **kwargs
+            )
+        # Predict on the grid points (project the coordinates if needed)
         if projection is None:
             data = check_data(self.predict(coordinates))
         else:
             data = check_data(
                 self.predict(project_coordinates(coordinates, projection))
             )
-        # Get names for data and any extra coordinates
+        # Get names for dims, data and any extra coordinates
+        dims = self._get_dims(dims)
         data_names = self._get_data_names(data, data_names)
         extra_coords_names = self._get_extra_coords_names(coordinates)
         # Create xarray.Dataset
@@ -455,7 +499,7 @@ class BaseGridder(BaseEstimator):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
+        **kwargs,
     ):
         """
         Interpolate values onto a random scatter of points.
@@ -534,7 +578,7 @@ class BaseGridder(BaseEstimator):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
+        **kwargs,
     ):
         """
         Interpolate data along a profile between two points.
