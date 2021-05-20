@@ -134,9 +134,9 @@ def test_basegridder():
         # A region should be given because it hasn't been assigned
         grd.grid()
 
-    coordinates_true = grid_coordinates(region, shape)
+    coordinates_true = grid_coordinates(region, shape=shape)
     data_true = angular * coordinates_true[0] + linear
-    grid = grd.grid(region, shape)
+    grid = grd.grid(region=region, shape=shape)
     prof = grd.profile((0, -10), (10, -10), 30)
 
     npt.assert_allclose(grd.coefs_, [linear, angular])
@@ -163,7 +163,7 @@ def test_basegridder_data_names():
     coordinates = scatter_points(region, 1000, random_state=0)
     data = angular * coordinates[0] + linear
     grd = PolyGridder().fit(coordinates, data)
-    grid = grd.grid(region, shape)
+    grid = grd.grid(region=region, shape=shape)
     prof = grd.profile((0, -10), (10, -10), 30)
     # Check if default name for data_names was applied correctly
     assert "scalars" in grid
@@ -205,7 +205,7 @@ def test_basegridder_projection():
     npt.assert_allclose(scat.northing, coordinates[1])
 
     # Check the grid
-    grid = grd.grid(region, shape, projection=proj)
+    grid = grd.grid(region=region, shape=shape, projection=proj)
     npt.assert_allclose(grid.scalars.values, data_true)
     npt.assert_allclose(grid.easting.values, coordinates_true[0][0, :])
     npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0])
@@ -318,7 +318,7 @@ def test_basegridder_projection_multiple_coordinates():
     npt.assert_allclose(grd.coefs_, [linear, angular / 2])
 
     # The actual values for a grid
-    coordinates_true = grid_coordinates(region, shape, extra_coords=(13, 17))
+    coordinates_true = grid_coordinates(region, shape=shape, extra_coords=(13, 17))
     data_true = angular * coordinates_true[0] + linear
 
     # Check the scatter
@@ -330,7 +330,7 @@ def test_basegridder_projection_multiple_coordinates():
     npt.assert_allclose(scat.northing, coordinates[1])
 
     # Check the grid
-    grid = grd.grid(region, shape, projection=proj, extra_coords=(13, 17))
+    grid = grd.grid(region=region, shape=shape, projection=proj, extra_coords=(13, 17))
     npt.assert_allclose(grid.scalars.values, data_true)
     npt.assert_allclose(grid.easting.values, coordinates_true[0][0, :])
     npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0])
