@@ -8,6 +8,7 @@
 """
 Test the base classes and their utility functions.
 """
+import warnings
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -134,16 +135,25 @@ def test_basegridder():
         # A region should be given because it hasn't been assigned
         grd.grid()
 
+    npt.assert_allclose(grd.coefs_, [linear, angular])
+
+    # Check predictions by comparing against expected values
     coordinates_true = grid_coordinates(region, shape=shape)
     data_true = angular * coordinates_true[0] + linear
-    grid = grd.grid(region=region, shape=shape)
+    # Grid passing region and shape
+    grid_1 = grd.grid(region=region, shape=shape)
+    # Grid passing grid coordinates
+    grid_2 = grd.grid(coordinates=coordinates_true)
+    # Grid on profile
     prof = grd.profile((0, -10), (10, -10), 30)
+    # Grid on scatter
+    scat = grd.scatter(region=region, size=1000, random_state=0)
 
-    npt.assert_allclose(grd.coefs_, [linear, angular])
-    npt.assert_allclose(grid.scalars.values, data_true)
-    npt.assert_allclose(grid.easting.values, coordinates_true[0][0, :])
-    npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0])
-    npt.assert_allclose(grd.scatter(region, 1000, random_state=0).scalars, data)
+    for grid in (grid_1, grid_2):
+        npt.assert_allclose(grid.scalars.values, data_true)
+        npt.assert_allclose(grid.easting.values, coordinates_true[0][0, :])
+        npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0])
+    npt.assert_allclose(scat.scalars, data)
     npt.assert_allclose(
         prof.scalars,
         angular * coordinates_true[0][0, :] + linear,
@@ -354,6 +364,34 @@ def test_basegridder_projection_multiple_coordinates():
     # coordinates.
     distance_true = np.linspace(region[0] * 2, region[1] * 2, shape[1])
     npt.assert_allclose(prof.distance, distance_true)
+
+
+def test_basegridder_grid_invalid_arguments():
+    """
+    Test if errors and warnings are raised on invalid arguments to grid method
+    """
+    region = (0, 10, -10, -5)
+    angular, linear = 2, 100
+    coordinates = scatter_points(region, 1000, random_state=0, extra_coords=(1, 2))
+    data = angular * coordinates[0] + linear
+    grd = PolyGridder().fit(coordinates, data)
+    # Check error is raised if coordinates and shape are passed
+    grid_coordinates = (np.linspace(*region[:2], 11), np.linspace(*region[2:], 7))
+    with pytest.raises(ValueError):
+        grd.grid(coordinates=grid_coordinates, shape=(30, 30))
+    # Check error is raised if coordinates and spacing are passed
+    with pytest.raises(ValueError):
+        grd.grid(coordinates=grid_coordinates, spacing=10)
+    # Check warning if both coordinates and region are passed
+    msg = (
+        "Both coordinates and region were provided. "
+        + "The region parameter will be ignored."
+    )
+    with warnings.catch_warnings(record=True) as warn:
+        grd.grid(coordinates=grid_coordinates, region=region)
+        assert len(warn) == 1
+        assert issubclass(warn[-1].category, UserWarning)
+        assert str(warn[-1].message) == msg
 
 
 def test_check_fit_input():
