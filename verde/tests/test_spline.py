@@ -69,8 +69,8 @@ def test_spline_cv(delayed, client, engine):
     # Tolerance needs to be kind of high to allow for error due to small
     # dataset
     npt.assert_allclose(
-        spline.grid(region, shape=shape).scalars,
-        synth.grid(region, shape=shape).scalars,
+        spline.grid(region=region, shape=shape).scalars,
+        synth.grid(region=region, shape=shape).scalars,
         rtol=5e-2,
     )
 
@@ -93,8 +93,8 @@ def test_spline():
     # Tolerance needs to be kind of high to allow for error due to small
     # dataset
     npt.assert_allclose(
-        spline.grid(region, shape=shape).scalars,
-        synth.grid(region, shape=shape).scalars,
+        spline.grid(region=region, shape=shape).scalars,
+        synth.grid(region=region, shape=shape).scalars,
         rtol=5e-2,
     )
 
@@ -141,8 +141,8 @@ def test_spline_damping():
     # Tolerance needs to be kind of high to allow for error due to small
     # dataset
     npt.assert_allclose(
-        spline.grid(region, shape=shape).scalars,
-        synth.grid(region, shape=shape).scalars,
+        spline.grid(region=region, shape=shape).scalars,
+        synth.grid(region=region, shape=shape).scalars,
         rtol=1e-2,
         atol=10,
     )
