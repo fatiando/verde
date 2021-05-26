@@ -459,7 +459,7 @@ class BaseGridder(BaseEstimator):
                 coordinates = meshgrid_from_1d(coordinates)
             else:
                 check_meshgrid(coordinates)
-        # Build the grid coordinates though vd.grid_coordinates
+        # Build the grid coordinates through vd.grid_coordinates
         else:
             region = get_instance_region(self, region)
             coordinates = grid_coordinates(
