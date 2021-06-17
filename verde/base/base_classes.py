@@ -7,7 +7,6 @@
 """
 Base classes for all gridders.
 """
-import warnings
 from abc import ABCMeta, abstractmethod
 
 import pandas as pd
@@ -447,9 +446,9 @@ class BaseGridder(BaseEstimator):
                 + "Please pass only coordinates or either the spacing or the shape."
             )
         if coordinates is not None and region is not None:
-            warnings.warn(
+            raise ValueError(
                 "Both coordinates and region were provided. "
-                + "The region parameter will be ignored."
+                + "Please pass region only if spacing or shape is specified."
             )
         # Get grid coordinates from coordinates parameter
         if coordinates is not None:

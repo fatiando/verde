@@ -8,7 +8,6 @@
 """
 Test the base classes and their utility functions.
 """
-import warnings
 import numpy as np
 import numpy.testing as npt
 import pytest
@@ -382,16 +381,9 @@ def test_basegridder_grid_invalid_arguments():
     # Check error is raised if coordinates and spacing are passed
     with pytest.raises(ValueError):
         grd.grid(coordinates=grid_coordinates, spacing=10)
-    # Check warning if both coordinates and region are passed
-    msg = (
-        "Both coordinates and region were provided. "
-        + "The region parameter will be ignored."
-    )
-    with warnings.catch_warnings(record=True) as warn:
+    # Check error is raised if both coordinates and region are passed
+    with pytest.raises(ValueError):
         grd.grid(coordinates=grid_coordinates, region=region)
-        assert len(warn) == 1
-        assert issubclass(warn[-1].category, UserWarning)
-        assert str(warn[-1].message) == msg
 
 
 def test_check_fit_input():
