@@ -140,15 +140,18 @@ def test_basegridder():
     coordinates_true = grid_coordinates(region, shape=shape)
     data_true = angular * coordinates_true[0] + linear
     # Grid passing region and shape
-    grid_1 = grd.grid(region=region, shape=shape)
+    grids = []
+    grids.append(grd.grid(region=region, shape=shape))
     # Grid passing grid coordinates
-    grid_2 = grd.grid(coordinates=coordinates_true)
+    grids.append(grd.grid(coordinates=coordinates_true))
+    # Grid passing grid coordinates as 1d arrays
+    grids.append(grd.grid(coordinates=tuple(np.unique(c) for c in coordinates_true)))
     # Grid on profile
     prof = grd.profile((0, -10), (10, -10), 30)
     # Grid on scatter
     scat = grd.scatter(region=region, size=1000, random_state=0)
 
-    for grid in (grid_1, grid_2):
+    for grid in grids:
         npt.assert_allclose(grid.scalars.values, data_true)
         npt.assert_allclose(grid.easting.values, coordinates_true[0][0, :])
         npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0])
