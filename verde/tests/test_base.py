@@ -375,15 +375,15 @@ def test_basegridder_grid_invalid_arguments():
     data = angular * coordinates[0] + linear
     grd = PolyGridder().fit(coordinates, data)
     # Check error is raised if coordinates and shape are passed
-    grid_coordinates = (np.linspace(*region[:2], 11), np.linspace(*region[2:], 7))
+    grid_coords = (np.linspace(*region[:2], 11), np.linspace(*region[2:], 7))
     with pytest.raises(ValueError):
-        grd.grid(coordinates=grid_coordinates, shape=(30, 30))
+        grd.grid(coordinates=grid_coords, shape=(30, 30))
     # Check error is raised if coordinates and spacing are passed
     with pytest.raises(ValueError):
-        grd.grid(coordinates=grid_coordinates, spacing=10)
+        grd.grid(coordinates=grid_coords, spacing=10)
     # Check error is raised if both coordinates and region are passed
     with pytest.raises(ValueError):
-        grd.grid(coordinates=grid_coordinates, region=region)
+        grd.grid(coordinates=grid_coords, region=region)
 
 
 def test_check_fit_input():
