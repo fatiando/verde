@@ -209,6 +209,9 @@ class BaseGridder(BaseEstimator):
     # (pd.DataFrame, xr.Dataset, etc)
     dims = ("northing", "easting")
 
+    # The default dimension names for generated outputs if projection is passed
+    unproj_dims = ("latitude", "longitude")
+
     # The default name for any extra coordinates given to methods below
     # through the `extra_coords` keyword argument. Coordinates are
     # included in the outputs (pandas.DataFrame or xarray.Dataset)
@@ -420,7 +423,7 @@ class BaseGridder(BaseEstimator):
         verde.grid_coordinates : Generate the coordinate values for the grid.
 
         """
-        dims = self._get_dims(dims)
+        dims = self._get_dims(dims, projection)
         region = get_instance_region(self, region)
         coordinates = grid_coordinates(region, shape=shape, spacing=spacing, **kwargs)
         if projection is None:
@@ -510,7 +513,7 @@ class BaseGridder(BaseEstimator):
             The interpolated values on a random set of points.
 
         """
-        dims = self._get_dims(dims)
+        dims = self._get_dims(dims, projection)
         region = get_instance_region(self, region)
         coordinates = scatter_points(region, size, random_state=random_state, **kwargs)
         if projection is None:
@@ -616,7 +619,7 @@ class BaseGridder(BaseEstimator):
             The interpolated values along the profile.
 
         """
-        dims = self._get_dims(dims)
+        dims = self._get_dims(dims, projection)
         # Project the input points to generate the profile in Cartesian
         # coordinates (the distance calculation doesn't make sense in
         # geographic coordinates since we don't do actual distances on a
@@ -641,12 +644,14 @@ class BaseGridder(BaseEstimator):
         columns.extend(zip(data_names, data))
         return pd.DataFrame(dict(columns), columns=[c[0] for c in columns])
 
-    def _get_dims(self, dims):
+    def _get_dims(self, dims, projection):
         """
         Get default dimension names.
         """
         if dims is not None:
             return dims
+        if projection:
+            return self.unproj_dims
         return self.dims
 
     def _get_extra_coords_names(self, coordinates):
