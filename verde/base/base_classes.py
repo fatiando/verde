@@ -650,7 +650,7 @@ class BaseGridder(BaseEstimator):
         """
         if dims is not None:
             return dims
-        if projection:
+        if projection is not None:
             return self.unproj_dims
         return self.dims
 
