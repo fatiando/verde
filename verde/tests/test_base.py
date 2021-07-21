@@ -38,6 +38,10 @@ def test_check_coordinates():
 
 def test_get_dims():
     "Tests that get_dims returns the expected results"
+    # Define a dummy projection function
+    def proj(lon, lat, inverse=False):
+        return None
+
     gridder = BaseGridder()
     assert gridder._get_dims(dims=None, projection=None) == ("northing", "easting")
     assert gridder._get_dims(dims=("john", "paul"), projection=None) == ("john", "paul")
@@ -45,13 +49,13 @@ def test_get_dims():
     assert gridder._get_dims(dims=None, projection=None) == ("latitude", "longitude")
     # Test with a projection
     gridder = BaseGridder()
-    assert gridder._get_dims(dims=None, projection=True) == ("latitude", "longitude")
-    assert gridder._get_dims(dims=("john", "paul"), projection=True) == (
+    assert gridder._get_dims(dims=None, projection=proj) == ("latitude", "longitude")
+    assert gridder._get_dims(dims=("john", "paul"), projection=proj) == (
         "john",
         "paul",
     )
     gridder.unproj_dims = ("latitude_1", "longitude_1")
-    assert gridder._get_dims(dims=None, projection=True) == (
+    assert gridder._get_dims(dims=None, projection=proj) == (
         "latitude_1",
         "longitude_1",
     )
