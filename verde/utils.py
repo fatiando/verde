@@ -341,7 +341,7 @@ def make_xarray_grid(
 
     """
     # Check dimensions of the horizontal coordinates of the regular grid
-    ndim = check_ndim_easting_northing(*coordinates[:2])
+    ndim = get_ndim_horizontal_coords(*coordinates[:2])
     # Convert 2d horizontal coordinates to 1d arrays if needed
     if ndim == 2:
         coordinates = meshgrid_to_1d(coordinates)
@@ -459,7 +459,7 @@ def meshgrid_from_1d(coordinates):
      [ 3.  3.  3.  3.  3.]]
 
     """
-    ndim = check_ndim_easting_northing(*coordinates[:2])
+    ndim = get_ndim_horizontal_coords(*coordinates[:2])
     if ndim != 1:
         raise ValueError(
             "Horizontal coordinates must be 1d-arrays. " + f"{ndim}d-arrays provided."
@@ -470,9 +470,23 @@ def meshgrid_from_1d(coordinates):
     return coordinates
 
 
-def check_ndim_easting_northing(easting, northing):
+def get_ndim_horizontal_coords(easting, northing):
     """
-    Check if easting and northing coordinates have the same dimensions
+    Return the number of dimensions of the horizontal coordinates arrays
+
+    Also check if the two horizontal coordinates arrays same dimensions.
+
+    Parameters
+    ----------
+    easting : nd-array
+        Array for the easting coordinates
+    northing : nd-array
+        Array for the northing coordinates
+
+    Returns
+    -------
+    ndim : int
+        Number of dimensions of the ``easting`` and ``northing`` arrays.
     """
     ndim = np.ndim(easting)
     if ndim != np.ndim(northing):

@@ -18,7 +18,7 @@ from .utils import check_data, check_data_names, score_estimator
 from ..utils import (
     make_xarray_grid,
     meshgrid_from_1d,
-    check_ndim_easting_northing,
+    get_ndim_horizontal_coords,
     check_meshgrid,
 )
 
@@ -452,7 +452,7 @@ class BaseGridder(BaseEstimator):
             )
         # Get grid coordinates from coordinates parameter
         if coordinates is not None:
-            ndim = check_ndim_easting_northing(*coordinates[:2])
+            ndim = get_ndim_horizontal_coords(*coordinates[:2])
             if ndim == 1:
                 # Build a meshgrid if easting and northing are 1d
                 coordinates = meshgrid_from_1d(coordinates)

@@ -25,7 +25,7 @@ from ..utils import (
     make_xarray_grid,
     meshgrid_to_1d,
     meshgrid_from_1d,
-    check_ndim_easting_northing,
+    get_ndim_horizontal_coords,
 )
 from .. import utils
 
@@ -326,12 +326,12 @@ def test_check_ndim_easting_northing():
     # Easting and northing as 1d arrays
     # pylint: disable=unbalanced-tuple-unpacking
     easting, northing = scatter_points((-5, 5, 0, 4), 50, random_state=42)
-    assert check_ndim_easting_northing(easting, northing) == 1
+    assert get_ndim_horizontal_coords(easting, northing) == 1
     # Easting and northing as 2d arrays
     easting, northing = grid_coordinates((-5, 5, 0, 4), spacing=1)
-    assert check_ndim_easting_northing(easting, northing) == 2
+    assert get_ndim_horizontal_coords(easting, northing) == 2
     # Check if error is raised after easting and northing with different ndims
     easting = np.linspace(0, 5, 6)
     northing = np.linspace(-5, 5, 16).reshape(4, 4)
     with pytest.raises(ValueError):
-        check_ndim_easting_northing(easting, northing)
+        get_ndim_horizontal_coords(easting, northing)
