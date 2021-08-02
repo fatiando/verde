@@ -358,13 +358,13 @@ class BaseGridder(BaseEstimator):
 
     def grid(
         self,
-        coordinates=None,
         region=None,
         shape=None,
         spacing=None,
         dims=None,
         data_names=None,
         projection=None,
+        coordinates=None,
         **kwargs,
     ):  # pylint: disable=too-many-locals
         """
@@ -387,15 +387,6 @@ class BaseGridder(BaseEstimator):
 
         Parameters
         ----------
-        coordinates : tuple of arrays
-            Tuple of arrays containing the coordinates of the grid in the
-            following order: (easting, northing, vertical, ...).
-            The easting and northing arrays could be 1d or 2d arrays, if
-            they are 2d they must be part of a meshgrid. Any extra coordinate
-            should be a 2d dimensional grid with a shape of ``(northing.shape,
-            easting.shape)``. The arrays could either be Numpy arrays or
-            :class:`xarray.DataArray`s. If ``coordinates`` are passed, no
-            ``region``, ``shape`` nor ``spacing`` is needed.
         region : list = [W, E, S, N]
             The west, east, south, and north boundaries of a given region.
             Use only if ``coordinates`` is None.
@@ -428,6 +419,15 @@ class BaseGridder(BaseEstimator):
             will be used to project the generated grid coordinates before
             passing them into ``predict``. For example, you can use this to
             generate a geographic grid from a Cartesian gridder.
+        coordinates : tuple of arrays
+            Tuple of arrays containing the coordinates of the grid in the
+            following order: (easting, northing, vertical, ...).
+            The easting and northing arrays could be 1d or 2d arrays, if
+            they are 2d they must be part of a meshgrid. Any extra coordinate
+            should be a 2d dimensional grid with a shape of ``(northing.shape,
+            easting.shape)``. The arrays could either be Numpy arrays or
+            :class:`xarray.DataArray`s. If ``coordinates`` are passed, no
+            ``region``, ``shape`` nor ``spacing`` is needed.
 
         Returns
         -------
