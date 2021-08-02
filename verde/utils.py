@@ -478,7 +478,7 @@ def check_ndim_easting_northing(easting, northing):
     if ndim != np.ndim(northing):
         raise ValueError(
             "Horizontal coordinates dimensions mismatch. "
-            + f"The easting coordinate has {easting.ndim} dimensions "
+            + f"The easting coordinate array has {easting.ndim} dimensions "
             + f"while the northing has {northing.ndim}."
         )
     return ndim
