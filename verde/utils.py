@@ -292,7 +292,7 @@ def make_xarray_grid(
     >>> grid = make_xarray_grid(coordinates, data, data_names="dummy")
     >>> print(grid)
     <xarray.Dataset>
-    Dimensions:   (easting: 3, northing: 2)
+    Dimensions:   (northing: 2, easting: 3)
     Coordinates:
       * easting   (easting) float64 -10.0 -8.0 -6.0
       * northing  (northing) float64 8.0 10.0
@@ -311,7 +311,7 @@ def make_xarray_grid(
     ... )
     >>> print(grid)
     <xarray.Dataset>
-    Dimensions:   (easting: 3, northing: 2)
+    Dimensions:   (northing: 2, easting: 3)
     Coordinates:
       * easting   (easting) float64 -10.0 -8.0 -6.0
       * northing  (northing) float64 8.0 10.0
