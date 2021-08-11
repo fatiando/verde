@@ -9,6 +9,7 @@ Base classes for all gridders.
 """
 from abc import ABCMeta, abstractmethod
 
+import warnings
 import pandas as pd
 from sklearn.base import BaseEstimator
 from sklearn.model_selection import BaseCrossValidator
@@ -449,6 +450,15 @@ class BaseGridder(BaseEstimator):
             raise ValueError(
                 "Both coordinates and region were provided. "
                 + "Please pass region only if spacing or shape is specified."
+            )
+        # Raise deprecation warning for the region, shape and spacing arguments
+        if spacing is not None or shape is not None or region is not None:
+            warnings.warn(
+                "The 'spacing', 'shape' and 'region' arguments will be removed "
+                + "in Verde v2.0.0. "
+                + "Please use the 'verde.grid_coordinates' function to define "
+                + "grid coordinates and pass them as the 'coordinates' argument.",
+                FutureWarning,
             )
         # Get grid coordinates from coordinates parameter
         if coordinates is not None:
