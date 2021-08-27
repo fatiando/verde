@@ -424,11 +424,9 @@ class BaseGridder(BaseEstimator):
             Tuple of arrays containing the coordinates of the grid in the
             following order: (easting, northing, vertical, ...).
             The easting and northing arrays could be 1d or 2d arrays, if
-            they are 2d they must be part of a meshgrid. Any extra coordinate
-            should be a 2d dimensional grid with a shape of ``(northing.shape,
-            easting.shape)``. The arrays could either be Numpy arrays or
-            :class:`xarray.DataArray`s. If ``coordinates`` are passed, no
-            ``region``, ``shape`` nor ``spacing`` is needed.
+            they are 2d they must be part of a meshgrid.
+            If coordinates are passed, ``region``, ``shape``, and ``spacing``
+            are ignored.
 
         Returns
         -------
