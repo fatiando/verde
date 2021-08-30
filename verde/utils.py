@@ -290,9 +290,9 @@ def make_xarray_grid(
     >>> data = np.ones_like(coordinates[0])
     >>> # Create the grid
     >>> grid = make_xarray_grid(coordinates, data, data_names="dummy")
-    >>> print(grid)
+    >>> print(grid) # doctest: +SKIP
     <xarray.Dataset>
-    Dimensions:   (easting: 3, northing: 2)
+    Dimensions:   (northing: 2, easting: 3)
     Coordinates:
       * easting   (easting) float64 -10.0 -8.0 -6.0
       * northing  (northing) float64 8.0 10.0
@@ -309,9 +309,9 @@ def make_xarray_grid(
     >>> grid = make_xarray_grid(
     ...     coordinates, data, data_names="dummy", extra_coords_names="upward"
     ... )
-    >>> print(grid)
+    >>> print(grid) # doctest: +SKIP
     <xarray.Dataset>
-    Dimensions:   (easting: 3, northing: 2)
+    Dimensions:   (northing: 2, easting: 3)
     Coordinates:
       * easting   (easting) float64 -10.0 -8.0 -6.0
       * northing  (northing) float64 8.0 10.0
@@ -329,7 +329,7 @@ def make_xarray_grid(
     ...     data_names=None,
     ...     extra_coords_names="upward",
     ... )
-    >>> print(grid)
+    >>> print(grid) # doctest: +SKIP
     <xarray.Dataset>
     Dimensions:   (easting: 3, northing: 2)
     Coordinates:
