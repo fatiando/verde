@@ -15,7 +15,7 @@ import xarray as xr
 from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
 import pytest
 
-from ..coordinates import grid_coordinates
+from ..coordinates import grid_coordinates, scatter_points
 from ..utils import (
     parse_engine,
     dummy_jit,
@@ -24,6 +24,8 @@ from ..utils import (
     partition_by_sum,
     make_xarray_grid,
     meshgrid_to_1d,
+    meshgrid_from_1d,
+    get_ndim_horizontal_coords,
 )
 from .. import utils
 
@@ -306,3 +308,30 @@ def test_meshgrid_to_1d_invalid():
     northing = np.linspace(-4, -4, 9)
     with pytest.raises(ValueError):
         meshgrid_to_1d((easting, northing))
+
+
+def test_meshgrid_from_1d_invalid():
+    """
+    Check if error is raised after non 1d arrays passed to meshgrid_from_1d
+    """
+    coordinates = grid_coordinates(region=(0, 10, -5, 5), shape=(11, 11))
+    with pytest.raises(ValueError):
+        meshgrid_from_1d(coordinates)
+
+
+def test_check_ndim_easting_northing():
+    """
+    Test if check_ndim_easting_northing works as expected
+    """
+    # Easting and northing as 1d arrays
+    # pylint: disable=unbalanced-tuple-unpacking
+    easting, northing = scatter_points((-5, 5, 0, 4), 50, random_state=42)
+    assert get_ndim_horizontal_coords(easting, northing) == 1
+    # Easting and northing as 2d arrays
+    easting, northing = grid_coordinates((-5, 5, 0, 4), spacing=1)
+    assert get_ndim_horizontal_coords(easting, northing) == 2
+    # Check if error is raised after easting and northing with different ndims
+    easting = np.linspace(0, 5, 6)
+    northing = np.linspace(-5, 5, 16).reshape(4, 4)
+    with pytest.raises(ValueError):
+        get_ndim_horizontal_coords(easting, northing)
