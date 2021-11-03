@@ -697,7 +697,7 @@ class BaseGridder(BaseEstimator):
         columns.extend(zip(data_names, data))
         return pd.DataFrame(dict(columns), columns=[c[0] for c in columns])
 
-    def _get_dims(self, dims, projection):
+    def _get_dims(self, dims, projection=None):
         """
         Get default dimension names.
         """
