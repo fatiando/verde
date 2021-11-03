@@ -39,11 +39,28 @@ def test_check_coordinates():
 
 def test_get_dims():
     "Tests that get_dims returns the expected results"
+    # Define a dummy projection function
+    def proj(lon, lat, inverse=False):
+        return None
+
     gridder = BaseGridder()
     assert gridder._get_dims(dims=None) == ("northing", "easting")
-    assert gridder._get_dims(dims=("john", "paul")) == ("john", "paul")
+    assert gridder._get_dims(dims=None, projection=None) == ("northing", "easting")
+    assert gridder._get_dims(dims=("john", "paul"), projection=None) == ("john", "paul")
     gridder.dims = ("latitude", "longitude")
-    assert gridder._get_dims(dims=None) == ("latitude", "longitude")
+    assert gridder._get_dims(dims=None, projection=None) == ("latitude", "longitude")
+    # Test with a projection
+    gridder = BaseGridder()
+    assert gridder._get_dims(dims=None, projection=proj) == ("latitude", "longitude")
+    assert gridder._get_dims(dims=("john", "paul"), projection=proj) == (
+        "john",
+        "paul",
+    )
+    gridder.unproj_dims = ("latitude_1", "longitude_1")
+    assert gridder._get_dims(dims=None, projection=proj) == (
+        "latitude_1",
+        "longitude_1",
+    )
 
 
 def test_get_data_names():
@@ -214,14 +231,14 @@ def test_basegridder_projection():
     # Check the scatter
     scat = grd.scatter(region, 1000, random_state=0, projection=proj)
     npt.assert_allclose(scat.scalars, data)
-    npt.assert_allclose(scat.easting, coordinates[0])
-    npt.assert_allclose(scat.northing, coordinates[1])
+    npt.assert_allclose(scat.longitude, coordinates[0])
+    npt.assert_allclose(scat.latitude, coordinates[1])
 
     # Check the grid
     grid = grd.grid(region=region, shape=shape, projection=proj)
     npt.assert_allclose(grid.scalars.values, data_true)
-    npt.assert_allclose(grid.easting.values, coordinates_true[0][0, :])
-    npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0])
+    npt.assert_allclose(grid.longitude.values, coordinates_true[0][0, :])
+    npt.assert_allclose(grid.latitude.values, coordinates_true[1][:, 0])
 
     # Check the profile
     prof = grd.profile(
@@ -230,8 +247,8 @@ def test_basegridder_projection():
     npt.assert_allclose(prof.scalars, data_true[-1, :])
     # Coordinates should still be evenly spaced since the projection is a
     # multiplication.
-    npt.assert_allclose(prof.easting, coordinates_true[0][0, :])
-    npt.assert_allclose(prof.northing, coordinates_true[1][-1, :])
+    npt.assert_allclose(prof.longitude, coordinates_true[0][0, :])
+    npt.assert_allclose(prof.latitude, coordinates_true[1][-1, :])
     # Distance should still be in the projected coordinates. If the projection
     # is from geographic, we shouldn't be returning distances in degrees but in
     # projected meters. The distances will be evenly spaced in unprojected
@@ -339,14 +356,14 @@ def test_basegridder_projection_multiple_coordinates():
         region, 1000, random_state=0, projection=proj, extra_coords=(13, 17)
     )
     npt.assert_allclose(scat.scalars, data)
-    npt.assert_allclose(scat.easting, coordinates[0])
-    npt.assert_allclose(scat.northing, coordinates[1])
+    npt.assert_allclose(scat.longitude, coordinates[0])
+    npt.assert_allclose(scat.latitude, coordinates[1])
 
     # Check the grid
     grid = grd.grid(region=region, shape=shape, projection=proj, extra_coords=(13, 17))
     npt.assert_allclose(grid.scalars.values, data_true)
-    npt.assert_allclose(grid.easting.values, coordinates_true[0][0, :])
-    npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0])
+    npt.assert_allclose(grid.longitude.values, coordinates_true[0][0, :])
+    npt.assert_allclose(grid.latitude.values, coordinates_true[1][:, 0])
 
     # Check the profile
     prof = grd.profile(
@@ -359,8 +376,8 @@ def test_basegridder_projection_multiple_coordinates():
     npt.assert_allclose(prof.scalars, data_true[-1, :])
     # Coordinates should still be evenly spaced since the projection is a
     # multiplication.
-    npt.assert_allclose(prof.easting, coordinates_true[0][0, :])
-    npt.assert_allclose(prof.northing, coordinates_true[1][-1, :])
+    npt.assert_allclose(prof.longitude, coordinates_true[0][0, :])
+    npt.assert_allclose(prof.latitude, coordinates_true[1][-1, :])
     # Distance should still be in the projected coordinates. If the projection
     # is from geographic, we shouldn't be returning distances in degrees but in
     # projected meters. The distances will be evenly spaced in unprojected
