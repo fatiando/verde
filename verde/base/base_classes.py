@@ -485,7 +485,7 @@ class BaseGridder(BaseEstimator):
                 self.predict(project_coordinates(coordinates, projection))
             )
         # Get names for dims, data and any extra coordinates
-        dims = self._get_dims(dims, projection)
+        dims = self._get_dims(dims, projection=projection)
         data_names = self._get_data_names(data, data_names)
         extra_coords_names = self._get_extra_coords_names(coordinates)
         # Create xarray.Dataset
@@ -566,7 +566,7 @@ class BaseGridder(BaseEstimator):
             The interpolated values on a random set of points.
 
         """
-        dims = self._get_dims(dims, projection)
+        dims = self._get_dims(dims, projection=projection)
         region = get_instance_region(self, region)
         coordinates = scatter_points(region, size, random_state=random_state, **kwargs)
         if projection is None:
@@ -672,7 +672,7 @@ class BaseGridder(BaseEstimator):
             The interpolated values along the profile.
 
         """
-        dims = self._get_dims(dims, projection)
+        dims = self._get_dims(dims, projection=projection)
         # Project the input points to generate the profile in Cartesian
         # coordinates (the distance calculation doesn't make sense in
         # geographic coordinates since we don't do actual distances on a

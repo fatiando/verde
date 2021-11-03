@@ -44,6 +44,7 @@ def test_get_dims():
         return None
 
     gridder = BaseGridder()
+    assert gridder._get_dims(dims=None) == ("northing", "easting")
     assert gridder._get_dims(dims=None, projection=None) == ("northing", "easting")
     assert gridder._get_dims(dims=("john", "paul"), projection=None) == ("john", "paul")
     gridder.dims = ("latitude", "longitude")
