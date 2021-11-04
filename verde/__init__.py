@@ -20,6 +20,7 @@ from .coordinates import (
     pad_region,
     longitude_continuity,
 )
+from .derivative import Derivative
 from .mask import distance_mask, convexhull_mask
 from .utils import (
     variance_to_weights,
