@@ -62,9 +62,9 @@ def least_squares(jacobian, data, weights, damping=None, copy_jacobian=False):
     scaler = StandardScaler(copy=copy_jacobian, with_mean=False, with_std=True)
     jacobian = scaler.fit_transform(jacobian)
     if damping is None:
-        regr = LinearRegression(fit_intercept=False, normalize=False)
+        regr = LinearRegression(fit_intercept=False)
     else:
-        regr = Ridge(alpha=damping, fit_intercept=False, normalize=False)
+        regr = Ridge(alpha=damping, fit_intercept=False)
     regr.fit(jacobian, data.ravel(), sample_weight=weights)
     params = regr.coef_ / scaler.scale_
     return params
