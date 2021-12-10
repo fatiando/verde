@@ -45,10 +45,19 @@ jobs:
           - "3.6"
           - "3.9"
         dependencies:
-          - basic
-          - optional
+          - latest
+        include:
+          - os: ubuntu
+            python: "3.9"
+            dependencies: optional
+          - os: macos
+            python: "3.9"
+            dependencies: optional
+          - os: windows
+            python: "3.9"
+            dependencies: optional
     env:
-      REQUIREMENTS: requirements.txt env/requirements-docs.txt env/requirements-build.txt
+      REQUIREMENTS: requirements.txt env/requirements-test.txt env/requirements-build.txt
       # Used to tag codecov submissions
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
