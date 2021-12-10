@@ -1,4 +1,4 @@
-.. image:: https://github.com/fatiando/verde/raw/master/doc/_static/readme-banner.png
+.. image:: https://github.com/fatiando/verde/raw/main/doc/_static/readme-banner.png
     :alt: Verde
 
 `Documentation <http://www.fatiando.org/verde>`__ |
@@ -10,18 +10,12 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 .. image:: http://img.shields.io/pypi/v/verde.svg?style=flat-square&label=version
     :alt: Latest version on PyPI
     :target: https://pypi.python.org/pypi/verde
-.. image:: http://img.shields.io/travis/fatiando/verde/master.svg?style=flat-square&label=TravisCI
-    :alt: TravisCI build status
-    :target: https://travis-ci.org/fatiando/verde
-.. image:: https://img.shields.io/azure-devops/build/fatiando/066f88d8-0495-49ba-bad9-ef7431356ce9/7/master.svg?label=Azure&style=flat-square
-    :alt: Azure Pipelines build status
-    :target: https://dev.azure.com/fatiando/verde/_build
-.. image:: https://img.shields.io/codecov/c/github/fatiando/verde/master.svg?style=flat-square
+.. image:: https://img.shields.io/conda/vn/conda-forge/verde.svg?style=flat-square
+    :alt: Latest version on conda-forge
+    :target: https://github.com/conda-forge/verde-feedstock
+.. image:: https://img.shields.io/codecov/c/github/fatiando/verde/main.svg?style=flat-square
     :alt: Test coverage status
     :target: https://codecov.io/gh/fatiando/verde
-.. image:: https://img.shields.io/codacy/grade/6b698defc0df47288a634930d41a9d65.svg?style=flat-square&label=codacy
-    :alt: Code quality grade on codacy
-    :target: https://www.codacy.com/app/leouieda/verde
 .. image:: https://img.shields.io/pypi/pyversions/verde.svg?style=flat-square
     :alt: Compatible Python versions.
     :target: https://pypi.python.org/pypi/verde
@@ -92,11 +86,11 @@ Citing Verde
 ------------
 
 This is research software **made by scientists** (see
-`AUTHORS.md <https://github.com/fatiando/verde/blob/master/AUTHORS.md>`__). Citations
+`AUTHORS.md <https://github.com/fatiando/verde/blob/main/AUTHORS.md>`__). Citations
 help us justify the effort that goes into building and maintaining this project. If you
 used Verde for your research, please consider citing us.
 
-See our `CITATION.rst file <https://github.com/fatiando/verde/blob/master/CITATION.rst>`__
+See our `CITATION.rst file <https://github.com/fatiando/verde/blob/main/CITATION.rst>`__
 to find out more.
 
 
@@ -107,14 +101,14 @@ Code of conduct
 +++++++++++++++
 
 Please note that this project is released with a
-`Contributor Code of Conduct <https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md>`__.
+`Contributor Code of Conduct <https://github.com/fatiando/verde/blob/main/CODE_OF_CONDUCT.md>`__.
 By participating in this project you agree to abide by its terms.
 
 Contributing Guidelines
 +++++++++++++++++++++++
 
 Please read our
-`Contributing Guide <https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md>`__
+`Contributing Guide <https://github.com/fatiando/verde/blob/main/CONTRIBUTING.md>`__
 to see how you can help and give feedback.
 
 Imposter syndrome disclaimer
@@ -150,13 +144,13 @@ License
 
 This is free software: you can redistribute it and/or modify it under the terms
 of the **BSD 3-clause License**. A copy of this license is provided in
-`LICENSE.txt <https://github.com/fatiando/verde/blob/master/LICENSE.txt>`__.
+`LICENSE.txt <https://github.com/fatiando/verde/blob/main/LICENSE.txt>`__.
 
 
 Documentation for other versions
 --------------------------------
 
-* `Development <http://www.fatiando.org/verde/dev>`__ (reflects the *master* branch on
+* `Development <http://www.fatiando.org/verde/dev>`__ (reflects the *main* branch on
   Github)
 * `Latest release <http://www.fatiando.org/verde/latest>`__
 * `v1.6.1 <http://www.fatiando.org/verde/v1.6.1>`__

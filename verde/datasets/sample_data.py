@@ -27,7 +27,7 @@ REGISTRY = pooch.create(
     path=pooch.os_cache("verde"),
     base_url="https://github.com/fatiando/verde/raw/{version}/data/",
     version=full_version,
-    version_dev="master",
+    version_dev="main",
     env="VERDE_DATA_DIR",
 )
 with pkg_resources.resource_stream("verde.datasets", "registry.txt") as registry_file:
