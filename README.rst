@@ -10,6 +10,9 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 .. image:: http://img.shields.io/pypi/v/verde.svg?style=flat-square&label=version
     :alt: Latest version on PyPI
     :target: https://pypi.python.org/pypi/verde
+.. image:: https://img.shields.io/conda/vn/conda-forge/verde.svg?style=flat-square
+    :alt: Latest version on conda-forge
+    :target: https://github.com/conda-forge/verde-feedstock
 .. image:: https://img.shields.io/codecov/c/github/fatiando/verde/main.svg?style=flat-square
     :alt: Test coverage status
     :target: https://codecov.io/gh/fatiando/verde
