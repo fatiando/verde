@@ -9,7 +9,6 @@ A minimal integration test to make sure the most critical parts of Verde work
 as expected.
 """
 import numpy.testing as npt
-import pyproj
 
 from ..datasets import fetch_california_gps
 from ..spline import Spline
@@ -22,10 +21,16 @@ from ..coordinates import get_region
 from ..mask import distance_mask
 
 
+def projection(longitude, latitude):
+    """
+    Simple projection function for testing.
+    """
+    return longitude * 111e3, latitude * 111e3
+
+
 def test_minimal_integration_2d_gps():
     "Grid the 2D GPS data to make sure things don't break in obvious ways."
     data = fetch_california_gps()
-    projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean(), ellps="WGS84")
     proj_coords = projection(data.longitude.values, data.latitude.values)
     spacing = 12 / 60
     train, test = train_test_split(
