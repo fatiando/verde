@@ -65,9 +65,9 @@ Alternatively, you can also use the `pip package manager
 Installing the latest development version
 -----------------------------------------
 
-You can use ``pip`` to install the latest source from Github::
+You can use ``pip`` to install the latest source from GitHub::
 
-    pip install https://github.com/fatiando/verde/archive/master.zip
+    pip install https://github.com/fatiando/verde/archive/main.zip
 
 Alternatively, you can clone the git repository locally and install from there::
 

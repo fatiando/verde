@@ -125,11 +125,11 @@ html_context = {
         ),
         (
             '<i class="fa fa-users fa-fw"></i> Contributing',
-            "https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md",
+            "https://github.com/fatiando/verde/blob/main/CONTRIBUTING.md",
         ),
         (
             '<i class="fa fa-gavel fa-fw"></i> Code of Conduct',
-            "https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md",
+            "https://github.com/fatiando/verde/blob/main/CODE_OF_CONDUCT.md",
         ),
         ('<i class="fa fa-comment fa-fw"></i> Contact', "http://contact.fatiando.org"),
         (
@@ -145,7 +145,7 @@ html_context = {
         zip(sphinx_gallery_conf["gallery_dirs"], sphinx_gallery_conf["examples_dirs"])
     ),
     "github_repo": "fatiando/verde",
-    "github_version": "master",
+    "github_version": "main",
 }
 
 
