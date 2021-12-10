@@ -4,7 +4,7 @@
 # token stolen if the Action is compromised. See the comments and links here:
 # https://github.com/pypa/gh-action-pypi-publish/issues/27
 #
-name: docs
+name: documentation
 
 # Only build PRs, the main branch, and releases. Pushes to branches will only
 # be built when a PR is opened. This avoids duplicated buids in PRs comming
@@ -32,10 +32,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      CONDA_REQUIREMENTS: requirements.txt
-      CONDA_REQUIREMENTS_DEV: requirements-dev.txt
-      CONDA_REQUIREMENTS_OPTIONAL: requirements-optional.txt
-      CONDA_INSTALL_EXTRA:
+      REQUIREMENTS: requirements.txt env/requirements-docs.txt env/requirements-optional.txt env/requirements-build.txt
       PYTHON: 3.8
 
     steps:
@@ -68,52 +65,39 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements*.txt') }}
+          key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('**/requirements*.txt') }}
 
       - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v2.0.1
+        uses: conda-incubator/setup-miniconda@v2
         with:
           python-version: ${{ env.PYTHON }}
-          miniconda-version: "latest"
-          auto-update-conda: true
-          channels: conda-forge
-          show-channel-urls: true
-          activate-environment: testing
+          miniforge-variant: Mambaforge
+          use-mamba: true
+          channels: conda-forge,defaults
           # Needed for caching
           use-only-tar-bz2: true
 
       - name: Install requirements
         run: |
-          requirements_file=full-conda-requirements.txt
-          if [ ! -z "$CONDA_REQUIREMENTS" ]; then
-              echo "Capturing dependencies from $CONDA_REQUIREMENTS"
-              cat $CONDA_REQUIREMENTS >> $requirements_file
-          fi
-          if [ ! -z "$CONDA_REQUIREMENTS_DEV" ]; then
-              echo "Capturing dependencies from $CONDA_REQUIREMENTS_DEV"
-              cat $CONDA_REQUIREMENTS_DEV >> $requirements_file
-          fi
-          if [ "$DEPENDENCIES" == "optional" ]; then
-              echo "Capturing optional dependencies from $CONDA_REQUIREMENTS_OPTIONAL"
-              cat $CONDA_REQUIREMENTS_OPTIONAL >> $requirements_file
-          fi
-          if [ ! -z "$CONDA_INSTALL_EXTRA" ]; then
-              echo "Capturing extra dependencies: $CONDA_INSTALL_EXTRA"
-              echo "# Extra" >> $requirements_file
-              # Use xargs to print one argument per line
-              echo $CONDA_INSTALL_EXTRA | xargs -n 1 >> $requirements_file
+          requirements_file=requirements-full.txt
+          if [ ! -z "$REQUIREMENTS" ]; then
+              echo "Capturing dependencies from $REQUIREMENTS"
+              for requirement in $REQUIREMENTS
+              do
+                cat $requirement >> $requirements_file
+              done
           fi
           if [ -f $requirements_file ]; then
               echo "Collected dependencies:"
               cat $requirements_file
               echo ""
-              conda install --quiet --file $requirements_file python=$PYTHON
+              mamba install --quiet --file $requirements_file python=$PYTHON
           else
               echo "No requirements defined."
           fi
 
       - name: List installed packages
-        run: conda list
+        run: mamba list
 
       - name: Build source and wheel distributions
         run: |
@@ -123,13 +107,14 @@ jobs:
           ls -lh dist/
 
       - name: Install the package
-        run: pip install --no-deps dist/*.whl
+        run: python -m pip install --no-deps dist/*.whl
 
       - name: Build the documentation
         run: make -C doc clean all
 
       # Store the docs as a build artifact so we can deploy it later
       - name: Upload HTML documentation as an artifact
+        if: github.event_name == 'release' || github.event_name == 'push'
         uses: actions/upload-artifact@v2
         with:
           name: docs-${{ github.sha }}
