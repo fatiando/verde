@@ -3,9 +3,14 @@ channels:
     - conda-forge
     - defaults
 dependencies:
-    - python=3.7
+    - python==3.7
     - pip
-    - setuptools_scm
+    # Build
+    - setuptools_scm>=6.2
+    - setuptools>=45
+    - wheel
+    - twine
+    # Run
     - numpy
     - scipy
     - pandas
@@ -16,18 +21,19 @@ dependencies:
     # Optional
     - pykdtree
     - numba
-    # Development requirements
-    - pyproj
+    # Style
+    - black>=20.8b1
+    - pylint==2.4.*
+    - flake8
+    # Test
     - matplotlib
     - cartopy>=0.18
     - pytest
     - pytest-cov
     - pytest-mpl
     - coverage
-    - black>=20.8b1
-    - pylint=2.4.*
-    - flake8
-    - sphinx=2.2.1
-    - sphinx_rtd_theme=0.4.3
+    # Documentation
+    - sphinx==2.2.1
+    - sphinx_rtd_theme==0.4.3
     - sphinx-gallery
-    - numpydoc
+    - pyproj
