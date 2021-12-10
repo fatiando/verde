@@ -31,10 +31,10 @@ jobs:
           python-version: "3.8"
 
       - name: Install requirements
-        run: pip install black>=20.8b1
+        run: python -m pip install -r env/requirements-style.txt
 
       - name: List installed packages
-        run: pip freeze
+        run: python -m pip freeze
 
       - name: Check code format
         run: make black-check
@@ -54,10 +54,10 @@ jobs:
           python-version: "3.8"
 
       - name: Install requirements
-        run: pip install flake8
+        run: python -m pip install -r env/requirements-style.txt
 
       - name: List installed packages
-        run: pip freeze
+        run: python -m pip freeze
 
       - name: Check code style
         run: make flake8
@@ -77,10 +77,33 @@ jobs:
           python-version: "3.8"
 
       - name: Install requirements
-        run: pip install pylint==2.4.*
+        run: python -m pip install -r env/requirements-style.txt
 
       - name: List installed packages
-        run: pip freeze
+        run: python -m pip freeze
 
-      - name: Linting (pylint)
+      - name: Linting
         run: make lint
+
+  license:
+    name: license [style]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+
+      - name: Install requirements
+        run: python -m pip install -r env/requirements-style.txt
+
+      - name: List installed packages
+        run: python -m pip freeze
+
+      - name: Check license notice on all source files
+        run: make license-check
