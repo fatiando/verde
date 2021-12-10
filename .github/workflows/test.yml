@@ -6,14 +6,14 @@
 #
 name: test
 
-# Only build PRs, the master branch, and releases. Pushes to branches will only
+# Only build PRs, the main branch, and releases. Pushes to branches will only
 # be built when a PR is opened. This avoids duplicated buids in PRs comming
 # from branches in the origin repository (1 for PR and 1 for push).
 on:
   pull_request:
   push:
     branches:
-      - master
+      - main
   release:
     types:
       - published
@@ -151,10 +151,10 @@ jobs:
 
       - name: Copy test data to cache
         run: |
-          echo "Copy data to " ${VERDE_DATA_DIR}/master
+          echo "Copy data to " ${VERDE_DATA_DIR}/main
           set -x -e
-          mkdir -p ${VERDE_DATA_DIR}/master
-          cp -r data/* ${VERDE_DATA_DIR}/master
+          mkdir -p ${VERDE_DATA_DIR}/main
+          cp -r data/* ${VERDE_DATA_DIR}/main
         env:
           # Define directory where sample data will be copied
           VERDE_DATA_DIR: ${{ runner.temp }}/cache/verde
