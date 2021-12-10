@@ -44,8 +44,6 @@ from .vector import Vector, VectorSpline2D
 from .projections import project_region, project_grid
 
 
-
-
 def test(doctest=True, verbose=True, coverage=False, figures=True):
     """
     Run the test suite.
