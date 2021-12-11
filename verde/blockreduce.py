@@ -114,7 +114,7 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
         self.center_coordinates = center_coordinates
         self.drop_coords = drop_coords
 
-    def filter(self, coordinates, data, weights=None):
+    def filter(self, coordinates, data, weights=None):  # noqa: A003
         """
         Apply the blocked aggregation to the given data.
 
@@ -357,7 +357,7 @@ class BlockMean(BlockReduce):  # pylint: disable=too-few-public-methods
         )
         self.uncertainty = uncertainty
 
-    def filter(self, coordinates, data, weights=None):
+    def filter(self, coordinates, data, weights=None):  # noqa: A003
         """
         Apply the blocked mean to the given data.
 

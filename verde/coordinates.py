@@ -487,14 +487,14 @@ def spacing_to_shape(region, spacing, adjust):
         )
 
     spacing = np.atleast_1d(spacing)
-    if len(spacing) == 1:
-        deast = dnorth = spacing[0]
-    elif len(spacing) == 2:
-        dnorth, deast = spacing
-    else:
+    if len(spacing) > 2:
         raise ValueError(
             "Only two values allowed for grid spacing: {}".format(str(spacing))
         )
+    elif len(spacing) == 1:
+        deast = dnorth = spacing[0]
+    elif len(spacing) == 2:
+        dnorth, deast = spacing
 
     w, e, s, n = region
     # Add 1 to get the number of nodes, not segments

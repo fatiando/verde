@@ -158,7 +158,7 @@ class BlockShuffleSplit(BaseBlockCrossValidator):
         self.random_state = random_state
         self.balancing = balancing
 
-    def _iter_test_indices(self, X=None, y=None, groups=None):
+    def _iter_test_indices(self, X=None, y=None, groups=None):  # noqa: N803,U100
         """
         Generates integer indices corresponding to test sets.
 
@@ -371,7 +371,7 @@ class BlockKFold(BaseBlockCrossValidator):
         self.random_state = random_state
         self.balance = balance
 
-    def _iter_test_indices(self, X=None, y=None, groups=None):
+    def _iter_test_indices(self, X=None, y=None, groups=None):  # noqa: N803,U100
         """
         Generates integer indices corresponding to test sets.
 
@@ -806,6 +806,7 @@ def select(arrays, index):
     Parameters
     ----------
     arrays : tuple of arrays
+        The arrays to index
     index : array
         An array of indices to select from arrays.
 
