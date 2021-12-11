@@ -20,9 +20,10 @@ Janeiro, Brazil, from the 1970s. The data are made available by the Geological S
 Brazil (CPRM) through their `GEOSGB portal <http://geosgb.cprm.gov.br/>`__. See the
 documentation for :func:`verde.datasets.fetch_rio_magnetic` for more details.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
 import numpy as np
+
 import verde as vd
 
 # The data are in a pandas.DataFrame

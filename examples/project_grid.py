@@ -36,11 +36,11 @@ Stereographic, revealing the checkered pattern of the data.
     `pyresample <https://github.com/pytroll/pyresample>`__ instead.
 
 """
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 import pyproj
-import verde as vd
 
+import verde as vd
 
 # We'll use synthetic data near the South pole to highlight the effects of the
 # projection. EPSG 3031 is a South Polar Stereographic projection.

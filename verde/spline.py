@@ -13,10 +13,10 @@ import warnings
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
-from .base import n_1d_arrays, BaseGridder, check_fit_input, least_squares
+from .base import BaseGridder, check_fit_input, least_squares, n_1d_arrays
 from .coordinates import get_region
-from .utils import dispatch, parse_engine
 from .model_selection import cross_val_score
+from .utils import dispatch, parse_engine
 
 try:
     import numba

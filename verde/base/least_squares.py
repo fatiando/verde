@@ -9,8 +9,8 @@ Functions for least-squares fitting with optional regularization.
 """
 from warnings import warn
 
-from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.preprocessing import StandardScaler
 
 
 def least_squares(jacobian, data, weights, damping=None, copy_jacobian=False):

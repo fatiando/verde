@@ -11,9 +11,9 @@ from warnings import warn
 
 import numpy as np
 from scipy.interpolate import (
+    CloughTocher2DInterpolator,
     LinearNDInterpolator,
     NearestNDInterpolator,
-    CloughTocher2DInterpolator,
 )
 from sklearn.utils.validation import check_is_fitted
 

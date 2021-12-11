@@ -13,10 +13,10 @@ methods. This is the ``@tut_ship.xyz`` sample data provided by `GMT
 <https://www.generic-mapping-tools.org/>`__ for their tutorials and gallery.
 The data is downloaded to a local directory if it's not there already.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import verde as vd
+import matplotlib.pyplot as plt
 
+import verde as vd
 
 # The data are in a pandas.DataFrame
 data = vd.datasets.fetch_baja_bathymetry()

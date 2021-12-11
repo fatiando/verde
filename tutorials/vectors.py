@@ -12,9 +12,10 @@ Some datasets have multiple vector components measured for each location, like t
 and West components of wind speed or GPS velocities. For example, let's look at our
 sample GPS velocity data from the U.S. West coast.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
 import pyproj
+
 import verde as vd
 
 data = vd.datasets.fetch_california_gps()

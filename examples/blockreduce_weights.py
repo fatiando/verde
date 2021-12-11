@@ -15,9 +15,10 @@ influence of the offending data points. However, :class:`verde.BlockReduce` can'
 produce weights for the blocked data (for use by a gridder, for example). If you want to
 produced blocked weights as well, use :class:`verde.BlockMean`.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
 import numpy as np
+
 import verde as vd
 
 # We'll test this on the California vertical GPS velocity data

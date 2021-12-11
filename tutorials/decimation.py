@@ -11,8 +11,9 @@ Data Decimation
 Often times, raw spatial data can be highly oversampled in a direction. In these cases,
 we need to decimate the data before interpolation to avoid aliasing effects.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+
 import verde as vd
 
 ########################################################################################

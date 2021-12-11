@@ -29,8 +29,9 @@ blocks are split randomly between training and testing sets.
 
 This example compares splitting our sample dataset using both methods.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+
 import verde as vd
 
 # Let's split the Baja California shipborne bathymetry data

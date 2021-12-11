@@ -34,10 +34,11 @@ don't implement the :meth:`~verde.base.BaseGridder.predict` method.
 
 For example, let's create a pipeline to grid our sample bathymetry data.
 """
-import numpy as np
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+import numpy as np
 import pyproj
+
 import verde as vd
 
 data = vd.datasets.fetch_baja_bathymetry()

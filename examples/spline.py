@@ -21,10 +21,11 @@ the interpolation is usually a bit slower. However, the advantage of using
     approach.
 
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import pyproj
+import matplotlib.pyplot as plt
 import numpy as np
+import pyproj
+
 import verde as vd
 
 # We'll test this on the air temperature data from Texas

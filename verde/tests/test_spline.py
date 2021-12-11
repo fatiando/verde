@@ -9,14 +9,14 @@ Test the biharmonic splines
 """
 import warnings
 
-import pytest
 import numpy as np
 import numpy.testing as npt
-from sklearn.model_selection import ShuffleSplit
+import pytest
 from dask.distributed import Client
+from sklearn.model_selection import ShuffleSplit
 
-from ..spline import Spline, SplineCV
 from ..datasets.synthetic import CheckerBoard
+from ..spline import Spline, SplineCV
 from .utils import requires_numba
 
 

@@ -14,9 +14,10 @@ is a common operation for gravity and magnetic data. Let's look at how we can us
 to remove the clear trend from our Texas temperature dataset
 (:func:`verde.datasets.fetch_texas_wind`).
 """
-import numpy as np
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+import numpy as np
+
 import verde as vd
 
 # Load the Texas wind and temperature data as a pandas.DataFrame

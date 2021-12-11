@@ -21,10 +21,11 @@ in each dimension (the shape) or by the grid node spacing.
 
 """
 
-import numpy as np
 import matplotlib.pyplot as plt
-import verde as vd
+import numpy as np
 from matplotlib.patches import Rectangle
+
+import verde as vd
 
 ########################################################################################
 # First let's create a region that is 1000 units west-east and 1000 units south-north,

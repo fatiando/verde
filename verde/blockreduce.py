@@ -11,8 +11,8 @@ import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator
 
-from .coordinates import block_split
 from .base import check_fit_input
+from .coordinates import block_split
 from .utils import variance_to_weights
 
 

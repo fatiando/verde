@@ -12,10 +12,10 @@ import warnings
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
-from .base import n_1d_arrays, check_fit_input, least_squares, BaseGridder
+from .base import BaseGridder, check_fit_input, least_squares, n_1d_arrays
+from .coordinates import get_region
 from .spline import warn_weighted_exact_solution
 from .utils import parse_engine
-from .coordinates import get_region
 
 try:
     import numba

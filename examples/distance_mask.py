@@ -12,10 +12,11 @@ Sometimes, data points are unevenly distributed. In such cases, we might not wan
 have interpolated grid points that are too far from any data point. Function
 :func:`verde.distance_mask` allows us to set such points to NaN or some other value.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import pyproj
+import matplotlib.pyplot as plt
 import numpy as np
+import pyproj
+
 import verde as vd
 
 # The Baja California bathymetry dataset has big gaps on land. We want to mask these

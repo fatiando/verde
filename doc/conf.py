@@ -5,12 +5,14 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 # -*- coding: utf-8 -*-
-import sys
-import os
 import datetime
-import sphinx_rtd_theme
+import os
+import sys
+
 import sphinx_gallery
+import sphinx_rtd_theme
 from sphinx_gallery.sorting import FileNameSortKey
+
 from verde import __version__
 
 extensions = [

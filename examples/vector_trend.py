@@ -15,11 +15,11 @@ of vector data, like GPS velocities. You can access each component as a separate
 using using :meth:`verde.Vector.predict`, :meth:`verde.Vector.grid`, etc, or
 chaining it with a vector interpolator using :class:`verde.Chain`.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
 import numpy as np
-import verde as vd
 
+import verde as vd
 
 # Fetch the GPS data from the U.S. West coast. The data has a strong trend toward the
 # North-West because of the relative movement along the San Andreas Fault System.

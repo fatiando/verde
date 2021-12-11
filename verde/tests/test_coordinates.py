@@ -15,11 +15,11 @@ import pytest
 
 from ..coordinates import (
     check_region,
-    spacing_to_shape,
-    profile_coordinates,
     grid_coordinates,
     longitude_continuity,
+    profile_coordinates,
     rolling_window,
+    spacing_to_shape,
 )
 
 

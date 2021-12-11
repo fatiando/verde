@@ -14,11 +14,12 @@ the data uncertainties or variance into the gridding.
 In this example, we'll see how to combine :class:`verde.BlockMean` to decimate the data
 and use weights based on the data uncertainty during gridding.
 """
-import matplotlib.pyplot as plt
-from matplotlib.colors import PowerNorm
 import cartopy.crs as ccrs
-import pyproj
+import matplotlib.pyplot as plt
 import numpy as np
+import pyproj
+from matplotlib.colors import PowerNorm
+
 import verde as vd
 
 # We'll test this on the California vertical GPS velocity data because it comes with the

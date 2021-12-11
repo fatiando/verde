@@ -9,15 +9,15 @@ Test the model selection code (cross-validation, etc).
 """
 import warnings
 
-import pytest
-from sklearn.model_selection import ShuffleSplit
-from sklearn.metrics import get_scorer
 import numpy as np
 import numpy.testing as npt
+import pytest
 from dask.distributed import Client
+from sklearn.metrics import get_scorer
+from sklearn.model_selection import ShuffleSplit
 
-from .. import Vector, Trend, grid_coordinates, scatter_points
-from ..model_selection import cross_val_score, BlockShuffleSplit, BlockKFold
+from .. import Trend, Vector, grid_coordinates, scatter_points
+from ..model_selection import BlockKFold, BlockShuffleSplit, cross_val_score
 
 
 @pytest.fixture(name="trend")

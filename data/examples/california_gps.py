@@ -13,11 +13,11 @@ were cut from EarthScope Plate Boundary Observatory data provided by UNAVCO. The
 velocities are in the North American tectonic plate reference system (NAM08). The
 velocities and their associated standard deviations are in meters/year.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
 import numpy as np
-import verde as vd
 
+import verde as vd
 
 # The data are in a pandas.DataFrame
 data = vd.datasets.fetch_california_gps()
