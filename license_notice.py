@@ -8,10 +8,10 @@
 Add license notice to every source file if not present
 """
 import sys
-from pathlib import Path
 from argparse import ArgumentParser
-from pathspec import PathSpec
+from pathlib import Path
 
+from pathspec import PathSpec
 
 PROJECT = "verde"
 YEAR = "2017"

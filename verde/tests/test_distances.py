@@ -10,8 +10,8 @@ Test distance calculation functions.
 import numpy as np
 import numpy.testing as npt
 
-from ..distances import median_distance
 from ..coordinates import grid_coordinates
+from ..distances import median_distance
 
 
 def test_distance_nearest():

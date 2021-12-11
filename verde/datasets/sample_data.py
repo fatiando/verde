@@ -9,19 +9,18 @@ Functions to load sample data
 """
 import warnings
 
-import pkg_resources
 import numpy as np
 import pandas as pd
+import pkg_resources
 import pooch
 
 try:
     import cartopy.crs as ccrs
-    from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
+    from cartopy.mpl.ticker import LatitudeFormatter, LongitudeFormatter
 except ImportError:
     pass
 
 from .._version import __version__
-
 
 REGISTRY = pooch.create(
     path=pooch.os_cache("verde"),

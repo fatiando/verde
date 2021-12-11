@@ -27,9 +27,9 @@ except ImportError:
 
 from .base.utils import (
     check_coordinates,
-    check_extra_coords_names,
     check_data,
     check_data_names,
+    check_extra_coords_names,
     n_1d_arrays,
 )
 

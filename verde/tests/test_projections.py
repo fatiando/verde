@@ -7,13 +7,13 @@
 """
 Test the projection functions.
 """
-import numpy.testing as npt
 import numpy as np
-import xarray as xr
+import numpy.testing as npt
 import pytest
+import xarray as xr
 
-from ..scipygridder import ScipyGridder
 from ..projections import project_grid
+from ..scipygridder import ScipyGridder
 
 
 def projection(longitude, latitude):

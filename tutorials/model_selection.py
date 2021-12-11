@@ -17,11 +17,13 @@ good for predicting our sample air temperature data. Now, let's see how we can t
 
 Once again, we'll start by importing the required packages and loading our sample data.
 """
-import numpy as np
-import matplotlib.pyplot as plt
-import cartopy.crs as ccrs
 import itertools
+
+import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+import numpy as np
 import pyproj
+
 import verde as vd
 
 data = vd.datasets.fetch_texas_wind()

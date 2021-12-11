@@ -15,10 +15,11 @@ Python but most of them rely on the `PROJ library <https://proj4.org/>`__. We'll
 `pyproj <https://github.com/jswhit/pyproj>`__ to access PROJ directly and handle the
 projection operations.
 """
-import pyproj
-import numpy as np
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+import numpy as np
+import pyproj
+
 import verde as vd
 
 ########################################################################################

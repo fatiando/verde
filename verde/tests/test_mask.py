@@ -9,11 +9,11 @@ Test the grid masking functions
 """
 import numpy as np
 import numpy.testing as npt
-import xarray as xr
 import pytest
+import xarray as xr
 
-from ..mask import distance_mask, convexhull_mask
 from ..coordinates import grid_coordinates
+from ..mask import convexhull_mask, distance_mask
 
 
 def test_convexhull_mask():

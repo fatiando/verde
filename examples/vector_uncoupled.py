@@ -16,12 +16,12 @@ alternative) but we have the convenience of dealing with a single estimator.
 :class:`verde.Spline`, and :class:`verde.Chain` to create a full processing
 pipeline.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
 import numpy as np
 import pyproj
-import verde as vd
 
+import verde as vd
 
 # Fetch the wind speed data from Texas.
 data = vd.datasets.fetch_texas_wind()

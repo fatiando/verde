@@ -9,17 +9,18 @@
 Test the base classes and their utility functions.
 """
 import warnings
+
 import numpy as np
 import numpy.testing as npt
 import pytest
 
-from ..base.least_squares import least_squares
-from ..base.utils import check_fit_input, check_coordinates
 from ..base.base_classes import (
-    BaseGridder,
     BaseBlockCrossValidator,
+    BaseGridder,
     get_instance_region,
 )
+from ..base.least_squares import least_squares
+from ..base.utils import check_coordinates, check_fit_input
 from ..coordinates import grid_coordinates, scatter_points
 
 

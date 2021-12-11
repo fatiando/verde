@@ -10,15 +10,15 @@ as expected.
 """
 import numpy.testing as npt
 
-from ..datasets import fetch_california_gps
-from ..spline import Spline
-from ..vector import Vector
-from ..trend import Trend
-from ..chain import Chain
-from ..model_selection import train_test_split
 from ..blockreduce import BlockMean
+from ..chain import Chain
 from ..coordinates import get_region
+from ..datasets import fetch_california_gps
 from ..mask import distance_mask
+from ..model_selection import train_test_split
+from ..spline import Spline
+from ..trend import Trend
+from ..vector import Vector
 
 
 def projection(longitude, latitude):

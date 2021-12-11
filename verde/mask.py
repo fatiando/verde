@@ -12,7 +12,7 @@ import numpy as np
 # pylint doesn't pick up on this import for some reason
 from scipy.spatial import Delaunay  # pylint: disable=no-name-in-module
 
-from .base.utils import n_1d_arrays, check_coordinates
+from .base.utils import check_coordinates, n_1d_arrays
 from .utils import kdtree
 
 

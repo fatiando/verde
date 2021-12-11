@@ -9,8 +9,8 @@ Distance calculations between points.
 """
 import numpy as np
 
-from .utils import kdtree
 from .base.utils import n_1d_arrays
+from .utils import kdtree
 
 
 def median_distance(coordinates, k_nearest=1, projection=None):

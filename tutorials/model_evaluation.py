@@ -21,10 +21,11 @@ Verde provides adaptations of common scikit-learn tools to work better with spat
 data. Let's use these tools to evaluate the performance of a :class:`~verde.Spline` on
 our sample air temperature data.
 """
-import numpy as np
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+import numpy as np
 import pyproj
+
 import verde as vd
 
 data = vd.datasets.fetch_texas_wind()

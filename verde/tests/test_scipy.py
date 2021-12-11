@@ -9,14 +9,14 @@ Test the scipy based interpolator.
 """
 import warnings
 
-import pandas as pd
 import numpy as np
 import numpy.testing as npt
+import pandas as pd
 import pytest
 
-from ..scipygridder import ScipyGridder
 from ..coordinates import grid_coordinates
 from ..datasets.synthetic import CheckerBoard
+from ..scipygridder import ScipyGridder
 
 
 def test_scipy_gridder_same_points():

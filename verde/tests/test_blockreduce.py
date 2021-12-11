@@ -8,13 +8,13 @@
 """
 Test the grid math functions
 """
-import pandas as pd
 import numpy as np
 import numpy.testing as npt
+import pandas as pd
 import pytest
 
+from ..blockreduce import BlockMean, BlockReduce
 from ..coordinates import grid_coordinates, scatter_points
-from ..blockreduce import BlockReduce, BlockMean
 
 
 def test_block_reduce():

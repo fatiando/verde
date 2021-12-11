@@ -30,9 +30,10 @@ This example shows the data assigned to each of the first 3 folds of a blocked
 k-fold iteration, with and without balancing. Notice that the unbalanced folds
 have very different numbers of data points.
 """
-import numpy as np
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+import numpy as np
+
 import verde as vd
 
 # Let's split the Baja California shipborne bathymetry data

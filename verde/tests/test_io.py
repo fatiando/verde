@@ -9,14 +9,14 @@
 Test the I/O functions.
 """
 import os
-from tempfile import NamedTemporaryFile
 from io import StringIO
+from tempfile import NamedTemporaryFile
 
-import pytest
 import numpy as np
 import numpy.testing as npt
+import pytest
 
-from ..io import load_surfer, _read_surfer_header, _check_surfer_integrity
+from ..io import _check_surfer_integrity, _read_surfer_header, load_surfer
 
 
 @pytest.fixture

@@ -13,11 +13,13 @@ can easily weight the data to give each point more or less influence over the re
 This is a good way to not let data points with large uncertainties bias the
 interpolation or the data decimation.
 """
+import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+import numpy as np
+
 # The weights vary a lot so it's better to plot them using a logarithmic color scale
 from matplotlib.colors import LogNorm
-import matplotlib.pyplot as plt
-import cartopy.crs as ccrs
-import numpy as np
+
 import verde as vd
 
 ########################################################################################

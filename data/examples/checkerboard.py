@@ -13,6 +13,7 @@ checkerboard pattern. It has the same data generation methods that most
 gridders have: predict, grid, scatter, and profile.
 """
 import matplotlib.pyplot as plt
+
 import verde as vd
 
 # Instantiate the data generator class and fit it to set the data region.

@@ -12,12 +12,12 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from ..datasets.synthetic import CheckerBoard
-from ..coordinates import grid_coordinates
-from ..trend import Trend
 from ..base import n_1d_arrays
+from ..coordinates import grid_coordinates
+from ..datasets.synthetic import CheckerBoard
+from ..trend import Trend
+from ..vector import Vector, VectorSpline2D
 from .utils import requires_numba
-from ..vector import VectorSpline2D, Vector
 
 
 @pytest.fixture

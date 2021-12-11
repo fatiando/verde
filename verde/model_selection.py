@@ -10,15 +10,14 @@ Functions for automating model selection through cross-validation.
 import warnings
 
 import numpy as np
-from sklearn.model_selection import KFold, ShuffleSplit
 from sklearn.base import clone
+from sklearn.model_selection import KFold, ShuffleSplit
 from sklearn.utils import check_random_state
 
-from .base import check_fit_input, n_1d_arrays, BaseBlockCrossValidator
+from .base import BaseBlockCrossValidator, check_fit_input, n_1d_arrays
 from .base.utils import score_estimator
 from .coordinates import block_split
 from .utils import dispatch, partition_by_sum
-
 
 # Pylint doesn't like X, y scikit-learn argument names.
 # pylint: disable=invalid-name,unused-argument

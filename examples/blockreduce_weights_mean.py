@@ -28,10 +28,11 @@ variance) but have very similar uncertainties. The variance will be large when t
 a lot of variability in the data that isn't due to the uncertainties. This is also the
 best choice if your data weights aren't ``1/uncertainty**2``.
 """
-import matplotlib.pyplot as plt
-from matplotlib.colors import PowerNorm, LogNorm
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.colors import LogNorm, PowerNorm
+
 import verde as vd
 
 # We'll test this on the California vertical GPS velocity data because it comes with the

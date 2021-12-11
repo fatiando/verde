@@ -14,9 +14,10 @@ with geophysical data. Moreover, some of the interpolation methods, like
 The :class:`verde.Trend` class fits a 2D polynomial trend of arbitrary degree
 to the data and can be used to remove it.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
 import numpy as np
+
 import verde as vd
 
 ########################################################################################

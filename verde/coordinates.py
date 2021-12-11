@@ -12,7 +12,7 @@ import warnings
 import numpy as np
 from sklearn.utils import check_random_state
 
-from .base.utils import n_1d_arrays, check_coordinates
+from .base.utils import check_coordinates, n_1d_arrays
 from .utils import kdtree
 
 

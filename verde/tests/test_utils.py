@@ -11,23 +11,23 @@ from unittest import mock
 
 import numpy as np
 import numpy.testing as npt
+import pytest
 import xarray as xr
 from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
-import pytest
 
+from .. import utils
 from ..coordinates import grid_coordinates, scatter_points
 from ..utils import (
-    parse_engine,
     dummy_jit,
-    kdtree,
-    grid_to_table,
-    partition_by_sum,
-    make_xarray_grid,
-    meshgrid_to_1d,
-    meshgrid_from_1d,
     get_ndim_horizontal_coords,
+    grid_to_table,
+    kdtree,
+    make_xarray_grid,
+    meshgrid_from_1d,
+    meshgrid_to_1d,
+    parse_engine,
+    partition_by_sum,
 )
-from .. import utils
 
 
 def test_parse_engine():

@@ -7,22 +7,21 @@
 """
 Base classes for all gridders.
 """
+import warnings
 from abc import ABCMeta, abstractmethod
 
-import warnings
 import pandas as pd
 from sklearn.base import BaseEstimator
 from sklearn.model_selection import BaseCrossValidator
 
 from ..coordinates import grid_coordinates, profile_coordinates, scatter_points
-from .utils import check_data, check_data_names, score_estimator
 from ..utils import (
+    check_meshgrid,
+    get_ndim_horizontal_coords,
     make_xarray_grid,
     meshgrid_from_1d,
-    get_ndim_horizontal_coords,
-    check_meshgrid,
 )
-
+from .utils import check_data, check_data_names, score_estimator
 
 # Pylint doesn't like X, y scikit-learn argument names.
 # pylint: disable=invalid-name,unused-argument
