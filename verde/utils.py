@@ -18,7 +18,7 @@ from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
 try:
     from pykdtree.kdtree import KDTree as pyKDTree
 except ImportError:
-    pyKDTree = None
+    pyKDTree = None  # noqa: N816
 
 try:
     import numba
@@ -87,7 +87,7 @@ def parse_engine(engine):
     return engine
 
 
-def dummy_jit(**kwargs):  # pylint: disable=unused-argument
+def dummy_jit(**kwargs):  # noqa: U100
     """
     Replace numba.jit if not installed with a function that raises RunTimeError
 
@@ -110,7 +110,7 @@ def dummy_jit(**kwargs):  # pylint: disable=unused-argument
         "The actual decorator"
 
         @functools.wraps(function)
-        def dummy_function(*args, **kwargs):  # pylint: disable=unused-argument
+        def dummy_function(*args, **kwargs):  # noqa: U100
             "Just raise an exception."
             raise RuntimeError("Could not find numba.")
 
