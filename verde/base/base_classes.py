@@ -57,7 +57,7 @@ class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
         self.shape = shape
         self.n_splits = n_splits
 
-    def split(self, X, y=None, groups=None):
+    def split(self, X, y=None, groups=None):  # noqa: N803
         """
         Generate indices to split data into training and test set.
 
@@ -88,7 +88,7 @@ class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
         for train, test in super().split(X, y, groups):
             yield train, test
 
-    def get_n_splits(self, X=None, y=None, groups=None):
+    def get_n_splits(self, X=None, y=None, groups=None):  # noqa: U100,N803
         """
         Returns the number of splitting iterations in the cross-validator
 
@@ -109,7 +109,7 @@ class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
         return self.n_splits
 
     @abstractmethod
-    def _iter_test_indices(self, X=None, y=None, groups=None):
+    def _iter_test_indices(self, X=None, y=None, groups=None):  # noqa: U100,N803
         """
         Generates integer indices corresponding to test sets.
 
@@ -228,7 +228,7 @@ class BaseGridder(BaseEstimator):
         ("east_component", "north_component", "vertical_component"),
     ]
 
-    def predict(self, coordinates):
+    def predict(self, coordinates):  # noqa: U100
         """
         Predict data on the given coordinate values. NOT IMPLEMENTED.
 
@@ -248,7 +248,7 @@ class BaseGridder(BaseEstimator):
         """
         raise NotImplementedError()
 
-    def fit(self, coordinates, data, weights=None):
+    def fit(self, coordinates, data, weights=None):  # noqa: U100
         """
         Fit the gridder to observed data. NOT IMPLEMENTED.
 
@@ -276,7 +276,7 @@ class BaseGridder(BaseEstimator):
         """
         raise NotImplementedError()
 
-    def filter(self, coordinates, data, weights=None):
+    def filter(self, coordinates, data, weights=None):  # noqa: A003
         """
         Filter the data through the gridder and produce residuals.
 
@@ -812,5 +812,5 @@ def get_instance_region(instance, region):
     if region is None:
         if not hasattr(instance, "region_"):
             raise ValueError("No default region found. Argument must be supplied.")
-        region = getattr(instance, "region_")
+        region = instance.region_
     return region

@@ -144,7 +144,7 @@ def test_vector_trend_weights(simple_2d_model):
     outlier = np.abs(data[0]).max() * 3
     data_out = tuple(i.copy() for i in data)
     weights = tuple(np.ones_like(i) for i in data)
-    for i, coef in enumerate(coefs):
+    for i, _ in enumerate(coefs):
         data_out[i][20, 20] += outlier
         weights[i][20, 20] = 1e-10
     trend = Vector([Trend(degree=1), Trend(degree=1)])

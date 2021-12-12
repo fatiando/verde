@@ -4,7 +4,6 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-# pylint: disable=unused-argument,too-many-locals,protected-access
 """
 Test the base classes and their utility functions.
 """
@@ -97,7 +96,7 @@ class PolyGridder(BaseGridder):
         super().__init__()
         self.degree = degree
 
-    def fit(self, coordinates, data, weights=None):
+    def fit(self, coordinates, data, weights=None):  # noqa: U100
         "Fit an easting polynomial"
         ndata = data.size
         nparams = self.degree + 1
@@ -434,23 +433,16 @@ def test_check_fit_input_fails_weights():
         check_fit_input(coords, (data, data), weights)
 
 
-# Pylint doesn't like X, y scikit-learn argument names.
-# pylint: disable=invalid-name,unused-argument
-
-
 class DummyCrossValidator(BaseBlockCrossValidator):
     """
     Dummy class to test the base cross-validator.
     """
 
-    def _iter_test_indices(self, X=None, y=None, groups=None):
+    def _iter_test_indices(self, X=None, y=None, groups=None):  # noqa: U100,N803
         """
         Yields a list of indices for the entire X.
         """
         yield list(range(X.shape[0]))
-
-
-# pylint: enable=invalid-name,unused-argument
 
 
 def test_baseblockedcrossvalidator_n_splits():
