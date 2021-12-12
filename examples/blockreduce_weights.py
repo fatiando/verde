@@ -8,12 +8,13 @@
 Using weights in blocked reduction
 ==================================
 
-Sometimes data has outliers or less reliable points that might skew a blocked mean or
-even a median. If the reduction function can take a ``weights`` argument, like
-``numpy.average``, you can pass in weights to :class:`verde.BlockReduce` to lower the
-influence of the offending data points. However, :class:`verde.BlockReduce` can't
-produce weights for the blocked data (for use by a gridder, for example). If you want to
-produced blocked weights as well, use :class:`verde.BlockMean`.
+Sometimes data has outliers or less reliable points that might skew a blocked
+mean or even a median. If the reduction function can take a ``weights``
+argument, like ``numpy.average``, you can pass in weights to
+:class:`verde.BlockReduce` to lower the influence of the offending data points.
+However, :class:`verde.BlockReduce` can't produce weights for the blocked data
+(for use by a gridder, for example). If you want to produced blocked weights as
+well, use :class:`verde.BlockMean`.
 """
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
@@ -29,11 +30,13 @@ outliers = np.random.RandomState(2).randint(0, data.shape[0], size=20)
 data.velocity_up[outliers] += 0.08
 print("Index of outliers:", outliers)
 
-# Create an array of weights and set the weights for the outliers to a very low value
+# Create an array of weights and set the weights for the outliers to a very low
+# value
 weights = np.ones_like(data.velocity_up)
 weights[outliers] = 1e-5
 
-# Now we can block average the points with and without weights to compare the outputs.
+# Now we can block average the points with and without weights to compare the
+# outputs.
 reducer = vd.BlockReduce(reduction=np.average, spacing=30 / 60, center_coordinates=True)
 coordinates, no_weights = reducer.filter(
     (data.longitude, data.latitude), data.velocity_up

@@ -8,9 +8,10 @@
 Mask grid points by distance
 ============================
 
-Sometimes, data points are unevenly distributed. In such cases, we might not want to
-have interpolated grid points that are too far from any data point. Function
-:func:`verde.distance_mask` allows us to set such points to NaN or some other value.
+Sometimes, data points are unevenly distributed. In such cases, we might not
+want to have interpolated grid points that are too far from any data point.
+Function :func:`verde.distance_mask` allows us to set such points to NaN or
+some other value.
 """
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
@@ -19,8 +20,8 @@ import pyproj
 
 import verde as vd
 
-# The Baja California bathymetry dataset has big gaps on land. We want to mask these
-# gaps on a dummy grid that we'll generate over the region.
+# The Baja California bathymetry dataset has big gaps on land. We want to mask
+# these gaps on a dummy grid that we'll generate over the region.
 data = vd.datasets.fetch_baja_bathymetry()
 region = vd.get_region((data.longitude, data.latitude))
 
@@ -28,12 +29,12 @@ region = vd.get_region((data.longitude, data.latitude))
 spacing = 10 / 60
 coordinates = vd.grid_coordinates(region, spacing=spacing)
 
-# Generate a mask for points that are more than 2 grid spacings away from any data
-# point. The mask is True for points that are within the maximum distance. Distance
-# calculations in the mask are Cartesian only. We can provide a projection function to
-# convert the coordinates before distances are calculated (Mercator in this case). In
-# this case, the maximum distance is also Cartesian and must be converted from degrees
-# to meters.
+# Generate a mask for points that are more than 2 grid spacings away from any
+# data point. The mask is True for points that are within the maximum distance.
+# Distance calculations in the mask are Cartesian only. We can provide a
+# projection function to convert the coordinates before distances are
+# calculated (Mercator in this case). In this case, the maximum distance is
+# also Cartesian and must be converted from degrees to meters.
 mask = vd.distance_mask(
     (data.longitude, data.latitude),
     maxdist=spacing * 2 * 111e3,

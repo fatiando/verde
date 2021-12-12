@@ -37,7 +37,6 @@ Stereographic, revealing the checkered pattern of the data.
 
 """
 import matplotlib.pyplot as plt
-import numpy as np
 import pyproj
 
 import verde as vd
@@ -63,9 +62,9 @@ data = checkerboard.grid(
 print("Geographic grid:")
 print(data)
 
-# Do the projection while setting the output grid spacing (in projected meters). Set
-# the coordinates names to x and y since they aren't really "northing" or
-# "easting".
+# Do the projection while setting the output grid spacing (in projected
+# meters). Set the coordinates names to x and y since they aren't really
+# "northing" or "easting".
 polar_data = vd.project_grid(
     data.checkerboard, projection, spacing=0.5 * 1e5, dims=("y", "x")
 )
