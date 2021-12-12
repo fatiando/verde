@@ -51,7 +51,7 @@ def load_surfer(fname, dtype="float64"):
     # Only open a file if given a path instead of a file-like object
     ispath = not hasattr(fname, "readline")
     if ispath:
-        input_file = open(fname, "r")
+        input_file = open(fname, "r")  # noqa: SIM115
     else:
         input_file = fname
     try:

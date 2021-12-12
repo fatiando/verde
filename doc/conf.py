@@ -86,7 +86,7 @@ master_doc = "index"
 # General information about the project
 year = datetime.date.today().year
 project = "Verde"
-copyright = "2017-{}, The Verde Developers".format(year)
+copyright = "2017-{}, The Verde Developers".format(year)  # noqa: A001
 version = __version__
 
 # These enable substitutions using |variable| in the rst files
