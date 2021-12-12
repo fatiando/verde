@@ -23,9 +23,6 @@ from ..utils import (
 )
 from .utils import check_data, check_data_names, score_estimator
 
-# Pylint doesn't like X, y scikit-learn argument names.
-# pylint: disable=invalid-name,unused-argument
-
 
 class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
     """
@@ -133,9 +130,6 @@ class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
             The testing set indices for that split.
 
         """
-
-
-# pylint: enable=invalid-name,unused-argument
 
 
 class BaseGridder(BaseEstimator):
@@ -366,7 +360,7 @@ class BaseGridder(BaseEstimator):
         projection=None,
         coordinates=None,
         **kwargs,
-    ):  # pylint: disable=too-many-locals
+    ):
         """
         Interpolate the data onto a regular grid.
 

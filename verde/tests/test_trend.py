@@ -4,7 +4,6 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-# pylint: disable=redefined-outer-name
 """
 Test the trend estimators.
 """

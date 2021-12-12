@@ -4,7 +4,6 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-# pylint: disable=missing-docstring
 from .sample_data import (
     fetch_baja_bathymetry,
     fetch_california_gps,

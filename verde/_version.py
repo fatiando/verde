@@ -4,7 +4,6 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-# pylint: disable=no-name-in-module
 """
 Get the automatically generated version information from setuptools_scm and
 format it nicely.

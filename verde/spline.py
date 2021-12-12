@@ -540,7 +540,7 @@ def jacobian_numpy(east, north, force_east, force_north, mindist, jac):
 @jit(nopython=True, fastmath=True, parallel=True)
 def predict_numba(east, north, force_east, force_north, mindist, forces, result):
     "Calculate the predicted data using numba to speed things up."
-    for i in numba.prange(east.size):  # pylint: disable=not-an-iterable
+    for i in numba.prange(east.size):
         result[i] = 0
         for j in range(forces.size):
             green = GREENS_FUNC_JIT(
@@ -553,7 +553,7 @@ def predict_numba(east, north, force_east, force_north, mindist, forces, result)
 @jit(nopython=True, fastmath=True, parallel=True)
 def jacobian_numba(east, north, force_east, force_north, mindist, jac):
     "Calculate the Jacobian matrix using numba to speed things up."
-    for i in numba.prange(east.size):  # pylint: disable=not-an-iterable
+    for i in numba.prange(east.size):
         for j in range(force_east.size):
             jac[i, j] = GREENS_FUNC_JIT(
                 east[i] - force_east[j], north[i] - force_north[j], mindist
