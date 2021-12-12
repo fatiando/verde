@@ -26,8 +26,9 @@ print(data.head())
 plt.figure(figsize=(7, 6))
 ax = plt.axes(projection=ccrs.Mercator())
 ax.set_title("Bathymetry from Baja California")
-# Plot the bathymetry as colored circles. Cartopy requires setting the projection of the
-# original data through the transform argument. Use PlateCarree for geographic data.
+# Plot the bathymetry as colored circles. Cartopy requires setting the
+# projection of the original data through the transform argument. Use
+# PlateCarree for geographic data.
 plt.scatter(
     data.longitude,
     data.latitude,
@@ -36,6 +37,7 @@ plt.scatter(
     transform=ccrs.PlateCarree(),
 )
 plt.colorbar().set_label("meters")
-# Use an utility function to add tick labels and land and ocean features to the map.
+# Use an utility function to add tick labels and land and ocean features to the
+# map.
 vd.datasets.setup_baja_bathymetry_map(ax)
 plt.show()

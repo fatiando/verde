@@ -6,11 +6,7 @@
 #
 # -*- coding: utf-8 -*-
 import datetime
-import os
-import sys
 
-import sphinx_gallery
-import sphinx_rtd_theme
 from sphinx_gallery.sorting import FileNameSortKey
 
 from verde import __version__

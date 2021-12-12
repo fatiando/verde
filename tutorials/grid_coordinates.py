@@ -21,8 +21,6 @@ of points in each dimension (the shape) or by the grid node spacing.
 """
 
 import matplotlib.pyplot as plt
-import numpy as np
-from matplotlib.patches import Rectangle
 
 import verde as vd
 

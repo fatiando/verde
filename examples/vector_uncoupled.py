@@ -33,8 +33,9 @@ region = vd.get_region(coordinates)
 # Use a Mercator projection because Spline is a Cartesian gridder
 projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 
-# Split the data into a training and testing set. We'll fit the gridder on the training
-# set and use the testing set to evaluate how well the gridder is performing.
+# Split the data into a training and testing set. We'll fit the gridder on the
+# training set and use the testing set to evaluate how well the gridder is
+# performing.
 train, test = vd.train_test_split(
     projection(*coordinates),
     (data.wind_speed_east_knots, data.wind_speed_north_knots),
@@ -44,9 +45,10 @@ train, test = vd.train_test_split(
 # We'll make a 20 arc-minute grid
 spacing = 20 / 60
 
-# Chain together a blocked mean to avoid aliasing, a polynomial trend (Spline usually
-# requires de-trended data), and finally a Spline for each component. Notice that
-# BlockReduce can work on multicomponent data without the use of Vector.
+# Chain together a blocked mean to avoid aliasing, a polynomial trend (Spline
+# usually requires de-trended data), and finally a Spline for each component.
+# Notice that BlockReduce can work on multicomponent data without the use of
+# Vector.
 chain = vd.Chain(
     [
         ("mean", vd.BlockReduce(np.mean, spacing * 111e3)),
@@ -61,13 +63,13 @@ print(chain)
 
 # Fit on the training data
 chain.fit(*train)
-# And score on the testing data. The best possible score is 1, meaning a perfect
-# prediction of the test data.
+# And score on the testing data. The best possible score is 1, meaning a
+# perfect prediction of the test data.
 score = chain.score(*test)
 print("Cross-validation R^2 score: {:.2f}".format(score))
 
-# Interpolate the wind speed onto a regular geographic grid and mask the data that are
-# outside of the convex hull of the data points.
+# Interpolate the wind speed onto a regular geographic grid and mask the data
+# that are outside of the convex hull of the data points.
 grid_full = chain.grid(
     region=region,
     spacing=spacing,
@@ -103,6 +105,7 @@ ax.quiver(
 )
 ax.quiverkey(tmp, 0.17, 0.23, 5, label="5 knots", coordinates="figure")
 ax.legend(loc="lower left")
-# Use an utility function to add tick labels and land and ocean features to the map.
+# Use an utility function to add tick labels and land and ocean features to the
+# map.
 vd.datasets.setup_texas_wind_map(ax)
 plt.show()
