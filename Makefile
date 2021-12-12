@@ -26,7 +26,7 @@ test:
 
 format: license isort black
 
-check: black-check flake8 license-check
+check: black-check isort-check flake8 license-check
 
 black:
 	black $(CHECK_STYLE)
