@@ -8,9 +8,7 @@
 Mask grid points based on different criteria.
 """
 import numpy as np
-
-# pylint doesn't pick up on this import for some reason
-from scipy.spatial import Delaunay  # pylint: disable=no-name-in-module
+from scipy.spatial import Delaunay
 
 from .base.utils import check_coordinates, n_1d_arrays
 from .utils import kdtree

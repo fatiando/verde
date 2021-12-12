@@ -13,7 +13,7 @@ import dask
 import numpy as np
 import pandas as pd
 import xarray as xr
-from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
+from scipy.spatial import cKDTree
 
 try:
     from pykdtree.kdtree import KDTree as pyKDTree

@@ -19,9 +19,6 @@ from .base.utils import score_estimator
 from .coordinates import block_split
 from .utils import dispatch, partition_by_sum
 
-# Pylint doesn't like X, y scikit-learn argument names.
-# pylint: disable=invalid-name,unused-argument
-
 
 class BlockShuffleSplit(BaseBlockCrossValidator):
     """
@@ -202,12 +199,7 @@ class BlockShuffleSplit(BaseBlockCrossValidator):
         for _ in range(self.n_splits):
             test_sets, balance = [], []
             for _ in range(self.balancing):
-                # This is a false positive in pylint which is why the warning
-                # is disabled at the top of this file:
-                # https://github.com/PyCQA/pylint/issues/1830
-                # pylint: disable=stop-iteration-return
                 train_blocks, test_blocks = next(shuffle)
-                # pylint: enable=stop-iteration-return
                 train_points = np.where(np.isin(labels, block_ids[train_blocks]))[0]
                 test_points = np.where(np.isin(labels, block_ids[test_blocks]))[0]
                 # The proportion of data points assigned to each group should
@@ -428,9 +420,6 @@ class BlockKFold(BaseBlockCrossValidator):
         for test_blocks in folds:
             test_points = np.where(np.isin(labels, block_ids[test_blocks]))[0]
             yield test_points
-
-
-# pylint: enable=invalid-name,unused-argument
 
 
 def train_test_split(

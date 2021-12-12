@@ -13,7 +13,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 import xarray as xr
-from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
+from scipy.spatial import cKDTree
 
 from .. import utils
 from ..coordinates import grid_coordinates, scatter_points
@@ -324,7 +324,6 @@ def test_check_ndim_easting_northing():
     Test if check_ndim_easting_northing works as expected
     """
     # Easting and northing as 1d arrays
-    # pylint: disable=unbalanced-tuple-unpacking
     easting, northing = scatter_points((-5, 5, 0, 4), 50, random_state=42)
     assert get_ndim_horizontal_coords(easting, northing) == 1
     # Easting and northing as 2d arrays
