@@ -7,16 +7,16 @@
 """
 Test the Chain class
 """
-import numpy.testing as npt
 import numpy as np
+import numpy.testing as npt
 
-from ..datasets.synthetic import CheckerBoard
 from ..blockreduce import BlockReduce
 from ..chain import Chain
+from ..coordinates import grid_coordinates
+from ..datasets.synthetic import CheckerBoard
 from ..scipygridder import ScipyGridder
 from ..spline import Spline
 from ..trend import Trend
-from ..coordinates import grid_coordinates
 from ..vector import Vector
 
 

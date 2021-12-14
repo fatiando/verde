@@ -80,11 +80,11 @@ class DummyEstimator:
     def __init__(self, predicted):
         self._predicted = predicted
 
-    def predict(self, *args, **kwargs):  # pylint: disable=unused-argument
+    def predict(self, *args, **kwargs):  # noqa: U100
         "Return the stored predicted values"
         return self._predicted
 
-    def fit(self, *args, **kwards):  # pylint: disable=unused-argument
+    def fit(self, *args, **kwards):  # noqa: U100
         "Does nothing. Just here to satisfy the API."
         return self
 

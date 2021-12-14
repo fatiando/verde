@@ -36,11 +36,10 @@ Stereographic, revealing the checkered pattern of the data.
     `pyresample <https://github.com/pytroll/pyresample>`__ instead.
 
 """
-import numpy as np
 import matplotlib.pyplot as plt
 import pyproj
-import verde as vd
 
+import verde as vd
 
 # We'll use synthetic data near the South pole to highlight the effects of the
 # projection. EPSG 3031 is a South Polar Stereographic projection.
@@ -63,9 +62,9 @@ data = checkerboard.grid(
 print("Geographic grid:")
 print(data)
 
-# Do the projection while setting the output grid spacing (in projected meters). Set
-# the coordinates names to x and y since they aren't really "northing" or
-# "easting".
+# Do the projection while setting the output grid spacing (in projected
+# meters). Set the coordinates names to x and y since they aren't really
+# "northing" or "easting".
 polar_data = vd.project_grid(
     data.checkerboard, projection, spacing=0.5 * 1e5, dims=("y", "x")
 )

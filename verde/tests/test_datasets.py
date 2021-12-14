@@ -10,20 +10,19 @@ Test data fetching routines.
 import os
 import warnings
 
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-
+import matplotlib.pyplot as plt
 import pytest
 
 from ..datasets.sample_data import (
-    locate,
     fetch_baja_bathymetry,
-    setup_baja_bathymetry_map,
-    fetch_rio_magnetic,
-    setup_rio_magnetic_map,
     fetch_california_gps,
-    setup_california_gps_map,
+    fetch_rio_magnetic,
     fetch_texas_wind,
+    locate,
+    setup_baja_bathymetry_map,
+    setup_california_gps_map,
+    setup_rio_magnetic_map,
     setup_texas_wind_map,
 )
 

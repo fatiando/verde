@@ -11,8 +11,8 @@ import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator
 
-from .coordinates import block_split
 from .base import check_fit_input
+from .coordinates import block_split
 from .utils import variance_to_weights
 
 
@@ -33,7 +33,7 @@ def attach_weights(reduction, weights):
     return weighted_reduction
 
 
-class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
+class BlockReduce(BaseEstimator):
     """
     Apply a reduction/aggregation operation to the data in blocks/windows.
 
@@ -114,7 +114,7 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
         self.center_coordinates = center_coordinates
         self.drop_coords = drop_coords
 
-    def filter(self, coordinates, data, weights=None):
+    def filter(self, coordinates, data, weights=None):  # noqa: A003
         """
         Apply the blocked aggregation to the given data.
 
@@ -243,7 +243,7 @@ class BlockReduce(BaseEstimator):  # pylint: disable=too-few-public-methods
         )
 
 
-class BlockMean(BlockReduce):  # pylint: disable=too-few-public-methods
+class BlockMean(BlockReduce):
     """
     Apply a (weighted) mean to the data in blocks/windows.
 
@@ -357,7 +357,7 @@ class BlockMean(BlockReduce):  # pylint: disable=too-few-public-methods
         )
         self.uncertainty = uncertainty
 
-    def filter(self, coordinates, data, weights=None):
+    def filter(self, coordinates, data, weights=None):  # noqa: A003
         """
         Apply the blocked mean to the given data.
 

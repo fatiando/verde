@@ -4,44 +4,38 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-# pylint: disable=missing-docstring,import-outside-toplevel
 # Import functions/classes to make the public API
-from ._version import __version__
 from . import datasets
+from ._version import __version__
+from .blockreduce import BlockMean, BlockReduce
+from .chain import Chain
 from .coordinates import (
-    scatter_points,
+    block_split,
+    expanding_window,
+    get_region,
     grid_coordinates,
     inside,
-    block_split,
-    rolling_window,
-    expanding_window,
-    profile_coordinates,
-    get_region,
-    pad_region,
     longitude_continuity,
+    pad_region,
+    profile_coordinates,
+    rolling_window,
+    scatter_points,
 )
-from .mask import distance_mask, convexhull_mask
-from .utils import (
-    variance_to_weights,
-    maxabs,
-    grid_to_table,
-    make_xarray_grid,
-)
-from .io import load_surfer
 from .distances import median_distance
-from .blockreduce import BlockReduce, BlockMean
-from .scipygridder import ScipyGridder
-from .trend import Trend
-from .chain import Chain
-from .spline import Spline, SplineCV
+from .io import load_surfer
+from .mask import convexhull_mask, distance_mask
 from .model_selection import (
+    BlockKFold,
+    BlockShuffleSplit,
     cross_val_score,
     train_test_split,
-    BlockShuffleSplit,
-    BlockKFold,
 )
+from .projections import project_grid, project_region
+from .scipygridder import ScipyGridder
+from .spline import Spline, SplineCV
+from .trend import Trend
+from .utils import grid_to_table, make_xarray_grid, maxabs, variance_to_weights
 from .vector import Vector, VectorSpline2D
-from .projections import project_region, project_grid
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=True):

@@ -8,14 +8,14 @@
 Wind speed data from Texas
 ==========================
 
-This is average wind speed and air temperature for data for the state of Texas, USA, on
-February 26 2018. The original data was downloaded from `Iowa State University
-<https://mesonet.agron.iastate.edu/request/download.phtml>`__.
+This is average wind speed and air temperature for data for the state of Texas,
+USA, on February 26 2018. The original data was downloaded from `Iowa State
+University <https://mesonet.agron.iastate.edu/request/download.phtml>`__.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import verde as vd
+import matplotlib.pyplot as plt
 
+import verde as vd
 
 # The data are in a pandas.DataFrame
 data = vd.datasets.fetch_texas_wind()
@@ -43,6 +43,7 @@ ax.quiver(
     width=0.003,
     transform=ccrs.PlateCarree(),
 )
-# Use an utility function to add tick labels and land and ocean features to the map.
+# Use an utility function to add tick labels and land and ocean features to the
+# map.
 vd.datasets.setup_texas_wind_map(ax)
 plt.show()

@@ -10,18 +10,14 @@ Functions for automating model selection through cross-validation.
 import warnings
 
 import numpy as np
-from sklearn.model_selection import KFold, ShuffleSplit
 from sklearn.base import clone
+from sklearn.model_selection import KFold, ShuffleSplit
 from sklearn.utils import check_random_state
 
-from .base import check_fit_input, n_1d_arrays, BaseBlockCrossValidator
+from .base import BaseBlockCrossValidator, check_fit_input, n_1d_arrays
 from .base.utils import score_estimator
 from .coordinates import block_split
 from .utils import dispatch, partition_by_sum
-
-
-# Pylint doesn't like X, y scikit-learn argument names.
-# pylint: disable=invalid-name,unused-argument
 
 
 class BlockShuffleSplit(BaseBlockCrossValidator):
@@ -159,7 +155,7 @@ class BlockShuffleSplit(BaseBlockCrossValidator):
         self.random_state = random_state
         self.balancing = balancing
 
-    def _iter_test_indices(self, X=None, y=None, groups=None):
+    def _iter_test_indices(self, X=None, y=None, groups=None):  # noqa: N803,U100
         """
         Generates integer indices corresponding to test sets.
 
@@ -203,12 +199,7 @@ class BlockShuffleSplit(BaseBlockCrossValidator):
         for _ in range(self.n_splits):
             test_sets, balance = [], []
             for _ in range(self.balancing):
-                # This is a false positive in pylint which is why the warning
-                # is disabled at the top of this file:
-                # https://github.com/PyCQA/pylint/issues/1830
-                # pylint: disable=stop-iteration-return
                 train_blocks, test_blocks = next(shuffle)
-                # pylint: enable=stop-iteration-return
                 train_points = np.where(np.isin(labels, block_ids[train_blocks]))[0]
                 test_points = np.where(np.isin(labels, block_ids[test_blocks]))[0]
                 # The proportion of data points assigned to each group should
@@ -372,7 +363,7 @@ class BlockKFold(BaseBlockCrossValidator):
         self.random_state = random_state
         self.balance = balance
 
-    def _iter_test_indices(self, X=None, y=None, groups=None):
+    def _iter_test_indices(self, X=None, y=None, groups=None):  # noqa: N803,U100
         """
         Generates integer indices corresponding to test sets.
 
@@ -429,9 +420,6 @@ class BlockKFold(BaseBlockCrossValidator):
         for test_blocks in folds:
             test_points = np.where(np.isin(labels, block_ids[test_blocks]))[0]
             yield test_points
-
-
-# pylint: enable=invalid-name,unused-argument
 
 
 def train_test_split(
@@ -807,6 +795,7 @@ def select(arrays, index):
     Parameters
     ----------
     arrays : tuple of arrays
+        The arrays to index
     index : array
         An array of indices to select from arrays.
 

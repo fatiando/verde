@@ -9,31 +9,33 @@ Gridding with Scipy
 ===================
 
 Scipy offers a range of interpolation methods in :mod:`scipy.interpolate` and 3
-specifically for 2D data (linear, nearest neighbors, and bicubic). Verde offers an
-interface for these 3 scipy interpolators in :class:`verde.ScipyGridder`.
+specifically for 2D data (linear, nearest neighbors, and bicubic). Verde offers
+an interface for these 3 scipy interpolators in :class:`verde.ScipyGridder`.
 
-All of these interpolations work on Cartesian data, so if we want to grid geographic
-data (like our Baja California bathymetry) we need to project them into a Cartesian
-system. We'll use `pyproj <https://github.com/jswhit/pyproj>`__ to calculate a Mercator
-projection for the data.
+All of these interpolations work on Cartesian data, so if we want to grid
+geographic data (like our Baja California bathymetry) we need to project them
+into a Cartesian system. We'll use `pyproj
+<https://github.com/jswhit/pyproj>`__ to calculate a Mercator projection for
+the data.
 
 For convenience, Verde still allows us to make geographic grids by passing the
-``projection`` argument to :meth:`verde.ScipyGridder.grid` and the like. When doing so,
-the grid will be generated using geographic coordinates which will be projected prior to
-interpolation.
+``projection`` argument to :meth:`verde.ScipyGridder.grid` and the like. When
+doing so, the grid will be generated using geographic coordinates which will be
+projected prior to interpolation.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import pyproj
+import matplotlib.pyplot as plt
 import numpy as np
+import pyproj
+
 import verde as vd
 
 # We'll test this on the Baja California shipborne bathymetry data
 data = vd.datasets.fetch_baja_bathymetry()
 
-# Before gridding, we need to decimate the data to avoid aliasing because of the
-# oversampling along the ship tracks. We'll use a blocked median with 5 arc-minute
-# blocks.
+# Before gridding, we need to decimate the data to avoid aliasing because of
+# the oversampling along the ship tracks. We'll use a blocked median with 5
+# arc-minute blocks.
 spacing = 5 / 60
 reducer = vd.BlockReduce(reduction=np.median, spacing=spacing)
 coordinates, bathymetry = reducer.filter(
@@ -53,12 +55,13 @@ print("Gridder used:", grd)
 region = vd.get_region((data.longitude, data.latitude))
 print("Data region:", region)
 
-# The 'grid' method can still make a geographic grid if we pass in a projection function
-# that converts lon, lat into the easting, northing coordinates that we used in 'fit'.
-# This can be any function that takes lon, lat and returns x, y. In our case, it'll be
-# the 'projection' variable that we created above. We'll also set the names of the grid
-# dimensions and the name the data variable in our grid (the default would be 'scalars',
-# which isn't very informative).
+# The 'grid' method can still make a geographic grid if we pass in a projection
+# function that converts lon, lat into the easting, northing coordinates that
+# we used in 'fit'. This can be any function that takes lon, lat and returns x,
+# y. In our case, it'll be the 'projection' variable that we created above.
+# We'll also set the names of the grid dimensions and the name the data
+# variable in our grid (the default would be 'scalars', which isn't very
+# informative).
 grid = grd.grid(
     region=region,
     spacing=spacing,
@@ -69,9 +72,9 @@ grid = grd.grid(
 print("Generated geographic grid:")
 print(grid)
 
-# Cartopy requires setting the coordinate reference system (CRS) of the original data
-# through the transform argument. Their docs say to use PlateCarree to represent
-# geographic data.
+# Cartopy requires setting the coordinate reference system (CRS) of the
+# original data through the transform argument. Their docs say to use
+# PlateCarree to represent geographic data.
 crs = ccrs.PlateCarree()
 
 plt.figure(figsize=(7, 6))

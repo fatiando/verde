@@ -5,12 +5,10 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 # -*- coding: utf-8 -*-
-import sys
-import os
 import datetime
-import sphinx_rtd_theme
-import sphinx_gallery
+
 from sphinx_gallery.sorting import FileNameSortKey
+
 from verde import __version__
 
 extensions = [
@@ -84,7 +82,7 @@ master_doc = "index"
 # General information about the project
 year = datetime.date.today().year
 project = "Verde"
-copyright = "2017-{}, The Verde Developers".format(year)
+copyright = "2017-{}, The Verde Developers".format(year)  # noqa: A001
 version = __version__
 
 # These enable substitutions using |variable| in the rst files

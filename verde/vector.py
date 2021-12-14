@@ -12,10 +12,10 @@ import warnings
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
-from .base import n_1d_arrays, check_fit_input, least_squares, BaseGridder
+from .base import BaseGridder, check_fit_input, least_squares, n_1d_arrays
+from .coordinates import get_region
 from .spline import warn_weighted_exact_solution
 from .utils import parse_engine
-from .coordinates import get_region
 
 try:
     import numba
@@ -449,7 +449,7 @@ def predict_2d_numba(
 ):
     "Calculate the predicted data using numba to speed things up."
     nforces = forces.size // 2
-    for i in numba.prange(east.size):  # pylint: disable=not-an-iterable
+    for i in numba.prange(east.size):
         vec_east[i] = 0
         vec_north[i] = 0
         for j in range(nforces):
@@ -466,7 +466,7 @@ def jacobian_2d_numba(east, north, force_east, force_north, mindist, poisson, ja
     "Calculate the Jacobian matrix using numba to speed things up."
     nforces = force_east.size
     npoints = east.size
-    for i in numba.prange(npoints):  # pylint: disable=not-an-iterable
+    for i in numba.prange(npoints):
         for j in range(nforces):
             green_ee, green_nn, green_ne = GREENS_FUNC_2D_JIT(
                 east[i] - force_east[j], north[i] - force_north[j], mindist, poisson

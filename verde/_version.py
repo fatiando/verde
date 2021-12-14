@@ -4,7 +4,6 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-# pylint: disable=no-name-in-module
 """
 Get the automatically generated version information from setuptools_scm and
 format it nicely.
@@ -12,7 +11,6 @@ format it nicely.
 
 # This file is generated automatically by setuptools_scm
 from . import _version_generated
-
 
 # Add a "v" to the version number made by setuptools_scm
 __version__ = f"v{_version_generated.version}"

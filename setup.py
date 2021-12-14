@@ -9,8 +9,7 @@ Build and install the project.
 
 Uses setuptools-scm to manage version numbers using git tags.
 """
-from setuptools import setup, find_packages
-
+from setuptools import find_packages, setup
 
 NAME = "verde"
 FULLNAME = "Verde"

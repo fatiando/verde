@@ -4,7 +4,6 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-# pylint: disable=redefined-outer-name
 """
 Test the vector data interpolators
 """
@@ -12,12 +11,12 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from ..datasets.synthetic import CheckerBoard
-from ..coordinates import grid_coordinates
-from ..trend import Trend
 from ..base import n_1d_arrays
+from ..coordinates import grid_coordinates
+from ..datasets.synthetic import CheckerBoard
+from ..trend import Trend
+from ..vector import Vector, VectorSpline2D
 from .utils import requires_numba
-from ..vector import VectorSpline2D, Vector
 
 
 @pytest.fixture
@@ -144,7 +143,7 @@ def test_vector_trend_weights(simple_2d_model):
     outlier = np.abs(data[0]).max() * 3
     data_out = tuple(i.copy() for i in data)
     weights = tuple(np.ones_like(i) for i in data)
-    for i, coef in enumerate(coefs):
+    for i, _ in enumerate(coefs):
         data_out[i][20, 20] += outlier
         weights[i][20, 20] = 1e-10
     trend = Vector([Trend(degree=1), Trend(degree=1)])

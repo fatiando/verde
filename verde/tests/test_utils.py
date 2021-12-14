@@ -11,23 +11,23 @@ from unittest import mock
 
 import numpy as np
 import numpy.testing as npt
-import xarray as xr
-from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
 import pytest
+import xarray as xr
+from scipy.spatial import cKDTree
 
+from .. import utils
 from ..coordinates import grid_coordinates, scatter_points
 from ..utils import (
-    parse_engine,
     dummy_jit,
-    kdtree,
-    grid_to_table,
-    partition_by_sum,
-    make_xarray_grid,
-    meshgrid_to_1d,
-    meshgrid_from_1d,
     get_ndim_horizontal_coords,
+    grid_to_table,
+    kdtree,
+    make_xarray_grid,
+    meshgrid_from_1d,
+    meshgrid_to_1d,
+    parse_engine,
+    partition_by_sum,
 )
-from .. import utils
 
 
 def test_parse_engine():
@@ -324,7 +324,6 @@ def test_check_ndim_easting_northing():
     Test if check_ndim_easting_northing works as expected
     """
     # Easting and northing as 1d arrays
-    # pylint: disable=unbalanced-tuple-unpacking
     easting, northing = scatter_points((-5, 5, 0, 4), 50, random_state=42)
     assert get_ndim_horizontal_coords(easting, northing) == 1
     # Easting and northing as 2d arrays

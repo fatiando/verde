@@ -7,25 +7,21 @@
 """
 Base classes for all gridders.
 """
+import warnings
 from abc import ABCMeta, abstractmethod
 
-import warnings
 import pandas as pd
 from sklearn.base import BaseEstimator
 from sklearn.model_selection import BaseCrossValidator
 
 from ..coordinates import grid_coordinates, profile_coordinates, scatter_points
-from .utils import check_data, check_data_names, score_estimator
 from ..utils import (
+    check_meshgrid,
+    get_ndim_horizontal_coords,
     make_xarray_grid,
     meshgrid_from_1d,
-    get_ndim_horizontal_coords,
-    check_meshgrid,
 )
-
-
-# Pylint doesn't like X, y scikit-learn argument names.
-# pylint: disable=invalid-name,unused-argument
+from .utils import check_data, check_data_names, score_estimator
 
 
 class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
@@ -58,7 +54,7 @@ class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
         self.shape = shape
         self.n_splits = n_splits
 
-    def split(self, X, y=None, groups=None):
+    def split(self, X, y=None, groups=None):  # noqa: N803
         """
         Generate indices to split data into training and test set.
 
@@ -89,7 +85,7 @@ class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
         for train, test in super().split(X, y, groups):
             yield train, test
 
-    def get_n_splits(self, X=None, y=None, groups=None):
+    def get_n_splits(self, X=None, y=None, groups=None):  # noqa: U100,N803
         """
         Returns the number of splitting iterations in the cross-validator
 
@@ -110,7 +106,7 @@ class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
         return self.n_splits
 
     @abstractmethod
-    def _iter_test_indices(self, X=None, y=None, groups=None):
+    def _iter_test_indices(self, X=None, y=None, groups=None):  # noqa: U100,N803
         """
         Generates integer indices corresponding to test sets.
 
@@ -134,9 +130,6 @@ class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
             The testing set indices for that split.
 
         """
-
-
-# pylint: enable=invalid-name,unused-argument
 
 
 class BaseGridder(BaseEstimator):
@@ -229,7 +222,7 @@ class BaseGridder(BaseEstimator):
         ("east_component", "north_component", "vertical_component"),
     ]
 
-    def predict(self, coordinates):
+    def predict(self, coordinates):  # noqa: U100
         """
         Predict data on the given coordinate values. NOT IMPLEMENTED.
 
@@ -249,7 +242,7 @@ class BaseGridder(BaseEstimator):
         """
         raise NotImplementedError()
 
-    def fit(self, coordinates, data, weights=None):
+    def fit(self, coordinates, data, weights=None):  # noqa: U100
         """
         Fit the gridder to observed data. NOT IMPLEMENTED.
 
@@ -277,7 +270,7 @@ class BaseGridder(BaseEstimator):
         """
         raise NotImplementedError()
 
-    def filter(self, coordinates, data, weights=None):
+    def filter(self, coordinates, data, weights=None):  # noqa: A003
         """
         Filter the data through the gridder and produce residuals.
 
@@ -367,7 +360,7 @@ class BaseGridder(BaseEstimator):
         projection=None,
         coordinates=None,
         **kwargs,
-    ):  # pylint: disable=too-many-locals
+    ):
         """
         Interpolate the data onto a regular grid.
 
@@ -813,5 +806,5 @@ def get_instance_region(instance, region):
     if region is None:
         if not hasattr(instance, "region_"):
             raise ValueError("No default region found. Argument must be supplied.")
-        region = getattr(instance, "region_")
+        region = instance.region_
     return region
