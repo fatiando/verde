@@ -20,13 +20,13 @@ try:
 except ImportError:
     pass
 
-from ..version import full_version
+from .._version import __version__
 
 
 REGISTRY = pooch.create(
     path=pooch.os_cache("verde"),
     base_url="https://github.com/fatiando/verde/raw/{version}/data/",
-    version=full_version,
+    version=__version__,
     version_dev="main",
     env="VERDE_DATA_DIR",
 )

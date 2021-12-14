@@ -53,7 +53,9 @@ PYTHON_REQUIRES = ">=3.6"
 SETUP_REQUIRES = ["setuptools_scm"]
 USE_SCM_VERSION = {
     "relative_to": __file__,
+    "version_scheme": "post-release",
     "local_scheme": "node-and-date",
+    "write_to": f"{NAME}/_version_generated.py",
 }
 
 if __name__ == "__main__":

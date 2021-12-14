@@ -6,8 +6,8 @@
 #
 # pylint: disable=missing-docstring,import-outside-toplevel
 # Import functions/classes to make the public API
+from ._version import __version__
 from . import datasets
-from . import version
 from .coordinates import (
     scatter_points,
     grid_coordinates,
@@ -42,10 +42,6 @@ from .model_selection import (
 )
 from .vector import Vector, VectorSpline2D
 from .projections import project_region, project_grid
-
-
-# Get the version number through setuptools-scm
-__version__ = version.version
 
 
 def test(doctest=True, verbose=True, coverage=False, figures=True):

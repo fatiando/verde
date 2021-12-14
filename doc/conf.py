@@ -11,7 +11,7 @@ import datetime
 import sphinx_rtd_theme
 import sphinx_gallery
 from sphinx_gallery.sorting import FileNameSortKey
-from verde.version import full_version
+from verde import __version__
 
 extensions = [
     "sphinx.ext.autodoc",
@@ -85,10 +85,7 @@ master_doc = "index"
 year = datetime.date.today().year
 project = "Verde"
 copyright = "2017-{}, The Verde Developers".format(year)
-if len(full_version.split("+")) > 1 or full_version == "unknown":
-    version = "dev"
-else:
-    version = full_version
+version = __version__
 
 # These enable substitutions using |variable| in the rst files
 rst_epilog = """
