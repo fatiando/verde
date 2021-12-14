@@ -3,7 +3,6 @@
 
 `Documentation <http://www.fatiando.org/verde>`__ |
 `Documentation (dev version) <http://www.fatiando.org/verde/dev>`__ |
-`Contact <http://contact.fatiando.org>`__ |
 Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 
 
@@ -74,7 +73,7 @@ larger-than-memory datasets can also be supported.
 Contacting us
 -------------
 
-Find out more about how to reach us at 
+Find out more about how to reach us at
 `fatiando.org/contact <https://www.fatiando.org/contact/>`__
 
 Citing Verde
