@@ -74,13 +74,8 @@ larger-than-memory datasets can also be supported.
 Contacting us
 -------------
 
-* Most discussion happens `on Github <https://github.com/fatiando/verde>`__.
-  Feel free to `open an issue
-  <https://github.com/fatiando/verde/issues/new>`__ or comment
-  on any open issue or pull request.
-* We have `chat room on Slack <http://contact.fatiando.org>`__
-  where you can ask questions and leave comments.
-
+Find out more about how to reach us at 
+`fatiando.org/contact <https://www.fatiando.org/contact/>`__
 
 Citing Verde
 ------------
