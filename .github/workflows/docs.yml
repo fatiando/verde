@@ -32,8 +32,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      REQUIREMENTS: requirements.txt env/requirements-docs.txt env/requirements-optional.txt env/requirements-build.txt
-      PYTHON: 3.8
+      REQUIREMENTS: env/requirements-build.txt env/requirements-docs.txt env/requirements-optional.txt
+      PYTHON: 3.9
 
     steps:
       # Cancel any previous run of the test job
@@ -61,12 +61,6 @@ jobs:
       - name: Fetch git tags
         run: git fetch origin 'refs/tags/*:refs/tags/*'
 
-      - name: Setup caching for conda packages
-        uses: actions/cache@v2
-        with:
-          path: ~/conda_pkgs_dir
-          key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('**/requirements*.txt') }}
-
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
         with:
@@ -77,24 +71,31 @@ jobs:
           # Needed for caching
           use-only-tar-bz2: true
 
-      - name: Install requirements
+      - name: Collect requirements - run-time
+        run: python tools/export_requirements.py > requirements-full.txt
+
+      - name: Collect requirements - other
         run: |
-          requirements_file=requirements-full.txt
-          if [ ! -z "$REQUIREMENTS" ]; then
-              echo "Capturing dependencies from $REQUIREMENTS"
-              for requirement in $REQUIREMENTS
-              do
-                cat $requirement >> $requirements_file
-              done
-          fi
-          if [ -f $requirements_file ]; then
-              echo "Collected dependencies:"
-              cat $requirements_file
-              echo ""
-              mamba install --quiet --file $requirements_file python=$PYTHON
-          else
-              echo "No requirements defined."
-          fi
+          echo "Capturing dependencies from:"
+          for requirement in $REQUIREMENTS
+          do
+            echo "  $requirement"
+            cat $requirement >> requirements-full.txt
+          done
+
+      - name: List requirements
+        run: |
+          echo "Collected dependencies:"
+          cat requirements-full.txt
+
+      - name: Setup caching for conda packages
+        uses: actions/cache@v2
+        with:
+          path: ~/conda_pkgs_dir
+          key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements-full.txt') }}
+
+      - name: Install requirements
+        run: mamba install --quiet --file requirements-full.txt python=$PYTHON
 
       - name: List installed packages
         run: mamba list
