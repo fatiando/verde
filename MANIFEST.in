@@ -1,9 +1,13 @@
-include README.rst
-include LICENSE.txt
-include CODE_OF_CONDUCT.md
-include CONTRIBUTING.md
-include AUTHORS.md
-include requirements.txt
-include verde/datasets/registry.txt
-recursive-include verde/tests/data *
-recursive-include verde/tests/baseline *
+# Exclude these files from source distributions.
+# setuptools_scm includes everything else by default.
+prune .github
+prune data
+prune doc
+prune env
+prune paper
+prune tools
+exclude .*.yml
+exclude .*rc
+exclude Makefile
+exclude .gitignore
+exclude environment.yml
