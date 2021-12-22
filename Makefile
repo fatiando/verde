@@ -2,7 +2,7 @@
 PROJECT=verde
 TESTDIR=tmp-test-dir-with-unique-name
 PYTEST_ARGS=--cov-config=../.coveragerc --cov-report=term-missing --cov=$(PROJECT) --doctest-modules -v --pyargs
-CHECK_STYLE=setup.py $(PROJECT) examples data/examples doc/conf.py tutorials license_notice.py
+CHECK_STYLE=setup.py $(PROJECT) examples data/examples doc/conf.py tutorials tools
 
 help:
 	@echo "Commands:"
@@ -35,10 +35,10 @@ black-check:
 	black --check $(CHECK_STYLE)
 
 license:
-	python license_notice.py
+	python tools/license_notice.py
 
 license-check:
-	python license_notice.py --check
+	python tools/license_notice.py --check
 
 isort:
 	isort $(CHECK_STYLE)
