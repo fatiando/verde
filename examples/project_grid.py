@@ -49,7 +49,7 @@ projection = pyproj.Proj("epsg:3031")
 region = (0, 360, -90, -60)
 spacing = 0.25
 wavelength = 10 * 1e5  # The size of the cells in the checkerboard
-checkerboard = vd.datasets.CheckerBoard(
+checkerboard = vd.synthetic.CheckerBoard(
     region=vd.project_region(region, projection), w_east=wavelength, w_north=wavelength
 )
 data = checkerboard.grid(

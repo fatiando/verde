@@ -37,9 +37,9 @@ The library
 -----------
 
 Most classes and functions are available through the :mod:`verde` top level
-package. The only exceptions are the functions related to loading sample data,
-which are in :mod:`verde.datasets`. Throughout the documentation we'll use
-``vd`` as the alias for :mod:`verde`.
+package. The only exception is the :mod:`verde.synthetic` module that has
+functionality for generating synthetic data. Throughout the documentation we'll
+use ``vd`` as the alias for :mod:`verde`.
 
 """
 import matplotlib.pyplot as plt
@@ -66,9 +66,9 @@ import verde as vd
 # for spatial data and is common to all classes and functions in Verde.
 #
 # As an example, let's generate some synthetic data using
-# :class:`verde.datasets.CheckerBoard`:
+# :class:`verde.synthetic.CheckerBoard`:
 
-data = vd.datasets.CheckerBoard().scatter(size=500, random_state=0)
+data = vd.synthetic.CheckerBoard().scatter(size=500, random_state=0)
 print(data.head())
 
 
@@ -111,7 +111,7 @@ plt.show()
 # `R² coefficient of determination
 # <https://en.wikipedia.org/wiki/Coefficient_of_determination>`__.
 
-true_values = vd.datasets.CheckerBoard().predict(grid_coords)
+true_values = vd.synthetic.CheckerBoard().predict(grid_coords)
 print(spline.score(grid_coords, true_values))
 
 ###############################################################################
