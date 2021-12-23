@@ -41,9 +41,9 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
     "numpy": ("https://docs.scipy.org/doc/numpy/", None),
     "scipy": ("https://docs.scipy.org/doc/scipy/reference", None),
-    "sklearn": ("http://scikit-learn.org/stable/", None),
-    "pandas": ("http://pandas.pydata.org/pandas-docs/stable/", None),
-    "xarray": ("http://xarray.pydata.org/en/stable/", None),
+    "sklearn": ("https://scikit-learn.org/stable/", None),
+    "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
+    "xarray": ("https://xarray.pydata.org/en/stable/", None),
     "cartopy": ("https://scitools.org.uk/cartopy/docs/latest/", None),
     "pooch": ("https://www.fatiando.org/pooch/latest/", None),
     "matplotlib": ("https://matplotlib.org/", None),
@@ -76,7 +76,7 @@ add_function_parentheses = False
 # -----------------------------------------------------------------------------
 sphinx_gallery_conf = {
     # path to your examples scripts
-    "examples_dirs": ["../examples", "../tutorials", "../data/examples"],
+    "examples_dirs": ["gallery_src", "tutorials_src", "sample_data_src"],
     # path where to save gallery generated examples
     "gallery_dirs": ["gallery", "tutorials", "sample_data"],
     "filename_pattern": r"\.py",
