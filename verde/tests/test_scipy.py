@@ -15,8 +15,8 @@ import pandas as pd
 import pytest
 
 from ..coordinates import grid_coordinates
-from ..datasets.synthetic import CheckerBoard
 from ..scipygridder import ScipyGridder
+from ..synthetic import CheckerBoard
 
 
 def test_scipy_gridder_same_points():

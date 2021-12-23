@@ -13,7 +13,7 @@ import pytest
 
 from ..base import n_1d_arrays
 from ..coordinates import grid_coordinates
-from ..datasets.synthetic import CheckerBoard
+from ..synthetic import CheckerBoard
 from ..trend import Trend
 from ..vector import Vector, VectorSpline2D
 from .utils import requires_numba

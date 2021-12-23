@@ -183,7 +183,7 @@ class BaseGridder(BaseEstimator):
     ...         check_is_fitted(self, ['mean_'])
     ...         return np.ones_like(coordinates[0])*self.mean_
     >>> # Try it on some synthetic data
-    >>> synthetic = vd.datasets.CheckerBoard(region=(0, 5, -10, 8))
+    >>> synthetic = vd.synthetic.CheckerBoard(region=(0, 5, -10, 8))
     >>> data = synthetic.scatter()
     >>> print('{:.4f}'.format(data.scalars.mean()))
     -32.2182

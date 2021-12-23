@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 # Import functions/classes to make the public API
-from . import datasets
+from . import datasets, synthetic
 from ._version import __version__
 from .blockreduce import BlockMean, BlockReduce
 from .chain import Chain
