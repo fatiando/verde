@@ -8,9 +8,10 @@ the :mod:`verde.datasets` module.
 
 .. warning::
 
-    All sample datasets in Verde have been moved to Rockhound and
-    **these functions will be removed in Verde v2.0.0**.
-    Please, use Rockhoud to fetch these dataset instead.
+    All sample datasets in Verde are deprecated and will be
+    **removed in Verde v2.0.0**.
+    The tutorials/examples will transition to using
+    `Ensaio <https://www.fatiando.org/ensaio/>`__ instead.
 
 Where are my data files?
 ------------------------
