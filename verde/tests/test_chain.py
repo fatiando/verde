@@ -13,7 +13,7 @@ import numpy.testing as npt
 from ..blockreduce import BlockReduce
 from ..chain import Chain
 from ..coordinates import grid_coordinates
-from ..datasets.synthetic import CheckerBoard
+from ..synthetic import CheckerBoard
 from ..scipygridder import ScipyGridder
 from ..spline import Spline
 from ..trend import Trend
