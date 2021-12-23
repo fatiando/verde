@@ -13,9 +13,9 @@ import numpy.testing as npt
 from ..blockreduce import BlockReduce
 from ..chain import Chain
 from ..coordinates import grid_coordinates
-from ..synthetic import CheckerBoard
 from ..scipygridder import ScipyGridder
 from ..spline import Spline
+from ..synthetic import CheckerBoard
 from ..trend import Trend
 from ..vector import Vector
 

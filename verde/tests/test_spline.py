@@ -15,8 +15,8 @@ import pytest
 from dask.distributed import Client
 from sklearn.model_selection import ShuffleSplit
 
-from ..synthetic import CheckerBoard
 from ..spline import Spline, SplineCV
+from ..synthetic import CheckerBoard
 from .utils import requires_numba
 
 
