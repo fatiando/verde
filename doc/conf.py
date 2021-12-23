@@ -33,7 +33,15 @@ extensions = [
     "matplotlib.sphinxext.plot_directive",
     "sphinx.ext.napoleon",
     "sphinx_gallery.gen_gallery",
+    "sphinx_panels",
 ]
+
+# Disable including boostrap CSS for sphinx_panels since it's already included
+# with sphinx-book-theme
+panels_add_bootstrap_css = False
+panels_css_variables = {
+    "tabs-color-label-inactive": "hsla(231, 99%, 66%, 0.5)",
+}
 
 # Configuration to include links to other project docs when referencing
 # functions/classes

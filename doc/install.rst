@@ -3,21 +3,61 @@
 Installing
 ==========
 
+There are different ways to install Verde:
+
+.. tabbed:: pip
+
+    Using the `pip <https://pypi.org/project/pip/>`__ package manager:
+
+    .. code:: bash
+
+        python -m pip install verde
+
+.. tabbed:: conda
+
+    Using the `conda <https://conda.io/>`__ package manager that comes with the
+    Anaconda/Miniconda distribution:
+
+    .. code:: bash
+
+        conda install verde --channel conda-forge
+
+.. tabbed:: Development version
+
+    Using ``pip`` to install the latest **unreleased** version from GitHub
+    (**not recommended** in most situations):
+
+    .. code:: bash
+
+        python -m pip install --upgrade git+https://github.com/fatiando/verde
+
+.. note::
+
+    The commands above should be executed in a terminal. On Windows, use the
+    ``cmd.exe`` or the "Anaconda Prompt" app if you're using Anaconda.
+
 Which Python?
 -------------
 
-You'll need **Python 3.6 or greater**.
+You'll need **Python >= 3.6**.
 
 We recommend using the
-`Anaconda Python distribution <https://www.anaconda.com/download>`__
-to ensure you have all dependencies installed and the ``conda`` package manager
-available.
+`Anaconda <https://www.anaconda.com/download>`__
+or `Miniconda <https://docs.conda.io/en/latest/miniconda.html>`__
+Python distributions to ensure you have all dependencies installed and the
+``conda`` package manager available.
 Installing Anaconda does not require administrative rights to your computer and
 doesn't interfere with any other Python installations in your system.
 
+.. _dependencies:
 
 Dependencies
 ------------
+
+The required dependencies should be installed automatically when you install
+Verde using ``conda`` or ``pip``.
+
+Required:
 
 * `numpy <http://www.numpy.org/>`__
 * `scipy <https://docs.scipy.org/doc/scipy/reference/>`__
@@ -27,70 +67,20 @@ Dependencies
 * `pooch <http://www.fatiando.org/pooch/>`__
 * `dask <https://dask.org/>`__
 
-The following are optional dependencies that can make some parts of the code faster if
-they are installed:
+The following are optional dependencies that can make some parts of the code
+more efficient if they are installed:
 
-* `numba <https://numba.pydata.org/>`__: replaces numpy calculations of predictions and
-  Jacobian matrices in splines with faster and more memory efficient multi-threaded
-  versions.
+* `numba <https://numba.pydata.org/>`__: replaces numpy calculations of
+  predictions and Jacobian matrices in splines with faster and more memory
+  efficient multi-threaded versions.
 * `pykdtree <https://github.com/storpipfugl/pykdtree>`__: replaces
-  :class:`scipy.spatial.cKDTree` for better performance in near neighbor calculations
-  used in blocked operations, distance masking, etc.
+  :class:`scipy.spatial.cKDTree` for better performance in near neighbor
+  calculations used in blocked operations, distance masking, etc.
 
-Most of the examples in the :ref:`gallery` and :ref:`tutorials` also use:
+Our examples use other packages as well which are not used within Verde itself.
+If you wish to **run the examples in the documentation**, you will also have to
+install:
 
 * `matplotlib <https://matplotlib.org/>`__
 * `cartopy <https://scitools.org.uk/cartopy/>`__ for plotting maps
 * `pyproj <https://jswhit.github.io/pyproj/>`__ for cartographic projections
-
-
-Installing with conda
----------------------
-
-You can install Verde using the `conda package manager <https://conda.io/>`__ that comes
-with the Anaconda distribution::
-
-    conda install verde --channel conda-forge
-
-
-Installing with pip
--------------------
-
-Alternatively, you can also use the `pip package manager
-<https://pypi.org/project/pip/>`__::
-
-    pip install verde
-
-
-Installing the latest development version
------------------------------------------
-
-You can use ``pip`` to install the latest source from GitHub::
-
-    pip install https://github.com/fatiando/verde/archive/main.zip
-
-Alternatively, you can clone the git repository locally and install from there::
-
-    git clone https://github.com/fatiando/verde.git
-    cd verde
-    pip install .
-
-
-Testing your install
---------------------
-
-We ship a full test suite with the package.
-To run the tests, you'll need to install some extra dependencies first:
-
-* `pytest <https://docs.pytest.org/>`__
-* `pytest-mpl <https://github.com/matplotlib/pytest-mpl>`__
-* `matplotlib <https://matplotlib.org/>`__
-* `cartopy <https://scitools.org.uk/cartopy/>`__
-* `dask <https://dask.pydata.org/>`__
-* `pyproj <https://jswhit.github.io/pyproj/>`__
-
-After that, you can test your installation by running the following inside a Python
-interpreter::
-
-    import verde
-    verde.test()
