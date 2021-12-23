@@ -1,7 +1,7 @@
 .. _api:
 
-API Reference
-=============
+List of functions and classes (API)
+===================================
 
 .. automodule:: verde
 
@@ -88,7 +88,6 @@ Utilities
 .. autosummary::
    :toctree: generated/
 
-    test
     maxabs
     variance_to_weights
     grid_to_table
