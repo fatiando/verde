@@ -5,8 +5,15 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Bathymetry data from Baja California
-====================================
+[DEPRECATED] Bathymetry data from Baja California
+=================================================
+
+.. warning::
+
+    All sample datasets in Verde are deprecated and will be
+    **removed in Verde v2.0.0**.
+    The tutorials/examples will transition to using
+    `Ensaio <https://www.fatiando.org/ensaio/>`__ instead.
 
 We provide sample bathymetry data from Baja California to test the gridding
 methods. This is the ``@tut_ship.xyz`` sample data provided by `GMT
