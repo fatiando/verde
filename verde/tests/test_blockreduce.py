@@ -1,14 +1,19 @@
-# pylint: disable=protected-access
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Test the grid math functions
 """
-import pandas as pd
 import numpy as np
 import numpy.testing as npt
+import pandas as pd
 import pytest
 
+from ..blockreduce import BlockMean, BlockReduce
 from ..coordinates import grid_coordinates, scatter_points
-from ..blockreduce import BlockReduce, BlockMean
 
 
 def test_block_reduce():

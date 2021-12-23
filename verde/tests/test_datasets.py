@@ -1,22 +1,28 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Test data fetching routines.
 """
 import os
+import warnings
 
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-
+import matplotlib.pyplot as plt
 import pytest
 
 from ..datasets.sample_data import (
-    locate,
     fetch_baja_bathymetry,
-    setup_baja_bathymetry_map,
-    fetch_rio_magnetic,
-    setup_rio_magnetic_map,
     fetch_california_gps,
-    setup_california_gps_map,
+    fetch_rio_magnetic,
     fetch_texas_wind,
+    locate,
+    setup_baja_bathymetry_map,
+    setup_california_gps_map,
+    setup_rio_magnetic_map,
     setup_texas_wind_map,
 )
 
@@ -130,3 +136,21 @@ def test_setup_california_gps():
     ax = plt.subplot(111, projection=ccrs.Mercator())
     setup_california_gps_map(ax)
     return fig
+
+
+def test_setup_cartopy_backward():
+    """
+    Test backward compatibility of setup map functions
+
+    Check if a warning is raise after passing deprecated parameters like ocean,
+    land, borders and states to functions to setup maps.
+    """
+    ax = plt.subplot(111, projection=ccrs.Mercator())
+    with warnings.catch_warnings(record=True):
+        setup_texas_wind_map(ax, land="#dddddd", borders=0.5, states=0.1)
+    ax = plt.subplot(111, projection=ccrs.Mercator())
+    with warnings.catch_warnings(record=True):
+        setup_california_gps_map(ax, land="gray", ocean="skyblue")
+    ax = plt.subplot(111, projection=ccrs.Mercator())
+    with warnings.catch_warnings(record=True):
+        setup_baja_bathymetry_map(ax, land="gray", ocean=None)

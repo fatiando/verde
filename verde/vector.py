@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Classes for dealing with vector data.
 """
@@ -6,10 +12,10 @@ import warnings
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
-from .base import n_1d_arrays, check_fit_input, least_squares, BaseGridder
+from .base import BaseGridder, check_fit_input, least_squares, n_1d_arrays
+from .coordinates import get_region
 from .spline import warn_weighted_exact_solution
 from .utils import parse_engine
-from .coordinates import get_region
 
 try:
     import numba
@@ -17,10 +23,6 @@ try:
 except ImportError:
     numba = None
     from .utils import dummy_jit as jit
-
-
-# Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
-warnings.simplefilter("default")
 
 
 class Vector(BaseGridder):
@@ -234,7 +236,7 @@ class VectorSpline2D(BaseGridder):
             "VectorSpline2D is deprecated and will be removed in Verde v2.0.0."
             " Please use the implementation in the Erizo package instead "
             "(https://github.com/fatiando/erizo).",
-            DeprecationWarning,
+            FutureWarning,
         )
 
     def fit(self, coordinates, data, weights=None):
@@ -447,7 +449,7 @@ def predict_2d_numba(
 ):
     "Calculate the predicted data using numba to speed things up."
     nforces = forces.size // 2
-    for i in numba.prange(east.size):  # pylint: disable=not-an-iterable
+    for i in numba.prange(east.size):
         vec_east[i] = 0
         vec_north[i] = 0
         for j in range(nforces):
@@ -464,7 +466,7 @@ def jacobian_2d_numba(east, north, force_east, force_north, mindist, poisson, ja
     "Calculate the Jacobian matrix using numba to speed things up."
     nforces = force_east.size
     npoints = east.size
-    for i in numba.prange(npoints):  # pylint: disable=not-an-iterable
+    for i in numba.prange(npoints):
         for j in range(nforces):
             green_ee, green_nn, green_ne = GREENS_FUNC_2D_JIT(
                 east[i] - force_east[j], north[i] - force_north[j], mindist, poisson

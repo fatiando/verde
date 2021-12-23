@@ -1,14 +1,20 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Operations with projections for grids, regions, etc.
 """
 import numpy as np
 
-from .coordinates import grid_coordinates, get_region, shape_to_spacing, check_region
-from .utils import grid_to_table
-from .scipygridder import ScipyGridder
 from .blockreduce import BlockReduce
 from .chain import Chain
+from .coordinates import check_region, get_region, grid_coordinates, shape_to_spacing
 from .mask import convexhull_mask
+from .scipygridder import ScipyGridder
+from .utils import grid_to_table
 
 
 def project_region(region, projection):

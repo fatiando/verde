@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Gridding with splines (cross-validated)
 =======================================
@@ -7,10 +13,10 @@ The :class:`verde.Spline` has two main parameters that need to be configured:
 1. ``mindist``: the minimum distance between forces and data points
 2. ``damping``: the regularization parameter controlling smoothness
 
-These parameters can be determined through cross-validation (see :ref:`model_selection`)
-automatically using :class:`verde.SplineCV`. It is very similar to :class:`verde.Spline`
-but takes a set of parameter values instead of only one value. When calling
-:meth:`verde.SplineCV.fit`, the class will:
+These parameters can be determined through cross-validation (see
+:ref:`model_selection`) automatically using :class:`verde.SplineCV`. It is very
+similar to :class:`verde.Spline` but takes a set of parameter values instead of
+only one value. When calling :meth:`verde.SplineCV.fit`, the class will:
 
 1. Create a spline for each combination of the input parameter sets
 2. Calculate the cross-validation score for each spline using
@@ -18,10 +24,10 @@ but takes a set of parameter values instead of only one value. When calling
 3. Pick the spline with the highest score
 
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
 import pyproj
-import numpy as np
+
 import verde as vd
 
 # We'll test this on the air temperature data from Texas
@@ -35,13 +41,13 @@ projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 # The output grid spacing will 15 arc-minutes
 spacing = 15 / 60
 
-# This spline will automatically perform cross-validation and search for the optimal
-# parameter configuration.
+# This spline will automatically perform cross-validation and search for the
+# optimal parameter configuration.
 spline = vd.SplineCV(dampings=(1e-5, 1e-3, 1e-1), mindists=(10e3, 50e3, 100e3))
 
 # Fit the model on the data. Under the hood, the class will perform K-fold
-# cross-validation for each the 3*3=9 parameter combinations and pick the one with the
-# highest R² score.
+# cross-validation for each the 3*3=9 parameter combinations and pick the one
+# with the highest R² score.
 spline.fit(projection(*coordinates), data.air_temperature_c)
 
 # We can show the best R² score obtained in the cross-validation
@@ -52,14 +58,15 @@ print("\nBest spline configuration:")
 print("  mindist:", spline.mindist_)
 print("  damping:", spline.damping_)
 
-# Now we can create a geographic grid of air temperature by providing a projection
-# function to the grid method and mask points that are too far from the observations
+# Now we can create a geographic grid of air temperature by providing a
+# projection function to the grid method and mask points that are too far from
+# the observations
 grid_full = spline.grid(
     region=region,
     spacing=spacing,
     projection=projection,
     dims=["latitude", "longitude"],
-    data_names=["temperature"],
+    data_names="temperature",
 )
 grid = vd.distance_mask(
     coordinates, maxdist=3 * spacing * 111e3, grid=grid_full, projection=projection
@@ -74,7 +81,7 @@ tmp = grid.temperature.plot.pcolormesh(
     ax=ax, cmap="plasma", transform=ccrs.PlateCarree(), add_colorbar=False
 )
 plt.colorbar(tmp).set_label("Air temperature (C)")
-# Use an utility function to add tick labels and land and ocean features to the map.
+# Use an utility function to add tick labels and land and ocean features to the
+# map.
 vd.datasets.setup_texas_wind_map(ax, region=region)
-plt.tight_layout()
 plt.show()

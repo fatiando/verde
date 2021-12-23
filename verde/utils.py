@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 General utilities.
 """
@@ -6,19 +12,26 @@ import functools
 import dask
 import numpy as np
 import pandas as pd
-from scipy.spatial import cKDTree  # pylint: disable=no-name-in-module
+import xarray as xr
+from scipy.spatial import cKDTree
 
 try:
     from pykdtree.kdtree import KDTree as pyKDTree
 except ImportError:
-    pyKDTree = None
+    pyKDTree = None  # noqa: N816
 
 try:
     import numba
 except ImportError:
     numba = None
 
-from .base.utils import check_data, n_1d_arrays
+from .base.utils import (
+    check_coordinates,
+    check_data,
+    check_data_names,
+    check_extra_coords_names,
+    n_1d_arrays,
+)
 
 
 def dispatch(function, delayed=False, client=None):
@@ -74,7 +87,7 @@ def parse_engine(engine):
     return engine
 
 
-def dummy_jit(**kwargs):  # pylint: disable=unused-argument
+def dummy_jit(**kwargs):  # noqa: U100
     """
     Replace numba.jit if not installed with a function that raises RunTimeError
 
@@ -97,7 +110,7 @@ def dummy_jit(**kwargs):  # pylint: disable=unused-argument
         "The actual decorator"
 
         @functools.wraps(function)
-        def dummy_function(*args, **kwargs):  # pylint: disable=unused-argument
+        def dummy_function(*args, **kwargs):  # noqa: U100
             "Just raise an exception."
             raise RuntimeError("Could not find numba.")
 
@@ -205,6 +218,316 @@ def maxabs(*args, nan=True):
         npmin, npmax = np.min, np.max
     absolute = [npmax(np.abs([npmin(i), npmax(i)])) for i in arrays]
     return npmax(absolute)
+
+
+def make_xarray_grid(
+    coordinates,
+    data,
+    data_names,
+    dims=("northing", "easting"),
+    extra_coords_names=None,
+):
+    """
+    Create an :class:`xarray.Dataset` grid from numpy arrays
+
+    This functions creates an :class:`xarray.Dataset` out of 2d gridded data
+    including easting and northing coordinates, any extra coordinates (like
+    upward elevation, time, etc) and data arrays.
+
+    Use this to transform the outputs of :func:`verde.grid_coordinates` and
+    the ``predict`` method of a gridder into an :class:`xarray.Dataset`.
+
+    .. note::
+
+        This is a utility function to help create 2D grids (i.e., grids with
+        two ``dims`` coordinates). For arbitrary N-dimensional arrays, use
+        :mod:`xarray` directly.
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+        Arrays with coordinates of each point in the grid. Each array must
+        contain values for a dimension in the order: easting, northing,
+        vertical, etc. All arrays must be 2d and need to have the same *shape*.
+        These coordinates can be generated through
+        :func:`verde.grid_coordinates`.
+    data : array, tuple of arrays or None
+        Array or tuple of arrays with data values on each point in the grid.
+        Each array must contain values for a dimension in the same order as
+        the coordinates. All arrays need to have the same *shape*.
+        If None, the :class:`xarray.Dataset` will not have any ``data_var``
+        array.
+    data_names : str or list
+        The name(s) of the data variables in the output grid.
+        Ignored if ``data`` is None.
+    dims : list (optional)
+        The names of the northing and easting data dimensions, respectively,
+        in the output grid. Must be defined in the following order: northing
+        dimension, easting dimension.
+        **NOTE: This is an exception to the "easting" then
+        "northing" pattern but is required for compatibility with xarray.**
+        The easting and northing coordinates in the :class:`xarray.Dataset`
+        will have the same names as the passed dimensions.
+    extra_coords_names : str or list (optional)
+        Name or list of names for any additional coordinates besides the
+        easting and northing ones. Ignored if coordinates has
+        only two elements. The extra coordinates are non-index coordinates of
+        the grid array.
+
+    Returns
+    -------
+    grid : :class:`xarray.Dataset`
+        A 2D grid with one or more data variables.
+
+    Examples
+    --------
+
+    >>> import numpy as np
+    >>> import verde as vd
+    >>> # Create the coordinates of the regular grid
+    >>> coordinates = vd.grid_coordinates((-10, -6, 8, 10), spacing=2)
+    >>> # And some dummy data for each point of the grid
+    >>> data = np.ones_like(coordinates[0])
+    >>> # Create the grid
+    >>> grid = make_xarray_grid(coordinates, data, data_names="dummy")
+    >>> print(grid) # doctest: +SKIP
+    <xarray.Dataset>
+    Dimensions:   (northing: 2, easting: 3)
+    Coordinates:
+      * easting   (easting) float64 -10.0 -8.0 -6.0
+      * northing  (northing) float64 8.0 10.0
+    Data variables:
+        dummy     (northing, easting) float64 1.0 1.0 1.0 1.0 1.0 1.0
+
+    >>> # Create a grid with an extra coordinate
+    >>> coordinates = vd.grid_coordinates(
+    ...     (-10, -6, 8, 10), spacing=2, extra_coords=5
+    ... )
+    >>> # And some dummy data for each point of the grid
+    >>> data = np.ones_like(coordinates[0])
+    >>> # Create the grid
+    >>> grid = make_xarray_grid(
+    ...     coordinates, data, data_names="dummy", extra_coords_names="upward"
+    ... )
+    >>> print(grid) # doctest: +SKIP
+    <xarray.Dataset>
+    Dimensions:   (northing: 2, easting: 3)
+    Coordinates:
+      * easting   (easting) float64 -10.0 -8.0 -6.0
+      * northing  (northing) float64 8.0 10.0
+        upward    (northing, easting) float64 5.0 5.0 5.0 5.0 5.0 5.0
+    Data variables:
+        dummy     (northing, easting) float64 1.0 1.0 1.0 1.0 1.0 1.0
+
+    >>> # Create a grid containing only coordinates and no data
+    >>> coordinates = vd.grid_coordinates(
+    ...     (-10, -6, 8, 10), spacing=2, extra_coords=-7
+    ... )
+    >>> grid = make_xarray_grid(
+    ...     coordinates,
+    ...     data=None,
+    ...     data_names=None,
+    ...     extra_coords_names="upward",
+    ... )
+    >>> print(grid) # doctest: +SKIP
+    <xarray.Dataset>
+    Dimensions:   (easting: 3, northing: 2)
+    Coordinates:
+      * easting   (easting) float64 -10.0 -8.0 -6.0
+      * northing  (northing) float64 8.0 10.0
+        upward    (northing, easting) float64 -7.0 -7.0 -7.0 -7.0 -7.0 -7.0
+    Data variables:
+        *empty*
+
+    """
+    # Check dimensions of the horizontal coordinates of the regular grid
+    ndim = get_ndim_horizontal_coords(*coordinates[:2])
+    # Convert 2d horizontal coordinates to 1d arrays if needed
+    if ndim == 2:
+        coordinates = meshgrid_to_1d(coordinates)
+    # dims is like shape with order (rows, cols) for the array
+    # so the first element is northing and second is easting
+    coords = {dims[1]: coordinates[0], dims[0]: coordinates[1]}
+    # Extra coordinates are handled like 2D data arrays with
+    # the same dims and the data.
+    if coordinates[2:]:
+        extra_coords_names = check_extra_coords_names(coordinates, extra_coords_names)
+        for name, extra_coord in zip(extra_coords_names, coordinates[2:]):
+            coords[name] = (dims, extra_coord)
+    # Initialize data_vars as None. If data is not None, build data_vars as
+    # a dirctionary to be passed to xr.Dataset constructor.
+    data_vars = None
+    if data is not None:
+        data = check_data(data)
+        data_names = check_data_names(data, data_names)
+        data_vars = {name: (dims, value) for name, value in zip(data_names, data)}
+    return xr.Dataset(data_vars, coords)
+
+
+def meshgrid_to_1d(coordinates):
+    """
+    Convert horizontal coordinates of 2d grids into 1d-arrays
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+        Arrays with coordinates of each point in the grid. Each array must
+        contain values for a dimension in the order: easting, northing,
+        vertical, etc. All arrays must be 2d and need to have the same
+        *shape*. The horizontal coordinates should be actual meshgrids.
+
+    Returns
+    -------
+    coordinates : tuple of arrays
+        Arrays with coordinates of each point in the grid. The horizontal
+        coordinates have been converted to 1d-arrays, having only a single
+        coordinate point per its corresponding axis.
+        All extra coordinates have not been modified.
+
+    Examples
+    --------
+
+    >>> import verde as vd
+    >>> coordinates = vd.grid_coordinates(
+    ...     region=(0, 4, -3, 3), spacing=1, extra_coords=2
+    ... )
+    >>> easting, northing, height = meshgrid_to_1d(coordinates)
+    >>> print(easting)
+    [0. 1. 2. 3. 4.]
+    >>> print(northing)
+    [-3. -2. -1.  0.  1.  2.  3.]
+    >>> print(height)
+    [[2. 2. 2. 2. 2.]
+     [2. 2. 2. 2. 2.]
+     [2. 2. 2. 2. 2.]
+     [2. 2. 2. 2. 2.]
+     [2. 2. 2. 2. 2.]
+     [2. 2. 2. 2. 2.]
+     [2. 2. 2. 2. 2.]]
+    """
+    check_coordinates(coordinates)
+    check_meshgrid(coordinates)
+    easting, northing = coordinates[0][0, :], coordinates[1][:, 0]
+    coordinates = (easting, northing, *coordinates[2:])
+    return coordinates
+
+
+def meshgrid_from_1d(coordinates):
+    """
+    Convert horizontal coordinates of 2d grids from 1d-arrays to 2d-arrays
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+        Arrays with coordinates of each point in the grid. Each array must
+        contain values for a dimension in the order: easting, northing,
+        vertical, etc. The horizontal coordinates (easting and northing) should
+        be 1d arrays, any extra coordinate should be an array with a shape of
+        ``(northing.size, easting.size)``.
+
+    Returns
+    -------
+    coordinates : tuple of arrays
+        Arrays with coordinates of each point in the grid.
+        The horizontal coordinates have been converted to 2d-arrays with the
+        same shape, forming a meshgrid. All extra coordinates have not been
+        modified.
+
+    Examples
+    --------
+
+    >>> easting = np.linspace(0, 4, 5)
+    >>> northing = np.linspace(-3, 3, 7)
+    >>> height = 2 * np.ones((7, 5))
+    >>> coordinates = (easting, northing, height)
+    >>> easting, northing, height = meshgrid_from_1d(coordinates)
+    >>> print(easting)
+    [[0. 1. 2. 3. 4.]
+     [0. 1. 2. 3. 4.]
+     [0. 1. 2. 3. 4.]
+     [0. 1. 2. 3. 4.]
+     [0. 1. 2. 3. 4.]
+     [0. 1. 2. 3. 4.]
+     [0. 1. 2. 3. 4.]]
+    >>> print(northing)
+    [[-3. -3. -3. -3. -3.]
+     [-2. -2. -2. -2. -2.]
+     [-1. -1. -1. -1. -1.]
+     [ 0.  0.  0.  0.  0.]
+     [ 1.  1.  1.  1.  1.]
+     [ 2.  2.  2.  2.  2.]
+     [ 3.  3.  3.  3.  3.]]
+
+    """
+    ndim = get_ndim_horizontal_coords(*coordinates[:2])
+    if ndim != 1:
+        raise ValueError(
+            "Horizontal coordinates must be 1d-arrays. " + f"{ndim}d-arrays provided."
+        )
+    easting, northing = np.meshgrid(coordinates[0], coordinates[1])
+    coordinates = (easting, northing, *coordinates[2:])
+    coordinates = check_coordinates(coordinates)
+    return coordinates
+
+
+def get_ndim_horizontal_coords(easting, northing):
+    """
+    Return the number of dimensions of the horizontal coordinates arrays
+
+    Also check if the two horizontal coordinates arrays same dimensions.
+
+    Parameters
+    ----------
+    easting : nd-array
+        Array for the easting coordinates
+    northing : nd-array
+        Array for the northing coordinates
+
+    Returns
+    -------
+    ndim : int
+        Number of dimensions of the ``easting`` and ``northing`` arrays.
+    """
+    ndim = np.ndim(easting)
+    if ndim != np.ndim(northing):
+        raise ValueError(
+            "Horizontal coordinates dimensions mismatch. "
+            + f"The easting coordinate array has {easting.ndim} dimensions "
+            + f"while the northing has {northing.ndim}."
+        )
+    return ndim
+
+
+def check_meshgrid(coordinates):
+    """
+    Check if the given horizontal coordinates define a meshgrid
+
+    Check if the rows of the easting 2d-array are identical. Check if the
+    columns of the northing 2d-array are identical. This function does not
+    check if the easting and northing coordinates are evenly spaced.
+
+    Parameters
+    ----------
+    coordinates : tuple of arrays
+        Arrays with coordinates of each point in the grid. Each array must
+        contain values for a dimension in the order: easting, northing,
+        vertical, etc. Only easting and northing will be checked, the other
+        ones will be ignored. All arrays must be 2d and need to have the same
+        *shape*.
+    """
+    # Get the two first arrays as easting and northing
+    easting, northing = coordinates[:2]
+    # Check if all elements of easting along the zeroth axis are equal
+    msg = (
+        "Invalid coordinate array. The arrays for the horizontal "
+        + "coordinates of a regular grid must be meshgrids."
+    )
+    if not np.allclose(easting[0, :], easting):
+        raise ValueError(msg)
+    # Check if all elements of northing along the first axis are equal
+    # (need to make northing[:, 0] a vertical array so numpy can compare)
+    if not np.allclose(northing[:, 0][:, None], northing):
+        raise ValueError(msg)
 
 
 def grid_to_table(grid):

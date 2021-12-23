@@ -1,12 +1,16 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Mask grid points based on different criteria.
 """
 import numpy as np
+from scipy.spatial import Delaunay
 
-# pylint doesn't pick up on this import for some reason
-from scipy.spatial import Delaunay  # pylint: disable=no-name-in-module
-
-from .base.utils import n_1d_arrays, check_coordinates
+from .base.utils import check_coordinates, n_1d_arrays
 from .utils import kdtree
 
 
@@ -110,7 +114,10 @@ def distance_mask(
 
 
 def convexhull_mask(
-    data_coordinates, coordinates=None, grid=None, projection=None,
+    data_coordinates,
+    coordinates=None,
+    grid=None,
+    projection=None,
 ):
     """
     Mask grid points that are outside the convex hull of the given data points.

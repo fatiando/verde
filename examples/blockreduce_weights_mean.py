@@ -1,44 +1,54 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Using weights in blocked means
 ==============================
 
-:class:`verde.BlockReduce` is not able to output weights because we need to make
-assumptions about the reduction operation to know how to propagate uncertainties or
-calculated weighted variances. That's why verde provides specialized reductions like
-:class:`verde.BlockMean`, which can calculate weights from input data in three ways:
+:class:`verde.BlockReduce` is not able to output weights because we need to
+make assumptions about the reduction operation to know how to propagate
+uncertainties or calculated weighted variances. That's why verde provides
+specialized reductions like :class:`verde.BlockMean`, which can calculate
+weights from input data in three ways:
 
-1. Using the variance of the data. This is the only possible option when no weights are
-   provided.
-2. Using the uncertainty of the weighted mean propagated from the uncertainties in the
-   data. In this case, we assume that the weights are ``1/uncertainty**2``.
+1. Using the variance of the data. This is the only possible option when no
+   weights are provided.
+2. Using the uncertainty of the weighted mean propagated from the uncertainties
+   in the data. In this case, we assume that the weights are
+   ``1/uncertainty**2``.
 3. Using the weighted variance of the data.
 
-Using the propagated uncertainties may be more adequate if your data is smooth in each
-block (low variance) but have very different uncertainties. The propagation preserves a
-low weight for data that have large uncertainties but don't vary much inside the block.
+Using the propagated uncertainties may be more adequate if your data is smooth
+in each block (low variance) but have very different uncertainties. The
+propagation preserves a low weight for data that have large uncertainties but
+don't vary much inside the block.
 
-The weighted variance should be used when the data vary a lot in each block (high
-variance) but have very similar uncertainties. The variance will be large when there is
-a lot of variability in the data that isn't due to the uncertainties. This is also the
-best choice if your data weights aren't ``1/uncertainty**2``.
+The weighted variance should be used when the data vary a lot in each block
+(high variance) but have very similar uncertainties. The variance will be large
+when there is a lot of variability in the data that isn't due to the
+uncertainties. This is also the best choice if your data weights aren't
+``1/uncertainty**2``.
 """
-import matplotlib.pyplot as plt
-from matplotlib.colors import PowerNorm, LogNorm
 import cartopy.crs as ccrs
-import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.colors import LogNorm, PowerNorm
+
 import verde as vd
 
-# We'll test this on the California vertical GPS velocity data because it comes with the
-# uncertainties
+# We'll test this on the California vertical GPS velocity data because it comes
+# with the uncertainties
 data = vd.datasets.fetch_california_gps()
 coordinates = (data.longitude, data.latitude)
 
-# We'll calculate the mean on large blocks to show the effect of the different weighting
-# schemes
+# We'll calculate the mean on large blocks to show the effect of the different
+# weighting schemes
 spacing = 30 / 60
 # It's important that the weights are given as 1/sigma**2 for the uncertainty
-# propagation. In this case, you should not use verde.variance_to_weights because it
-# would normalize the weights.
+# propagation. In this case, you should not use verde.variance_to_weights
+# because it would normalize the weights.
 weights = 1 / data.std_up ** 2
 reducer = vd.BlockMean(spacing, center_coordinates=True)
 # First produce the weighted variance weights
@@ -83,5 +93,4 @@ pc = ax.scatter(
 )
 plt.colorbar(pc, ax=ax, orientation="horizontal", pad=0.05).set_label("mm/yr")
 vd.datasets.setup_california_gps_map(ax)
-plt.tight_layout()
 plt.show()

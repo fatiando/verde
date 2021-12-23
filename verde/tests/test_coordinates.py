@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Test the coordinate generation functions
 """
@@ -9,11 +15,11 @@ import pytest
 
 from ..coordinates import (
     check_region,
-    spacing_to_shape,
-    profile_coordinates,
     grid_coordinates,
     longitude_continuity,
+    profile_coordinates,
     rolling_window,
+    spacing_to_shape,
 )
 
 
@@ -56,6 +62,40 @@ def test_rolling_window_warnings():
             assert len(userwarnings) == 1
             assert issubclass(userwarnings[-1].category, UserWarning)
             assert str(userwarnings[-1].message).split()[0] == "Rolling"
+
+
+def test_rolling_window_no_shape_or_spacing():
+    """
+    Check if error is raise if no shape or spacing is passed
+    """
+    coords = grid_coordinates((-5, -1, 6, 10), spacing=1)
+    err_msg = "Either a shape or a spacing must be provided."
+    with pytest.raises(ValueError, match=err_msg):
+        rolling_window(coords, size=2)
+
+
+def test_rolling_window_oversized_window():
+    """
+    Check if error is raised if size larger than region is passed
+    """
+    oversize = 5
+    regions = [
+        (-5, -1, 6, 20),  # window larger than west-east
+        (-20, -1, 6, 10),  # window larger than south-north
+        (-5, -1, 6, 10),  # window larger than both dims
+    ]
+    for region in regions:
+        coords = grid_coordinates(region, spacing=1)
+        # The expected error message with regex
+        # (the long expression intends to capture floats and ints)
+        float_regex = r"[+-]?([0-9]*[.])?[0-9]+"
+        err_msg = (
+            r"Window size '{}' is larger ".format(float_regex)
+            + r"than dimensions of the region "
+            + r"'\({0}, {0}, {0}, {0}\)'.".format(float_regex)
+        )
+        with pytest.raises(ValueError, match=err_msg):
+            rolling_window(coords, size=oversize, spacing=2)
 
 
 def test_spacing_to_shape():
@@ -132,7 +172,7 @@ def test_check_region():
         check_region([-2, -1, -2, -3])
 
 
-def test_profile_coordiantes_fails():
+def test_profile_coordinates_fails():
     "Should raise an exception for invalid input"
     with pytest.raises(ValueError):
         profile_coordinates((0, 1), (1, 2), size=0)

@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 [DEPRECATED] GPS velocities from California
 ===========================================
@@ -8,16 +14,16 @@
     **this function will be removed in Verde v2.0.0**.
     Please, use Rockhoud to fetch this dataset instead.
 
-We provide sample 3-component GPS velocity data from the West coast of the U.S. The data
-were cut from EarthScope Plate Boundary Observatory data provided by UNAVCO. The
-velocities are in the North American tectonic plate reference system (NAM08). The
-velocities and their associated standard deviations are in meters/year.
+We provide sample 3-component GPS velocity data from the West coast of the U.S.
+The data were cut from EarthScope Plate Boundary Observatory data provided by
+UNAVCO. The velocities are in the North American tectonic plate reference
+system (NAM08). The velocities and their associated standard deviations are in
+meters/year.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import numpy as np
-import verde as vd
+import matplotlib.pyplot as plt
 
+import verde as vd
 
 # The data are in a pandas.DataFrame
 data = vd.datasets.fetch_california_gps()
@@ -57,5 +63,4 @@ tmp = ax.scatter(
 )
 plt.colorbar(tmp, ax=ax).set_label("meters/year")
 vd.datasets.setup_california_gps_map(ax)
-plt.tight_layout(w_pad=0)
 plt.show()

@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Gridding 2D vectors
 ===================
@@ -10,12 +16,12 @@ alternative) but we have the convenience of dealing with a single estimator.
 :class:`verde.Spline`, and :class:`verde.Chain` to create a full processing
 pipeline.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
 import numpy as np
 import pyproj
-import verde as vd
 
+import verde as vd
 
 # Fetch the wind speed data from Texas.
 data = vd.datasets.fetch_texas_wind()
@@ -27,8 +33,9 @@ region = vd.get_region(coordinates)
 # Use a Mercator projection because Spline is a Cartesian gridder
 projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 
-# Split the data into a training and testing set. We'll fit the gridder on the training
-# set and use the testing set to evaluate how well the gridder is performing.
+# Split the data into a training and testing set. We'll fit the gridder on the
+# training set and use the testing set to evaluate how well the gridder is
+# performing.
 train, test = vd.train_test_split(
     projection(*coordinates),
     (data.wind_speed_east_knots, data.wind_speed_north_knots),
@@ -38,9 +45,10 @@ train, test = vd.train_test_split(
 # We'll make a 20 arc-minute grid
 spacing = 20 / 60
 
-# Chain together a blocked mean to avoid aliasing, a polynomial trend (Spline usually
-# requires de-trended data), and finally a Spline for each component. Notice that
-# BlockReduce can work on multicomponent data without the use of Vector.
+# Chain together a blocked mean to avoid aliasing, a polynomial trend (Spline
+# usually requires de-trended data), and finally a Spline for each component.
+# Notice that BlockReduce can work on multicomponent data without the use of
+# Vector.
 chain = vd.Chain(
     [
         ("mean", vd.BlockReduce(np.mean, spacing * 111e3)),
@@ -55,15 +63,18 @@ print(chain)
 
 # Fit on the training data
 chain.fit(*train)
-# And score on the testing data. The best possible score is 1, meaning a perfect
-# prediction of the test data.
+# And score on the testing data. The best possible score is 1, meaning a
+# perfect prediction of the test data.
 score = chain.score(*test)
 print("Cross-validation R^2 score: {:.2f}".format(score))
 
-# Interpolate the wind speed onto a regular geographic grid and mask the data that are
-# outside of the convex hull of the data points.
+# Interpolate the wind speed onto a regular geographic grid and mask the data
+# that are outside of the convex hull of the data points.
 grid_full = chain.grid(
-    region, spacing=spacing, projection=projection, dims=["latitude", "longitude"]
+    region=region,
+    spacing=spacing,
+    projection=projection,
+    dims=["latitude", "longitude"],
 )
 grid = vd.convexhull_mask(coordinates, grid=grid_full, projection=projection)
 
@@ -94,7 +105,7 @@ ax.quiver(
 )
 ax.quiverkey(tmp, 0.17, 0.23, 5, label="5 knots", coordinates="figure")
 ax.legend(loc="lower left")
-# Use an utility function to add tick labels and land and ocean features to the map.
+# Use an utility function to add tick labels and land and ocean features to the
+# map.
 vd.datasets.setup_texas_wind_map(ax)
-plt.tight_layout()
 plt.show()

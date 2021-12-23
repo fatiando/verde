@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 [DEPRECATED] Wind speed data from Texas
 =======================================
@@ -8,14 +14,14 @@
     **this function will be removed in Verde v2.0.0**.
     Please, use Rockhoud to fetch this dataset instead.
 
-This is average wind speed and air temperature for data for the state of Texas, USA, on
-February 26 2018. The original data was downloaded from `Iowa State University
-<https://mesonet.agron.iastate.edu/request/download.phtml>`__.
+This is average wind speed and air temperature for data for the state of Texas,
+USA, on February 26 2018. The original data was downloaded from `Iowa State
+University <https://mesonet.agron.iastate.edu/request/download.phtml>`__.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import verde as vd
+import matplotlib.pyplot as plt
 
+import verde as vd
 
 # The data are in a pandas.DataFrame
 data = vd.datasets.fetch_texas_wind()
@@ -43,7 +49,7 @@ ax.quiver(
     width=0.003,
     transform=ccrs.PlateCarree(),
 )
-# Use an utility function to add tick labels and land and ocean features to the map.
+# Use an utility function to add tick labels and land and ocean features to the
+# map.
 vd.datasets.setup_texas_wind_map(ax)
-plt.tight_layout()
 plt.show()

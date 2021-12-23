@@ -1,11 +1,17 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Test distance calculation functions.
 """
 import numpy as np
 import numpy.testing as npt
 
-from ..distances import median_distance
 from ..coordinates import grid_coordinates
+from ..distances import median_distance
 
 
 def test_distance_nearest():

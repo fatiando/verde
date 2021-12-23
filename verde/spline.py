@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Biharmonic splines in 2D.
 """
@@ -7,10 +13,10 @@ import warnings
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
-from .base import n_1d_arrays, BaseGridder, check_fit_input, least_squares
+from .base import BaseGridder, check_fit_input, least_squares, n_1d_arrays
 from .coordinates import get_region
-from .utils import dispatch, parse_engine
 from .model_selection import cross_val_score
+from .utils import dispatch, parse_engine
 
 try:
     import numba
@@ -18,10 +24,6 @@ try:
 except ImportError:
     numba = None
     from .utils import dummy_jit as jit
-
-
-# Otherwise, DeprecationWarning won't be shown, kind of defeating the purpose.
-warnings.simplefilter("default")
 
 
 class SplineCV(BaseGridder):
@@ -145,7 +147,7 @@ class SplineCV(BaseGridder):
                 "The 'client' parameter of 'verde.SplineCV' is "
                 "deprecated and will be removed in Verde 2.0.0. "
                 "Use the 'delayed' parameter instead.",
-                DeprecationWarning,
+                FutureWarning,
             )
 
     def fit(self, coordinates, data, weights=None):
@@ -538,7 +540,7 @@ def jacobian_numpy(east, north, force_east, force_north, mindist, jac):
 @jit(nopython=True, fastmath=True, parallel=True)
 def predict_numba(east, north, force_east, force_north, mindist, forces, result):
     "Calculate the predicted data using numba to speed things up."
-    for i in numba.prange(east.size):  # pylint: disable=not-an-iterable
+    for i in numba.prange(east.size):
         result[i] = 0
         for j in range(forces.size):
             green = GREENS_FUNC_JIT(
@@ -551,7 +553,7 @@ def predict_numba(east, north, force_east, force_north, mindist, forces, result)
 @jit(nopython=True, fastmath=True, parallel=True)
 def jacobian_numba(east, north, force_east, force_north, mindist, jac):
     "Calculate the Jacobian matrix using numba to speed things up."
-    for i in numba.prange(east.size):  # pylint: disable=not-an-iterable
+    for i in numba.prange(east.size):
         for j in range(force_east.size):
             jac[i, j] = GREENS_FUNC_JIT(
                 east[i] - force_east[j], north[i] - force_north[j], mindist

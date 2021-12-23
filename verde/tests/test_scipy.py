@@ -1,16 +1,22 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Test the scipy based interpolator.
 """
 import warnings
 
-import pandas as pd
 import numpy as np
 import numpy.testing as npt
+import pandas as pd
 import pytest
 
-from ..scipygridder import ScipyGridder
 from ..coordinates import grid_coordinates
 from ..datasets.synthetic import CheckerBoard
+from ..scipygridder import ScipyGridder
 
 
 def test_scipy_gridder_same_points():

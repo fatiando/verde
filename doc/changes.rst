@@ -3,6 +3,69 @@
 Changelog
 =========
 
+Version 1.6.1
+-------------
+
+*Released on: 2021/03/22*
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.4626786.svg
+   :target: https://doi.org/10.5281/zenodo.4626786
+
+Minor changes:
+
+* Allow ``make_xarray_grid`` to receive ``data=None`` instead of raising an error. This is used to create an empty ``xarray.Dataset`` (`#318 <https://github.com/fatiando/verde/pull/318>`__)
+
+Maintenance:
+
+* Fix use of wrong version numbers for PyPI releases (`#317 <https://github.com/fatiando/verde/pull/317>`__)
+
+This release contains contributions from:
+
+* Santiago Soler
+* Leonardo Uieda
+
+Version 1.6.0
+-------------
+
+*Released on: 2021/03/18*
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.4617252.svg
+   :target: https://doi.org/10.5281/zenodo.4617252
+
+New features:
+
+* Allow specifing the scoring function in ``cross_val_score`` instead of always using the ``.score`` method of the gridder (`#273 <https://github.com/fatiando/verde/pull/273>`__)
+* New function ``verde.make_xarray_grid`` to simplify the creation of ``xarray.Dataset`` from individual numpy arrays that represent a 2D grid (`#282 <https://github.com/fatiando/verde/pull/282>`__ and `#300 <https://github.com/fatiando/verde/pull/300>`__)
+
+Enhancements:
+
+* Raise informative errors for invalid ``verde.rolling_window`` arguments, like missing ``spacing`` or ``shape`` and invalid window sizes (`#280 <https://github.com/fatiando/verde/pull/280>`__)
+* Replace ``DeprecationWarning`` with ``FutureWarning`` since these are intended for end-users, which allows us to avoid having to set ``warning.simplefilter`` (`#305 <https://github.com/fatiando/verde/pull/305>`__ and `#293 <https://github.com/fatiando/verde/pull/293>`__)
+
+Documentation:
+
+* Several typo fixes (`#306 <https://github.com/fatiando/verde/pull/306>`__ `#303 <https://github.com/fatiando/verde/pull/303>`__ `#281 <https://github.com/fatiando/verde/pull/281>`__)
+* Update link to the GMT website in the Baja bathymetry example (`#298 <https://github.com/fatiando/verde/pull/298>`__)
+* Fix issue with Cartopy 0.17 and require versions >= 0.18 for building the docs (`#283 <https://github.com/fatiando/verde/pull/283>`__)
+
+Maintenance:
+
+* Refactor internal function ``get_data_names`` and related check functions to simplify their logic and make them more useful (`#295 <https://github.com/fatiando/verde/pull/295>`__)
+* Require Black >=20.8b1 (`#284 <https://github.com/fatiando/verde/pull/284>`__)
+* Format the ``doc/conf.py`` sphinx configuration file with Black (`#275 <https://github.com/fatiando/verde/pull/275>`__)
+* Add a license and copyright notice to every source file (`#308 <https://github.com/fatiando/verde/pull/308>`__)
+* Replace versioneer for setuptools-scm (`#307 <https://github.com/fatiando/verde/pull/307>`__)
+* Replace Travis and Azure with GitHub Actions (`#309 <https://github.com/fatiando/verde/pull/309>`__)
+* Exclude Dask 2021.03.0 as a dependency. This release was causing the tests to fail under Python 3.8 on every OS. The problem seems to be originated in ``dask.distributed`` (`#311 <https://github.com/fatiando/verde/pull/311>`__)
+* Use the OSI version of item 3 in the license (`#299 <https://github.com/fatiando/verde/pull/299>`__)
+
+This release contains contributions from:
+
+* Santiago Soler
+* Leonardo Uieda
+* Federico Esteban
+* DC Slagel
+
 Version 1.5.0
 -------------
 

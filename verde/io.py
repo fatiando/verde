@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Functions for input and output of grids in less common formats.
 """
@@ -45,7 +51,7 @@ def load_surfer(fname, dtype="float64"):
     # Only open a file if given a path instead of a file-like object
     ispath = not hasattr(fname, "readline")
     if ispath:
-        input_file = open(fname, "r")
+        input_file = open(fname, "r")  # noqa: SIM115
     else:
         input_file = fname
     try:

@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Mask grid points by convex hull
 ===============================
@@ -7,10 +13,11 @@ want to have interpolated grid points that are too far from any data point.
 Function :func:`verde.convexhull_mask` allows us to set grid points that fall
 outside of the convex hull of the data points to NaN or some other value.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import pyproj
+import matplotlib.pyplot as plt
 import numpy as np
+import pyproj
+
 import verde as vd
 
 # The Baja California bathymetry dataset has big gaps on land. We want to mask
@@ -47,5 +54,4 @@ ax.set_title("Only keep grid points that inside of the convex hull")
 ax.plot(data.longitude, data.latitude, ".y", markersize=0.5, transform=crs)
 ax.pcolormesh(*coordinates, dummy_data, transform=crs)
 vd.datasets.setup_baja_bathymetry_map(ax, land=None)
-plt.tight_layout()
 plt.show()

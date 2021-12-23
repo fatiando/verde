@@ -1,0 +1,165 @@
+# Run tests and upload to Codecov with GitHub Actions
+#
+# NOTE: Pin actions to a specific commit to avoid having the authentication
+# token stolen if the Action is compromised. See the comments and links here:
+# https://github.com/pypa/gh-action-pypi-publish/issues/27
+#
+name: test
+
+# Only build PRs, the main branch, and releases. Pushes to branches will only
+# be built when a PR is opened. This avoids duplicated buids in PRs comming
+# from branches in the origin repository (1 for PR and 1 for push).
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  release:
+    types:
+      - published
+
+# Use bash by default in all jobs
+defaults:
+  run:
+    # The -l {0} is necessary for conda environments to be activated
+    # But this breaks on MacOS if using actions/setup-python:
+    # https://github.com/actions/setup-python/issues/132
+    shell: bash -l {0}
+
+jobs:
+  #############################################################################
+  # Run tests and upload to codecov
+  test:
+    name: ${{ matrix.os }} python=${{ matrix.python }} dependencies=${{ matrix.dependencies }}
+    runs-on: ${{ matrix.os }}-latest
+    strategy:
+      # Otherwise, the workflow would stop if a single job fails. We want to
+      # run all of them to catch failures in different combinations.
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu
+          - macos
+          - windows
+        python:
+          - "3.6"
+          - "3.9"
+        dependencies:
+          - latest
+          - optional
+
+    env:
+      REQUIREMENTS: env/requirements-build.txt env/requirements-test.txt
+      # Used to tag codecov submissions
+      OS: ${{ matrix.os }}
+      PYTHON: ${{ matrix.python }}
+      DEPENDENCIES: ${{ matrix.dependencies }}
+
+    steps:
+      # Cancel any previous run of the test job
+      # We pin the commit hash corresponding to v0.5.0, and not pinning the tag
+      # because we are giving full access through the github.token.
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@148d9a848c6acaf90a3ec30bc5062f646f8a4163
+        with:
+          access_token: ${{ github.token }}
+
+      # Checks-out your repository under $GITHUB_WORKSPACE
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          # Need to fetch more than the last commit so that setuptools-scm can
+          # create the correct version string. If the number of commits since
+          # the last release is greater than this, the version still be wrong.
+          # Increase if necessary.
+          fetch-depth: 100
+          # The GitHub token is preserved by default but this job doesn't need
+          # to be able to push to GitHub.
+          persist-credentials: false
+
+      # Need the tags so that setuptools-scm can form a valid version number
+      - name: Fetch git tags
+        run: git fetch origin 'refs/tags/*:refs/tags/*'
+
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: ${{ env.PYTHON }}
+          miniforge-variant: Mambaforge
+          use-mamba: true
+          channels: conda-forge,defaults
+          # Needed for caching
+          use-only-tar-bz2: true
+
+      - name: Collect requirements - run-time
+        run: python tools/export_requirements.py > requirements-full.txt
+
+      - name: Collect requirements - optional
+        if: matrix.dependencies == 'optional'
+        run: cat env/requirements-optional.txt >> requirements-full.txt
+
+      - name: Collect requirements - other
+        run: |
+          echo "Capturing dependencies from:"
+          for requirement in $REQUIREMENTS
+          do
+            echo "  $requirement"
+            cat $requirement >> requirements-full.txt
+          done
+
+      - name: List requirements
+        run: |
+          echo "Collected dependencies:"
+          cat requirements-full.txt
+
+      - name: Setup caching for conda packages
+        uses: actions/cache@v2
+        with:
+          path: ~/conda_pkgs_dir
+          key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements-full.txt') }}
+
+      - name: Install requirements
+        run: mamba install --quiet --file requirements-full.txt python=$PYTHON
+
+      - name: List installed packages
+        run: conda list
+
+      - name: Build source and wheel distributions
+        run: |
+          python setup.py sdist bdist_wheel
+          echo ""
+          echo "Generated files:"
+          ls -lh dist/
+
+      - name: Install the package
+        run: python -m pip install --no-deps dist/*.whl
+
+      - name: Copy test data to the cache
+        run: |
+          echo "Copy data to " ${VERDE_DATA_DIR}/main
+          set -x -e
+          mkdir -p ${VERDE_DATA_DIR}/main
+          cp -r data/* ${VERDE_DATA_DIR}/main
+        env:
+          # Define directory where sample data will be copied
+          VERDE_DATA_DIR: ${{ runner.temp }}/cache/verde
+
+      - name: Run the tests
+        run: |
+          make test
+        env:
+          # Define directory where sample data have been copied
+          VERDE_DATA_DIR: ${{ runner.temp }}/cache/verde
+
+      - name: Convert coverage report to XML for codecov
+        run: coverage xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          file: ./coverage.xml
+          env_vars: OS,PYTHON,DEPENDENCIES
+          # Don't mark the job as failed if the upload fails for some reason.
+          # It does sometimes but shouldn't be the reason for running
+          # everything again unless something else is broken.
+          fail_ci_if_error: false

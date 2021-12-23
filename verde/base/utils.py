@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Utility functions for building gridders and checking arguments.
 """
@@ -74,11 +80,11 @@ class DummyEstimator:
     def __init__(self, predicted):
         self._predicted = predicted
 
-    def predict(self, *args, **kwargs):  # pylint: disable=unused-argument
+    def predict(self, *args, **kwargs):  # noqa: U100
         "Return the stored predicted values"
         return self._predicted
 
-    def fit(self, *args, **kwards):  # pylint: disable=unused-argument
+    def fit(self, *args, **kwards):  # noqa: U100
         "Does nothing. Just here to satisfy the API."
         return self
 
@@ -104,6 +110,42 @@ def check_data(data):
     return data
 
 
+def check_data_names(data, data_names):
+    """
+    Check *data_names* against *data*.
+
+    Also, convert ``data_names`` to a tuple if it's a single string.
+
+    Examples
+    --------
+
+    >>> import numpy as np
+    >>> east, north, scalar = [np.array(10)]*3
+    >>> check_data_names((scalar,), "dummy")
+    ('dummy',)
+    >>> check_data_names((scalar,), ("dummy",))
+    ('dummy',)
+    >>> check_data_names((scalar,), ["dummy"])
+    ['dummy']
+    >>> check_data_names((east, north), ("component_x", "component_y"))
+    ('component_x', 'component_y')
+    """
+    # Convert single string to tuple
+    if isinstance(data_names, str):
+        data_names = (data_names,)
+    # Raise error if data_names is None
+    if data_names is None:
+        raise ValueError("Invalid data_names equal to None.")
+    # Raise error if data and data_names don't have the same number of elements
+    if len(data) != len(data_names):
+        raise ValueError(
+            "Data has {} components but only {} names provided: {}".format(
+                len(data), len(data_names), str(data_names)
+            )
+        )
+    return data_names
+
+
 def check_coordinates(coordinates):
     """
     Check that the given coordinate arrays are what we expect them to be.
@@ -117,6 +159,46 @@ def check_coordinates(coordinates):
             )
         )
     return coordinates
+
+
+def check_extra_coords_names(coordinates, extra_coords_names):
+    """
+    Check extra_coords_names against coordinates.
+
+    Also, convert ``extra_coords_names`` to a tuple if it's a single string.
+    Assume that there are extra coordinates on the ``coordinates`` tuple.
+
+    Examples
+    --------
+
+    >>> import numpy as np
+    >>> coordinates = [np.array(10)]*3
+    >>> check_extra_coords_names(coordinates, "upward")
+    ('upward',)
+    >>> check_extra_coords_names(coordinates, ("upward",))
+    ('upward',)
+    >>> coordinates = [np.array(10)]*4
+    >>> check_extra_coords_names(coordinates, ("upward", "time"))
+    ('upward', 'time')
+    """
+    # Convert single string to a tuple
+    if isinstance(extra_coords_names, str):
+        extra_coords_names = (extra_coords_names,)
+    # Check if it's not None
+    if extra_coords_names is None:
+        raise ValueError(
+            "Invalid extra_coords_names equal to None. "
+            + "When passing one or more extra coordinate, "
+            + "extra_coords_names cannot be None."
+        )
+    # Check if there are the same number of extra_coords than extra_coords_name
+    if len(coordinates[2:]) != len(extra_coords_names):
+        raise ValueError(
+            "Invalid extra_coords_names '{}'. ".format(extra_coords_names)
+            + "Number of extra coordinates names must match the number of "
+            + "additional coordinates ('{}').".format(len(coordinates[2:]))
+        )
+    return extra_coords_names
 
 
 def check_fit_input(coordinates, data, weights, unpack=True):

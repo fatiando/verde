@@ -1,12 +1,26 @@
-# -*- coding: utf-8 -*-
-import sys
-import os
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 import datetime
-import sphinx_rtd_theme
-import sphinx_gallery
-from sphinx_gallery.sorting import FileNameSortKey
-from verde.version import full_version
 
+from sphinx_gallery.sorting import FileNameSortKey
+
+import verde
+
+# Project information
+# -----------------------------------------------------------------------------
+project = "Verde"
+copyright = f"2017-{datetime.date.today().year}, The {project} Developers"  # noqa: A001
+if len(verde.__version__.split("+")) > 1 or verde.__version__ == "unknown":
+    version = "dev"
+else:
+    version = verde.__version__
+
+# General configuration
+# -----------------------------------------------------------------------------
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
@@ -21,7 +35,8 @@ extensions = [
     "sphinx_gallery.gen_gallery",
 ]
 
-# intersphinx configuration
+# Configuration to include links to other project docs when referencing
+# functions/classes
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
     "numpy": ("https://docs.scipy.org/doc/numpy/", None),
@@ -44,6 +59,21 @@ napoleon_use_rtype = False
 # list
 napoleon_use_ivar = True
 
+# Always show the source code that generates a plot
+plot_include_source = True
+plot_formats = ["png"]
+
+# Sphinx project configuration
+templates_path = ["_templates"]
+exclude_patterns = ["_build", "**.ipynb_checkpoints"]
+source_suffix = ".rst"
+source_encoding = "utf-8"
+master_doc = "index"
+pygments_style = "default"
+add_function_parentheses = False
+
+# Sphinx-Gallery configuration
+# -----------------------------------------------------------------------------
 sphinx_gallery_conf = {
     # path to your examples scripts
     "examples_dirs": ["../examples", "../tutorials", "../data/examples"],
@@ -63,86 +93,33 @@ sphinx_gallery_conf = {
     "reference_url": {"verde": None},
 }
 
-# Always show the source code that generates a plot
-plot_include_source = True
-plot_formats = ["png"]
-
-# Sphinx project configuration
-templates_path = ["_templates"]
-exclude_patterns = ["_build", "**.ipynb_checkpoints"]
-source_suffix = ".rst"
-# The encoding of source files.
-source_encoding = "utf-8-sig"
-master_doc = "index"
-
-# General information about the project
-year = datetime.date.today().year
-project = "Verde"
-copyright = "2017-{}, The Verde Developers".format(year)
-if len(full_version.split("+")) > 1 or full_version == "unknown":
-    version = "dev"
-else:
-    version = full_version
-
-# These enable substitutions using |variable| in the rst files
-rst_epilog = """
-.. |year| replace:: {year}
-""".format(
-    year=year
-)
-
-html_last_updated_fmt = "%b %d, %Y"
-html_title = "Verde"
-html_short_title = "Verde"
+# HTML output configuration
+# -----------------------------------------------------------------------------
+html_title = f'{project} <span class="project-version">{version}</span>'
 html_logo = "_static/verde-logo.png"
 html_favicon = "_static/favicon.png"
+html_last_updated_fmt = "%b %d, %Y"
+html_copy_source = True
 html_static_path = ["_static"]
 html_extra_path = []
-pygments_style = "default"
-add_function_parentheses = False
 html_show_sourcelink = False
 html_show_sphinx = True
 html_show_copyright = True
+# CSS files are relative to the static path
+html_css_files = ["custom.css"]
 
-# Theme config
-html_theme = "sphinx_rtd_theme"
+html_theme = "sphinx_book_theme"
 html_theme_options = {
-    "logo_only": True,
-    "display_version": True,
+    "repository_url": "https://github.com/fatiando/verde",
+    "repository_branch": "main",
+    "path_to_docs": "doc",
+    "launch_buttons": {
+        "binderhub_url": "https://mybinder.org",
+        "notebook_interface": "jupyterlab",
+    },
+    "use_edit_page_button": True,
+    "use_issues_button": True,
+    "use_repository_button": True,
+    "use_download_button": True,
+    "home_page_in_toc": False,
 }
-html_context = {
-    "menu_links_name": "Getting help and contributing",
-    "menu_links": [
-        (
-            '<i class="fa fa-external-link-square fa-fw"></i> Fatiando a Terra',
-            "https://www.fatiando.org",
-        ),
-        (
-            '<i class="fa fa-users fa-fw"></i> Contributing',
-            "https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md",
-        ),
-        (
-            '<i class="fa fa-gavel fa-fw"></i> Code of Conduct',
-            "https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md",
-        ),
-        ('<i class="fa fa-comment fa-fw"></i> Contact', "http://contact.fatiando.org"),
-        (
-            '<i class="fa fa-github fa-fw"></i> Source Code',
-            "https://github.com/fatiando/verde",
-        ),
-    ],
-    # Custom variables to enable "Improve this page"" and "Download notebook"
-    # links
-    "doc_path": "doc",
-    "galleries": sphinx_gallery_conf["gallery_dirs"],
-    "gallery_dir": dict(
-        zip(sphinx_gallery_conf["gallery_dirs"], sphinx_gallery_conf["examples_dirs"])
-    ),
-    "github_repo": "fatiando/verde",
-    "github_version": "master",
-}
-
-
-# Load the custom CSS files (needs sphinx >= 1.6 for this to work)
-def setup(app):
-    app.add_stylesheet("style.css")

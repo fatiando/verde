@@ -1,10 +1,16 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Functions for least-squares fitting with optional regularization.
 """
 from warnings import warn
 
-from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.preprocessing import StandardScaler
 
 
 def least_squares(jacobian, data, weights, damping=None, copy_jacobian=False):
@@ -56,9 +62,9 @@ def least_squares(jacobian, data, weights, damping=None, copy_jacobian=False):
     scaler = StandardScaler(copy=copy_jacobian, with_mean=False, with_std=True)
     jacobian = scaler.fit_transform(jacobian)
     if damping is None:
-        regr = LinearRegression(fit_intercept=False, normalize=False)
+        regr = LinearRegression(fit_intercept=False)
     else:
-        regr = Ridge(alpha=damping, fit_intercept=False, normalize=False)
+        regr = Ridge(alpha=damping, fit_intercept=False)
     regr.fit(jacobian, data.ravel(), sample_weight=weights)
     params = regr.coef_ / scaler.scale_
     return params

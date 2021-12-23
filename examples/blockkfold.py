@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 K-Fold cross-validation with blocks
 ===================================
@@ -24,9 +30,10 @@ This example shows the data assigned to each of the first 3 folds of a blocked
 k-fold iteration, with and without balancing. Notice that the unbalanced folds
 have very different numbers of data points.
 """
-import numpy as np
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+import numpy as np
+
 import verde as vd
 
 # Let's split the Baja California shipborne bathymetry data
@@ -42,7 +49,10 @@ kfold = vd.BlockKFold(spacing=spacing, shuffle=True, random_state=random_state)
 # balancing, the folds can have very different number of data points in them
 # (which may bias the scores).
 kfold_unbalanced = vd.BlockKFold(
-    spacing=spacing, shuffle=True, random_state=random_state, balance=False,
+    spacing=spacing,
+    shuffle=True,
+    random_state=random_state,
+    balance=False,
 )
 
 # The BlockKFold is compatible with scikit-learn, so instead of giving it a

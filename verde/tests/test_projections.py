@@ -1,13 +1,19 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Test the projection functions.
 """
-import numpy.testing as npt
 import numpy as np
-import xarray as xr
+import numpy.testing as npt
 import pytest
+import xarray as xr
 
-from ..scipygridder import ScipyGridder
 from ..projections import project_grid
+from ..scipygridder import ScipyGridder
 
 
 def projection(longitude, latitude):

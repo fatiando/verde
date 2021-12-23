@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 A gridder that uses scipy.interpolate as the backend.
 """
@@ -5,9 +11,9 @@ from warnings import warn
 
 import numpy as np
 from scipy.interpolate import (
+    CloughTocher2DInterpolator,
     LinearNDInterpolator,
     NearestNDInterpolator,
-    CloughTocher2DInterpolator,
 )
 from sklearn.utils.validation import check_is_fitted
 

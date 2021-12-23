@@ -1,17 +1,23 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Test the model selection code (cross-validation, etc).
 """
 import warnings
 
-import pytest
-from sklearn.model_selection import ShuffleSplit
-from sklearn.metrics import get_scorer
 import numpy as np
 import numpy.testing as npt
+import pytest
 from dask.distributed import Client
+from sklearn.metrics import get_scorer
+from sklearn.model_selection import ShuffleSplit
 
-from .. import Vector, Trend, grid_coordinates, scatter_points
-from ..model_selection import cross_val_score, BlockShuffleSplit, BlockKFold
+from .. import Trend, Vector, grid_coordinates, scatter_points
+from ..model_selection import BlockKFold, BlockShuffleSplit, cross_val_score
 
 
 @pytest.fixture(name="trend")
@@ -73,7 +79,9 @@ def test_blockshufflesplit_fails_balancing():
 def test_blockshufflesplit_balancing(test_size):
     "Make sure that the sets have the right number of points"
     coords = np.random.RandomState(seed=0).multivariate_normal(
-        mean=[5, -7.5], cov=[[4, 0], [0, 9]], size=1000,
+        mean=[5, -7.5],
+        cov=[[4, 0], [0, 9]],
+        size=1000,
     )
     npoints = coords.shape[0]
     train_size = 1 - test_size

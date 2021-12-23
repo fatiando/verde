@@ -1,19 +1,25 @@
-# pylint: disable=unused-argument,too-many-locals,protected-access
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Test the base classes and their utility functions.
 """
+import warnings
+
 import numpy as np
 import numpy.testing as npt
 import pytest
 
-from ..base.least_squares import least_squares
-from ..base.utils import check_fit_input, check_coordinates
 from ..base.base_classes import (
-    BaseGridder,
     BaseBlockCrossValidator,
-    get_data_names,
+    BaseGridder,
     get_instance_region,
 )
+from ..base.least_squares import least_squares
+from ..base.utils import check_coordinates, check_fit_input
 from ..coordinates import grid_coordinates, scatter_points
 
 
@@ -46,28 +52,30 @@ def test_get_data_names():
     data2 = tuple([np.arange(10)] * 2)
     data3 = tuple([np.arange(10)] * 3)
     # Test the default names
-    assert get_data_names(data1, data_names=None) == ("scalars",)
-    assert get_data_names(data2, data_names=None) == (
+    gridder = BaseGridder()
+    assert gridder._get_data_names(data1, data_names=None) == ("scalars",)
+    assert gridder._get_data_names(data2, data_names=None) == (
         "east_component",
         "north_component",
     )
-    assert get_data_names(data3, data_names=None) == (
+    assert gridder._get_data_names(data3, data_names=None) == (
         "east_component",
         "north_component",
         "vertical_component",
     )
     # Test custom names
-    assert get_data_names(data1, data_names=("a",)) == ("a",)
-    assert get_data_names(data2, data_names=("a", "b")) == ("a", "b")
-    assert get_data_names(data3, data_names=("a", "b", "c")) == ("a", "b", "c")
+    assert gridder._get_data_names(data1, data_names=("a",)) == ("a",)
+    assert gridder._get_data_names(data2, data_names=("a", "b")) == ("a", "b")
+    assert gridder._get_data_names(data3, data_names=("a", "b", "c")) == ("a", "b", "c")
 
 
 def test_get_data_names_fails():
     "Check if fails for invalid data types"
+    gridder = BaseGridder()
     with pytest.raises(ValueError):
-        get_data_names(tuple([np.arange(5)] * 4), data_names=None)
+        gridder._get_data_names(tuple([np.arange(5)] * 4), data_names=None)
     with pytest.raises(ValueError):
-        get_data_names(tuple([np.arange(5)] * 2), data_names=("meh",))
+        gridder._get_data_names(tuple([np.arange(5)] * 2), data_names=("meh",))
 
 
 def test_get_instance_region():
@@ -88,7 +96,7 @@ class PolyGridder(BaseGridder):
         super().__init__()
         self.degree = degree
 
-    def fit(self, coordinates, data, weights=None):
+    def fit(self, coordinates, data, weights=None):  # noqa: U100
         "Fit an easting polynomial"
         ndata = data.size
         nparams = self.degree + 1
@@ -127,22 +135,52 @@ def test_basegridder():
         # A region should be given because it hasn't been assigned
         grd.grid()
 
-    coordinates_true = grid_coordinates(region, shape)
-    data_true = angular * coordinates_true[0] + linear
-    grid = grd.grid(region, shape)
-    prof = grd.profile((0, -10), (10, -10), 30)
-
     npt.assert_allclose(grd.coefs_, [linear, angular])
-    npt.assert_allclose(grid.scalars.values, data_true)
-    npt.assert_allclose(grid.easting.values, coordinates_true[0][0, :])
-    npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0])
-    npt.assert_allclose(grd.scatter(region, 1000, random_state=0).scalars, data)
+
+    # Check predictions by comparing against expected values
+    coordinates_true = grid_coordinates(region, shape=shape)
+    data_true = angular * coordinates_true[0] + linear
+    # Grid passing region and shape
+    grids = []
+    grids.append(grd.grid(region=region, shape=shape))
+    # Grid passing grid coordinates
+    grids.append(grd.grid(coordinates=coordinates_true))
+    # Grid passing grid coordinates as 1d arrays
+    grids.append(grd.grid(coordinates=tuple(np.unique(c) for c in coordinates_true)))
+    # Grid on profile
+    prof = grd.profile((0, -10), (10, -10), 30)
+    # Grid on scatter
+    scat = grd.scatter(region=region, size=1000, random_state=0)
+
+    for grid in grids:
+        npt.assert_allclose(grid.scalars.values, data_true)
+        npt.assert_allclose(grid.easting.values, coordinates_true[0][0, :])
+        npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0])
+    npt.assert_allclose(scat.scalars, data)
     npt.assert_allclose(
-        prof.scalars, angular * coordinates_true[0][0, :] + linear,
+        prof.scalars,
+        angular * coordinates_true[0][0, :] + linear,
     )
     npt.assert_allclose(prof.easting, coordinates_true[0][0, :])
     npt.assert_allclose(prof.northing, coordinates_true[1][0, :])
     npt.assert_allclose(prof.distance, coordinates_true[0][0, :])
+
+
+def test_basegridder_data_names():
+    """
+    Test default values for data_names
+    """
+    region = (0, 10, -10, -5)
+    shape = (50, 30)
+    angular, linear = 2, 100
+    coordinates = scatter_points(region, 1000, random_state=0)
+    data = angular * coordinates[0] + linear
+    grd = PolyGridder().fit(coordinates, data)
+    grid = grd.grid(region=region, shape=shape)
+    prof = grd.profile((0, -10), (10, -10), 30)
+    # Check if default name for data_names was applied correctly
+    assert "scalars" in grid
+    assert "scalars" in prof
 
 
 def test_basegridder_projection():
@@ -180,7 +218,7 @@ def test_basegridder_projection():
     npt.assert_allclose(scat.northing, coordinates[1])
 
     # Check the grid
-    grid = grd.grid(region, shape, projection=proj)
+    grid = grd.grid(region=region, shape=shape, projection=proj)
     npt.assert_allclose(grid.scalars.values, data_true)
     npt.assert_allclose(grid.easting.values, coordinates_true[0][0, :])
     npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0])
@@ -245,7 +283,10 @@ def test_basegridder_extra_coords():
     # Test profile with a single extra coord
     extra_coords = 9
     prof = grd.profile(
-        (region[0], region[-1]), (region[1], region[-1]), 51, extra_coords=extra_coords,
+        (region[0], region[-1]),
+        (region[1], region[-1]),
+        51,
+        extra_coords=extra_coords,
     )
     assert "extra_coord" in prof.columns
     npt.assert_allclose(prof["extra_coord"], extra_coords)
@@ -253,7 +294,10 @@ def test_basegridder_extra_coords():
     # Test profile with multiple extra coord
     extra_coords = [9, 18, 27]
     prof = grd.profile(
-        (region[0], region[-1]), (region[1], region[-1]), 51, extra_coords=extra_coords,
+        (region[0], region[-1]),
+        (region[1], region[-1]),
+        51,
+        extra_coords=extra_coords,
     )
     extra_coord_names = ["extra_coord", "extra_coord_1", "extra_coord_2"]
     for name, coord in zip(extra_coord_names, extra_coords):
@@ -287,7 +331,7 @@ def test_basegridder_projection_multiple_coordinates():
     npt.assert_allclose(grd.coefs_, [linear, angular / 2])
 
     # The actual values for a grid
-    coordinates_true = grid_coordinates(region, shape, extra_coords=(13, 17))
+    coordinates_true = grid_coordinates(region, shape=shape, extra_coords=(13, 17))
     data_true = angular * coordinates_true[0] + linear
 
     # Check the scatter
@@ -299,7 +343,7 @@ def test_basegridder_projection_multiple_coordinates():
     npt.assert_allclose(scat.northing, coordinates[1])
 
     # Check the grid
-    grid = grd.grid(region, shape, projection=proj, extra_coords=(13, 17))
+    grid = grd.grid(region=region, shape=shape, projection=proj, extra_coords=(13, 17))
     npt.assert_allclose(grid.scalars.values, data_true)
     npt.assert_allclose(grid.easting.values, coordinates_true[0][0, :])
     npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0])
@@ -323,6 +367,36 @@ def test_basegridder_projection_multiple_coordinates():
     # coordinates.
     distance_true = np.linspace(region[0] * 2, region[1] * 2, shape[1])
     npt.assert_allclose(prof.distance, distance_true)
+
+
+def test_basegridder_grid_invalid_arguments():
+    """
+    Test if errors and warnings are raised on invalid arguments to grid method
+    """
+    region = (0, 10, -10, -5)
+    angular, linear = 2, 100
+    coordinates = scatter_points(region, 1000, random_state=0, extra_coords=(1, 2))
+    data = angular * coordinates[0] + linear
+    grd = PolyGridder().fit(coordinates, data)
+    # Check error is raised if coordinates and shape are passed
+    grid_coords = (np.linspace(*region[:2], 11), np.linspace(*region[2:], 7))
+    with pytest.raises(ValueError):
+        grd.grid(coordinates=grid_coords, shape=(30, 30))
+    # Check error is raised if coordinates and spacing are passed
+    with pytest.raises(ValueError):
+        grd.grid(coordinates=grid_coords, spacing=10)
+    # Check error is raised if both coordinates and region are passed
+    with pytest.raises(ValueError):
+        grd.grid(coordinates=grid_coords, region=region)
+    # Check if FutureWarning is raised after passing region, spacing or shape
+    with warnings.catch_warnings(record=True) as warns:
+        grd.grid(region=region, shape=(4, 4))
+        assert len(warns) == 1
+        assert issubclass(warns[0].category, FutureWarning)
+    with warnings.catch_warnings(record=True) as warns:
+        grd.grid(region=region, spacing=1)
+        assert len(warns) == 1
+        assert issubclass(warns[0].category, FutureWarning)
 
 
 def test_check_fit_input():
@@ -359,23 +433,16 @@ def test_check_fit_input_fails_weights():
         check_fit_input(coords, (data, data), weights)
 
 
-# Pylint doesn't like X, y scikit-learn argument names.
-# pylint: disable=invalid-name,unused-argument
-
-
 class DummyCrossValidator(BaseBlockCrossValidator):
     """
     Dummy class to test the base cross-validator.
     """
 
-    def _iter_test_indices(self, X=None, y=None, groups=None):
+    def _iter_test_indices(self, X=None, y=None, groups=None):  # noqa: U100,N803
         """
         Yields a list of indices for the entire X.
         """
         yield list(range(X.shape[0]))
-
-
-# pylint: enable=invalid-name,unused-argument
 
 
 def test_baseblockedcrossvalidator_n_splits():

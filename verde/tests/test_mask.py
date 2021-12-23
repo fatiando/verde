@@ -1,13 +1,19 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Test the grid masking functions
 """
 import numpy as np
 import numpy.testing as npt
-import xarray as xr
 import pytest
+import xarray as xr
 
-from ..mask import distance_mask, convexhull_mask
 from ..coordinates import grid_coordinates
+from ..mask import convexhull_mask, distance_mask
 
 
 def test_convexhull_mask():
@@ -36,7 +42,9 @@ def test_convexhull_mask_projection():
     # For a linear projection, the result should be the same since there is no
     # area change in the data.
     mask = convexhull_mask(
-        data_coords, coordinates=coords, projection=lambda e, n: (10 * e, 10 * n),
+        data_coords,
+        coordinates=coords,
+        projection=lambda e, n: (10 * e, 10 * n),
     )
     true = [
         [False, False, False, False, False, False],

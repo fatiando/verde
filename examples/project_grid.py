@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Projection of gridded data
 ==========================
@@ -30,11 +36,10 @@ Stereographic, revealing the checkered pattern of the data.
     `pyresample <https://github.com/pytroll/pyresample>`__ instead.
 
 """
-import numpy as np
 import matplotlib.pyplot as plt
 import pyproj
-import verde as vd
 
+import verde as vd
 
 # We'll use synthetic data near the South pole to highlight the effects of the
 # projection. EPSG 3031 is a South Polar Stereographic projection.
@@ -51,15 +56,15 @@ data = checkerboard.grid(
     region=region,
     spacing=spacing,
     projection=projection,
-    data_names=["checkerboard"],
+    data_names="checkerboard",
     dims=("latitude", "longitude"),
 )
 print("Geographic grid:")
 print(data)
 
-# Do the projection while setting the output grid spacing (in projected meters). Set
-# the coordinates names to x and y since they aren't really "northing" or
-# "easting".
+# Do the projection while setting the output grid spacing (in projected
+# meters). Set the coordinates names to x and y since they aren't really
+# "northing" or "easting".
 polar_data = vd.project_grid(
     data.checkerboard, projection, spacing=0.5 * 1e5, dims=("y", "x")
 )

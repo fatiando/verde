@@ -1,16 +1,22 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Polynomial trend
 ================
 
-Verde offers the :class:`verde.Trend` class to fit a 2D polynomial trend to your data.
-This can be useful for isolating a regional component of your data, for example, which
-is a common operation for gravity and magnetic data. Let's look at how we can use Verde
-to remove the clear trend from our Texas temperature dataset
-(:func:`verde.datasets.fetch_texas_wind`).
+Verde offers the :class:`verde.Trend` class to fit a 2D polynomial trend to
+your data. This can be useful for isolating a regional component of your data,
+for example, which is a common operation for gravity and magnetic data. Let's
+look at how we can use Verde to remove the clear trend from our Texas
+temperature dataset (:func:`verde.datasets.fetch_texas_wind`).
 """
-import numpy as np
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+
 import verde as vd
 
 # Load the Texas wind and temperature data as a pandas.DataFrame
@@ -72,8 +78,11 @@ ax.set_xlabel("Air temperature (C)")
 
 # Add a single colorbar on top of the histogram plot where there is some space
 cax = plt.axes((0.35, 0.44, 0.10, 0.01))
-cb = plt.colorbar(mappable, cax=cax, orientation="horizontal",)
+cb = plt.colorbar(
+    mappable,
+    cax=cax,
+    orientation="horizontal",
+)
 cb.set_label("C")
 
-plt.tight_layout()
 plt.show()

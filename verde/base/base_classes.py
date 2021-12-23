@@ -1,19 +1,27 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Base classes for all gridders.
 """
+import warnings
 from abc import ABCMeta, abstractmethod
 
-import xarray as xr
 import pandas as pd
 from sklearn.base import BaseEstimator
 from sklearn.model_selection import BaseCrossValidator
 
 from ..coordinates import grid_coordinates, profile_coordinates, scatter_points
-from .utils import check_data, score_estimator
-
-
-# Pylint doesn't like X, y scikit-learn argument names.
-# pylint: disable=invalid-name,unused-argument
+from ..utils import (
+    check_meshgrid,
+    get_ndim_horizontal_coords,
+    make_xarray_grid,
+    meshgrid_from_1d,
+)
+from .utils import check_data, check_data_names, score_estimator
 
 
 class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
@@ -35,7 +43,10 @@ class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
     """
 
     def __init__(
-        self, spacing=None, shape=None, n_splits=10,
+        self,
+        spacing=None,
+        shape=None,
+        n_splits=10,
     ):
         if spacing is None and shape is None:
             raise ValueError("Either 'spacing' or 'shape' must be provided.")
@@ -43,7 +54,7 @@ class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
         self.shape = shape
         self.n_splits = n_splits
 
-    def split(self, X, y=None, groups=None):
+    def split(self, X, y=None, groups=None):  # noqa: N803
         """
         Generate indices to split data into training and test set.
 
@@ -74,7 +85,7 @@ class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
         for train, test in super().split(X, y, groups):
             yield train, test
 
-    def get_n_splits(self, X=None, y=None, groups=None):
+    def get_n_splits(self, X=None, y=None, groups=None):  # noqa: U100,N803
         """
         Returns the number of splitting iterations in the cross-validator
 
@@ -95,7 +106,7 @@ class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
         return self.n_splits
 
     @abstractmethod
-    def _iter_test_indices(self, X=None, y=None, groups=None):
+    def _iter_test_indices(self, X=None, y=None, groups=None):  # noqa: U100,N803
         """
         Generates integer indices corresponding to test sets.
 
@@ -119,9 +130,6 @@ class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
             The testing set indices for that split.
 
         """
-
-
-# pylint: enable=invalid-name,unused-argument
 
 
 class BaseGridder(BaseEstimator):
@@ -162,7 +170,7 @@ class BaseGridder(BaseEstimator):
     ...     def __init__(self, multiplier=1):
     ...         # Init should only assign the parameters to attributes
     ...         self.multiplier = multiplier
-    ...     def fit(self, coordiantes, data):
+    ...     def fit(self, coordinates, data):
     ...         # Argument checking should be done in fit
     ...         if self.multiplier <= 0:
     ...             raise ValueError('Invalid multiplier {}'
@@ -206,7 +214,15 @@ class BaseGridder(BaseEstimator):
     # using this name as a basis.
     extra_coords_name = "extra_coord"
 
-    def predict(self, coordinates):
+    # Define default values for data_names depending on the number of data
+    # arrays returned by predict method.
+    data_names_defaults = [
+        ("scalars",),
+        ("east_component", "north_component"),
+        ("east_component", "north_component", "vertical_component"),
+    ]
+
+    def predict(self, coordinates):  # noqa: U100
         """
         Predict data on the given coordinate values. NOT IMPLEMENTED.
 
@@ -226,7 +242,7 @@ class BaseGridder(BaseEstimator):
         """
         raise NotImplementedError()
 
-    def fit(self, coordinates, data, weights=None):
+    def fit(self, coordinates, data, weights=None):  # noqa: U100
         """
         Fit the gridder to observed data. NOT IMPLEMENTED.
 
@@ -254,7 +270,7 @@ class BaseGridder(BaseEstimator):
         """
         raise NotImplementedError()
 
-    def filter(self, coordinates, data, weights=None):
+    def filter(self, coordinates, data, weights=None):  # noqa: A003
         """
         Filter the data through the gridder and produce residuals.
 
@@ -342,19 +358,24 @@ class BaseGridder(BaseEstimator):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
-    ):  # pylint: disable=too-many-locals
+        coordinates=None,
+        **kwargs,
+    ):
         """
         Interpolate the data onto a regular grid.
 
-        The grid can be specified by either the number of points in each
-        dimension (the *shape*) or by the grid node spacing. See
-        :func:`verde.grid_coordinates` for details. Other arguments for
-        :func:`verde.grid_coordinates` can be passed as extra keyword arguments
-        (``kwargs``) to this method.
+        The grid can be specified by two methods:
 
-        If the interpolator collected the input data region, then it will be
-        used if ``region=None``. Otherwise, you must specify the grid region.
+        - Pass the actual *coordinates* of the grid points, as generated by
+          :func:`verde.grid_coordinates` or from an existing
+          :class:`xarray.Dataset` grid.
+        - Let the method define a new grid by either passing the number of
+          points in each dimension (the *shape*) or by the grid node *spacing*.
+          If the interpolator collected the input data region, then it will be
+          used if ``region=None``. Otherwise, you must specify the grid region.
+          See :func:`verde.grid_coordinates` for details. Other arguments for
+          :func:`verde.grid_coordinates` can be passed as extra keyword
+          arguments (``kwargs``) to this method.
 
         Use the *dims* and *data_names* arguments to set custom names for the
         dimensions and the data field(s) in the output :class:`xarray.Dataset`.
@@ -364,12 +385,15 @@ class BaseGridder(BaseEstimator):
         ----------
         region : list = [W, E, S, N]
             The west, east, south, and north boundaries of a given region.
+            Use only if ``coordinates`` is None.
         shape : tuple = (n_north, n_east) or None
             The number of points in the South-North and West-East directions,
             respectively.
+            Use only if ``coordinates`` is None.
         spacing : tuple = (s_north, s_east) or None
             The grid spacing in the South-North and West-East directions,
             respectively.
+            Use only if ``coordinates`` is None.
         dims : list or None
             The names of the northing and easting data dimensions,
             respectively, in the output grid. Default is determined from the
@@ -377,9 +401,9 @@ class BaseGridder(BaseEstimator):
             order: northing dimension, easting dimension.
             **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
-        data_names : list of None
+        data_names : str, list or None
             The name(s) of the data variables in the output grid. Defaults to
-            ``['scalars']`` for scalar data,
+            ``'scalars'`` for scalar data,
             ``['east_component', 'north_component']`` for 2D vector data, and
             ``['east_component', 'north_component', 'vertical_component']`` for
             3D vector data.
@@ -391,6 +415,13 @@ class BaseGridder(BaseEstimator):
             will be used to project the generated grid coordinates before
             passing them into ``predict``. For example, you can use this to
             generate a geographic grid from a Cartesian gridder.
+        coordinates : tuple of arrays
+            Tuple of arrays containing the coordinates of the grid in the
+            following order: (easting, northing, vertical, ...).
+            The easting and northing arrays could be 1d or 2d arrays, if
+            they are 2d they must be part of a meshgrid.
+            If coordinates are passed, ``region``, ``shape``, and ``spacing``
+            are ignored.
 
         Returns
         -------
@@ -403,26 +434,64 @@ class BaseGridder(BaseEstimator):
         verde.grid_coordinates : Generate the coordinate values for the grid.
 
         """
-        dims = self._get_dims(dims)
-        region = get_instance_region(self, region)
-        coordinates = grid_coordinates(region, shape=shape, spacing=spacing, **kwargs)
+        if coordinates is not None and (spacing is not None or shape is not None):
+            raise ValueError(
+                "Both coordinates and spacing or shape were provided. "
+                + "Please pass only coordinates or either the spacing or the shape."
+            )
+        if coordinates is not None and region is not None:
+            raise ValueError(
+                "Both coordinates and region were provided. "
+                + "Please pass region only if spacing or shape is specified."
+            )
+        # Raise deprecation warning for the region, shape and spacing arguments
+        if spacing is not None or shape is not None or region is not None:
+            warnings.warn(
+                "The 'spacing', 'shape' and 'region' arguments will be removed "
+                + "in Verde v2.0.0. "
+                + "Please use the 'verde.grid_coordinates' function to define "
+                + "grid coordinates and pass them as the 'coordinates' argument.",
+                FutureWarning,
+            )
+        # Get grid coordinates from coordinates parameter
+        if coordinates is not None:
+            ndim = get_ndim_horizontal_coords(*coordinates[:2])
+            if ndim == 1:
+                # Build a meshgrid if easting and northing are 1d
+                coordinates = meshgrid_from_1d(coordinates)
+            else:
+                check_meshgrid(coordinates)
+        # Build the grid coordinates through vd.grid_coordinates
+        else:
+            region = get_instance_region(self, region)
+            coordinates = grid_coordinates(
+                region, shape=shape, spacing=spacing, **kwargs
+            )
+        # Predict on the grid points (project the coordinates if needed)
         if projection is None:
             data = check_data(self.predict(coordinates))
         else:
             data = check_data(
                 self.predict(project_coordinates(coordinates, projection))
             )
-        data_names = get_data_names(data, data_names)
-        coords = {dims[1]: coordinates[0][0, :], dims[0]: coordinates[1][:, 0]}
-        # Add extra coordinates to xr.Dataset as non-dimension coordinates
+        # Get names for dims, data and any extra coordinates
+        dims = self._get_dims(dims)
+        data_names = self._get_data_names(data, data_names)
         extra_coords_names = self._get_extra_coords_names(coordinates)
-        for name, extra_coord in zip(extra_coords_names, coordinates[2:]):
-            coords[name] = (dims, extra_coord)
-        attrs = {"metadata": "Generated by {}".format(repr(self))}
-        data_vars = {
-            name: (dims, value, attrs) for name, value in zip(data_names, data)
-        }
-        return xr.Dataset(data_vars, coords=coords, attrs=attrs)
+        # Create xarray.Dataset
+        dataset = make_xarray_grid(
+            coordinates,
+            data,
+            data_names,
+            dims=dims,
+            extra_coords_names=extra_coords_names,
+        )
+        # Add metadata as attrs
+        metadata = "Generated by {}".format(repr(self))
+        dataset.attrs["metadata"] = metadata
+        for array in dataset:
+            dataset[array].attrs["metadata"] = metadata
+        return dataset
 
     def scatter(
         self,
@@ -432,7 +501,7 @@ class BaseGridder(BaseEstimator):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
+        **kwargs,
     ):
         """
         Interpolate values onto a random scatter of points.
@@ -466,9 +535,9 @@ class BaseGridder(BaseEstimator):
             following order: northing dimension, easting dimension.
             **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
-        data_names : list of None
+        data_names : str, list or None
             The name(s) of the data variables in the output dataframe. Defaults
-            to ``['scalars']`` for scalar data,
+            to ``'scalars'`` for scalar data,
             ``['east_component', 'north_component']`` for 2D vector data, and
             ``['east_component', 'north_component', 'vertical_component']`` for
             3D vector data.
@@ -496,7 +565,7 @@ class BaseGridder(BaseEstimator):
             data = check_data(
                 self.predict(project_coordinates(coordinates, projection))
             )
-        data_names = get_data_names(data, data_names)
+        data_names = self._get_data_names(data, data_names)
         columns = [(dims[0], coordinates[1]), (dims[1], coordinates[0])]
         extra_coords_names = self._get_extra_coords_names(coordinates)
         columns.extend(zip(extra_coords_names, coordinates[2:]))
@@ -511,7 +580,7 @@ class BaseGridder(BaseEstimator):
         dims=None,
         data_names=None,
         projection=None,
-        **kwargs
+        **kwargs,
     ):
         """
         Interpolate data along a profile between two points.
@@ -569,9 +638,9 @@ class BaseGridder(BaseEstimator):
             following order: northing dimension, easting dimension.
             **NOTE: This is an exception to the "easting" then
             "northing" pattern but is required for compatibility with xarray.**
-        data_names : list of None
+        data_names : str, list or None
             The name(s) of the data variables in the output dataframe. Defaults
-            to ``['scalars']`` for scalar data,
+            to ``'scalars'`` for scalar data,
             ``['east_component', 'north_component']`` for 2D vector data, and
             ``['east_component', 'north_component', 'vertical_component']`` for
             3D vector data.
@@ -607,7 +676,7 @@ class BaseGridder(BaseEstimator):
         # profile but Cartesian distances.
         if projection is not None:
             coordinates = project_coordinates(coordinates, projection, inverse=True)
-        data_names = get_data_names(data, data_names)
+        data_names = self._get_data_names(data, data_names)
         columns = [
             (dims[0], coordinates[1]),
             (dims[1], coordinates[0]),
@@ -653,10 +722,50 @@ class BaseGridder(BaseEstimator):
             names.append(name)
         return names
 
+    def _get_data_names(self, data, data_names):
+        """
+        Get default names for data fields if none are given based on the data.
+
+        Examples
+        --------
+
+        >>> import numpy as np
+        >>> east, north, up = [np.arange(10)]*3
+        >>> gridder = BaseGridder()
+        >>> gridder._get_data_names((east,), data_names=None)
+        ('scalars',)
+        >>> gridder._get_data_names((east, north), data_names=None)
+        ('east_component', 'north_component')
+        >>> gridder._get_data_names((east, north, up), data_names=None)
+        ('east_component', 'north_component', 'vertical_component')
+        >>> gridder._get_data_names((east,), data_names="john")
+        ('john',)
+        >>> gridder._get_data_names((east,), data_names=("paul",))
+        ('paul',)
+        >>> gridder._get_data_names(
+        ...     (up, north), data_names=('ringo', 'george')
+        ... )
+        ('ringo', 'george')
+        >>> gridder._get_data_names((north,), data_names=["brian"])
+        ['brian']
+
+        """
+        # Return the defaults data_names for the class
+        if data_names is None:
+            if len(data) > len(self.data_names_defaults):
+                raise ValueError(
+                    "Default data names only available for up to 3 components. "
+                    + "Must provide custom names through the 'data_names' argument."
+                )
+            return self.data_names_defaults[len(data) - 1]
+        # Return the passed data_names if valid
+        data_names = check_data_names(data, data_names)
+        return data_names
+
 
 def project_coordinates(coordinates, projection, **kwargs):
     """
-    Apply projection to given coordiantes
+    Apply projection to given coordinates
 
     Allows to apply projections to any number of coordinates, assuming
     that the first ones are ``longitude`` and ``latitude``.
@@ -690,50 +799,6 @@ def project_coordinates(coordinates, projection, **kwargs):
     return proj_coordinates
 
 
-def get_data_names(data, data_names):
-    """
-    Get default names for data fields if none are given based on the data.
-
-    Examples
-    --------
-
-    >>> import numpy as np
-    >>> east, north, up = [np.arange(10)]*3
-    >>> get_data_names((east,), data_names=None)
-    ('scalars',)
-    >>> get_data_names((east, north), data_names=None)
-    ('east_component', 'north_component')
-    >>> get_data_names((east, north, up), data_names=None)
-    ('east_component', 'north_component', 'vertical_component')
-    >>> get_data_names((up, north), data_names=('ringo', 'george'))
-    ('ringo', 'george')
-
-    """
-    if data_names is not None:
-        if len(data) != len(data_names):
-            raise ValueError(
-                "Data has {} components but only {} names provided: {}".format(
-                    len(data), len(data_names), str(data_names)
-                )
-            )
-        return data_names
-    data_types = [
-        ("scalars",),
-        ("east_component", "north_component"),
-        ("east_component", "north_component", "vertical_component"),
-    ]
-    if len(data) > len(data_types):
-        raise ValueError(
-            " ".join(
-                [
-                    "Default data names only available for up to 3 components.",
-                    "Must provide custom names through the 'data_names' argument.",
-                ]
-            )
-        )
-    return data_types[len(data) - 1]
-
-
 def get_instance_region(instance, region):
     """
     Get the region attribute stored in instance if one is not provided.
@@ -741,5 +806,5 @@ def get_instance_region(instance, region):
     if region is None:
         if not hasattr(instance, "region_"):
             raise ValueError("No default region found. Argument must be supplied.")
-        region = getattr(instance, "region_")
+        region = instance.region_
     return region

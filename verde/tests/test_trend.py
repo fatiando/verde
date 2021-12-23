@@ -1,4 +1,9 @@
-# pylint: disable=redefined-outer-name
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Test the trend estimators.
 """
@@ -6,8 +11,8 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from ..trend import Trend, polynomial_power_combinations
 from ..coordinates import grid_coordinates
+from ..trend import Trend, polynomial_power_combinations
 
 
 @pytest.fixture()

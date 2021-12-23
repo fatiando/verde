@@ -1,16 +1,22 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Test the Chain class
 """
-import numpy.testing as npt
 import numpy as np
+import numpy.testing as npt
 
-from ..datasets.synthetic import CheckerBoard
 from ..blockreduce import BlockReduce
 from ..chain import Chain
+from ..coordinates import grid_coordinates
+from ..datasets.synthetic import CheckerBoard
 from ..scipygridder import ScipyGridder
 from ..spline import Spline
 from ..trend import Trend
-from ..coordinates import grid_coordinates
 from ..vector import Vector
 
 

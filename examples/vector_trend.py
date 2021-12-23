@@ -1,28 +1,35 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Trends in vector data
 =====================
 
-Verde provides the :class:`verde.Trend` class to estimate a polynomial trend and the
-:class:`verde.Vector` class to apply any combination of estimators to each component
-of vector data, like GPS velocities. You can access each component as a separate
-(fitted) :class:`verde.Trend` instance or operate on all vector components directly
-using using :meth:`verde.Vector.predict`, :meth:`verde.Vector.grid`, etc, or
-chaining it with a vector interpolator using :class:`verde.Chain`.
+Verde provides the :class:`verde.Trend` class to estimate a polynomial trend
+and the :class:`verde.Vector` class to apply any combination of estimators to
+each component of vector data, like GPS velocities. You can access each
+component as a separate (fitted) :class:`verde.Trend` instance or operate on
+all vector components directly using using :meth:`verde.Vector.predict`,
+:meth:`verde.Vector.grid`, etc, or chaining it with a vector interpolator using
+:class:`verde.Chain`.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import numpy as np
+import matplotlib.pyplot as plt
+
 import verde as vd
 
-
-# Fetch the GPS data from the U.S. West coast. The data has a strong trend toward the
-# North-West because of the relative movement along the San Andreas Fault System.
+# Fetch the GPS data from the U.S. West coast. The data has a strong trend
+# toward the North-West because of the relative movement along the San Andreas
+# Fault System.
 data = vd.datasets.fetch_california_gps()
 
-# We'll fit a degree 2 trend on both the East and North components and weight the data
-# using the inverse of the variance of each component.
-# Note: Never use [Trend(...)]*2 as an argument to Vector. This creates references
-# to the same Trend instance and will mess up the fitting.
+# We'll fit a degree 2 trend on both the East and North components and weight
+# the data using the inverse of the variance of each component. Note: Never use
+# [Trend(...)]*2 as an argument to Vector. This creates references to the same
+# Trend instance and will mess up the fitting.
 trend = vd.Vector([vd.Trend(degree=2) for i in range(2)])
 weights = vd.variance_to_weights((data.std_east ** 2, data.std_north ** 2))
 trend.fit(
@@ -32,8 +39,8 @@ trend.fit(
 )
 print("Vector trend estimator:", trend)
 
-# The separate Trend objects for each component can be accessed through the 'components'
-# attribute. You could grid them individually if you wanted.
+# The separate Trend objects for each component can be accessed through the
+# 'components' attribute. You could grid them individually if you wanted.
 print("East component trend:", trend.components[0])
 print("East trend coefficients:", trend.components[0].coef_)
 print("North component trend:", trend.components[1])
@@ -86,5 +93,4 @@ for ax, component, title in zip(axes, components, titles):
     )
     ax.coastlines(color="white")
 axes[0].legend(loc="lower left")
-plt.tight_layout()
 plt.show()

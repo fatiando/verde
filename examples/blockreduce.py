@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Blocked reduction operations
 ============================
@@ -9,9 +15,10 @@ data by applying a reduction operation (mean, median, mode, max, etc) to the
 data in blocks. For non-smooth data, like bathymetry, a blocked median filter
 is a good choice.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
 import numpy as np
+
 import verde as vd
 
 # We'll test this on the Baja California shipborne bathymetry data
@@ -36,5 +43,4 @@ plt.scatter(lon, lat, c=bathymetry, s=5, transform=ccrs.PlateCarree())
 plt.colorbar().set_label("meters")
 # Use a utility function to setup the tick labels and land feature
 vd.datasets.setup_baja_bathymetry_map(ax)
-plt.tight_layout()
 plt.show()

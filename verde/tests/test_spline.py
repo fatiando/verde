@@ -1,16 +1,22 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Test the biharmonic splines
 """
 import warnings
 
-import pytest
 import numpy as np
 import numpy.testing as npt
-from sklearn.model_selection import ShuffleSplit
+import pytest
 from dask.distributed import Client
+from sklearn.model_selection import ShuffleSplit
 
-from ..spline import Spline, SplineCV
 from ..datasets.synthetic import CheckerBoard
+from ..spline import Spline, SplineCV
 from .utils import requires_numba
 
 
@@ -63,8 +69,8 @@ def test_spline_cv(delayed, client, engine):
     # Tolerance needs to be kind of high to allow for error due to small
     # dataset
     npt.assert_allclose(
-        spline.grid(region, shape=shape).scalars,
-        synth.grid(region, shape=shape).scalars,
+        spline.grid(region=region, shape=shape).scalars,
+        synth.grid(region=region, shape=shape).scalars,
         rtol=5e-2,
     )
 
@@ -87,8 +93,8 @@ def test_spline():
     # Tolerance needs to be kind of high to allow for error due to small
     # dataset
     npt.assert_allclose(
-        spline.grid(region, shape=shape).scalars,
-        synth.grid(region, shape=shape).scalars,
+        spline.grid(region=region, shape=shape).scalars,
+        synth.grid(region=region, shape=shape).scalars,
         rtol=5e-2,
     )
 
@@ -135,8 +141,8 @@ def test_spline_damping():
     # Tolerance needs to be kind of high to allow for error due to small
     # dataset
     npt.assert_allclose(
-        spline.grid(region, shape=shape).scalars,
-        synth.grid(region, shape=shape).scalars,
+        spline.grid(region=region, shape=shape).scalars,
+        synth.grid(region=region, shape=shape).scalars,
         rtol=1e-2,
         atol=10,
     )

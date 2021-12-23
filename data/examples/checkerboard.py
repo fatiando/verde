@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Checkerboard function
 =====================
@@ -7,6 +13,7 @@ checkerboard pattern. It has the same data generation methods that most
 gridders have: predict, grid, scatter, and profile.
 """
 import matplotlib.pyplot as plt
+
 import verde as vd
 
 # Instantiate the data generator class and fit it to set the data region.

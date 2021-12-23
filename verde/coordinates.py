@@ -1,3 +1,9 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
 """
 Functions for generating and manipulating coordinates.
 """
@@ -6,7 +12,7 @@ import warnings
 import numpy as np
 from sklearn.utils import check_random_state
 
-from .base.utils import n_1d_arrays, check_coordinates
+from .base.utils import check_coordinates, n_1d_arrays
 from .utils import kdtree
 
 
@@ -481,14 +487,14 @@ def spacing_to_shape(region, spacing, adjust):
         )
 
     spacing = np.atleast_1d(spacing)
-    if len(spacing) == 1:
-        deast = dnorth = spacing[0]
-    elif len(spacing) == 2:
-        dnorth, deast = spacing
-    else:
+    if len(spacing) > 2:
         raise ValueError(
             "Only two values allowed for grid spacing: {}".format(str(spacing))
         )
+    elif len(spacing) == 1:
+        deast = dnorth = spacing[0]
+    elif len(spacing) == 2:
+        dnorth, deast = spacing
 
     w, e, s, n = region
     # Add 1 to get the number of nodes, not segments
@@ -1015,11 +1021,21 @@ def rolling_window(
     [20. 20. 20. 20. 20. 20. 20. 20. 20.]
 
     """
+    # Check if shape or spacing were passed
+    if shape is None and spacing is None:
+        raise ValueError("Either a shape or a spacing must be provided.")
     # Select the coordinates after checking to make sure indexing will still
     # work on the ignored coordinates.
     coordinates = check_coordinates(coordinates)[:2]
     if region is None:
         region = get_region(coordinates)
+    # Check if window size is bigger than the minimum dimension of the region
+    region_min_width = min(region[1] - region[0], region[3] - region[2])
+    if region_min_width < size:
+        raise ValueError(
+            "Window size '{}' is larger ".format(size)
+            + "than dimensions of the region '{}'.".format(region)
+        )
     # Calculate the region spanning the centers of the rolling windows
     window_region = [
         dimension + (-1) ** (i % 2) * size / 2 for i, dimension in enumerate(region)
