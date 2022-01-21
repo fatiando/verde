@@ -21,15 +21,18 @@
 Data Decimation
 ===============
 
-Often times, raw spatial data can be highly oversampled in a direction. In these cases,
-we need to decimate the data before interpolation to avoid aliasing effects.
+Often times, raw spatial data can be highly oversampled in a direction. In
+these cases, we need to decimate the data before interpolation to avoid
+aliasing effects.
 
-.. GENERATED FROM PYTHON SOURCE LINES 14-18
+.. GENERATED FROM PYTHON SOURCE LINES 15-21
 
 .. code-block:: default
 
-    import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
+    import matplotlib.pyplot as plt
+    import numpy as np
+
     import verde as vd
 
 
@@ -39,12 +42,12 @@ we need to decimate the data before interpolation to avoid aliasing effects.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-21
+.. GENERATED FROM PYTHON SOURCE LINES 22-24
 
-For example, our sample shipborne bathymetry data has a higher sampling frequency
-along the tracks than between tracks:
+For example, our sample shipborne bathymetry data has a higher sampling
+frequency along the tracks than between tracks:
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-35
+.. GENERATED FROM PYTHON SOURCE LINES 24-38
 
 .. code-block:: default
 
@@ -65,45 +68,33 @@ along the tracks than between tracks:
 
 
 
-.. image:: /tutorials/images/sphx_glr_decimation_001.png
-    :alt: Locations of bathymetry measurements from Baja California
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_decimation_001.png
+   :alt: Locations of bathymetry measurements from Baja California
+   :srcset: /tutorials/images/sphx_glr_decimation_001.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-42
+.. GENERATED FROM PYTHON SOURCE LINES 39-53
 
 Class :class:`verde.BlockReduce` can be used to apply a reduction/aggregation
-operation (mean, median, standard deviation, etc) to the data in regular blocks. All
-data inside each block will be replaced by their aggregated value.
-:class:`~verde.BlockReduce` takes an aggregation function as input. It can be any
-function that receives a numpy array as input and returns a single scalar value. The
-:func:`numpy.mean` or :func:`numpy.median` functions are usually what we want.
+operation (mean, median, standard deviation, etc) to the data in regular
+blocks. All data inside each block will be replaced by their aggregated
+value. :class:`~verde.BlockReduce` takes an aggregation function as input. It
+can be any function that receives a numpy array as input and returns a single
+scalar value. The :func:`numpy.mean` or :func:`numpy.median` functions are
+usually what we want.
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-44
+Blocked means and medians are good ways to decimate data for interpolation.
+Let's use a blocked median on our data to decimate it to our desired grid
+interval of 5 arc-minutes. The reason for using a median over a mean is
+because bathymetry data can vary abruptly and a mean would smooth the data
+too much. For data varies more smoothly (like gravity and magnetic data), a
+mean would be a better option.
 
-.. code-block:: default
-
-    import numpy as np
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 45-50
-
-Blocked means and medians are good ways to decimate data for interpolation. Let's use
-a blocked median on our data to decimate it to our desired grid interval of 5
-arc-minutes. The reason for using a median over a mean is because bathymetry data can
-vary abruptly and a mean would smooth the data too much. For data varies more
-smoothly (like gravity and magnetic data), a mean would be a better option.
-
-.. GENERATED FROM PYTHON SOURCE LINES 50-53
+.. GENERATED FROM PYTHON SOURCE LINES 53-56
 
 .. code-block:: default
 
@@ -120,17 +111,17 @@ smoothly (like gravity and magnetic data), a mean would be a better option.
 
  .. code-block:: none
 
-    BlockReduce(reduction=<function median at 0x7f238aec5310>,
+    BlockReduce(reduction=<function median at 0x7fe4afd6e0d0>,
                 spacing=0.08333333333333333)
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-55
+.. GENERATED FROM PYTHON SOURCE LINES 57-58
 
 Use the :meth:`~verde.BlockReduce.filter` method to apply the reduction:
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-68
+.. GENERATED FROM PYTHON SOURCE LINES 58-71
 
 .. code-block:: default
 
@@ -150,22 +141,23 @@ Use the :meth:`~verde.BlockReduce.filter` method to apply the reduction:
 
 
 
-.. image:: /tutorials/images/sphx_glr_decimation_002.png
-    :alt: Locations of decimated data
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_decimation_002.png
+   :alt: Locations of decimated data
+   :srcset: /tutorials/images/sphx_glr_decimation_002.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-73
+.. GENERATED FROM PYTHON SOURCE LINES 72-76
 
-By default, the coordinates of the decimated data are obtained by applying the same
-reduction operation to the coordinates of the original data. Alternatively, we can
-tell :class:`~verde.BlockReduce` to return the coordinates of the center of each
-block:
+By default, the coordinates of the decimated data are obtained by applying
+the same reduction operation to the coordinates of the original data.
+Alternatively, we can tell :class:`~verde.BlockReduce` to return the
+coordinates of the center of each block:
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-88
+.. GENERATED FROM PYTHON SOURCE LINES 76-91
 
 .. code-block:: default
 
@@ -187,22 +179,23 @@ block:
 
 
 
-.. image:: /tutorials/images/sphx_glr_decimation_003.png
-    :alt: Locations of decimated data using block centers
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_decimation_003.png
+   :alt: Locations of decimated data using block centers
+   :srcset: /tutorials/images/sphx_glr_decimation_003.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-90
+.. GENERATED FROM PYTHON SOURCE LINES 92-93
 
 Now the data are ready for interpolation.
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.941 seconds)
+   **Total running time of the script:** ( 0 minutes  3.665 seconds)
 
 
 .. _sphx_glr_download_tutorials_decimation.py:

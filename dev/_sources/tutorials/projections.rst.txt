@@ -21,21 +21,23 @@
 Geographic Coordinates
 ======================
 
-Most gridders and processing methods in Verde operate under the assumption that the data
-coordinates are Cartesian. To process data in geographic (longitude and latitude)
-coordinates, we must first project them. There are different ways of doing this in
-Python but most of them rely on the `PROJ library <https://proj4.org/>`__. We'll use
-`pyproj <https://github.com/jswhit/pyproj>`__ to access PROJ directly and handle the
+Most gridders and processing methods in Verde operate under the assumption that
+the data coordinates are Cartesian. To process data in geographic (longitude
+and latitude) coordinates, we must first project them. There are different ways
+of doing this in Python but most of them rely on the `PROJ library
+<https://proj4.org/>`__. We'll use `pyproj
+<https://github.com/jswhit/pyproj>`__ to access PROJ directly and handle the
 projection operations.
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-24
+.. GENERATED FROM PYTHON SOURCE LINES 19-26
 
 .. code-block:: default
 
-    import pyproj
-    import numpy as np
-    import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import pyproj
+
     import verde as vd
 
 
@@ -45,19 +47,19 @@ projection operations.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-28
+.. GENERATED FROM PYTHON SOURCE LINES 27-30
 
-With pyproj, we can create functions that will project our coordinates to and from
-different coordinate systems. For our Baja California bathymetry data, we'll use a
-Mercator projection.
+With pyproj, we can create functions that will project our coordinates to and
+from different coordinate systems. For our Baja California bathymetry data,
+we'll use a Mercator projection.
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-33
+.. GENERATED FROM PYTHON SOURCE LINES 30-35
 
 .. code-block:: default
 
 
     data = vd.datasets.fetch_baja_bathymetry()
-    # We're choosing the latitude of true scale as the mean latitude of our dataset.
+    # We're choosing the latitude of true scale as the mean latitude of our dataset
     projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 
 
@@ -67,12 +69,12 @@ Mercator projection.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-36
+.. GENERATED FROM PYTHON SOURCE LINES 36-38
 
-The Proj object is a callable (meaning that it behaves like a function) that will take
-longitude and latitude and return easting and northing coordinates.
+The Proj object is a callable (meaning that it behaves like a function) that
+will take longitude and latitude and return easting and northing coordinates.
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-41
+.. GENERATED FROM PYTHON SOURCE LINES 38-43
 
 .. code-block:: default
 
@@ -92,17 +94,17 @@ longitude and latitude and return easting and northing coordinates.
  .. code-block:: none
 
     (array([-11749316.65303046, -11748999.90777981, -11748682.14077029, ...,
-           -11749178.7155826 , -11749531.22239381, -11749882.70744613]), array([2905766.05183735, 2905457.83817752, 2905148.48639437, ...,
+           -11749178.7155826 , -11749531.22239381, -11749882.70744613]), array([2905766.05183735, 2905457.83817751, 2905148.48639437, ...,
            2579612.89349502, 2580017.48641078, 2580422.09116873]))
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-43
+.. GENERATED FROM PYTHON SOURCE LINES 44-45
 
 We can plot our projected coordinates using matplotlib.
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-54
+.. GENERATED FROM PYTHON SOURCE LINES 45-56
 
 .. code-block:: default
 
@@ -120,24 +122,25 @@ We can plot our projected coordinates using matplotlib.
 
 
 
-.. image:: /tutorials/images/sphx_glr_projections_001.png
-    :alt: Projected coordinates of bathymetry measurements
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_projections_001.png
+   :alt: Projected coordinates of bathymetry measurements
+   :srcset: /tutorials/images/sphx_glr_projections_001.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-61
+.. GENERATED FROM PYTHON SOURCE LINES 57-63
 
 Cartesian grids
 ---------------
 
-Now we can use :class:`verde.BlockReduce` and :class:`verde.Spline` on our projected
-coordinates. We'll specify the desired grid spacing as degrees and convert it to
-Cartesian using the 1 degree approx. 111 km rule-of-thumb.
+Now we can use :class:`verde.BlockReduce` and :class:`verde.Spline` on our
+projected coordinates. We'll specify the desired grid spacing as degrees and
+convert it to Cartesian using the 1 degree approx. 111 km rule-of-thumb.
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-66
+.. GENERATED FROM PYTHON SOURCE LINES 63-68
 
 .. code-block:: default
 
@@ -153,12 +156,12 @@ Cartesian using the 1 degree approx. 111 km rule-of-thumb.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-69
+.. GENERATED FROM PYTHON SOURCE LINES 69-71
 
-If we now call :meth:`verde.Spline.grid` we'll get back a grid evenly spaced in
-projected Cartesian coordinates.
+If we now call :meth:`verde.Spline.grid` we'll get back a grid evenly spaced
+in projected Cartesian coordinates.
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-73
+.. GENERATED FROM PYTHON SOURCE LINES 71-75
 
 .. code-block:: default
 
@@ -176,9 +179,11 @@ projected Cartesian coordinates.
 
  .. code-block:: none
 
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:463: FutureWarning: The 'spacing', 'shape' and 'region' arguments will be removed in Verde v2.0.0. Please use the 'verde.grid_coordinates' function to define grid coordinates and pass them as the 'coordinates' argument.
+      warnings.warn(
     Cartesian grid:
     <xarray.Dataset>
-    Dimensions:     (easting: 54, northing: 61)
+    Dimensions:     (northing: 61, easting: 54)
     Coordinates:
       * easting     (easting) float64 -1.175e+07 -1.173e+07 ... -1.077e+07
       * northing    (northing) float64 2.074e+06 2.093e+06 ... 3.171e+06 3.19e+06
@@ -190,12 +195,12 @@ projected Cartesian coordinates.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-76
+.. GENERATED FROM PYTHON SOURCE LINES 76-78
 
-We'll mask our grid using :func:`verde.distance_mask` to get rid of all the spurious
-solutions far away from the data points.
+We'll mask our grid using :func:`verde.distance_mask` to get rid of all the
+spurious solutions far away from the data points.
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-90
+.. GENERATED FROM PYTHON SOURCE LINES 78-92
 
 .. code-block:: default
 
@@ -216,30 +221,32 @@ solutions far away from the data points.
 
 
 
-.. image:: /tutorials/images/sphx_glr_projections_002.png
-    :alt: projections
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_projections_002.png
+   :alt: projections
+   :srcset: /tutorials/images/sphx_glr_projections_002.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-103
+.. GENERATED FROM PYTHON SOURCE LINES 93-106
 
 Geographic grids
 ----------------
 
 The Cartesian grid that we generated won't be evenly spaced if we convert the
-coordinates back to geographic latitude and longitude. Verde gridders allow you to
-generate an evenly spaced grid in geographic coordinates through the ``projection``
-argument of the :meth:`~verde.base.BaseGridder.grid` method.
+coordinates back to geographic latitude and longitude. Verde gridders allow
+you to generate an evenly spaced grid in geographic coordinates through the
+``projection`` argument of the :meth:`~verde.base.BaseGridder.grid` method.
 
-By providing a projection function (like our pyproj ``projection`` object), Verde will
-generate coordinates for a regular grid and then pass them through the projection
-function before predicting data values. This way, you can generate a grid in a
-coordinate system other than the one you used to fit the spline.
+By providing a projection function (like our pyproj ``projection`` object),
+Verde will generate coordinates for a regular grid and then pass them through
+the projection function before predicting data values. This way, you can
+generate a grid in a coordinate system other than the one you used to fit the
+spline.
 
-.. GENERATED FROM PYTHON SOURCE LINES 103-119
+.. GENERATED FROM PYTHON SOURCE LINES 106-122
 
 .. code-block:: default
 
@@ -270,6 +277,8 @@ coordinate system other than the one you used to fit the spline.
  .. code-block:: none
 
     Data region in degrees: (245.0, 254.705, 20.0, 29.99131)
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:463: FutureWarning: The 'spacing', 'shape' and 'region' arguments will be removed in Verde v2.0.0. Please use the 'verde.grid_coordinates' function to define grid coordinates and pass them as the 'coordinates' argument.
+      warnings.warn(
     Geographic grid:
     <xarray.Dataset>
     Dimensions:     (latitude: 61, longitude: 59)
@@ -284,15 +293,15 @@ coordinate system other than the one you used to fit the spline.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-125
+.. GENERATED FROM PYTHON SOURCE LINES 123-128
 
-Notice that grid has longitude and latitude coordinates and slightly different number
-of points than the Cartesian grid.
+Notice that grid has longitude and latitude coordinates and slightly
+different number of points than the Cartesian grid.
 
-The :func:`verde.distance_mask` function also supports the ``projection`` argument and
-will project the coordinates before calculating distances.
+The :func:`verde.distance_mask` function also supports the ``projection``
+argument and will project the coordinates before calculating distances.
 
-.. GENERATED FROM PYTHON SOURCE LINES 125-130
+.. GENERATED FROM PYTHON SOURCE LINES 128-133
 
 .. code-block:: default
 
@@ -308,11 +317,11 @@ will project the coordinates before calculating distances.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 131-132
+.. GENERATED FROM PYTHON SOURCE LINES 134-135
 
 Now we can use the Cartopy library to plot our geographic grid.
 
-.. GENERATED FROM PYTHON SOURCE LINES 132-143
+.. GENERATED FROM PYTHON SOURCE LINES 135-146
 
 .. code-block:: default
 
@@ -330,9 +339,10 @@ Now we can use the Cartopy library to plot our geographic grid.
 
 
 
-.. image:: /tutorials/images/sphx_glr_projections_003.png
-    :alt: projections
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_projections_003.png
+   :alt: projections
+   :srcset: /tutorials/images/sphx_glr_projections_003.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -341,13 +351,13 @@ Now we can use the Cartopy library to plot our geographic grid.
 
  .. code-block:: none
 
-    /usr/share/miniconda3/envs/testing/lib/python3.8/site-packages/verde/datasets/sample_data.py:129: UserWarning: All kwargs are being ignored. They are accepted to guarantee backward compatibility.
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/datasets/sample_data.py:152: UserWarning: All kwargs are being ignored. They are accepted to guarantee backward compatibility.
       warnings.warn(
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 144-162
+.. GENERATED FROM PYTHON SOURCE LINES 147-165
 
 Profiles
 --------
@@ -368,7 +378,7 @@ system (making it easier to plot on a map).
 To generate a profile cutting across our bathymetry data, we can use
 longitude and latitude points taken from the map above).
 
-.. GENERATED FROM PYTHON SOURCE LINES 162-175
+.. GENERATED FROM PYTHON SOURCE LINES 165-178
 
 .. code-block:: default
 
@@ -398,26 +408,26 @@ longitude and latitude points taken from the map above).
           latitude   longitude       distance   bathymetry
     0    24.700000 -114.500000       0.000000 -4115.540285
     1    24.679226 -114.477387    3276.548360 -4397.069052
-    2    24.658449 -114.454774    6553.096720 -4766.953634
-    3    24.637668 -114.432161    9829.645080 -5198.947540
+    2    24.658449 -114.454774    6553.096720 -4766.953633
+    3    24.637668 -114.432161    9829.645080 -5198.947539
     4    24.616884 -114.409548   13106.193440 -5639.303392
     ..         ...         ...            ...          ...
-    195  20.585669 -110.090452  638926.930221 -3016.467548
-    196  20.564257 -110.067839  642203.478581 -2969.351780
-    197  20.542841 -110.045226  645480.026941 -2914.069306
-    198  20.521422 -110.022613  648756.575301 -2859.557818
-    199  20.500000 -110.000000  652033.123661 -2818.101949
+    195  20.585669 -110.090452  638926.930221 -3016.467547
+    196  20.564257 -110.067839  642203.478581 -2969.351779
+    197  20.542841 -110.045226  645480.026941 -2914.069305
+    198  20.521422 -110.022613  648756.575301 -2859.557817
+    199  20.500000 -110.000000  652033.123661 -2818.101948
 
     [200 rows x 4 columns]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 176-177
+.. GENERATED FROM PYTHON SOURCE LINES 179-180
 
 Plot the profile location on our geographic grid from above.
 
-.. GENERATED FROM PYTHON SOURCE LINES 177-191
+.. GENERATED FROM PYTHON SOURCE LINES 180-194
 
 .. code-block:: default
 
@@ -438,9 +448,10 @@ Plot the profile location on our geographic grid from above.
 
 
 
-.. image:: /tutorials/images/sphx_glr_projections_004.png
-    :alt: projections
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_projections_004.png
+   :alt: projections
+   :srcset: /tutorials/images/sphx_glr_projections_004.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -449,17 +460,17 @@ Plot the profile location on our geographic grid from above.
 
  .. code-block:: none
 
-    /usr/share/miniconda3/envs/testing/lib/python3.8/site-packages/verde/datasets/sample_data.py:129: UserWarning: All kwargs are being ignored. They are accepted to guarantee backward compatibility.
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/datasets/sample_data.py:152: UserWarning: All kwargs are being ignored. They are accepted to guarantee backward compatibility.
       warnings.warn(
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 192-193
+.. GENERATED FROM PYTHON SOURCE LINES 195-196
 
 And finally plot the profile.
 
-.. GENERATED FROM PYTHON SOURCE LINES 193-204
+.. GENERATED FROM PYTHON SOURCE LINES 196-207
 
 .. code-block:: default
 
@@ -477,9 +488,10 @@ And finally plot the profile.
 
 
 
-.. image:: /tutorials/images/sphx_glr_projections_005.png
-    :alt: Profile of bathymetry (A-B)
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_projections_005.png
+   :alt: Profile of bathymetry (A-B)
+   :srcset: /tutorials/images/sphx_glr_projections_005.png
+   :class: sphx-glr-single-img
 
 
 
@@ -488,7 +500,7 @@ And finally plot the profile.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.830 seconds)
+   **Total running time of the script:** ( 0 minutes  2.023 seconds)
 
 
 .. _sphx_glr_download_tutorials_projections.py:

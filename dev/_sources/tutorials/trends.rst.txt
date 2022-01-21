@@ -27,13 +27,14 @@ with geophysical data. Moreover, some of the interpolation methods, like
 The :class:`verde.Trend` class fits a 2D polynomial trend of arbitrary degree
 to the data and can be used to remove it.
 
-.. GENERATED FROM PYTHON SOURCE LINES 17-22
+.. GENERATED FROM PYTHON SOURCE LINES 17-23
 
 .. code-block:: default
 
-    import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
+    import matplotlib.pyplot as plt
     import numpy as np
+
     import verde as vd
 
 
@@ -43,11 +44,12 @@ to the data and can be used to remove it.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-24
+.. GENERATED FROM PYTHON SOURCE LINES 24-26
 
-Our sample air temperature data from Texas has a clear trend from land to the ocean:
+Our sample air temperature data from Texas has a clear trend from land to the
+ocean:
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-42
+.. GENERATED FROM PYTHON SOURCE LINES 26-44
 
 .. code-block:: default
 
@@ -72,19 +74,20 @@ Our sample air temperature data from Texas has a clear trend from land to the oc
 
 
 
-.. image:: /tutorials/images/sphx_glr_trends_001.png
-    :alt: trends
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_trends_001.png
+   :alt: trends
+   :srcset: /tutorials/images/sphx_glr_trends_001.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-44
+.. GENERATED FROM PYTHON SOURCE LINES 45-46
 
 We can estimate the polynomial coefficients for this trend:
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-48
+.. GENERATED FROM PYTHON SOURCE LINES 46-50
 
 .. code-block:: default
 
@@ -107,11 +110,12 @@ We can estimate the polynomial coefficients for this trend:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-50
+.. GENERATED FROM PYTHON SOURCE LINES 51-53
 
-More importantly, we can predict the trend values and remove them from our data:
+More importantly, we can predict the trend values and remove them from our
+data:
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-88
+.. GENERATED FROM PYTHON SOURCE LINES 53-91
 
 .. code-block:: default
 
@@ -156,26 +160,27 @@ More importantly, we can predict the trend values and remove them from our data:
 
 
 
-.. image:: /tutorials/images/sphx_glr_trends_002.png
-    :alt: Trend, Residuals
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_trends_002.png
+   :alt: Trend, Residuals
+   :srcset: /tutorials/images/sphx_glr_trends_002.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-91
+.. GENERATED FROM PYTHON SOURCE LINES 92-94
 
-The fitting, prediction, and residual calculation can all be done in a single step
-using the :meth:`~verde.Trend.filter` method:
+The fitting, prediction, and residual calculation can all be done in a single
+step using the :meth:`~verde.Trend.filter` method:
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-98
+.. GENERATED FROM PYTHON SOURCE LINES 94-101
 
 .. code-block:: default
 
 
-    # filter always outputs coordinates and weights as well, which we don't need and will
-    # ignore here.
+    # ``filter`` always outputs coordinates and weights as well, which we don't
+    # need and will ignore here.
     __, res_filter, __ = vd.Trend(degree=1).filter(coordinates, data.air_temperature_c)
 
     print(np.allclose(res_filter, residuals))
@@ -195,15 +200,16 @@ using the :meth:`~verde.Trend.filter` method:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-101
+.. GENERATED FROM PYTHON SOURCE LINES 102-105
 
-Additionally, :class:`verde.Trend` implements the :ref:`gridder interface <overview>`
-and has the :meth:`~verde.Trend.grid` and :meth:`~verde.Trend.profile` methods.
+Additionally, :class:`verde.Trend` implements the :ref:`gridder interface
+<overview>` and has the :meth:`~verde.Trend.grid` and
+:meth:`~verde.Trend.profile` methods.
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.314 seconds)
+   **Total running time of the script:** ( 0 minutes  0.430 seconds)
 
 
 .. _sphx_glr_download_tutorials_trends.py:

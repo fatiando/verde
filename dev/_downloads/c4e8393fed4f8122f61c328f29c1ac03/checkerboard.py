@@ -8,15 +8,16 @@
 Checkerboard function
 =====================
 
-The :class:`verde.datasets.CheckerBoard` class generates synthetic data in a
+The :class:`verde.synthetic.CheckerBoard` class generates synthetic data in a
 checkerboard pattern. It has the same data generation methods that most
 gridders have: predict, grid, scatter, and profile.
 """
 import matplotlib.pyplot as plt
+
 import verde as vd
 
 # Instantiate the data generator class and fit it to set the data region.
-synth = vd.datasets.CheckerBoard()
+synth = vd.synthetic.CheckerBoard()
 
 # Default values are provided for the wavelengths of the function determined
 # from the region.

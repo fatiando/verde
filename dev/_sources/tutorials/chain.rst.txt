@@ -28,38 +28,41 @@ Often, a data processing pipeline looks like the following:
 #. Fit a spline to the residual of the trend
 #. Grid using the spline and restore the trend
 
-The :class:`verde.Chain` class allows us to created gridders that perform multiple
-operations on data. Each step in the chain filters the input and passes the result along
-to the next step. For gridders and trend estimators, filtering means fitting the model
-and passing along the residuals (input data minus predicted data). When predicting data,
-the predictions of each step are added together.
+The :class:`verde.Chain` class allows us to created gridders that perform
+multiple operations on data. Each step in the chain filters the input and
+passes the result along to the next step. For gridders and trend estimators,
+filtering means fitting the model and passing along the residuals (input data
+minus predicted data). When predicting data, the predictions of each step are
+added together.
 
-Other operations, like :class:`verde.BlockReduce` and :class:`verde.BlockMean` change
-the input data values and the coordinates but don't impact the predictions because they
-don't implement the :meth:`~verde.base.BaseGridder.predict` method.
+Other operations, like :class:`verde.BlockReduce` and :class:`verde.BlockMean`
+change the input data values and the coordinates but don't impact the
+predictions because they don't implement the
+:meth:`~verde.base.BaseGridder.predict` method.
 
 .. note::
 
     The :class:`~verde.Chain` class was inspired by the
-    :class:`sklearn.pipeline.Pipeline` class, which doesn't serve our purposes because
-    it only affects the feature matrix, not what we would call *data* (the target
-    vector).
+    :class:`sklearn.pipeline.Pipeline` class, which doesn't serve our purposes
+    because it only affects the feature matrix, not what we would call *data*
+    (the target vector).
 
 For example, let's create a pipeline to grid our sample bathymetry data.
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-65
+.. GENERATED FROM PYTHON SOURCE LINES 39-68
 
 .. code-block:: default
 
-    import numpy as np
-    import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
+    import matplotlib.pyplot as plt
+    import numpy as np
     import pyproj
+
     import verde as vd
 
     data = vd.datasets.fetch_baja_bathymetry()
     region = vd.get_region((data.longitude, data.latitude))
-    # The desired grid spacing in degrees (converted to meters using 1 degree approx. 111km)
+    # The desired grid spacing in degrees
     spacing = 10 / 60
     # Use Mercator projection because Spline is a Cartesian gridder
     projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
@@ -82,20 +85,21 @@ For example, let's create a pipeline to grid our sample bathymetry data.
 
 
 
-.. image:: /tutorials/images/sphx_glr_chain_001.png
-    :alt: Bathymetry from Baja California
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_chain_001.png
+   :alt: Bathymetry from Baja California
+   :srcset: /tutorials/images/sphx_glr_chain_001.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-68
+.. GENERATED FROM PYTHON SOURCE LINES 69-71
 
-We'll create a chain that applies a blocked median to the data, fits a polynomial
-trend, and then fits a standard gridder to the trend residuals.
+We'll create a chain that applies a blocked median to the data, fits a
+polynomial trend, and then fits a standard gridder to the trend residuals.
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-78
+.. GENERATED FROM PYTHON SOURCE LINES 71-81
 
 .. code-block:: default
 
@@ -120,22 +124,23 @@ trend, and then fits a standard gridder to the trend residuals.
  .. code-block:: none
 
     Chain(steps=[('reduce',
-                  BlockReduce(reduction=<function median at 0x7f238aec5310>,
+                  BlockReduce(reduction=<function median at 0x7fe4afd6e0d0>,
                               spacing=18500.0)),
                  ('trend', Trend(degree=1)), ('spline', Spline())])
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-84
+.. GENERATED FROM PYTHON SOURCE LINES 82-88
 
-Calling :meth:`verde.Chain.fit` will automatically run the data through the chain:
+Calling :meth:`verde.Chain.fit` will automatically run the data through the
+chain:
 
 #. Apply the blocked median to the input data
 #. Fit a trend to the blocked data and output the residuals
 #. Fit the spline to the trend residuals
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-87
+.. GENERATED FROM PYTHON SOURCE LINES 88-91
 
 .. code-block:: default
 
@@ -154,23 +159,25 @@ Calling :meth:`verde.Chain.fit` will automatically run the data through the chai
 
 
     Chain(steps=[('reduce',
-                  BlockReduce(reduction=<function median at 0x7f238aec5310>,
+                  BlockReduce(reduction=<function median at 0x7fe4afd6e0d0>,
                               spacing=18500.0)),
                  ('trend', Trend(degree=1)), ('spline', Spline())])
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-95
+.. GENERATED FROM PYTHON SOURCE LINES 92-101
 
-Now that the data has been through the chain, calling :meth:`verde.Chain.predict` will
-sum the results of every step in the chain that has a ``predict`` method. In our case,
-that will be only the :class:`~verde.Trend` and :class:`~verde.Spline`.
+Now that the data has been through the chain, calling
+:meth:`verde.Chain.predict` will sum the results of every step in the chain
+that has a ``predict`` method. In our case, that will be only the
+:class:`~verde.Trend` and :class:`~verde.Spline`.
 
-We can verify the quality of the fit by inspecting a histogram of the residuals with
-respect to the original data. Remember that our spline and trend were fit on decimated
-data, not the original data, so the fit won't be perfect.
+We can verify the quality of the fit by inspecting a histogram of the
+residuals with respect to the original data. Remember that our spline and
+trend were fit on decimated data, not the original data, so the fit won't be
+perfect.
 
-.. GENERATED FROM PYTHON SOURCE LINES 95-105
+.. GENERATED FROM PYTHON SOURCE LINES 101-111
 
 .. code-block:: default
 
@@ -187,21 +194,22 @@ data, not the original data, so the fit won't be perfect.
 
 
 
-.. image:: /tutorials/images/sphx_glr_chain_002.png
-    :alt: Histogram of fit residuals
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_chain_002.png
+   :alt: Histogram of fit residuals
+   :srcset: /tutorials/images/sphx_glr_chain_002.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 106-109
+.. GENERATED FROM PYTHON SOURCE LINES 112-115
 
-Likewise, :meth:`verde.Chain.grid` creates a grid of the combined trend and spline
-predictions. This is equivalent to a *remove-compute-restore* procedure that should be
-familiar to the geodesists among us.
+Likewise, :meth:`verde.Chain.grid` creates a grid of the combined trend and
+spline predictions. This is equivalent to a *remove-compute-restore*
+procedure that should be familiar to the geodesists among us.
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-119
+.. GENERATED FROM PYTHON SOURCE LINES 115-125
 
 .. code-block:: default
 
@@ -225,6 +233,8 @@ familiar to the geodesists among us.
 
  .. code-block:: none
 
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:463: FutureWarning: The 'spacing', 'shape' and 'region' arguments will be removed in Verde v2.0.0. Please use the 'verde.grid_coordinates' function to define grid coordinates and pass them as the 'coordinates' argument.
+      warnings.warn(
     <xarray.Dataset>
     Dimensions:     (latitude: 61, longitude: 59)
     Coordinates:
@@ -238,11 +248,11 @@ familiar to the geodesists among us.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-121
+.. GENERATED FROM PYTHON SOURCE LINES 126-127
 
 Finally, we can plot the resulting grid:
 
-.. GENERATED FROM PYTHON SOURCE LINES 121-132
+.. GENERATED FROM PYTHON SOURCE LINES 127-138
 
 .. code-block:: default
 
@@ -260,21 +270,22 @@ Finally, we can plot the resulting grid:
 
 
 
-.. image:: /tutorials/images/sphx_glr_chain_003.png
-    :alt: chain
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_chain_003.png
+   :alt: chain
+   :srcset: /tutorials/images/sphx_glr_chain_003.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 133-136
+.. GENERATED FROM PYTHON SOURCE LINES 139-142
 
-Each component of the chain can be accessed separately using the ``named_steps``
-attribute. It's a dictionary with keys and values matching the inputs given to the
-:class:`~verde.Chain`.
+Each component of the chain can be accessed separately using the
+``named_steps`` attribute. It's a dictionary with keys and values matching
+the inputs given to the :class:`~verde.Chain`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-140
+.. GENERATED FROM PYTHON SOURCE LINES 142-146
 
 .. code-block:: default
 
@@ -298,12 +309,13 @@ attribute. It's a dictionary with keys and values matching the inputs given to t
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 141-143
+.. GENERATED FROM PYTHON SOURCE LINES 147-150
 
-All gridders and estimators in the chain have been fitted and can be used to generate
-grids and predictions. For example, we can get a grid of the estimated trend:
+All gridders and estimators in the chain have been fitted and can be used to
+generate grids and predictions. For example, we can get a grid of the
+estimated trend:
 
-.. GENERATED FROM PYTHON SOURCE LINES 143-162
+.. GENERATED FROM PYTHON SOURCE LINES 150-169
 
 .. code-block:: default
 
@@ -329,9 +341,10 @@ grids and predictions. For example, we can get a grid of the estimated trend:
 
 
 
-.. image:: /tutorials/images/sphx_glr_chain_004.png
-    :alt: chain
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_chain_004.png
+   :alt: chain
+   :srcset: /tutorials/images/sphx_glr_chain_004.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -340,6 +353,8 @@ grids and predictions. For example, we can get a grid of the estimated trend:
 
  .. code-block:: none
 
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:463: FutureWarning: The 'spacing', 'shape' and 'region' arguments will be removed in Verde v2.0.0. Please use the 'verde.grid_coordinates' function to define grid coordinates and pass them as the 'coordinates' argument.
+      warnings.warn(
     <xarray.Dataset>
     Dimensions:     (latitude: 61, longitude: 59)
     Coordinates:
@@ -356,7 +371,7 @@ grids and predictions. For example, we can get a grid of the estimated trend:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.587 seconds)
+   **Total running time of the script:** ( 0 minutes  5.143 seconds)
 
 
 .. _sphx_glr_download_tutorials_chain.py:

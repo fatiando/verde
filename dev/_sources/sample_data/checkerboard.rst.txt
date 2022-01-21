@@ -21,17 +21,18 @@
 Checkerboard function
 =====================
 
-The :class:`verde.datasets.CheckerBoard` class generates synthetic data in a
+The :class:`verde.synthetic.CheckerBoard` class generates synthetic data in a
 checkerboard pattern. It has the same data generation methods that most
 gridders have: predict, grid, scatter, and profile.
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-46
+.. GENERATED FROM PYTHON SOURCE LINES 15-47
 
 
 
-.. image:: /sample_data/images/sphx_glr_checkerboard_001.png
-    :alt: checkerboard
-    :class: sphx-glr-single-img
+.. image-sg:: /sample_data/images/sphx_glr_checkerboard_001.png
+   :alt: checkerboard
+   :srcset: /sample_data/images/sphx_glr_checkerboard_001.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -42,10 +43,12 @@ gridders have: predict, grid, scatter, and profile.
 
     wavelengths (east, north): 2500.0 2500.0
     Checkerboard value at (easting=2000, northing=-2500): -951.0565162951536
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:463: FutureWarning: The 'spacing', 'shape' and 'region' arguments will be removed in Verde v2.0.0. Please use the 'verde.grid_coordinates' function to define grid coordinates and pass them as the 'coordinates' argument.
+      warnings.warn(
 
     Data grid:
      <xarray.Dataset>
-    Dimensions:   (easting: 100, northing: 150)
+    Dimensions:   (northing: 150, easting: 100)
     Coordinates:
       * easting   (easting) float64 0.0 50.51 101.0 ... 4.899e+03 4.949e+03 5e+03
       * northing  (northing) float64 -5e+03 -4.966e+03 -4.933e+03 ... -33.56 0.0
@@ -72,10 +75,11 @@ gridders have: predict, grid, scatter, and profile.
 .. code-block:: default
 
     import matplotlib.pyplot as plt
+
     import verde as vd
 
     # Instantiate the data generator class and fit it to set the data region.
-    synth = vd.datasets.CheckerBoard()
+    synth = vd.synthetic.CheckerBoard()
 
     # Default values are provided for the wavelengths of the function determined
     # from the region.
@@ -106,7 +110,7 @@ gridders have: predict, grid, scatter, and profile.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.118 seconds)
+   **Total running time of the script:** ( 0 minutes  0.161 seconds)
 
 
 .. _sphx_glr_download_sample_data_checkerboard.py:

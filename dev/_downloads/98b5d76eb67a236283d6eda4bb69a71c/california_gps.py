@@ -5,19 +5,26 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-GPS velocities from California
-==============================
+[DEPRECATED] GPS velocities from California
+===========================================
 
-We provide sample 3-component GPS velocity data from the West coast of the U.S. The data
-were cut from EarthScope Plate Boundary Observatory data provided by UNAVCO. The
-velocities are in the North American tectonic plate reference system (NAM08). The
-velocities and their associated standard deviations are in meters/year.
+.. warning::
+
+    All sample datasets in Verde are deprecated and will be
+    **removed in Verde v2.0.0**.
+    The tutorials/examples will transition to using
+    `Ensaio <https://www.fatiando.org/ensaio/>`__ instead.
+
+We provide sample 3-component GPS velocity data from the West coast of the U.S.
+The data were cut from EarthScope Plate Boundary Observatory data provided by
+UNAVCO. The velocities are in the North American tectonic plate reference
+system (NAM08). The velocities and their associated standard deviations are in
+meters/year.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import numpy as np
-import verde as vd
+import matplotlib.pyplot as plt
 
+import verde as vd
 
 # The data are in a pandas.DataFrame
 data = vd.datasets.fetch_california_gps()

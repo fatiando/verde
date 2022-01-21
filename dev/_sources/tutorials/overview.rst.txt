@@ -23,38 +23,42 @@
 Overview
 ========
 
-Verde provides classes and functions for processing spatial data, like bathymetry, GPS,
-temperature, gravity, or anything else that is measured along a surface.
-The main focus is on methods for gridding such data (interpolating on a regular grid).
-You'll also find other analysis methods that are often used in combination with
-gridding, like trend removal and blocked operations.
+Verde provides classes and functions for processing spatial data, like
+bathymetry, GPS, temperature, gravity, or anything else that is measured along
+a surface. The main focus is on methods for gridding such data (interpolating
+on a regular grid). You'll also find other analysis methods that are often used
+in combination with gridding, like trend removal and blocked operations.
 
 Conventions
 -----------
 
 Before we get started, here are a few of the conventions we use across Verde:
 
-* Coordinates can be Cartesian or Geographic. We generally make no assumptions about
-  which one you're using.
-* All functions and classes expect coordinates in the order: West-East and South-North.
-  This applies to the actual coordinate values, bounding regions, grid spacing, etc.
-  Exceptions to this rule are the ``dims`` and ``shape`` arguments.
-* We don't use names like "x" and "y" to avoid ambiguity. Cartesian coordinates are
-  "easting" and "northing" and Geographic coordinates are "longitude" and "latitude".
-* The term "region" means the bounding box of the data. It is ordered west, east, south,
-  north.
+* Coordinates can be Cartesian or Geographic. We generally make no assumptions
+  about which one you're using.
+* All functions and classes expect coordinates in the order: West-East and
+  South-North. This applies to the actual coordinate values, bounding regions,
+  grid spacing, etc. Exceptions to this rule are the ``dims`` and ``shape``
+  arguments.
+* We don't use names like "x" and "y" to avoid ambiguity. Cartesian coordinates
+  are "easting" and "northing" and Geographic coordinates are "longitude" and
+  "latitude".
+* The term "region" means the bounding box of the data. It is ordered west,
+  east, south, north.
 
 The library
 -----------
 
-Most classes and functions are available through the :mod:`verde` top level package.
-The only exceptions are the functions related to loading sample data, which are in
-:mod:`verde.datasets`. Throughout the documentation we'll use ``vd`` as the alias for
-:mod:`verde`.
+Most classes and functions are available through the :mod:`verde` top level
+package. The only exception is the :mod:`verde.synthetic` module that has
+functionality for generating synthetic data. Throughout the documentation we'll
+use ``vd`` as the alias for :mod:`verde`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-45
+.. GENERATED FROM PYTHON SOURCE LINES 45-49
 
 .. code-block:: default
+
+    import matplotlib.pyplot as plt
 
     import verde as vd
 
@@ -65,35 +69,35 @@ The only exceptions are the functions related to loading sample data, which are 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-66
+.. GENERATED FROM PYTHON SOURCE LINES 50-70
 
 .. _gridder_interface:
 
 The gridder interface
 ---------------------
 
-All gridding and trend estimation classes in Verde share the same interface (they all
-inherit from :class:`verde.base.BaseGridder`). Since most gridders in Verde are linear
-models, we based our gridder interface on the `scikit-learn
-<http://scikit-learn.org/>`__ estimator interface: they all implement a
-:meth:`~verde.base.BaseGridder.fit` method that estimates the model parameters based
-on data and a :meth:`~verde.base.BaseGridder.predict` method that calculates new data
-based on the estimated parameters.
+All gridding and trend estimation classes in Verde share the same interface
+(they all inherit from :class:`verde.base.BaseGridder`). Since most gridders
+in Verde are linear models, we based our gridder interface on the
+`scikit-learn <http://scikit-learn.org/>`__ estimator interface: they all
+implement a :meth:`~verde.base.BaseGridder.fit` method that estimates the
+model parameters based on data and a :meth:`~verde.base.BaseGridder.predict`
+method that calculates new data based on the estimated parameters.
 
-Unlike scikit-learn, our data model is not a feature matrix and a target vector (e.g.,
-``est.fit(X, y)``) but a tuple of coordinate arrays and a data vector (e.g.,
-``grd.fit((easting, northing), data)``). This makes more sense for spatial data and is
-common to all classes and functions in Verde.
+Unlike scikit-learn, our data model is not a feature matrix and a target
+vector (e.g., ``est.fit(X, y)``) but a tuple of coordinate arrays and a data
+vector (e.g., ``grd.fit((easting, northing), data)``). This makes more sense
+for spatial data and is common to all classes and functions in Verde.
 
 As an example, let's generate some synthetic data using
-:class:`verde.datasets.CheckerBoard`:
+:class:`verde.synthetic.CheckerBoard`:
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-71
+.. GENERATED FROM PYTHON SOURCE LINES 70-75
 
 .. code-block:: default
 
 
-    data = vd.datasets.CheckerBoard().scatter(size=500, random_state=0)
+    data = vd.synthetic.CheckerBoard().scatter(size=500, random_state=0)
     print(data.head())
 
 
@@ -117,17 +121,15 @@ As an example, let's generate some synthetic data using
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-74
+.. GENERATED FROM PYTHON SOURCE LINES 76-78
 
-The data are random points taken from a checkerboard function and returned to us in a
-:class:`pandas.DataFrame`:
+The data are random points taken from a checkerboard function and returned to
+us in a :class:`pandas.DataFrame`:
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-82
+.. GENERATED FROM PYTHON SOURCE LINES 78-84
 
 .. code-block:: default
 
-
-    import matplotlib.pyplot as plt
 
     plt.figure()
     plt.scatter(data.easting, data.northing, c=data.scalars, cmap="RdBu_r")
@@ -137,20 +139,21 @@ The data are random points taken from a checkerboard function and returned to us
 
 
 
-.. image:: /tutorials/images/sphx_glr_overview_001.png
-    :alt: overview
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_overview_001.png
+   :alt: overview
+   :srcset: /tutorials/images/sphx_glr_overview_001.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-85
+.. GENERATED FROM PYTHON SOURCE LINES 85-87
 
-Now we can use the bi-harmonic spline method [Sandwell1987]_ to fit this data. First,
-we create a new :class:`verde.Spline`:
+Now we can use the bi-harmonic spline method [Sandwell1987]_ to fit this
+data. First, we create a new :class:`verde.Spline`:
 
-.. GENERATED FROM PYTHON SOURCE LINES 85-90
+.. GENERATED FROM PYTHON SOURCE LINES 87-92
 
 .. code-block:: default
 
@@ -174,20 +177,20 @@ we create a new :class:`verde.Spline`:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-93
+.. GENERATED FROM PYTHON SOURCE LINES 93-95
 
-Before we can use the spline, we need to fit it to our synthetic data. After that, we
-can use the spline to predict values anywhere:
+Before we can use the spline, we need to fit it to our synthetic data. After
+that, we can use the spline to predict values anywhere:
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-106
+.. GENERATED FROM PYTHON SOURCE LINES 95-108
 
 .. code-block:: default
 
 
     spline.fit((data.easting, data.northing), data.scalars)
 
-    # Generate coordinates for a regular grid with 100 m grid spacing (assuming coordinates
-    # are in meters).
+    # Generate coordinates for a regular grid with 100 m grid spacing (assuming
+    # coordinates are in meters).
     grid_coords = vd.grid_coordinates(region=(0, 5000, -5000, 0), spacing=100)
     gridded_scalars = spline.predict(grid_coords)
 
@@ -199,35 +202,28 @@ can use the spline to predict values anywhere:
 
 
 
-.. image:: /tutorials/images/sphx_glr_overview_002.png
-    :alt: overview
-    :class: sphx-glr-single-img
-
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /home/runner/work/verde/verde/tutorials/overview.py:102: MatplotlibDeprecationWarning: shading='flat' when X and Y have the same dimensions as C is deprecated since 3.3.  Either specify the corners of the quadrilaterals with X and Y, or pass shading='auto', 'nearest' or 'gouraud', or set rcParams['pcolor.shading'].  This will become an error two minor releases later.
-      plt.pcolormesh(grid_coords[0], grid_coords[1], gridded_scalars, cmap="RdBu_r")
+.. image-sg:: /tutorials/images/sphx_glr_overview_002.png
+   :alt: overview
+   :srcset: /tutorials/images/sphx_glr_overview_002.png
+   :class: sphx-glr-single-img
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 107-110
 
-We can compare our predictions with the true values for the checkerboard function
-using the :meth:`~verde.Spline.score` method to calculate the `R² coefficient of
-determination <https://en.wikipedia.org/wiki/Coefficient_of_determination>`__.
+.. GENERATED FROM PYTHON SOURCE LINES 109-113
 
-.. GENERATED FROM PYTHON SOURCE LINES 110-114
+We can compare our predictions with the true values for the checkerboard
+function using the :meth:`~verde.Spline.score` method to calculate the
+`R² coefficient of determination
+<https://en.wikipedia.org/wiki/Coefficient_of_determination>`__.
+
+.. GENERATED FROM PYTHON SOURCE LINES 113-117
 
 .. code-block:: default
 
 
-    true_values = vd.datasets.CheckerBoard().predict(grid_coords)
+    true_values = vd.synthetic.CheckerBoard().predict(grid_coords)
     print(spline.score(grid_coords, true_values))
 
 
@@ -240,12 +236,14 @@ determination <https://en.wikipedia.org/wiki/Coefficient_of_determination>`__.
 
  .. code-block:: none
 
-    0.9950450871661976
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    0.9950450871662572
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-121
+.. GENERATED FROM PYTHON SOURCE LINES 118-124
 
 Generating grids and profiles
 -----------------------------
@@ -254,7 +252,7 @@ A more convenient way of generating grids is through the
 :meth:`~verde.base.BaseGridder.grid` method. It will automatically generate
 coordinates and output an :class:`xarray.Dataset`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 121-125
+.. GENERATED FROM PYTHON SOURCE LINES 124-128
 
 .. code-block:: default
 
@@ -272,8 +270,10 @@ coordinates and output an :class:`xarray.Dataset`.
 
  .. code-block:: none
 
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:463: FutureWarning: The 'spacing', 'shape' and 'region' arguments will be removed in Verde v2.0.0. Please use the 'verde.grid_coordinates' function to define grid coordinates and pass them as the 'coordinates' argument.
+      warnings.warn(
     <xarray.Dataset>
-    Dimensions:   (easting: 167, northing: 168)
+    Dimensions:   (northing: 168, easting: 167)
     Coordinates:
       * easting   (easting) float64 23.48 53.42 83.37 ... 4.964e+03 4.994e+03
       * northing  (northing) float64 -4.997e+03 -4.967e+03 ... -30.88 -0.9571
@@ -285,13 +285,13 @@ coordinates and output an :class:`xarray.Dataset`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 126-129
+.. GENERATED FROM PYTHON SOURCE LINES 129-132
 
-:meth:`~verde.base.BaseGridder.grid` uses default names for the coordinates ("easting"
-and "northing") and data variables ("scalars"). You can overwrite these names by
-setting the ``dims`` and ``data_names`` arguments.
+:meth:`~verde.base.BaseGridder.grid` uses default names for the coordinates
+("easting" and "northing") and data variables ("scalars"). You can overwrite
+these names by setting the ``dims`` and ``data_names`` arguments.
 
-.. GENERATED FROM PYTHON SOURCE LINES 129-137
+.. GENERATED FROM PYTHON SOURCE LINES 132-140
 
 .. code-block:: default
 
@@ -306,9 +306,10 @@ setting the ``dims`` and ``data_names`` arguments.
 
 
 
-.. image:: /tutorials/images/sphx_glr_overview_003.png
-    :alt: overview
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_overview_003.png
+   :alt: overview
+   :srcset: /tutorials/images/sphx_glr_overview_003.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -317,6 +318,8 @@ setting the ``dims`` and ``data_names`` arguments.
 
  .. code-block:: none
 
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:463: FutureWarning: The 'spacing', 'shape' and 'region' arguments will be removed in Verde v2.0.0. Please use the 'verde.grid_coordinates' function to define grid coordinates and pass them as the 'coordinates' argument.
+      warnings.warn(
     <xarray.Dataset>
     Dimensions:    (latitude: 168, longitude: 167)
     Coordinates:
@@ -330,13 +333,13 @@ setting the ``dims`` and ``data_names`` arguments.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 138-141
+.. GENERATED FROM PYTHON SOURCE LINES 141-144
 
-Gridders can also be used to interpolate data on a straight line between two points
-using the :meth:`~verde.base.BaseGridder.profile` method. The profile data are
-returned as a :class:`pandas.DataFrame`.
+Gridders can also be used to interpolate data on a straight line between two
+points using the :meth:`~verde.base.BaseGridder.profile` method. The profile
+data are returned as a :class:`pandas.DataFrame`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 141-150
+.. GENERATED FROM PYTHON SOURCE LINES 144-153
 
 .. code-block:: default
 
@@ -352,9 +355,10 @@ returned as a :class:`pandas.DataFrame`.
 
 
 
-.. image:: /tutorials/images/sphx_glr_overview_004.png
-    :alt: overview
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_overview_004.png
+   :alt: overview
+   :srcset: /tutorials/images/sphx_glr_overview_004.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -373,7 +377,7 @@ returned as a :class:`pandas.DataFrame`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 151-162
+.. GENERATED FROM PYTHON SOURCE LINES 154-165
 
 Wrap up
 -------
@@ -390,7 +394,7 @@ documentation will involve some variation of the following workflow:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.693 seconds)
+   **Total running time of the script:** ( 0 minutes  0.776 seconds)
 
 
 .. _sphx_glr_download_tutorials_overview.py:

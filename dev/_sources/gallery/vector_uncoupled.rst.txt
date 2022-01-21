@@ -29,13 +29,14 @@ alternative) but we have the convenience of dealing with a single estimator.
 :class:`verde.Spline`, and :class:`verde.Chain` to create a full processing
 pipeline.
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-106
+.. GENERATED FROM PYTHON SOURCE LINES 19-112
 
 
 
-.. image:: /gallery/images/sphx_glr_vector_uncoupled_001.png
-    :alt: Uncoupled spline gridding of wind speed
-    :class: sphx-glr-single-img
+.. image-sg:: /gallery/images/sphx_glr_vector_uncoupled_001.png
+   :alt: Uncoupled spline gridding of wind speed
+   :srcset: /gallery/images/sphx_glr_vector_uncoupled_001.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -53,13 +54,17 @@ pipeline.
 
     [5 rows x 6 columns]
     Chain(steps=[('mean',
-                  BlockReduce(reduction=<function mean at 0x7f238b09c700>,
+                  BlockReduce(reduction=<function mean at 0x7fe4aff2fee0>,
                               spacing=37000.0)),
                  ('trend', Vector(components=[Trend(degree=1), Trend(degree=1)])),
                  ('spline',
                   Vector(components=[Spline(damping=1e-10, mindist=500000.0),
                                      Spline(damping=1e-10, mindist=500000.0)]))])
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
     Cross-validation R^2 score: 0.78
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:463: FutureWarning: The 'spacing', 'shape' and 'region' arguments will be removed in Verde v2.0.0. Please use the 'verde.grid_coordinates' function to define grid coordinates and pass them as the 'coordinates' argument.
+      warnings.warn(
 
 
 
@@ -70,12 +75,12 @@ pipeline.
 
 .. code-block:: default
 
-    import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
+    import matplotlib.pyplot as plt
     import numpy as np
     import pyproj
-    import verde as vd
 
+    import verde as vd
 
     # Fetch the wind speed data from Texas.
     data = vd.datasets.fetch_texas_wind()
@@ -87,8 +92,9 @@ pipeline.
     # Use a Mercator projection because Spline is a Cartesian gridder
     projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 
-    # Split the data into a training and testing set. We'll fit the gridder on the training
-    # set and use the testing set to evaluate how well the gridder is performing.
+    # Split the data into a training and testing set. We'll fit the gridder on the
+    # training set and use the testing set to evaluate how well the gridder is
+    # performing.
     train, test = vd.train_test_split(
         projection(*coordinates),
         (data.wind_speed_east_knots, data.wind_speed_north_knots),
@@ -98,9 +104,10 @@ pipeline.
     # We'll make a 20 arc-minute grid
     spacing = 20 / 60
 
-    # Chain together a blocked mean to avoid aliasing, a polynomial trend (Spline usually
-    # requires de-trended data), and finally a Spline for each component. Notice that
-    # BlockReduce can work on multicomponent data without the use of Vector.
+    # Chain together a blocked mean to avoid aliasing, a polynomial trend (Spline
+    # usually requires de-trended data), and finally a Spline for each component.
+    # Notice that BlockReduce can work on multicomponent data without the use of
+    # Vector.
     chain = vd.Chain(
         [
             ("mean", vd.BlockReduce(np.mean, spacing * 111e3)),
@@ -115,15 +122,18 @@ pipeline.
 
     # Fit on the training data
     chain.fit(*train)
-    # And score on the testing data. The best possible score is 1, meaning a perfect
-    # prediction of the test data.
+    # And score on the testing data. The best possible score is 1, meaning a
+    # perfect prediction of the test data.
     score = chain.score(*test)
     print("Cross-validation R^2 score: {:.2f}".format(score))
 
-    # Interpolate the wind speed onto a regular geographic grid and mask the data that are
-    # outside of the convex hull of the data points.
+    # Interpolate the wind speed onto a regular geographic grid and mask the data
+    # that are outside of the convex hull of the data points.
     grid_full = chain.grid(
-        region, spacing=spacing, projection=projection, dims=["latitude", "longitude"]
+        region=region,
+        spacing=spacing,
+        projection=projection,
+        dims=["latitude", "longitude"],
     )
     grid = vd.convexhull_mask(coordinates, grid=grid_full, projection=projection)
 
@@ -154,14 +164,15 @@ pipeline.
     )
     ax.quiverkey(tmp, 0.17, 0.23, 5, label="5 knots", coordinates="figure")
     ax.legend(loc="lower left")
-    # Use an utility function to add tick labels and land and ocean features to the map.
+    # Use an utility function to add tick labels and land and ocean features to the
+    # map.
     vd.datasets.setup_texas_wind_map(ax)
     plt.show()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.150 seconds)
+   **Total running time of the script:** ( 0 minutes  0.181 seconds)
 
 
 .. _sphx_glr_download_gallery_vector_uncoupled.py:

@@ -23,23 +23,23 @@
 Grid Coordinates
 ====================
 
-Creating the coordinates for regular grids in Verde is done using the 
-:func:`verde.grid_coordinates` function. It creates a set of regularly spaced points in 
-both the west-east and south-north directions, i.e. a two-dimensional spatial grid. These 
-points are then used by the Verde gridders to interpolate between data points. As such, all 
-`.grid` methods (like :meth:`verde.Spline.grid`) take as input the configuration parameters 
-for :func:`verde.grid_coordinates`. The grid can be specified either by the number of points 
-in each dimension (the shape) or by the grid node spacing.
+Creating the coordinates for regular grids in Verde is done using the
+:func:`verde.grid_coordinates` function. It creates a set of regularly spaced
+points in both the west-east and south-north directions, i.e. a two-dimensional
+spatial grid. These points are then used by the Verde gridders to interpolate
+between data points. As such, all `.grid` methods (like
+:meth:`verde.Spline.grid`) take as input the configuration parameters for
+:func:`verde.grid_coordinates`. The grid can be specified either by the number
+of points in each dimension (the shape) or by the grid node spacing.
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-29
+.. GENERATED FROM PYTHON SOURCE LINES 22-27
 
 .. code-block:: default
 
 
-    import numpy as np
     import matplotlib.pyplot as plt
+
     import verde as vd
-    from matplotlib.patches import Rectangle
 
 
 
@@ -48,12 +48,12 @@ in each dimension (the shape) or by the grid node spacing.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-32
+.. GENERATED FROM PYTHON SOURCE LINES 28-30
 
-First let's create a region that is 1000 units west-east and 1000 units south-north,
-and we will set an initial spacing to 100 units.
+First let's create a region that is 1000 units west-east and 1000 units
+south-north, and we will set an initial spacing to 100 units.
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-40
+.. GENERATED FROM PYTHON SOURCE LINES 30-38
 
 .. code-block:: default
 
@@ -72,14 +72,14 @@ and we will set an initial spacing to 100 units.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-45
+.. GENERATED FROM PYTHON SOURCE LINES 39-43
 
-We can check the dimensions of the grid coordinates. The region is 1000 units and the
-spacing is 100 units, so the shape of the segments is 10x10. However, the number of
-grid nodes in this case is one more than the number of segments. So our grid
-coordinates have a shape of 11x11.
+We can check the dimensions of the grid coordinates. The region is 1000 units
+and the spacing is 100 units, so the shape of the segments is 10x10. However,
+the number of grid nodes in this case is one more than the number of
+segments. So our grid coordinates have a shape of 11x11.
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-47
+.. GENERATED FROM PYTHON SOURCE LINES 43-45
 
 .. code-block:: default
 
@@ -100,11 +100,11 @@ coordinates have a shape of 11x11.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-49
+.. GENERATED FROM PYTHON SOURCE LINES 46-47
 
 Let's define two functions to visualize the region bounds and grid points
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-83
+.. GENERATED FROM PYTHON SOURCE LINES 47-81
 
 .. code-block:: default
 
@@ -149,11 +149,11 @@ Let's define two functions to visualize the region bounds and grid points
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-85
+.. GENERATED FROM PYTHON SOURCE LINES 82-83
 
 Visualize our region and grid coordinates using our functions
 
-.. GENERATED FROM PYTHON SOURCE LINES 85-104
+.. GENERATED FROM PYTHON SOURCE LINES 83-102
 
 .. code-block:: default
 
@@ -179,29 +179,31 @@ Visualize our region and grid coordinates using our functions
 
 
 
-.. image:: /tutorials/images/sphx_glr_grid_coordinates_001.png
-    :alt: grid coordinates
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_grid_coordinates_001.png
+   :alt: grid coordinates
+   :srcset: /tutorials/images/sphx_glr_grid_coordinates_001.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 105-116
+.. GENERATED FROM PYTHON SOURCE LINES 103-115
 
 Adjusting region boundaries when creating the grid coordinates
 --------------------------------------------------------------
 
-Now let's change our spacing to 300 units. Because the range of the west-east and
-south-north boundaries are not multiples of 300, we must choose to change either:
+Now let's change our spacing to 300 units. Because the range of the west-east
+and south-north boundaries are not multiples of 300, we must choose to change
+either:
 
 - the boundaries of the region in order to fit the spacing, or
 - the spacing in order to fit the region boundaries.
 
-We could tell :func:`verde.grid_coordinates` to adjust the region boundaries by
-passing ``adjust="region"``.
+We could tell :func:`verde.grid_coordinates` to adjust the region boundaries
+by passing ``adjust="region"``.
 
-.. GENERATED FROM PYTHON SOURCE LINES 116-123
+.. GENERATED FROM PYTHON SOURCE LINES 115-122
 
 .. code-block:: default
 
@@ -227,17 +229,17 @@ passing ``adjust="region"``.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 124-131
+.. GENERATED FROM PYTHON SOURCE LINES 123-130
 
 With the spacing set at 300 units and a 4 by 4 grid of regular dimensions,
-:func:`verde.grid_coordinates` calculates the spatial location of each
-grid point and adjusts the region so that the maximum northing and maximum
-easting values are divisible by the spacing. In this example, both the  easting and
-northing have 3 segments (4 nodes) that are each 300 units long, meaning the easting
-and northing span from 0 to 900. Both dimensions are divisible
-by 300.
+:func:`verde.grid_coordinates` calculates the spatial location of each grid
+point and adjusts the region so that the maximum northing and maximum easting
+values are divisible by the spacing. In this example, both the  easting and
+northing have 3 segments (4 nodes) that are each 300 units long, meaning the
+easting and northing span from 0 to 900. Both dimensions are divisible by
+300.
 
-.. GENERATED FROM PYTHON SOURCE LINES 131-135
+.. GENERATED FROM PYTHON SOURCE LINES 130-134
 
 .. code-block:: default
 
@@ -267,25 +269,23 @@ by 300.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-143
+.. GENERATED FROM PYTHON SOURCE LINES 135-148
 
 By default, if ``adjust`` is not assigned to ``"region"`` or ``"spacing"``,
 then :func:`verde.grid_coordinates` will adjust the spacing. With the adjust
-parameter set to ``spacing`` :func:`verde.grid_coordinates` creates grid nodes
-in a similar manner as when it adjusts the region. However, it doesn't readjust
-the region so that it is divisble by the spacing before creating the grid.
-This means the grid will have the same number of grid points no matter if
-the adjust parameter is set to ``region`` or ``spacing``.
-
-.. GENERATED FROM PYTHON SOURCE LINES 145-150
+parameter set to ``spacing`` :func:`verde.grid_coordinates` creates grid
+nodes in a similar manner as when it adjusts the region. However, it doesn't
+readjust the region so that it is divisble by the spacing before creating the
+grid. This means the grid will have the same number of grid points no matter
+if the adjust parameter is set to ``region`` or ``spacing``.
 
 Adjusting spacing when creating the grid
 ----------------------------------------
 
-Now let's adjust the spacing of the grid points by passing ``adjust="spacing"``
-to :func:`verde.grid_coordinates`.
+Now let's adjust the spacing of the grid points by passing
+``adjust="spacing"`` to :func:`verde.grid_coordinates`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 150-156
+.. GENERATED FROM PYTHON SOURCE LINES 148-154
 
 .. code-block:: default
 
@@ -310,11 +310,11 @@ to :func:`verde.grid_coordinates`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 157-158
+.. GENERATED FROM PYTHON SOURCE LINES 155-156
 
 However the regular spacing between the grid points is no longer 300 units.
 
-.. GENERATED FROM PYTHON SOURCE LINES 158-162
+.. GENERATED FROM PYTHON SOURCE LINES 156-160
 
 .. code-block:: default
 
@@ -344,7 +344,7 @@ However the regular spacing between the grid points is no longer 300 units.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 163-170
+.. GENERATED FROM PYTHON SOURCE LINES 161-168
 
 Visualize the different adjustments
 -----------------------------------
@@ -354,7 +354,7 @@ adjusted region grid nodes, and the adjusted spacing grid nodes. Note the
 adjusted spacing grid nodes keep the original region, while the adjusted
 region grid nodes on the north and east side of the region have moved.
 
-.. GENERATED FROM PYTHON SOURCE LINES 170-199
+.. GENERATED FROM PYTHON SOURCE LINES 168-197
 
 .. code-block:: default
 
@@ -390,15 +390,16 @@ region grid nodes on the north and east side of the region have moved.
 
 
 
-.. image:: /tutorials/images/sphx_glr_grid_coordinates_002.png
-    :alt: grid coordinates
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_grid_coordinates_002.png
+   :alt: grid coordinates
+   :srcset: /tutorials/images/sphx_glr_grid_coordinates_002.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 200-212
+.. GENERATED FROM PYTHON SOURCE LINES 198-210
 
 Pixel Registration
 ------------------
@@ -406,14 +407,14 @@ Pixel Registration
 Pixel registration locates the grid points in the middle of the grid segments
 rather than in the corner of each grid node.
 
-First, let's take our 1000x1000 region and use the 100 unit spacing from the first
-example and set the ``pixel_register`` parameter to ``True``. Without pixel
-registration our grid should have dimensions of 11x11. With pixel registration we
-expect the dimensions of the grid to be the dimensions of the non-registered grid
-minus one, or equal to the number of segments between the grid points in the
-non-registered grid (10x10).
+First, let's take our 1000x1000 region and use the 100 unit spacing from the
+first example and set the ``pixel_register`` parameter to ``True``. Without
+pixel registration our grid should have dimensions of 11x11. With pixel
+registration we expect the dimensions of the grid to be the dimensions of the
+non-registered grid minus one, or equal to the number of segments between the
+grid points in the non-registered grid (10x10).
 
-.. GENERATED FROM PYTHON SOURCE LINES 212-219
+.. GENERATED FROM PYTHON SOURCE LINES 210-217
 
 .. code-block:: default
 
@@ -439,11 +440,11 @@ non-registered grid (10x10).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 220-221
+.. GENERATED FROM PYTHON SOURCE LINES 218-219
 
 And we can check the coordinates for the grid points with pixel registration.
 
-.. GENERATED FROM PYTHON SOURCE LINES 221-225
+.. GENERATED FROM PYTHON SOURCE LINES 219-223
 
 .. code-block:: default
 
@@ -485,12 +486,13 @@ And we can check the coordinates for the grid points with pixel registration.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 226-228
+.. GENERATED FROM PYTHON SOURCE LINES 224-227
 
 If we set ``pixel_register`` to ``False`` the function will return the grid
-coordinates of the nodes instead of pixel centers, resulting in an extra point in each direction.
+coordinates of the nodes instead of pixel centers, resulting in an extra
+point in each direction.
 
-.. GENERATED FROM PYTHON SOURCE LINES 228-234
+.. GENERATED FROM PYTHON SOURCE LINES 227-233
 
 .. code-block:: default
 
@@ -515,11 +517,11 @@ coordinates of the nodes instead of pixel centers, resulting in an extra point i
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 235-236
+.. GENERATED FROM PYTHON SOURCE LINES 234-235
 
 Again we can check the coordinates for grid points with spacing adjustment.
 
-.. GENERATED FROM PYTHON SOURCE LINES 236-240
+.. GENERATED FROM PYTHON SOURCE LINES 235-239
 
 .. code-block:: default
 
@@ -563,12 +565,12 @@ Again we can check the coordinates for grid points with spacing adjustment.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 241-243
+.. GENERATED FROM PYTHON SOURCE LINES 240-242
 
-Lastly, we can visualize the pixel-registered grid points to see where they fall
-within the original region bounds.
+Lastly, we can visualize the pixel-registered grid points to see where they
+fall within the original region bounds.
 
-.. GENERATED FROM PYTHON SOURCE LINES 243-273
+.. GENERATED FROM PYTHON SOURCE LINES 242-272
 
 .. code-block:: default
 
@@ -605,24 +607,26 @@ within the original region bounds.
 
 
 
-.. image:: /tutorials/images/sphx_glr_grid_coordinates_003.png
-    :alt: grid coordinates
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_grid_coordinates_003.png
+   :alt: grid coordinates
+   :srcset: /tutorials/images/sphx_glr_grid_coordinates_003.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 274-282
+.. GENERATED FROM PYTHON SOURCE LINES 273-282
 
 Extra Coordinates
 -----------------
 
-In some cases, you might need an additional coordinate such as a height or a time
-that is associated with your coordinate grid. The ``extra_coords`` parameter
-in :func:`verde.grid_coordinates` creates an extra coordinate array that is the same
-shape as the coordinate grid, but contains a constant value. For example, let's
-add a constant height of 1000 units and time of 1 to our coordinate grid.
+In some cases, you might need an additional coordinate such as a height or a
+time that is associated with your coordinate grid. The ``extra_coords``
+parameter in :func:`verde.grid_coordinates` creates an extra coordinate array
+that is the same shape as the coordinate grid, but contains a constant value.
+For example, let's add a constant height of 1000 units and time of 1 to our
+coordinate grid.
 
 .. GENERATED FROM PYTHON SOURCE LINES 282-289
 
@@ -724,7 +728,7 @@ And we can print the time array as well
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.250 seconds)
+   **Total running time of the script:** ( 0 minutes  0.330 seconds)
 
 
 .. _sphx_glr_download_tutorials_grid_coordinates.py:

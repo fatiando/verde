@@ -21,20 +21,22 @@
 Using weights in blocked reduction
 ==================================
 
-Sometimes data has outliers or less reliable points that might skew a blocked mean or
-even a median. If the reduction function can take a ``weights`` argument, like
-``numpy.average``, you can pass in weights to :class:`verde.BlockReduce` to lower the
-influence of the offending data points. However, :class:`verde.BlockReduce` can't
-produce weights for the blocked data (for use by a gridder, for example). If you want to
-produced blocked weights as well, use :class:`verde.BlockMean`.
+Sometimes data has outliers or less reliable points that might skew a blocked
+mean or even a median. If the reduction function can take a ``weights``
+argument, like ``numpy.average``, you can pass in weights to
+:class:`verde.BlockReduce` to lower the influence of the offending data points.
+However, :class:`verde.BlockReduce` can't produce weights for the blocked data
+(for use by a gridder, for example). If you want to produced blocked weights as
+well, use :class:`verde.BlockMean`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-77
+.. GENERATED FROM PYTHON SOURCE LINES 19-81
 
 
 
-.. image:: /gallery/images/sphx_glr_blockreduce_weights_001.png
-    :alt: No Weights, Weights
-    :class: sphx-glr-single-img
+.. image-sg:: /gallery/images/sphx_glr_blockreduce_weights_001.png
+   :alt: No Weights, Weights
+   :srcset: /gallery/images/sphx_glr_blockreduce_weights_001.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -55,9 +57,10 @@ produced blocked weights as well, use :class:`verde.BlockMean`.
 
 .. code-block:: default
 
-    import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
+    import matplotlib.pyplot as plt
     import numpy as np
+
     import verde as vd
 
     # We'll test this on the California vertical GPS velocity data
@@ -68,11 +71,13 @@ produced blocked weights as well, use :class:`verde.BlockMean`.
     data.velocity_up[outliers] += 0.08
     print("Index of outliers:", outliers)
 
-    # Create an array of weights and set the weights for the outliers to a very low value
+    # Create an array of weights and set the weights for the outliers to a very low
+    # value
     weights = np.ones_like(data.velocity_up)
     weights[outliers] = 1e-5
 
-    # Now we can block average the points with and without weights to compare the outputs.
+    # Now we can block average the points with and without weights to compare the
+    # outputs.
     reducer = vd.BlockReduce(reduction=np.average, spacing=30 / 60, center_coordinates=True)
     coordinates, no_weights = reducer.filter(
         (data.longitude, data.latitude), data.velocity_up
@@ -118,7 +123,7 @@ produced blocked weights as well, use :class:`verde.BlockMean`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.486 seconds)
+   **Total running time of the script:** ( 0 minutes  0.675 seconds)
 
 
 .. _sphx_glr_download_gallery_blockreduce_weights.py:

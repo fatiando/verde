@@ -21,17 +21,18 @@
 Vector Data
 ===========
 
-Some datasets have multiple vector components measured for each location, like the East
-and West components of wind speed or GPS velocities. For example, let's look at our
-sample GPS velocity data from the U.S. West coast.
+Some datasets have multiple vector components measured for each location, like
+the East and West components of wind speed or GPS velocities. For example,
+let's look at our sample GPS velocity data from the U.S. West coast.
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-47
+.. GENERATED FROM PYTHON SOURCE LINES 15-48
 
 .. code-block:: default
 
-    import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
+    import matplotlib.pyplot as plt
     import pyproj
+
     import verde as vd
 
     data = vd.datasets.fetch_california_gps()
@@ -64,34 +65,36 @@ sample GPS velocity data from the U.S. West coast.
 
 
 
-.. image:: /tutorials/images/sphx_glr_vectors_001.png
-    :alt: GPS horizontal velocities
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_vectors_001.png
+   :alt: GPS horizontal velocities
+   :srcset: /tutorials/images/sphx_glr_vectors_001.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-64
+.. GENERATED FROM PYTHON SOURCE LINES 49-66
 
-Verde classes and functions are equipped to deal with vector data natively or through
-the use of the :class:`verde.Vector` class. Function and classes that can take vector
-data as input will accept tuples as the ``data`` and ``weights`` arguments. Each
-element of the tuple must be an array with the data values for a component of the
-vector data. As with ``coordinates``, **the order of components must be**
-``(east_component, north_component, up_component)``.
+Verde classes and functions are equipped to deal with vector data natively or
+through the use of the :class:`verde.Vector` class. Function and classes that
+can take vector data as input will accept tuples as the ``data`` and
+``weights`` arguments. Each element of the tuple must be an array with the
+data values for a component of the vector data. As with ``coordinates``,
+**the order of components must be** ``(east_component, north_component,
+up_component)``.
 
 
 Blocked reductions
 ------------------
 
-Operations with :class:`verde.BlockReduce` and :class:`verde.BlockMean` can handle
-multi-component data automatically. The reduction operation is applied to each data
-component separately. The blocked data and weights will be returned in tuples as well
-following the same ordering as the inputs. This will work for an arbitrary number of
-components.
+Operations with :class:`verde.BlockReduce` and :class:`verde.BlockMean` can
+handle multi-component data automatically. The reduction operation is applied
+to each data component separately. The blocked data and weights will be
+returned in tuples as well following the same ordering as the inputs. This
+will work for an arbitrary number of components.
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-74
+.. GENERATED FROM PYTHON SOURCE LINES 66-76
 
 .. code-block:: default
 
@@ -120,12 +123,12 @@ components.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-77
+.. GENERATED FROM PYTHON SOURCE LINES 77-79
 
-We can convert the blocked coordinates back to longitude and latitude to plot with
-Cartopy.
+We can convert the blocked coordinates back to longitude and latitude to plot
+with Cartopy.
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-97
+.. GENERATED FROM PYTHON SOURCE LINES 79-99
 
 .. code-block:: default
 
@@ -152,32 +155,34 @@ Cartopy.
 
 
 
-.. image:: /tutorials/images/sphx_glr_vectors_002.png
-    :alt: Block mean velocities
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_vectors_002.png
+   :alt: Block mean velocities
+   :srcset: /tutorials/images/sphx_glr_vectors_002.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-112
+.. GENERATED FROM PYTHON SOURCE LINES 100-115
 
 Trends
 ------
 
 Trends can't handle vector data automatically, so you can't pass
-``data=(data.velocity_east, data.velocity_north)`` to :meth:`verde.Trend.fit`. To get
-around that, you can use the :class:`verde.Vector` class to create multi-component
-estimators and gridders from single component ones.
+``data=(data.velocity_east, data.velocity_north)`` to
+:meth:`verde.Trend.fit`. To get around that, you can use the
+:class:`verde.Vector` class to create multi-component estimators and gridders
+from single component ones.
 
 :class:`~verde.Vector` takes an estimator/gridder for each data component and
-implements the :ref:`gridder interface <gridder_interface>` for vector data, fitting
-each estimator/gridder given to a different component of the data.
+implements the :ref:`gridder interface <gridder_interface>` for vector data,
+fitting each estimator/gridder given to a different component of the data.
 
-For example, to fit a trend to our GPS velocities, we need to make a 2-component
-vector trend:
+For example, to fit a trend to our GPS velocities, we need to make a
+2-component vector trend:
 
-.. GENERATED FROM PYTHON SOURCE LINES 112-116
+.. GENERATED FROM PYTHON SOURCE LINES 115-119
 
 .. code-block:: default
 
@@ -200,13 +205,13 @@ vector trend:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 117-120
+.. GENERATED FROM PYTHON SOURCE LINES 120-123
 
-We can use the ``trend`` as if it were a regular :class:`verde.Trend` but passing in
-2-component data to fit. This will fit each data component to a different
-:class:`verde.Trend`.
+We can use the ``trend`` as if it were a regular :class:`verde.Trend` but
+passing in 2-component data to fit. This will fit each data component to a
+different :class:`verde.Trend`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-127
+.. GENERATED FROM PYTHON SOURCE LINES 123-130
 
 .. code-block:: default
 
@@ -232,11 +237,11 @@ We can use the ``trend`` as if it were a regular :class:`verde.Trend` but passin
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 128-129
+.. GENERATED FROM PYTHON SOURCE LINES 131-132
 
 Each estimator can be accessed through the ``components`` attribute:
 
-.. GENERATED FROM PYTHON SOURCE LINES 129-134
+.. GENERATED FROM PYTHON SOURCE LINES 132-137
 
 .. code-block:: default
 
@@ -257,7 +262,7 @@ Each estimator can be accessed through the ``components`` attribute:
 
     [Trend(degree=4), Trend(degree=1)]
     East trend coefficients: [-3.31743842e+03 -1.61368024e-03 -1.08568612e-03 -2.77735425e-10
-     -2.99424188e-10  7.38718817e-12 -2.03916793e-17 -2.68710016e-17
+     -2.99424188e-10  7.38718818e-12 -2.03916793e-17 -2.68710016e-17
       3.36222190e-18  2.00921241e-18 -5.43959103e-25 -7.79030546e-25
       2.71546631e-25  2.44086928e-25  5.03611061e-26]
     North trend coefficients: [-3.35415183e-01 -4.50275691e-08 -3.75590521e-08]
@@ -265,13 +270,13 @@ Each estimator can be accessed through the ``components`` attribute:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 135-138
+.. GENERATED FROM PYTHON SOURCE LINES 138-141
 
-When we call :meth:`verde.Vector.predict` or :meth:`verde.Vector.grid`, we'll get back
-predictions for two components instead of just one. Each prediction comes from a
-different :class:`verde.Trend`.
+When we call :meth:`verde.Vector.predict` or :meth:`verde.Vector.grid`, we'll
+get back predictions for two components instead of just one. Each prediction
+comes from a different :class:`verde.Trend`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 138-151
+.. GENERATED FROM PYTHON SOURCE LINES 141-154
 
 .. code-block:: default
 
@@ -291,22 +296,23 @@ different :class:`verde.Trend`.
 
 
 
-.. image:: /tutorials/images/sphx_glr_vectors_003.png
-    :alt: Trend residuals
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_vectors_003.png
+   :alt: Trend residuals
+   :srcset: /tutorials/images/sphx_glr_vectors_003.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 152-156
+.. GENERATED FROM PYTHON SOURCE LINES 155-159
 
-As expected, the residuals are higher for the North component because of the lower
-degree polynomial.
+As expected, the residuals are higher for the North component because of the
+lower degree polynomial.
 
 Let's make geographic grids of these trends.
 
-.. GENERATED FROM PYTHON SOURCE LINES 156-167
+.. GENERATED FROM PYTHON SOURCE LINES 159-170
 
 .. code-block:: default
 
@@ -331,6 +337,8 @@ Let's make geographic grids of these trends.
 
  .. code-block:: none
 
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:463: FutureWarning: The 'spacing', 'shape' and 'region' arguments will be removed in Verde v2.0.0. Please use the 'verde.grid_coordinates' function to define grid coordinates and pass them as the 'coordinates' argument.
+      warnings.warn(
     <xarray.Dataset>
     Dimensions:          (latitude: 49, longitude: 47)
     Coordinates:
@@ -345,15 +353,15 @@ Let's make geographic grids of these trends.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 168-173
+.. GENERATED FROM PYTHON SOURCE LINES 171-176
 
-By default, the names of the data components in the :class:`xarray.Dataset` are
-``east_component`` and ``north_component``. This can be customized using the
-``data_names`` argument.
+By default, the names of the data components in the :class:`xarray.Dataset`
+are ``east_component`` and ``north_component``. This can be customized using
+the ``data_names`` argument.
 
 Now we can map the trends.
 
-.. GENERATED FROM PYTHON SOURCE LINES 173-198
+.. GENERATED FROM PYTHON SOURCE LINES 176-201
 
 .. code-block:: default
 
@@ -385,9 +393,10 @@ Now we can map the trends.
 
 
 
-.. image:: /tutorials/images/sphx_glr_vectors_004.png
-    :alt: East component trend, North component trend
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_vectors_004.png
+   :alt: East component trend, North component trend
+   :srcset: /tutorials/images/sphx_glr_vectors_004.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -396,26 +405,28 @@ Now we can map the trends.
 
  .. code-block:: none
 
-    /usr/share/miniconda3/envs/testing/lib/python3.8/site-packages/verde/datasets/sample_data.py:293: UserWarning: All kwargs are being ignored. They are accepted to guarantee backward compatibility.
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/datasets/sample_data.py:331: UserWarning: All kwargs are being ignored. They are accepted to guarantee backward compatibility.
+      warnings.warn(
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/datasets/sample_data.py:331: UserWarning: All kwargs are being ignored. They are accepted to guarantee backward compatibility.
       warnings.warn(
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 199-209
+.. GENERATED FROM PYTHON SOURCE LINES 202-212
 
 Gridding
 --------
 
 You can use :class:`verde.Vector` to create multi-component gridders out of
-:class:`verde.Spline` the same way as we did for trends. In this case, each component
-is treated separately.
+:class:`verde.Spline` the same way as we did for trends. In this case, each
+component is treated separately.
 
 We can start by splitting the data into training and testing sets (see
 :ref:`model_selection`). Notice that :func:`verde.train_test_split` work for
 multicomponent data automatically.
 
-.. GENERATED FROM PYTHON SOURCE LINES 209-217
+.. GENERATED FROM PYTHON SOURCE LINES 212-220
 
 .. code-block:: default
 
@@ -434,17 +445,17 @@ multicomponent data automatically.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 218-225
+.. GENERATED FROM PYTHON SOURCE LINES 221-228
 
 Now we can make a 2-component spline. Since :class:`verde.Vector` implements
-``fit``, ``predict``, and ``filter``, we can use it in a :class:`verde.Chain` to build
-a pipeline.
+``fit``, ``predict``, and ``filter``, we can use it in a :class:`verde.Chain`
+to build a pipeline.
 
-We need to use a bit of damping so that the weights can be taken into account. Splines
-without damping provide a perfect fit to the data and ignore the weights as a
-consequence.
+We need to use a bit of damping so that the weights can be taken into
+account. Splines without damping provide a perfect fit to the data and ignore
+the weights as a consequence.
 
-.. GENERATED FROM PYTHON SOURCE LINES 225-235
+.. GENERATED FROM PYTHON SOURCE LINES 228-238
 
 .. code-block:: default
 
@@ -477,17 +488,18 @@ consequence.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 236-243
+.. GENERATED FROM PYTHON SOURCE LINES 239-247
 
 .. warning::
 
-    Never generate the component gridders with ``[vd.Spline()]*2``. This will result
-    in each component being a represented by **the same Spline object**, causing
-    problems when trying to fit it to different components.
+    Never generate the component gridders with ``[vd.Spline()]*2``. This will
+    result in each component being a represented by **the same Spline
+    object**, causing problems when trying to fit it to different components.
 
-Fitting the spline and gridding is exactly the same as what we've done before.
+Fitting the spline and gridding is exactly the same as what we've done
+before.
 
-.. GENERATED FROM PYTHON SOURCE LINES 244-258
+.. GENERATED FROM PYTHON SOURCE LINES 248-262
 
 .. code-block:: default
 
@@ -515,26 +527,30 @@ Fitting the spline and gridding is exactly the same as what we've done before.
 
  .. code-block:: none
 
-    0.992677062678452
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    0.9926777718153782
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:463: FutureWarning: The 'spacing', 'shape' and 'region' arguments will be removed in Verde v2.0.0. Please use the 'verde.grid_coordinates' function to define grid coordinates and pass them as the 'coordinates' argument.
+      warnings.warn(
     <xarray.Dataset>
     Dimensions:          (latitude: 49, longitude: 47)
     Coordinates:
       * longitude        (longitude) float64 235.7 235.9 236.1 ... 244.6 244.8 245.0
       * latitude         (latitude) float64 32.29 32.49 32.69 ... 41.5 41.7 41.9
     Data variables:
-        east_component   (latitude, longitude) float64 -0.04659 ... -0.0006119
-        north_component  (latitude, longitude) float64 0.08796 ... -0.0006046
+        east_component   (latitude, longitude) float64 -0.0466 ... -0.0006086
+        north_component  (latitude, longitude) float64 0.08793 0.08534 ... -0.000605
     Attributes:
         metadata:  Generated by Chain(steps=[('mean', BlockMean(spacing=22200.0, ...
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 259-260
+.. GENERATED FROM PYTHON SOURCE LINES 263-264
 
 Mask out the points too far from data and plot the gridded vectors.
 
-.. GENERATED FROM PYTHON SOURCE LINES 260-284
+.. GENERATED FROM PYTHON SOURCE LINES 264-288
 
 .. code-block:: default
 
@@ -565,15 +581,16 @@ Mask out the points too far from data and plot the gridded vectors.
 
 
 
-.. image:: /tutorials/images/sphx_glr_vectors_005.png
-    :alt: Gridded velocities
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_vectors_005.png
+   :alt: Gridded velocities
+   :srcset: /tutorials/images/sphx_glr_vectors_005.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 285-300
+.. GENERATED FROM PYTHON SOURCE LINES 289-304
 
 GPS/GNSS data
 +++++++++++++
@@ -594,7 +611,7 @@ Green's functions.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.329 seconds)
+   **Total running time of the script:** ( 0 minutes  1.867 seconds)
 
 
 .. _sphx_glr_download_tutorials_vectors.py:

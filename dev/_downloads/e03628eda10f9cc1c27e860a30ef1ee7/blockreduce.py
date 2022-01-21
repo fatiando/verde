@@ -15,9 +15,10 @@ data by applying a reduction operation (mean, median, mode, max, etc) to the
 data in blocks. For non-smooth data, like bathymetry, a blocked median filter
 is a good choice.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
 import numpy as np
+
 import verde as vd
 
 # We'll test this on the Baja California shipborne bathymetry data

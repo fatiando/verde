@@ -23,25 +23,28 @@
 Evaluating Performance
 ======================
 
-The Green's functions based interpolations in Verde are all linear regressions under the
-hood. This means that we can use some of the same tactics from
-:mod:`sklearn.model_selection` to evaluate our interpolator's performance. Once we have
-a quantified measure of the quality of a given fitted gridder, we can use it to tune the
-gridder's parameters, like ``damping`` for a :class:`~verde.Spline` (see
-:ref:`model_selection`).
+The Green's functions based interpolations in Verde are all linear regressions
+under the hood. This means that we can use some of the same tactics from
+:mod:`sklearn.model_selection` to evaluate our interpolator's performance. Once
+we have a quantified measure of the quality of a given fitted gridder, we can
+use it to tune the gridder's parameters, like ``damping`` for a
+:class:`~verde.Spline` (see :ref:`model_selection`).
 
-Verde provides adaptations of common scikit-learn tools to work better with spatial
-data. Let's use these tools to evaluate the performance of a :class:`~verde.Spline` on
-our sample air temperature data.
+Verde provides adaptations of common scikit-learn tools to work better with
+spatial data. Let's use these tools to evaluate the performance of a
+:class:`~verde.Spline` on our sample air temperature data.
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-40
+.. GENERATED FROM PYTHON SOURCE LINES 24-43
 
 .. code-block:: default
 
-    import numpy as np
-    import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
+    import dask
+    import matplotlib.pyplot as plt
+    import numpy as np
     import pyproj
+    from sklearn.model_selection import ShuffleSplit
+
     import verde as vd
 
     data = vd.datasets.fetch_texas_wind()
@@ -61,26 +64,26 @@ our sample air temperature data.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-57
+.. GENERATED FROM PYTHON SOURCE LINES 44-60
 
 Splitting the data
 ------------------
 
-We can't evaluate a gridder on the data that went into fitting it. The true test of a
-model is if it can correctly predict data that it hasn't seen before. scikit-learn has
-the :func:`sklearn.model_selection.train_test_split` function to separate a dataset
-into two parts: one for fitting the model (called *training* data) and a separate one
-for evaluating the model (called *testing* data). Using it with spatial data would
-involve some tedious array conversions so Verde implements
-:func:`verde.train_test_split` which does the same thing but takes coordinates and
-data arrays instead.
+We can't evaluate a gridder on the data that went into fitting it. The true
+test of a model is if it can correctly predict data that it hasn't seen
+before. scikit-learn has the :func:`sklearn.model_selection.train_test_split`
+function to separate a dataset into two parts: one for fitting the model
+(called *training* data) and a separate one for evaluating the model (called
+*testing* data). Using it with spatial data would involve some tedious array
+conversions so Verde implements :func:`verde.train_test_split` which does the
+same thing but takes coordinates and data arrays instead.
 
-The split is done randomly so we specify a seed for the random number generator to
-guarantee that we'll get the same result every time we run this example. You probably
-don't want to do that for real data. We'll keep 30% of the data to use for testing
-(``test_size=0.3``).
+The split is done randomly so we specify a seed for the random number
+generator to guarantee that we'll get the same result every time we run this
+example. You probably don't want to do that for real data. We'll keep 30% of
+the data to use for testing (``test_size=0.3``).
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-62
+.. GENERATED FROM PYTHON SOURCE LINES 60-65
 
 .. code-block:: default
 
@@ -96,13 +99,13 @@ don't want to do that for real data. We'll keep 30% of the data to use for testi
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-66
-
-The returned ``train`` and ``test`` variables are tuples containing coordinates, data,
-and (optionally) weights arrays. Since we're not using weights, the third element of
-the tuple will be ``None``:
-
 .. GENERATED FROM PYTHON SOURCE LINES 66-69
+
+The returned ``train`` and ``test`` variables are tuples containing
+coordinates, data, and (optionally) weights arrays. Since we're not using
+weights, the third element of the tuple will be ``None``:
+
+.. GENERATED FROM PYTHON SOURCE LINES 69-72
 
 .. code-block:: default
 
@@ -178,34 +181,34 @@ the tuple will be ``None``:
            3166283.29483646, 3185632.21052805, 3023883.40574366,
            3417009.35720713, 3393428.62105992, 3316162.95136998,
            3082031.84084665, 2953318.41751121, 2933549.90421567,
-           2932676.98398158, 3020406.81467849, 3574040.01091358,
-           2790505.48355738, 2973418.65910264, 3307698.11129963,
+           2932676.98398158, 3020406.81467849, 3574040.01091357,
+           2790505.48355737, 2973418.65910265, 3307698.11129963,
            2945505.02203083, 3311522.23776724, 2975313.52946633,
            2861050.32840049, 2887880.3960125 , 2945898.28967202,
            2941474.84700705, 3225124.76062141, 3281387.74953726,
-           3159592.7976058 , 3315823.31326006, 2571845.86314015,
+           3159592.7976058 , 3315823.31326005, 2571845.86314014,
            3331844.27865595, 2740231.34771917, 3387759.04557859,
-           3060081.02436476, 3041845.53079301, 3210124.8374159 ,
+           3060081.02436475, 3041845.53079302, 3210124.8374159 ,
            3164074.94938398, 3271836.50108902, 2579123.45324659,
            2545954.59014788, 3342747.49976745, 2979356.30060547,
-           3009203.6131726 , 2719110.10495866, 2846814.97160994,
+           3009203.6131726 , 2719110.10495866, 2846814.97160993,
            3188985.42191104, 2983466.36042869, 3294675.45126596,
            3039773.54716658, 3071437.56540843, 3483134.04990316,
            3294607.6695262 , 3667917.1194501 , 3619924.68699415,
            2573548.51452294, 2821249.74463367, 2683074.91768678,
-           3285461.36507139, 3652271.03785312, 3283204.30900926,
+           3285461.36507139, 3652271.03785311, 3283204.30900926,
            3210853.02111693, 2943844.71518428, 3230601.11578242,
-           3137567.17555595, 2777047.34270749, 2945144.53916802,
+           3137567.17555594, 2777047.34270749, 2945144.53916802,
            3066497.95513723, 3110760.99744545, 3188091.12461515,
            3298991.83921469, 3394820.85278175, 3391739.95155904,
            3286590.08456857, 3389059.21988513, 3085628.36101872,
-           3630202.83368938, 3134419.72201147, 3256654.45390054,
+           3630202.83368938, 3134419.72201146, 3256654.45390054,
            2573738.88783378, 3339785.07776942, 3063935.13249589,
            3648601.05705207, 3330211.5352512 , 3142162.17467495,
            2982622.30031315, 3282673.97488324, 3183676.67838886,
            3006522.74236789, 2990221.2234946 , 3532083.29147308,
-           2942206.50247381, 3121339.67312345, 2913261.59698676,
-           3259243.23756798])), (array([18.15166667, 12.17857143, 16.45916667, 16.60084507, 12.41170213,
+           2942206.50247381, 3121339.67312344, 2913261.59698675,
+           3259243.23756799])), (array([18.15166667, 12.17857143, 16.45916667, 16.60084507, 12.41170213,
             9.67159091, 16.33043478,  9.43978723, 11.10313725, 10.22955556,
            11.57575758, 12.47194444, 12.22138889, 10.36794118,  8.775     ,
            10.46055556, 12.55241379, 11.78611111,  7.89736111,  7.06944444,
@@ -235,7 +238,7 @@ the tuple will be ``None``:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-73
+.. GENERATED FROM PYTHON SOURCE LINES 74-76
 
 .. code-block:: default
 
@@ -273,20 +276,20 @@ the tuple will be ``None``:
            3027361.13101297, 2757426.84021469, 3028296.78889616,
            2903724.5557224 , 3182157.20869187, 3066100.23492454,
            3255225.28091213, 2860584.19616269, 2934171.90242784,
-           3714012.76916745, 3011874.16439619, 3080991.84629853,
+           3714012.76916745, 3011874.16439619, 3080991.84629854,
            2915167.81938923, 2873187.46869299, 3003831.55941359,
            2735051.95799933, 2953788.49303643, 2915178.71303919,
            3249859.25595487, 2916780.19714376, 3182123.69352164,
-           3337515.62533228, 3230904.19741824, 3187923.45258656,
-           3041327.49695636, 2912727.91396922, 2979696.00616845,
-           2954947.37073634, 3348209.3192316 , 3284716.48014213,
+           3337515.62533228, 3230904.19741823, 3187923.45258655,
+           3041327.49695635, 2912727.91396922, 2979696.00616845,
+           2954947.37073634, 3348209.31923159, 3284716.48014213,
            3043124.19066597, 3246452.13452785, 3189924.51834186,
-           3339251.70946121, 2715192.27113021, 2992766.36237038,
-           3024323.56139651, 3192216.72345509, 3430837.16378734,
+           3339251.70946121, 2715192.2711302 , 2992766.36237038,
+           3024323.56139652, 3192216.72345509, 3430837.16378734,
            3327060.19688609, 2904921.67586422, 2871114.86619099,
            2807032.29570529, 2992876.08017689, 3082728.91614068,
-           3254021.33225593, 3216131.11265389, 3253177.52895142,
-           3265222.50231349, 2744264.94274218, 3049585.98626738,
+           3254021.33225593, 3216131.11265388, 3253177.52895142,
+           3265222.50231348, 2744264.94274218, 3049585.98626738,
            3129450.24999779, 3452568.99011507])), (array([17.71611111, 17.3918    , 10.73421875,  8.08555556, 16.258125  ,
            16.18181818, 15.87828571,  7.47625   , 11.02857143, 12.25472222,
            17.16923077, 15.60208333,  5.04152778, 13.14263889, 12.47835821,
@@ -303,11 +306,11 @@ the tuple will be ``None``:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-75
+.. GENERATED FROM PYTHON SOURCE LINES 77-78
 
 Let's plot these two datasets with different colors:
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-85
+.. GENERATED FROM PYTHON SOURCE LINES 78-88
 
 .. code-block:: default
 
@@ -324,20 +327,22 @@ Let's plot these two datasets with different colors:
 
 
 
-.. image:: /tutorials/images/sphx_glr_model_evaluation_001.png
-    :alt: Air temperature measurements for Texas
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_model_evaluation_001.png
+   :alt: Air temperature measurements for Texas
+   :srcset: /tutorials/images/sphx_glr_model_evaluation_001.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-88
+.. GENERATED FROM PYTHON SOURCE LINES 89-92
 
-We can pass the training dataset to the :meth:`~verde.base.BaseGridder.fit` method of
-most gridders using Python's argument expansion using the ``*`` symbol.
+We can pass the training dataset to the :meth:`~verde.base.BaseGridder.fit`
+method of most gridders using Python's argument expansion using the ``*``
+symbol.
 
-.. GENERATED FROM PYTHON SOURCE LINES 88-92
+.. GENERATED FROM PYTHON SOURCE LINES 92-96
 
 .. code-block:: default
 
@@ -360,12 +365,12 @@ most gridders using Python's argument expansion using the ``*`` symbol.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-95
+.. GENERATED FROM PYTHON SOURCE LINES 97-99
 
-Let's plot the gridded result to see what it looks like. First, we'll create a
-geographic grid:
+Let's plot the gridded result to see what it looks like. First, we'll create
+a geographic grid:
 
-.. GENERATED FROM PYTHON SOURCE LINES 95-104
+.. GENERATED FROM PYTHON SOURCE LINES 99-108
 
 .. code-block:: default
 
@@ -388,6 +393,8 @@ geographic grid:
 
  .. code-block:: none
 
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:463: FutureWarning: The 'spacing', 'shape' and 'region' arguments will be removed in Verde v2.0.0. Please use the 'verde.grid_coordinates' function to define grid coordinates and pass them as the 'coordinates' argument.
+      warnings.warn(
     <xarray.Dataset>
     Dimensions:      (latitude: 43, longitude: 51)
     Coordinates:
@@ -401,12 +408,12 @@ geographic grid:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 105-107
+.. GENERATED FROM PYTHON SOURCE LINES 109-111
 
-Then, we'll mask out grid points that are too far from any given data point and plot
-the grid:
+Then, we'll mask out grid points that are too far from any given data point
+and plot the grid:
 
-.. GENERATED FROM PYTHON SOURCE LINES 107-130
+.. GENERATED FROM PYTHON SOURCE LINES 111-134
 
 .. code-block:: default
 
@@ -436,26 +443,27 @@ the grid:
 
 
 
-.. image:: /tutorials/images/sphx_glr_model_evaluation_002.png
-    :alt: Gridded temperature
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_model_evaluation_002.png
+   :alt: Gridded temperature
+   :srcset: /tutorials/images/sphx_glr_model_evaluation_002.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 131-139
+.. GENERATED FROM PYTHON SOURCE LINES 135-143
 
 Scoring
 --------
 
-Gridders in Verde implement the :meth:`~verde.base.BaseGridder.score` method that
-calculates the `R² coefficient of determination
-<https://en.wikipedia.org/wiki/Coefficient_of_determination>`__
-for a given comparison dataset (``test`` in our case). The R² score is at most 1,
-meaning a perfect prediction, but has no lower bound.
+Gridders in Verde implement the :meth:`~verde.base.BaseGridder.score` method
+that calculates the `R² coefficient of determination
+<https://en.wikipedia.org/wiki/Coefficient_of_determination>`__ for a given
+comparison dataset (``test`` in our case). The R² score is at most 1, meaning
+a perfect prediction, but has no lower bound.
 
-.. GENERATED FROM PYTHON SOURCE LINES 139-143
+.. GENERATED FROM PYTHON SOURCE LINES 143-147
 
 .. code-block:: default
 
@@ -473,23 +481,25 @@ meaning a perfect prediction, but has no lower bound.
 
  .. code-block:: none
 
-    R² score: 0.840455299499375
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    R² score: 0.8404552994992693
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 144-152
+.. GENERATED FROM PYTHON SOURCE LINES 148-156
 
-That's a good score meaning that our gridder is able to accurately predict data that
-wasn't used in the gridding algorithm.
+That's a good score meaning that our gridder is able to accurately predict
+data that wasn't used in the gridding algorithm.
 
 .. caution::
 
-    Once caveat for this score is that it is highly dependent on the particular split
-    that we made. Changing the random number generator seed in
-    :func:`verde.train_test_split` will result in a different score.
+    Once caveat for this score is that it is highly dependent on the
+    particular split that we made. Changing the random number generator seed
+    in :func:`verde.train_test_split` will result in a different score.
 
-.. GENERATED FROM PYTHON SOURCE LINES 152-160
+.. GENERATED FROM PYTHON SOURCE LINES 156-164
 
 .. code-block:: default
 
@@ -511,23 +521,26 @@ wasn't used in the gridding algorithm.
 
  .. code-block:: none
 
-    R² score with seed 1: 0.7832246926676265
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    R² score with seed 1: 0.7832246926768177
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 161-169
+.. GENERATED FROM PYTHON SOURCE LINES 165-174
 
 Cross-validation
 ----------------
 
 A more robust way of scoring the gridders is to use function
-:func:`verde.cross_val_score`, which (by default) uses a `k-fold cross-validation
+:func:`verde.cross_val_score`, which (by default) uses a `k-fold
+cross-validation
 <https://en.wikipedia.org/wiki/Cross-validation_(statistics)#k-fold_cross-validation>`__
-by default. It will split the data *k* times and return the score on each *fold*. We
-can then take a mean of these scores.
+by default. It will split the data *k* times and return the score on each
+*fold*. We can then take a mean of these scores.
 
-.. GENERATED FROM PYTHON SOURCE LINES 169-174
+.. GENERATED FROM PYTHON SOURCE LINES 174-179
 
 .. code-block:: default
 
@@ -546,25 +559,33 @@ can then take a mean of these scores.
 
  .. code-block:: none
 
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
     k-fold scores: [0.81655898 0.72019255 0.81596348 0.87740087 0.75006854]
-    Mean score: 0.7960368854799368
+    Mean score: 0.7960368854873764
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 175-179
+.. GENERATED FROM PYTHON SOURCE LINES 180-184
 
 You can also use most cross-validation splitter classes from
-:mod:`sklearn.model_selection` by specifying the ``cv`` argument. For example, if we
-want to shuffle then split the data *n* times
+:mod:`sklearn.model_selection` by specifying the ``cv`` argument. For
+example, if we want to shuffle then split the data *n* times
 (:class:`sklearn.model_selection.ShuffleSplit`):
 
-.. GENERATED FROM PYTHON SOURCE LINES 179-190
+.. GENERATED FROM PYTHON SOURCE LINES 184-193
 
 .. code-block:: default
 
-
-    from sklearn.model_selection import ShuffleSplit
 
     shuffle = ShuffleSplit(n_splits=10, test_size=0.3, random_state=0)
 
@@ -584,14 +605,34 @@ want to shuffle then split the data *n* times
 
  .. code-block:: none
 
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
     shuffle scores: [0.8404553  0.79219264 0.60098099 0.73123421 0.67325199 0.70560489
      0.68905622 0.83517217 0.86908658 0.84133251]
-    Mean score: 0.757836751698671
+    Mean score: 0.7578367516969872
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 191-200
+.. GENERATED FROM PYTHON SOURCE LINES 194-203
 
 Parallel cross-validation
 -------------------------
@@ -603,7 +644,7 @@ library for parallel execution.
 
 To run :func:`verde.cross_val_score` with Dask, use the ``delayed`` argument:
 
-.. GENERATED FROM PYTHON SOURCE LINES 200-206
+.. GENERATED FROM PYTHON SOURCE LINES 203-209
 
 .. code-block:: default
 
@@ -623,24 +664,22 @@ To run :func:`verde.cross_val_score` with Dask, use the ``delayed`` argument:
 
  .. code-block:: none
 
-    Delayed k-fold scores: [Delayed('fit_score-edff0014-66c8-4ae0-885a-8fffc691583f'), Delayed('fit_score-b99a203a-9e3c-4c62-a96f-4f8dba5579e6'), Delayed('fit_score-6c5a111b-6461-42f7-9567-4176041b9700'), Delayed('fit_score-d1bec514-4e70-43ff-a54a-0b940a5571a1'), Delayed('fit_score-63681c86-3ae5-4666-836e-4c1f1108ca02')]
+    Delayed k-fold scores: [Delayed('fit_score-e7218d1e-6d06-4486-a427-ba61008c4146'), Delayed('fit_score-d7845649-2843-4907-a957-38deceeb164e'), Delayed('fit_score-5578e801-889d-49c7-937b-14acaf739f1a'), Delayed('fit_score-acc0eacc-f6ee-4850-ab41-538028335b5e'), Delayed('fit_score-7a274696-9da0-4168-b5ea-86d090bacc05')]
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 207-211
+.. GENERATED FROM PYTHON SOURCE LINES 210-214
 
 In this case, the scores haven't actually been computed yet (hence the
 "delayed" term). Instead, Verde scheduled the operations with Dask. Since we
 are interested only in the mean score, we can schedule the mean as well using
 :func:`dask.delayed`:
 
-.. GENERATED FROM PYTHON SOURCE LINES 211-217
+.. GENERATED FROM PYTHON SOURCE LINES 214-218
 
 .. code-block:: default
 
-
-    import dask
 
     mean_score = dask.delayed(np.mean)(scores)
     print("Delayed mean:", mean_score)
@@ -655,18 +694,18 @@ are interested only in the mean score, we can schedule the mean as well using
 
  .. code-block:: none
 
-    Delayed mean: Delayed('mean-aa88e62a-60ef-426d-ad93-61a3ffb46aca')
+    Delayed mean: Delayed('mean-3bb3a132-9a0c-420b-b869-7ada9525fe4a')
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 218-221
+.. GENERATED FROM PYTHON SOURCE LINES 219-222
 
 To run the scheduled computations and get the mean score, use
 :func:`dask.compute` or ``.compute()``. Dask will automatically execute
 things in parallel.
 
-.. GENERATED FROM PYTHON SOURCE LINES 221-225
+.. GENERATED FROM PYTHON SOURCE LINES 222-226
 
 .. code-block:: default
 
@@ -684,12 +723,22 @@ things in parallel.
 
  .. code-block:: none
 
-    Mean score: 0.7960368854799368
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
+    Mean score: 0.7960368854873764
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 226-231
+.. GENERATED FROM PYTHON SOURCE LINES 227-232
 
 .. note::
 
@@ -697,7 +746,7 @@ things in parallel.
     intensive. Make sure you have enough RAM to run multiple fits.
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 233-241
+.. GENERATED FROM PYTHON SOURCE LINES 234-242
 
 Improving the score
 -------------------
@@ -711,7 +760,7 @@ that.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.338 seconds)
+   **Total running time of the script:** ( 0 minutes  0.432 seconds)
 
 
 .. _sphx_glr_download_tutorials_model_evaluation.py:

@@ -21,20 +21,24 @@
 Using Weights
 =============
 
-One of the advantages of using a Green's functions approach to interpolation is that we
-can easily weight the data to give each point more or less influence over the results.
-This is a good way to not let data points with large uncertainties bias the
-interpolation or the data decimation.
+One of the advantages of using a Green's functions approach to interpolation is
+that we can easily weight the data to give each point more or less influence
+over the results. This is a good way to not let data points with large
+uncertainties bias the interpolation or the data decimation.
 
-.. GENERATED FROM PYTHON SOURCE LINES 16-23
+.. GENERATED FROM PYTHON SOURCE LINES 16-27
 
 .. code-block:: default
 
-    # The weights vary a lot so it's better to plot them using a logarithmic color scale
-    from matplotlib.colors import LogNorm
-    import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
+    import matplotlib.pyplot as plt
     import numpy as np
+    import pyproj
+
+    # The weights vary a lot so it's better to plot them using a logarithmic color
+    # scale
+    from matplotlib.colors import LogNorm
+
     import verde as vd
 
 
@@ -44,13 +48,13 @@ interpolation or the data decimation.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-27
+.. GENERATED FROM PYTHON SOURCE LINES 28-31
 
 We'll use some sample GPS vertical ground velocity which has some variable
 uncertainties associated with each data point. The data are loaded as a
 pandas.DataFrame:
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-30
+.. GENERATED FROM PYTHON SOURCE LINES 31-34
 
 .. code-block:: default
 
@@ -79,19 +83,20 @@ pandas.DataFrame:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-33
+.. GENERATED FROM PYTHON SOURCE LINES 35-38
 
-Let's plot our data using Cartopy to see what the vertical velocities and their
-uncertainties look like. We'll make a function for this so we can reuse it later on.
+Let's plot our data using Cartopy to see what the vertical velocities and
+their uncertainties look like. We'll make a function for this so we can reuse
+it later on.
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-74
+.. GENERATED FROM PYTHON SOURCE LINES 38-79
 
 .. code-block:: default
 
 
 
     def plot_data(coordinates, velocity, weights, title_data, title_weights):
-        "Make two maps of our data, one with the data and one with the weights/uncertainty"
+        "Make two maps of our data, one with the data and one with the weights"
         fig, axes = plt.subplots(
             1, 2, figsize=(9.5, 7), subplot_kw=dict(projection=ccrs.Mercator())
         )
@@ -132,30 +137,32 @@ uncertainties look like. We'll make a function for this so we can reuse it later
 
 
 
-.. image:: /tutorials/images/sphx_glr_weights_001.png
-    :alt: Vertical GPS velocity, Uncertainty (m/yr)
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_weights_001.png
+   :alt: Vertical GPS velocity, Uncertainty (m/yr)
+   :srcset: /tutorials/images/sphx_glr_weights_001.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-87
+.. GENERATED FROM PYTHON SOURCE LINES 80-93
 
 Weights in data decimation
 --------------------------
 
-:class:`~verde.BlockReduce` can't output weights for each data point because it
-doesn't know which reduction operation it's using. If you want to do a weighted
-interpolation, like :class:`verde.Spline`, :class:`~verde.BlockReduce` won't propagate
-the weights to the interpolation function. If your data are relatively smooth, you can
-use :class:`verde.BlockMean` instead to decimated data and produce weights. It can
-calculate different kinds of weights, depending on configuration options and what you
-give it as input.
+:class:`~verde.BlockReduce` can't output weights for each data point because
+it doesn't know which reduction operation it's using. If you want to do a
+weighted interpolation, like :class:`verde.Spline`,
+:class:`~verde.BlockReduce` won't propagate the weights to the interpolation
+function. If your data are relatively smooth, you can use
+:class:`verde.BlockMean` instead to decimated data and produce weights. It
+can calculate different kinds of weights, depending on configuration options
+and what you give it as input.
 
 Let's explore all of the possibilities.
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-90
+.. GENERATED FROM PYTHON SOURCE LINES 93-96
 
 .. code-block:: default
 
@@ -177,13 +184,13 @@ Let's explore all of the possibilities.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 91-112
+.. GENERATED FROM PYTHON SOURCE LINES 97-118
 
 Option 1: No input weights
 ++++++++++++++++++++++++++
 
-In this case, we'll get a standard mean and the output weights will be 1 over the
-variance of the data in each block:
+In this case, we'll get a standard mean and the output weights will be 1 over
+the variance of the data in each block:
 
 .. math::
 
@@ -193,15 +200,15 @@ variance of the data in each block:
     \: , \qquad
     w = \dfrac{1}{\sigma^2}
 
-in which :math:`N` is the number of data points in the block, :math:`d_i` are the
-data values in the block, and the output values for the block are the mean data
-:math:`\bar{d}` and the weight :math:`w`.
+in which :math:`N` is the number of data points in the block, :math:`d_i` are
+the data values in the block, and the output values for the block are the
+mean data :math:`\bar{d}` and the weight :math:`w`.
 
-Notice that data points that are more uncertain don't necessarily have smaller
-weights. Instead, the blocks that contain data with sharper variations end up having
-smaller weights, like the data points in the south.
+Notice that data points that are more uncertain don't necessarily have
+smaller weights. Instead, the blocks that contain data with sharper
+variations end up having smaller weights, like the data points in the south.
 
-.. GENERATED FROM PYTHON SOURCE LINES 112-124
+.. GENERATED FROM PYTHON SOURCE LINES 118-130
 
 .. code-block:: default
 
@@ -220,23 +227,25 @@ smaller weights, like the data points in the south.
 
 
 
-.. image:: /tutorials/images/sphx_glr_weights_002.png
-    :alt: Mean vertical GPS velocity, Weights based on data variance
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_weights_002.png
+   :alt: Mean vertical GPS velocity, Weights based on data variance
+   :srcset: /tutorials/images/sphx_glr_weights_002.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 125-146
+.. GENERATED FROM PYTHON SOURCE LINES 131-154
 
 Option 2: Input weights are not related to the uncertainty of the data
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 This is the case when data weights are chosen by the user, not based on the
-measurement uncertainty. For example, when you need to give less importance to a
-portion of the data and no uncertainties are available. The mean will be weighted and
-the output weights will be 1 over the weighted variance of the data in each block:
+measurement uncertainty. For example, when you need to give less importance
+to a portion of the data and no uncertainties are available. The mean will be
+weighted and the output weights will be 1 over the weighted variance of the
+data in each block:
 
 .. math::
 
@@ -249,10 +258,11 @@ the output weights will be 1 over the weighted variance of the data in each bloc
 
 in which :math:`w_i` are the input weights in the block.
 
-The output will be similar to the one above but points with larger initial weights
-will have a smaller influence on the mean and also on the output weights.
+The output will be similar to the one above but points with larger initial
+weights will have a smaller influence on the mean and also on the output
+weights.
 
-.. GENERATED FROM PYTHON SOURCE LINES 146-165
+.. GENERATED FROM PYTHON SOURCE LINES 154-173
 
 .. code-block:: default
 
@@ -278,25 +288,27 @@ will have a smaller influence on the mean and also on the output weights.
 
 
 
-.. image:: /tutorials/images/sphx_glr_weights_003.png
-    :alt: Weighted mean vertical GPS velocity, Weights based on weighted data variance
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_weights_003.png
+   :alt: Weighted mean vertical GPS velocity, Weights based on weighted data variance
+   :srcset: /tutorials/images/sphx_glr_weights_003.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 166-190
+.. GENERATED FROM PYTHON SOURCE LINES 174-200
 
 Option 3: Input weights are 1 over the data uncertainty squared
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-If input weights are 1 over the data uncertainty squared, we can use uncertainty
-propagation to calculate the uncertainty of the weighted mean and use it to define our
-output weights. Use option ``uncertainty=True`` to tell :class:`~verde.BlockMean` to
-calculate weights based on the propagated uncertainty of the data. The output weights
-will be 1 over the propagated uncertainty squared. In this case, the **input weights
-must not be normalized**. This is preferable if you know the uncertainty of the data.
+If input weights are 1 over the data uncertainty squared, we can use
+uncertainty propagation to calculate the uncertainty of the weighted mean and
+use it to define our output weights. Use option ``uncertainty=True`` to tell
+:class:`~verde.BlockMean` to calculate weights based on the propagated
+uncertainty of the data. The output weights will be 1 over the propagated
+uncertainty squared. In this case, the **input weights must not be
+normalized**. This is preferable if you know the uncertainty of the data.
 
 .. math::
 
@@ -307,13 +319,14 @@ must not be normalized**. This is preferable if you know the uncertainty of the 
     w = \dfrac{1}{\sigma_{\bar{d}^*}^2}
 
 in which :math:`\sigma_i` are the input data uncertainties in the block and
-:math:`\sigma_{\bar{d}^*}` is the propagated uncertainty of the weighted mean in the
-block.
+:math:`\sigma_{\bar{d}^*}` is the propagated uncertainty of the weighted mean
+in the block.
 
-Notice that in this case the output weights reflect the input data uncertainties. Less
-weight is given to the data points that had larger uncertainties from the start.
+Notice that in this case the output weights reflect the input data
+uncertainties. Less weight is given to the data points that had larger
+uncertainties from the start.
 
-.. GENERATED FROM PYTHON SOURCE LINES 190-208
+.. GENERATED FROM PYTHON SOURCE LINES 200-218
 
 .. code-block:: default
 
@@ -338,15 +351,16 @@ weight is given to the data points that had larger uncertainties from the start.
 
 
 
-.. image:: /tutorials/images/sphx_glr_weights_004.png
-    :alt: Weighted mean vertical GPS velocity, Weights based on data uncertainty
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_weights_004.png
+   :alt: Weighted mean vertical GPS velocity, Weights based on data uncertainty
+   :srcset: /tutorials/images/sphx_glr_weights_004.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 209-224
+.. GENERATED FROM PYTHON SOURCE LINES 219-235
 
 .. note::
 
@@ -357,18 +371,18 @@ Interpolation with weights
 --------------------------
 
 The Green's functions based interpolation classes in Verde, like
-:class:`~verde.Spline`, can take input weights if you want to give less importance to
-some data points. In our case, the points with larger uncertainties shouldn't have the
-same influence in our gridded solution as the points with lower uncertainties.
+:class:`~verde.Spline`, can take input weights if you want to give less
+importance to some data points. In our case, the points with larger
+uncertainties shouldn't have the same influence in our gridded solution as
+the points with lower uncertainties.
 
-Let's setup a projection to grid our geographic data using the Cartesian spline
-gridder.
+Let's setup a projection to grid our geographic data using the Cartesian
+spline gridder.
 
-.. GENERATED FROM PYTHON SOURCE LINES 225-233
+.. GENERATED FROM PYTHON SOURCE LINES 236-243
 
 .. code-block:: default
 
-    import pyproj
 
     projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
     proj_coords = projection(data.longitude.values, data.latitude.values)
@@ -383,16 +397,16 @@ gridder.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 234-240
+.. GENERATED FROM PYTHON SOURCE LINES 244-250
 
-Now we can grid our data using a weighted spline. We'll use the block mean results
-with uncertainty based weights.
+Now we can grid our data using a weighted spline. We'll use the block mean
+results with uncertainty based weights.
 
-Note that the weighted spline solution will only work on a non-exact interpolation. So
-we'll need to use some damping regularization or not use the data locations for the
-point forces. Here, we'll apply a bit of damping.
+Note that the weighted spline solution will only work on a non-exact
+interpolation. So we'll need to use some damping regularization or not use
+the data locations for the point forces. Here, we'll apply a bit of damping.
 
-.. GENERATED FROM PYTHON SOURCE LINES 240-257
+.. GENERATED FROM PYTHON SOURCE LINES 250-267
 
 .. code-block:: default
 
@@ -417,14 +431,23 @@ point forces. Here, we'll apply a bit of damping.
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:463: FutureWarning: The 'spacing', 'shape' and 'region' arguments will be removed in Verde v2.0.0. Please use the 'verde.grid_coordinates' function to define grid coordinates and pass them as the 'coordinates' argument.
+      warnings.warn(
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 258-259
+
+.. GENERATED FROM PYTHON SOURCE LINES 268-269
 
 Calculate an unweighted spline as well for comparison.
 
-.. GENERATED FROM PYTHON SOURCE LINES 259-276
+.. GENERATED FROM PYTHON SOURCE LINES 269-286
 
 .. code-block:: default
 
@@ -449,14 +472,23 @@ Calculate an unweighted spline as well for comparison.
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:463: FutureWarning: The 'spacing', 'shape' and 'region' arguments will be removed in Verde v2.0.0. Please use the 'verde.grid_coordinates' function to define grid coordinates and pass them as the 'coordinates' argument.
+      warnings.warn(
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 277-278
+
+.. GENERATED FROM PYTHON SOURCE LINES 287-288
 
 Finally, plot the weighted and unweighted grids side by side.
 
-.. GENERATED FROM PYTHON SOURCE LINES 278-314
+.. GENERATED FROM PYTHON SOURCE LINES 288-324
 
 .. code-block:: default
 
@@ -499,9 +531,10 @@ Finally, plot the weighted and unweighted grids side by side.
 
 
 
-.. image:: /tutorials/images/sphx_glr_weights_005.png
-    :alt: Spline interpolation with weights, Spline interpolation without weights
-    :class: sphx-glr-single-img
+.. image-sg:: /tutorials/images/sphx_glr_weights_005.png
+   :alt: Spline interpolation with weights, Spline interpolation without weights
+   :srcset: /tutorials/images/sphx_glr_weights_005.png
+   :class: sphx-glr-single-img
 
 
 
@@ -510,7 +543,7 @@ Finally, plot the weighted and unweighted grids side by side.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.580 seconds)
+   **Total running time of the script:** ( 0 minutes  3.801 seconds)
 
 
 .. _sphx_glr_download_tutorials_weights.py:

@@ -21,25 +21,27 @@
 Gridding with splines
 =====================
 
-Biharmonic spline interpolation is based on estimating vertical forces acting on an
-elastic sheet that yield deformations in the sheet equal to the observed data. The
-results are similar to using :class:`verde.ScipyGridder` with ``method='cubic'`` but
-the interpolation is usually a bit slower. However, the advantage of using
-:class:`verde.Spline` is that we can assign weights to the data and do model evaluation.
+Biharmonic spline interpolation is based on estimating vertical forces acting
+on an elastic sheet that yield deformations in the sheet equal to the observed
+data. The results are similar to using :class:`verde.ScipyGridder` with
+``method='cubic'`` but the interpolation is usually a bit slower. However, the
+advantage of using :class:`verde.Spline` is that we can assign weights to the
+data and do model evaluation.
 
 .. note::
 
     Scoring on a single split of the data can be highly dependent on the
-    ``random_state``. See :ref:`model_selection` for more information and a better
-    approach.
+    ``random_state``. See :ref:`model_selection` for more information and a
+    better approach.
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-94
+.. GENERATED FROM PYTHON SOURCE LINES 25-99
 
 
 
-.. image:: /gallery/images/sphx_glr_spline_001.png
-    :alt: spline
-    :class: sphx-glr-single-img
+.. image-sg:: /gallery/images/sphx_glr_spline_001.png
+   :alt: spline
+   :srcset: /gallery/images/sphx_glr_spline_001.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -49,11 +51,15 @@ the interpolation is usually a bit slower. However, the advantage of using
  .. code-block:: none
 
     Chain(steps=[('mean',
-                  BlockReduce(reduction=<function mean at 0x7f238b09c700>,
+                  BlockReduce(reduction=<function mean at 0x7fe4aff2fee0>,
                               spacing=27750.0)),
                  ('spline', Spline(damping=1e-10, mindist=100000.0))])
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      warnings.warn(
 
     Score: 0.856
+    /usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:463: FutureWarning: The 'spacing', 'shape' and 'region' arguments will be removed in Verde v2.0.0. Please use the 'verde.grid_coordinates' function to define grid coordinates and pass them as the 'coordinates' argument.
+      warnings.warn(
     <xarray.Dataset>
     Dimensions:      (latitude: 43, longitude: 51)
     Coordinates:
@@ -73,10 +79,11 @@ the interpolation is usually a bit slower. However, the advantage of using
 
 .. code-block:: default
 
-    import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
-    import pyproj
+    import matplotlib.pyplot as plt
     import numpy as np
+    import pyproj
+
     import verde as vd
 
     # We'll test this on the air temperature data from Texas
@@ -90,9 +97,10 @@ the interpolation is usually a bit slower. However, the advantage of using
     # The output grid spacing will 15 arc-minutes
     spacing = 15 / 60
 
-    # Now we can chain a blocked mean and spline together. The Spline can be regularized
-    # by setting the damping coefficient (should be positive). It's also a good idea to set
-    # the minimum distance to the average data spacing to avoid singularities in the spline.
+    # Now we can chain a blocked mean and spline together. The Spline can be
+    # regularized by setting the damping coefficient (should be positive). It's
+    # also a good idea to set the minimum distance to the average data spacing to
+    # avoid singularities in the spline.
     chain = vd.Chain(
         [
             ("mean", vd.BlockReduce(np.mean, spacing=spacing * 111e3)),
@@ -101,9 +109,9 @@ the interpolation is usually a bit slower. However, the advantage of using
     )
     print(chain)
 
-    # We can evaluate model performance by splitting the data into a training and testing
-    # set. We'll use the training set to grid the data and the testing set to validate our
-    # spline model.
+    # We can evaluate model performance by splitting the data into a training and
+    # testing set. We'll use the training set to grid the data and the testing set
+    # to validate our spline model.
     train, test = vd.train_test_split(
         projection(*coordinates), data.air_temperature_c, random_state=0
     )
@@ -111,14 +119,15 @@ the interpolation is usually a bit slower. However, the advantage of using
     # Fit the model on the training set
     chain.fit(*train)
 
-    # And calculate an R^2 score coefficient on the testing set. The best possible score
-    # (perfect prediction) is 1. This can tell us how good our spline is at predicting data
-    # that was not in the input dataset.
+    # And calculate an R^2 score coefficient on the testing set. The best possible
+    # score (perfect prediction) is 1. This can tell us how good our spline is at
+    # predicting data that was not in the input dataset.
     score = chain.score(*test)
     print("\nScore: {:.3f}".format(score))
 
-    # Now we can create a geographic grid of air temperature by providing a projection
-    # function to the grid method and mask points that are too far from the observations
+    # Now we can create a geographic grid of air temperature by providing a
+    # projection function to the grid method and mask points that are too far from
+    # the observations
     grid_full = chain.grid(
         region=region,
         spacing=spacing,
@@ -140,14 +149,15 @@ the interpolation is usually a bit slower. However, the advantage of using
         ax=ax, cmap="plasma", transform=ccrs.PlateCarree(), add_colorbar=False
     )
     plt.colorbar(tmp).set_label("Air temperature (C)")
-    # Use an utility function to add tick labels and land and ocean features to the map.
+    # Use an utility function to add tick labels and land and ocean features to the
+    # map.
     vd.datasets.setup_texas_wind_map(ax, region=region)
     plt.show()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.401 seconds)
+   **Total running time of the script:** ( 0 minutes  2.035 seconds)
 
 
 .. _sphx_glr_download_gallery_spline.py:

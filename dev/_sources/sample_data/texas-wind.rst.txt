@@ -18,20 +18,28 @@
 .. _sphx_glr_sample_data_texas-wind.py:
 
 
-Wind speed data from Texas
-==========================
+[DEPRECATED] Wind speed data from Texas
+=======================================
 
-This is average wind speed and air temperature for data for the state of Texas, USA, on
-February 26 2018. The original data was downloaded from `Iowa State University
-<https://mesonet.agron.iastate.edu/request/download.phtml>`__.
+.. warning::
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-49
+    All sample datasets in Verde are deprecated and will be
+    **removed in Verde v2.0.0**.
+    The tutorials/examples will transition to using
+    `Ensaio <https://www.fatiando.org/ensaio/>`__ instead.
+
+This is average wind speed and air temperature for data for the state of Texas,
+USA, on February 26 2018. The original data was downloaded from `Iowa State
+University <https://mesonet.agron.iastate.edu/request/download.phtml>`__.
+
+.. GENERATED FROM PYTHON SOURCE LINES 22-57
 
 
 
-.. image:: /sample_data/images/sphx_glr_texas-wind_001.png
-    :alt: Wind speed and air temperature for Texas
-    :class: sphx-glr-single-img
+.. image-sg:: /sample_data/images/sphx_glr_texas-wind_001.png
+   :alt: Wind speed and air temperature for Texas
+   :srcset: /sample_data/images/sphx_glr_texas-wind_001.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -58,10 +66,10 @@ February 26 2018. The original data was downloaded from `Iowa State University
 
 .. code-block:: default
 
-    import matplotlib.pyplot as plt
     import cartopy.crs as ccrs
-    import verde as vd
+    import matplotlib.pyplot as plt
 
+    import verde as vd
 
     # The data are in a pandas.DataFrame
     data = vd.datasets.fetch_texas_wind()
@@ -89,14 +97,15 @@ February 26 2018. The original data was downloaded from `Iowa State University
         width=0.003,
         transform=ccrs.PlateCarree(),
     )
-    # Use an utility function to add tick labels and land and ocean features to the map.
+    # Use an utility function to add tick labels and land and ocean features to the
+    # map.
     vd.datasets.setup_texas_wind_map(ax)
     plt.show()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.130 seconds)
+   **Total running time of the script:** ( 0 minutes  0.177 seconds)
 
 
 .. _sphx_glr_download_sample_data_texas-wind.py:
