@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 # Import functions/classes to make the public API
-from . import datasets
+from . import datasets, synthetic
 from ._version import __version__
 from .blockreduce import BlockMean, BlockReduce
 from .chain import Chain
@@ -67,6 +67,8 @@ def test(doctest=True, verbose=True, coverage=False, figures=True):
         failed.
 
     """
+    import warnings
+
     import pytest
 
     package = __name__
@@ -83,4 +85,12 @@ def test(doctest=True, verbose=True, coverage=False, figures=True):
     args.append("--pyargs")
     args.append(package)
     status = pytest.main(args)
+
+    warnings.warn(
+        f"The '{package}.test' function is deprecated since v1.7.0 and "
+        "will be removed in v2.0.0. "
+        f"Use 'pytest --pyargs {package}' to run the tests.",
+        FutureWarning,
+    )
+
     assert status == 0, "Some tests have failed."

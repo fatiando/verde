@@ -1,7 +1,7 @@
 .. _api:
 
-API Reference
-=============
+List of functions and classes (API)
+===================================
 
 .. automodule:: verde
 
@@ -88,7 +88,6 @@ Utilities
 .. autosummary::
    :toctree: generated/
 
-    test
     maxabs
     variance_to_weights
     grid_to_table
@@ -103,6 +102,18 @@ Input/Output
 
     load_surfer
 
+.. automodule:: verde.synthetic
+
+.. currentmodule:: verde
+
+Synthetic data
+--------------
+
+.. autosummary::
+    :toctree: generated/
+
+    synthetic.CheckerBoard
+
 
 .. automodule:: verde.datasets
 
@@ -115,7 +126,6 @@ Datasets
    :toctree: generated/
 
     datasets.locate
-    datasets.CheckerBoard
     datasets.fetch_baja_bathymetry
     datasets.setup_baja_bathymetry_map
     datasets.fetch_california_gps

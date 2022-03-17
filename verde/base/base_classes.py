@@ -183,7 +183,7 @@ class BaseGridder(BaseEstimator):
     ...         check_is_fitted(self, ['mean_'])
     ...         return np.ones_like(coordinates[0])*self.mean_
     >>> # Try it on some synthetic data
-    >>> synthetic = vd.datasets.CheckerBoard(region=(0, 5, -10, 8))
+    >>> synthetic = vd.synthetic.CheckerBoard(region=(0, 5, -10, 8))
     >>> data = synthetic.scatter()
     >>> print('{:.4f}'.format(data.scalars.mean()))
     -32.2182
@@ -323,6 +323,14 @@ class BaseGridder(BaseEstimator):
         predicted values and the given data values. A maximum score of 1 means
         a perfect fit. The score can be negative.
 
+        .. warning::
+
+            The default scoring will change from R² to negative root mean
+            squared error (RMSE) in Verde 2.0.0. This may change model
+            selection results slightly. The negative version will be used to
+            maintain the behaviour of larger scores being better, which is more
+            compatible with current model selection code.
+
         If the data has more than 1 component, the scores of each component
         will be averaged.
 
@@ -348,6 +356,12 @@ class BaseGridder(BaseEstimator):
             The R^2 score
 
         """
+        warnings.warn(
+            "The default scoring will change from R² to negative root mean "
+            "squared error (RMSE) in Verde 2.0.0. "
+            "This may change model selection results slightly.",
+            FutureWarning,
+        )
         return score_estimator("r2", self, coordinates, data, weights=weights)
 
     def grid(

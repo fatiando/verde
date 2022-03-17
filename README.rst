@@ -29,30 +29,16 @@ Part of the `Fatiando a Terra <https://www.fatiando.org>`__ project
 About
 -----
 
-Verde is a Python library for processing spatial data (bathymetry, geophysics
-surveys, etc) and interpolating it on regular grids (i.e., *gridding*).
+**Verde** is a Python library for processing spatial data (bathymetry,
+geophysics surveys, etc) and interpolating it on regular grids (i.e.,
+*gridding*).
 
-Most gridding methods in Verde use a Green's functions approach.
-A linear model is estimated based on the input data and then used to predict
-data on a regular grid (or in a scatter, a profile, as derivatives).
-The models are Green's functions from (mostly) elastic deformation theory.
-This approach is very similar to *machine learning* so we implement gridder
-classes that are similar to `scikit-learn <http://scikit-learn.org/>`__
-regression classes.
-The API is not 100% compatible but it should look familiar to those with some
-scikit-learn experience.
-
-Advantages of using Green's functions include:
-
-* Easily apply **weights** to data points. This is a linear least-squares
-  problem.
-* Perform **model selection** using established machine learning techniques,
-  like k-fold or holdout cross-validation.
-* The estimated model can be **easily stored** for later use, like
-  spherical-harmonic coefficients are used in gravimetry.
-
-The main disadvantage is the heavy memory and processing time requirement (it's
-a linear regression problem).
+Our core interpolation methods are inspired by machine-learning.
+As such, Verde implements an interface that is similar to the popular
+`scikit-learn <https://scikit-learn.org/>`__ library.
+We also provide other analysis methods that are often used in combination with
+gridding, like trend removal, blocked/windowed operations, cross-validation,
+and more!
 
 
 Project goals
@@ -64,10 +50,11 @@ Project goals
 * Support for gridding scalar and vector data (like wind speed or GPS velocities)
 * Support for both Cartesian and geographic coordinates
 
-The first release of Verde was focused on meeting these initial goals and establishing
-the look and feel of the library. Later releases will focus on expanding the range of
-gridders available, optimizing the code, and improving algorithms so that
-larger-than-memory datasets can also be supported.
+The first release of Verde was focused on meeting most of these initial goals
+and establishing the look and feel of the library.
+Later releases will focus on expanding the range of gridders available,
+optimizing the code, and improving algorithms so that larger-than-memory
+datasets can also be supported.
 
 
 Contacting us
@@ -139,20 +126,3 @@ License
 This is free software: you can redistribute it and/or modify it under the terms
 of the **BSD 3-clause License**. A copy of this license is provided in
 `LICENSE.txt <https://github.com/fatiando/verde/blob/main/LICENSE.txt>`__.
-
-
-Documentation for other versions
---------------------------------
-
-* `Development <http://www.fatiando.org/verde/dev>`__ (reflects the *main* branch on
-  Github)
-* `Latest release <http://www.fatiando.org/verde/latest>`__
-* `v1.6.1 <http://www.fatiando.org/verde/v1.6.1>`__
-* `v1.6.0 <http://www.fatiando.org/verde/v1.6.0>`__
-* `v1.5.0 <http://www.fatiando.org/verde/v1.5.0>`__
-* `v1.4.0 <http://www.fatiando.org/verde/v1.4.0>`__
-* `v1.3.0 <http://www.fatiando.org/verde/v1.3.0>`__
-* `v1.2.0 <http://www.fatiando.org/verde/v1.2.0>`__
-* `v1.1.0 <http://www.fatiando.org/verde/v1.1.0>`__
-* `v1.0.1 <http://www.fatiando.org/verde/v1.0.1>`__
-* `v1.0.0 <http://www.fatiando.org/verde/v1.0.0>`__

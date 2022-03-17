@@ -5,8 +5,15 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-GPS velocities from California
-==============================
+[DEPRECATED] GPS velocities from California
+===========================================
+
+.. warning::
+
+    All sample datasets in Verde are deprecated and will be
+    **removed in Verde v2.0.0**.
+    The tutorials/examples will transition to using
+    `Ensaio <https://www.fatiando.org/ensaio/>`__ instead.
 
 We provide sample 3-component GPS velocity data from the West coast of the U.S.
 The data were cut from EarthScope Plate Boundary Observatory data provided by
