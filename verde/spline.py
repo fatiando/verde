@@ -509,11 +509,11 @@ def warn_weighted_exact_solution(spline, weights):
 
 def greens_func(east, north, mindist):
     "Calculate the Green's function for the Bi-Harmonic Spline"
-    distance = np.sqrt(east ** 2 + north ** 2)
+    distance = np.sqrt(east**2 + north**2)
     # The mindist factor helps avoid singular matrices when the force and
     # computation point are too close
     distance += mindist
-    return (distance ** 2) * (np.log(distance) - 1)
+    return (distance**2) * (np.log(distance) - 1)
 
 
 def predict_numpy(east, north, force_east, force_north, mindist, forces, result):
