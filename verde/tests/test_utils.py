@@ -74,7 +74,7 @@ def test_kdtree():
 def test_grid_to_table_order():
     "Check that coordinates are in the right order when converting to tables"
     lon, lat = grid_coordinates(region=(1, 10, -10, -1), shape=(3, 4))
-    data = lon ** 2
+    data = lon**2
     # If the DataArray is created with coords in an order that doesn't match
     # the dims (which is valid), we were getting it wrong because we were
     # relying on the order of the coords instead of dims. This test would have

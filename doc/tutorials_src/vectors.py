@@ -69,7 +69,7 @@ reducer = vd.BlockMean(spacing=spacing * 111e3, uncertainty=True)
 block_coords, block_data, block_weights = reducer.filter(
     coordinates=proj_coords,
     data=(data.velocity_east, data.velocity_north),
-    weights=(1 / data.std_east ** 2, 1 / data.std_north ** 2),
+    weights=(1 / data.std_east**2, 1 / data.std_north**2),
 )
 print(len(block_data), len(block_weights))
 
@@ -124,7 +124,7 @@ print(trend)
 trend.fit(
     coordinates=proj_coords,
     data=(data.velocity_east, data.velocity_north),
-    weights=(1 / data.std_east ** 2, 1 / data.std_north ** 2),
+    weights=(1 / data.std_east**2, 1 / data.std_north**2),
 )
 
 ###############################################################################
@@ -213,7 +213,7 @@ plt.show()
 train, test = vd.train_test_split(
     coordinates=proj_coords,
     data=(data.velocity_east, data.velocity_north),
-    weights=(1 / data.std_east ** 2, 1 / data.std_north ** 2),
+    weights=(1 / data.std_east**2, 1 / data.std_north**2),
     random_state=1,
 )
 

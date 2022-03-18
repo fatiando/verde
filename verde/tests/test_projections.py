@@ -18,7 +18,7 @@ from ..scipygridder import ScipyGridder
 
 def projection(longitude, latitude):
     "Dummy projection"
-    return longitude ** 2, latitude ** 2
+    return longitude**2, latitude**2
 
 
 @pytest.mark.parametrize(

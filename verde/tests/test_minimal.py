@@ -36,7 +36,7 @@ def test_minimal_integration_2d_gps():
     train, test = train_test_split(
         coordinates=proj_coords,
         data=(data.velocity_east, data.velocity_north),
-        weights=(1 / data.std_east ** 2, 1 / data.std_north ** 2),
+        weights=(1 / data.std_east**2, 1 / data.std_north**2),
         random_state=1,
     )
     chain = Chain(

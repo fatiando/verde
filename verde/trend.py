@@ -161,7 +161,7 @@ class Trend(BaseGridder):
         data = np.zeros(easting.size, dtype=easting.dtype)
         combinations = polynomial_power_combinations(self.degree)
         for coef, (i, j) in zip(self.coef_, combinations):
-            data += (easting ** i) * (northing ** j) * coef
+            data += (easting**i) * (northing**j) * coef
         return data.reshape(shape)
 
     def jacobian(self, coordinates, dtype="float64"):
@@ -214,7 +214,7 @@ class Trend(BaseGridder):
         nparams = len(combinations)
         out = np.empty((ndata, nparams), dtype=dtype)
         for col, (i, j) in enumerate(combinations):
-            out[:, col] = (easting ** i) * (northing ** j)
+            out[:, col] = (easting**i) * (northing**j)
         return out
 
 

@@ -47,7 +47,7 @@ print(chain)
 train, test = vd.train_test_split(
     projection(*coordinates),
     data.velocity_up,
-    weights=1 / data.std_up ** 2,
+    weights=1 / data.std_up**2,
     random_state=0,
 )
 # Fit the model on the training set

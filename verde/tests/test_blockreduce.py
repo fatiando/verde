@@ -244,7 +244,7 @@ def test_blockmean_uncertainty_weights():
     uncertainty = np.ones_like(data)
     # Set a higher uncertainty for the first block
     uncertainty[:2, :2] = 2
-    weights = 1 / uncertainty ** 2
+    weights = 1 / uncertainty**2
     reducer = BlockMean(spacing=1, uncertainty=True)
     # Uncertainty propagation can only work if weights are given
     with pytest.raises(ValueError):
@@ -269,7 +269,7 @@ def test_blockmean_variance_weights():
     uncertainty = np.ones_like(data)
     # Set a higher uncertainty for the first block
     uncertainty[:2, :2] = 2
-    weights = 1 / uncertainty ** 2
+    weights = 1 / uncertainty**2
     reducer = BlockMean(spacing=1, uncertainty=False)
     block_coords, block_data, block_weights = reducer.filter(coords, data, weights)
     assert len(block_coords[0]) == 4
