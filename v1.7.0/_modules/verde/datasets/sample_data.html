@@ -1,0 +1,1113 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>verde.datasets.sample_data | Verde v1.7.0</title>
+    
+
+    
+  <link href="../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/panels-variables.87249bd3f7b54630a2508c1b61607c7f.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    
+  <link rel="preload" as="script" href="../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../../_static/verde-logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Verde <span class="project-version">v1.7.0</span></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../tutorials/overview.html">
+   Overview
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../install.html">
+   Installing
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../gallery/index.html">
+   Gallery
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/blockkfold.html">
+     K-Fold cross-validation with blocks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/blockreduce.html">
+     Blocked reduction operations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/blockreduce_weights.html">
+     Using weights in blocked reduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/blockreduce_weights_mean.html">
+     Using weights in blocked means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/convex_hull_mask.html">
+     Mask grid points by convex hull
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/distance_mask.html">
+     Mask grid points by distance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/project_grid.html">
+     Projection of gridded data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/scipygridder.html">
+     Gridding with Scipy
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/spline.html">
+     Gridding with splines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/spline_cv.html">
+     Gridding with splines (cross-validated)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/spline_weights.html">
+     Gridding with splines and weights
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/train_test_split.html">
+     Splitting data into train and test sets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/trend.html">
+     Polynomial trend
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/vector_trend.html">
+     Trends in vector data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../gallery/vector_uncoupled.html">
+     Gridding 2D vectors
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  User Guide
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../sample_data/index.html">
+   Sample Data
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../sample_data/baja_bathymetry.html">
+     [DEPRECATED] Bathymetry data from Baja California
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../sample_data/california_gps.html">
+     [DEPRECATED] GPS velocities from California
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../sample_data/checkerboard.html">
+     Checkerboard function
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../sample_data/rio_magnetic.html">
+     [DEPRECATED] Magnetic data from Rio de Janeiro
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../sample_data/texas-wind.html">
+     [DEPRECATED] Wind speed data from Texas
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../tutorials/grid_coordinates.html">
+   Grid Coordinates
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../tutorials/trends.html">
+   Trend Estimation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../tutorials/decimation.html">
+   Data Decimation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../tutorials/projections.html">
+   Geographic Coordinates
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../tutorials/chain.html">
+   Chaining Operations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../tutorials/model_evaluation.html">
+   Evaluating Performance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../tutorials/model_selection.html">
+   Model Selection
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../tutorials/weights.html">
+   Using Weights
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../tutorials/vectors.html">
+   Vector Data
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference documentation
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../api/index.html">
+   List of functions and classes (API)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.Spline.html">
+     verde.Spline
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.SplineCV.html">
+     verde.SplineCV
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.VectorSpline2D.html">
+     verde.VectorSpline2D
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.ScipyGridder.html">
+     verde.ScipyGridder
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.BlockReduce.html">
+     verde.BlockReduce
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.BlockMean.html">
+     verde.BlockMean
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.Trend.html">
+     verde.Trend
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.Chain.html">
+     verde.Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.Vector.html">
+     verde.Vector
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.train_test_split.html">
+     verde.train_test_split
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.cross_val_score.html">
+     verde.cross_val_score
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.BlockShuffleSplit.html">
+     verde.BlockShuffleSplit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.BlockKFold.html">
+     verde.BlockKFold
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.grid_coordinates.html">
+     verde.grid_coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.scatter_points.html">
+     verde.scatter_points
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.profile_coordinates.html">
+     verde.profile_coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.get_region.html">
+     verde.get_region
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.pad_region.html">
+     verde.pad_region
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.inside.html">
+     verde.inside
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.block_split.html">
+     verde.block_split
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.rolling_window.html">
+     verde.rolling_window
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.expanding_window.html">
+     verde.expanding_window
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.project_region.html">
+     verde.project_region
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.project_grid.html">
+     verde.project_grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.distance_mask.html">
+     verde.distance_mask
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.convexhull_mask.html">
+     verde.convexhull_mask
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.maxabs.html">
+     verde.maxabs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.variance_to_weights.html">
+     verde.variance_to_weights
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.grid_to_table.html">
+     verde.grid_to_table
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.make_xarray_grid.html">
+     verde.make_xarray_grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.median_distance.html">
+     verde.median_distance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.load_surfer.html">
+     verde.load_surfer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.synthetic.CheckerBoard.html">
+     verde.synthetic.CheckerBoard
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.datasets.locate.html">
+     verde.datasets.locate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.datasets.fetch_baja_bathymetry.html">
+     verde.datasets.fetch_baja_bathymetry
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.datasets.setup_baja_bathymetry_map.html">
+     verde.datasets.setup_baja_bathymetry_map
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.datasets.fetch_california_gps.html">
+     verde.datasets.fetch_california_gps
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.datasets.setup_california_gps_map.html">
+     verde.datasets.setup_california_gps_map
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.datasets.fetch_texas_wind.html">
+     verde.datasets.fetch_texas_wind
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.datasets.setup_texas_wind_map.html">
+     verde.datasets.setup_texas_wind_map
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.datasets.fetch_rio_magnetic.html">
+     verde.datasets.fetch_rio_magnetic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.datasets.setup_rio_magnetic_map.html">
+     verde.datasets.setup_rio_magnetic_map
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.base.BaseGridder.html">
+     verde.base.BaseGridder
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.base.BaseBlockCrossValidator.html">
+     verde.base.BaseBlockCrossValidator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.base.n_1d_arrays.html">
+     verde.base.n_1d_arrays
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.base.check_fit_input.html">
+     verde.base.check_fit_input
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../api/generated/verde.base.least_squares.html">
+     verde.base.least_squares
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../citing.html">
+   Citing Verde
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../changes.html">
+   Changelog
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../references.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../versions.html">
+   Documentation for other versions
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Community
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.fatiando.org/contact/">
+   Join the community
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">
+   How to contribute
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">
+   Code of Conduct
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/verde">
+   Source code on GitHub
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.fatiando.org">
+   The Fatiando a Terra project
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/fatiando/verde"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/fatiando/verde/issues/new?title=Issue%20on%20page%20%2F_modules/verde/datasets/sample_data.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1></h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <h1>Source code for verde.datasets.sample_data</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2017 The Verde Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions to load sample data</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">import</span> <span class="nn">pooch</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+    <span class="kn">from</span> <span class="nn">cartopy.mpl.ticker</span> <span class="kn">import</span> <span class="n">LatitudeFormatter</span><span class="p">,</span> <span class="n">LongitudeFormatter</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="kn">from</span> <span class="nn">.._version</span> <span class="kn">import</span> <span class="n">__version__</span>
+
+<span class="n">REGISTRY</span> <span class="o">=</span> <span class="n">pooch</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">pooch</span><span class="o">.</span><span class="n">os_cache</span><span class="p">(</span><span class="s2">&quot;verde&quot;</span><span class="p">),</span>
+    <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;https://github.com/fatiando/verde/raw/</span><span class="si">{version}</span><span class="s2">/data/&quot;</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span>
+    <span class="n">version_dev</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span>
+    <span class="n">env</span><span class="o">=</span><span class="s2">&quot;VERDE_DATA_DIR&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="k">with</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_stream</span><span class="p">(</span><span class="s2">&quot;verde.datasets&quot;</span><span class="p">,</span> <span class="s2">&quot;registry.txt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">registry_file</span><span class="p">:</span>
+    <span class="n">REGISTRY</span><span class="o">.</span><span class="n">load_registry</span><span class="p">(</span><span class="n">registry_file</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_datasets_deprecation_warning</span><span class="p">():</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+        <span class="s2">&quot;All sample datasets in Verde are deprecated and will be &quot;</span>
+        <span class="s2">&quot;removed in Verde v2.0.0. The tutorials/examples will transition &quot;</span>
+        <span class="s2">&quot;to using Ensaio (https://www.fatiando.org/ensaio/) instead.&quot;</span><span class="p">,</span>
+        <span class="ne">DeprecationWarning</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="locate"><a class="viewcode-back" href="../../../api/generated/verde.datasets.locate.html#verde.datasets.locate">[docs]</a><span class="k">def</span> <span class="nf">locate</span><span class="p">():</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The absolute path to the sample data storage location on disk.</span>
+
+<span class="sd">    This is where the data are saved on your computer. The location is</span>
+<span class="sd">    dependent on the operating system. The folder locations are defined by the</span>
+<span class="sd">    ``appdirs``  package (see the `appdirs documentation</span>
+<span class="sd">    &lt;https://github.com/ActiveState/appdirs&gt;`__).</span>
+
+<span class="sd">    The location can be overwritten by the ``VERDE_DATA_DIR`` environment</span>
+<span class="sd">    variable to the desired destination.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    path : str</span>
+<span class="sd">        The local data storage location.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">REGISTRY</span><span class="o">.</span><span class="n">abspath</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_setup_map</span><span class="p">(</span>
+    <span class="n">ax</span><span class="p">,</span>
+    <span class="n">xticks</span><span class="p">,</span>
+    <span class="n">yticks</span><span class="p">,</span>
+    <span class="n">crs</span><span class="p">,</span>
+    <span class="n">region</span><span class="p">,</span>
+    <span class="n">coastlines</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Setup a Cartopy map with coastlines and proper tick labels.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">coastlines</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
+    <span class="c1"># Set the proper ticks for a Cartopy map</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">xticks</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">yticks</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">LongitudeFormatter</span><span class="p">())</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">LatitudeFormatter</span><span class="p">())</span>
+
+
+<div class="viewcode-block" id="fetch_baja_bathymetry"><a class="viewcode-back" href="../../../api/generated/verde.datasets.fetch_baja_bathymetry.html#verde.datasets.fetch_baja_bathymetry">[docs]</a><span class="k">def</span> <span class="nf">fetch_baja_bathymetry</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetch sample bathymetry data from Baja California.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        All sample datasets in Verde are deprecated and will be</span>
+<span class="sd">        **removed in Verde v2.0.0**.</span>
+<span class="sd">        The tutorials/examples will transition to using</span>
+<span class="sd">        `Ensaio &lt;https://www.fatiando.org/ensaio/&gt;`__ instead.</span>
+
+<span class="sd">    This is the ``@tut_ship.xyz`` sample data from the `GMT</span>
+<span class="sd">    &lt;http://gmt.soest.hawaii.edu/&gt;`__ tutorial.</span>
+
+<span class="sd">    If the file isn&#39;t already in your data directory, it will be downloaded</span>
+<span class="sd">    automatically.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    data : :class:`pandas.DataFrame`</span>
+<span class="sd">        The bathymetry data. Columns are longitude, latitude, and bathymetry</span>
+<span class="sd">        (in meters) for each data point.</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    setup_baja_bathymetry_map: Utility function to help setup a Cartopy map.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_datasets_deprecation_warning</span><span class="p">()</span>
+    <span class="n">data_file</span> <span class="o">=</span> <span class="n">REGISTRY</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;baja-bathymetry.csv.xz&quot;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;xz&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="setup_baja_bathymetry_map"><a class="viewcode-back" href="../../../api/generated/verde.datasets.setup_baja_bathymetry_map.html#verde.datasets.setup_baja_bathymetry_map">[docs]</a><span class="k">def</span> <span class="nf">setup_baja_bathymetry_map</span><span class="p">(</span>
+    <span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mf">245.0</span><span class="p">,</span> <span class="mf">254.705</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">29.99</span><span class="p">),</span> <span class="n">coastlines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Setup a Cartopy map for the Baja California bathymetry dataset.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        All sample datasets in Verde are deprecated and will be</span>
+<span class="sd">        **removed in Verde v2.0.0**.</span>
+<span class="sd">        The tutorials/examples will transition to using</span>
+<span class="sd">        `Ensaio &lt;https://www.fatiando.org/ensaio/&gt;`__ instead.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ax : matplotlib Axes</span>
+<span class="sd">        The axes where the map is being plotted.</span>
+<span class="sd">    region : list = [W, E, S, N]</span>
+<span class="sd">        The boundaries of the map region in the coordinate system of the data.</span>
+<span class="sd">    coastlines : bool</span>
+<span class="sd">        If True the coastlines will be added to the plot.</span>
+<span class="sd">    kwargs :</span>
+<span class="sd">        All additional key-word arguments will be ignored. ``kwargs`` are</span>
+<span class="sd">        accepted to guarantee backward compatibility.</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    fetch_baja_bathymetry: Sample bathymetry data from Baja California.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;All kwargs are being ignored. They are accepted to &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;guarantee backward compatibility.&quot;</span>
+        <span class="p">)</span>
+    <span class="n">_setup_map</span><span class="p">(</span>
+        <span class="n">ax</span><span class="p">,</span>
+        <span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">114</span><span class="p">,</span> <span class="o">-</span><span class="mi">105</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="n">yticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="n">coastlines</span><span class="o">=</span><span class="n">coastlines</span><span class="p">,</span>
+        <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+        <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="fetch_rio_magnetic"><a class="viewcode-back" href="../../../api/generated/verde.datasets.fetch_rio_magnetic.html#verde.datasets.fetch_rio_magnetic">[docs]</a><span class="k">def</span> <span class="nf">fetch_rio_magnetic</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetch total-field magnetic anomaly data from Rio de Janeiro, Brazil.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        All sample datasets in Verde are deprecated and will be</span>
+<span class="sd">        **removed in Verde v2.0.0**.</span>
+<span class="sd">        The tutorials/examples will transition to using</span>
+<span class="sd">        `Ensaio &lt;https://www.fatiando.org/ensaio/&gt;`__ instead.</span>
+
+<span class="sd">    These data were cropped from the northwestern part of an airborne survey of</span>
+<span class="sd">    Rio de Janeiro, Brazil, conducted in 1978. The data are made available by</span>
+<span class="sd">    the Geological Survey of Brazil (CPRM) through their `GEOSGB portal</span>
+<span class="sd">    &lt;http://geosgb.cprm.gov.br/&gt;`__.</span>
+
+<span class="sd">    The anomaly is calculated with respect to the IGRF field parameters listed</span>
+<span class="sd">    on the table below. See the original data for more processing information.</span>
+
+<span class="sd">    +----------+-----------+----------------+-------------+-------------+</span>
+<span class="sd">    |               IGRF for year 1978.3 at 500 m height                |</span>
+<span class="sd">    +----------+-----------+----------------+-------------+-------------+</span>
+<span class="sd">    | Latitude | Longitude | Intensity (nT) | Declination | Inclination |</span>
+<span class="sd">    +==========+===========+================+=============+=============+</span>
+<span class="sd">    |  -22º15&#39; |  -42º15&#39;  |     23834      |   -19º19&#39;   |   -27º33&#39;   |</span>
+<span class="sd">    +----------+-----------+----------------+-------------+-------------+</span>
+
+<span class="sd">    If the file isn&#39;t already in your data directory, it will be downloaded</span>
+<span class="sd">    automatically.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    data : :class:`pandas.DataFrame`</span>
+<span class="sd">        The magnetic anomaly data. Columns are longitude, latitude, total-field</span>
+<span class="sd">        magnetic anomaly (nanoTesla), observation height above the WGS84</span>
+<span class="sd">        ellipsoid (in meters), flight line type (LINE or TIE), and flight line</span>
+<span class="sd">        number for each data point.</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    setup_rio_magnetic_map: Utility function to help setup a Cartopy map.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+        <span class="s2">&quot;The Rio magnetic anomaly dataset is deprecated and will be removed &quot;</span>
+        <span class="s2">&quot;in Verde v2.0.0. Use a different dataset instead.&quot;</span><span class="p">,</span>
+        <span class="ne">FutureWarning</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">data_file</span> <span class="o">=</span> <span class="n">REGISTRY</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;rio-magnetic.csv.xz&quot;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;xz&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="setup_rio_magnetic_map"><a class="viewcode-back" href="../../../api/generated/verde.datasets.setup_rio_magnetic_map.html#verde.datasets.setup_rio_magnetic_map">[docs]</a><span class="k">def</span> <span class="nf">setup_rio_magnetic_map</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">42.6</span><span class="p">,</span> <span class="o">-</span><span class="mi">42</span><span class="p">,</span> <span class="o">-</span><span class="mf">22.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">22</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Setup a Cartopy map for the Rio de Janeiro magnetic anomaly dataset.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        All sample datasets in Verde are deprecated and will be</span>
+<span class="sd">        **removed in Verde v2.0.0**.</span>
+<span class="sd">        The tutorials/examples will transition to using</span>
+<span class="sd">        `Ensaio &lt;https://www.fatiando.org/ensaio/&gt;`__ instead.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ax : matplotlib Axes</span>
+<span class="sd">        The axes where the map is being plotted.</span>
+<span class="sd">    region : list = [W, E, S, N]</span>
+<span class="sd">        The boundaries of the map region in the coordinate system of the data.</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    fetch_rio_magnetic: Magnetic anomaly data from Rio de Janeiro, Brazil.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+        <span class="s2">&quot;The Rio magnetic anomaly dataset is deprecated and will be removed &quot;</span>
+        <span class="s2">&quot;in Verde v2.0.0. Use a different dataset instead.&quot;</span><span class="p">,</span>
+        <span class="ne">FutureWarning</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">_setup_map</span><span class="p">(</span>
+        <span class="n">ax</span><span class="p">,</span>
+        <span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">42.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">42</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+        <span class="n">yticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">22.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">21.99</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+        <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+        <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="fetch_california_gps"><a class="viewcode-back" href="../../../api/generated/verde.datasets.fetch_california_gps.html#verde.datasets.fetch_california_gps">[docs]</a><span class="k">def</span> <span class="nf">fetch_california_gps</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetch sample GPS velocity data from California (the U.S. West coast).</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        All sample datasets in Verde are deprecated and will be</span>
+<span class="sd">        **removed in Verde v2.0.0**.</span>
+<span class="sd">        The tutorials/examples will transition to using</span>
+<span class="sd">        `Ensaio &lt;https://www.fatiando.org/ensaio/&gt;`__ instead.</span>
+
+<span class="sd">    Velocities and their standard deviations are in meters/year. Height is</span>
+<span class="sd">    geometric height above WGS84 in meters. Velocities are referenced to the</span>
+<span class="sd">    North American tectonic plate (NAM08). The average velocities were released</span>
+<span class="sd">    on 2017-12-27.</span>
+
+<span class="sd">    This material is based on EarthScope Plate Boundary Observatory data</span>
+<span class="sd">    services provided by UNAVCO through the GAGE Facility with support from the</span>
+<span class="sd">    National Science Foundation (NSF) and National Aeronautics and Space</span>
+<span class="sd">    Administration (NASA) under NSF Cooperative Agreement No. EAR-1261833.</span>
+
+<span class="sd">    If the file isn&#39;t already in your data directory, it will be downloaded</span>
+<span class="sd">    automatically.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    data : :class:`pandas.DataFrame`</span>
+<span class="sd">        The GPS velocity data. Columns are longitude, latitude, height</span>
+<span class="sd">        (geometric, in meters), East velocity (meter/year), North velocity</span>
+<span class="sd">        (meter/year), upward velocity (meter/year), standard deviation of East</span>
+<span class="sd">        velocity (meter/year), standard deviation of North velocity</span>
+<span class="sd">        (meter/year), standard deviation of upward velocity (meter/year).</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    setup_california_gps_map: Utility function to help setup a Cartopy map.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_datasets_deprecation_warning</span><span class="p">()</span>
+    <span class="n">data_file</span> <span class="o">=</span> <span class="n">REGISTRY</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;california-gps.csv.xz&quot;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;xz&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="setup_california_gps_map"><a class="viewcode-back" href="../../../api/generated/verde.datasets.setup_california_gps_map.html#verde.datasets.setup_california_gps_map">[docs]</a><span class="k">def</span> <span class="nf">setup_california_gps_map</span><span class="p">(</span>
+    <span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mf">235.2</span><span class="p">,</span> <span class="mf">245.3</span><span class="p">,</span> <span class="mf">31.9</span><span class="p">,</span> <span class="mf">42.3</span><span class="p">),</span> <span class="n">coastlines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Setup a Cartopy map for the California GPS velocity dataset.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        All sample datasets in Verde are deprecated and will be</span>
+<span class="sd">        **removed in Verde v2.0.0**.</span>
+<span class="sd">        The tutorials/examples will transition to using</span>
+<span class="sd">        `Ensaio &lt;https://www.fatiando.org/ensaio/&gt;`__ instead.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ax : matplotlib Axes</span>
+<span class="sd">        The axes where the map is being plotted.</span>
+<span class="sd">    region : list = [W, E, S, N]</span>
+<span class="sd">        The boundaries of the map region in the coordinate system of the data.</span>
+<span class="sd">    coastlines : bool</span>
+<span class="sd">        If True the coastlines will be added to the plot.</span>
+<span class="sd">    kwargs :</span>
+<span class="sd">        All additional key-word arguments will be ignored. ``kwargs`` are</span>
+<span class="sd">        accepted to guarantee backward compatibility.</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    fetch_california_gps: Sample GPS velocity data from California.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;All kwargs are being ignored. They are accepted to &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;guarantee backward compatibility.&quot;</span>
+        <span class="p">)</span>
+    <span class="n">_setup_map</span><span class="p">(</span>
+        <span class="n">ax</span><span class="p">,</span>
+        <span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">124</span><span class="p">,</span> <span class="o">-</span><span class="mi">115</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+        <span class="n">yticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="n">coastlines</span><span class="o">=</span><span class="n">coastlines</span><span class="p">,</span>
+        <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+        <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="fetch_texas_wind"><a class="viewcode-back" href="../../../api/generated/verde.datasets.fetch_texas_wind.html#verde.datasets.fetch_texas_wind">[docs]</a><span class="k">def</span> <span class="nf">fetch_texas_wind</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetch sample wind speed and air temperature data for Texas, USA.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        All sample datasets in Verde are deprecated and will be</span>
+<span class="sd">        **removed in Verde v2.0.0**.</span>
+<span class="sd">        The tutorials/examples will transition to using</span>
+<span class="sd">        `Ensaio &lt;https://www.fatiando.org/ensaio/&gt;`__ instead.</span>
+
+<span class="sd">    Data are average wind speed and air temperature for data for February 26</span>
+<span class="sd">    2018. The original data was downloaded from `Iowa State University</span>
+<span class="sd">    &lt;https://mesonet.agron.iastate.edu/request/download.phtml&gt;`__.</span>
+
+<span class="sd">    If the file isn&#39;t already in your data directory, it will be downloaded</span>
+<span class="sd">    automatically.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    data : :class:`pandas.DataFrame`</span>
+<span class="sd">        Columns are the station ID, longitude, latitude, air temperature in C,</span>
+<span class="sd">        east component of wind speed in knots, and north component of wind</span>
+<span class="sd">        speed in knots.</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    setup_texas_wind_map: Utility function to help setup a Cartopy map.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_datasets_deprecation_warning</span><span class="p">()</span>
+    <span class="n">data_file</span> <span class="o">=</span> <span class="n">REGISTRY</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;texas-wind.csv&quot;</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="setup_texas_wind_map"><a class="viewcode-back" href="../../../api/generated/verde.datasets.setup_texas_wind_map.html#verde.datasets.setup_texas_wind_map">[docs]</a><span class="k">def</span> <span class="nf">setup_texas_wind_map</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">107</span><span class="p">,</span> <span class="o">-</span><span class="mi">93</span><span class="p">,</span> <span class="mf">25.5</span><span class="p">,</span> <span class="mi">37</span><span class="p">),</span> <span class="n">coastlines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Setup a Cartopy map for the Texas wind speed and air temperature dataset.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        All sample datasets in Verde are deprecated and will be</span>
+<span class="sd">        **removed in Verde v2.0.0**.</span>
+<span class="sd">        The tutorials/examples will transition to using</span>
+<span class="sd">        `Ensaio &lt;https://www.fatiando.org/ensaio/&gt;`__ instead.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ax : matplotlib Axes</span>
+<span class="sd">        The axes where the map is being plotted.</span>
+<span class="sd">    region : list = [W, E, S, N]</span>
+<span class="sd">        The boundaries of the map region in the coordinate system of the data.</span>
+<span class="sd">    coastlines : bool</span>
+<span class="sd">        If True the coastlines will be added to the plot.</span>
+<span class="sd">    kwargs :</span>
+<span class="sd">        All additional key-word arguments will be ignored. ``kwargs`` are</span>
+<span class="sd">        accepted to guarantee backward compatibility.</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    fetch_texas_wind: Sample wind speed and air temperature data for Texas.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;All kwargs are being ignored. They are accepted to &quot;</span>
+            <span class="o">+</span> <span class="s2">&quot;guarantee backward compatibility.&quot;</span>
+        <span class="p">)</span>
+    <span class="n">_setup_map</span><span class="p">(</span>
+        <span class="n">ax</span><span class="p">,</span>
+        <span class="n">xticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">106</span><span class="p">,</span> <span class="o">-</span><span class="mi">92</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+        <span class="n">yticks</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">27</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+        <span class="n">coastlines</span><span class="o">=</span><span class="n">coastlines</span><span class="p">,</span>
+        <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+        <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+    <span class="p">)</span></div>
+</pre></div>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+        &copy; Copyright 2017-2022, The Verde Developers.<br/>
+      Last updated on Mar 25, 2022.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
