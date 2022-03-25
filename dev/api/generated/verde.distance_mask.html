@@ -733,12 +733,12 @@ calculations.</p>
 point is more than <em>maxdist</em> from the closest data point and True
 otherwise.</p></li>
 <li><p>If <em>grid</em> is not None, produces a mask and applies it to <em>grid</em> (an
-<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>).</p></li>
+<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>).</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If installed, package <code class="docutils literal notranslate"><span class="pre">pykdtree</span></code> will be used instead of
-<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/reference/generated/scipy.spatial.cKDTree.html#scipy.spatial.cKDTree" title="(in SciPy v1.7.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.spatial.cKDTree</span></code></a> for better performance.</p>
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.cKDTree.html#scipy.spatial.cKDTree" title="(in SciPy v1.8.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.spatial.cKDTree</span></code></a> for better performance.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -748,11 +748,11 @@ otherwise.</p></li>
 <li><p><strong>coordinates</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em> or </em><em>tuple of arrays</em>) – Arrays with the coordinates of each point that will be masked. Should
 be in the following order: (easting, northing, …). Only easting and
 northing will be used, all subsequent coordinates will be ignored.</p></li>
-<li><p><strong>grid</strong> (None or <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – 2D grid with values to be masked. Will use the first two dimensions of
+<li><p><strong>grid</strong> (None or <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – 2D grid with values to be masked. Will use the first two dimensions of
 the grid as northing and easting coordinates, respectively. For this to
 work, the grid dimensions <strong>must be ordered as northing then easting</strong>.
 The mask will be applied to <em>grid</em> using the
-<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.where.html#xarray.Dataset.where" title="(in xarray v0.20.2.dev0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">xarray.Dataset.where</span></code></a> method.</p></li>
+<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.where.html#xarray.Dataset.where" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">xarray.Dataset.where</span></code></a> method.</p></li>
 <li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – If not None, then should be a callable object <code class="docutils literal notranslate"><span class="pre">projection(easting,</span>
 <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code> that takes in easting and
 northing coordinate arrays and returns projected easting and northing
@@ -762,9 +762,9 @@ distances.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>mask</strong> (array or <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – If <em>coordinates</em> was given, then a boolean array with the same shape as
+<dd class="field-even"><p><strong>mask</strong> (array or <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – If <em>coordinates</em> was given, then a boolean array with the same shape as
 the elements of <em>coordinates</em>. If <em>grid</em> was given, then an
-<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> with the mask applied to it.</p>
+<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> with the mask applied to it.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -860,7 +860,7 @@ the elements of <em>coordinates</em>. If <em>grid</em> was given, then an
   <p>
     
         &copy; Copyright 2017-2022, The Verde Developers.<br/>
-      Last updated on Jan 21, 2022.<br/>
+      Last updated on Mar 25, 2022.<br/>
   </p>
 </footer>
 </main>

@@ -1059,15 +1059,15 @@
 
 <span class="k">def</span> <span class="nf">greens_func_2d</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">poisson</span><span class="p">):</span>
     <span class="s2">&quot;Calculate the Green&#39;s functions for the 2D elastic case.&quot;</span>
-    <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">east</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">north</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">east</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">north</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="c1"># The mindist factor helps avoid singular matrices when the force and</span>
     <span class="c1"># computation point are too close</span>
     <span class="n">distance</span> <span class="o">+=</span> <span class="n">mindist</span>
     <span class="c1"># Pre-compute common terms for the Green&#39;s functions of each component</span>
     <span class="n">ln_r</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span> <span class="o">-</span> <span class="n">poisson</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
-    <span class="n">over_r2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">poisson</span><span class="p">)</span> <span class="o">/</span> <span class="n">distance</span> <span class="o">**</span> <span class="mi">2</span>
-    <span class="n">green_ee</span> <span class="o">=</span> <span class="n">ln_r</span> <span class="o">+</span> <span class="n">over_r2</span> <span class="o">*</span> <span class="n">north</span> <span class="o">**</span> <span class="mi">2</span>
-    <span class="n">green_nn</span> <span class="o">=</span> <span class="n">ln_r</span> <span class="o">+</span> <span class="n">over_r2</span> <span class="o">*</span> <span class="n">east</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">over_r2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">poisson</span><span class="p">)</span> <span class="o">/</span> <span class="n">distance</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">green_ee</span> <span class="o">=</span> <span class="n">ln_r</span> <span class="o">+</span> <span class="n">over_r2</span> <span class="o">*</span> <span class="n">north</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">green_nn</span> <span class="o">=</span> <span class="n">ln_r</span> <span class="o">+</span> <span class="n">over_r2</span> <span class="o">*</span> <span class="n">east</span><span class="o">**</span><span class="mi">2</span>
     <span class="n">green_ne</span> <span class="o">=</span> <span class="o">-</span><span class="n">over_r2</span> <span class="o">*</span> <span class="n">east</span> <span class="o">*</span> <span class="n">north</span>
     <span class="k">return</span> <span class="n">green_ee</span><span class="p">,</span> <span class="n">green_nn</span><span class="p">,</span> <span class="n">green_ne</span>
 
@@ -1159,7 +1159,7 @@
   <p>
     
         &copy; Copyright 2017-2022, The Verde Developers.<br/>
-      Last updated on Jan 21, 2022.<br/>
+      Last updated on Mar 25, 2022.<br/>
   </p>
 </footer>
 </main>

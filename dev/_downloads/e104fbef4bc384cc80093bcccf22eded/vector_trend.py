@@ -31,7 +31,7 @@ data = vd.datasets.fetch_california_gps()
 # [Trend(...)]*2 as an argument to Vector. This creates references to the same
 # Trend instance and will mess up the fitting.
 trend = vd.Vector([vd.Trend(degree=2) for i in range(2)])
-weights = vd.variance_to_weights((data.std_east ** 2, data.std_north ** 2))
+weights = vd.variance_to_weights((data.std_east**2, data.std_north**2))
 trend.fit(
     coordinates=(data.longitude, data.latitude),
     data=(data.velocity_east, data.velocity_north),

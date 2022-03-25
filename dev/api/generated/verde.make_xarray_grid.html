@@ -687,12 +687,12 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="verde.make_xarray_grid">
 <span class="sig-prename descclassname"><span class="pre">verde.</span></span><span class="sig-name descname"><span class="pre">make_xarray_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('northing',</span> <span class="pre">'easting')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_coords_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/utils.html#make_xarray_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#verde.make_xarray_grid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> grid from numpy arrays</p>
-<p>This functions creates an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> out of 2d gridded data
+<dd><p>Create an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> grid from numpy arrays</p>
+<p>This functions creates an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> out of 2d gridded data
 including easting and northing coordinates, any extra coordinates (like
 upward elevation, time, etc) and data arrays.</p>
 <p>Use this to transform the outputs of <a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> and
-the <code class="docutils literal notranslate"><span class="pre">predict</span></code> method of a gridder into an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.</p>
+the <code class="docutils literal notranslate"><span class="pre">predict</span></code> method of a gridder into an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is a utility function to help create 2D grids (i.e., grids with
@@ -710,7 +710,7 @@ These coordinates can be generated through
 <li><p><strong>data</strong> (<em>array</em><em>, </em><em>tuple of arrays</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – Array or tuple of arrays with data values on each point in the grid.
 Each array must contain values for a dimension in the same order as
 the coordinates. All arrays need to have the same <em>shape</em>.
-If None, the <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> will not have any <code class="docutils literal notranslate"><span class="pre">data_var</span></code>
+If None, the <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> will not have any <code class="docutils literal notranslate"><span class="pre">data_var</span></code>
 array.</p></li>
 <li><p><strong>data_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – The name(s) of the data variables in the output grid.
 Ignored if <code class="docutils literal notranslate"><span class="pre">data</span></code> is None.</p></li>
@@ -719,7 +719,7 @@ in the output grid. Must be defined in the following order: northing
 dimension, easting dimension.
 <strong>NOTE: This is an exception to the “easting” then
 “northing” pattern but is required for compatibility with xarray.</strong>
-The easting and northing coordinates in the <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>
+The easting and northing coordinates in the <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>
 will have the same names as the passed dimensions.</p></li>
 <li><p><strong>extra_coords_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em> (</em><em>optional</em><em>)</em>) – Name or list of names for any additional coordinates besides the
 easting and northing ones. Ignored if coordinates has
@@ -728,7 +728,7 @@ the grid array.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>grid</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.20.2.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – A 2D grid with one or more data variables.</p>
+<dd class="field-even"><p><strong>grid</strong> (<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – A 2D grid with one or more data variables.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -824,7 +824,7 @@ the grid array.</p></li>
   <p>
     
         &copy; Copyright 2017-2022, The Verde Developers.<br/>
-      Last updated on Jan 21, 2022.<br/>
+      Last updated on Mar 25, 2022.<br/>
   </p>
 </footer>
 </main>
