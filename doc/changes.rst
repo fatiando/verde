@@ -3,6 +3,48 @@
 Changelog
 =========
 
+Version 1.7.0
+-------------
+
+*Released on: 2022/03/25*
+
+DOI: https://doi.org/10.5281/zenodo.6384887
+
+Deprecation:
+
+* Move the ``CheckerBoard`` class to ``verde.synthetic`` (`#353 <https://github.com/fatiando/verde/pull/353>`__)
+* Deprecate the ``verde.test`` function which will be removed in v2.0.0 (`#344 <https://github.com/fatiando/verde/pull/344>`__)
+* Deprecate the ``datasets`` module, which will be replaced by `Ensaio <https://github.com/fatiando/ensaio>`__ in the future (`#277 <https://github.com/fatiando/verde/pull/277>`__)
+* Warn that the default score will change from R² to negative RMSE in v2.0 (`#352 <https://github.com/fatiando/verde/pull/352>`__)
+
+New features:
+
+* Add option to pass coordinates to the ``grid`` method instead of just ``region`` and ``spacing`` (`#326 <https://github.com/fatiando/verde/pull/326>`__)
+* Add support for Python 3.9 (`#323 <https://github.com/fatiando/verde/pull/323>`__) and 3.10 (`#346 <https://github.com/fatiando/verde/pull/346>`__)
+
+Documentation:
+
+* Modernize the front page of the docs (`#356 <https://github.com/fatiando/verde/pull/356>`__)
+* Modernize the Installing page (`#355 <https://github.com/fatiando/verde/pull/355>`__)
+* Update the contact link in the docs (`#347 <https://github.com/fatiando/verde/pull/347>`__)
+* Switch the docs theme to the sphinx-book-theme (`#343 <https://github.com/fatiando/verde/pull/343>`__)
+* Update ``dims`` in example of ``make_xarray_grid`` (`#329 <https://github.com/fatiando/verde/pull/329>`__)
+* Explicitly pass default arguments with their corresponding keywords on tests and examples (`#327 <https://github.com/fatiando/verde/pull/327>`__)
+
+Maintenance:
+
+* Replace Google Analytics for Plausible one to make our docs more privacy-friendly (`#358 <https://github.com/fatiando/verde/pull/358>`__)
+* Move configuration from ``setup.py`` to ``setup.cfg`` (`#348 <https://github.com/fatiando/verde/pull/348>`__)
+* Link CoC, Authorship, Contributing, and Maintainers guides back to the Fatiando-wide pages (`#338 <https://github.com/fatiando/verde/pull/338>`__)
+* Replace pylint with more flake8 plugins (`#337 <https://github.com/fatiando/verde/pull/337>`__)
+* Rename the main branch from "master" to "main" (`#335 <https://github.com/fatiando/verde/pull/335>`__)
+* Remove ``normalize`` argument when creating scikit-learn solvers (`#333 <https://github.com/fatiando/verde/pull/333>`__)
+
+This release contains contributions from:
+
+* Santiago Soler
+* Leonardo Uieda
+
 Version 1.6.1
 -------------
 
