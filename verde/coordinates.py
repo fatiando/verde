@@ -696,8 +696,8 @@ def inside(coordinates, region):
     w, e, s, n = region
     easting, northing = coordinates[:2]
     # Allocate temporary arrays to minimize memory allocation overhead
-    out = np.empty_like(easting, dtype=np.bool)
-    tmp = tuple(np.empty_like(easting, dtype=np.bool) for i in range(4))
+    out = np.empty_like(easting, dtype=bool)
+    tmp = tuple(np.empty_like(easting, dtype=bool) for i in range(4))
     # Using the logical functions is a lot faster than & > < for some reason
     # Plus, this way avoids repeated allocation of intermediate arrays
     in_we = np.logical_and(
