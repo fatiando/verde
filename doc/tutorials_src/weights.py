@@ -153,7 +153,7 @@ plot_data(
 # weights.
 
 # We'll use 1 over the squared data uncertainty as our input weights.
-data["weights"] = 1 / data.std_up ** 2
+data["weights"] = 1 / data.std_up**2
 
 # By default, BlockMean assumes that weights are not related to uncertainties
 coordinates, velocity, weights = mean.filter(

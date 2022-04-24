@@ -49,7 +49,7 @@ spacing = 30 / 60
 # It's important that the weights are given as 1/sigma**2 for the uncertainty
 # propagation. In this case, you should not use verde.variance_to_weights
 # because it would normalize the weights.
-weights = 1 / data.std_up ** 2
+weights = 1 / data.std_up**2
 reducer = vd.BlockMean(spacing, center_coordinates=True)
 # First produce the weighted variance weights
 variance_weights = reducer.filter(coordinates, data.velocity_up, weights)[-1]

@@ -4,9 +4,6 @@
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
-"""
-Generators of synthetic datasets.
-"""
 import numpy as np
 import pandas as pd
 

@@ -395,15 +395,15 @@ class VectorSpline2D(BaseGridder):
 
 def greens_func_2d(east, north, mindist, poisson):
     "Calculate the Green's functions for the 2D elastic case."
-    distance = np.sqrt(east ** 2 + north ** 2)
+    distance = np.sqrt(east**2 + north**2)
     # The mindist factor helps avoid singular matrices when the force and
     # computation point are too close
     distance += mindist
     # Pre-compute common terms for the Green's functions of each component
     ln_r = (3 - poisson) * np.log(distance)
-    over_r2 = (1 + poisson) / distance ** 2
-    green_ee = ln_r + over_r2 * north ** 2
-    green_nn = ln_r + over_r2 * east ** 2
+    over_r2 = (1 + poisson) / distance**2
+    green_ee = ln_r + over_r2 * north**2
+    green_nn = ln_r + over_r2 * east**2
     green_ne = -over_r2 * east * north
     return green_ee, green_nn, green_ne
 
