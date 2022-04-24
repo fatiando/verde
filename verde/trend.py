@@ -192,13 +192,13 @@ class Trend(BaseGridder):
         >>> import numpy as np
         >>> east = np.linspace(0, 4, 5)
         >>> north = np.linspace(-5, -1, 5)
-        >>> print(Trend(degree=1).jacobian((east, north), dtype=np.int))
+        >>> print(Trend(degree=1).jacobian((east, north), dtype=int))
         [[ 1  0 -5]
          [ 1  1 -4]
          [ 1  2 -3]
          [ 1  3 -2]
          [ 1  4 -1]]
-        >>> print(Trend(degree=2).jacobian((east, north), dtype=np.int))
+        >>> print(Trend(degree=2).jacobian((east, north), dtype=int))
         [[ 1  0 -5  0  0 25]
          [ 1  1 -4  1 -4 16]
          [ 1  2 -3  4 -6  9]
