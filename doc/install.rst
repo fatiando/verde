@@ -5,31 +5,33 @@ Installing
 
 There are different ways to install Verde:
 
-.. tabbed:: pip
+.. tab-set::
 
-    Using the `pip <https://pypi.org/project/pip/>`__ package manager:
+    .. tab-item:: pip
 
-    .. code:: bash
+        Using the `pip <https://pypi.org/project/pip/>`__ package manager:
 
-        python -m pip install verde
+        .. code:: bash
 
-.. tabbed:: conda
+            python -m pip install verde
 
-    Using the `conda <https://conda.io/>`__ package manager that comes with the
-    Anaconda/Miniconda distribution:
+    .. tab-item:: conda/mamba
 
-    .. code:: bash
+        Using the `conda package manager <https://conda.io/>`__ (or ``mamba``)
+        that comes with the Anaconda/Miniconda distribution:
 
-        conda install verde --channel conda-forge
+        .. code:: bash
 
-.. tabbed:: Development version
+            conda install verde --channel conda-forge
 
-    Using ``pip`` to install the latest **unreleased** version from GitHub
-    (**not recommended** in most situations):
+    .. tab-item:: Development version
 
-    .. code:: bash
+        You can use ``pip`` to install the latest **unreleased** version from
+        GitHub (**not recommended** in most situations):
 
-        python -m pip install --upgrade git+https://github.com/fatiando/verde
+        .. code:: bash
+
+            python -m pip install --upgrade git+https://github.com/fatiando/verde
 
 .. note::
 
