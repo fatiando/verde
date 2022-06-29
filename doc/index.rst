@@ -1,12 +1,33 @@
 .. title:: Home
 
-========
-|banner|
-========
+.. grid::
+    :gutter: 4 4 4 4
+    :margin: 5 5 0 0
+    :padding: 0 0 0 0
 
-.. |banner| image:: _static/readme-banner.png
-    :alt: Verde Documentation
-    :align: middle
+    .. grid-item::
+        :columns: 12 8 12 8
+
+        .. grid::
+            :padding: 0 0 0 0
+
+            .. grid-item::
+                :columns: 12 12 12 9
+
+                .. raw:: html
+
+                    <h1 class="display-1"><img src="_static/verde-title.svg" alt="Verde"></h1>
+
+        .. div:: sd-fs-3
+
+            Processing and gridding spatial data, machine-learning style
+
+    .. grid-item::
+        :columns: 12 4 12 4
+
+        .. image:: ./_static/verde-logo.svg
+            :width: 200px
+            :class: sd-m-auto
 
 **Verde** is a Python library for processing spatial data (bathymetry,
 geophysics surveys, etc) and interpolating it on regular grids (i.e.,
@@ -19,72 +40,78 @@ We also provide other analysis methods that are often used in combination with
 gridding, like trend removal, blocked/windowed operations, cross-validation,
 and more!
 
+----
 
-.. panels::
-    :header: text-center text-large
-    :card: border-1 m-1 text-center
+.. grid:: 1 2 1 2
+    :margin: 5 5 0 0
+    :padding: 0 0 0 0
+    :gutter: 4
 
-    **Getting started**
-    ^^^^^^^^^^^^^^^^^^^
+    .. grid-item-card:: :octicon:`info` Getting started
+        :text-align: center
+        :class-title: sd-fs-5
+        :class-card: sd-p-3
 
-    New to Verde? Start here!
+        New to Verde? Start here!
 
-    .. link-button:: overview
-        :type: ref
-        :text: Overview
-        :classes: btn-outline-primary btn-block stretched-link
+        .. button-ref:: overview
+            :ref-type: ref
+            :click-parent:
+            :color: primary
+            :outline:
+            :expand:
 
-    ---
+    .. grid-item-card:: :octicon:`comment-discussion` Need help?
+        :text-align: center
+        :class-title: sd-fs-5
+        :class-card: sd-p-3
 
-    **Need help?**
-    ^^^^^^^^^^^^^^
+        Ask on our community channels.
 
-    Ask on our community channels
+        .. button-link:: https://www.fatiando.org/contact
+            :click-parent:
+            :color: primary
+            :outline:
+            :expand:
 
-    .. link-button:: https://www.fatiando.org/contact
-        :type: url
-        :text: Join the conversation
-        :classes: btn-outline-primary btn-block stretched-link
+            Join the conversation :octicon:`link-external`
 
-    ---
+    .. grid-item-card:: :octicon:`file-badge` Reference documentation
+        :text-align: center
+        :class-title: sd-fs-5
+        :class-card: sd-p-3
 
-    **Reference documentation**
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        A list of modules and functions.
 
-    A list of modules and functions
+        .. button-ref:: api
+            :ref-type: ref
+            :color: primary
+            :outline:
+            :expand:
 
-    .. link-button:: api
-        :type: ref
-        :text: API reference
-        :classes: btn-outline-primary btn-block stretched-link
+    .. grid-item-card:: :octicon:`bookmark` Using Verde for research?
+        :text-align: center
+        :class-title: sd-fs-5
+        :class-card: sd-p-3
 
-    ---
+        Citations help support our work!
 
-    **Using Verde for research?**
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        .. button-ref:: citing
+            :ref-type: ref
+            :color: primary
+            :outline:
+            :expand:
 
-    Citations help support our work
-
-    .. link-button:: citing
-        :type: ref
-        :text: Cite Verde
-        :classes: btn-outline-primary btn-block stretched-link
-
+----
 
 .. seealso::
 
     Verde is a part of the
     `Fatiando a Terra <https://www.fatiando.org/>`__ project.
 
-
-----
-
-
-Table of contents
------------------
-
 .. toctree::
     :maxdepth: 1
+    :hidden:
     :caption: Getting Started
 
     tutorials/overview.rst
@@ -93,6 +120,7 @@ Table of contents
 
 .. toctree::
     :maxdepth: 1
+    :hidden:
     :caption: User Guide
 
     sample_data/index.rst
@@ -108,6 +136,7 @@ Table of contents
 
 .. toctree::
     :maxdepth: 1
+    :hidden:
     :caption: Reference documentation
 
     api/index.rst
@@ -118,6 +147,7 @@ Table of contents
 
 .. toctree::
     :maxdepth: 1
+    :hidden:
     :caption: Community
 
     Join the community <https://www.fatiando.org/contact/>

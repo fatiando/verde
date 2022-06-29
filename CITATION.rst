@@ -12,7 +12,9 @@ If you used Verde in your research, please consider citing our paper:
 This is an open-access publication and can be freely downloaded from
 https://doi.org/10.21105/joss.00957
 
-Here is a Bibtex entry to make things easier if you're using Latex::
+Here is a Bibtex entry to make things easier if you're using Latex:
+
+.. code:: bibtex
 
     @article{uieda2018,
       title = {{Verde}: {Processing} and gridding spatial data using {Green's} functions},
