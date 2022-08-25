@@ -23,8 +23,12 @@ defaults:
 
 jobs:
 
+  #############################################################################
+  # Build the wheel and source archives and check them with Twine
   build:
     runs-on: ubuntu-latest
+    # Only publish from the origin repository, not forks
+    if: github.repository_owner == 'fatiando'
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE
@@ -55,17 +59,9 @@ jobs:
       - name: List installed packages
         run: python -m pip freeze
 
-      - name: Don't use local version numbers for TestPyPI uploads
-        if: github.event_name != 'release'
-        run: |
-          # Change setuptools-scm local_scheme to "no-local-version" so the
-          # local part of the version isn't included, making the version string
-          # compatible with Test PyPI.
-          sed --in-place "s/node-and-date/no-local-version/g" pyproject.toml
-
       - name: Build source and wheel distributions
         run: |
-          python setup.py sdist bdist_wheel
+          make build
           echo ""
           echo "Generated files:"
           ls -lh dist/
@@ -82,6 +78,8 @@ jobs:
           name: pypi-${{ github.sha }}
           path: dist
 
+  #############################################################################
+  # Publish built wheels and source archives to PyPI and test PyPI
   publish:
     runs-on: ubuntu-latest
     needs: build
