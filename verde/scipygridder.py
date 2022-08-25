@@ -114,7 +114,7 @@ class _BaseScipyGridder(BaseGridder):
 
 class Linear(_BaseScipyGridder):
     """
-    A piecewise linear interpolation.
+    Piecewise linear interpolation.
 
     Provides a Verde interface to
     :class:`scipy.interpolate.LinearNDInterpolator`.
@@ -133,8 +133,7 @@ class Linear(_BaseScipyGridder):
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
-        :meth:`~verde.Linear.grid` and
-        :meth:`~verde.Linear.scatter` methods.
+        :meth:`~verde.Linear.grid` method.
 
     """
 
@@ -148,6 +147,43 @@ class Linear(_BaseScipyGridder):
         a dictionary.
         """
         return LinearNDInterpolator, {"rescale": self.rescale}
+
+
+class Cubic(_BaseScipyGridder):
+    """
+    Piecewise cubic interpolation.
+
+    Provides a Verde interface to
+    :class:`scipy.interpolate.CloughTocher2DInterpolator`.
+
+    Parameters
+    ----------
+    rescale : bool
+        If ``True``, rescale the data coordinates to [0, 1] range before
+        interpolation. Useful when coordinates vary greatly in scale. Default
+        is ``True``.
+
+    Attributes
+    ----------
+    interpolator_ : scipy interpolator class
+        An instance of the corresponding scipy interpolator class.
+    region_ : tuple
+        The boundaries (``[W, E, S, N]``) of the data used to fit the
+        interpolator. Used as the default region for the
+        :meth:`~verde.Cubic.grid` method.
+
+    """
+
+    def __init__(self, rescale=True):
+        super().__init__()
+        self.rescale = rescale
+
+    def _get_interpolator(self):
+        """
+        Return the SciPy interpolator class and any extra keyword arguments as
+        a dictionary.
+        """
+        return CloughTocher2DInterpolator, {"rescale": self.rescale}
 
 
 class ScipyGridder(_BaseScipyGridder):

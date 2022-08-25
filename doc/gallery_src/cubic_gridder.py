@@ -5,12 +5,12 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Gridding with a linear interpolator
+Gridding with a cubic interpolator
 ===================================
 
-Verde offers the :class:`verde.Linear` class for piecewise linear gridding.
-It uses :class:`scipy.interpolate.LinearNDInterpolator` under the hood while
-offering the convenience of Verde's gridder API.
+Verde offers the :class:`verde.Cubic` class for piecewise cubic gridding.
+It uses :class:`scipy.interpolate.CloughTocher2DInterpolator` under the hood
+while offering the convenience of Verde's gridder API.
 
 The interpolation works on Cartesian data, so if we want to grid geographic
 data (like our Baja California bathymetry) we need to project them into a
@@ -18,7 +18,7 @@ Cartesian system. We'll use `pyproj <https://github.com/jswhit/pyproj>`__ to
 calculate a Mercator projection for the data.
 
 For convenience, Verde still allows us to make geographic grids by passing the
-``projection`` argument to :meth:`verde.Linear.grid` and the like. When
+``projection`` argument to :meth:`verde.Cubic.grid` and the like. When
 doing so, the grid will be generated using geographic coordinates which will be
 projected prior to interpolation.
 """
@@ -47,7 +47,7 @@ projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 proj_coordinates = projection(*coordinates)
 
 # Now we can set up a gridder for the decimated data
-grd = vd.Linear().fit(proj_coordinates, bathymetry)
+grd = vd.Cubic().fit(proj_coordinates, bathymetry)
 
 # Get the grid region in geographic coordinates
 region = vd.get_region((data.longitude, data.latitude))
