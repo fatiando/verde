@@ -15,7 +15,7 @@ import pandas as pd
 import pytest
 
 from ..coordinates import grid_coordinates
-from ..scipygridder import Linear, Cubic, ScipyGridder
+from ..scipygridder import Cubic, Linear, ScipyGridder
 from ..synthetic import CheckerBoard
 
 
