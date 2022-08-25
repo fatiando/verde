@@ -59,6 +59,14 @@ jobs:
       - name: List installed packages
         run: python -m pip freeze
 
+      - name: Don't use local version numbers for TestPyPI uploads
+        if: github.event_name != 'release'
+        run: |
+          # Change setuptools-scm local_scheme to "no-local-version" so the
+          # local part of the version isn't included, making the version string
+          # compatible with Test PyPI.
+          sed --in-place "s/node-and-date/no-local-version/g" pyproject.toml
+
       - name: Build source and wheel distributions
         run: |
           make build
