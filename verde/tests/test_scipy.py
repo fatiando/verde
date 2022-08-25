@@ -15,7 +15,7 @@ import pandas as pd
 import pytest
 
 from ..coordinates import grid_coordinates
-from ..scipygridder import Linear, ScipyGridder
+from ..scipygridder import Cubic, Linear, ScipyGridder
 from ..synthetic import CheckerBoard
 
 
@@ -27,6 +27,8 @@ from ..synthetic import CheckerBoard
         ScipyGridder(method="cubic"),
         Linear(),
         Linear(rescale=False),
+        Cubic(),
+        Cubic(rescale=False),
     ],
     ids=[
         "nearest(scipy)",
@@ -34,6 +36,8 @@ from ..synthetic import CheckerBoard
         "cubic(scipy)",
         "linear",
         "linear_norescale",
+        "cubic",
+        "cubic_norescale",
     ],
 )
 def test_scipy_gridder_same_points(gridder):
@@ -56,8 +60,17 @@ def test_scipy_gridder_same_points(gridder):
         ScipyGridder(method="cubic"),
         Linear(),
         Linear(rescale=False),
+        Cubic(),
+        Cubic(rescale=False),
     ],
-    ids=["linear(scipy)", "cubic(scipy)", "linear", "linear_norescale"],
+    ids=[
+        "cubic(scipy)",
+        "cubic(scipy)",
+        "linear",
+        "linear_norescale",
+        "cubic",
+        "cubic_norescale",
+    ],
 )
 def test_scipy_gridder(gridder):
     "See if the gridder recovers known points."
