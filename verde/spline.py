@@ -74,11 +74,12 @@ class SplineCV(BaseGridder):
         (default), then will be set to the data coordinates the first time
         :meth:`~verde.SplineCV.fit` is called.
     engine : str
-        Computation engine for the Jacobian matrix and prediction. Can be
-        ``'auto'``, ``'numba'``, or ``'numpy'``. If ``'auto'``, will use numba
-        if it is installed or numpy otherwise. The numba version is
-        multi-threaded and usually faster, which makes fitting and predicting
-        faster.
+        **DEPRECATED:** This option is deprecated and will be removed in Verde
+        v2.0.0. The numba engine will be the only option. Computation engine
+        for the Jacobian matrix and prediction. Can be ``'auto'``, ``'numba'``,
+        or ``'numpy'``. If ``'auto'``, will use numba if it is installed or
+        numpy otherwise. The numba version is multi-threaded and usually
+        faster, which makes fitting and predicting faster.
     cv : None or cross-validation generator
         Any scikit-learn cross-validation generator. If not given, will use the
         default set by :func:`verde.cross_val_score`.
@@ -142,6 +143,14 @@ class SplineCV(BaseGridder):
         self.cv = cv
         self.client = client
         self.delayed = delayed
+        if engine != "auto":
+            warnings.warn(
+                "The 'engine' parameter of 'verde.SplineCV' is "
+                "deprecated and will be removed in Verde 2.0.0. "
+                "The faster and memory efficient numba engine will be "
+                "the only option.",
+                FutureWarning,
+            )
         if client is not None:
             warnings.warn(
                 "The 'client' parameter of 'verde.SplineCV' is "
@@ -338,11 +347,12 @@ class Spline(BaseGridder):
         (default), then will be set to the data coordinates used to fit the
         spline.
     engine : str
-        Computation engine for the Jacobian matrix and prediction. Can be
-        ``'auto'``, ``'numba'``, or ``'numpy'``. If ``'auto'``, will use numba
-        if it is installed or numpy otherwise. The numba version is
-        multi-threaded and usually faster, which makes fitting and predicting
-        faster.
+        **DEPRECATED:** This option is deprecated and will be removed in Verde
+        v2.0.0. The numba engine will be the only option. Computation engine
+        for the Jacobian matrix and prediction. Can be ``'auto'``, ``'numba'``,
+        or ``'numpy'``. If ``'auto'``, will use numba if it is installed or
+        numpy otherwise. The numba version is multi-threaded and usually
+        faster, which makes fitting and predicting faster.
 
     Attributes
     ----------
@@ -369,6 +379,14 @@ class Spline(BaseGridder):
         self.damping = damping
         self.force_coords = force_coords
         self.engine = engine
+        if engine != "auto":
+            warnings.warn(
+                "The 'engine' parameter of 'verde.Spline' is "
+                "deprecated and will be removed in Verde 2.0.0. "
+                "The faster and memory efficient numba engine will be "
+                "the only option.",
+                FutureWarning,
+            )
 
     def fit(self, coordinates, data, weights=None):
         """
