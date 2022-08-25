@@ -15,6 +15,7 @@ Interpolators
 
     Spline
     SplineCV
+    Linear
     VectorSpline2D
     ScipyGridder
 
