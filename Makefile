@@ -2,7 +2,7 @@
 PROJECT=verde
 TESTDIR=tmp-test-dir-with-unique-name
 PYTEST_ARGS=--cov-config=../.coveragerc --cov-report=term-missing --cov=$(PROJECT) --doctest-modules -v --pyargs
-CHECK_STYLE=setup.py $(PROJECT) doc tools
+CHECK_STYLE=$(PROJECT) doc tools
 
 help:
 	@echo "Commands:"
@@ -11,11 +11,15 @@ help:
 	@echo "  test      run the test suite (including doctests) and report coverage"
 	@echo "  format    automatically format the code"
 	@echo "  check     run code style and quality checks"
+	@echo "  build     build source and wheel distributions"
 	@echo "  clean     clean up build and generated files"
 	@echo ""
 
+build:
+	python -m build .
+
 install:
-	pip install --no-deps -e .
+	python -m pip install --no-deps -e .
 
 test:
 	# Run a tmp folder to make sure the tests are run on the installed version
@@ -48,7 +52,6 @@ isort-check:
 
 flake8:
 	flake8 $(CHECK_STYLE)
-
 
 clean:
 	find . -name "*.pyc" -exec rm -v {} \;
