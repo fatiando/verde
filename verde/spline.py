@@ -93,10 +93,10 @@ class SplineCV(BaseGridder):
         allow mod:`dask` to execute the grid search in parallel (see note
         above).
     scoring : None, str, or callable
-        A scoring function (or name of a function) known to scikit-learn. See
-        the description of *scoring* in
+        The scoring function (or name of a function) used for cross-validation.
+        Must be known to scikit-learn. See the description of *scoring* in
         :func:`sklearn.model_selection.cross_val_score` for details. If None,
-        will fall back to the estimator's ``.score`` method.
+        will fall back to the :meth:`verde.Spline.score` method.
 
     Attributes
     ----------
