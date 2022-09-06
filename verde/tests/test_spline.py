@@ -108,7 +108,7 @@ def test_spline_cv_scoring():
     coords = (data.easting, data.northing)
     # Compare SplineCV to results from Spline with cross_val_score
     for score in ["r2", "neg_root_mean_squared_error"]:
-        spline = Spline()
+        spline = Spline(damping=None, mindist=1e-5)
         score_spline = np.mean(
             cross_val_score(spline, coords, data.scalars, scoring=score)
         )
