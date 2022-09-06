@@ -115,7 +115,7 @@ def test_spline_cv_scoring():
         # Limit SplineCV to a single parameter set equal to Spline's defaults
         spline_cv = SplineCV(mindists=[1e-5], dampings=[None], scoring=score)
         spline_cv.fit(coords, data.scalars)
-        score_spline_cv = spline_cv.scores_.max()
+        score_spline_cv = spline_cv.scores_[0]
         npt.assert_allclose(score_spline, score_spline_cv, rtol=1e-5)
 
 
