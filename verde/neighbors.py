@@ -34,9 +34,10 @@ class KNeighbors(BaseGridder):
 
     """
 
-    def __init__(self, k=1):
+    def __init__(self, k=1, reduction=np.mean):
         super().__init__()
         self.k = k
+        self.reduction = reduction
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -105,6 +106,6 @@ class KNeighbors(BaseGridder):
         if indices.ndim == 1:
             indices = np.atleast_2d(indices).T
         neighbor_values = np.reshape(self.data_[indices.ravel()], indices.shape)
-        data = np.mean(neighbor_values, axis=1)
+        data = self.reduction(neighbor_values, axis=1)
         shape = np.broadcast(*coordinates[:2]).shape
         return data.reshape(shape)
