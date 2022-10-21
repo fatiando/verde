@@ -44,9 +44,11 @@ jobs:
         python:
           - "3.7"
           - "3.10"
-        dependencies:
-          - latest
-          - optional
+        include:
+          - python: "3.7"
+            dependencies: oldest
+          - python: "3.10"
+            dependencies: latest
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-test.txt
       # Used to tag codecov submissions
@@ -112,7 +114,7 @@ jobs:
           cat requirements-full.txt
 
       - name: Setup caching for conda packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/conda_pkgs_dir
           key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements-full.txt') }}
