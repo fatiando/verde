@@ -11,8 +11,8 @@ Gridding with a nearest-neighbors interpolator
 Verde offers the :class:`verde.KNeighbors` class for nearest-neighbor gridding.
 The interpolation looks at the data values of the *k* nearest neighbors of a
 interpolated point. If *k* is 1, then the data value of the closest neighbor is
-assigned to the point. If *k* is greater than 1, the mean value of the closest
-*k* neighbors is assigned to the point.
+assigned to the point. If *k* is greater than 1, the average value of the
+closest *k* neighbors is assigned to the point.
 
 The interpolation works on Cartesian data, so if we want to grid geographic
 data (like our Baja California bathymetry) we need to project them into a
@@ -27,6 +27,7 @@ projected prior to interpolation.
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import pyproj
+import numpy as np
 
 import verde as vd
 
@@ -42,8 +43,12 @@ data = vd.datasets.fetch_baja_bathymetry()
 projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 proj_coordinates = projection(data.longitude, data.latitude)
 
-# Now we can set up a gridder for the decimated data
-grd = vd.KNeighbors(k=20).fit(proj_coordinates, data.bathymetry_m)
+# Now we can set up a gridder using the 10 nearest neighbors and averaging
+# using using a median instead of a mean (the default). The median is better in
+# this case since our data are expected to have sharp changes at ridges and
+# faults.
+grd = vd.KNeighbors(k=10, reduction=np.median)
+grd.fit(proj_coordinates, data.bathymetry_m)
 
 # Get the grid region in geographic coordinates
 region = vd.get_region((data.longitude, data.latitude))
