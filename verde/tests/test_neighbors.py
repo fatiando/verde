@@ -36,13 +36,15 @@ def test_neighbors_same_points():
     "gridder",
     [
         KNeighbors(),
+        KNeighbors(k=1),
         KNeighbors(k=2),
-        KNeighbors(k=3),
+        KNeighbors(k=10),
     ],
     ids=[
         "k=default",
+        "k=1",
         "k=2",
-        "k=3",
+        "k=10",
     ],
 )
 def test_neighbors(gridder):
@@ -55,7 +57,7 @@ def test_neighbors(gridder):
     true_data = synth.predict(coords)
     # nearest will never be too close to the truth
     gridder.fit(data_coords, data)
-    npt.assert_almost_equal(gridder.predict(coords), true_data, decimal=1)
+    npt.assert_allclose(gridder.predict(coords), true_data, rtol=0, atol=100)
 
 
 def test_neighbors_weights_warning():
