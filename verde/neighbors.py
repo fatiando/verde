@@ -73,7 +73,9 @@ class KNeighbors(BaseGridder):
         coordinates, data, weights = check_fit_input(coordinates, data, weights)
         self.region_ = get_region(coordinates[:2])
         self.tree_ = kdtree(coordinates[:2])
-        self.data_ = n_1d_arrays(data, n=1)[0].copy()
+        # Make sure this is an array and not a subclass of array (pandas,
+        # xarray, etc) so that we can index it later during predict.
+        self.data_ = np.asarray(data).ravel().copy()
         return self
 
     def predict(self, coordinates):
