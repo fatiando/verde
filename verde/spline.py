@@ -92,6 +92,11 @@ class SplineCV(BaseGridder):
         If True, will use :func:`dask.delayed` to dispatch computations and
         allow mod:`dask` to execute the grid search in parallel (see note
         above).
+    scoring : None, str, or callable
+        The scoring function (or name of a function) used for cross-validation.
+        Must be known to scikit-learn. See the description of *scoring* in
+        :func:`sklearn.model_selection.cross_val_score` for details. If None,
+        will fall back to the :meth:`verde.Spline.score` method.
 
     Attributes
     ----------
@@ -134,6 +139,7 @@ class SplineCV(BaseGridder):
         cv=None,
         client=None,
         delayed=False,
+        scoring=None,
     ):
         super().__init__()
         self.dampings = dampings
@@ -143,6 +149,7 @@ class SplineCV(BaseGridder):
         self.cv = cv
         self.client = client
         self.delayed = delayed
+        self.scoring = scoring
         if engine != "auto":
             warnings.warn(
                 "The 'engine' parameter of 'verde.SplineCV' is "
@@ -229,6 +236,7 @@ class SplineCV(BaseGridder):
                     weights=weights,
                     cv=self.cv,
                     delayed=self.delayed,
+                    scoring=self.scoring,
                 )
                 scores.append(dispatch(np.mean, delayed=self.delayed)(score))
         best = dispatch(np.argmax, delayed=self.delayed)(scores)

@@ -15,6 +15,7 @@ import pytest
 from dask.distributed import Client
 from sklearn.model_selection import ShuffleSplit
 
+from ..model_selection import cross_val_score
 from ..spline import Spline, SplineCV
 from ..synthetic import CheckerBoard
 from .utils import requires_numba
@@ -97,6 +98,25 @@ def test_spline():
         synth.grid(region=region, shape=shape).scalars,
         rtol=5e-2,
     )
+
+
+def test_spline_cv_scoring():
+    "Check scoring parameter works with SplineCV"
+    region = (100, 500, -800, -700)
+    synth = CheckerBoard(region=region)
+    data = synth.scatter(size=1500, random_state=1)
+    coords = (data.easting, data.northing)
+    # Compare SplineCV to results from Spline with cross_val_score
+    for score in ["r2", "neg_root_mean_squared_error"]:
+        spline = Spline(damping=None, mindist=1e-5)
+        score_spline = np.mean(
+            cross_val_score(spline, coords, data.scalars, scoring=score)
+        )
+        # Limit SplineCV to a single parameter set equal to Spline's defaults
+        spline_cv = SplineCV(mindists=[1e-5], dampings=[None], scoring=score)
+        spline_cv.fit(coords, data.scalars)
+        score_spline_cv = spline_cv.scores_[0]
+        npt.assert_allclose(score_spline, score_spline_cv, rtol=1e-5)
 
 
 def test_spline_weights():
