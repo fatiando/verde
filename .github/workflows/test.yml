@@ -41,16 +41,17 @@ jobs:
           - ubuntu
           - macos
           - windows
-        python:
-          - "3.7"
-          - "3.10"
+        dependencies:
+          - oldest
+          - latest
+          - optional
         include:
-          - python: "3.7"
-            dependencies: oldest
-          - python: "3.10"
-            dependencies: latest
-          - python: "3.10"
-            dependencies: optional
+          - dependencies: oldest
+            python: "3.7"
+          - dependencies: latest
+            python: "3.10"
+          - dependencies: optional
+            python: "3.10"
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-test.txt
       # Used to tag codecov submissions
