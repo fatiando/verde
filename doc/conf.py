@@ -96,7 +96,7 @@ sphinx_gallery_conf = {
     # Insert links to documentation of objects in the examples
     "reference_url": {"verde": None},
     # Use the PyGMT image scraper
-    "image_scrapers": ('matplotlib', pygmt.sphinx_gallery.PyGMTScraper()),
+    "image_scrapers": ("matplotlib", pygmt.sphinx_gallery.PyGMTScraper()),
 }
 
 # HTML output configuration
