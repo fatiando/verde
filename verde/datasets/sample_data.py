@@ -46,6 +46,13 @@ def locate():
     r"""
     The absolute path to the sample data storage location on disk.
 
+    .. warning::
+
+        All sample datasets in Verde are deprecated and will be
+        **removed in Verde v2.0.0**.
+        The tutorials/examples will transition to using
+        `Ensaio <https://www.fatiando.org/ensaio/>`__ instead.
+
     This is where the data are saved on your computer. The location is
     dependent on the operating system. The folder locations are defined by the
     ``appdirs``  package (see the `appdirs documentation

@@ -123,7 +123,6 @@ and more!
     :hidden:
     :caption: User Guide
 
-    sample_data/index.rst
     tutorials/grid_coordinates.rst
     tutorials/trends.rst
     tutorials/decimation.rst
