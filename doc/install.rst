@@ -77,5 +77,6 @@ If you wish to **run the examples in the documentation**, you will also have to
 install:
 
 * `matplotlib <https://matplotlib.org/>`__
+* `pygmt <https://www.pygmt.org>`__ for plotting maps
 * `cartopy <https://scitools.org.uk/cartopy/>`__ for plotting maps
 * `pyproj <https://jswhit.github.io/pyproj/>`__ for cartographic projections
