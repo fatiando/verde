@@ -46,6 +46,7 @@ jobs:
           - "3.10"
         dependencies:
           - latest
+          - oldest
           - optional
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-test.txt
@@ -90,24 +91,26 @@ jobs:
           # Needed for caching
           use-only-tar-bz2: true
 
-      - name: Collect requirements - run-time
-        run: python tools/export_requirements.py > requirements-full.txt
-
-      - name: Collect requirements - optional
-        if: matrix.dependencies == 'optional'
-        run: cat env/requirements-optional.txt >> requirements-full.txt
-
-      - name: Collect requirements - other
+      - name: Collect requirements
         run: |
+          echo "Install Dependente to capture dependencies:"
+          mamba install dependente==0.1.0 -c conda-forge
+          echo ""
+          echo "Capturing run-time dependencies:"
+          if [[ "${{ matrix.dependencies }}" == "oldest" ]]; then
+            dependente --source install --oldest > requirements-full.txt
+          elif [[ "${{ matrix.dependencies }}" == "optional" ]]; then
+            dependente --source install,extras > requirements-full.txt
+          else
+            dependente --source install > requirements-full.txt
+          fi
           echo "Capturing dependencies from:"
           for requirement in $REQUIREMENTS
           do
             echo "  $requirement"
             cat $requirement >> requirements-full.txt
           done
-
-      - name: List requirements
-        run: |
+          echo ""
           echo "Collected dependencies:"
           cat requirements-full.txt
 
