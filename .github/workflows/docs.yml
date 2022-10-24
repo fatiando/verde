@@ -32,7 +32,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      REQUIREMENTS: env/requirements-build.txt env/requirements-docs.txt env/requirements-optional.txt
+      REQUIREMENTS: env/requirements-build.txt env/requirements-docs.txt
       PYTHON: 3.9
 
     steps:
@@ -71,25 +71,26 @@ jobs:
           # Needed for caching
           use-only-tar-bz2: true
 
-      - name: Collect requirements - run-time
-        run: python tools/export_requirements.py > requirements-full.txt
 
-      - name: Collect requirements - other
+      - name: Collect requirements
         run: |
+          echo "Install Dependente to capture dependencies:"
+          mamba install dependente==0.1.0 -c conda-forge
+          echo ""
+          echo "Capturing run-time dependencies:"
+          dependente --source install,extras > requirements-full.txt
           echo "Capturing dependencies from:"
           for requirement in $REQUIREMENTS
           do
             echo "  $requirement"
             cat $requirement >> requirements-full.txt
           done
-
-      - name: List requirements
-        run: |
+          echo ""
           echo "Collected dependencies:"
           cat requirements-full.txt
 
       - name: Setup caching for conda packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/conda_pkgs_dir
           key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements-full.txt') }}

@@ -141,8 +141,9 @@ and more!
 
     api/index.rst
     citing.rst
-    changes.rst
     references.rst
+    changes.rst
+    compatibility.rst
     versions.rst
 
 .. toctree::

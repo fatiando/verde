@@ -41,15 +41,8 @@ There are different ways to install Verde:
 Which Python?
 -------------
 
-You'll need **Python >= 3.6**.
-
-We recommend using the
-`Anaconda <https://www.anaconda.com/download>`__
-or `Miniconda <https://docs.conda.io/en/latest/miniconda.html>`__
-Python distributions to ensure you have all dependencies installed and the
-``conda`` package manager available.
-Installing Anaconda does not require administrative rights to your computer and
-doesn't interfere with any other Python installations in your system.
+You'll need **Python >= 3.7**.
+See :ref:`python-versions` if you require support for older versions.
 
 .. _dependencies:
 
