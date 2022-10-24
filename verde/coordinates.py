@@ -195,6 +195,7 @@ def grid_coordinates(
     adjust="spacing",
     pixel_register=False,
     extra_coords=None,
+    meshgrid=True,
 ):
     """
     Generate the coordinates for each point on a regular grid.
@@ -235,6 +236,14 @@ def grid_coordinates(
         contain a constant value. Will generate an extra array per value given
         in *extra_coords*. Use this to generate arrays of constant heights or
         times, for example, that might be needed to evaluate a gridder.
+    meshgrid : bool
+        If True, will call :func:`numpy.meshgrid` on the generated coordinates
+        and return 2D arrays (useful if you need the coordinate values for
+        every single point on a grid). Otherwise, will return 1D coordinate
+        arrays (useful if you're making a :class:`xarray.DataArray` or looping
+        over grid coordinates with two ``for`` loops). Passing False to
+        *meshgrid* is **incompatible with *extra_coords* and an exception will
+        be raised** if used together (:class:`ValueError`).
 
     Returns
     -------
@@ -283,6 +292,18 @@ def grid_coordinates(
      [ 5.   5.   5. ]
      [ 7.5  7.5  7.5]
      [10.  10.  10. ]]
+
+    If you don't need the 2D arrays, then use ``meshgrid=False``:
+
+    >>> east, north = grid_coordinates(
+    ...     region=(0, 5, 0, 10), spacing=2.5, meshgrid=False,
+    ... )
+    >>> print(east.shape, north.shape)
+    (3,) (5,)
+    >>> print(east)
+    [0.  2.5 5. ]
+    >>> print(north)
+    [ 0.   2.5  5.   7.5 10. ]
 
     The spacing can be different for northing and easting, respectively:
 
@@ -444,8 +465,15 @@ def grid_coordinates(
     if pixel_register:
         east_lines = east_lines[:-1] + (east_lines[1] - east_lines[0]) / 2
         north_lines = north_lines[:-1] + (north_lines[1] - north_lines[0]) / 2
-    coordinates = list(np.meshgrid(east_lines, north_lines))
+    if meshgrid:
+        coordinates = list(np.meshgrid(east_lines, north_lines))
+    else:
+        coordinates = (east_lines, north_lines)
     if extra_coords is not None:
+        if not meshgrid:
+            raise ValueError(
+                "Using 'meshgrid=False' and 'extra_coords' is 'verde.grid_coordinates' is not allowed."
+            )
         for value in np.atleast_1d(extra_coords):
             coordinates.append(np.ones_like(coordinates[0]) * value)
     return tuple(coordinates)
