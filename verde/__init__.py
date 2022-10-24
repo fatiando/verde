@@ -15,6 +15,7 @@ from .coordinates import (
     get_region,
     grid_coordinates,
     inside,
+    linspace,
     longitude_continuity,
     pad_region,
     profile_coordinates,

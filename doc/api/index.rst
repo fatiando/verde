@@ -56,6 +56,7 @@ Coordinate Manipulation
 .. autosummary::
    :toctree: generated/
 
+    linspace
     grid_coordinates
     scatter_points
     profile_coordinates
