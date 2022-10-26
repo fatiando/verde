@@ -21,12 +21,40 @@ class KNeighbors(BaseGridder):
     """
     Nearest neighbor interpolation.
 
+    This gridder assumes Cartesian coordinates.
+
+    Interpolation based on the values of the *k* nearest neighbors of each
+    interpolated point. The number of neighbors *k* can be controlled and
+    mostly influences the spatial smoothness of the interpolated values.
+
+    The data values of the *k* nearest neighbors are combined into a single
+    value by a reduction function, which defaults to the mean. This can also be
+    configured.
+
+    .. note::
+
+        If installed, package ``pykdtree`` will be used for the nearest
+        neighbors look-up instead of :class:`scipy.spatial.cKDTree` for better
+        performance.
+
+    Parameters
+    ----------
+    k : int
+        The number of neighbors to use for each interpolated point. Default is
+        1.
+    reduction : function
+        Function used to combine the values of the *k* neighbors into a single
+        value. Can be any function that takes a 1D numpy array as input and
+        outputs a single value. Default is :func:`numpy.mean`.
 
     Attributes
     ----------
     tree_ : K-D tree
         An instance of the K-D tree data structure for the data points that is
         used to query for nearest neighbors.
+    data_ : 1D array
+        A copy of the input data as a 1D array. Used to look up values for
+        interpolation/prediction.
     region_ : tuple
         The boundaries (``[W, E, S, N]``) of the data used to fit the
         interpolator. Used as the default region for the
@@ -57,7 +85,7 @@ class KNeighbors(BaseGridder):
             The data values that will be interpolated.
         weights : None or array
             Data weights are **not supported** by this interpolator and will be
-            ignored. Only present for compatibility with other gridder.
+            ignored. Only present for compatibility with other gridders.
 
         Returns
         -------
