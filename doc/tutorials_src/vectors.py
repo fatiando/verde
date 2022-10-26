@@ -291,13 +291,5 @@ plt.show()
 #
 # For some types of vector data, like GPS/GNSS displacements, the vector
 # components are coupled through elasticity. In these cases, elastic Green's
-# functions can be used to achieve better interpolation results. The `Erizo
-# package <https://github.com/fatiando/erizo>`__ implements some of these
-# Green's functions.
-#
-# .. warning::
-#
-#     The :class:`verde.VectorSpline2D` class implemented an elastically
-#     coupled Green's function but it is deprecated and will be removed in
-#     Verde v2.0.0. Please use the implementation in the `Erizo
-#     <https://github.com/fatiando/erizo>`__ package instead.
+# functions can be used to achieve better interpolation results. The
+# :class:`verde.VectorSpline2D` implements these Green's functions.

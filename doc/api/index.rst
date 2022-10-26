@@ -124,6 +124,12 @@ Synthetic data
 Datasets
 --------
 
+.. warning::
+
+    All sample datasets in Verde are deprecated and will be **removed in Verde
+    v2.0.0**. The tutorials/examples will transition to using `Ensaio
+    <https://www.fatiando.org/ensaio/>`__ instead.
+
 .. autosummary::
    :toctree: generated/
 

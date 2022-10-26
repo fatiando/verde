@@ -283,3 +283,11 @@ def test_invalid_geographic_coordinates():
     latitude[0] = 100
     with pytest.raises(ValueError):
         longitude_continuity([longitude, latitude], region)
+
+
+def test_meshgrid_extra_coords_error():
+    "Should raise an exception if meshgrid=False and extra_coords are used"
+    with pytest.raises(ValueError):
+        grid_coordinates(
+            region=(0, 1, 0, 3), spacing=0.1, meshgrid=False, extra_coords=10
+        )
