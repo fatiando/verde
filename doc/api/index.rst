@@ -15,6 +15,7 @@ Interpolators
 
     Spline
     SplineCV
+    KNeighbors
     Linear
     Cubic
     VectorSpline2D
