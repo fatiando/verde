@@ -39,12 +39,14 @@ def test_neighbors_same_points():
         KNeighbors(k=1),
         KNeighbors(k=2),
         KNeighbors(k=10),
+        KNeighbors(k=1, reduction=np.median),
     ],
     ids=[
         "k=default",
         "k=1",
         "k=2",
         "k=10",
+        "median",
     ],
 )
 def test_neighbors(gridder):
