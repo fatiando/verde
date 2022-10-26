@@ -87,5 +87,5 @@ plt.colorbar(pc).set_label("meters")
 ax.plot(*coordinates, ".k", markersize=0.1, transform=crs)
 # Use an utility function to setup the tick labels and the land feature
 vd.datasets.setup_baja_bathymetry_map(ax)
-ax.set_title("Linear gridding of bathymetry")
+ax.set_title("Cubic gridding of bathymetry")
 plt.show()

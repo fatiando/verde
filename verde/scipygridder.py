@@ -124,7 +124,7 @@ class Linear(_BaseScipyGridder):
     rescale : bool
         If ``True``, rescale the data coordinates to [0, 1] range before
         interpolation. Useful when coordinates vary greatly in scale. Default
-        is ``True``.
+        is ``False``.
 
     Attributes
     ----------
@@ -137,7 +137,7 @@ class Linear(_BaseScipyGridder):
 
     """
 
-    def __init__(self, rescale=True):
+    def __init__(self, rescale=False):
         super().__init__()
         self.rescale = rescale
 
@@ -161,7 +161,7 @@ class Cubic(_BaseScipyGridder):
     rescale : bool
         If ``True``, rescale the data coordinates to [0, 1] range before
         interpolation. Useful when coordinates vary greatly in scale. Default
-        is ``True``.
+        is ``False``.
 
     Attributes
     ----------
@@ -174,7 +174,7 @@ class Cubic(_BaseScipyGridder):
 
     """
 
-    def __init__(self, rescale=True):
+    def __init__(self, rescale=False):
         super().__init__()
         self.rescale = rescale
 
