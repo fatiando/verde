@@ -531,6 +531,12 @@ class BaseGridder(BaseEstimator):
         dimensions and the data field(s) in the output
         :class:`pandas.DataFrame`. Default names are provided.
 
+        .. warning::
+
+            The ``scatter`` method is deprecated and will be removed in Verde
+            2.0.0. Use :func:`verde.scatter_points` and the ``predict`` method
+            instead.
+
         Parameters
         ----------
         region : list = [W, E, S, N]
@@ -570,6 +576,12 @@ class BaseGridder(BaseEstimator):
             The interpolated values on a random set of points.
 
         """
+        warnings.warn(
+            "The 'scatter' method is deprecated and will be removed in Verde "
+            "2.0.0. Use 'verde.scatter_points' and the 'predict' method "
+            "instead.",
+            FutureWarning,
+        )
         dims = self._get_dims(dims)
         region = get_instance_region(self, region)
         coordinates = scatter_points(region, size, random_state=random_state, **kwargs)
