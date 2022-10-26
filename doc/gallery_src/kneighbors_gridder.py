@@ -26,8 +26,8 @@ projected prior to interpolation.
 """
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
-import pyproj
 import numpy as np
+import pyproj
 
 import verde as vd
 
