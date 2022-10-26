@@ -7,8 +7,6 @@
 """
 Classes for dealing with vector data.
 """
-import warnings
-
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
@@ -145,13 +143,6 @@ class VectorSpline2D(BaseGridder):
     r"""
     Elastically coupled interpolation of 2-component vector data.
 
-    .. warning::
-
-        The :class:`~verde.VectorSpline2D` class is deprecated and will be
-        removed in Verde v2.0.0. Its usage is restricted to GPS/GNSS data and
-        not in the general scope of Verde. Please use the implementation in the
-        `Erizo <https://github.com/fatiando/erizo>`__ package instead.
-
     This gridder assumes Cartesian coordinates.
 
     Uses the Green's functions based on elastic deformation from
@@ -232,12 +223,6 @@ class VectorSpline2D(BaseGridder):
         self.damping = damping
         self.force_coords = force_coords
         self.engine = engine
-        warnings.warn(
-            "VectorSpline2D is deprecated and will be removed in Verde v2.0.0."
-            " Please use the implementation in the Erizo package instead "
-            "(https://github.com/fatiando/erizo).",
-            FutureWarning,
-        )
 
     def fit(self, coordinates, data, weights=None):
         """

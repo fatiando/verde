@@ -5,31 +5,33 @@ Installing
 
 There are different ways to install Verde:
 
-.. tabbed:: pip
+.. tab-set::
 
-    Using the `pip <https://pypi.org/project/pip/>`__ package manager:
+    .. tab-item:: pip
 
-    .. code:: bash
+        Using the `pip <https://pypi.org/project/pip/>`__ package manager:
 
-        python -m pip install verde
+        .. code:: bash
 
-.. tabbed:: conda
+            python -m pip install verde
 
-    Using the `conda <https://conda.io/>`__ package manager that comes with the
-    Anaconda/Miniconda distribution:
+    .. tab-item:: conda/mamba
 
-    .. code:: bash
+        Using the `conda package manager <https://conda.io/>`__ (or ``mamba``)
+        that comes with the Anaconda/Miniconda distribution:
 
-        conda install verde --channel conda-forge
+        .. code:: bash
 
-.. tabbed:: Development version
+            conda install verde --channel conda-forge
 
-    Using ``pip`` to install the latest **unreleased** version from GitHub
-    (**not recommended** in most situations):
+    .. tab-item:: Development version
 
-    .. code:: bash
+        You can use ``pip`` to install the latest **unreleased** version from
+        GitHub (**not recommended** in most situations):
 
-        python -m pip install --upgrade git+https://github.com/fatiando/verde
+        .. code:: bash
+
+            python -m pip install --upgrade git+https://github.com/fatiando/verde
 
 .. note::
 
@@ -39,15 +41,8 @@ There are different ways to install Verde:
 Which Python?
 -------------
 
-You'll need **Python >= 3.6**.
-
-We recommend using the
-`Anaconda <https://www.anaconda.com/download>`__
-or `Miniconda <https://docs.conda.io/en/latest/miniconda.html>`__
-Python distributions to ensure you have all dependencies installed and the
-``conda`` package manager available.
-Installing Anaconda does not require administrative rights to your computer and
-doesn't interfere with any other Python installations in your system.
+You'll need **Python >= 3.7**.
+See :ref:`python-versions` if you require support for older versions.
 
 .. _dependencies:
 
@@ -82,5 +77,6 @@ If you wish to **run the examples in the documentation**, you will also have to
 install:
 
 * `matplotlib <https://matplotlib.org/>`__
+* `pygmt <https://www.pygmt.org>`__ for plotting maps
 * `cartopy <https://scitools.org.uk/cartopy/>`__ for plotting maps
 * `pyproj <https://jswhit.github.io/pyproj/>`__ for cartographic projections

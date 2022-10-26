@@ -15,26 +15,64 @@ import pandas as pd
 import pytest
 
 from ..coordinates import grid_coordinates
-from ..scipygridder import ScipyGridder
+from ..scipygridder import Cubic, Linear, ScipyGridder
 from ..synthetic import CheckerBoard
 
 
-def test_scipy_gridder_same_points():
+@pytest.mark.parametrize(
+    "gridder",
+    [
+        ScipyGridder(method="nearest"),
+        ScipyGridder(method="linear"),
+        ScipyGridder(method="cubic"),
+        Linear(),
+        Linear(rescale=False),
+        Cubic(),
+        Cubic(rescale=False),
+    ],
+    ids=[
+        "nearest(scipy)",
+        "linear(scipy)",
+        "cubic(scipy)",
+        "linear",
+        "linear_norescale",
+        "cubic",
+        "cubic_norescale",
+    ],
+)
+def test_scipy_gridder_same_points(gridder):
     "See if the gridder recovers known points."
     region = (1000, 5000, -8000, -7000)
     synth = CheckerBoard(region=region)
     data = synth.scatter(size=1000, random_state=0)
     coords = (data.easting, data.northing)
     # The interpolation should be perfect on top of the data points
-    for method in ["nearest", "linear", "cubic"]:
-        grd = ScipyGridder(method=method)
-        grd.fit(coords, data.scalars)
-        predicted = grd.predict(coords)
-        npt.assert_allclose(predicted, data.scalars)
-        npt.assert_allclose(grd.score(coords, data.scalars), 1)
+    gridder.fit(coords, data.scalars)
+    predicted = gridder.predict(coords)
+    npt.assert_allclose(predicted, data.scalars)
+    npt.assert_allclose(gridder.score(coords, data.scalars), 1)
 
 
-def test_scipy_gridder():
+@pytest.mark.parametrize(
+    "gridder",
+    [
+        ScipyGridder(method="linear"),
+        ScipyGridder(method="cubic"),
+        Linear(),
+        Linear(rescale=False),
+        Cubic(),
+        Cubic(rescale=False),
+    ],
+    ids=[
+        "cubic(scipy)",
+        "cubic(scipy)",
+        "linear",
+        "linear_norescale",
+        "cubic",
+        "cubic_norescale",
+    ],
+)
+def test_scipy_gridder(gridder):
     "See if the gridder recovers known points."
     synth = CheckerBoard(region=(1000, 5000, -8000, -6000))
     data = synth.scatter(size=20000, random_state=0)
@@ -42,22 +80,42 @@ def test_scipy_gridder():
     pt_coords = (3000, -7000)
     true_data = synth.predict(pt_coords)
     # nearest will never be too close to the truth
-    grd = ScipyGridder("cubic").fit(coords, data.scalars)
-    npt.assert_almost_equal(grd.predict(pt_coords), true_data, decimal=2)
-    grd = ScipyGridder("linear").fit(coords, data.scalars)
-    npt.assert_almost_equal(grd.predict(pt_coords), true_data, decimal=1)
+    gridder.fit(coords, data.scalars)
+    npt.assert_almost_equal(gridder.predict(pt_coords), true_data, decimal=1)
 
 
-def test_scipy_gridder_region():
+@pytest.mark.parametrize(
+    "gridder",
+    [
+        ScipyGridder(method="cubic"),
+        Linear(),
+    ],
+    ids=["cubic(scipy)", "linear"],
+)
+def test_scipy_gridder_region_xarray(gridder):
     "See if the region is gotten from the data is correct."
     region = (1000, 5000, -8000, -6000)
     synth = CheckerBoard(region=region)
-    # Test using xarray objects
     grid = synth.grid(shape=(101, 101))
     coords = grid_coordinates(region, grid.scalars.shape)
-    grd = ScipyGridder().fit(coords, grid.scalars)
-    npt.assert_allclose(grd.region_, region)
-    # Test using pandas objects
+    gridder.fit(coords, grid.scalars)
+    npt.assert_allclose(gridder.region_, region)
+
+
+@pytest.mark.parametrize(
+    "gridder",
+    [
+        ScipyGridder(method="cubic"),
+        Linear(),
+    ],
+    ids=["cubic(scipy)", "linear"],
+)
+def test_scipy_gridder_region_pandas(gridder):
+    "See if the region is gotten from the data is correct."
+    region = (1000, 5000, -8000, -6000)
+    synth = CheckerBoard(region=region)
+    grid = synth.grid(shape=(101, 101))
+    coords = grid_coordinates(region, grid.scalars.shape)
     data = pd.DataFrame(
         {
             "easting": coords[0].ravel(),
@@ -65,8 +123,8 @@ def test_scipy_gridder_region():
             "scalars": grid.scalars.values.ravel(),
         }
     )
-    grd = ScipyGridder().fit((data.easting, data.northing), data.scalars)
-    npt.assert_allclose(grd.region_, region)
+    gridder.fit((data.easting, data.northing), data.scalars)
+    npt.assert_allclose(gridder.region_, region)
 
 
 def test_scipy_gridder_extra_args():
