@@ -5,12 +5,14 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Gridding with a cubic interpolator
-===================================
+Gridding with a nearest-neighbors interpolator
+==============================================
 
-Verde offers the :class:`verde.Cubic` class for piecewise cubic gridding.
-It uses :class:`scipy.interpolate.CloughTocher2DInterpolator` under the hood
-while offering the convenience of Verde's gridder API.
+Verde offers the :class:`verde.KNeighbors` class for nearest-neighbor gridding.
+The interpolation looks at the data values of the *k* nearest neighbors of a
+interpolated point. If *k* is 1, then the data value of the closest neighbor is
+assigned to the point. If *k* is greater than 1, the average value of the
+closest *k* neighbors is assigned to the point.
 
 The interpolation works on Cartesian data, so if we want to grid geographic
 data (like our Baja California bathymetry) we need to project them into a
@@ -18,7 +20,7 @@ Cartesian system. We'll use `pyproj <https://github.com/jswhit/pyproj>`__ to
 calculate a Mercator projection for the data.
 
 For convenience, Verde still allows us to make geographic grids by passing the
-``projection`` argument to :meth:`verde.Cubic.grid` and the like. When
+``projection`` argument to :meth:`verde.KNeighbors.grid` and the like. When
 doing so, the grid will be generated using geographic coordinates which will be
 projected prior to interpolation.
 """
@@ -32,22 +34,21 @@ import verde as vd
 # We'll test this on the Baja California shipborne bathymetry data
 data = vd.datasets.fetch_baja_bathymetry()
 
-# Before gridding, we need to decimate the data to avoid aliasing because of
-# the oversampling along the ship tracks. We'll use a blocked median with 1
-# arc-minute blocks.
-spacing = 1 / 60
-reducer = vd.BlockReduce(reduction=np.median, spacing=spacing)
-coordinates, bathymetry = reducer.filter(
-    (data.longitude, data.latitude), data.bathymetry_m
-)
+# Data decimation using verde.BlockReduce is not necessary here since the
+# averaging operation is already performed by the k nearest-neighbor
+# interpolator.
 
 # Project the data using pyproj so that we can use it as input for the gridder.
 # We'll set the latitude of true scale to the mean latitude of the data.
 projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
-proj_coordinates = projection(*coordinates)
+proj_coordinates = projection(data.longitude, data.latitude)
 
-# Now we can set up a gridder for the decimated data
-grd = vd.Cubic().fit(proj_coordinates, bathymetry)
+# Now we can set up a gridder using the 10 nearest neighbors and averaging
+# using using a median instead of a mean (the default). The median is better in
+# this case since our data are expected to have sharp changes at ridges and
+# faults.
+grd = vd.KNeighbors(k=10, reduction=np.median)
+grd.fit(proj_coordinates, data.bathymetry_m)
 
 # Get the grid region in geographic coordinates
 region = vd.get_region((data.longitude, data.latitude))
@@ -62,7 +63,7 @@ print("Data region:", region)
 # informative).
 grid = grd.grid(
     region=region,
-    spacing=spacing,
+    spacing=1 / 60,
     projection=projection,
     dims=["latitude", "longitude"],
     data_names="bathymetry_m",
@@ -83,9 +84,9 @@ pc = grid.bathymetry_m.plot.pcolormesh(
     ax=ax, transform=crs, vmax=0, zorder=-1, add_colorbar=False
 )
 plt.colorbar(pc).set_label("meters")
-# Plot the locations of the decimated data
-ax.plot(*coordinates, ".k", markersize=0.1, transform=crs)
+# Plot the locations of the data
+ax.plot(data.longitude, data.latitude, ".k", markersize=0.1, transform=crs)
 # Use an utility function to setup the tick labels and the land feature
 vd.datasets.setup_baja_bathymetry_map(ax)
-ax.set_title("Cubic gridding of bathymetry")
+ax.set_title("Nearest-neighbor gridding of bathymetry")
 plt.show()

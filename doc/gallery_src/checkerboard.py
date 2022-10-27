@@ -9,8 +9,8 @@ Checkerboard function
 =====================
 
 The :class:`verde.synthetic.CheckerBoard` class generates synthetic data in a
-checkerboard pattern. It has the same data generation methods that most
-gridders have: predict, grid, scatter, and profile.
+checkerboard pattern. It has different data generation methods, some of which
+are shared with most other gridders: predict, grid, profile, and scatter.
 """
 import matplotlib.pyplot as plt
 

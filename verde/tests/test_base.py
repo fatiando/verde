@@ -150,7 +150,8 @@ def test_basegridder():
     # Grid on profile
     prof = grd.profile((0, -10), (10, -10), 30)
     # Grid on scatter
-    scat = grd.scatter(region=region, size=1000, random_state=0)
+    with pytest.warns(FutureWarning):
+        scat = grd.scatter(region=region, size=1000, random_state=0)
 
     for grid in grids:
         npt.assert_allclose(grid.scalars.values, data_true)

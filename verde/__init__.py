@@ -31,6 +31,7 @@ from .model_selection import (
     cross_val_score,
     train_test_split,
 )
+from .neighbors import KNeighbors
 from .projections import project_grid, project_region
 from .scipygridder import Cubic, Linear, ScipyGridder
 from .spline import Spline, SplineCV
