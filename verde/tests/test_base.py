@@ -389,15 +389,6 @@ def test_basegridder_grid_invalid_arguments():
     # Check error is raised if both coordinates and region are passed
     with pytest.raises(ValueError):
         grd.grid(coordinates=grid_coords, region=region)
-    # Check if FutureWarning is raised after passing region, spacing or shape
-    with warnings.catch_warnings(record=True) as warns:
-        grd.grid(region=region, shape=(4, 4))
-        assert len(warns) == 1
-        assert issubclass(warns[0].category, FutureWarning)
-    with warnings.catch_warnings(record=True) as warns:
-        grd.grid(region=region, spacing=1)
-        assert len(warns) == 1
-        assert issubclass(warns[0].category, FutureWarning)
 
 
 def test_check_fit_input():
