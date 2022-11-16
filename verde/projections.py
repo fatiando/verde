@@ -13,7 +13,8 @@ from .blockreduce import BlockReduce
 from .chain import Chain
 from .coordinates import check_region, get_region, grid_coordinates, shape_to_spacing
 from .mask import convexhull_mask
-from .scipygridder import ScipyGridder
+from .neighbors import KNeighbors
+from .scipygridder import Cubic, Linear
 from .utils import grid_to_table
 
 
@@ -99,10 +100,10 @@ def project_grid(grid, projection, method="linear", antialias=True, **kwargs):
         northing coordinate arrays and returns projected northing and easting
         coordinate arrays.
     method : string or Verde gridder
-        If a string, will use it to create a :class:`~verde.ScipyGridder` with
-        the corresponding method (nearest, linear, or cubic). Otherwise, should
-        be a gridder/estimator object, like :class:`~verde.Spline`. Default is
-        ``"linear"``.
+        If a string, will use it to create :class:`~verde.KNeighbors`,
+        :class:`~verde.Linear`, or :class:`~verde.Cubic` (``"nearest"``,
+        ``"linear"``, or ``"cubic"``). Otherwise, should be a gridder/estimator
+        object, like :class:`~verde.Spline`. Default is ``"linear"``.
     antialias : bool
         If True, will run a :class:`~verde.BlockReduce` with a mean function to
         avoid aliasing when the projection results in oversampling of the data
@@ -127,6 +128,17 @@ def project_grid(grid, projection, method="linear", antialias=True, **kwargs):
                 len(grid.dims)
             )
         )
+    if isinstance(method, str):
+        classes = dict(
+            linear=Linear,
+            nearest=KNeighbors,
+            cubic=Cubic,
+        )
+        if method not in classes:
+            raise ValueError(
+                f"Invalid interpolation method '{method}'. Must be one of {classes.keys()}."
+            )
+        method = classes[method]()
 
     # Can be set to None for some data arrays depending on how they are created
     # so we can't just rely on the default value for getattr.
@@ -149,10 +161,7 @@ def project_grid(grid, projection, method="linear", antialias=True, **kwargs):
         steps.append(
             ("mean", BlockReduce(np.mean, spacing=spacing, region=data_region))
         )
-    if isinstance(method, str):
-        steps.append(("spline", ScipyGridder(method)))
-    else:
-        steps.append(("spline", method))
+    steps.append(("interpolator", method))
     interpolator = Chain(steps)
     interpolator.fit(coordinates, data[name])
 
@@ -160,8 +169,7 @@ def project_grid(grid, projection, method="linear", antialias=True, **kwargs):
         region=region,
         spacing=spacing,
         data_names=kwargs.pop("data_names", [name]),
-        **kwargs
+        **kwargs,
     )
-    if method not in ["linear", "cubic"]:
-        projected = convexhull_mask(coordinates, grid=projected)
+    projected = convexhull_mask(coordinates, grid=projected)
     return projected[name]

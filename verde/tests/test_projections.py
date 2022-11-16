@@ -12,8 +12,8 @@ import numpy.testing as npt
 import pytest
 import xarray as xr
 
+from ..neighbors import KNeighbors
 from ..projections import project_grid
-from ..scipygridder import ScipyGridder
 
 
 def projection(longitude, latitude):
@@ -23,7 +23,7 @@ def projection(longitude, latitude):
 
 @pytest.mark.parametrize(
     "method",
-    ["nearest", "linear", "cubic", ScipyGridder("nearest")],
+    ["nearest", "linear", "cubic", KNeighbors()],
     ids=["nearest", "linear", "cubic", "gridder"],
 )
 def test_project_grid(method):
@@ -119,3 +119,14 @@ def test_project_grid_fails_dimensions(ndims):
     grid = xr.DataArray(data, coords=coords[:ndims], dims=dims[:ndims])
     with pytest.raises(ValueError):
         project_grid(grid, projection)
+
+
+def test_project_grid_fails_method():
+    "Should fail for invalid method name"
+    shape = (50, 40)
+    lats = np.linspace(2, 10, shape[1])
+    lons = np.linspace(-10, 2, shape[0])
+    data = np.ones(shape, dtype="float")
+    grid = xr.DataArray(data, coords=[lons, lats], dims=("latitude", "longitude"))
+    with pytest.raises(ValueError):
+        project_grid(grid, projection, method="some invalid method")
