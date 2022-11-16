@@ -16,11 +16,11 @@ import pytest
 from ..coordinates import (
     check_region,
     grid_coordinates,
-    linspace,
+    line_coordinates,
     longitude_continuity,
     profile_coordinates,
     rolling_window,
-    spacing_to_num,
+    spacing_to_size,
 )
 
 
@@ -99,48 +99,48 @@ def test_rolling_window_oversized_window():
             rolling_window(coords, size=oversize, spacing=2)
 
 
-def test_spacing_to_num():
-    "Check that correct num and stop are returned"
+def test_spacing_to_size():
+    "Check that correct size and stop are returned"
     start, stop = -10, 0
 
-    num, new_stop = spacing_to_num(start, stop, spacing=2.5, adjust="spacing")
-    npt.assert_allclose(num, 5)
+    size, new_stop = spacing_to_size(start, stop, spacing=2.5, adjust="spacing")
+    npt.assert_allclose(size, 5)
     npt.assert_allclose(new_stop, stop)
 
-    num, new_stop = spacing_to_num(start, stop, spacing=2, adjust="spacing")
-    npt.assert_allclose(num, 6)
+    size, new_stop = spacing_to_size(start, stop, spacing=2, adjust="spacing")
+    npt.assert_allclose(size, 6)
     npt.assert_allclose(new_stop, stop)
 
-    num, new_stop = spacing_to_num(start, stop, spacing=2.6, adjust="spacing")
-    npt.assert_allclose(num, 5)
+    size, new_stop = spacing_to_size(start, stop, spacing=2.6, adjust="spacing")
+    npt.assert_allclose(size, 5)
     npt.assert_allclose(new_stop, stop)
 
-    num, new_stop = spacing_to_num(start, stop, spacing=2.4, adjust="spacing")
-    npt.assert_allclose(num, 5)
+    size, new_stop = spacing_to_size(start, stop, spacing=2.4, adjust="spacing")
+    npt.assert_allclose(size, 5)
     npt.assert_allclose(new_stop, stop)
 
-    num, new_stop = spacing_to_num(start, stop, spacing=2.6, adjust="region")
-    npt.assert_allclose(num, 5)
+    size, new_stop = spacing_to_size(start, stop, spacing=2.6, adjust="region")
+    npt.assert_allclose(size, 5)
     npt.assert_allclose(new_stop, 0.4)
 
-    num, new_stop = spacing_to_num(start, stop, spacing=2.4, adjust="region")
-    npt.assert_allclose(num, 5)
+    size, new_stop = spacing_to_size(start, stop, spacing=2.4, adjust="region")
+    npt.assert_allclose(size, 5)
     npt.assert_allclose(new_stop, -0.4)
 
 
-def test_linspace_fails():
+def test_line_coordinates_fails():
     "Check failures for invalid arguments"
     start, stop = 0, 1
-    num = 10
+    size = 10
     spacing = 0.1
     # Make sure it doesn't fail for these parameters
-    linspace(start, stop, num=num)
-    linspace(start, stop, spacing=spacing)
+    line_coordinates(start, stop, size=size)
+    line_coordinates(start, stop, spacing=spacing)
 
     with pytest.raises(ValueError):
-        linspace(start, stop)
+        line_coordinates(start, stop)
     with pytest.raises(ValueError):
-        linspace(start, stop, num=num, spacing=spacing)
+        line_coordinates(start, stop, size=size, spacing=spacing)
 
 
 def test_grid_coordinates_fails():

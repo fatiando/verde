@@ -188,14 +188,14 @@ def scatter_points(region, size, random_state=None, extra_coords=None):
     return tuple(coordinates)
 
 
-def linspace(
-    start, stop, num=None, spacing=None, adjust="spacing", pixel_register=False
+def line_coordinates(
+    start, stop, size=None, spacing=None, adjust="spacing", pixel_register=False
 ):
     """
     Generate evenly spaced points between two values.
 
-    Able to handle either specifying the number of points required (*num*) or
-    the size of the interval between points (*spacing*). If using *num*, the
+    Able to handle either specifying the number of points required (*size*) or
+    the size of the interval between points (*spacing*). If using *size*, the
     output will be similar to using :func:`numpy.linspace`. When using
     *spacing*, if the interval is not divisible by the desired spacing, either
     the interval or the spacing will have to be adjusted. By default, the
@@ -212,16 +212,16 @@ def linspace(
         The number of points in the sequence. If None, *spacing* must be
         provided.
     spacing : float or None
-        The step size (interval) between points in the sequence. If None, *num*
-        must be provided.
+        The step size (interval) between points in the sequence. If None,
+        *size* must be provided.
     adjust : {'spacing', 'region'}
         Whether to adjust the spacing or the interval/region if required.
-        Ignored if *num* is given instead of *spacing*. Defaults to adjusting
+        Ignored if *size* is given instead of *spacing*. Defaults to adjusting
         the spacing.
     pixel_register : bool
         If True, the points will refer to the center of each interval (pixel)
         instead of the boundaries. In practice, this means that there will be
-        one less element in the sequence if *spacing* is provided. If *num* is
+        one less element in the sequence if *spacing* is provided. If *size* is
         provided, the requested number of elements is respected. Default is
         False.
 
@@ -236,52 +236,52 @@ def linspace(
     >>> # Lower printing precision to shorten this example
     >>> import numpy as np; np.set_printoptions(precision=2, suppress=True)
 
-    >>> values = linspace(0, 5, spacing=2.5)
+    >>> values = line_coordinates(0, 5, spacing=2.5)
     >>> print(values.shape)
     (3,)
     >>> print(values)
     [0.  2.5 5. ]
-    >>> print(linspace(0, 10, num=5))
+    >>> print(line_coordinates(0, 10, size=5))
     [ 0.   2.5  5.   7.5 10. ]
-    >>> print(linspace(0, 10, spacing=2.5))
+    >>> print(line_coordinates(0, 10, spacing=2.5))
     [ 0.   2.5  5.   7.5 10. ]
 
     The spacing is adjusted to fit the interval by default but this can be
     changed to adjusting the interval/region instead:
 
-    >>> print(linspace(0, 10, spacing=2.6))
+    >>> print(line_coordinates(0, 10, spacing=2.6))
     [ 0.   2.5  5.   7.5 10. ]
-    >>> print(linspace(0, 10, spacing=2.6, adjust="region"))
+    >>> print(line_coordinates(0, 10, spacing=2.6, adjust="region"))
     [ 0.   2.6  5.2  7.8 10.4]
 
     Optionally, return values at the center of the intervals instead of their
     boundaries:
 
-    >>> print(linspace(0, 10, spacing=2.5, pixel_register=True))
+    >>> print(line_coordinates(0, 10, spacing=2.5, pixel_register=True))
     [1.25 3.75 6.25 8.75]
 
     Notice that this produces one value less than the non-pixel registered
-    version. If using *num* instead of *spacing*, the number of values will be
-    *num* regardless and the spacing will therefore be different from the
+    version. If using *size* instead of *spacing*, the number of values will be
+    *size* regardless and the spacing will therefore be different from the
     non-pixel registered version:
 
-    >>> print(linspace(0, 10, num=5, pixel_register=True))
+    >>> print(line_coordinates(0, 10, size=5, pixel_register=True))
     [1. 3. 5. 7. 9.]
 
     """
-    if num is not None and spacing is not None:
-        raise ValueError("Both num and spacing provided. Only one is allowed.")
-    if num is None and spacing is None:
-        raise ValueError("Either a num or a spacing must be provided.")
+    if size is not None and spacing is not None:
+        raise ValueError("Both size and spacing provided. Only one is allowed.")
+    if size is None and spacing is None:
+        raise ValueError("Either a size or a spacing must be provided.")
     if spacing is not None:
-        num, stop = spacing_to_num(start, stop, spacing, adjust)
+        size, stop = spacing_to_size(start, stop, spacing, adjust)
     elif pixel_register:
         # Starts by generating grid-line registered coordinates and shifting
         # them to the center of the pixel. Need 1 more point if given a shape
         # so that we can do that because we discard the last point when
         # shifting the coordinates.
-        num = num + 1
-    values = np.linspace(start, stop, num)
+        size = size + 1
+    values = np.linspace(start, stop, size)
     if pixel_register:
         values = values[:-1] + (values[1] - values[0]) / 2
     return values
@@ -544,7 +544,7 @@ def grid_coordinates(
     --------
     scatter_points : Generate the coordinates for a random scatter of points
     profile_coordinates : Coordinates for a profile between two points
-    linspace: Generate evenly spaced points between two values
+    line_coordinates: Generate evenly spaced points between two values
 
     """
     check_region(region)
@@ -563,18 +563,18 @@ def grid_coordinates(
     else:
         spacing = (None, None)
 
-    east = linspace(
+    east = line_coordinates(
         region[0],
         region[1],
-        num=shape[1],
+        size=shape[1],
         spacing=spacing[1],
         adjust=adjust,
         pixel_register=pixel_register,
     )
-    north = linspace(
+    north = line_coordinates(
         region[2],
         region[3],
-        num=shape[0],
+        size=shape[0],
         spacing=spacing[0],
         adjust=adjust,
         pixel_register=pixel_register,
@@ -592,7 +592,7 @@ def grid_coordinates(
     return tuple(coordinates)
 
 
-def spacing_to_num(start, stop, spacing, adjust):
+def spacing_to_size(start, stop, spacing, adjust):
     """
     Convert a spacing to the number of points between start and stop.
 
@@ -608,12 +608,11 @@ def spacing_to_num(start, stop, spacing, adjust):
         The step size (interval) between points in the sequence.
     adjust : {'spacing', 'region'}
         Whether to adjust the spacing or the interval/region if required.
-        Ignored if *num* is given instead of *spacing*. Defaults to adjusting
-        the spacing.
+        Defaults to adjusting the spacing.
 
     Returns
     -------
-    num : int
+    size : int
         The number of points between start and stop.
     stop : float
         The end of the interval, which may or may not have been adjusted.
@@ -626,12 +625,12 @@ def spacing_to_num(start, stop, spacing, adjust):
             )
         )
     # Add 1 to get the number of nodes, not segments
-    num = int(round((stop - start) / spacing)) + 1
+    size = int(round((stop - start) / spacing)) + 1
     if adjust == "region":
-        # The num is the same but we adjust the interval so that the spacing
+        # The size is the same but we adjust the interval so that the spacing
         # isn't altered when we do the linspace.
-        stop = start + (num - 1) * spacing
-    return num, stop
+        stop = start + (size - 1) * spacing
+    return size, stop
 
 
 def shape_to_spacing(region, shape, pixel_register=False):
