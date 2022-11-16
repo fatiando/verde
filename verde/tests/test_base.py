@@ -7,8 +7,6 @@
 """
 Test the base classes and their utility functions.
 """
-import warnings
-
 import numpy as np
 import numpy.testing as npt
 import pytest
