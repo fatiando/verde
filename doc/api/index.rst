@@ -57,6 +57,7 @@ Coordinate Manipulation
 .. autosummary::
    :toctree: generated/
 
+    line_coordinates
     grid_coordinates
     scatter_points
     profile_coordinates

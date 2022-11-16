@@ -16,10 +16,11 @@ import pytest
 from ..coordinates import (
     check_region,
     grid_coordinates,
+    line_coordinates,
     longitude_continuity,
     profile_coordinates,
     rolling_window,
-    spacing_to_shape,
+    spacing_to_size,
 )
 
 
@@ -98,43 +99,48 @@ def test_rolling_window_oversized_window():
             rolling_window(coords, size=oversize, spacing=2)
 
 
-def test_spacing_to_shape():
-    "Check that correct spacing and region are returned"
-    region = (-10, 0, 0, 5)
+def test_spacing_to_size():
+    "Check that correct size and stop are returned"
+    start, stop = -10, 0
 
-    shape, new_region = spacing_to_shape(region, spacing=2.5, adjust="spacing")
-    npt.assert_allclose(shape, (3, 5))
-    npt.assert_allclose(new_region, region)
+    size, new_stop = spacing_to_size(start, stop, spacing=2.5, adjust="spacing")
+    npt.assert_allclose(size, 5)
+    npt.assert_allclose(new_stop, stop)
 
-    shape, new_region = spacing_to_shape(region, spacing=(2.5, 2), adjust="spacing")
-    npt.assert_allclose(shape, (3, 6))
-    npt.assert_allclose(new_region, region)
+    size, new_stop = spacing_to_size(start, stop, spacing=2, adjust="spacing")
+    npt.assert_allclose(size, 6)
+    npt.assert_allclose(new_stop, stop)
 
-    shape, new_region = spacing_to_shape(region, spacing=2.6, adjust="spacing")
-    npt.assert_allclose(shape, (3, 5))
-    npt.assert_allclose(new_region, region)
+    size, new_stop = spacing_to_size(start, stop, spacing=2.6, adjust="spacing")
+    npt.assert_allclose(size, 5)
+    npt.assert_allclose(new_stop, stop)
 
-    shape, new_region = spacing_to_shape(region, spacing=2.4, adjust="spacing")
-    npt.assert_allclose(shape, (3, 5))
-    npt.assert_allclose(new_region, region)
+    size, new_stop = spacing_to_size(start, stop, spacing=2.4, adjust="spacing")
+    npt.assert_allclose(size, 5)
+    npt.assert_allclose(new_stop, stop)
 
-    shape, new_region = spacing_to_shape(region, spacing=(2.4, 1.9), adjust="spacing")
-    npt.assert_allclose(shape, (3, 6))
-    npt.assert_allclose(new_region, region)
+    size, new_stop = spacing_to_size(start, stop, spacing=2.6, adjust="region")
+    npt.assert_allclose(size, 5)
+    npt.assert_allclose(new_stop, 0.4)
 
-    shape, new_region = spacing_to_shape(region, spacing=2.6, adjust="region")
-    npt.assert_allclose(shape, (3, 5))
-    npt.assert_allclose(new_region, (-10, 0.4, 0, 5.2))
-
-    shape, new_region = spacing_to_shape(region, spacing=(2.6, 2.4), adjust="region")
-    npt.assert_allclose(shape, (3, 5))
-    npt.assert_allclose(new_region, (-10, -0.4, 0, 5.2))
+    size, new_stop = spacing_to_size(start, stop, spacing=2.4, adjust="region")
+    npt.assert_allclose(size, 5)
+    npt.assert_allclose(new_stop, -0.4)
 
 
-def test_spacing_to_shape_fails():
-    "Should fail if more than 2 spacings are given"
+def test_line_coordinates_fails():
+    "Check failures for invalid arguments"
+    start, stop = 0, 1
+    size = 10
+    spacing = 0.1
+    # Make sure it doesn't fail for these parameters
+    line_coordinates(start, stop, size=size)
+    line_coordinates(start, stop, spacing=spacing)
+
     with pytest.raises(ValueError):
-        spacing_to_shape((0, 1, 0, 1), (1, 2, 3), adjust="region")
+        line_coordinates(start, stop)
+    with pytest.raises(ValueError):
+        line_coordinates(start, stop, size=size, spacing=spacing)
 
 
 def test_grid_coordinates_fails():
@@ -152,6 +158,8 @@ def test_grid_coordinates_fails():
         grid_coordinates(region, shape=None, spacing=None)
     with pytest.raises(ValueError):
         grid_coordinates(region, spacing=spacing, adjust="invalid adjust")
+    with pytest.raises(ValueError):
+        grid_coordinates(region, spacing=(1, 2, 3))
 
 
 def test_check_region():
