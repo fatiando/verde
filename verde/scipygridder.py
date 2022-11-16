@@ -190,6 +190,12 @@ class ScipyGridder(_BaseScipyGridder):
     """
     A scipy.interpolate based gridder for scalar Cartesian data.
 
+    .. warning::
+
+        The ``ScipyGridder`` class is **deprecated** and will be **removed in
+        Verde v2.0.0**. Use :class:`~verde.KNeighbors`, :class:`~verde.Linear`,
+        and :class:`~verde.Cubic` instead.
+
     Provides a verde gridder interface to the scipy interpolators
     :class:`scipy.interpolate.LinearNDInterpolator`,
     :class:`scipy.interpolate.NearestNDInterpolator`, and
@@ -221,6 +227,11 @@ class ScipyGridder(_BaseScipyGridder):
         super().__init__()
         self.method = method
         self.extra_args = extra_args
+        warn(
+            "verde.ScipyGridder is deprecated and will be removed in Verde "
+            "v2.0.0. Use the KNeighbors, Linear, and Cubic classes instead.",
+            FutureWarning,
+        )
 
     def _get_interpolator(self):
         """
