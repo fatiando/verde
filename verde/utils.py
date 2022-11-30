@@ -228,7 +228,7 @@ def make_xarray_grid(
     extra_coords_names=None,
 ):
     """
-    Create an :class:`xarray.Dataset` grid from numpy arrays
+    Create an :class:`xarray.Dataset` grid from 2D numpy arrays
 
     This functions creates an :class:`xarray.Dataset` out of 2d gridded data
     including easting and northing coordinates, any extra coordinates (like
@@ -236,6 +236,14 @@ def make_xarray_grid(
 
     Use this to transform the outputs of :func:`verde.grid_coordinates` and
     the ``predict`` method of a gridder into an :class:`xarray.Dataset`.
+
+    .. important::
+
+        This function does not perform any interpolation or gridding. If you
+        are dealing with 1d arrays and need to interpolate them on a regular
+        grid (a.k.a _grid_ them) you might want to use one of the available
+        interpolators in Verde, like :class:`verde.Spline`,
+        :class:`verde.KNeighbors`, :class:`Linear`, etc.
 
     .. note::
 
