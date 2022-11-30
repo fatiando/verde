@@ -277,7 +277,7 @@ class BaseGridder(BaseEstimator):
         Calls ``fit`` on the data, evaluates the residuals (data - predicted
         data), and returns the coordinates, residuals, and weights.
 
-        No very useful by itself but this interface makes gridders compatible
+        Not very useful by itself but this interface makes gridders compatible
         with other processing operations and is used by :class:`verde.Chain` to
         join them together (for example, so you can fit a spline on the
         residuals of a trend).
