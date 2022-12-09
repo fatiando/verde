@@ -343,9 +343,12 @@ class Spline(BaseGridder):
     Parameters
     ----------
     mindist : float
-        A minimum distance between the point forces and data points. Needed
-        because the Green's functions are singular when forces and data points
-        coincide. Acts as a fudge factor.
+        **DEPRECATED:** and will be removed in Verde 2.0.0 (this fudge factor
+        is no longer required since a new formulation eliminates the
+        singularity at zero distance, use the default value to get the future
+        behaviour). A minimum distance between the point forces and data
+        points. Needed because the Green's functions are singular when forces
+        and data points coincide. Acts as a fudge factor.
     damping : None or float
         The positive damping regularization parameter. Controls how much
         smoothness is imposed on the estimated forces. If None, no
@@ -381,9 +384,8 @@ class Spline(BaseGridder):
 
     """
 
-    def __init__(self, mindist=1e-5, damping=None, force_coords=None, engine="auto"):
+    def __init__(self, mindist=None, damping=None, force_coords=None, engine="auto"):
         super().__init__()
-        self.mindist = mindist
         self.damping = damping
         self.force_coords = force_coords
         self.engine = engine
@@ -393,6 +395,16 @@ class Spline(BaseGridder):
                 "deprecated and will be removed in Verde 2.0.0. "
                 "The faster and memory efficient numba engine will be "
                 "the only option.",
+                FutureWarning,
+            )
+        if mindist is None:
+            self.mindist = 0
+        else:
+            self.mindist = mindist
+            warnings.warn(
+                "The mindist parameter of verde.Spline is no longer required "
+                "and will be removed in Verde 2.0.0. Use the default value "
+                "to obtain the future behavior.",
                 FutureWarning,
             )
 
@@ -533,20 +545,53 @@ def warn_weighted_exact_solution(spline, weights):
         )
 
 
-def greens_func(east, north, mindist):
+def greens_func_numpy(east, north, mindist):
     "Calculate the Green's function for the Bi-Harmonic Spline"
     distance = np.sqrt(east**2 + north**2)
-    # The mindist factor helps avoid singular matrices when the force and
-    # computation point are too close
+    # The mindist factor was used to avoid NaNs when the distance approaches
+    # zero and the log tents to -infinity. This is no longer needed with
+    # current implementation below. Keep it for compatibility only but remove
+    # in Verde 2.0.0.
     distance += mindist
-    return (distance**2) * (np.log(distance) - 1)
+    # Calculate this way instead of x²(log(x) - 1) to avoid calculating log of
+    # 0. The limit for this as x->0 is 0 anyway. This is good for small values
+    # of distance but for larger distances it fails because of an overflow in
+    # the power operator. Saw this on Wikipedia but there was no citation in
+    # December 2022: https://en.wikipedia.org/wiki/Radial_basis_function
+    result = np.empty_like(distance)
+    small = distance < 1
+    big = ~small
+    result[small] = (distance[small] * (np.log(distance[small]**distance[small]) - distance[small]))
+    result[big] = distance[big]**2 * (np.log(distance[big]) - 1)
+    return result
+
+
+@jit(nopython=True)
+def greens_func_jit(east, north, mindist):
+    "Calculate the Green's function for the Bi-Harmonic Spline"
+    distance = np.sqrt(east**2 + north**2)
+    # The mindist factor was used to avoid NaNs when the distance approaches
+    # zero and the log tents to -infinity. This is no longer needed with
+    # current implementation below. Keep it for compatibility only but remove
+    # in Verde 2.0.0.
+    distance += mindist
+    # Calculate this way instead of x²(log(x) - 1) to avoid calculating log of
+    # 0. The limit for this as x->0 is 0 anyway. This is good for small values
+    # of distance but for larger distances it fails because of an overflow in
+    # the power operator. Saw this on Wikipedia but there was no citation in
+    # December 2022: https://en.wikipedia.org/wiki/Radial_basis_function
+    if distance < 1:
+        result = distance * (np.log(distance**distance) - distance)
+    else:
+        result = distance**2 * (np.log(distance) - 1)
+    return result
 
 
 def predict_numpy(east, north, force_east, force_north, mindist, forces, result):
     "Calculate the predicted data using numpy."
     result[:] = 0
     for j in range(forces.size):
-        green = greens_func(east - force_east[j], north - force_north[j], mindist)
+        green = greens_func_numpy(east - force_east[j], north - force_north[j], mindist)
         result += green * forces[j]
     return result
 
@@ -555,7 +600,7 @@ def jacobian_numpy(east, north, force_east, force_north, mindist, jac):
     "Calculate the Jacobian using numpy broadcasting."
     # Reshaping the data to a column vector will automatically build a distance
     # matrix between each data point and force.
-    jac[:] = greens_func(
+    jac[:] = greens_func_numpy(
         east.reshape((east.size, 1)) - force_east,
         north.reshape((north.size, 1)) - force_north,
         mindist,
@@ -563,29 +608,25 @@ def jacobian_numpy(east, north, force_east, force_north, mindist, jac):
     return jac
 
 
-@jit(nopython=True, fastmath=True, parallel=True)
+@jit(nopython=True, parallel=True)
 def predict_numba(east, north, force_east, force_north, mindist, forces, result):
     "Calculate the predicted data using numba to speed things up."
     for i in numba.prange(east.size):
         result[i] = 0
         for j in range(forces.size):
-            green = GREENS_FUNC_JIT(
+            green = greens_func_jit(
                 east[i] - force_east[j], north[i] - force_north[j], mindist
             )
             result[i] += green * forces[j]
     return result
 
 
-@jit(nopython=True, fastmath=True, parallel=True)
+@jit(nopython=True, parallel=True)
 def jacobian_numba(east, north, force_east, force_north, mindist, jac):
     "Calculate the Jacobian matrix using numba to speed things up."
     for i in numba.prange(east.size):
         for j in range(force_east.size):
-            jac[i, j] = GREENS_FUNC_JIT(
+            jac[i, j] = greens_func_jit(
                 east[i] - force_east[j], north[i] - force_north[j], mindist
             )
     return jac
-
-
-# Jit compile the Green's functions for use in the numba functions
-GREENS_FUNC_JIT = jit(nopython=True, fastmath=True)(greens_func)
