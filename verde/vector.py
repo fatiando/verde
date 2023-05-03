@@ -7,6 +7,8 @@
 """
 Classes for dealing with vector data.
 """
+import warnings
+
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
@@ -196,11 +198,12 @@ class VectorSpline2D(BaseGridder):
         (default), then will be set to the data coordinates the first time
         :meth:`~verde.VectorSpline2D.fit` is called.
     engine : str
-        Computation engine for the Jacobian matrix and predictions. Can be
-        ``'auto'``, ``'numba'``, or ``'numpy'``. If ``'auto'``, will use numba
-        if it is installed or numpy otherwise. The numba version is
-        multi-threaded and usually faster, which makes fitting and predicting
-        faster.
+        **DEPRECATED:** This option is deprecated and will be removed in Verde
+        v2.0.0. The numba engine will be the only option. Computation engine
+        for the Jacobian matrix and prediction. Can be ``'auto'``, ``'numba'``,
+        or ``'numpy'``. If ``'auto'``, will use numba if it is installed or
+        numpy otherwise. The numba version is multi-threaded and usually
+        faster, which makes fitting and predicting faster.
 
     Attributes
     ----------
@@ -223,6 +226,15 @@ class VectorSpline2D(BaseGridder):
         self.damping = damping
         self.force_coords = force_coords
         self.engine = engine
+        if engine != "auto":
+            warnings.warn(
+                "The 'engine' parameter of 'verde.VectorSpline2D' is "
+                "deprecated and will be removed in Verde 2.0.0. "
+                "The faster and memory efficient numba engine will be "
+                "the only option.",
+                FutureWarning,
+                stacklevel=2,
+            )
 
     def fit(self, coordinates, data, weights=None):
         """
