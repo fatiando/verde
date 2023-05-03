@@ -136,11 +136,26 @@ def test_line_coordinates_fails():
     # Make sure it doesn't fail for these parameters
     line_coordinates(start, stop, size=size)
     line_coordinates(start, stop, spacing=spacing)
-
     with pytest.raises(ValueError):
         line_coordinates(start, stop)
     with pytest.raises(ValueError):
         line_coordinates(start, stop, size=size, spacing=spacing)
+
+
+def test_line_coordinates_spacing_larger_than_twice_interval():
+    "Check if pixel_register works when the spacing is greater than the limits"
+    start, stop = 0, 1
+    spacing = 3
+    coordinates = line_coordinates(start, stop, spacing=spacing)
+    npt.assert_allclose(coordinates, [0, 1])
+    coordinates = line_coordinates(start, stop, spacing=spacing, pixel_register=True)
+    npt.assert_allclose(coordinates, [0.5])
+    coordinates = line_coordinates(start, stop, spacing=spacing, adjust="region")
+    npt.assert_allclose(coordinates, [0, 3])
+    coordinates = line_coordinates(
+        start, stop, spacing=spacing, pixel_register=True, adjust="region"
+    )
+    npt.assert_allclose(coordinates, [1.5])
 
 
 def test_grid_coordinates_fails():
