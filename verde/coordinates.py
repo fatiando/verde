@@ -1211,7 +1211,8 @@ def _check_rolling_window_overlap(region, size, shape, spacing):
         warnings.warn(
             f"Rolling windows do not overlap (size '{size}' and spacing '{spacing}'). "
             "Some data points may not be included in any window. "
-            "Increase size or decrease spacing to avoid this."
+            "Increase size or decrease spacing to avoid this.",
+            stacklevel=2,
         )
 
 

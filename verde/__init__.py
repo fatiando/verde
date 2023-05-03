@@ -93,6 +93,7 @@ def test(doctest=True, verbose=True, coverage=False, figures=True):
         "will be removed in v2.0.0. "
         f"Use 'pytest --pyargs {package}' to run the tests.",
         FutureWarning,
+        stacklevel=2,
     )
 
     assert status == 0, "Some tests have failed."

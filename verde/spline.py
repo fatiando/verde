@@ -157,6 +157,7 @@ class SplineCV(BaseGridder):
                 "The faster and memory efficient numba engine will be "
                 "the only option.",
                 FutureWarning,
+                stacklevel=2,
             )
         if client is not None:
             warnings.warn(
@@ -164,6 +165,7 @@ class SplineCV(BaseGridder):
                 "deprecated and will be removed in Verde 2.0.0. "
                 "Use the 'delayed' parameter instead.",
                 FutureWarning,
+                stacklevel=2,
             )
 
     def fit(self, coordinates, data, weights=None):
@@ -394,6 +396,7 @@ class Spline(BaseGridder):
                 "The faster and memory efficient numba engine will be "
                 "the only option.",
                 FutureWarning,
+                stacklevel=2,
             )
 
     def fit(self, coordinates, data, weights=None):
@@ -529,7 +532,8 @@ def warn_weighted_exact_solution(spline, weights):
     if weights is not None and spline.damping is None:
         warnings.warn(
             "Weights might have no effect if no regularization is used. "
-            "Use damping or specify force positions that are different from the data."
+            "Use damping or specify force positions that are different from the data.",
+            stacklevel=2,
         )
 
 
