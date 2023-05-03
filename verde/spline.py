@@ -60,11 +60,13 @@ class SplineCV(BaseGridder):
 
     Parameters
     ----------
-    mindists : iterable or 1d array
+    mindists : iterable or 1d array or None
+        **DEPRECATED:** This argument is no longer needed and will be removed
+        in Verde 2.0.0. This fudge factor is no longer required since a new
+        formulation eliminates the singularity at zero distance. Use the
+        default value of ``mindists=None`` to get the future behaviour.
         List (or other iterable) of *mindist* parameter values to try. Can be
         considered a minimum distance between the point forces and data points.
-        Needed because the Green's functions are singular when forces and data
-        points coincide. Acts as a fudge factor.
     dampings : iterable or 1d array
         List (or other iterable) of *damping* parameter values to try. Is the
         positive damping regularization parameter. Controls how much smoothness
@@ -132,7 +134,7 @@ class SplineCV(BaseGridder):
 
     def __init__(
         self,
-        mindists=(1e3, 10e3, 100e3),
+        mindists=None,
         dampings=(1e-10, 1e-5, 1e-1),
         force_coords=None,
         engine="auto",
@@ -143,7 +145,17 @@ class SplineCV(BaseGridder):
     ):
         super().__init__()
         self.dampings = dampings
-        self.mindists = mindists
+        if mindists is None:
+            self.mindists = [0]
+        else:
+            self.mindists = mindists
+            warnings.warn(
+                "The mindists parameter of verde.SplineCV is no longer "
+                "required and will be removed in Verde 2.0.0. Use the default "
+                "value to obtain the future behavior.",
+                FutureWarning,
+                stacklevel=2,
+            )
         self.force_coords = force_coords
         self.engine = engine
         self.cv = cv
@@ -344,13 +356,12 @@ class Spline(BaseGridder):
 
     Parameters
     ----------
-    mindist : float
-        **DEPRECATED:** and will be removed in Verde 2.0.0 (this fudge factor
-        is no longer required since a new formulation eliminates the
-        singularity at zero distance, use the default value to get the future
-        behaviour). A minimum distance between the point forces and data
-        points. Needed because the Green's functions are singular when forces
-        and data points coincide. Acts as a fudge factor.
+    mindist : float or None
+        **DEPRECATED:** This argument is no longer needed and will be removed
+        in Verde 2.0.0. This fudge factor is no longer required since a new
+        formulation eliminates the singularity at zero distance. Use the
+        default value of ``mindist=None`` to get the future behaviour. A
+        minimum distance between the point forces and data points.
     damping : None or float
         The positive damping regularization parameter. Controls how much
         smoothness is imposed on the estimated forces. If None, no
@@ -409,6 +420,7 @@ class Spline(BaseGridder):
                 "and will be removed in Verde 2.0.0. Use the default value "
                 "to obtain the future behavior.",
                 FutureWarning,
+                stacklevel=2,
             )
 
     def fit(self, coordinates, data, weights=None):
@@ -565,8 +577,10 @@ def greens_func_numpy(east, north, mindist):
     result = np.empty_like(distance)
     small = distance < 1
     big = ~small
-    result[small] = (distance[small] * (np.log(distance[small]**distance[small]) - distance[small]))
-    result[big] = distance[big]**2 * (np.log(distance[big]) - 1)
+    result[small] = distance[small] * (
+        np.log(distance[small] ** distance[small]) - distance[small]
+    )
+    result[big] = distance[big] ** 2 * (np.log(distance[big]) - 1)
     return result
 
 
