@@ -97,7 +97,8 @@ class KNeighbors(BaseGridder):
             warnings.warn(
                 "{} does not support weights and they will be ignored.".format(
                     self.__class__.__name__
-                )
+                ),
+                stacklevel=2,
             )
         coordinates, data, weights = check_fit_input(coordinates, data, weights)
         self.region_ = get_region(coordinates[:2])

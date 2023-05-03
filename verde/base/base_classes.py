@@ -361,6 +361,7 @@ class BaseGridder(BaseEstimator):
             "squared error (RMSE) in Verde 2.0.0. "
             "This may change model selection results slightly.",
             FutureWarning,
+            stacklevel=2,
         )
         return score_estimator("r2", self, coordinates, data, weights=weights)
 
@@ -572,6 +573,7 @@ class BaseGridder(BaseEstimator):
             "2.0.0. Use 'verde.scatter_points' and the 'predict' method "
             "instead.",
             FutureWarning,
+            stacklevel=2,
         )
         dims = self._get_dims(dims)
         region = get_instance_region(self, region)
