@@ -249,6 +249,10 @@ def line_coordinates(
     The spacing is adjusted to fit the interval by default but this can be
     changed to adjusting the interval/region instead:
 
+    >>> print(line_coordinates(0, 10, spacing=2.4))
+    [ 0.   2.5  5.   7.5 10. ]
+    >>> print(line_coordinates(0, 10, spacing=2.4, adjust="region"))
+    [0.  2.4 4.8 7.2 9.6]
     >>> print(line_coordinates(0, 10, spacing=2.6))
     [ 0.   2.5  5.   7.5 10. ]
     >>> print(line_coordinates(0, 10, spacing=2.6, adjust="region"))
@@ -277,9 +281,9 @@ def line_coordinates(
         size, stop = spacing_to_size(start, stop, spacing, adjust)
     elif pixel_register:
         # Starts by generating grid-line registered coordinates and shifting
-        # them to the center of the pixel. Need 1 more point if given a shape
-        # so that we can do that because we discard the last point when
-        # shifting the coordinates.
+        # them to the center of the pixel. Need 1 more point if given a size
+        # instead of spacing so that we can do that because we discard the last
+        # point when shifting the coordinates.
         size = size + 1
     values = np.linspace(start, stop, size)
     if pixel_register:
@@ -626,6 +630,14 @@ def spacing_to_size(start, stop, spacing, adjust):
         )
     # Add 1 to get the number of nodes, not segments
     size = int(round((stop - start) / spacing)) + 1
+    # If the spacing >= 2 * (stop - start), it rounds to zero so we'd be
+    # generating a single point, which isn't equivalent to adjusting the
+    # spacing or the region. To get the appropriate behaviour of decreasing the
+    # spacing until it fits the region or increasing the region until it fits
+    # at least 1 spacing, we need to always round to at least 1 in the code
+    # above.
+    if size == 1:
+        size += 1
     if adjust == "region":
         # The size is the same but we adjust the interval so that the spacing
         # isn't altered when we do the linspace.
@@ -1211,7 +1223,8 @@ def _check_rolling_window_overlap(region, size, shape, spacing):
         warnings.warn(
             f"Rolling windows do not overlap (size '{size}' and spacing '{spacing}'). "
             "Some data points may not be included in any window. "
-            "Increase size or decrease spacing to avoid this."
+            "Increase size or decrease spacing to avoid this.",
+            stacklevel=2,
         )
 
 

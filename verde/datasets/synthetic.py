@@ -29,4 +29,5 @@ class CheckerBoard(_CheckerBoard):
             "removed in Verde 2.0.0. "
             "Use verde.synthetic.CheckerBoard instead.",
             FutureWarning,
+            stacklevel=2,
         )

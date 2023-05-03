@@ -39,6 +39,7 @@ def _datasets_deprecation_warning():
         "removed in Verde v2.0.0. The tutorials/examples will transition "
         "to using Ensaio (https://www.fatiando.org/ensaio/) instead.",
         DeprecationWarning,
+        stacklevel=2,
     )
 
 
@@ -158,7 +159,8 @@ def setup_baja_bathymetry_map(
     if kwargs:
         warnings.warn(
             "All kwargs are being ignored. They are accepted to "
-            + "guarantee backward compatibility."
+            + "guarantee backward compatibility.",
+            stacklevel=2,
         )
     _setup_map(
         ax,
@@ -217,6 +219,7 @@ def fetch_rio_magnetic():
         "The Rio magnetic anomaly dataset is deprecated and will be removed "
         "in Verde v2.0.0. Use a different dataset instead.",
         FutureWarning,
+        stacklevel=2,
     )
     data_file = REGISTRY.fetch("rio-magnetic.csv.xz")
     data = pd.read_csv(data_file, compression="xz")
@@ -250,6 +253,7 @@ def setup_rio_magnetic_map(ax, region=(-42.6, -42, -22.5, -22)):
         "The Rio magnetic anomaly dataset is deprecated and will be removed "
         "in Verde v2.0.0. Use a different dataset instead.",
         FutureWarning,
+        stacklevel=2,
     )
     _setup_map(
         ax,
@@ -337,7 +341,8 @@ def setup_california_gps_map(
     if kwargs:
         warnings.warn(
             "All kwargs are being ignored. They are accepted to "
-            + "guarantee backward compatibility."
+            + "guarantee backward compatibility.",
+            stacklevel=2,
         )
     _setup_map(
         ax,
@@ -416,7 +421,8 @@ def setup_texas_wind_map(ax, region=(-107, -93, 25.5, 37), coastlines=True, **kw
     if kwargs:
         warnings.warn(
             "All kwargs are being ignored. They are accepted to "
-            + "guarantee backward compatibility."
+            + "guarantee backward compatibility.",
+            stacklevel=2,
         )
     _setup_map(
         ax,

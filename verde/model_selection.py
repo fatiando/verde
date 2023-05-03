@@ -413,6 +413,7 @@ class BlockKFold(BaseBlockCrossValidator):
                     "number of blocks instead. Decreasing n_splits or increasing "
                     "the number of blocks may help.",
                     UserWarning,
+                    stacklevel=2,
                 )
                 folds = [i for _, i in KFold(n_splits=self.n_splits).split(block_ids)]
         else:
@@ -749,6 +750,7 @@ def cross_val_score(
             "and will be removed in Verde 2.0.0. "
             "Use the 'delayed' parameter instead.",
             FutureWarning,
+            stacklevel=2,
         )
     coordinates, data, weights = check_fit_input(
         coordinates, data, weights, unpack=False
