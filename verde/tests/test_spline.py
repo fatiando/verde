@@ -40,7 +40,6 @@ def test_spline_cv(delayed, client, engine):
     # testing
     spline = SplineCV(
         dampings=[None, 1e3],
-        mindists=[1e-7, 1e6],
         cv=ShuffleSplit(n_splits=1, random_state=0),
         delayed=delayed,
         client=client,
@@ -48,7 +47,6 @@ def test_spline_cv(delayed, client, engine):
     ).fit(coords, data.scalars)
     if client is not None:
         client.close()
-    assert spline.mindist_ == 1e-7
     assert spline.damping_ is None
     # The interpolation should be perfect on top of the data points
     npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-5)
@@ -108,12 +106,12 @@ def test_spline_cv_scoring():
     coords = (data.easting, data.northing)
     # Compare SplineCV to results from Spline with cross_val_score
     for score in ["r2", "neg_root_mean_squared_error"]:
-        spline = Spline(damping=None, mindist=1e-5)
+        spline = Spline(damping=None)
         score_spline = np.mean(
             cross_val_score(spline, coords, data.scalars, scoring=score)
         )
         # Limit SplineCV to a single parameter set equal to Spline's defaults
-        spline_cv = SplineCV(mindists=[1e-5], dampings=[None], scoring=score)
+        spline_cv = SplineCV(dampings=[None], scoring=score)
         spline_cv.fit(coords, data.scalars)
         score_spline_cv = spline_cv.scores_[0]
         npt.assert_allclose(score_spline, score_spline_cv, rtol=1e-5)
@@ -154,8 +152,8 @@ def test_spline_damping():
     data = synth.scatter(size=3000, random_state=1)
     coords = (data.easting, data.northing)
     # The interpolation should be close on top of the data points
-    spline = Spline(damping=1e-8, mindist=1000).fit(coords, data.scalars)
-    npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-2, atol=1)
+    spline = Spline(damping=1e-8).fit(coords, data.scalars)
+    npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-2, atol=10)
     shape = (5, 5)
     region = (2000, 4000, -7500, -6500)
     # Tolerance needs to be kind of high to allow for error due to small

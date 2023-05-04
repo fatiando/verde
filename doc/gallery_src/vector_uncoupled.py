@@ -55,7 +55,7 @@ chain = vd.Chain(
         ("trend", vd.Vector([vd.Trend(degree=1) for i in range(2)])),
         (
             "spline",
-            vd.Vector([vd.Spline(damping=1e-10, mindist=500e3) for i in range(2)]),
+            vd.Vector([vd.Spline(damping=1e-10) for i in range(2)]),
         ),
     ]
 )
