@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-docs.txt
-      PYTHON: 3.9
+      PYTHON: 3.11
 
     steps:
       # Cancel any previous run of the test job
@@ -46,7 +46,7 @@ jobs:
 
       # Checks-out your repository under $GITHUB_WORKSPACE
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           # Need to fetch more than the last commit so that setuptools-scm can
           # create the correct version string. If the number of commits since
@@ -117,7 +117,7 @@ jobs:
       # Store the docs as a build artifact so we can deploy it later
       - name: Upload HTML documentation as an artifact
         if: github.event_name == 'release' || github.event_name == 'push'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: docs-${{ github.sha }}
           path: doc/_build/html
@@ -131,17 +131,17 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Fetch the built docs from the "build" job
       - name: Download HTML documentation artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: docs-${{ github.sha }}
           path: doc/_build/html
 
       - name: Checkout the gh-pages branch in a separate folder
-        uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+        uses: actions/checkout@v3
         with:
           ref: gh-pages
           # Checkout to this folder instead of the current one
