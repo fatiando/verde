@@ -1,0 +1,967 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    
+        <title>verde.make_xarray_grid | Verde v1.8.0</title>
+    
+
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="verde.median_distance" href="verde.median_distance.html" />
+    <link rel="prev" title="verde.grid_to_table" href="verde.grid_to_table.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../../_static/verde-logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Verde <span class="project-version">v1.8.0</span></h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Getting Started
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/overview.html">
+   Overview
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../install.html">
+   Installing
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../gallery/index.html">
+   Gallery
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/blockkfold.html">
+     K-Fold cross-validation with blocks
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/blockreduce.html">
+     Blocked reduction operations
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/blockreduce_weights.html">
+     Using weights in blocked reduction
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/blockreduce_weights_mean.html">
+     Using weights in blocked means
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/checkerboard.html">
+     Checkerboard function
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/convex_hull_mask.html">
+     Mask grid points by convex hull
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/cubic_gridder.html">
+     Gridding with a cubic interpolator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/distance_mask.html">
+     Mask grid points by distance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/kneighbors_gridder.html">
+     Gridding with a nearest-neighbors interpolator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/linear_gridder.html">
+     Gridding with a linear interpolator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/project_grid.html">
+     Projection of gridded data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/spline.html">
+     Gridding with splines
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/spline_cv.html">
+     Gridding with splines (cross-validated)
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/spline_weights.html">
+     Gridding with splines and weights
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/train_test_split.html">
+     Splitting data into train and test sets
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/trend.html">
+     Polynomial trend
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/vector_trend.html">
+     Trends in vector data
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/vector_uncoupled.html">
+     Gridding 2D vectors
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  User Guide
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/grid_coordinates.html">
+   Grid Coordinates
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/trends.html">
+   Trend Estimation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/decimation.html">
+   Data Decimation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/projections.html">
+   Geographic Coordinates
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/chain.html">
+   Chaining Operations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/model_evaluation.html">
+   Evaluating Performance
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/model_selection.html">
+   Model Selection
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/weights.html">
+   Using Weights
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../tutorials/vectors.html">
+   Vector Data
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reference documentation
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../index.html">
+   List of functions and classes (API)
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.Spline.html">
+     verde.Spline
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.SplineCV.html">
+     verde.SplineCV
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.KNeighbors.html">
+     verde.KNeighbors
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.Linear.html">
+     verde.Linear
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.Cubic.html">
+     verde.Cubic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.VectorSpline2D.html">
+     verde.VectorSpline2D
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.BlockReduce.html">
+     verde.BlockReduce
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.BlockMean.html">
+     verde.BlockMean
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.Trend.html">
+     verde.Trend
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.Chain.html">
+     verde.Chain
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.Vector.html">
+     verde.Vector
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.train_test_split.html">
+     verde.train_test_split
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.cross_val_score.html">
+     verde.cross_val_score
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.BlockShuffleSplit.html">
+     verde.BlockShuffleSplit
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.BlockKFold.html">
+     verde.BlockKFold
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.line_coordinates.html">
+     verde.line_coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.grid_coordinates.html">
+     verde.grid_coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.scatter_points.html">
+     verde.scatter_points
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.profile_coordinates.html">
+     verde.profile_coordinates
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.get_region.html">
+     verde.get_region
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.pad_region.html">
+     verde.pad_region
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.inside.html">
+     verde.inside
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.block_split.html">
+     verde.block_split
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.rolling_window.html">
+     verde.rolling_window
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.expanding_window.html">
+     verde.expanding_window
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.project_region.html">
+     verde.project_region
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.project_grid.html">
+     verde.project_grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.distance_mask.html">
+     verde.distance_mask
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.convexhull_mask.html">
+     verde.convexhull_mask
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.maxabs.html">
+     verde.maxabs
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.variance_to_weights.html">
+     verde.variance_to_weights
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.grid_to_table.html">
+     verde.grid_to_table
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     verde.make_xarray_grid
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.median_distance.html">
+     verde.median_distance
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.load_surfer.html">
+     verde.load_surfer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.synthetic.CheckerBoard.html">
+     verde.synthetic.CheckerBoard
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.base.BaseGridder.html">
+     verde.base.BaseGridder
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.base.BaseBlockCrossValidator.html">
+     verde.base.BaseBlockCrossValidator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.base.n_1d_arrays.html">
+     verde.base.n_1d_arrays
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.base.check_fit_input.html">
+     verde.base.check_fit_input
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.base.least_squares.html">
+     verde.base.least_squares
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.ScipyGridder.html">
+     verde.ScipyGridder
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.datasets.locate.html">
+     verde.datasets.locate
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.datasets.fetch_baja_bathymetry.html">
+     verde.datasets.fetch_baja_bathymetry
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.datasets.setup_baja_bathymetry_map.html">
+     verde.datasets.setup_baja_bathymetry_map
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.datasets.fetch_california_gps.html">
+     verde.datasets.fetch_california_gps
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.datasets.setup_california_gps_map.html">
+     verde.datasets.setup_california_gps_map
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.datasets.fetch_texas_wind.html">
+     verde.datasets.fetch_texas_wind
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.datasets.setup_texas_wind_map.html">
+     verde.datasets.setup_texas_wind_map
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.datasets.fetch_rio_magnetic.html">
+     verde.datasets.fetch_rio_magnetic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.datasets.setup_rio_magnetic_map.html">
+     verde.datasets.setup_rio_magnetic_map
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../citing.html">
+   Citing Verde
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../references.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../changes.html">
+   Changelog
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../compatibility.html">
+   Version compatibility
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../versions.html">
+   Documentation for other versions
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Community
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.fatiando.org/contact/">
+   Join the community
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">
+   How to contribute
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">
+   Code of Conduct
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://github.com/fatiando/verde">
+   Source code on GitHub
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference external" href="https://www.fatiando.org">
+   The Fatiando a Terra project
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/fatiando/verde"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/fatiando/verde/issues/new?title=Issue%20on%20page%20%2Fapi/generated/verde.make_xarray_grid.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/fatiando/verde/edit/main/doc/api/generated/verde.make_xarray_grid.rst"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../_sources/api/generated/verde.make_xarray_grid.rst.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.rst</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>verde.make_xarray_grid</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section id="verde-make-xarray-grid">
+<h1>verde.make_xarray_grid<a class="headerlink" href="#verde-make-xarray-grid" title="Permalink to this headline">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="verde.make_xarray_grid">
+<span class="sig-prename descclassname"><span class="pre">verde.</span></span><span class="sig-name descname"><span class="pre">make_xarray_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">('northing',</span> <span class="pre">'easting')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_coords_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/utils.html#make_xarray_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#verde.make_xarray_grid" title="Permalink to this definition">#</a></dt>
+<dd><p>Create an <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.4.3.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> grid from 2D numpy arrays</p>
+<p>This function creates an <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.4.3.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> out of 2d gridded data
+including easting and northing coordinates, any extra coordinates (like
+upward elevation, time, etc) and data arrays.</p>
+<p>Use this to transform the outputs of <a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> and
+the <code class="docutils literal notranslate"><span class="pre">predict</span></code> method of a gridder into an <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.4.3.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>This function does not perform any interpolation or gridding. If you
+are dealing with 1d arrays and need to interpolate them on a regular
+grid (a.k.a _grid_ them) you might want to use one of the available
+interpolators in Verde, like <a class="reference internal" href="verde.Spline.html#verde.Spline" title="verde.Spline"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Spline</span></code></a>,
+<a class="reference internal" href="verde.KNeighbors.html#verde.KNeighbors" title="verde.KNeighbors"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.KNeighbors</span></code></a>, <a class="reference internal" href="verde.Linear.html#verde.Linear" title="verde.Linear"><code class="xref py py-class docutils literal notranslate"><span class="pre">Linear</span></code></a>, etc.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is a utility function to help create 2D grids (i.e., grids with
+two <code class="docutils literal notranslate"><span class="pre">dims</span></code> coordinates). For arbitrary N-dimensional arrays, use
+<a class="reference external" href="https://docs.xarray.dev/en/stable/index.html#module-xarray" title="(in xarray v2023.4.3.dev0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">xarray</span></code></a> directly.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<em>tuple of arrays</em>) – Arrays with coordinates of each point in the grid. Each array must
+contain values for a dimension in the order: easting, northing,
+vertical, etc. All arrays must be 2d and need to have the same <em>shape</em>.
+These coordinates can be generated through
+<a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a>.</p></li>
+<li><p><strong>data</strong> (<em>array</em><em>, </em><em>tuple of arrays</em><em> or </em><em>None</em>) – Array or tuple of arrays with data values on each point in the grid.
+Each array must contain values for a dimension in the same order as
+the coordinates. All arrays need to have the same <em>shape</em>.
+If None, the <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.4.3.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> will not have any <code class="docutils literal notranslate"><span class="pre">data_var</span></code>
+array.</p></li>
+<li><p><strong>data_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a>) – The name(s) of the data variables in the output grid.
+Ignored if <code class="docutils literal notranslate"><span class="pre">data</span></code> is None.</p></li>
+<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> (</em><em>optional</em><em>)</em>) – The names of the northing and easting data dimensions, respectively,
+in the output grid. Must be defined in the following order: northing
+dimension, easting dimension.
+<strong>NOTE: This is an exception to the “easting” then
+“northing” pattern but is required for compatibility with xarray.</strong>
+The easting and northing coordinates in the <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.4.3.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>
+will have the same names as the passed dimensions.</p></li>
+<li><p><strong>extra_coords_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> (</em><em>optional</em><em>)</em>) – Name or list of names for any additional coordinates besides the
+easting and northing ones. Ignored if coordinates has
+only two elements. The extra coordinates are non-index coordinates of
+the grid array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>grid</strong> (<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.4.3.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – A 2D grid with one or more data variables.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">verde</span> <span class="k">as</span> <span class="nn">vd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create the coordinates of the regular grid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">((</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># And some dummy data for each point of the grid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create the grid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">make_xarray_grid</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">data_names</span><span class="o">=</span><span class="s2">&quot;dummy&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span> 
+<span class="go">&lt;xarray.Dataset&gt;</span>
+<span class="go">Dimensions:   (northing: 2, easting: 3)</span>
+<span class="go">Coordinates:</span>
+<span class="go">  * easting   (easting) float64 -10.0 -8.0 -6.0</span>
+<span class="go">  * northing  (northing) float64 8.0 10.0</span>
+<span class="go">Data variables:</span>
+<span class="go">    dummy     (northing, easting) float64 1.0 1.0 1.0 1.0 1.0 1.0</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a grid with an extra coordinate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">extra_coords</span><span class="o">=</span><span class="mi">5</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># And some dummy data for each point of the grid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create the grid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">make_xarray_grid</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">data_names</span><span class="o">=</span><span class="s2">&quot;dummy&quot;</span><span class="p">,</span> <span class="n">extra_coords_names</span><span class="o">=</span><span class="s2">&quot;upward&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span> 
+<span class="go">&lt;xarray.Dataset&gt;</span>
+<span class="go">Dimensions:   (northing: 2, easting: 3)</span>
+<span class="go">Coordinates:</span>
+<span class="go">  * easting   (easting) float64 -10.0 -8.0 -6.0</span>
+<span class="go">  * northing  (northing) float64 8.0 10.0</span>
+<span class="go">    upward    (northing, easting) float64 5.0 5.0 5.0 5.0 5.0 5.0</span>
+<span class="go">Data variables:</span>
+<span class="go">    dummy     (northing, easting) float64 1.0 1.0 1.0 1.0 1.0 1.0</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a grid containing only coordinates and no data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">grid_coordinates</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">extra_coords</span><span class="o">=-</span><span class="mi">7</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">make_xarray_grid</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">coordinates</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">data_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">extra_coords_names</span><span class="o">=</span><span class="s2">&quot;upward&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span> 
+<span class="go">&lt;xarray.Dataset&gt;</span>
+<span class="go">Dimensions:   (easting: 3, northing: 2)</span>
+<span class="go">Coordinates:</span>
+<span class="go">  * easting   (easting) float64 -10.0 -8.0 -6.0</span>
+<span class="go">  * northing  (northing) float64 8.0 10.0</span>
+<span class="go">    upward    (northing, easting) float64 -7.0 -7.0 -7.0 -7.0 -7.0 -7.0</span>
+<span class="go">Data variables:</span>
+<span class="go">    *empty*</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<div style='clear:both'></div></section>
+
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="verde.grid_to_table.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">verde.grid_to_table</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="verde.median_distance.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">verde.median_distance</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+      &copy; Copyright 2017-2023, The Verde Developers.<br/>
+    Last updated on May 08, 2023.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
