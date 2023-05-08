@@ -23,9 +23,9 @@ Part of the <a href="https://www.fatiando.org"><strong>Fatiando a Terra</strong>
 
 ## About
 
-**Verde** is a Python library for processing spatial data (bathymetry,
-geophysics surveys, etc) and interpolating it on regular grids (i.e.,
-*gridding*).
+**Verde** is a Python library for processing spatial data (topography, point
+clouds, bathymetry, geophysics surveys, etc) and interpolating them on a 2D
+surface (i.e., gridding) with a hint of machine learning.
 
 Our core interpolation methods are inspired by machine-learning.
 As such, Verde implements an interface that is similar to the popular

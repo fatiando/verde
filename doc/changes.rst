@@ -3,10 +3,74 @@
 Changelog
 =========
 
+Version 1.8.0
+-------------
+
+Released on: 2023/05/08
+
+DOI: https://doi.org/10.5281/zenodo.7907182
+
+.. warning::
+
+    **Verde v1.8.0 is the last release that is compatible with Python 3.6.**
+
+Deprecations:
+
+* Deprecate the ``engine`` argument of ``Spline/SplineCV`` (`#373 <https://github.com/fatiando/verde/pull/373>`__)
+* Deprecate the ``engine`` argument in ``VectorSpline2D`` (`#410 <https://github.com/fatiando/verde/pull/410>`__)
+* Deprecate ``verde.ScipyGridder`` in favor of the new ``Linear/Cubic/KNeighbors`` (`#393 <https://github.com/fatiando/verde/pull/393>`__)
+* Deprecate the ``scatter`` method of all interpolators (`#357 <https://github.com/fatiando/verde/pull/357>`__)
+* Undo deprecation of region/spacing/shape in the ``grid`` method (`#394 <https://github.com/fatiando/verde/pull/394>`__)
+* Undo deprecation of ``verde.VectorSpline2D`` (`#385 <https://github.com/fatiando/verde/pull/385>`__)
+
+New features:
+
+* New interpolator ``verde.KNeighbors`` class for nearest neighbor interpolation (`#378 <https://github.com/fatiando/verde/pull/378>`__)
+* New interpolator ``verde.Cubic`` gridder class based on SciPy (`#374 <https://github.com/fatiando/verde/pull/374>`__)
+* New interpolator ``verde.Linear`` gridder class based on SciPy (`#372 <https://github.com/fatiando/verde/pull/372>`__)
+* New function ``verde.line_coordinates``, a 1D version of ``verde.grid_coordinates`` (`#390 <https://github.com/fatiando/verde/pull/390>`__)
+* New ``scoring`` parameter for ``verde.SplineCV`` to specify the scoring function (`#380 <https://github.com/fatiando/verde/pull/380>`__)
+
+Improvements:
+
+* Remove the need for ``mindist`` in ``verde.Spline`` by using a better Green's function for small distances (`#401 <https://github.com/fatiando/verde/pull/401>`__)
+* Fix behavior of coordinate generation in ``verde.line_coordinates`` if ``spacing >= 2 * interval`` (`#406 <https://github.com/fatiando/verde/pull/406>`__)
+* Use the new classes ``Linear/Cubic/KNeighbors`` in ``verde.project_grid`` (`#395 <https://github.com/fatiando/verde/pull/395>`__)
+* Default to not rescaling coordinates in ``Linear/Cubic`` (`#391 <https://github.com/fatiando/verde/pull/391>`__)
+* Add option to return 1D arrays in ``grid_coordinates`` (`#388 <https://github.com/fatiando/verde/pull/388>`__)
+
+Documentation:
+
+* New logo and use sphinx-design in the docs (`#367 <https://github.com/fatiando/verde/pull/367>`__)
+* Move deprecated APIs to their own docs section (`#400 <https://github.com/fatiando/verde/pull/400>`__)
+* Improve docstring of ``verde.make_xarray_grid`` (`#399 <https://github.com/fatiando/verde/pull/399>`__)
+* Fix typo in the ``verde.base.BaseGridder.fit`` docstring (`#397 <https://github.com/fatiando/verde/pull/397>`__)
+* Add missing matplotlib scraper for sphinx-gallery (`#389 <https://github.com/fatiando/verde/pull/389>`__)
+* Use PyGMT instead of Cartopy in the ``verde.Chain`` tutorial (`#386 <https://github.com/fatiando/verde/pull/386>`__)
+* Use Markdown for the README instead of RST (`#366 <https://github.com/fatiando/verde/pull/366>`__)
+
+Maintenance:
+
+* Drop support for Python 3.6 (`#364 <https://github.com/fatiando/verde/pull/364>`__)
+* Fail CI if codecov upload fails (`#409 <https://github.com/fatiando/verde/pull/409>`__)
+* More informative warning messages by setting ``stacklevel=2`` (`#407 <https://github.com/fatiando/verde/pull/407>`__)
+* Remove the deprecated sample data gallery (`#387 <https://github.com/fatiando/verde/pull/387>`__)
+* Set lower bounds for dependencies based on NEP29 (`#384 <https://github.com/fatiando/verde/pull/384>`__)
+* Replace ``setup.py`` with PyPA "build" (`#371 <https://github.com/fatiando/verde/pull/371>`__)
+* Replace deprecated numpy dtypes ``np.bool`` and ``np.int`` (`#362 <https://github.com/fatiando/verde/pull/362>`__)
+
+This release contains contributions from:
+
+* Sarah Margrethe Askevold
+* James Sample
+* Santiago Soler
+* Matt Tankersley
+* Leonardo Uieda
+
 Version 1.7.0
 -------------
 
-*Released on: 2022/03/25*
+Released on: 2022/03/25
 
 DOI: https://doi.org/10.5281/zenodo.6384887
 
@@ -48,10 +112,9 @@ This release contains contributions from:
 Version 1.6.1
 -------------
 
-*Released on: 2021/03/22*
+Released on: 2021/03/22
 
-.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.4626786.svg
-   :target: https://doi.org/10.5281/zenodo.4626786
+DOI: https://doi.org/10.5281/zenodo.4626786
 
 Minor changes:
 
@@ -69,10 +132,9 @@ This release contains contributions from:
 Version 1.6.0
 -------------
 
-*Released on: 2021/03/18*
+Released on: 2021/03/18
 
-.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.4617252.svg
-   :target: https://doi.org/10.5281/zenodo.4617252
+DOI: https://doi.org/10.5281/zenodo.4617252
 
 New features:
 
@@ -111,10 +173,9 @@ This release contains contributions from:
 Version 1.5.0
 -------------
 
-*Released on: 2020/06/04*
+Released on: 2020/06/04
 
-.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3877060.svg
-   :target: https://doi.org/10.5281/zenodo.3877060
+DOI: https://doi.org/10.5281/zenodo.3877060
 
 Bug fixes:
 
@@ -167,10 +228,9 @@ This release contains contributions from:
 Version 1.4.0
 -------------
 
-*Released on: 2020/04/06*
+Released on: 2020/04/06
 
-.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3739449.svg
-   :target: https://doi.org/10.5281/zenodo.3739449
+DOI: https://doi.org/10.5281/zenodo.3739449
 
 Bug fixes:
 
@@ -242,10 +302,9 @@ This release contains contributions from:
 Version 1.3.0
 -------------
 
-*Released on: 2020/01/22*
+Released on: 2020/01/22
 
-.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3620851.svg
-   :target: https://doi.org/10.5281/zenodo.3620851
+DOI: https://doi.org/10.5281/zenodo.3620851
 
 **DEPRECATIONS** (the following features are deprecated and will be removed in
 Verde v2.0.0):
@@ -328,10 +387,9 @@ This release contains contributions from:
 Version 1.2.0
 -------------
 
-*Released on: 2019/07/23*
+Released on: 2019/07/23
 
-.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3347076.svg
-   :target: https://doi.org/10.5281/zenodo.3347076
+DOI: https://doi.org/10.5281/zenodo.3347076
 
 Bug fixes:
 
@@ -405,10 +463,9 @@ This release contains contributions from:
 Version 1.1.0
 -------------
 
-*Released on: 2018/11/06*
+Released on: 2018/11/06
 
-.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.1478245.svg
-   :target: https://doi.org/10.5281/zenodo.1478245
+DOI: https://doi.org/10.5281/zenodo.1478245
 
 New features:
 
@@ -443,10 +500,9 @@ New contributors to the project:
 Version 1.0.1
 -------------
 
-*Released on: 2018/10/10*
+Released on: 2018/10/10
 
-.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.1421979.svg
-   :target: https://doi.org/10.5281/zenodo.1421979
+DOI: https://doi.org/10.5281/zenodo.1421979
 
 * Paper submission to JOSS (`#134 <https://github.com/fatiando/verde/pull/134>`__). This
   is the new default citation for Verde.
@@ -458,10 +514,9 @@ Version 1.0.1
 Version 1.0.0
 -------------
 
-*Released on: 2018/09/13*
+Released on: 2018/09/13
 
-.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.1415281.svg
-   :target: https://doi.org/10.5281/zenodo.1415281
+DOI: https://doi.org/10.5281/zenodo.1415281
 
 * First release of Verde. Establishes the gridder API and includes blocked reductions,
   bi-harmonic splines [Sandwell1987]_, coupled 2D interpolation [SandwellWessel2016]_,
