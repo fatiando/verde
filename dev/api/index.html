@@ -5,14 +5,16 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     
         <title>List of functions and classes (API) | Verde dev</title>
     
 
     
-  <link href="../_static/css/theme.css" rel="stylesheet">
-  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -22,28 +24,28 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.87249bd3f7b54630a2508c1b61607c7f.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../_static/design-tabs.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -53,7 +55,21 @@
     <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
     
     <div class="container-fluid" id="banner"></div>
 
@@ -62,9 +78,10 @@
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../index.html">
       
         <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
@@ -129,8 +146,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/checkerboard.html">
+     Checkerboard function
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../gallery/convex_hull_mask.html">
      Mask grid points by convex hull
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/cubic_gridder.html">
+     Gridding with a cubic interpolator
     </a>
    </li>
    <li class="toctree-l2">
@@ -139,13 +166,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/project_grid.html">
-     Projection of gridded data
+    <a class="reference internal" href="../gallery/kneighbors_gridder.html">
+     Gridding with a nearest-neighbors interpolator
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/scipygridder.html">
-     Gridding with Scipy
+    <a class="reference internal" href="../gallery/linear_gridder.html">
+     Gridding with a linear interpolator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/project_grid.html">
+     Projection of gridded data
     </a>
    </li>
    <li class="toctree-l2">
@@ -192,43 +224,6 @@
  </span>
 </p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../sample_data/index.html">
-   Sample Data
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../sample_data/baja_bathymetry.html">
-     [DEPRECATED] Bathymetry data from Baja California
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../sample_data/california_gps.html">
-     [DEPRECATED] GPS velocities from California
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../sample_data/checkerboard.html">
-     Checkerboard function
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../sample_data/rio_magnetic.html">
-     [DEPRECATED] Magnetic data from Rio de Janeiro
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../sample_data/texas-wind.html">
-     [DEPRECATED] Wind speed data from Texas
-    </a>
-   </li>
-  </ul>
- </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../tutorials/grid_coordinates.html">
    Grid Coordinates
@@ -285,8 +280,8 @@
   <a class="current reference internal" href="#">
    List of functions and classes (API)
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -302,13 +297,23 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="generated/verde.VectorSpline2D.html">
-     verde.VectorSpline2D
+    <a class="reference internal" href="generated/verde.KNeighbors.html">
+     verde.KNeighbors
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="generated/verde.ScipyGridder.html">
-     verde.ScipyGridder
+    <a class="reference internal" href="generated/verde.Linear.html">
+     verde.Linear
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/verde.Cubic.html">
+     verde.Cubic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/verde.VectorSpline2D.html">
+     verde.VectorSpline2D
     </a>
    </li>
    <li class="toctree-l2">
@@ -354,6 +359,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="generated/verde.BlockKFold.html">
      verde.BlockKFold
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/verde.line_coordinates.html">
+     verde.line_coordinates
     </a>
    </li>
    <li class="toctree-l2">
@@ -457,6 +467,36 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="generated/verde.base.BaseGridder.html">
+     verde.base.BaseGridder
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/verde.base.BaseBlockCrossValidator.html">
+     verde.base.BaseBlockCrossValidator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/verde.base.n_1d_arrays.html">
+     verde.base.n_1d_arrays
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/verde.base.check_fit_input.html">
+     verde.base.check_fit_input
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/verde.base.least_squares.html">
+     verde.base.least_squares
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generated/verde.ScipyGridder.html">
+     verde.ScipyGridder
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="generated/verde.datasets.locate.html">
      verde.datasets.locate
     </a>
@@ -501,31 +541,6 @@
      verde.datasets.setup_rio_magnetic_map
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/verde.base.BaseGridder.html">
-     verde.base.BaseGridder
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/verde.base.BaseBlockCrossValidator.html">
-     verde.base.BaseBlockCrossValidator
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/verde.base.n_1d_arrays.html">
-     verde.base.n_1d_arrays
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/verde.base.check_fit_input.html">
-     verde.base.check_fit_input
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generated/verde.base.least_squares.html">
-     verde.base.least_squares
-    </a>
-   </li>
   </ul>
  </li>
  <li class="toctree-l1">
@@ -534,13 +549,18 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../references.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../changes.html">
    Changelog
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../references.html">
-   References
+  <a class="reference internal" href="../compatibility.html">
+   Version compatibility
   </a>
  </li>
  <li class="toctree-l1">
@@ -583,92 +603,197 @@
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/api/index.rst.txt"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.rst</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/fatiando/verde"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/fatiando/verde/issues/new?title=Issue%20on%20page%20%2Fapi/index.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/fatiando/verde/edit/main/doc/api/index.rst"><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/fatiando/verde"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/fatiando/verde/issues/new?title=Issue%20on%20page%20%2Fapi/index.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/fatiando/verde/edit/main/doc/api/index.rst"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/api/index.rst.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.rst</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#interpolators">
    Interpolators
@@ -720,23 +845,22 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#datasets">
-   Datasets
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#base-classes-and-functions">
    Base Classes and Functions
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#deprecated-classes-and-functions">
+   Deprecated classes and functions
+  </a>
+ </li>
 </ul>
 
-            </nav>
-        </div>
-    </div>
+    </nav>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>List of functions and classes (API)</h1>
@@ -800,13 +924,13 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#datasets">
-   Datasets
+  <a class="reference internal nav-link" href="#base-classes-and-functions">
+   Base Classes and Functions
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#base-classes-and-functions">
-   Base Classes and Functions
+  <a class="reference internal nav-link" href="#deprecated-classes-and-functions">
+   Deprecated classes and functions
   </a>
  </li>
 </ul>
@@ -815,14 +939,15 @@
                     </div>
                 </div>
             </div>
-            
+            <main id="main-content" role="main">
+                
               <div>
                 
-  <div class="section" id="module-verde">
-<span id="list-of-functions-and-classes-api"></span><span id="api"></span><h1>List of functions and classes (API)<a class="headerlink" href="#module-verde" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="interpolators">
-<h2>Interpolators<a class="headerlink" href="#interpolators" title="Permalink to this headline">¶</a></h2>
-<table class="longtable table autosummary">
+  <section id="module-verde">
+<span id="list-of-functions-and-classes-api"></span><span id="api"></span><h1>List of functions and classes (API)<a class="headerlink" href="#module-verde" title="Permalink to this headline">#</a></h1>
+<section id="interpolators">
+<h2>Interpolators<a class="headerlink" href="#interpolators" title="Permalink to this headline">#</a></h2>
+<table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -834,18 +959,24 @@
 <tr class="row-even"><td><p><a class="reference internal" href="generated/verde.SplineCV.html#verde.SplineCV" title="verde.SplineCV"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SplineCV</span></code></a>([mindists, dampings, force_coords, ...])</p></td>
 <td><p>Cross-validated biharmonic spline interpolation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.VectorSpline2D.html#verde.VectorSpline2D" title="verde.VectorSpline2D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorSpline2D</span></code></a>([poisson, mindist, damping, ...])</p></td>
-<td><p>Elastically coupled interpolation of 2-component vector data.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.KNeighbors.html#verde.KNeighbors" title="verde.KNeighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KNeighbors</span></code></a>([k, reduction])</p></td>
+<td><p>Nearest neighbor interpolation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.ScipyGridder.html#verde.ScipyGridder" title="verde.ScipyGridder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ScipyGridder</span></code></a>([method, extra_args])</p></td>
-<td><p>A scipy.interpolate based gridder for scalar Cartesian data.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.Linear.html#verde.Linear" title="verde.Linear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Linear</span></code></a>([rescale])</p></td>
+<td><p>Piecewise linear interpolation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.Cubic.html#verde.Cubic" title="verde.Cubic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cubic</span></code></a>([rescale])</p></td>
+<td><p>Piecewise cubic interpolation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.VectorSpline2D.html#verde.VectorSpline2D" title="verde.VectorSpline2D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VectorSpline2D</span></code></a>([poisson, mindist, damping, ...])</p></td>
+<td><p>Elastically coupled interpolation of 2-component vector data.</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="data-processing">
-<h2>Data Processing<a class="headerlink" href="#data-processing" title="Permalink to this headline">¶</a></h2>
-<table class="longtable table autosummary">
+</section>
+<section id="data-processing">
+<h2>Data Processing<a class="headerlink" href="#data-processing" title="Permalink to this headline">#</a></h2>
+<table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -862,10 +993,10 @@
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="composite-estimators">
-<h2>Composite Estimators<a class="headerlink" href="#composite-estimators" title="Permalink to this headline">¶</a></h2>
-<table class="longtable table autosummary">
+</section>
+<section id="composite-estimators">
+<h2>Composite Estimators<a class="headerlink" href="#composite-estimators" title="Permalink to this headline">#</a></h2>
+<table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -879,10 +1010,10 @@
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="model-selection">
-<h2>Model Selection<a class="headerlink" href="#model-selection" title="Permalink to this headline">¶</a></h2>
-<table class="longtable table autosummary">
+</section>
+<section id="model-selection">
+<h2>Model Selection<a class="headerlink" href="#model-selection" title="Permalink to this headline">#</a></h2>
+<table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -902,48 +1033,51 @@
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="coordinate-manipulation">
-<h2>Coordinate Manipulation<a class="headerlink" href="#coordinate-manipulation" title="Permalink to this headline">¶</a></h2>
-<table class="longtable table autosummary">
+</section>
+<section id="coordinate-manipulation">
+<h2>Coordinate Manipulation<a class="headerlink" href="#coordinate-manipulation" title="Permalink to this headline">#</a></h2>
+<table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_coordinates</span></code></a>(region[, shape, spacing, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.line_coordinates.html#verde.line_coordinates" title="verde.line_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">line_coordinates</span></code></a>(start, stop[, size, ...])</p></td>
+<td><p>Generate evenly spaced points between two values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_coordinates</span></code></a>(region[, shape, spacing, ...])</p></td>
 <td><p>Generate the coordinates for each point on a regular grid.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.scatter_points.html#verde.scatter_points" title="verde.scatter_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scatter_points</span></code></a>(region, size[, random_state, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.scatter_points.html#verde.scatter_points" title="verde.scatter_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scatter_points</span></code></a>(region, size[, random_state, ...])</p></td>
 <td><p>Generate the coordinates for a random scatter of points.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.profile_coordinates.html#verde.profile_coordinates" title="verde.profile_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">profile_coordinates</span></code></a>(point1, point2, size[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.profile_coordinates.html#verde.profile_coordinates" title="verde.profile_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">profile_coordinates</span></code></a>(point1, point2, size[, ...])</p></td>
 <td><p>Coordinates for a profile along a straight line between two points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.get_region.html#verde.get_region" title="verde.get_region"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_region</span></code></a>(coordinates)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.get_region.html#verde.get_region" title="verde.get_region"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_region</span></code></a>(coordinates)</p></td>
 <td><p>Get the bounding region of the given coordinates.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.pad_region.html#verde.pad_region" title="verde.pad_region"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pad_region</span></code></a>(region, pad)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.pad_region.html#verde.pad_region" title="verde.pad_region"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pad_region</span></code></a>(region, pad)</p></td>
 <td><p>Extend the borders of a region by the given amount.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.inside.html#verde.inside" title="verde.inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside</span></code></a>(coordinates, region)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.inside.html#verde.inside" title="verde.inside"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inside</span></code></a>(coordinates, region)</p></td>
 <td><p>Determine which points fall inside a given region.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.block_split.html#verde.block_split" title="verde.block_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">block_split</span></code></a>(coordinates[, spacing, adjust, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.block_split.html#verde.block_split" title="verde.block_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">block_split</span></code></a>(coordinates[, spacing, adjust, ...])</p></td>
 <td><p>Split a region into blocks and label points according to where they fall.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.rolling_window.html#verde.rolling_window" title="verde.rolling_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rolling_window</span></code></a>(coordinates, size[, spacing, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.rolling_window.html#verde.rolling_window" title="verde.rolling_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rolling_window</span></code></a>(coordinates, size[, spacing, ...])</p></td>
 <td><p>Select points on a rolling (moving) window.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.expanding_window.html#verde.expanding_window" title="verde.expanding_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expanding_window</span></code></a>(coordinates, center, sizes)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.expanding_window.html#verde.expanding_window" title="verde.expanding_window"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expanding_window</span></code></a>(coordinates, center, sizes)</p></td>
 <td><p>Select points on windows of changing size around a center point.</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="projection">
-<h2>Projection<a class="headerlink" href="#projection" title="Permalink to this headline">¶</a></h2>
-<table class="longtable table autosummary">
+</section>
+<section id="projection">
+<h2>Projection<a class="headerlink" href="#projection" title="Permalink to this headline">#</a></h2>
+<table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -957,10 +1091,10 @@
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="masking">
-<h2>Masking<a class="headerlink" href="#masking" title="Permalink to this headline">¶</a></h2>
-<table class="longtable table autosummary">
+</section>
+<section id="masking">
+<h2>Masking<a class="headerlink" href="#masking" title="Permalink to this headline">#</a></h2>
+<table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -974,10 +1108,10 @@
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="utilities">
-<h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h2>
-<table class="longtable table autosummary">
+</section>
+<section id="utilities">
+<h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">#</a></h2>
+<table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -993,17 +1127,17 @@
 <td><p>Convert a grid to a table with the values and coordinates of each point.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/verde.make_xarray_grid.html#verde.make_xarray_grid" title="verde.make_xarray_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_xarray_grid</span></code></a>(coordinates, data, data_names)</p></td>
-<td><p>Create an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> grid from numpy arrays</p></td>
+<td><p>Create an <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.4.3.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> grid from 2D numpy arrays</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.median_distance.html#verde.median_distance" title="verde.median_distance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">median_distance</span></code></a>(coordinates[, k_nearest, ...])</p></td>
 <td><p>Median distance between the <em>k</em> nearest neighbors of each point.</p></td>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="input-output">
-<h2>Input/Output<a class="headerlink" href="#input-output" title="Permalink to this headline">¶</a></h2>
-<table class="longtable table autosummary">
+</section>
+<section id="input-output">
+<h2>Input/Output<a class="headerlink" href="#input-output" title="Permalink to this headline">#</a></h2>
+<table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -1014,10 +1148,10 @@
 </tr>
 </tbody>
 </table>
-<span class="target" id="module-verde.synthetic"></span></div>
-<div class="section" id="synthetic-data">
-<h2>Synthetic data<a class="headerlink" href="#synthetic-data" title="Permalink to this headline">¶</a></h2>
-<table class="longtable table autosummary">
+<span class="target" id="module-verde.synthetic"></span></section>
+<section id="synthetic-data">
+<h2>Synthetic data<a class="headerlink" href="#synthetic-data" title="Permalink to this headline">#</a></h2>
+<table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -1028,48 +1162,10 @@
 </tr>
 </tbody>
 </table>
-<span class="target" id="module-verde.datasets"></span></div>
-<div class="section" id="datasets">
-<h2>Datasets<a class="headerlink" href="#datasets" title="Permalink to this headline">¶</a></h2>
-<table class="longtable table autosummary">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.datasets.locate.html#verde.datasets.locate" title="verde.datasets.locate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.locate</span></code></a>()</p></td>
-<td><p>The absolute path to the sample data storage location on disk.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.datasets.fetch_baja_bathymetry.html#verde.datasets.fetch_baja_bathymetry" title="verde.datasets.fetch_baja_bathymetry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_baja_bathymetry</span></code></a>()</p></td>
-<td><p>Fetch sample bathymetry data from Baja California.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.datasets.setup_baja_bathymetry_map.html#verde.datasets.setup_baja_bathymetry_map" title="verde.datasets.setup_baja_bathymetry_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.setup_baja_bathymetry_map</span></code></a>(ax[, ...])</p></td>
-<td><p>Setup a Cartopy map for the Baja California bathymetry dataset.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.datasets.fetch_california_gps.html#verde.datasets.fetch_california_gps" title="verde.datasets.fetch_california_gps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_california_gps</span></code></a>()</p></td>
-<td><p>Fetch sample GPS velocity data from California (the U.S.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.datasets.setup_california_gps_map.html#verde.datasets.setup_california_gps_map" title="verde.datasets.setup_california_gps_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.setup_california_gps_map</span></code></a>(ax[, ...])</p></td>
-<td><p>Setup a Cartopy map for the California GPS velocity dataset.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.datasets.fetch_texas_wind.html#verde.datasets.fetch_texas_wind" title="verde.datasets.fetch_texas_wind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_texas_wind</span></code></a>()</p></td>
-<td><p>Fetch sample wind speed and air temperature data for Texas, USA.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.datasets.setup_texas_wind_map.html#verde.datasets.setup_texas_wind_map" title="verde.datasets.setup_texas_wind_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.setup_texas_wind_map</span></code></a>(ax[, region, ...])</p></td>
-<td><p>Setup a Cartopy map for the Texas wind speed and air temperature dataset.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.datasets.fetch_rio_magnetic.html#verde.datasets.fetch_rio_magnetic" title="verde.datasets.fetch_rio_magnetic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_rio_magnetic</span></code></a>()</p></td>
-<td><p>Fetch total-field magnetic anomaly data from Rio de Janeiro, Brazil.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.datasets.setup_rio_magnetic_map.html#verde.datasets.setup_rio_magnetic_map" title="verde.datasets.setup_rio_magnetic_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.setup_rio_magnetic_map</span></code></a>(ax[, region])</p></td>
-<td><p>Setup a Cartopy map for the Rio de Janeiro magnetic anomaly dataset.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="section" id="base-classes-and-functions">
-<h2>Base Classes and Functions<a class="headerlink" href="#base-classes-and-functions" title="Permalink to this headline">¶</a></h2>
-<table class="longtable table autosummary">
+</section>
+<section id="base-classes-and-functions">
+<h2>Base Classes and Functions<a class="headerlink" href="#base-classes-and-functions" title="Permalink to this headline">#</a></h2>
+<table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -1092,15 +1188,60 @@
 </tr>
 </tbody>
 </table>
-</div>
-</div>
+</section>
+<section id="deprecated-classes-and-functions">
+<h2>Deprecated classes and functions<a class="headerlink" href="#deprecated-classes-and-functions" title="Permalink to this headline">#</a></h2>
+<p>The following classes and functions are deprecated and <strong>will be removed in
+Verde 2.0.0</strong>. Alternatives are provided in the function/class docstrings.</p>
+<table class="autosummary longtable table autosummary">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.ScipyGridder.html#verde.ScipyGridder" title="verde.ScipyGridder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ScipyGridder</span></code></a>([method, extra_args])</p></td>
+<td><p>A scipy.interpolate based gridder for scalar Cartesian data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.datasets.locate.html#verde.datasets.locate" title="verde.datasets.locate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.locate</span></code></a>()</p></td>
+<td><p>The absolute path to the sample data storage location on disk.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.datasets.fetch_baja_bathymetry.html#verde.datasets.fetch_baja_bathymetry" title="verde.datasets.fetch_baja_bathymetry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_baja_bathymetry</span></code></a>()</p></td>
+<td><p>Fetch sample bathymetry data from Baja California.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.datasets.setup_baja_bathymetry_map.html#verde.datasets.setup_baja_bathymetry_map" title="verde.datasets.setup_baja_bathymetry_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.setup_baja_bathymetry_map</span></code></a>(ax[, ...])</p></td>
+<td><p>Setup a Cartopy map for the Baja California bathymetry dataset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.datasets.fetch_california_gps.html#verde.datasets.fetch_california_gps" title="verde.datasets.fetch_california_gps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_california_gps</span></code></a>()</p></td>
+<td><p>Fetch sample GPS velocity data from California (the U.S.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.datasets.setup_california_gps_map.html#verde.datasets.setup_california_gps_map" title="verde.datasets.setup_california_gps_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.setup_california_gps_map</span></code></a>(ax[, ...])</p></td>
+<td><p>Setup a Cartopy map for the California GPS velocity dataset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.datasets.fetch_texas_wind.html#verde.datasets.fetch_texas_wind" title="verde.datasets.fetch_texas_wind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_texas_wind</span></code></a>()</p></td>
+<td><p>Fetch sample wind speed and air temperature data for Texas, USA.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.datasets.setup_texas_wind_map.html#verde.datasets.setup_texas_wind_map" title="verde.datasets.setup_texas_wind_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.setup_texas_wind_map</span></code></a>(ax[, region, ...])</p></td>
+<td><p>Setup a Cartopy map for the Texas wind speed and air temperature dataset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.datasets.fetch_rio_magnetic.html#verde.datasets.fetch_rio_magnetic" title="verde.datasets.fetch_rio_magnetic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.fetch_rio_magnetic</span></code></a>()</p></td>
+<td><p>Fetch total-field magnetic anomaly data from Rio de Janeiro, Brazil.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.datasets.setup_rio_magnetic_map.html#verde.datasets.setup_rio_magnetic_map" title="verde.datasets.setup_rio_magnetic_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datasets.setup_rio_magnetic_map</span></code></a>(ax[, region])</p></td>
+<td><p>Setup a Cartopy map for the Rio de Janeiro magnetic anomaly dataset.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
 
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="../tutorials/vectors.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -1116,23 +1257,27 @@
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            
+            </footer>
         </div>
     </div>
-    <footer class="footer">
-  <p>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+      &copy; Copyright 2017-2023, The Verde Developers.<br/>
+    Last updated on May 08, 2023.<br/>
+</p>
+        </footer>
+    </div>
     
-        &copy; Copyright 2017-2022, The Verde Developers.<br/>
-      Last updated on Mar 25, 2022.<br/>
-  </p>
-</footer>
-</main>
+</div>
 
 
       </div>
     </div>
   
-  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
 
   </body>
 </html>

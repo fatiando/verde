@@ -19,8 +19,6 @@ cross-validation performance.
 Once again, we'll start by importing the required packages and loading our
 sample data.
 """
-import itertools
-
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import numpy as np
@@ -54,34 +52,26 @@ print("R² with defaults:", score_default)
 # Tuning
 # ------
 #
-# :class:`~verde.Spline` has many parameters that can be set to modify the
-# final result. Mainly the ``damping`` regularization parameter and the
-# ``mindist`` "fudge factor" which smooths the solution. Would changing the
-# default values give us a better score?
+# :class:`~verde.Spline` has the ``damping`` regularization parameter which
+# smooths the solution and provides a least-squares fit to the data instead of
+# an exact fit at the observation points. This is often desirable to mitigate
+# data errors and provide better results when points are widely spaced. Would
+# changing the default values give us a better score?
 #
-# We can answer these questions by changing the values in our ``spline`` and
-# re-evaluating the model score repeatedly for different values of these
-# parameters. Let's test the following combinations:
+# We can answer this question by changing the values in our ``spline`` and
+# re-evaluating the model score repeatedly for different values of this
+# parameter. Let's test the following values:
 
 dampings = [None, 1e-4, 1e-3, 1e-2]
-mindists = [5e3, 10e3, 50e3, 100e3]
-
-# Use itertools to create a list with all combinations of parameters to test
-parameter_sets = [
-    dict(damping=combo[0], mindist=combo[1])
-    for combo in itertools.product(dampings, mindists)
-]
-print("Number of combinations:", len(parameter_sets))
-print("Combinations:", parameter_sets)
 
 ###############################################################################
-# Now we can loop over the combinations and collect the scores for each
-# parameter set.
+# Now we can loop over each value and collect the scores for each parameter
+# choice.
 
 spline = vd.Spline()
 scores = []
-for params in parameter_sets:
-    spline.set_params(**params)
+for damping in dampings:
+    spline.set_params(damping=damping)
     score = np.mean(vd.cross_val_score(spline, proj_coords, data.air_temperature_c))
     scores.append(score)
 print(scores)
@@ -92,7 +82,7 @@ print(scores)
 best = np.argmax(scores)
 print("Best score:", scores[best])
 print("Score with defaults:", score_default)
-print("Best parameters:", parameter_sets[best])
+print("Best damping:", dampings[best])
 
 ###############################################################################
 # **That is a nice improvement over our previous score!**
@@ -110,27 +100,23 @@ print("Best parameters:", parameter_sets[best])
 # The :class:`verde.SplineCV` class provides a cross-validated version of
 # :class:`verde.Spline`. It has almost the same interface but does all of the
 # above automatically when fitting a dataset. The only difference is that you
-# must provide a list of ``damping`` and ``mindist`` parameters to try instead
-# of only a single value:
+# must provide a list of ``damping`` values to try instead of only a single
+# value:
 
-spline = vd.SplineCV(
-    dampings=dampings,
-    mindists=mindists,
-)
+spline = vd.SplineCV(dampings=dampings)
 
 ###############################################################################
 # Calling :meth:`~verde.SplineCV.fit` will run a grid search over all parameter
-# combinations to find the one that maximizes the cross-validation score.
+# values to find the one that maximizes the cross-validation score.
 
 spline.fit(proj_coords, data.air_temperature_c)
 
 ###############################################################################
-# The estimated best ``damping`` and ``mindist``, as well as the
-# cross-validation scores, are stored in class attributes:
+# The estimated best ``damping``, as well as the cross-validation scores, are
+# stored in class attributes:
 
 print("Highest score:", spline.scores_.max())
 print("Best damping:", spline.damping_)
-print("Best mindist:", spline.mindist_)
 
 ###############################################################################
 # The cross-validated gridder can be used like any other gridder (including in
@@ -150,7 +136,7 @@ print(grid)
 # grid search in parallel using `Dask <https://dask.org/>`__ by specifying the
 # ``delayed`` attribute:
 
-spline = vd.SplineCV(dampings=dampings, mindists=mindists, delayed=True)
+spline = vd.SplineCV(dampings=dampings, delayed=True)
 
 ###############################################################################
 # Unlike :func:`verde.cross_val_score`, calling :meth:`~verde.SplineCV.fit`
@@ -160,7 +146,6 @@ spline = vd.SplineCV(dampings=dampings, mindists=mindists, delayed=True)
 spline.fit(proj_coords, data.air_temperature_c)
 
 print("Best damping:", spline.damping_)
-print("Best mindist:", spline.mindist_)
 
 ###############################################################################
 # The one caveat is the that the ``scores_`` attribute will be a list of

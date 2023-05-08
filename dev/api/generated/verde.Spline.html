@@ -5,14 +5,16 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     
         <title>verde.Spline | Verde dev</title>
     
 
     
-  <link href="../../_static/css/theme.css" rel="stylesheet">
-  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -22,28 +24,28 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.87249bd3f7b54630a2508c1b61607c7f.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../_static/design-tabs.js"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -54,7 +56,21 @@
     <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
     
     <div class="container-fluid" id="banner"></div>
 
@@ -63,9 +79,10 @@
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../../index.html">
       
         <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
@@ -130,8 +147,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/checkerboard.html">
+     Checkerboard function
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../gallery/convex_hull_mask.html">
      Mask grid points by convex hull
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/cubic_gridder.html">
+     Gridding with a cubic interpolator
     </a>
    </li>
    <li class="toctree-l2">
@@ -140,13 +167,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/project_grid.html">
-     Projection of gridded data
+    <a class="reference internal" href="../../gallery/kneighbors_gridder.html">
+     Gridding with a nearest-neighbors interpolator
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/scipygridder.html">
-     Gridding with Scipy
+    <a class="reference internal" href="../../gallery/linear_gridder.html">
+     Gridding with a linear interpolator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/project_grid.html">
+     Projection of gridded data
     </a>
    </li>
    <li class="toctree-l2">
@@ -193,43 +225,6 @@
  </span>
 </p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../sample_data/index.html">
-   Sample Data
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../sample_data/baja_bathymetry.html">
-     [DEPRECATED] Bathymetry data from Baja California
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../sample_data/california_gps.html">
-     [DEPRECATED] GPS velocities from California
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../sample_data/checkerboard.html">
-     Checkerboard function
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../sample_data/rio_magnetic.html">
-     [DEPRECATED] Magnetic data from Rio de Janeiro
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../sample_data/texas-wind.html">
-     [DEPRECATED] Wind speed data from Texas
-    </a>
-   </li>
-  </ul>
- </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../../tutorials/grid_coordinates.html">
    Grid Coordinates
@@ -286,8 +281,8 @@
   <a class="reference internal" href="../index.html">
    List of functions and classes (API)
   </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -303,13 +298,23 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="verde.VectorSpline2D.html">
-     verde.VectorSpline2D
+    <a class="reference internal" href="verde.KNeighbors.html">
+     verde.KNeighbors
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="verde.ScipyGridder.html">
-     verde.ScipyGridder
+    <a class="reference internal" href="verde.Linear.html">
+     verde.Linear
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.Cubic.html">
+     verde.Cubic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.VectorSpline2D.html">
+     verde.VectorSpline2D
     </a>
    </li>
    <li class="toctree-l2">
@@ -355,6 +360,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="verde.BlockKFold.html">
      verde.BlockKFold
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.line_coordinates.html">
+     verde.line_coordinates
     </a>
    </li>
    <li class="toctree-l2">
@@ -458,6 +468,36 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="verde.base.BaseGridder.html">
+     verde.base.BaseGridder
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.base.BaseBlockCrossValidator.html">
+     verde.base.BaseBlockCrossValidator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.base.n_1d_arrays.html">
+     verde.base.n_1d_arrays
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.base.check_fit_input.html">
+     verde.base.check_fit_input
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.base.least_squares.html">
+     verde.base.least_squares
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="verde.ScipyGridder.html">
+     verde.ScipyGridder
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="verde.datasets.locate.html">
      verde.datasets.locate
     </a>
@@ -502,31 +542,6 @@
      verde.datasets.setup_rio_magnetic_map
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="verde.base.BaseGridder.html">
-     verde.base.BaseGridder
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="verde.base.BaseBlockCrossValidator.html">
-     verde.base.BaseBlockCrossValidator
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="verde.base.n_1d_arrays.html">
-     verde.base.n_1d_arrays
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="verde.base.check_fit_input.html">
-     verde.base.check_fit_input
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="verde.base.least_squares.html">
-     verde.base.least_squares
-    </a>
-   </li>
   </ul>
  </li>
  <li class="toctree-l1">
@@ -535,13 +550,18 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../../references.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../../changes.html">
    Changelog
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../../references.html">
-   References
+  <a class="reference internal" href="../../compatibility.html">
+   Version compatibility
   </a>
  </li>
  <li class="toctree-l1">
@@ -584,92 +604,197 @@
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../../_sources/api/generated/verde.Spline.rst.txt"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.rst</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/fatiando/verde"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/fatiando/verde/issues/new?title=Issue%20on%20page%20%2Fapi/generated/verde.Spline.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/fatiando/verde/edit/main/doc/api/generated/verde.Spline.rst"><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/fatiando/verde"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/fatiando/verde/issues/new?title=Issue%20on%20page%20%2Fapi/generated/verde.Spline.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/fatiando/verde/edit/main/doc/api/generated/verde.Spline.rst"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../../_sources/api/generated/verde.Spline.rst.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.rst</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#examples-using-verde-spline">
    Examples using
@@ -682,12 +807,11 @@
  </li>
 </ul>
 
-            </nav>
-        </div>
-    </div>
+    </nav>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>verde.Spline</h1>
@@ -716,14 +840,15 @@
                     </div>
                 </div>
             </div>
-            
+            <main id="main-content" role="main">
+                
               <div>
                 
-  <div class="section" id="verde-spline">
-<h1>verde.Spline<a class="headerlink" href="#verde-spline" title="Permalink to this headline">¶</a></h1>
+  <section id="verde-spline">
+<h1>verde.Spline<a class="headerlink" href="#verde-spline" title="Permalink to this headline">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="verde.Spline">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">verde.</span></span><span class="sig-name descname"><span class="pre">Spline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mindist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_coords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/spline.html#Spline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#verde.Spline" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">verde.</span></span><span class="sig-name descname"><span class="pre">Spline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mindist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_coords</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/spline.html#Spline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#verde.Spline" title="Permalink to this definition">#</a></dt>
 <dd><p>Biharmonic spline interpolation using Green’s functions.</p>
 <p>This gridder assumes Cartesian coordinates.</p>
 <p>Implements the 2D splines of <a class="reference internal" href="../../references.html#sandwell1987" id="id1"><span>[Sandwell1987]</span></a>. The Green’s function for the
@@ -751,34 +876,37 @@ by not using the data coordinates to position the forces (use the
 using the approximate solutions.</p>
 <p>Before fitting, the Jacobian (design, sensitivity, feature, etc) matrix for
 the spline is normalized using
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="(in scikit-learn v1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.preprocessing.StandardScaler</span></code></a> without centering the mean so
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html#sklearn.preprocessing.StandardScaler" title="(in scikit-learn v1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.preprocessing.StandardScaler</span></code></a> without centering the mean so
 that the transformation can be undone in the estimated forces.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mindist</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – A minimum distance between the point forces and data points. Needed
-because the Green’s functions are singular when forces and data points
-coincide. Acts as a fudge factor.</p></li>
-<li><p><strong>damping</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – The positive damping regularization parameter. Controls how much
+<li><p><strong>mindist</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em> or </em><em>None</em>) – <strong>DEPRECATED:</strong> This argument is no longer needed and will be removed
+in Verde 2.0.0. This fudge factor is no longer required since a new
+formulation eliminates the singularity at zero distance. Use the
+default value of <code class="docutils literal notranslate"><span class="pre">mindist=None</span></code> to get the future behaviour. A
+minimum distance between the point forces and data points.</p></li>
+<li><p><strong>damping</strong> (<em>None</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – The positive damping regularization parameter. Controls how much
 smoothness is imposed on the estimated forces. If None, no
 regularization is used.</p></li>
-<li><p><strong>force_coords</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em> or </em><em>tuple of arrays</em>) – The easting and northing coordinates of the point forces. If None
+<li><p><strong>force_coords</strong> (<em>None</em><em> or </em><em>tuple of arrays</em>) – The easting and northing coordinates of the point forces. If None
 (default), then will be set to the data coordinates used to fit the
 spline.</p></li>
-<li><p><strong>engine</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – Computation engine for the Jacobian matrix and prediction. Can be
-<code class="docutils literal notranslate"><span class="pre">'auto'</span></code>, <code class="docutils literal notranslate"><span class="pre">'numba'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'numpy'</span></code>. If <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>, will use numba
-if it is installed or numpy otherwise. The numba version is
-multi-threaded and usually faster, which makes fitting and predicting
-faster.</p></li>
+<li><p><strong>engine</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a>) – <strong>DEPRECATED:</strong> This option is deprecated and will be removed in Verde
+v2.0.0. The numba engine will be the only option. Computation engine
+for the Jacobian matrix and prediction. Can be <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>, <code class="docutils literal notranslate"><span class="pre">'numba'</span></code>,
+or <code class="docutils literal notranslate"><span class="pre">'numpy'</span></code>. If <code class="docutils literal notranslate"><span class="pre">'auto'</span></code>, will use numba if it is installed or
+numpy otherwise. The numba version is multi-threaded and usually
+faster, which makes fitting and predicting faster.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Variables</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>force_</strong> (<em>array</em>) – The estimated forces that fit the observed data.</p></li>
-<li><p><strong>force_coords_</strong> (<em>tuple of arrays</em>) – The easting and northing coordinates of the point forces. Same as
+<li><p><strong>force</strong> (<em>array</em>) – The estimated forces that fit the observed data.</p></li>
+<li><p><strong>force_coords</strong> (<em>tuple of arrays</em>) – The easting and northing coordinates of the point forces. Same as
 <em>force_coords</em> if it is not None. Otherwise, same as the data locations
 used to fit the spline.</p></li>
-<li><p><strong>region_</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><em>tuple</em></a>) – The boundaries (<code class="docutils literal notranslate"><span class="pre">[W,</span> <span class="pre">E,</span> <span class="pre">S,</span> <span class="pre">N]</span></code>) of the data used to fit the
+<li><p><strong>region</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a>) – The boundaries (<code class="docutils literal notranslate"><span class="pre">[W,</span> <span class="pre">E,</span> <span class="pre">S,</span> <span class="pre">N]</span></code>) of the data used to fit the
 interpolator. Used as the default region for the
 <a class="reference internal" href="#verde.Spline.grid" title="verde.Spline.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a> and <a class="reference internal" href="#verde.Spline.scatter" title="verde.Spline.scatter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scatter</span></code></a> methods.</p></li>
 </ul>
@@ -794,7 +922,7 @@ interpolator. Used as the default region for the
 </dd></dl>
 
 <p class="rubric">Methods Summary</p>
-<table class="longtable table autosummary">
+<table class="autosummary longtable table autosummary">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -835,11 +963,11 @@ interpolator. Used as the default region for the
 <hr class="docutils" />
 <dl class="py method">
 <dt class="sig sig-object py" id="verde.Spline.filter">
-<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Spline.filter" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Spline.filter" title="Permalink to this definition">#</a></dt>
 <dd><p>Filter the data through the gridder and produce residuals.</p>
 <p>Calls <code class="docutils literal notranslate"><span class="pre">fit</span></code> on the data, evaluates the residuals (data - predicted
 data), and returns the coordinates, residuals, and weights.</p>
-<p>No very useful by itself but this interface makes gridders compatible
+<p>Not very useful by itself but this interface makes gridders compatible
 with other processing operations and is used by <a class="reference internal" href="verde.Chain.html#verde.Chain" title="verde.Chain"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Chain</span></code></a> to
 join them together (for example, so you can fit a spline on the
 residuals of a trend).</p>
@@ -853,7 +981,7 @@ names mean, see the class docstring.</p></li>
 <li><p><strong>data</strong> (<em>array</em><em> or </em><em>tuple of arrays</em>) – The data values of each data point. If the data has more than one
 component, <em>data</em> must be a tuple of arrays (one for each
 component).</p></li>
-<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – If not None, then the weights assigned to each data point. If more
+<li><p><strong>weights</strong> (<em>None</em><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – If not None, then the weights assigned to each data point. If more
 than one data component is provided, you must provide a weights
 array for each data component (if not None).</p></li>
 </ul>
@@ -867,7 +995,7 @@ the input data minus the predicted data.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="verde.Spline.fit">
-<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/spline.html#Spline.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#verde.Spline.fit" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/spline.html#Spline.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#verde.Spline.fit" title="Permalink to this definition">#</a></dt>
 <dd><p>Fit the biharmonic spline to the given data.</p>
 <p>The data region is captured and used as default for the
 <a class="reference internal" href="#verde.Spline.grid" title="verde.Spline.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a> and <a class="reference internal" href="#verde.Spline.scatter" title="verde.Spline.scatter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scatter</span></code></a> methods.</p>
@@ -880,7 +1008,7 @@ following order: (easting, northing, vertical, …). Only easting
 and northing will be used, all subsequent coordinates will be
 ignored.</p></li>
 <li><p><strong>data</strong> (<em>array</em>) – The data values of each data point.</p></li>
-<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em> or </em><em>array</em>) – If not None, then the weights assigned to each data point.
+<li><p><strong>weights</strong> (<em>None</em><em> or </em><em>array</em>) – If not None, then the weights assigned to each data point.
 Typically, this should be 1 over the data uncertainty squared.</p></li>
 </ul>
 </dd>
@@ -892,11 +1020,11 @@ Typically, this should be 1 over the data uncertainty squared.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="verde.Spline.get_params">
-<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Spline.get_params" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Spline.get_params" title="Permalink to this definition">#</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>deep</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a><em>, </em><em>default=True</em>) – If True, will return the parameters for this estimator and
+<dd class="field-odd"><p><strong>deep</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>default=True</em>) – If True, will return the parameters for this estimator and
 contained subobjects that are estimators.</p>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -907,13 +1035,13 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="verde.Spline.grid">
-<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Spline.grid" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Spline.grid" title="Permalink to this definition">#</a></dt>
 <dd><p>Interpolate the data onto a regular grid.</p>
 <p>The grid can be specified by two methods:</p>
 <ul class="simple">
 <li><p>Pass the actual <em>coordinates</em> of the grid points, as generated by
 <a class="reference internal" href="verde.grid_coordinates.html#verde.grid_coordinates" title="verde.grid_coordinates"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.grid_coordinates</span></code></a> or from an existing
-<a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> grid.</p></li>
+<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.4.3.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> grid.</p></li>
 <li><p>Let the method define a new grid by either passing the number of
 points in each dimension (the <em>shape</em>) or by the grid node <em>spacing</em>.
 If the interpolator collected the input data region, then it will be
@@ -923,31 +1051,31 @@ See <a class="reference internal" href="verde.grid_coordinates.html#verde.grid_c
 arguments (<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this method.</p></li>
 </ul>
 <p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
-dimensions and the data field(s) in the output <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.
+dimensions and the data field(s) in the output <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.4.3.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>.
 Default names will be provided if none are given.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>region</strong> (<em>list =</em><em> [</em><em>W</em><em>, </em><em>E</em><em>, </em><em>S</em><em>, </em><em>N</em><em>]</em>) – The west, east, south, and north boundaries of a given region.
 Use only if <code class="docutils literal notranslate"><span class="pre">coordinates</span></code> is None.</p></li>
-<li><p><strong>shape</strong> (<em>tuple =</em><em> (</em><em>n_north</em><em>, </em><em>n_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – The number of points in the South-North and West-East directions,
+<li><p><strong>shape</strong> (<em>tuple =</em><em> (</em><em>n_north</em><em>, </em><em>n_east</em><em>) or </em><em>None</em>) – The number of points in the South-North and West-East directions,
 respectively.
 Use only if <code class="docutils literal notranslate"><span class="pre">coordinates</span></code> is None.</p></li>
-<li><p><strong>spacing</strong> (<em>tuple =</em><em> (</em><em>s_north</em><em>, </em><em>s_east</em><em>) or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – The grid spacing in the South-North and West-East directions,
+<li><p><strong>spacing</strong> (<em>tuple =</em><em> (</em><em>s_north</em><em>, </em><em>s_east</em><em>) or </em><em>None</em>) – The grid spacing in the South-North and West-East directions,
 respectively.
 Use only if <code class="docutils literal notranslate"><span class="pre">coordinates</span></code> is None.</p></li>
-<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – The names of the northing and easting data dimensions,
+<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> or </em><em>None</em>) – The names of the northing and easting data dimensions,
 respectively, in the output grid. Default is determined from the
 <code class="docutils literal notranslate"><span class="pre">dims</span></code> attribute of the class. Must be defined in the following
 order: northing dimension, easting dimension.
 <strong>NOTE: This is an exception to the “easting” then
 “northing” pattern but is required for compatibility with xarray.</strong></p></li>
-<li><p><strong>data_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – The name(s) of the data variables in the output grid. Defaults to
+<li><p><strong>data_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> or </em><em>None</em>) – The name(s) of the data variables in the output grid. Defaults to
 <code class="docutils literal notranslate"><span class="pre">'scalars'</span></code> for scalar data,
 <code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component']</span></code> for 2D vector data, and
 <code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component',</span> <span class="pre">'vertical_component']</span></code> for
 3D vector data.</p></li>
-<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – If not None, then should be a callable object
+<li><p><strong>projection</strong> (<em>callable</em><em> or </em><em>None</em>) – If not None, then should be a callable object
 <code class="docutils literal notranslate"><span class="pre">projection(easting,</span> <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code>
 that takes in easting and northing coordinate arrays and returns
 projected northing and easting coordinate arrays. This function
@@ -978,7 +1106,7 @@ to the <code class="docutils literal notranslate"><span class="pre">attrs</span>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="verde.Spline.jacobian">
-<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">jacobian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float64'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/spline.html#Spline.jacobian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#verde.Spline.jacobian" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">jacobian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_coords</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float64'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/spline.html#Spline.jacobian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#verde.Spline.jacobian" title="Permalink to this definition">#</a></dt>
 <dd><p>Make the Jacobian matrix for the 2D biharmonic spline.</p>
 <p>Each column of the Jacobian is the Green’s function for a single force
 evaluated on all observation points <a class="reference internal" href="../../references.html#sandwell1987" id="id2"><span>[Sandwell1987]</span></a>.</p>
@@ -991,7 +1119,7 @@ and northing will be used, all subsequent coordinates will be
 ignored.</p></li>
 <li><p><strong>force_coords</strong> (<em>tuple of arrays</em>) – Arrays with the coordinates for the forces. Should be in the same
 order as the coordinate arrays.</p></li>
-<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em> or </em><em>numpy dtype</em>) – The type of the Jacobian array.</p></li>
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em> or </em><em>numpy dtype</em>) – The type of the Jacobian array.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1002,7 +1130,7 @@ order as the coordinate arrays.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="verde.Spline.predict">
-<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/spline.html#Spline.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#verde.Spline.predict" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/spline.html#Spline.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#verde.Spline.predict" title="Permalink to this definition">#</a></dt>
 <dd><p>Evaluate the estimated spline on the given set of points.</p>
 <p>Requires a fitted estimator (see <a class="reference internal" href="#verde.Spline.fit" title="verde.Spline.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a>).</p>
 <dl class="field-list simple">
@@ -1020,7 +1148,7 @@ ignored.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="verde.Spline.profile">
-<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Spline.profile" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">profile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Spline.profile" title="Permalink to this definition">#</a></dt>
 <dd><p>Interpolate data along a profile between two points.</p>
 <p>Generates the profile along a straight line assuming Cartesian
 distances. Point coordinates are generated by
@@ -1028,7 +1156,7 @@ distances. Point coordinates are generated by
 can be passed as extra keyword arguments (<code class="docutils literal notranslate"><span class="pre">kwargs</span></code>) to this method.</p>
 <p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
 dimensions and the data field(s) in the output
-<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
 <p>Includes the calculated Cartesian distance from <em>point1</em> for each data
 point in the profile.</p>
 <p>To specify <em>point1</em> and <em>point2</em> in a coordinate system that would
@@ -1057,23 +1185,23 @@ projected coordinates as well.</strong></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>point1</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><em>tuple</em></a>) – The easting and northing coordinates, respectively, of the first
+<li><p><strong>point1</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a>) – The easting and northing coordinates, respectively, of the first
 point.</p></li>
-<li><p><strong>point2</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.10)"><em>tuple</em></a>) – The easting and northing coordinates, respectively, of the second
+<li><p><strong>point2</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a>) – The easting and northing coordinates, respectively, of the second
 point.</p></li>
-<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The number of points to generate.</p></li>
-<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – The names of the northing and easting data dimensions,
+<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – The number of points to generate.</p></li>
+<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> or </em><em>None</em>) – The names of the northing and easting data dimensions,
 respectively, in the output dataframe. Default is determined from
 the <code class="docutils literal notranslate"><span class="pre">dims</span></code> attribute of the class. Must be defined in the
 following order: northing dimension, easting dimension.
 <strong>NOTE: This is an exception to the “easting” then
 “northing” pattern but is required for compatibility with xarray.</strong></p></li>
-<li><p><strong>data_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – The name(s) of the data variables in the output dataframe. Defaults
+<li><p><strong>data_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> or </em><em>None</em>) – The name(s) of the data variables in the output dataframe. Defaults
 to <code class="docutils literal notranslate"><span class="pre">'scalars'</span></code> for scalar data,
 <code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component']</span></code> for 2D vector data, and
 <code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component',</span> <span class="pre">'vertical_component']</span></code> for
 3D vector data.</p></li>
-<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – If not None, then should be a callable object <code class="docutils literal notranslate"><span class="pre">projection(easting,</span>
+<li><p><strong>projection</strong> (<em>callable</em><em> or </em><em>None</em>) – If not None, then should be a callable object <code class="docutils literal notranslate"><span class="pre">projection(easting,</span>
 <span class="pre">northing,</span> <span class="pre">inverse=False)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code> that
 takes in easting and northing coordinate arrays and returns
 projected northing and easting coordinate arrays. Should also take
@@ -1093,7 +1221,7 @@ results.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="verde.Spline.scatter">
-<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">scatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Spline.scatter" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">scatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Spline.scatter" title="Permalink to this definition">#</a></dt>
 <dd><p>Interpolate values onto a random scatter of points.</p>
 <p>Point coordinates are generated by <a class="reference internal" href="verde.scatter_points.html#verde.scatter_points" title="verde.scatter_points"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.scatter_points</span></code></a>. Other
 arguments for this function can be passed as extra keyword arguments
@@ -1102,28 +1230,34 @@ arguments for this function can be passed as extra keyword arguments
 used if <code class="docutils literal notranslate"><span class="pre">region=None</span></code>. Otherwise, you must specify the grid region.</p>
 <p>Use the <em>dims</em> and <em>data_names</em> arguments to set custom names for the
 dimensions and the data field(s) in the output
-<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
+<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. Default names are provided.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">scatter</span></code> method is deprecated and will be removed in Verde
+2.0.0. Use <a class="reference internal" href="verde.scatter_points.html#verde.scatter_points" title="verde.scatter_points"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.scatter_points</span></code></a> and the <code class="docutils literal notranslate"><span class="pre">predict</span></code> method
+instead.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>region</strong> (<em>list =</em><em> [</em><em>W</em><em>, </em><em>E</em><em>, </em><em>S</em><em>, </em><em>N</em><em>]</em>) – The west, east, south, and north boundaries of a given region.</p></li>
-<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The number of points to generate.</p></li>
-<li><p><strong>random_state</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/random/legacy.html#numpy.random.RandomState" title="(in NumPy v1.22)"><em>numpy.random.RandomState</em></a><em> or </em><em>an int seed</em>) – A random number generator used to define the state of the random
+<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – The number of points to generate.</p></li>
+<li><p><strong>random_state</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/random/legacy.html#numpy.random.RandomState" title="(in NumPy v1.24)"><em>numpy.random.RandomState</em></a><em> or </em><em>an int seed</em>) – A random number generator used to define the state of the random
 permutations. Use a fixed seed to make sure computations are
 reproducible. Use <code class="docutils literal notranslate"><span class="pre">None</span></code> to choose a seed automatically
 (resulting in different numbers with each run).</p></li>
-<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – The names of the northing and easting data dimensions,
+<li><p><strong>dims</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> or </em><em>None</em>) – The names of the northing and easting data dimensions,
 respectively, in the output dataframe. Default is determined from
 the <code class="docutils literal notranslate"><span class="pre">dims</span></code> attribute of the class. Must be defined in the
 following order: northing dimension, easting dimension.
 <strong>NOTE: This is an exception to the “easting” then
 “northing” pattern but is required for compatibility with xarray.</strong></p></li>
-<li><p><strong>data_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – The name(s) of the data variables in the output dataframe. Defaults
+<li><p><strong>data_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> or </em><em>None</em>) – The name(s) of the data variables in the output dataframe. Defaults
 to <code class="docutils literal notranslate"><span class="pre">'scalars'</span></code> for scalar data,
 <code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component']</span></code> for 2D vector data, and
 <code class="docutils literal notranslate"><span class="pre">['east_component',</span> <span class="pre">'north_component',</span> <span class="pre">'vertical_component']</span></code> for
 3D vector data.</p></li>
-<li><p><strong>projection</strong> (<em>callable</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – If not None, then should be a callable object
+<li><p><strong>projection</strong> (<em>callable</em><em> or </em><em>None</em>) – If not None, then should be a callable object
 <code class="docutils literal notranslate"><span class="pre">projection(easting,</span> <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code>
 that takes in easting and northing coordinate arrays and returns
 projected northing and easting coordinate arrays. This function
@@ -1140,7 +1274,7 @@ generate a geographic scatter from a Cartesian gridder.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="verde.Spline.score">
-<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Spline.score" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Spline.score" title="Permalink to this definition">#</a></dt>
 <dd><p>Score the gridder predictions against the given data.</p>
 <p>Calculates the R^2 coefficient of determination of between the
 predicted values and the given data values. A maximum score of 1 means
@@ -1165,7 +1299,7 @@ names mean, see the class docstring.</p></li>
 <li><p><strong>data</strong> (<em>array</em><em> or </em><em>tuple of arrays</em>) – The data values of each data point. If the data has more than one
 component, <em>data</em> must be a tuple of arrays (one for each
 component).</p></li>
-<li><p><strong>weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – If not None, then the weights assigned to each data point. If more
+<li><p><strong>weights</strong> (<em>None</em><em> or </em><em>array</em><em> or </em><em>tuple of arrays</em>) – If not None, then the weights assigned to each data point. If more
 than one data component is provided, you must provide a weights
 array for each data component (if not None).</p></li>
 </ul>
@@ -1178,15 +1312,15 @@ array for each data component (if not None).</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="verde.Spline.set_params">
-<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Spline.set_params" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">Spline.</span></span><span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#verde.Spline.set_params" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
-(such as <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>). The latter have
+(such as <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>). The latter have
 parameters of the form <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s
 possible to update each component of a nested object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>**params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><em>dict</em></a>) – Estimator parameters.</p>
+<dd class="field-odd"><p><strong>**params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><em>dict</em></a>) – Estimator parameters.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>self</strong> (<em>estimator instance</em>) – Estimator instance.</p>
@@ -1194,65 +1328,91 @@ possible to update each component of a nested object.</p>
 </dl>
 </dd></dl>
 
-<div class="section" id="examples-using-verde-spline">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">verde.Spline</span></code><a class="headerlink" href="#examples-using-verde-spline" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Biharmonic spline interpolation is based on estimating vertical forces acting on an elastic she..."><div class="figure align-default" id="id3">
+<section id="examples-using-verde-spline">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">verde.Spline</span></code><a class="headerlink" href="#examples-using-verde-spline" title="Permalink to this headline">#</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Biharmonic spline interpolation is based on estimating vertical forces acting on an elastic she..."><figure class="align-default" id="id3">
 <img alt="Gridding with splines" src="../../_images/sphx_glr_spline_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline.html#sphx-glr-gallery-spline-py"><span class="std std-ref">Gridding with splines</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="The verde.Spline has two main parameters that need to be configured:"><div class="figure align-default" id="id4">
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../gallery/spline.html#sphx-glr-gallery-spline-py"><span class="std std-ref">Gridding with splines</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The verde.Spline has one main parameter that needs to be configured:"><figure class="align-default" id="id4">
 <img alt="Gridding with splines (cross-validated)" src="../../_images/sphx_glr_spline_cv_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline_cv.html#sphx-glr-gallery-spline-cv-py"><span class="std std-ref">Gridding with splines (cross-validated)</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="An advantage of using the Green&#x27;s functions based verde.Spline over verde.ScipyGridder is that ..."><div class="figure align-default" id="id5">
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../gallery/spline_cv.html#sphx-glr-gallery-spline-cv-py"><span class="std std-ref">Gridding with splines (cross-validated)</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div><div class="sphx-glr-thumbcontainer" tooltip="An advantage of using the Green&#x27;s functions based verde.Spline over verde.ScipyGridder is that ..."><figure class="align-default" id="id5">
 <img alt="Gridding with splines and weights" src="../../_images/sphx_glr_spline_weights_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/spline_weights.html#sphx-glr-gallery-spline-weights-py"><span class="std std-ref">Gridding with splines and weights</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="We can use verde.Vector to simultaneously process and grid all components of vector data. Each ..."><div class="figure align-default" id="id6">
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../gallery/spline_weights.html#sphx-glr-gallery-spline-weights-py"><span class="std std-ref">Gridding with splines and weights</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div><div class="sphx-glr-thumbcontainer" tooltip="We can use verde.Vector to simultaneously process and grid all components of vector data. Each ..."><figure class="align-default" id="id6">
 <img alt="Gridding 2D vectors" src="../../_images/sphx_glr_vector_uncoupled_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../gallery/vector_uncoupled.html#sphx-glr-gallery-vector-uncoupled-py"><span class="std std-ref">Gridding 2D vectors</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Often, a data processing pipeline looks like the following:"><div class="figure align-default" id="id7">
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../gallery/vector_uncoupled.html#sphx-glr-gallery-vector-uncoupled-py"><span class="std std-ref">Gridding 2D vectors</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Often, a data processing pipeline looks like the following:"><figure class="align-default" id="id7">
 <img alt="Chaining Operations" src="../../_images/sphx_glr_chain_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/chain.html#sphx-glr-tutorials-chain-py"><span class="std std-ref">Chaining Operations</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="The Green&#x27;s functions based interpolations in Verde are all linear regressions under the hood. ..."><div class="figure align-default" id="id8">
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../tutorials/chain.html#sphx-glr-tutorials-chain-py"><span class="std std-ref">Chaining Operations</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The Green&#x27;s functions based interpolations in Verde are all linear regressions under the hood. ..."><figure class="align-default" id="id8">
 <img alt="Evaluating Performance" src="../../_images/sphx_glr_model_evaluation_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/model_evaluation.html#sphx-glr-tutorials-model-evaluation-py"><span class="std std-ref">Evaluating Performance</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="In model_evaluation, we saw how to check the performance of an interpolator using cross-validat..."><div class="figure align-default" id="id9">
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../tutorials/model_evaluation.html#sphx-glr-tutorials-model-evaluation-py"><span class="std std-ref">Evaluating Performance</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div><div class="sphx-glr-thumbcontainer" tooltip="In model_evaluation, we saw how to check the performance of an interpolator using cross-validat..."><figure class="align-default" id="id9">
 <img alt="Model Selection" src="../../_images/sphx_glr_model_selection_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/model_selection.html#sphx-glr-tutorials-model-selection-py"><span class="std std-ref">Model Selection</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Verde provides classes and functions for processing spatial data, like bathymetry, GPS, tempera..."><div class="figure align-default" id="id10">
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../tutorials/model_selection.html#sphx-glr-tutorials-model-selection-py"><span class="std std-ref">Model Selection</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Verde provides classes and functions for processing spatial data, like bathymetry, GPS, tempera..."><figure class="align-default" id="id10">
 <img alt="Overview" src="../../_images/sphx_glr_overview_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/overview.html#sphx-glr-tutorials-overview-py"><span class="std std-ref">Overview</span></a></span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Most gridders and processing methods in Verde operate under the assumption that the data coordi..."><div class="figure align-default" id="id11">
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../tutorials/overview.html#sphx-glr-tutorials-overview-py"><span class="std std-ref">Overview</span></a></span><a class="headerlink" href="#id10" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Most gridders and processing methods in Verde operate under the assumption that the data coordi..."><figure class="align-default" id="id11">
 <img alt="Geographic Coordinates" src="../../_images/sphx_glr_projections_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/projections.html#sphx-glr-tutorials-projections-py"><span class="std std-ref">Geographic Coordinates</span></a></span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Trend estimation and removal is a common operation, particularly when dealing with geophysical ..."><div class="figure align-default" id="id12">
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../tutorials/projections.html#sphx-glr-tutorials-projections-py"><span class="std std-ref">Geographic Coordinates</span></a></span><a class="headerlink" href="#id11" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Trend estimation and removal is a common operation, particularly when dealing with geophysical ..."><figure class="align-default" id="id12">
 <img alt="Trend Estimation" src="../../_images/sphx_glr_trends_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/trends.html#sphx-glr-tutorials-trends-py"><span class="std std-ref">Trend Estimation</span></a></span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Some datasets have multiple vector components measured for each location, like the East and Wes..."><div class="figure align-default" id="id13">
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../tutorials/trends.html#sphx-glr-tutorials-trends-py"><span class="std std-ref">Trend Estimation</span></a></span><a class="headerlink" href="#id12" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Some datasets have multiple vector components measured for each location, like the East and Wes..."><figure class="align-default" id="id13">
 <img alt="Vector Data" src="../../_images/sphx_glr_vectors_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/vectors.html#sphx-glr-tutorials-vectors-py"><span class="std std-ref">Vector Data</span></a></span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="One of the advantages of using a Green&#x27;s functions approach to interpolation is that we can eas..."><div class="figure align-default" id="id14">
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../tutorials/vectors.html#sphx-glr-tutorials-vectors-py"><span class="std std-ref">Vector Data</span></a></span><a class="headerlink" href="#id13" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div><div class="sphx-glr-thumbcontainer" tooltip="One of the advantages of using a Green&#x27;s functions approach to interpolation is that we can eas..."><figure class="align-default" id="id14">
 <img alt="Using Weights" src="../../_images/sphx_glr_weights_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/weights.html#sphx-glr-tutorials-weights-py"><span class="std std-ref">Using Weights</span></a></span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
-</div>
-</div><div style='clear:both'></div></div>
-</div>
+<figcaption>
+<p><span class="caption-text"><a class="reference internal" href="../../tutorials/weights.html#sphx-glr-tutorials-weights-py"><span class="std std-ref">Using Weights</span></a></span><a class="headerlink" href="#id14" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</div><div style='clear:both'></div></section>
+</section>
 
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="../index.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -1268,23 +1428,27 @@ possible to update each component of a nested object.</p>
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            
+            </footer>
         </div>
     </div>
-    <footer class="footer">
-  <p>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+      &copy; Copyright 2017-2023, The Verde Developers.<br/>
+    Last updated on May 08, 2023.<br/>
+</p>
+        </footer>
+    </div>
     
-        &copy; Copyright 2017-2022, The Verde Developers.<br/>
-      Last updated on Mar 25, 2022.<br/>
-  </p>
-</footer>
-</main>
+</div>
 
 
       </div>
     </div>
   
-  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
 
   </body>
 </html>

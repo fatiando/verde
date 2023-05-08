@@ -5,14 +5,16 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     
         <title>Vector Data | Verde dev</title>
     
 
     
-  <link href="../_static/css/theme.css" rel="stylesheet">
-  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -22,28 +24,28 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/panels-variables.87249bd3f7b54630a2508c1b61607c7f.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
-  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../_static/design-tabs.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -53,7 +55,21 @@
     <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
     
     <div class="container-fluid" id="banner"></div>
 
@@ -62,9 +78,10 @@
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../index.html">
       
         <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
@@ -129,8 +146,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/checkerboard.html">
+     Checkerboard function
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../gallery/convex_hull_mask.html">
      Mask grid points by convex hull
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/cubic_gridder.html">
+     Gridding with a cubic interpolator
     </a>
    </li>
    <li class="toctree-l2">
@@ -139,13 +166,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/project_grid.html">
-     Projection of gridded data
+    <a class="reference internal" href="../gallery/kneighbors_gridder.html">
+     Gridding with a nearest-neighbors interpolator
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../gallery/scipygridder.html">
-     Gridding with Scipy
+    <a class="reference internal" href="../gallery/linear_gridder.html">
+     Gridding with a linear interpolator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../gallery/project_grid.html">
+     Projection of gridded data
     </a>
    </li>
    <li class="toctree-l2">
@@ -192,43 +224,6 @@
  </span>
 </p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../sample_data/index.html">
-   Sample Data
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../sample_data/baja_bathymetry.html">
-     [DEPRECATED] Bathymetry data from Baja California
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../sample_data/california_gps.html">
-     [DEPRECATED] GPS velocities from California
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../sample_data/checkerboard.html">
-     Checkerboard function
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../sample_data/rio_magnetic.html">
-     [DEPRECATED] Magnetic data from Rio de Janeiro
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../sample_data/texas-wind.html">
-     [DEPRECATED] Wind speed data from Texas
-    </a>
-   </li>
-  </ul>
- </li>
  <li class="toctree-l1">
   <a class="reference internal" href="grid_coordinates.html">
    Grid Coordinates
@@ -285,8 +280,8 @@
   <a class="reference internal" href="../api/index.html">
    List of functions and classes (API)
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -302,13 +297,23 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../api/generated/verde.VectorSpline2D.html">
-     verde.VectorSpline2D
+    <a class="reference internal" href="../api/generated/verde.KNeighbors.html">
+     verde.KNeighbors
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../api/generated/verde.ScipyGridder.html">
-     verde.ScipyGridder
+    <a class="reference internal" href="../api/generated/verde.Linear.html">
+     verde.Linear
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/verde.Cubic.html">
+     verde.Cubic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/verde.VectorSpline2D.html">
+     verde.VectorSpline2D
     </a>
    </li>
    <li class="toctree-l2">
@@ -354,6 +359,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../api/generated/verde.BlockKFold.html">
      verde.BlockKFold
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/verde.line_coordinates.html">
+     verde.line_coordinates
     </a>
    </li>
    <li class="toctree-l2">
@@ -457,6 +467,36 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/verde.base.BaseGridder.html">
+     verde.base.BaseGridder
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/verde.base.BaseBlockCrossValidator.html">
+     verde.base.BaseBlockCrossValidator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/verde.base.n_1d_arrays.html">
+     verde.base.n_1d_arrays
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/verde.base.check_fit_input.html">
+     verde.base.check_fit_input
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/verde.base.least_squares.html">
+     verde.base.least_squares
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../api/generated/verde.ScipyGridder.html">
+     verde.ScipyGridder
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../api/generated/verde.datasets.locate.html">
      verde.datasets.locate
     </a>
@@ -501,31 +541,6 @@
      verde.datasets.setup_rio_magnetic_map
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../api/generated/verde.base.BaseGridder.html">
-     verde.base.BaseGridder
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../api/generated/verde.base.BaseBlockCrossValidator.html">
-     verde.base.BaseBlockCrossValidator
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../api/generated/verde.base.n_1d_arrays.html">
-     verde.base.n_1d_arrays
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../api/generated/verde.base.check_fit_input.html">
-     verde.base.check_fit_input
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../api/generated/verde.base.least_squares.html">
-     verde.base.least_squares
-    </a>
-   </li>
   </ul>
  </li>
  <li class="toctree-l1">
@@ -534,13 +549,18 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../references.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../changes.html">
    Changelog
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../references.html">
-   References
+  <a class="reference internal" href="../compatibility.html">
+   Version compatibility
   </a>
  </li>
  <li class="toctree-l1">
@@ -583,92 +603,197 @@
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="../_sources/tutorials/vectors.rst.txt"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.rst</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/fatiando/verde"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/fatiando/verde/issues/new?title=Issue%20on%20page%20%2Ftutorials/vectors.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/fatiando/verde/edit/main/doc/tutorials/vectors.rst"><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/fatiando/verde"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/fatiando/verde/issues/new?title=Issue%20on%20page%20%2Ftutorials/vectors.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/fatiando/verde/edit/main/doc/tutorials/vectors.rst"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/tutorials/vectors.rst.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.rst</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#blocked-reductions">
    Blocked reductions
@@ -693,12 +818,11 @@
  </li>
 </ul>
 
-            </nav>
-        </div>
-    </div>
+    </nav>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1>Vector Data</h1>
@@ -739,7 +863,8 @@
                     </div>
                 </div>
             </div>
-            
+            <main id="main-content" role="main">
+                
               <div>
                 
   <div class="sphx-glr-download-link-note admonition note">
@@ -747,8 +872,8 @@
 <p>Click <a class="reference internal" href="#sphx-glr-download-tutorials-vectors-py"><span class="std std-ref">here</span></a>
 to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="vector-data">
-<span id="sphx-glr-tutorials-vectors-py"></span><h1>Vector Data<a class="headerlink" href="#vector-data" title="Permalink to this headline">¶</a></h1>
+<section class="sphx-glr-example-title" id="vector-data">
+<span id="sphx-glr-tutorials-vectors-py"></span><h1>Vector Data<a class="headerlink" href="#vector-data" title="Permalink to this headline">#</a></h1>
 <p>Some datasets have multiple vector components measured for each location, like
 the East and West components of wind speed or GPS velocities. For example,
 let’s look at our sample GPS velocity data from the U.S. West coast.</p>
@@ -792,8 +917,8 @@ can take vector data as input will accept tuples as the <code class="docutils li
 data values for a component of the vector data. As with <code class="docutils literal notranslate"><span class="pre">coordinates</span></code>,
 <strong>the order of components must be</strong> <code class="docutils literal notranslate"><span class="pre">(east_component,</span> <span class="pre">north_component,</span>
 <span class="pre">up_component)</span></code>.</p>
-<div class="section" id="blocked-reductions">
-<h2>Blocked reductions<a class="headerlink" href="#blocked-reductions" title="Permalink to this headline">¶</a></h2>
+<section id="blocked-reductions">
+<h2>Blocked reductions<a class="headerlink" href="#blocked-reductions" title="Permalink to this headline">#</a></h2>
 <p>Operations with <a class="reference internal" href="../api/generated/verde.BlockReduce.html#verde.BlockReduce" title="verde.BlockReduce"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.BlockReduce</span></code></a> and <a class="reference internal" href="../api/generated/verde.BlockMean.html#verde.BlockMean" title="verde.BlockMean"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.BlockMean</span></code></a> can
 handle multi-component data automatically. The reduction operation is applied
 to each data component separately. The blocked data and weights will be
@@ -835,9 +960,9 @@ with Cartopy.</p>
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_vectors_002.png" srcset="../_images/sphx_glr_vectors_002.png" alt="Block mean velocities" class = "sphx-glr-single-img"/></div>
-<div class="section" id="trends">
-<h2>Trends<a class="headerlink" href="#trends" title="Permalink to this headline">¶</a></h2>
+<img src="../_images/sphx_glr_vectors_002.png" srcset="../_images/sphx_glr_vectors_002.png" alt="Block mean velocities" class = "sphx-glr-single-img"/></section>
+<section id="trends">
+<h2>Trends<a class="headerlink" href="#trends" title="Permalink to this headline">#</a></h2>
 <p>Trends can’t handle vector data automatically, so you can’t pass
 <code class="docutils literal notranslate"><span class="pre">data=(data.velocity_east,</span> <span class="pre">data.velocity_north)</span></code> to
 <a class="reference internal" href="../api/generated/verde.Trend.html#verde.Trend.fit" title="verde.Trend.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">verde.Trend.fit</span></code></a>. To get around that, you can use the
@@ -866,11 +991,11 @@ different <a class="reference internal" href="../api/generated/verde.Trend.html#
 <span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Vector(components=[Trend(degree=4), Trend(degree=1)])
-</pre></div>
+<div class="output_subarea output_html rendered_html output_result">
+<style>#sk-container-id-4 {color: black;background-color: white;}#sk-container-id-4 pre{padding: 0;}#sk-container-id-4 div.sk-toggleable {background-color: white;}#sk-container-id-4 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-4 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-4 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-4 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-4 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-4 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-4 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-4 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-4 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-4 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-4 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-4 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-4 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-4 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-4 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-4 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-4 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-4 div.sk-item {position: relative;z-index: 1;}#sk-container-id-4 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-4 div.sk-item::before, #sk-container-id-4 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-4 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-4 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-4 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-4 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-4 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-4 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-4 div.sk-label-container {text-align: center;}#sk-container-id-4 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-4 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-4" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Vector(components=[Trend(degree=4), Trend(degree=1)])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox" checked><label for="sk-estimator-id-4" class="sk-toggleable__label sk-toggleable__label-arrow">Vector</label><div class="sk-toggleable__content"><pre>Vector(components=[Trend(degree=4), Trend(degree=1)])</pre></div></div></div></div></div>
 </div>
-<p>Each estimator can be accessed through the <code class="docutils literal notranslate"><span class="pre">components</span></code> attribute:</p>
+<br />
+<br /><p>Each estimator can be accessed through the <code class="docutils literal notranslate"><span class="pre">components</span></code> attribute:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">trend</span><span class="o">.</span><span class="n">components</span></a><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;East trend coefficients:&quot;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">trend</span><span class="o">.</span><span class="n">components</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;North trend coefficients:&quot;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">trend</span><span class="o">.</span><span class="n">components</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
@@ -906,19 +1031,17 @@ lower degree polynomial.</p>
 <p>Let’s make geographic grids of these trends.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">region</span></a> <span class="o">=</span> <a href="../api/generated/verde.get_region.html#verde.get_region" title="verde.get_region" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-function"><span class="n">vd</span><span class="o">.</span><span class="n">get_region</span></a><span class="p">((</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">longitude</span></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">latitude</span></a><span class="p">))</span>
 
-<a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a> <span class="o">=</span> <a href="../api/generated/verde.Vector.html#verde.Vector.grid" title="verde.Vector.grid" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-method"><span class="n">trend</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span>
+<a href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.core.dataset.Dataset" class="sphx-glr-backref-module-xarray-core-dataset sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a> <span class="o">=</span> <a href="../api/generated/verde.Vector.html#verde.Vector.grid" title="verde.Vector.grid" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-method"><span class="n">trend</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span>
     <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">region</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">region</span></a><span class="p">,</span>
     <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">spacing</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">spacing</span></a><span class="p">,</span>
     <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
     <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.core.dataset.Dataset" class="sphx-glr-backref-module-xarray-core-dataset sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:463: FutureWarning: The &#39;spacing&#39;, &#39;shape&#39; and &#39;region&#39; arguments will be removed in Verde v2.0.0. Please use the &#39;verde.grid_coordinates&#39; function to define grid coordinates and pass them as the &#39;coordinates&#39; argument.
-  warnings.warn(
-&lt;xarray.Dataset&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;xarray.Dataset&gt;
 Dimensions:          (latitude: 49, longitude: 47)
 Coordinates:
   * longitude        (longitude) float64 235.7 235.9 236.1 ... 244.6 244.8 245.0
@@ -930,7 +1053,7 @@ Attributes:
     metadata:  Generated by Vector(components=[Trend(degree=4), Trend(degree=...
 </pre></div>
 </div>
-<p>By default, the names of the data components in the <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2022.3.1.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>
+<p>By default, the names of the data components in the <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2023.4.3.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>
 are <code class="docutils literal notranslate"><span class="pre">east_component</span></code> and <code class="docutils literal notranslate"><span class="pre">north_component</span></code>. This can be customized using
 the <code class="docutils literal notranslate"><span class="pre">data_names</span></code> argument.</p>
 <p>Now we can map the trends.</p>
@@ -939,11 +1062,11 @@ the <code class="docutils literal notranslate"><span class="pre">data_names</spa
 <span class="p">)</span>
 <a href="https://scitools.org.uk/cartopy/docs/latest/reference/projections.html#cartopy.crs.PlateCarree" title="cartopy.crs.PlateCarree" class="sphx-glr-backref-module-cartopy-crs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">crs</span></a> <span class="o">=</span> <a href="https://scitools.org.uk/cartopy/docs/latest/reference/projections.html#cartopy.crs.PlateCarree" title="cartopy.crs.PlateCarree" class="sphx-glr-backref-module-cartopy-crs sphx-glr-backref-type-py-class"><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span></a><span class="p">()</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">titles</span></a> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;East component trend&quot;</span><span class="p">,</span> <span class="s2">&quot;North component trend&quot;</span><span class="p">]</span>
-<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">components</span></a> <span class="o">=</span> <span class="p">[</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span><span class="o">.</span><span class="n">east_component</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span><span class="o">.</span><span class="n">north_component</span></a><span class="p">]</span>
-<span class="k">for</span> <a href="https://scitools.org.uk/cartopy/docs/latest/reference/generated/cartopy.mpl.geoaxes.GeoAxesSubplot.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="cartopy.mpl.geoaxes.GeoAxesSubplot" class="sphx-glr-backref-module-cartopy-mpl-geoaxes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="p">,</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">component</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">title</span></a> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axes</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">components</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">titles</span></a><span class="p">):</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">components</span></a> <span class="o">=</span> <span class="p">[</span><a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.core.dataarray.DataArray" class="sphx-glr-backref-module-xarray-core-dataarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span><span class="o">.</span><span class="n">east_component</span></a><span class="p">,</span> <a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.core.dataarray.DataArray" class="sphx-glr-backref-module-xarray-core-dataarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span><span class="o">.</span><span class="n">north_component</span></a><span class="p">]</span>
+<span class="k">for</span> <a href="https://scitools.org.uk/cartopy/docs/latest/reference/generated/cartopy.mpl.geoaxes.GeoAxesSubplot.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="cartopy.mpl.geoaxes.GeoAxesSubplot" class="sphx-glr-backref-module-cartopy-mpl-geoaxes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="p">,</span> <a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.core.dataarray.DataArray" class="sphx-glr-backref-module-xarray-core-dataarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">component</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">title</span></a> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">axes</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">components</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">titles</span></a><span class="p">):</span>
     <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.set_title.html#matplotlib.axes.Axes.set_title" title="matplotlib.axes.Axes.set_title" class="sphx-glr-backref-module-matplotlib-axes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">title</span></a><span class="p">)</span>
-    <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">maxabs</span></a> <span class="o">=</span> <a href="../api/generated/verde.maxabs.html#verde.maxabs" title="verde.maxabs" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-function"><span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span></a><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">component</span></a><span class="p">)</span>
-    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.quiver.Quiver.html#matplotlib.quiver.Quiver" title="matplotlib.quiver.Quiver" class="sphx-glr-backref-module-matplotlib-quiver sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tmp</span></a> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.DataArray" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">component</span></a><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+    <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">maxabs</span></a> <span class="o">=</span> <a href="../api/generated/verde.maxabs.html#verde.maxabs" title="verde.maxabs" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-function"><span class="n">vd</span><span class="o">.</span><span class="n">maxabs</span></a><span class="p">(</span><a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.core.dataarray.DataArray" class="sphx-glr-backref-module-xarray-core-dataarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">component</span></a><span class="p">)</span>
+    <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.quiver.Quiver.html#matplotlib.quiver.Quiver" title="matplotlib.quiver.Quiver" class="sphx-glr-backref-module-matplotlib-quiver sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tmp</span></a> <span class="o">=</span> <a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="xarray.core.dataarray.DataArray" class="sphx-glr-backref-module-xarray-core-dataarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">component</span></a><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
         <a href="https://scitools.org.uk/cartopy/docs/latest/reference/generated/cartopy.mpl.geoaxes.GeoAxesSubplot.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="cartopy.mpl.geoaxes.GeoAxesSubplot" class="sphx-glr-backref-module-cartopy-mpl-geoaxes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/reference/generated/cartopy.mpl.geoaxes.GeoAxesSubplot.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="cartopy.mpl.geoaxes.GeoAxesSubplot" class="sphx-glr-backref-module-cartopy-mpl-geoaxes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a><span class="p">,</span>
         <span class="n">vmin</span><span class="o">=-</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">maxabs</span></a><span class="p">,</span>
         <span class="n">vmax</span><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">maxabs</span></a><span class="p">,</span>
@@ -960,15 +1083,15 @@ the <code class="docutils literal notranslate"><span class="pre">data_names</spa
 </pre></div>
 </div>
 <img src="../_images/sphx_glr_vectors_004.png" srcset="../_images/sphx_glr_vectors_004.png" alt="East component trend, North component trend" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/datasets/sample_data.py:331: UserWarning: All kwargs are being ignored. They are accepted to guarantee backward compatibility.
-  warnings.warn(
-/usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/datasets/sample_data.py:331: UserWarning: All kwargs are being ignored. They are accepted to guarantee backward compatibility.
-  warnings.warn(
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/runner/work/verde/verde/doc/tutorials_src/vectors.py:197: UserWarning: All kwargs are being ignored. They are accepted to guarantee backward compatibility.
+  vd.datasets.setup_california_gps_map(ax, land=None, ocean=None)
+/home/runner/work/verde/verde/doc/tutorials_src/vectors.py:197: UserWarning: All kwargs are being ignored. They are accepted to guarantee backward compatibility.
+  vd.datasets.setup_california_gps_map(ax, land=None, ocean=None)
 </pre></div>
 </div>
-</div>
-<div class="section" id="gridding">
-<h2>Gridding<a class="headerlink" href="#gridding" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="gridding">
+<h2>Gridding<a class="headerlink" href="#gridding" title="Permalink to this headline">#</a></h2>
 <p>You can use <a class="reference internal" href="../api/generated/verde.Vector.html#verde.Vector" title="verde.Vector"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Vector</span></code></a> to create multi-component gridders out of
 <a class="reference internal" href="../api/generated/verde.Spline.html#verde.Spline" title="verde.Spline"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Spline</span></code></a> the same way as we did for trends. In this case, each
 component is treated separately.</p>
@@ -1003,8 +1126,8 @@ the weights as a consequence.</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Chain(steps=[(&#39;mean&#39;, BlockMean(spacing=22200.0, uncertainty=True)),
              (&#39;trend&#39;, Vector(components=[Trend(degree=1), Trend(degree=1)])),
              (&#39;spline&#39;,
-              Vector(components=[Spline(damping=1e-10),
-                                 Spline(damping=1e-10)]))])
+              Vector(components=[Spline(damping=1e-10, mindist=0),
+                                 Spline(damping=1e-10, mindist=0)]))])
 </pre></div>
 </div>
 <div class="admonition warning">
@@ -1020,48 +1143,46 @@ before.</p>
 <span class="c1"># Score on the test data</span>
 <span class="nb">print</span><span class="p">(</span><a href="../api/generated/verde.Chain.html#verde.Chain.score" title="verde.Chain.score" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-method"><span class="n">chain</span><span class="o">.</span><span class="n">score</span></a><span class="p">(</span><span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">test</span></a><span class="p">))</span>
 
-<a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a> <span class="o">=</span> <a href="../api/generated/verde.Chain.html#verde.Chain.grid" title="verde.Chain.grid" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-method"><span class="n">chain</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span>
+<a href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.core.dataset.Dataset" class="sphx-glr-backref-module-xarray-core-dataset sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a> <span class="o">=</span> <a href="../api/generated/verde.Chain.html#verde.Chain.grid" title="verde.Chain.grid" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-method"><span class="n">chain</span><span class="o">.</span><span class="n">grid</span></a><span class="p">(</span>
     <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">region</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">region</span></a><span class="p">,</span>
     <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">spacing</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">spacing</span></a><span class="p">,</span>
     <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
     <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">],</span>
 <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.core.dataset.Dataset" class="sphx-glr-backref-module-xarray-core-dataset sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:359: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
-  warnings.warn(
-0.9926769819977688
-/usr/share/miniconda3/envs/test/lib/python3.9/site-packages/verde/base/base_classes.py:463: FutureWarning: The &#39;spacing&#39;, &#39;shape&#39; and &#39;region&#39; arguments will be removed in Verde v2.0.0. Please use the &#39;verde.grid_coordinates&#39; function to define grid coordinates and pass them as the &#39;coordinates&#39; argument.
-  warnings.warn(
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/runner/work/verde/verde/doc/tutorials_src/vectors.py:252: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+  print(chain.score(*test))
+0.9926765607374941
 &lt;xarray.Dataset&gt;
 Dimensions:          (latitude: 49, longitude: 47)
 Coordinates:
   * longitude        (longitude) float64 235.7 235.9 236.1 ... 244.6 244.8 245.0
   * latitude         (latitude) float64 32.29 32.49 32.69 ... 41.5 41.7 41.9
 Data variables:
-    east_component   (latitude, longitude) float64 -0.04659 ... -0.0006104
-    north_component  (latitude, longitude) float64 0.08795 ... -0.0006109
+    east_component   (latitude, longitude) float64 -0.0466 ... -0.0006105
+    north_component  (latitude, longitude) float64 0.08795 ... -0.0005965
 Attributes:
     metadata:  Generated by Chain(steps=[(&#39;mean&#39;, BlockMean(spacing=22200.0, ...
 </pre></div>
 </div>
 <p>Mask out the points too far from data and plot the gridded vectors.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a> <span class="o">=</span> <a href="../api/generated/verde.distance_mask.html#verde.distance_mask" title="verde.distance_mask" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-function"><span class="n">vd</span><span class="o">.</span><span class="n">distance_mask</span></a><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.core.dataset.Dataset" class="sphx-glr-backref-module-xarray-core-dataset sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a> <span class="o">=</span> <a href="../api/generated/verde.distance_mask.html#verde.distance_mask" title="verde.distance_mask" class="sphx-glr-backref-module-verde sphx-glr-backref-type-py-function"><span class="n">vd</span><span class="o">.</span><span class="n">distance_mask</span></a><span class="p">(</span>
     <span class="p">(</span><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">longitude</span></a><span class="p">,</span> <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html#pandas.Series" title="pandas.core.series.Series" class="sphx-glr-backref-module-pandas-core-series sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data</span><span class="o">.</span><span class="n">latitude</span></a><span class="p">),</span>
     <span class="n">maxdist</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">spacing</span></a> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="mf">111e3</span><span class="p">,</span>
-    <a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="o">=</span><a href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.Dataset" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="p">,</span>
+    <a href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.core.dataset.Dataset" class="sphx-glr-backref-module-xarray-core-dataset sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="o">=</span><a href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="xarray.core.dataset.Dataset" class="sphx-glr-backref-module-xarray-core-dataset sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grid</span></a><span class="p">,</span>
     <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
 <span class="p">)</span>
 
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="matplotlib.pyplot.figure" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 <a href="https://scitools.org.uk/cartopy/docs/latest/reference/generated/cartopy.mpl.geoaxes.GeoAxesSubplot.html#cartopy.mpl.geoaxes.GeoAxesSubplot" title="cartopy.mpl.geoaxes.GeoAxesSubplot" class="sphx-glr-backref-module-cartopy-mpl-geoaxes sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ax</span></a> <span class="o">=</span> <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.axes.html#matplotlib.pyplot.axes" title="matplotlib.pyplot.axes" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">(</span><span class="n">projection</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/reference/projections.html#cartopy.crs.Mercator" title="cartopy.crs.Mercator" class="sphx-glr-backref-module-cartopy-crs sphx-glr-backref-type-py-class"><span class="n">ccrs</span><span class="o">.</span><span class="n">Mercator</span></a><span class="p">())</span>
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.quiver.Quiver.html#matplotlib.quiver.Quiver" title="matplotlib.quiver.Quiver" class="sphx-glr-backref-module-matplotlib-quiver sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tmp</span></a> <span class="o">=</span> <a href="https://scitools.org.uk/cartopy/docs/latest/reference/generated/cartopy.mpl.geoaxes.GeoAxes.html#cartopy.mpl.geoaxes.GeoAxes.quiver" title="cartopy.mpl.geoaxes.GeoAxes.quiver" class="sphx-glr-backref-module-cartopy-mpl-geoaxes sphx-glr-backref-type-py-method"><span class="n">ax</span><span class="o">.</span><span class="n">quiver</span></a><span class="p">(</span>
-    <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">grid</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span></a><span class="p">,</span>
-    <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">grid</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span></a><span class="p">,</span>
-    <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">grid</span><span class="o">.</span><span class="n">east_component</span><span class="o">.</span><span class="n">values</span></a><span class="p">,</span>
-    <a href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-method"><span class="n">grid</span><span class="o">.</span><span class="n">north_component</span><span class="o">.</span><span class="n">values</span></a><span class="p">,</span>
+    <a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-property"><span class="n">grid</span><span class="o">.</span><span class="n">longitude</span><span class="o">.</span><span class="n">values</span></a><span class="p">,</span>
+    <a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-property"><span class="n">grid</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span></a><span class="p">,</span>
+    <a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-property"><span class="n">grid</span><span class="o">.</span><span class="n">east_component</span><span class="o">.</span><span class="n">values</span></a><span class="p">,</span>
+    <a href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.values.html#xarray.DataArray.values" title="xarray.DataArray.values" class="sphx-glr-backref-module-xarray sphx-glr-backref-type-py-property"><span class="n">grid</span><span class="o">.</span><span class="n">north_component</span><span class="o">.</span><span class="n">values</span></a><span class="p">,</span>
     <span class="n">scale</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
     <span class="n">transform</span><span class="o">=</span><a href="https://scitools.org.uk/cartopy/docs/latest/reference/projections.html#cartopy.crs.PlateCarree" title="cartopy.crs.PlateCarree" class="sphx-glr-backref-module-cartopy-crs sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">crs</span></a><span class="p">,</span>
     <span class="n">width</span><span class="o">=</span><span class="mf">0.002</span><span class="p">,</span>
@@ -1072,20 +1193,13 @@ Attributes:
 <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_vectors_005.png" srcset="../_images/sphx_glr_vectors_005.png" alt="Gridded velocities" class = "sphx-glr-single-img"/><div class="section" id="gps-gnss-data">
-<h3>GPS/GNSS data<a class="headerlink" href="#gps-gnss-data" title="Permalink to this headline">¶</a></h3>
+<img src="../_images/sphx_glr_vectors_005.png" srcset="../_images/sphx_glr_vectors_005.png" alt="Gridded velocities" class = "sphx-glr-single-img"/><section id="gps-gnss-data">
+<h3>GPS/GNSS data<a class="headerlink" href="#gps-gnss-data" title="Permalink to this headline">#</a></h3>
 <p>For some types of vector data, like GPS/GNSS displacements, the vector
 components are coupled through elasticity. In these cases, elastic Green’s
-functions can be used to achieve better interpolation results. The <a class="reference external" href="https://github.com/fatiando/erizo">Erizo
-package</a> implements some of these
-Green’s functions.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The <a class="reference internal" href="../api/generated/verde.VectorSpline2D.html#verde.VectorSpline2D" title="verde.VectorSpline2D"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.VectorSpline2D</span></code></a> class implemented an elastically
-coupled Green’s function but it is deprecated and will be removed in
-Verde v2.0.0. Please use the implementation in the <a class="reference external" href="https://github.com/fatiando/erizo">Erizo</a> package instead.</p>
-</div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.309 seconds)</p>
+functions can be used to achieve better interpolation results. The
+<a class="reference internal" href="../api/generated/verde.VectorSpline2D.html#verde.VectorSpline2D" title="verde.VectorSpline2D"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.VectorSpline2D</span></code></a> implements these Green’s functions.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.403 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-vectors-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/c156953e5af94c539aaf3d04db82f05f/vectors.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">vectors.py</span></code></a></p>
@@ -1095,16 +1209,18 @@ Verde v2.0.0. Please use the implementation in the <a class="reference external"
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'> 
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
     <a class='left-prev' id="prev-link" href="weights.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
@@ -1120,23 +1236,27 @@ Verde v2.0.0. Please use the implementation in the <a class="reference external"
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            
+            </footer>
         </div>
     </div>
-    <footer class="footer">
-  <p>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+      &copy; Copyright 2017-2023, The Verde Developers.<br/>
+    Last updated on May 08, 2023.<br/>
+</p>
+        </footer>
+    </div>
     
-        &copy; Copyright 2017-2022, The Verde Developers.<br/>
-      Last updated on Mar 25, 2022.<br/>
-  </p>
-</footer>
-</main>
+</div>
 
 
       </div>
     </div>
   
-  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
 
   </body>
 </html>

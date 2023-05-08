@@ -8,17 +8,16 @@
 Gridding with splines (cross-validated)
 =======================================
 
-The :class:`verde.Spline` has two main parameters that need to be configured:
+The :class:`verde.Spline` has one main parameter that needs to be configured:
 
-1. ``mindist``: the minimum distance between forces and data points
-2. ``damping``: the regularization parameter controlling smoothness
+* ``damping``: the regularization parameter controlling smoothness
 
-These parameters can be determined through cross-validation (see
+This parameter can be determined through cross-validation (see
 :ref:`model_selection`) automatically using :class:`verde.SplineCV`. It is very
 similar to :class:`verde.Spline` but takes a set of parameter values instead of
 only one value. When calling :meth:`verde.SplineCV.fit`, the class will:
 
-1. Create a spline for each combination of the input parameter sets
+1. Create a spline for each input parameter value
 2. Calculate the cross-validation score for each spline using
    :func:`verde.cross_val_score`
 3. Pick the spline with the highest score
@@ -43,20 +42,18 @@ spacing = 15 / 60
 
 # This spline will automatically perform cross-validation and search for the
 # optimal parameter configuration.
-spline = vd.SplineCV(dampings=(1e-5, 1e-3, 1e-1), mindists=(10e3, 50e3, 100e3))
+spline = vd.SplineCV(dampings=(1e-5, 1e-3, 1e-1))
 
 # Fit the model on the data. Under the hood, the class will perform K-fold
-# cross-validation for each the 3*3=9 parameter combinations and pick the one
-# with the highest R² score.
+# cross-validation for each the 3 parameter values and pick the one with the
+# highest score.
 spline.fit(projection(*coordinates), data.air_temperature_c)
 
 # We can show the best R² score obtained in the cross-validation
 print("\nScore: {:.3f}".format(spline.scores_.max()))
 
-# And then the best spline parameters that produced this high score.
-print("\nBest spline configuration:")
-print("  mindist:", spline.mindist_)
-print("  damping:", spline.damping_)
+# And then the best damping parameter that produced this high score.
+print("\nBest damping:", spline.damping_)
 
 # Now we can create a geographic grid of air temperature by providing a
 # projection function to the grid method and mask points that are too far from

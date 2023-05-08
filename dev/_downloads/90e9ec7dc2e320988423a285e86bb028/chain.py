@@ -36,9 +36,9 @@ predictions because they don't implement the
 
 For example, let's create a pipeline to grid our sample bathymetry data.
 """
-import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import numpy as np
+import pygmt
 import pyproj
 
 import verde as vd
@@ -51,19 +51,20 @@ spacing = 10 / 60
 projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 proj_coords = projection(data.longitude.values, data.latitude.values)
 
-plt.figure(figsize=(7, 6))
-ax = plt.axes(projection=ccrs.Mercator())
-ax.set_title("Bathymetry from Baja California")
-plt.scatter(
-    data.longitude,
-    data.latitude,
-    c=data.bathymetry_m,
-    s=0.1,
-    transform=ccrs.PlateCarree(),
+fig = pygmt.Figure()
+fig.coast(region=region, projection="M20c", land="#666666")
+pygmt.makecpt(cmap="viridis", series=[data.bathymetry_m.min(), data.bathymetry_m.max()])
+fig.plot(
+    x=data.longitude,
+    y=data.latitude,
+    color=data.bathymetry_m,
+    cmap=True,
+    style="c0.05c",
 )
-plt.colorbar().set_label("meters")
-vd.datasets.setup_baja_bathymetry_map(ax)
-plt.show()
+fig.basemap(frame=True)
+fig.colorbar(frame='af+l"bathymetric depth [m]"')
+fig.show()
+
 
 ###############################################################################
 # We'll create a chain that applies a blocked median to the data, fits a
@@ -120,20 +121,27 @@ grid = chain.grid(
     dims=["latitude", "longitude"],
     data_names="bathymetry",
 )
-print(grid)
+grid = vd.distance_mask(
+    data_coordinates=(data.longitude, data.latitude),
+    maxdist=spacing * 111e3,
+    grid=grid,
+    projection=projection,
+)
+grid
 
 ###############################################################################
 # Finally, we can plot the resulting grid:
 
-plt.figure(figsize=(7, 6))
-ax = plt.axes(projection=ccrs.Mercator())
-ax.set_title("Gridded result of the chain")
-pc = grid.bathymetry.plot.pcolormesh(
-    ax=ax, transform=ccrs.PlateCarree(), vmax=0, zorder=-1, add_colorbar=False
+fig = pygmt.Figure()
+fig.coast(region=region, projection="M20c", land="#666666")
+fig.grdimage(
+    grid=grid.bathymetry,
+    cmap="viridis",
+    nan_transparent=True,
 )
-plt.colorbar(pc).set_label("meters")
-vd.datasets.setup_baja_bathymetry_map(ax)
-plt.show()
+fig.basemap(frame=True)
+fig.colorbar(frame='af+l"bathymetric depth [m]"')
+fig.show()
 
 ###############################################################################
 # Each component of the chain can be accessed separately using the
@@ -155,14 +163,24 @@ grid_trend = chain.named_steps["trend"].grid(
     dims=["latitude", "longitude"],
     data_names="bathymetry",
 )
-print(grid_trend)
-
-plt.figure(figsize=(7, 6))
-ax = plt.axes(projection=ccrs.Mercator())
-ax.set_title("Gridded trend")
-pc = grid_trend.bathymetry.plot.pcolormesh(
-    ax=ax, transform=ccrs.PlateCarree(), zorder=-1, add_colorbar=False
+grid_trend = vd.distance_mask(
+    data_coordinates=(data.longitude, data.latitude),
+    maxdist=spacing * 111e3,
+    grid=grid_trend,
+    projection=projection,
 )
-plt.colorbar(pc).set_label("meters")
-vd.datasets.setup_baja_bathymetry_map(ax)
-plt.show()
+grid_trend
+
+###############################################################################
+#
+
+fig = pygmt.Figure()
+fig.coast(region=region, projection="M20c", land="#666666")
+fig.grdimage(
+    grid=grid_trend.bathymetry,
+    cmap="viridis",
+    nan_transparent=True,
+)
+fig.basemap(frame=True)
+fig.colorbar(frame='af+l"bathymetric depth [m]"')
+fig.show()

@@ -11,8 +11,9 @@
     
 
     
-  <link href="../../_static/css/theme.css" rel="stylesheet">
-  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -22,28 +23,28 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.87249bd3f7b54630a2508c1b61607c7f.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
-  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../_static/design-tabs.js"></script>
     <link rel="shortcut icon" href="../../_static/favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -51,7 +52,21 @@
     <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
     
     <div class="container-fluid" id="banner"></div>
 
@@ -60,9 +75,10 @@
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="../../index.html">
       
         <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
@@ -127,8 +143,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/checkerboard.html">
+     Checkerboard function
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../gallery/convex_hull_mask.html">
      Mask grid points by convex hull
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/cubic_gridder.html">
+     Gridding with a cubic interpolator
     </a>
    </li>
    <li class="toctree-l2">
@@ -137,13 +163,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/project_grid.html">
-     Projection of gridded data
+    <a class="reference internal" href="../../gallery/kneighbors_gridder.html">
+     Gridding with a nearest-neighbors interpolator
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../gallery/scipygridder.html">
-     Gridding with Scipy
+    <a class="reference internal" href="../../gallery/linear_gridder.html">
+     Gridding with a linear interpolator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../gallery/project_grid.html">
+     Projection of gridded data
     </a>
    </li>
    <li class="toctree-l2">
@@ -190,43 +221,6 @@
  </span>
 </p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../../sample_data/index.html">
-   Sample Data
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../sample_data/baja_bathymetry.html">
-     [DEPRECATED] Bathymetry data from Baja California
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../sample_data/california_gps.html">
-     [DEPRECATED] GPS velocities from California
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../sample_data/checkerboard.html">
-     Checkerboard function
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../sample_data/rio_magnetic.html">
-     [DEPRECATED] Magnetic data from Rio de Janeiro
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../sample_data/texas-wind.html">
-     [DEPRECATED] Wind speed data from Texas
-    </a>
-   </li>
-  </ul>
- </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../../tutorials/grid_coordinates.html">
    Grid Coordinates
@@ -283,8 +277,8 @@
   <a class="reference internal" href="../../api/index.html">
    List of functions and classes (API)
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -300,13 +294,23 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/verde.VectorSpline2D.html">
-     verde.VectorSpline2D
+    <a class="reference internal" href="../../api/generated/verde.KNeighbors.html">
+     verde.KNeighbors
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/verde.ScipyGridder.html">
-     verde.ScipyGridder
+    <a class="reference internal" href="../../api/generated/verde.Linear.html">
+     verde.Linear
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/verde.Cubic.html">
+     verde.Cubic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/verde.VectorSpline2D.html">
+     verde.VectorSpline2D
     </a>
    </li>
    <li class="toctree-l2">
@@ -352,6 +356,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="../../api/generated/verde.BlockKFold.html">
      verde.BlockKFold
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/verde.line_coordinates.html">
+     verde.line_coordinates
     </a>
    </li>
    <li class="toctree-l2">
@@ -455,6 +464,36 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/verde.base.BaseGridder.html">
+     verde.base.BaseGridder
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/verde.base.BaseBlockCrossValidator.html">
+     verde.base.BaseBlockCrossValidator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/verde.base.n_1d_arrays.html">
+     verde.base.n_1d_arrays
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/verde.base.check_fit_input.html">
+     verde.base.check_fit_input
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/verde.base.least_squares.html">
+     verde.base.least_squares
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../api/generated/verde.ScipyGridder.html">
+     verde.ScipyGridder
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="../../api/generated/verde.datasets.locate.html">
      verde.datasets.locate
     </a>
@@ -499,31 +538,6 @@
      verde.datasets.setup_rio_magnetic_map
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/verde.base.BaseGridder.html">
-     verde.base.BaseGridder
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/verde.base.BaseBlockCrossValidator.html">
-     verde.base.BaseBlockCrossValidator
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/verde.base.n_1d_arrays.html">
-     verde.base.n_1d_arrays
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/verde.base.check_fit_input.html">
-     verde.base.check_fit_input
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="../../api/generated/verde.base.least_squares.html">
-     verde.base.least_squares
-    </a>
-   </li>
   </ul>
  </li>
  <li class="toctree-l1">
@@ -532,13 +546,18 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="../../references.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../../changes.html">
    Changelog
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../../references.html">
-   References
+  <a class="reference internal" href="../../compatibility.html">
+   Version compatibility
   </a>
  </li>
  <li class="toctree-l1">
@@ -581,12 +600,17 @@
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
-</div>
-
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
 </div>
 
 
@@ -594,60 +618,104 @@
 
 
           
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
     
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
-            
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-            <!-- Source interaction buttons -->
+    <div class="header-article row sticky-top noprint">
+        
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/fatiando/verde"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/fatiando/verde/issues/new?title=Issue%20on%20page%20%2F_modules/verde/spline.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
         
     </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/fatiando/verde"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/fatiando/verde/issues/new?title=Issue%20on%20page%20%2F_modules/verde/spline.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
 </div>
 
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
-            
-        </div>
     </div>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
                 <h1></h1>
@@ -658,7 +726,8 @@
                     </div>
                 </div>
             </div>
-            
+            <main id="main-content" role="main">
+                
               <div>
                 
   <h1>Source code for verde.spline</h1><div class="highlight"><pre>
@@ -724,11 +793,13 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    mindists : iterable or 1d array</span>
+<span class="sd">    mindists : iterable or 1d array or None</span>
+<span class="sd">        **DEPRECATED:** This argument is no longer needed and will be removed</span>
+<span class="sd">        in Verde 2.0.0. This fudge factor is no longer required since a new</span>
+<span class="sd">        formulation eliminates the singularity at zero distance. Use the</span>
+<span class="sd">        default value of ``mindists=None`` to get the future behaviour.</span>
 <span class="sd">        List (or other iterable) of *mindist* parameter values to try. Can be</span>
 <span class="sd">        considered a minimum distance between the point forces and data points.</span>
-<span class="sd">        Needed because the Green&#39;s functions are singular when forces and data</span>
-<span class="sd">        points coincide. Acts as a fudge factor.</span>
 <span class="sd">    dampings : iterable or 1d array</span>
 <span class="sd">        List (or other iterable) of *damping* parameter values to try. Is the</span>
 <span class="sd">        positive damping regularization parameter. Controls how much smoothness</span>
@@ -738,11 +809,12 @@
 <span class="sd">        (default), then will be set to the data coordinates the first time</span>
 <span class="sd">        :meth:`~verde.SplineCV.fit` is called.</span>
 <span class="sd">    engine : str</span>
-<span class="sd">        Computation engine for the Jacobian matrix and prediction. Can be</span>
-<span class="sd">        ``&#39;auto&#39;``, ``&#39;numba&#39;``, or ``&#39;numpy&#39;``. If ``&#39;auto&#39;``, will use numba</span>
-<span class="sd">        if it is installed or numpy otherwise. The numba version is</span>
-<span class="sd">        multi-threaded and usually faster, which makes fitting and predicting</span>
-<span class="sd">        faster.</span>
+<span class="sd">        **DEPRECATED:** This option is deprecated and will be removed in Verde</span>
+<span class="sd">        v2.0.0. The numba engine will be the only option. Computation engine</span>
+<span class="sd">        for the Jacobian matrix and prediction. Can be ``&#39;auto&#39;``, ``&#39;numba&#39;``,</span>
+<span class="sd">        or ``&#39;numpy&#39;``. If ``&#39;auto&#39;``, will use numba if it is installed or</span>
+<span class="sd">        numpy otherwise. The numba version is multi-threaded and usually</span>
+<span class="sd">        faster, which makes fitting and predicting faster.</span>
 <span class="sd">    cv : None or cross-validation generator</span>
 <span class="sd">        Any scikit-learn cross-validation generator. If not given, will use the</span>
 <span class="sd">        default set by :func:`verde.cross_val_score`.</span>
@@ -755,6 +827,11 @@
 <span class="sd">        If True, will use :func:`dask.delayed` to dispatch computations and</span>
 <span class="sd">        allow mod:`dask` to execute the grid search in parallel (see note</span>
 <span class="sd">        above).</span>
+<span class="sd">    scoring : None, str, or callable</span>
+<span class="sd">        The scoring function (or name of a function) used for cross-validation.</span>
+<span class="sd">        Must be known to scikit-learn. See the description of *scoring* in</span>
+<span class="sd">        :func:`sklearn.model_selection.cross_val_score` for details. If None,</span>
+<span class="sd">        will fall back to the :meth:`verde.Spline.score` method.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -790,28 +867,50 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">mindists</span><span class="o">=</span><span class="p">(</span><span class="mf">1e3</span><span class="p">,</span> <span class="mf">10e3</span><span class="p">,</span> <span class="mf">100e3</span><span class="p">),</span>
+        <span class="n">mindists</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">dampings</span><span class="o">=</span><span class="p">(</span><span class="mf">1e-10</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">),</span>
         <span class="n">force_coords</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
         <span class="n">cv</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">delayed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">scoring</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dampings</span> <span class="o">=</span> <span class="n">dampings</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mindists</span> <span class="o">=</span> <span class="n">mindists</span>
+        <span class="k">if</span> <span class="n">mindists</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mindists</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mindists</span> <span class="o">=</span> <span class="n">mindists</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;The mindists parameter of verde.SplineCV is no longer &quot;</span>
+                <span class="s2">&quot;required and will be removed in Verde 2.0.0. Use the default &quot;</span>
+                <span class="s2">&quot;value to obtain the future behavior.&quot;</span><span class="p">,</span>
+                <span class="ne">FutureWarning</span><span class="p">,</span>
+                <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">force_coords</span> <span class="o">=</span> <span class="n">force_coords</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">engine</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cv</span> <span class="o">=</span> <span class="n">cv</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">client</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delayed</span> <span class="o">=</span> <span class="n">delayed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scoring</span> <span class="o">=</span> <span class="n">scoring</span>
+        <span class="k">if</span> <span class="n">engine</span> <span class="o">!=</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;The &#39;engine&#39; parameter of &#39;verde.SplineCV&#39; is &quot;</span>
+                <span class="s2">&quot;deprecated and will be removed in Verde 2.0.0. &quot;</span>
+                <span class="s2">&quot;The faster and memory efficient numba engine will be &quot;</span>
+                <span class="s2">&quot;the only option.&quot;</span><span class="p">,</span>
+                <span class="ne">FutureWarning</span><span class="p">,</span>
+                <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
                 <span class="s2">&quot;The &#39;client&#39; parameter of &#39;verde.SplineCV&#39; is &quot;</span>
                 <span class="s2">&quot;deprecated and will be removed in Verde 2.0.0. &quot;</span>
                 <span class="s2">&quot;Use the &#39;delayed&#39; parameter instead.&quot;</span><span class="p">,</span>
                 <span class="ne">FutureWarning</span><span class="p">,</span>
+                <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="p">)</span>
 
 <div class="viewcode-block" id="SplineCV.fit"><a class="viewcode-back" href="../../api/generated/verde.SplineCV.html#verde.SplineCV.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -884,6 +983,7 @@
                     <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span>
                     <span class="n">cv</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cv</span><span class="p">,</span>
                     <span class="n">delayed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">delayed</span><span class="p">,</span>
+                    <span class="n">scoring</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scoring</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dispatch</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">delayed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">delayed</span><span class="p">)(</span><span class="n">score</span><span class="p">))</span>
         <span class="n">best</span> <span class="o">=</span> <span class="n">dispatch</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">,</span> <span class="n">delayed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">delayed</span><span class="p">)(</span><span class="n">scores</span><span class="p">)</span>
@@ -989,10 +1089,12 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    mindist : float</span>
-<span class="sd">        A minimum distance between the point forces and data points. Needed</span>
-<span class="sd">        because the Green&#39;s functions are singular when forces and data points</span>
-<span class="sd">        coincide. Acts as a fudge factor.</span>
+<span class="sd">    mindist : float or None</span>
+<span class="sd">        **DEPRECATED:** This argument is no longer needed and will be removed</span>
+<span class="sd">        in Verde 2.0.0. This fudge factor is no longer required since a new</span>
+<span class="sd">        formulation eliminates the singularity at zero distance. Use the</span>
+<span class="sd">        default value of ``mindist=None`` to get the future behaviour. A</span>
+<span class="sd">        minimum distance between the point forces and data points.</span>
 <span class="sd">    damping : None or float</span>
 <span class="sd">        The positive damping regularization parameter. Controls how much</span>
 <span class="sd">        smoothness is imposed on the estimated forces. If None, no</span>
@@ -1002,11 +1104,12 @@
 <span class="sd">        (default), then will be set to the data coordinates used to fit the</span>
 <span class="sd">        spline.</span>
 <span class="sd">    engine : str</span>
-<span class="sd">        Computation engine for the Jacobian matrix and prediction. Can be</span>
-<span class="sd">        ``&#39;auto&#39;``, ``&#39;numba&#39;``, or ``&#39;numpy&#39;``. If ``&#39;auto&#39;``, will use numba</span>
-<span class="sd">        if it is installed or numpy otherwise. The numba version is</span>
-<span class="sd">        multi-threaded and usually faster, which makes fitting and predicting</span>
-<span class="sd">        faster.</span>
+<span class="sd">        **DEPRECATED:** This option is deprecated and will be removed in Verde</span>
+<span class="sd">        v2.0.0. The numba engine will be the only option. Computation engine</span>
+<span class="sd">        for the Jacobian matrix and prediction. Can be ``&#39;auto&#39;``, ``&#39;numba&#39;``,</span>
+<span class="sd">        or ``&#39;numpy&#39;``. If ``&#39;auto&#39;``, will use numba if it is installed or</span>
+<span class="sd">        numpy otherwise. The numba version is multi-threaded and usually</span>
+<span class="sd">        faster, which makes fitting and predicting faster.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -1027,12 +1130,31 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mindist</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_coords</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mindist</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_coords</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mindist</span> <span class="o">=</span> <span class="n">mindist</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">damping</span> <span class="o">=</span> <span class="n">damping</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">force_coords</span> <span class="o">=</span> <span class="n">force_coords</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">engine</span>
+        <span class="k">if</span> <span class="n">engine</span> <span class="o">!=</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;The &#39;engine&#39; parameter of &#39;verde.Spline&#39; is &quot;</span>
+                <span class="s2">&quot;deprecated and will be removed in Verde 2.0.0. &quot;</span>
+                <span class="s2">&quot;The faster and memory efficient numba engine will be &quot;</span>
+                <span class="s2">&quot;the only option.&quot;</span><span class="p">,</span>
+                <span class="ne">FutureWarning</span><span class="p">,</span>
+                <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">mindist</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mindist</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mindist</span> <span class="o">=</span> <span class="n">mindist</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;The mindist parameter of verde.Spline is no longer required &quot;</span>
+                <span class="s2">&quot;and will be removed in Verde 2.0.0. Use the default value &quot;</span>
+                <span class="s2">&quot;to obtain the future behavior.&quot;</span><span class="p">,</span>
+                <span class="ne">FutureWarning</span><span class="p">,</span>
+                <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="p">)</span>
 
 <div class="viewcode-block" id="Spline.fit"><a class="viewcode-back" href="../../api/generated/verde.Spline.html#verde.Spline.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1167,24 +1289,60 @@
     <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">spline</span><span class="o">.</span><span class="n">damping</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;Weights might have no effect if no regularization is used. &quot;</span>
-            <span class="s2">&quot;Use damping or specify force positions that are different from the data.&quot;</span>
+            <span class="s2">&quot;Use damping or specify force positions that are different from the data.&quot;</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">greens_func</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">greens_func_numpy</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">):</span>
     <span class="s2">&quot;Calculate the Green&#39;s function for the Bi-Harmonic Spline&quot;</span>
     <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">east</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">north</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-    <span class="c1"># The mindist factor helps avoid singular matrices when the force and</span>
-    <span class="c1"># computation point are too close</span>
+    <span class="c1"># The mindist factor was used to avoid NaNs when the distance approaches</span>
+    <span class="c1"># zero and the log tents to -infinity. This is no longer needed with</span>
+    <span class="c1"># current implementation below. Keep it for compatibility only but remove</span>
+    <span class="c1"># in Verde 2.0.0.</span>
     <span class="n">distance</span> <span class="o">+=</span> <span class="n">mindist</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">distance</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># Calculate this way instead of x²(log(x) - 1) to avoid calculating log of</span>
+    <span class="c1"># 0. The limit for this as x-&gt;0 is 0 anyway. This is good for small values</span>
+    <span class="c1"># of distance but for larger distances it fails because of an overflow in</span>
+    <span class="c1"># the power operator. Saw this on Wikipedia but there was no citation in</span>
+    <span class="c1"># December 2022: https://en.wikipedia.org/wiki/Radial_basis_function</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
+    <span class="n">small</span> <span class="o">=</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="mi">1</span>
+    <span class="n">big</span> <span class="o">=</span> <span class="o">~</span><span class="n">small</span>
+    <span class="n">result</span><span class="p">[</span><span class="n">small</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span><span class="p">[</span><span class="n">small</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">distance</span><span class="p">[</span><span class="n">small</span><span class="p">]</span> <span class="o">**</span> <span class="n">distance</span><span class="p">[</span><span class="n">small</span><span class="p">])</span> <span class="o">-</span> <span class="n">distance</span><span class="p">[</span><span class="n">small</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="n">big</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span><span class="p">[</span><span class="n">big</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">distance</span><span class="p">[</span><span class="n">big</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">greens_func_jit</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">):</span>
+    <span class="s2">&quot;Calculate the Green&#39;s function for the Bi-Harmonic Spline&quot;</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">east</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">north</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># The mindist factor was used to avoid NaNs when the distance approaches</span>
+    <span class="c1"># zero and the log tents to -infinity. This is no longer needed with</span>
+    <span class="c1"># current implementation below. Keep it for compatibility only but remove</span>
+    <span class="c1"># in Verde 2.0.0.</span>
+    <span class="n">distance</span> <span class="o">+=</span> <span class="n">mindist</span>
+    <span class="c1"># Calculate this way instead of x²(log(x) - 1) to avoid calculating log of</span>
+    <span class="c1"># 0. The limit for this as x-&gt;0 is 0 anyway. This is good for small values</span>
+    <span class="c1"># of distance but for larger distances it fails because of an overflow in</span>
+    <span class="c1"># the power operator. Saw this on Wikipedia but there was no citation in</span>
+    <span class="c1"># December 2022: https://en.wikipedia.org/wiki/Radial_basis_function</span>
+    <span class="k">if</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">distance</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">distance</span><span class="o">**</span><span class="n">distance</span><span class="p">)</span> <span class="o">-</span> <span class="n">distance</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">distance</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
 
 
 <span class="k">def</span> <span class="nf">predict_numpy</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
     <span class="s2">&quot;Calculate the predicted data using numpy.&quot;</span>
     <span class="n">result</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">forces</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
-        <span class="n">green</span> <span class="o">=</span> <span class="n">greens_func</span><span class="p">(</span><span class="n">east</span> <span class="o">-</span> <span class="n">force_east</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">north</span> <span class="o">-</span> <span class="n">force_north</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">mindist</span><span class="p">)</span>
+        <span class="n">green</span> <span class="o">=</span> <span class="n">greens_func_numpy</span><span class="p">(</span><span class="n">east</span> <span class="o">-</span> <span class="n">force_east</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">north</span> <span class="o">-</span> <span class="n">force_north</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">mindist</span><span class="p">)</span>
         <span class="n">result</span> <span class="o">+=</span> <span class="n">green</span> <span class="o">*</span> <span class="n">forces</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">result</span>
 
@@ -1193,7 +1351,7 @@
     <span class="s2">&quot;Calculate the Jacobian using numpy broadcasting.&quot;</span>
     <span class="c1"># Reshaping the data to a column vector will automatically build a distance</span>
     <span class="c1"># matrix between each data point and force.</span>
-    <span class="n">jac</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">greens_func</span><span class="p">(</span>
+    <span class="n">jac</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">greens_func_numpy</span><span class="p">(</span>
         <span class="n">east</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">east</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">force_east</span><span class="p">,</span>
         <span class="n">north</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">north</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">force_north</span><span class="p">,</span>
         <span class="n">mindist</span><span class="p">,</span>
@@ -1201,57 +1359,59 @@
     <span class="k">return</span> <span class="n">jac</span>
 
 
-<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">predict_numba</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
     <span class="s2">&quot;Calculate the predicted data using numba to speed things up.&quot;</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">numba</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
         <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">forces</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
-            <span class="n">green</span> <span class="o">=</span> <span class="n">GREENS_FUNC_JIT</span><span class="p">(</span>
+            <span class="n">green</span> <span class="o">=</span> <span class="n">greens_func_jit</span><span class="p">(</span>
                 <span class="n">east</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">force_east</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">north</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">force_north</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">mindist</span>
             <span class="p">)</span>
             <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">green</span> <span class="o">*</span> <span class="n">forces</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">result</span>
 
 
-<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">jacobian_numba</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">jac</span><span class="p">):</span>
     <span class="s2">&quot;Calculate the Jacobian matrix using numba to speed things up.&quot;</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">numba</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">force_east</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
-            <span class="n">jac</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">GREENS_FUNC_JIT</span><span class="p">(</span>
+            <span class="n">jac</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">greens_func_jit</span><span class="p">(</span>
                 <span class="n">east</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">force_east</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">north</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">force_north</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">mindist</span>
             <span class="p">)</span>
     <span class="k">return</span> <span class="n">jac</span>
-
-
-<span class="c1"># Jit compile the Green&#39;s functions for use in the numba functions</span>
-<span class="n">GREENS_FUNC_JIT</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">greens_func</span><span class="p">)</span>
 </pre></div>
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
 <div class='prev-next-area'>
 </div>
-            
+            </footer>
         </div>
     </div>
-    <footer class="footer">
-  <p>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+      &copy; Copyright 2017-2023, The Verde Developers.<br/>
+    Last updated on May 08, 2023.<br/>
+</p>
+        </footer>
+    </div>
     
-        &copy; Copyright 2017-2022, The Verde Developers.<br/>
-      Last updated on Mar 25, 2022.<br/>
-  </p>
-</footer>
-</main>
+</div>
 
 
       </div>
     </div>
   
-  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
 
   </body>
 </html>

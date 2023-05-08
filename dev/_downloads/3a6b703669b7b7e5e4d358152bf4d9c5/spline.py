@@ -10,10 +10,11 @@ Gridding with splines
 
 Biharmonic spline interpolation is based on estimating vertical forces acting
 on an elastic sheet that yield deformations in the sheet equal to the observed
-data. The results are similar to using :class:`verde.ScipyGridder` with
-``method='cubic'`` but the interpolation is usually a bit slower. However, the
-advantage of using :class:`verde.Spline` is that we can assign weights to the
-data and do model evaluation.
+data. The results are similar to using :class:`verde.Cubic` but the
+interpolation is usually a bit slower. However, the advantages of using
+:class:`verde.Spline` are that the method is able to extrapolate outside of the
+convex hull of the data points and we can assign weights to the data and do
+model evaluation.
 
 .. note::
 
@@ -41,13 +42,11 @@ projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
 spacing = 15 / 60
 
 # Now we can chain a blocked mean and spline together. The Spline can be
-# regularized by setting the damping coefficient (should be positive). It's
-# also a good idea to set the minimum distance to the average data spacing to
-# avoid singularities in the spline.
+# regularized by setting the damping coefficient (should be positive).
 chain = vd.Chain(
     [
         ("mean", vd.BlockReduce(np.mean, spacing=spacing * 111e3)),
-        ("spline", vd.Spline(damping=1e-10, mindist=100e3)),
+        ("spline", vd.Spline(damping=1e-10)),
     ]
 )
 print(chain)

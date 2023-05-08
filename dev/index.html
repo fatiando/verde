@@ -5,14 +5,16 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     
         <title>Verde dev</title>
     
 
     
-  <link href="_static/css/theme.css" rel="stylesheet">
-  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
     
   <link rel="stylesheet"
@@ -22,28 +24,28 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.87249bd3f7b54630a2508c1b61607c7f.css" />
-    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
     
-  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="_static/design-tabs.js"></script>
     <link rel="shortcut icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -52,7 +54,21 @@
     <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
     
     <div class="container-fluid" id="banner"></div>
 
@@ -61,9 +77,10 @@
     <div class="container-xl">
       <div class="row">
           
-<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
-    
-        <div class="navbar-brand-box">
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="#">
       
         <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
@@ -128,8 +145,18 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="gallery/checkerboard.html">
+     Checkerboard function
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="gallery/convex_hull_mask.html">
      Mask grid points by convex hull
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/cubic_gridder.html">
+     Gridding with a cubic interpolator
     </a>
    </li>
    <li class="toctree-l2">
@@ -138,13 +165,18 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="gallery/project_grid.html">
-     Projection of gridded data
+    <a class="reference internal" href="gallery/kneighbors_gridder.html">
+     Gridding with a nearest-neighbors interpolator
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="gallery/scipygridder.html">
-     Gridding with Scipy
+    <a class="reference internal" href="gallery/linear_gridder.html">
+     Gridding with a linear interpolator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="gallery/project_grid.html">
+     Projection of gridded data
     </a>
    </li>
    <li class="toctree-l2">
@@ -191,43 +223,6 @@
  </span>
 </p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1 has-children">
-  <a class="reference internal" href="sample_data/index.html">
-   Sample Data
-  </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul>
-   <li class="toctree-l2">
-    <a class="reference internal" href="sample_data/baja_bathymetry.html">
-     [DEPRECATED] Bathymetry data from Baja California
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="sample_data/california_gps.html">
-     [DEPRECATED] GPS velocities from California
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="sample_data/checkerboard.html">
-     Checkerboard function
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="sample_data/rio_magnetic.html">
-     [DEPRECATED] Magnetic data from Rio de Janeiro
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="sample_data/texas-wind.html">
-     [DEPRECATED] Wind speed data from Texas
-    </a>
-   </li>
-  </ul>
- </li>
  <li class="toctree-l1">
   <a class="reference internal" href="tutorials/grid_coordinates.html">
    Grid Coordinates
@@ -284,8 +279,8 @@
   <a class="reference internal" href="api/index.html">
    List of functions and classes (API)
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
-  <label for="toctree-checkbox-3">
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -301,13 +296,23 @@
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/verde.VectorSpline2D.html">
-     verde.VectorSpline2D
+    <a class="reference internal" href="api/generated/verde.KNeighbors.html">
+     verde.KNeighbors
     </a>
    </li>
    <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/verde.ScipyGridder.html">
-     verde.ScipyGridder
+    <a class="reference internal" href="api/generated/verde.Linear.html">
+     verde.Linear
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/verde.Cubic.html">
+     verde.Cubic
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/verde.VectorSpline2D.html">
+     verde.VectorSpline2D
     </a>
    </li>
    <li class="toctree-l2">
@@ -353,6 +358,11 @@
    <li class="toctree-l2">
     <a class="reference internal" href="api/generated/verde.BlockKFold.html">
      verde.BlockKFold
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/verde.line_coordinates.html">
+     verde.line_coordinates
     </a>
    </li>
    <li class="toctree-l2">
@@ -456,6 +466,36 @@
     </a>
    </li>
    <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/verde.base.BaseGridder.html">
+     verde.base.BaseGridder
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/verde.base.BaseBlockCrossValidator.html">
+     verde.base.BaseBlockCrossValidator
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/verde.base.n_1d_arrays.html">
+     verde.base.n_1d_arrays
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/verde.base.check_fit_input.html">
+     verde.base.check_fit_input
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/verde.base.least_squares.html">
+     verde.base.least_squares
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="api/generated/verde.ScipyGridder.html">
+     verde.ScipyGridder
+    </a>
+   </li>
+   <li class="toctree-l2">
     <a class="reference internal" href="api/generated/verde.datasets.locate.html">
      verde.datasets.locate
     </a>
@@ -500,31 +540,6 @@
      verde.datasets.setup_rio_magnetic_map
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/verde.base.BaseGridder.html">
-     verde.base.BaseGridder
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/verde.base.BaseBlockCrossValidator.html">
-     verde.base.BaseBlockCrossValidator
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/verde.base.n_1d_arrays.html">
-     verde.base.n_1d_arrays
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/verde.base.check_fit_input.html">
-     verde.base.check_fit_input
-    </a>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="api/generated/verde.base.least_squares.html">
-     verde.base.least_squares
-    </a>
-   </li>
   </ul>
  </li>
  <li class="toctree-l1">
@@ -533,13 +548,18 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="references.html">
+   References
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="changes.html">
    Changelog
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="references.html">
-   References
+  <a class="reference internal" href="compatibility.html">
+   Version compatibility
   </a>
  </li>
  <li class="toctree-l1">
@@ -582,110 +602,207 @@
 </ul>
 
     </div>
-</nav> <!-- To handle the deprecated key -->
-
-<div class="navbar_extra_footer">
-  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
-</div>
-
-</div>
-
-
-          
-
-
-          
-<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
-    
-    <div class="topbar container-xl fixed-top">
-    <div class="topbar-contents row">
-        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
-        <div class="col pl-md-4 topbar-main">
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
             
-            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
-                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
-                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
-                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
-                <i class="fas fa-bars"></i>
-                <i class="fas fa-arrow-left"></i>
-                <i class="fas fa-arrow-up"></i>
-            </button>
-            
-            
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
-            class="fas fa-download"></i></button>
-
-    <div class="dropdown-buttons">
-        <!-- ipynb file if we had a myst markdown file -->
-        
-        <!-- Download raw file -->
-        <a class="dropdown-buttons" href="_sources/index.rst.txt"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
-                data-placement="left">.rst</button></a>
-        <!-- Download PDF via print -->
-        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
-    </div>
-</div>
-
-            <!-- Source interaction buttons -->
-
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
-    <div class="dropdown-buttons sourcebuttons">
-        <a class="repository-button"
-            href="https://github.com/fatiando/verde"><button type="button" class="btn btn-secondary topbarbtn"
-                data-toggle="tooltip" data-placement="left" title="Source repository"><i
-                    class="fab fa-github"></i>repository</button></a>
-        <a class="issues-button"
-            href="https://github.com/fatiando/verde/issues/new?title=Issue%20on%20page%20%2Findex.html&body=Your%20issue%20content%20here."><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
-        <a class="edit-button" href="https://github.com/fatiando/verde/edit/main/doc/index.rst"><button
-                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
-                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
-    </div>
-</div>
-
-            <!-- Full screen (wrap in <a> to have style consistency -->
-
-<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
-        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
-        title="Fullscreen mode"><i
-            class="fas fa-expand"></i></button></a>
-
-            <!-- Launch buttons -->
-
-        </div>
-
-        <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
-            
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
+            <div class="navbar_extra_footer">
+            Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
             </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#table-of-contents">
-   Table of contents
-  </a>
-  <ul class="nav section-nav flex-column">
-  </ul>
- </li>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/fatiando/verde"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/fatiando/verde/issues/new?title=Issue%20on%20page%20%2Findex.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/fatiando/verde/edit/main/doc/index.rst"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/index.rst.txt"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.rst</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
 </ul>
 
-            </nav>
-        </div>
-    </div>
+    </nav>
 </div>
-    <div id="main-content" class="row">
-        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1></h1>
+                <h1>Home</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -695,24 +812,34 @@
                         </div>
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#table-of-contents">
-   Table of contents
-  </a>
-  <ul class="nav section-nav flex-column">
-  </ul>
- </li>
 </ul>
 
                         </nav>
                     </div>
                 </div>
             </div>
-            
+            <main id="main-content" role="main">
+                
               <div>
                 
-  <div class="section" id="banner">
-<h1><img alt="Verde Documentation" class="align-middle" src="_images/readme-banner.png" /><a class="headerlink" href="#banner" title="Permalink to this headline">¶</a></h1>
+  <div class="sd-container-fluid sd-sphinx-override sd-mt-5 sd-mb-5 sd-ml-0 sd-mr-0 sd-pt-0 sd-pb-0 sd-pl-0 sd-pr-0 docutils">
+<div class="sd-row sd-g-4 sd-g-xs-4 sd-g-sm-4 sd-g-md-4 sd-g-lg-4 docutils">
+<div class="sd-col sd-d-flex-column sd-col-12 sd-col-xs-12 sd-col-sm-8 sd-col-md-12 sd-col-lg-8 docutils">
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 sd-pt-0 sd-pb-0 sd-pl-0 sd-pr-0 docutils">
+<div class="sd-row docutils">
+<div class="sd-col sd-d-flex-column sd-col-12 sd-col-xs-12 sd-col-sm-12 sd-col-md-12 sd-col-lg-9 docutils">
+<h1 class="display-1"><img src="_static/verde-title.svg" alt="Verde"></h1></div>
+</div>
+</div>
+<div class="sd-fs-3 docutils">
+<p>Processing and gridding spatial data, machine-learning style</p>
+</div>
+</div>
+<div class="sd-col sd-d-flex-column sd-col-12 sd-col-xs-12 sd-col-sm-4 sd-col-md-12 sd-col-lg-4 docutils">
+<a class="sd-m-auto reference internal image-reference" href="_images/verde-logo.svg"><img alt="_images/verde-logo.svg" class="sd-m-auto" src="_images/verde-logo.svg" width="200px" /></a>
+</div>
+</div>
+</div>
 <p><strong>Verde</strong> is a Python library for processing spatial data (bathymetry,
 geophysics surveys, etc) and interpolating it on regular grids (i.e.,
 <em>gridding</em>).</p>
@@ -722,113 +849,73 @@ implements an interface that is similar to the popular
 We also provide other analysis methods that are often used in combination with
 gridding, like trend removal, blocked/windowed operations, cross-validation,
 and more!</p>
-<div class="sphinx-bs container pb-4 docutils">
-<div class="row docutils">
-<div class="d-flex col-lg-6 col-md-6 col-sm-6 col-xs-12 p-2 docutils">
-<div class="card w-100 border-1 m-1 text-center docutils">
-<div class="card-header text-center text-large docutils">
-<p class="card-text"><strong>Getting started</strong></p>
-</div>
-<div class="card-body docutils">
-<p class="card-text">New to Verde? Start here!</p>
-<p class="card-text"><a class="sphinx-bs btn text-wrap btn-outline-primary btn-block stretched-link reference internal" href="tutorials/overview.html#overview"><span class="std std-ref">Overview</span></a></p>
-</div>
-</div>
-</div>
-<div class="d-flex col-lg-6 col-md-6 col-sm-6 col-xs-12 p-2 docutils">
-<div class="card w-100 border-1 m-1 text-center docutils">
-<div class="card-header text-center text-large docutils">
-<p class="card-text"><strong>Need help?</strong></p>
-</div>
-<div class="card-body docutils">
-<p class="card-text">Ask on our community channels</p>
-<p class="card-text"><a class="sphinx-bs btn text-wrap btn-outline-primary btn-block stretched-link reference external" href="https://www.fatiando.org/contact"><span>Join the conversation</span></a></p>
+<hr class="docutils" />
+<div class="sd-container-fluid sd-sphinx-override sd-mt-5 sd-mb-5 sd-ml-0 sd-mr-0 sd-pt-0 sd-pb-0 sd-pl-0 sd-pr-0 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-1 sd-row-cols-lg-2 sd-g-4 sd-g-xs-4 sd-g-sm-4 sd-g-md-4 sd-g-lg-4 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-text-center sd-p-3 docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold sd-fs-5 docutils">
+<svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-info" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z"></path></svg> Getting started</div>
+<p class="sd-card-text">New to Verde? Start here!</p>
+<p class="sd-card-text"><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-outline-primary sd-stretched-link reference internal" href="tutorials/overview.html#overview"><span class="std std-ref">Overview</span></a></span></p>
 </div>
 </div>
 </div>
-<div class="d-flex col-lg-6 col-md-6 col-sm-6 col-xs-12 p-2 docutils">
-<div class="card w-100 border-1 m-1 text-center docutils">
-<div class="card-header text-center text-large docutils">
-<p class="card-text"><strong>Reference documentation</strong></p>
-</div>
-<div class="card-body docutils">
-<p class="card-text">A list of modules and functions</p>
-<p class="card-text"><a class="sphinx-bs btn text-wrap btn-outline-primary btn-block stretched-link reference internal" href="api/index.html#api"><span class="std std-ref">API reference</span></a></p>
-</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-text-center sd-p-3 docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold sd-fs-5 docutils">
+<svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-comment-discussion" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M1.5 2.75a.25.25 0 01.25-.25h8.5a.25.25 0 01.25.25v5.5a.25.25 0 01-.25.25h-3.5a.75.75 0 00-.53.22L3.5 11.44V9.25a.75.75 0 00-.75-.75h-1a.25.25 0 01-.25-.25v-5.5zM1.75 1A1.75 1.75 0 000 2.75v5.5C0 9.216.784 10 1.75 10H2v1.543a1.457 1.457 0 002.487 1.03L7.061 10h3.189A1.75 1.75 0 0012 8.25v-5.5A1.75 1.75 0 0010.25 1h-8.5zM14.5 4.75a.25.25 0 00-.25-.25h-.5a.75.75 0 110-1.5h.5c.966 0 1.75.784 1.75 1.75v5.5A1.75 1.75 0 0114.25 12H14v1.543a1.457 1.457 0 01-2.487 1.03L9.22 12.28a.75.75 0 111.06-1.06l2.22 2.22v-2.19a.75.75 0 01.75-.75h1a.25.25 0 00.25-.25v-5.5z"></path></svg> Need help?</div>
+<p class="sd-card-text">Ask on our community channels.</p>
+<p class="sd-card-text"><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-outline-primary sd-stretched-link reference external" href="https://www.fatiando.org/contact"><span>Join the conversation <svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-link-external" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M10.604 1h4.146a.25.25 0 01.25.25v4.146a.25.25 0 01-.427.177L13.03 4.03 9.28 7.78a.75.75 0 01-1.06-1.06l3.75-3.75-1.543-1.543A.25.25 0 0110.604 1zM3.75 2A1.75 1.75 0 002 3.75v8.5c0 .966.784 1.75 1.75 1.75h8.5A1.75 1.75 0 0014 12.25v-3.5a.75.75 0 00-1.5 0v3.5a.25.25 0 01-.25.25h-8.5a.25.25 0 01-.25-.25v-8.5a.25.25 0 01.25-.25h3.5a.75.75 0 000-1.5h-3.5z"></path></svg></span></a></span></p>
 </div>
 </div>
-<div class="d-flex col-lg-6 col-md-6 col-sm-6 col-xs-12 p-2 docutils">
-<div class="card w-100 border-1 m-1 text-center docutils">
-<div class="card-header text-center text-large docutils">
-<p class="card-text"><strong>Using Verde for research?</strong></p>
 </div>
-<div class="card-body docutils">
-<p class="card-text">Citations help support our work</p>
-<p class="card-text"><a class="sphinx-bs btn text-wrap btn-outline-primary btn-block stretched-link reference internal" href="citing.html"><span class="doc">Cite Verde</span></a></p>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-text-center sd-p-3 docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold sd-fs-5 docutils">
+<svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-file-badge" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.75 1.5a.25.25 0 00-.25.25v11.5c0 .138.112.25.25.25h3.5a.75.75 0 010 1.5h-3.5A1.75 1.75 0 011 13.25V1.75C1 .784 1.784 0 2.75 0h8a1.75 1.75 0 011.508.862.75.75 0 11-1.289.768.25.25 0 00-.219-.13h-8z"></path><path fill-rule="evenodd" d="M8 7a4 4 0 116.49 3.13l.995 4.973a.75.75 0 01-.991.852l-2.409-.876a.25.25 0 00-.17 0l-2.409.876a.75.75 0 01-.991-.852l.994-4.973A3.993 3.993 0 018 7zm4-2.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5zm0 6.5a4 4 0 001.104-.154l.649 3.243-1.155-.42c-.386-.14-.81-.14-1.196 0l-1.155.42.649-3.243A4 4 0 0012 11z"></path></svg> Reference documentation</div>
+<p class="sd-card-text">A list of modules and functions.</p>
+<p class="sd-card-text"><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-outline-primary reference internal" href="api/index.html#api"><span class="std std-ref">List of functions and classes (API)</span></a></span></p>
+</div>
+</div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-text-center sd-p-3 docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold sd-fs-5 docutils">
+<svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-bookmark" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M4.75 2.5a.25.25 0 00-.25.25v9.91l3.023-2.489a.75.75 0 01.954 0l3.023 2.49V2.75a.25.25 0 00-.25-.25h-6.5zM3 2.75C3 1.784 3.784 1 4.75 1h6.5c.966 0 1.75.784 1.75 1.75v11.5a.75.75 0 01-1.227.579L8 11.722l-3.773 3.107A.75.75 0 013 14.25V2.75z"></path></svg> Using Verde for research?</div>
+<p class="sd-card-text">Citations help support our work!</p>
+<p class="sd-card-text"><span class="sd-d-grid"><a class="sd-sphinx-override sd-btn sd-text-wrap sd-btn-outline-primary reference internal" href="citing.html#citing"><span class="std std-ref">Citing Verde</span></a></span></p>
 </div>
 </div>
 </div>
 </div>
 </div>
+<hr class="docutils" />
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>Verde is a part of the
 <a class="reference external" href="https://www.fatiando.org/">Fatiando a Terra</a> project.</p>
 </div>
-<hr class="docutils" />
-<div class="section" id="table-of-contents">
-<h2>Table of contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gallery/index.html">Gallery</a></li>
-</ul>
 </div>
 <div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="sample_data/index.html">Sample Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/grid_coordinates.html">Grid Coordinates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/trends.html">Trend Estimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/decimation.html">Data Decimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/projections.html">Geographic Coordinates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/chain.html">Chaining Operations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/model_evaluation.html">Evaluating Performance</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/model_selection.html">Model Selection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/weights.html">Using Weights</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/vectors.html">Vector Data</a></li>
-</ul>
 </div>
 <div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="api/index.html">List of functions and classes (API)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="citing.html">Citing Verde</a></li>
-<li class="toctree-l1"><a class="reference internal" href="changes.html">Changelog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
-<li class="toctree-l1"><a class="reference internal" href="versions.html">Documentation for other versions</a></li>
-</ul>
 </div>
 <div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact/">Join the community</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
-</ul>
-</div>
-</div>
 </div>
 
 
               </div>
               
-            
-                <!-- Previous / next buttons -->
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
 <div class='prev-next-area'>
     <a class='right-next' id="next-link" href="tutorials/overview.html" title="next page">
     <div class="prev-next-info">
@@ -838,23 +925,27 @@ and more!</p>
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-            
+            </footer>
         </div>
     </div>
-    <footer class="footer">
-  <p>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+      &copy; Copyright 2017-2023, The Verde Developers.<br/>
+    Last updated on May 08, 2023.<br/>
+</p>
+        </footer>
+    </div>
     
-        &copy; Copyright 2017-2022, The Verde Developers.<br/>
-      Last updated on Mar 25, 2022.<br/>
-  </p>
-</footer>
-</main>
+</div>
 
 
       </div>
     </div>
   
-  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
 
   </body>
 </html>
