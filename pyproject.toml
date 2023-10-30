@@ -1,7 +1,48 @@
-# Specify that we use setuptools and setuptools_scm (to generate the version
-# string). Actual configuration is in setup.py and setup.cfg.
+[project]
+name = "verde"
+description = "Processing and gridding spatial data, machine-learning style"
+dynamic = ["version"]
+authors = [
+  { name="The Verde Developers", email="fatiandoaterra@protonmail.com" },
+]
+maintainers = [
+  {name = "Leonardo Uieda", email = "leo@uieda.com"}
+]
+readme = "README.md"
+license = {text = "BSD-3-Clause"}
+keywords = ["geoscience", "geophysics"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "numpy >= 1.21",
+    "pandas >= 1.1",
+    "scipy >= 1.5",
+    "scikit-learn >= 0.24",
+    "numba >= 0.52",
+    "xarray >= 0.16",
+    "verde >= 1.7",
+    "xrft >= 1.0",
+    "choclo >= 0.1",
+]
+
+[project.urls]
+"Homepage" = "https://www.fatiando.org/harmonica"
+"Documentation" = "https://www.fatiando.org/harmonica"
+"Repository" = "https://github.com/fatiando/harmonica.git"
+"Changelog" = "https://www.fatiando.org/harmonica/latest/changes.html"
+"Bug Tracker" = "https://github.com/fatiando/harmonica/issues"
+"Source Code" = "https://github.com/fatiando/harmonica"
+"Release Notes" = "https://github.com/fatiando/harmonica/releases"
+
+[project.optional-dependencies]
+visualizations = ["pyvista>=0.27", "vtk>=9"]
+numba_progress = ["numba_progress"]
 [build-system]
-requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+requires = ["setuptools>=61", "wheel", "setuptools_scm[toml]>=8.0.3"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
