@@ -55,3 +55,7 @@ following releases to ensure compatibility:
       - **Last compatible release**
     * - 3.6
       - 1.7.0
+    * - 3.7
+      - 1.8.0
+    * - 3.8
+      - 1.8.0
