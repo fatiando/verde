@@ -89,16 +89,12 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           python-version: ${{ env.PYTHON }}
-          miniforge-variant: Mambaforge
-          use-mamba: true
           channels: conda-forge,defaults
-          # Needed for caching
-          use-only-tar-bz2: true
 
       - name: Collect requirements
         run: |
           echo "Install Dependente to capture dependencies:"
-          mamba install dependente==0.1.0 -c conda-forge
+          conda install dependente==0.1.0 -c conda-forge
           echo ""
           echo "Capturing run-time dependencies:"
           if [[ "${{ matrix.dependencies }}" == "oldest" ]]; then
@@ -118,14 +114,8 @@ jobs:
           echo "Collected dependencies:"
           cat requirements-full.txt
 
-      - name: Setup caching for conda packages
-        uses: actions/cache@v4
-        with:
-          path: ~/conda_pkgs_dir
-          key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements-full.txt') }}
-
       - name: Install requirements
-        run: mamba install --quiet --file requirements-full.txt python=$PYTHON
+        run: conda install --quiet --file requirements-full.txt python=$PYTHON
 
       - name: List installed packages
         run: conda list
@@ -167,6 +157,6 @@ jobs:
           env_vars: OS,PYTHON,DEPENDENCIES
           # Fail the job so we know coverage isn't being updated. Otherwise it
           # can silently drop and we won't know.
-          fail_ci_if_error: true          
+          fail_ci_if_error: true
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
