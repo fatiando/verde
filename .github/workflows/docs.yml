@@ -33,14 +33,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-docs.txt
-      PYTHON: 3.11
+      PYTHON: "3.11"
 
     steps:
       # Cancel any previous run of the test job
       # We pin the commit hash corresponding to v0.5.0, and not pinning the tag
       # because we are giving full access through the github.token.
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@148d9a848c6acaf90a3ec30bc5062f646f8a4163
+        uses: styfle/cancel-workflow-action@0.12.1
         with:
           access_token: ${{ github.token }}
 
@@ -62,20 +62,15 @@ jobs:
         run: git fetch origin 'refs/tags/*:refs/tags/*'
 
       - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v3
         with:
           python-version: ${{ env.PYTHON }}
-          miniforge-variant: Mambaforge
-          use-mamba: true
           channels: conda-forge,defaults
-          # Needed for caching
-          use-only-tar-bz2: true
-
 
       - name: Collect requirements
         run: |
           echo "Install Dependente to capture dependencies:"
-          mamba install dependente==0.1.0 -c conda-forge
+          conda install dependente==0.1.0 -c conda-forge
           echo ""
           echo "Capturing run-time dependencies:"
           dependente --source install,extras > requirements-full.txt
@@ -89,17 +84,11 @@ jobs:
           echo "Collected dependencies:"
           cat requirements-full.txt
 
-      - name: Setup caching for conda packages
-        uses: actions/cache@v3
-        with:
-          path: ~/conda_pkgs_dir
-          key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements-full.txt') }}
-
       - name: Install requirements
-        run: mamba install --quiet --file requirements-full.txt python=$PYTHON
+        run: conda install --file requirements-full.txt python=$PYTHON -c conda-forge
 
       - name: List installed packages
-        run: mamba list
+        run: conda list
 
       - name: Build source and wheel distributions
         run: |
@@ -117,7 +106,7 @@ jobs:
       # Store the docs as a build artifact so we can deploy it later
       - name: Upload HTML documentation as an artifact
         if: github.event_name == 'release' || github.event_name == 'push'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: docs-${{ github.sha }}
           path: doc/_build/html
