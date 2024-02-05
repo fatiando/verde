@@ -71,7 +71,6 @@ jobs:
           # Needed for caching
           use-only-tar-bz2: true
 
-
       - name: Collect requirements
         run: |
           echo "Install Dependente to capture dependencies:"
@@ -96,7 +95,7 @@ jobs:
           key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements-full.txt') }}
 
       - name: Install requirements
-        run: mamba install --quiet --file requirements-full.txt python=$PYTHON
+        run: mamba install --file requirements-full.txt python=$PYTHON
 
       - name: List installed packages
         run: mamba list
