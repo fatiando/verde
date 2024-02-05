@@ -36,6 +36,7 @@ extensions = [
     "sphinx_design",
     "sphinx_copybutton",
     "jupyter_sphinx",
+    "myst_parser",
 ]
 
 # Configuration to include links to other project docs when referencing
@@ -66,6 +67,10 @@ napoleon_use_ivar = True
 # Always show the source code that generates a plot
 plot_include_source = True
 plot_formats = ["png"]
+
+# Configuration for using MyST markdown
+myst_enable_extensions = ["colon_fence", "attrs_block"]
+myst_title_to_header = True
 
 # Sphinx project configuration
 templates_path = ["_templates"]
