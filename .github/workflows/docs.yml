@@ -65,7 +65,6 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           python-version: ${{ env.PYTHON }}
-          use-mamba: true
           channels: conda-forge,defaults
           # Needed for caching
           use-only-tar-bz2: true
@@ -73,7 +72,7 @@ jobs:
       - name: Collect requirements
         run: |
           echo "Install Dependente to capture dependencies:"
-          mamba install dependente==0.1.0 -c conda-forge
+          conda install dependente==0.1.0 -c conda-forge
           echo ""
           echo "Capturing run-time dependencies:"
           dependente --source install,extras > requirements-full.txt
@@ -94,10 +93,10 @@ jobs:
           key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements-full.txt') }}
 
       - name: Install requirements
-        run: mamba install --file requirements-full.txt python=$PYTHON -c conda-forge
+        run: conda install --file requirements-full.txt python=$PYTHON -c conda-forge
 
       - name: List installed packages
-        run: mamba list
+        run: conda list
 
       - name: Build source and wheel distributions
         run: |
