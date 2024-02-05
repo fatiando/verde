@@ -114,8 +114,8 @@ and more!
     :hidden:
     :caption: Getting Started
 
-    tutorials/overview.rst
     install.rst
+    introduction.rst
     gallery/index.rst
 
 .. toctree::
