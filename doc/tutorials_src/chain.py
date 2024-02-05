@@ -61,8 +61,8 @@ fig.plot(
     cmap=True,
     style="c0.05c",
 )
-fig.basemap(frame=True)
 fig.colorbar(frame='af+l"bathymetric depth [m]"')
+fig.basemap(frame=True)
 fig.show()
 
 
