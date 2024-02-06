@@ -1,4 +1,3 @@
-.. title:: Home
 
 .. grid::
     :gutter: 4 4 4 4
@@ -6,28 +5,24 @@
     :padding: 0 0 0 0
 
     .. grid-item::
-        :columns: 12 4 12 4
+        :columns: 12 3 3 3
 
         .. image:: ./_static/verde-logo.svg
             :width: 200px
             :class: sd-m-auto dark-light
 
     .. grid-item::
-        :columns: 12 8 12 8
+        :columns: 12 9 9 9
 
-        .. grid::
-            :padding: 0 0 0 0
+        .. raw:: html
 
-            .. grid-item::
-                :columns: 12 12 12 9
+            <h1 class="display-1"><img class="dark-light" src="_static/verde-title.svg" alt="Verde"></h1>
 
-                .. raw:: html
+.. raw:: html
 
-                    <h1 class="display-1"><img class="dark-light" src="_static/verde-title.svg" alt="Verde"></h1>
-
-        .. div:: sd-fs-3
-
-            Processing and gridding spatial data, machine-learning style
+    <p class="sd-fs-3">
+    Processing and gridding spatial data, machine-learning style.
+    </p>
 
 **Verde** is a Python library for processing spatial data (bathymetry,
 geophysics surveys, etc) and interpolating it on regular grids (i.e.,
@@ -114,8 +109,8 @@ and more!
     :hidden:
     :caption: Getting Started
 
-    tutorials/overview.rst
     install.rst
+    introduction.rst
     gallery/index.rst
 
 .. toctree::
@@ -139,6 +134,7 @@ and more!
     :caption: Reference documentation
 
     api/index.rst
+    conventions.rst
     citing.rst
     references.rst
     changes.rst

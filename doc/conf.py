@@ -31,11 +31,11 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.extlinks",
     "sphinx.ext.intersphinx",
-    "matplotlib.sphinxext.plot_directive",
     "sphinx.ext.napoleon",
     "sphinx_gallery.gen_gallery",
     "sphinx_design",
     "sphinx_copybutton",
+    "jupyter_sphinx",
 ]
 
 # Configuration to include links to other project docs when referencing

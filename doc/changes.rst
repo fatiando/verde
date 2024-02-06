@@ -10,10 +10,6 @@ Released on: 2023/05/08
 
 DOI: https://doi.org/10.5281/zenodo.7907182
 
-.. warning::
-
-    **Verde v1.8.0 is the last release that is compatible with Python 3.6.**
-
 Deprecations:
 
 * Deprecate the ``engine`` argument of ``Spline/SplineCV`` (`#373 <https://github.com/fatiando/verde/pull/373>`__)
@@ -73,6 +69,10 @@ Version 1.7.0
 Released on: 2022/03/25
 
 DOI: https://doi.org/10.5281/zenodo.6384887
+
+.. warning::
+
+    **Verde v1.7.0 is the last release that is compatible with Python 3.6.**
 
 Deprecation:
 
