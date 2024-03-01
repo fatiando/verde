@@ -80,7 +80,7 @@ jobs:
       # Store the archives as a build artifact so we can deploy them later
       - name: Upload archives as artifacts
         # Only if not a pull request
-        if: success() && github.event_name != 'pull_request'
+        #if: success() && github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
         with:
           name: pypi-${{ github.sha }}
