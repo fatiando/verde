@@ -80,7 +80,7 @@ jobs:
       # Store the archives as a build artifact so we can deploy them later
       - name: Upload archives as artifacts
         # Only if not a pull request
-        #if: success() && github.event_name != 'pull_request'
+        if: success() && github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
         with:
           name: pypi-${{ github.sha }}
@@ -93,8 +93,7 @@ jobs:
     needs: build
     environment: pypi
     # Only publish from the origin repository, not forks
-    #if: github.repository_owner == 'fatiando' && github.event_name != 'pull_request'
-    if: github.repository_owner == 'fatiando'
+    if: github.repository_owner == 'fatiando' && github.event_name != 'pull_request'
     permissions:
       # This permission allows trusted publishing to PyPI (without an API token)
       id-token: write
@@ -116,7 +115,7 @@ jobs:
 
       - name: Publish to Test PyPI
         # Only publish to TestPyPI when a PR is merged (pushed to main)
-        #if: success() && github.event_name == 'push'
+        if: success() && github.event_name == 'push'
         uses: pypa/gh-action-pypi-publish@v1.8.12
         with:
           repository_url: https://test.pypi.org/legacy/
