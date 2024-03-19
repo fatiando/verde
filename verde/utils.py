@@ -14,6 +14,7 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 from scipy.spatial import cKDTree
+from sklearn.impute import KNNImputer
 
 try:
     from pykdtree.kdtree import KDTree as pyKDTree
@@ -680,6 +681,36 @@ def kdtree(coordinates, use_pykdtree=True, **kwargs):
         tree = cKDTree(points, **kwargs)
     return tree
 
+
+def fill_nans(grid, n_neighbors=1):
+    """
+    This methos is responsible for fill the NaN values in the grid using the KNN algorithm.
+    
+    Parameters
+    ----------
+    grid : :class:`xarray.Dataset` or :class:`xarray.DataArray`
+        A 2D grid with one or more data variables.
+    n_neighbors : int
+        Number of nearest neighbors to use to fill the NaN values in the grid. 
+        The greater the quantity, the longer the processing time, depending on the size of the matrix
+    
+    Returns
+    -------
+    grid : :class:`xarray.Dataset` or :class:`xarray.DataArray`
+        A 2D grid with the NaN values filled.
+    """
+    
+    not_nan_values = np.argwhere(~np.isnan(grid)).reshape(-1, 1)
+    unknown_indices = np.argwhere(np.isnan(grid))
+    
+    knn_imputer = KNNImputer(n_neighbors=n_neighbors)
+    knn_imputer.fit(not_nan_values)
+    
+    predicted_values = knn_imputer.transform(not_nan_values)
+    for i, idx in enumerate(unknown_indices):
+        grid[tuple(idx)] = predicted_values[i]
+        
+    return grid
 
 def partition_by_sum(array, parts):
     """

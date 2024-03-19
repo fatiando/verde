@@ -27,8 +27,21 @@ from ..utils import (
     meshgrid_to_1d,
     parse_engine,
     partition_by_sum,
+    fill_nans
 )
 
+
+def test_fill_nans():
+    """
+    This function tests the fill_nans function.
+    """
+    
+    grid = np.array([[1, np.nan, 3],
+                     [4, 5, np.nan],
+                     [np.nan, 7, 8]])
+    filled_grid = fill_nans(grid)
+    assert np.isnan(filled_grid).sum() == 0
+    
 
 def test_parse_engine():
     "Check that it works for common input"
