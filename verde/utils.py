@@ -637,6 +637,12 @@ def grid_to_table(grid):
     # Need to flip the coordinates because the names are in northing and
     # easting order
     coordinates = [i.ravel() for i in np.meshgrid(east, north)][::-1]
+    # Identify and add extra coordinates
+    all_coordinate_names = list(grid.coords.keys())
+    for coord in all_coordinate_names:
+        if coord not in coordinate_names:
+            coordinates.append(grid[coord].values.ravel())
+            coordinate_names.append(coord)
     data_dict = dict(zip(coordinate_names, coordinates))
     data_dict.update(dict(zip(data_names, data_arrays)))
     return pd.DataFrame(data_dict)
