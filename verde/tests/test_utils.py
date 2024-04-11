@@ -33,7 +33,7 @@ from ..utils import (
 
 def test_fill_nans():
     """
-    This function tests the fill_nans function.
+    Test filling NaNs on a small sample grid
     """
     grid = xr.DataArray([[1, np.nan, 3],
                         [4, 5, np.nan],
