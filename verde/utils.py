@@ -626,7 +626,12 @@ def grid_to_table(grid):
     ...     coords=(np.arange(4), np.arange(5, 10)),
     ...     dims=['northing', 'easting']
     ... )
-    >>> temperature = temperature.assign_coords(upward=(("northing", "easting"), np.arange(20).reshape((4, 5))))
+    >>> temperature = temperature.assign_coords(
+    ...     upward=(
+    ...         ("northing", "easting"), 
+    ...         np.arange(20).reshape((4, 5))
+    ...     )
+    ... )
     >>> table = grid_to_table(temperature)
     >>> list(sorted(table.columns))
     ['easting', 'northing', 'scalars', 'upward']
