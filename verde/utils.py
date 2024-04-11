@@ -685,7 +685,7 @@ def kdtree(coordinates, use_pykdtree=True, **kwargs):
 
 def fill_nans(grid):
     """
-    This methos is responsible for fill the NaN values in the grid using the KNN algorithm.
+    Fill missing values in a grid by nearest neighbor interpolation
 
     Parameters
     ----------
