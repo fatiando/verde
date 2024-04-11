@@ -702,7 +702,7 @@ def fill_nans(grid):
     not_nan_values = np.argwhere(~np.isnan(grid.values))
     unknown_indices = np.argwhere(np.isnan(grid.values))
 
-    knn_imputer = vd.KNeighbors()
+    knn = vd.KNeighbors()
     easting, northing = not_nan_values[:, 0], not_nan_values[:, 1]
     knn_imputer.fit((easting, northing), grid.values[not_nan_values[:, 0],
                     not_nan_values[:, 1]])
