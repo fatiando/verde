@@ -620,7 +620,23 @@ def grid_to_table(grid):
     [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]
     >>> print(table.wind_speed.values)
     [20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39]
-
+    >>> # Non-dimensional coordinates are also handled
+    >>> temperature = xr.DataArray(
+    ...     np.arange(20).reshape((4, 5)),
+    ...     coords=(np.arange(4), np.arange(5, 10)),
+    ...     dims=['northing', 'easting']
+    ... )
+    >>> temperature = temperature.assign_coords(
+    ...     upward=(
+    ...         ("northing", "easting"),
+    ...         np.arange(20).reshape((4, 5))
+    ...     )
+    ... )
+    >>> table = grid_to_table(temperature)
+    >>> list(sorted(table.columns))
+    ['easting', 'northing', 'scalars', 'upward']
+    >>> print(table.upward.values)
+    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]
     """
     if hasattr(grid, "data_vars"):
         # It's a Dataset
@@ -637,6 +653,11 @@ def grid_to_table(grid):
     # Need to flip the coordinates because the names are in northing and
     # easting order
     coordinates = [i.ravel() for i in np.meshgrid(east, north)][::-1]
+    # Identify and add extra coordinates
+    extra = [coord for coord in grid.coords.keys() if coord not in coordinate_names]
+    for coord in extra:
+        coordinates.append(grid[coord].values.ravel())
+        coordinate_names.append(coord)
     data_dict = dict(zip(coordinate_names, coordinates))
     data_dict.update(dict(zip(data_names, data_arrays)))
     return pd.DataFrame(data_dict)
