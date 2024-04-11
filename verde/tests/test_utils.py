@@ -44,7 +44,7 @@ def test_fill_nans():
                             [4, 5, 3],
                             [4, 7, 8]])
 
-    assert np.isnan(filled_grid).sum() == 0
+    assert np.any(np.isnan(filled_grid))
     assert np.allclose(filled_grid, expected_values)
 
 
