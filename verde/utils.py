@@ -628,7 +628,7 @@ def grid_to_table(grid):
     ... )
     >>> temperature = temperature.assign_coords(
     ...     upward=(
-    ...         ("northing", "easting"), 
+    ...         ("northing", "easting"),
     ...         np.arange(20).reshape((4, 5))
     ...     )
     ... )
