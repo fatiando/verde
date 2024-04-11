@@ -35,7 +35,6 @@ def test_fill_nans():
     """
     This function tests the fill_nans function.
     """
-
     grid = xr.DataArray([[1, np.nan, 3],
                         [4, 5, np.nan],
                         [np.nan, 7, 8]])
