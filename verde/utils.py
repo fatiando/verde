@@ -704,7 +704,7 @@ def fill_nans(grid):
 
     knn = vd.KNeighbors()
     easting, northing = not_nan_values[:, 0], not_nan_values[:, 1]
-    knn_imputer.fit((easting, northing), grid.values[not_nan_values[:, 0],
+    knn.fit((easting, northing), grid.values[not_nan_values[:, 0],
                     not_nan_values[:, 1]])
     predicted_values = knn_imputer.predict((easting, northing))
 
