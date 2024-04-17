@@ -500,9 +500,7 @@ class BlockMean(BlockReduce):
                 data.reshape((1, data.size)), index=[0], columns=columns
             )
 
-        blocked = table.groupby("block").apply(
-            weighted_average_variance, include_groups=False
-        )
+        blocked = table.groupby("block").apply(weighted_average_variance)
         mean = [blocked[i] for i in columns[:ncomps]]
         variance = [blocked[i] for i in columns[ncomps:]]
         return mean, variance
