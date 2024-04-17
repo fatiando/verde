@@ -54,9 +54,9 @@ def score_estimator(scoring, estimator, coordinates, data, weights=None):
     result = np.mean(
         [
             scorer(
-                DummyEstimator(pred.ravel()),
+                DummyEstimator(np.ravel(pred)),
                 coordinates,
-                data[i].ravel(),
+                np.ravel(data[i]),
                 sample_weight=weights[i],
             )
             for i, pred in enumerate(predicted)
@@ -251,7 +251,7 @@ def check_fit_input(coordinates, data, weights, unpack=True):
             )
         if any(i.size != j.size for i in weights for j in data):
             raise ValueError("Weights must have the same size as the data array.")
-        weights = tuple(i.ravel() for i in weights)
+        weights = tuple(np.ravel(i) for i in weights)
     else:
         weights = tuple([None] * len(data))
     if unpack:
@@ -291,4 +291,4 @@ def n_1d_arrays(arrays, n):
     (array([0, 1, 2, 3]), array([0, 1, 2, 3]))
 
     """
-    return tuple(np.atleast_1d(i).ravel() for i in arrays[:n])
+    return tuple(np.ravel(np.atleast_1d(i)) for i in arrays[:n])
