@@ -11,7 +11,6 @@ import warnings
 
 import numpy as np
 import pandas as pd
-import pkg_resources
 import pooch
 
 try:
@@ -28,9 +27,13 @@ REGISTRY = pooch.create(
     version=__version__,
     version_dev="main",
     env="VERDE_DATA_DIR",
+    registry={
+        "baja-bathymetry.csv.xz": "64bc38514e771caa468b8230d94bf3a2abdac9e8b784273a0ca9ed6cb5165c32",
+        "california-gps.csv.xz": "54fa4aa490883c41362fae5cbf4925f2b1036361f4169ce5d2035828e22ff89a",
+        "rio-magnetic.csv.xz": "0e826932045e177b3d558b93be35a33548aa24529d1293cccfd4b8e7e706a03b",
+        "texas-wind.csv": "89213be635006e3838f906918427ec838142d44f5de3f5b2c5d82f9e11d93a24",
+    },
 )
-with pkg_resources.resource_stream("verde.datasets", "registry.txt") as registry_file:
-    REGISTRY.load_registry(registry_file)
 
 
 def _datasets_deprecation_warning():
