@@ -58,7 +58,7 @@ intersphinx_mapping = {
 autosummary_generate = []
 
 # Create cross-references for the parameter types in the Parameters, Other
-# Parameters, Returns and Yields sections of the docstring
+# Returns and Yields sections of the docstring
 numpydoc_xref_param_type = True
 
 # Format the Attributes section the Methods section and not like the Parameters
