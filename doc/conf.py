@@ -61,6 +61,10 @@ autosummary_generate = []
 # Parameters, Returns and Yields sections of the docstring
 numpydoc_xref_param_type = True
 
+# Format the Attributes section the Methods section and not like the Parameters
+# section.
+numpydoc_attributes_as_param_list = False
+
 # Always show the source code that generates a plot
 plot_include_source = True
 plot_formats = ["png"]
