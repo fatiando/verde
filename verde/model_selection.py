@@ -817,4 +817,4 @@ def select(arrays, index):
     """
     if arrays is None or any(i is None for i in arrays):
         return arrays
-    return tuple(i.ravel()[index] for i in arrays)
+    return tuple(np.ravel(i)[index] for i in arrays)
