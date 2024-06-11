@@ -6,7 +6,7 @@ Changelog
 Version 1.8.1
 -------------
 
-Released on: 2023/06/12
+Released on: 2023/06/11
 
 DOI: https://doi.org/10.5281/zenodo.10964877
 
