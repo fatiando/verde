@@ -1,0 +1,675 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>verde.projections | Verde v1.8.1</title>
+    
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=504d3d5d" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/verde/projections';</script>
+    <link rel="icon" href="../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Verde <span class="project-version">v1.8.1</span></p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">A taste of Verde</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../gallery/index.html">Gallery</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/blockkfold.html">K-Fold cross-validation with blocks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/blockreduce.html">Blocked reduction operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/blockreduce_weights.html">Using weights in blocked reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/blockreduce_weights_mean.html">Using weights in blocked means</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/checkerboard.html">Checkerboard function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/convex_hull_mask.html">Mask grid points by convex hull</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/cubic_gridder.html">Gridding with a cubic interpolator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/distance_mask.html">Mask grid points by distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/kneighbors_gridder.html">Gridding with a nearest-neighbors interpolator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/linear_gridder.html">Gridding with a linear interpolator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/project_grid.html">Projection of gridded data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/spline.html">Gridding with splines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/spline_cv.html">Gridding with splines (cross-validated)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/spline_weights.html">Gridding with splines and weights</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/train_test_split.html">Splitting data into train and test sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/trend.html">Polynomial trend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/vector_trend.html">Trends in vector data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery/vector_uncoupled.html">Gridding 2D vectors</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/grid_coordinates.html">Grid Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/trends.html">Trend Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/decimation.html">Data Decimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/projections.html">Geographic Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/chain.html">Chaining Operations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_evaluation.html">Evaluating Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/model_selection.html">Model Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/weights.html">Using Weights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/vectors.html">Vector Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">List of functions and classes (API)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.Spline.html">verde.Spline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.SplineCV.html">verde.SplineCV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.KNeighbors.html">verde.KNeighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.Linear.html">verde.Linear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.Cubic.html">verde.Cubic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.VectorSpline2D.html">verde.VectorSpline2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.BlockReduce.html">verde.BlockReduce</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.BlockMean.html">verde.BlockMean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.Trend.html">verde.Trend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.Chain.html">verde.Chain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.Vector.html">verde.Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.train_test_split.html">verde.train_test_split</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.cross_val_score.html">verde.cross_val_score</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.BlockShuffleSplit.html">verde.BlockShuffleSplit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.BlockKFold.html">verde.BlockKFold</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.line_coordinates.html">verde.line_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.grid_coordinates.html">verde.grid_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.scatter_points.html">verde.scatter_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.profile_coordinates.html">verde.profile_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.get_region.html">verde.get_region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.pad_region.html">verde.pad_region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.inside.html">verde.inside</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.block_split.html">verde.block_split</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.rolling_window.html">verde.rolling_window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.expanding_window.html">verde.expanding_window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.project_region.html">verde.project_region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.project_grid.html">verde.project_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.distance_mask.html">verde.distance_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.convexhull_mask.html">verde.convexhull_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.maxabs.html">verde.maxabs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.variance_to_weights.html">verde.variance_to_weights</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.grid_to_table.html">verde.grid_to_table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.make_xarray_grid.html">verde.make_xarray_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.median_distance.html">verde.median_distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.load_surfer.html">verde.load_surfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.synthetic.CheckerBoard.html">verde.synthetic.CheckerBoard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.base.BaseGridder.html">verde.base.BaseGridder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.base.BaseBlockCrossValidator.html">verde.base.BaseBlockCrossValidator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.base.n_1d_arrays.html">verde.base.n_1d_arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.base.check_fit_input.html">verde.base.check_fit_input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.base.least_squares.html">verde.base.least_squares</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.ScipyGridder.html">verde.ScipyGridder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.datasets.locate.html">verde.datasets.locate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.datasets.fetch_baja_bathymetry.html">verde.datasets.fetch_baja_bathymetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.datasets.setup_baja_bathymetry_map.html">verde.datasets.setup_baja_bathymetry_map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.datasets.fetch_california_gps.html">verde.datasets.fetch_california_gps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.datasets.setup_california_gps_map.html">verde.datasets.setup_california_gps_map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.datasets.fetch_texas_wind.html">verde.datasets.fetch_texas_wind</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.datasets.setup_texas_wind_map.html">verde.datasets.setup_texas_wind_map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.datasets.fetch_rio_magnetic.html">verde.datasets.fetch_rio_magnetic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.datasets.setup_rio_magnetic_map.html">verde.datasets.setup_rio_magnetic_map</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../conventions.html">Definitions and conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Verde</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compatibility.html">Version compatibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../versions.html">Documentation for other versions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact/">Join the community</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fatiando/verde" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/verde/issues/new?title=Issue%20on%20page%20%2F_modules/verde/projections.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for verde.projections</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2017 The Verde Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Operations with projections for grids, regions, etc.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.blockreduce</span> <span class="kn">import</span> <span class="n">BlockReduce</span>
+<span class="kn">from</span> <span class="nn">.chain</span> <span class="kn">import</span> <span class="n">Chain</span>
+<span class="kn">from</span> <span class="nn">.coordinates</span> <span class="kn">import</span> <span class="n">check_region</span><span class="p">,</span> <span class="n">get_region</span><span class="p">,</span> <span class="n">grid_coordinates</span><span class="p">,</span> <span class="n">shape_to_spacing</span>
+<span class="kn">from</span> <span class="nn">.mask</span> <span class="kn">import</span> <span class="n">convexhull_mask</span>
+<span class="kn">from</span> <span class="nn">.neighbors</span> <span class="kn">import</span> <span class="n">KNeighbors</span>
+<span class="kn">from</span> <span class="nn">.scipygridder</span> <span class="kn">import</span> <span class="n">Cubic</span><span class="p">,</span> <span class="n">Linear</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">grid_to_table</span>
+
+
+<div class="viewcode-block" id="project_region">
+<a class="viewcode-back" href="../../api/generated/verde.project_region.html#verde.project_region">[docs]</a>
+<span class="k">def</span> <span class="nf">project_region</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the bounding box of a region in projected coordinates.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    region : list = [W, E, S, N]</span>
+<span class="sd">        The boundaries of a given region in Cartesian or geographic</span>
+<span class="sd">        coordinates.</span>
+<span class="sd">    projection : callable</span>
+<span class="sd">        Should be a callable object (like a function) ``projection(easting,</span>
+<span class="sd">        northing) -&gt; (proj_easting, proj_northing)`` that takes in easting and</span>
+<span class="sd">        northing coordinate arrays and returns projected northing and easting</span>
+<span class="sd">        coordinate arrays.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    proj_region : list = [W, E, S, N]</span>
+<span class="sd">        The bounding box of the projected region.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; def projection(x, y):</span>
+<span class="sd">    ...     return (2*x, -1*y)</span>
+<span class="sd">    &gt;&gt;&gt; project_region((3, 5, -9, -4), projection)</span>
+<span class="sd">    (6.0, 10.0, 4.0, 9.0)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">east</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">101</span><span class="p">,</span> <span class="mi">101</span><span class="p">))</span>
+    <span class="n">east</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="n">projection</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">north</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">east</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">north</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">north</span><span class="o">.</span><span class="n">max</span><span class="p">())</span></div>
+
+
+
+<div class="viewcode-block" id="project_grid">
+<a class="viewcode-back" href="../../api/generated/verde.project_grid.html#verde.project_grid">[docs]</a>
+<span class="k">def</span> <span class="nf">project_grid</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="n">antialias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply the given map projection to a grid and re-sample it.</span>
+
+<span class="sd">    Creates a new grid in the projected coordinates by interpolating the</span>
+<span class="sd">    original values using the chosen *method* (linear by default). Before</span>
+<span class="sd">    interpolation, apply a blocked mean operation (:class:`~verde.BlockReduce`)</span>
+<span class="sd">    to avoid aliasing when the projected coordinates become oversampled in some</span>
+<span class="sd">    regions (which would cause the interpolation to down-sample the original</span>
+<span class="sd">    data). For example, applying a polar projection results in oversampled data</span>
+<span class="sd">    close to the pole.</span>
+
+<span class="sd">    Points that fall outside the convex hull of the original data will be</span>
+<span class="sd">    masked (see :func:`~verde.convexhull_mask`) since they are not constrained</span>
+<span class="sd">    by any data points.</span>
+
+<span class="sd">    Any arguments that can be passed to the</span>
+<span class="sd">    :meth:`~verde.base.BaseGridder.grid` method of Verde gridders can be passed</span>
+<span class="sd">    to this function as well. Use this to set a region and spacing (or shape)</span>
+<span class="sd">    for the projected grid. The region and spacing must be in *projected</span>
+<span class="sd">    coordinates*.</span>
+
+<span class="sd">    If no region is provided, the bounding box of the projected data will be</span>
+<span class="sd">    used. If no spacing or shape is provided, the shape of the input *grid*</span>
+<span class="sd">    will be used for the projected grid.</span>
+
+<span class="sd">    By default, the ``data_names`` argument will be set to the name of the data</span>
+<span class="sd">    variable of the input *grid* (if it has been set).</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        The interpolation methods are limited to what is available in Verde and</span>
+<span class="sd">        there is only support for single 2D grids. For more sophisticated use</span>
+<span class="sd">        cases, you might want to try</span>
+<span class="sd">        `pyresample &lt;https://github.com/pytroll/pyresample&gt;`__ instead.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grid : :class:`xarray.DataArray`</span>
+<span class="sd">        A single 2D grid of values. The first dimension is assumed to be the</span>
+<span class="sd">        northing/latitude dimension while the second is assumed to be the</span>
+<span class="sd">        easting/longitude dimension.</span>
+<span class="sd">    projection : callable</span>
+<span class="sd">        Should be a callable object (like a function) ``projection(easting,</span>
+<span class="sd">        northing) -&gt; (proj_easting, proj_northing)`` that takes in easting and</span>
+<span class="sd">        northing coordinate arrays and returns projected northing and easting</span>
+<span class="sd">        coordinate arrays.</span>
+<span class="sd">    method : string or Verde gridder</span>
+<span class="sd">        If a string, will use it to create :class:`~verde.KNeighbors`,</span>
+<span class="sd">        :class:`~verde.Linear`, or :class:`~verde.Cubic` (``&quot;nearest&quot;``,</span>
+<span class="sd">        ``&quot;linear&quot;``, or ``&quot;cubic&quot;``). Otherwise, should be a gridder/estimator</span>
+<span class="sd">        object, like :class:`~verde.Spline`. Default is ``&quot;linear&quot;``.</span>
+<span class="sd">    antialias : bool</span>
+<span class="sd">        If True, will run a :class:`~verde.BlockReduce` with a mean function to</span>
+<span class="sd">        avoid aliasing when the projection results in oversampling of the data</span>
+<span class="sd">        in some areas (for example, in polar projections). If False, will not</span>
+<span class="sd">        run the blocked mean.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    projected_grid : :class:`xarray.DataArray`</span>
+<span class="sd">        The projected grid, interpolated with the given parameters.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="s2">&quot;data_vars&quot;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Projecting xarray.Dataset is not currently supported. &quot;</span>
+            <span class="s2">&quot;Please provide a DataArray instead.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Projecting grids with number of dimensions other than 2 is not &quot;</span>
+            <span class="s2">&quot;currently supported (dimensions of the given DataArray: </span><span class="si">{}</span><span class="s2">).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">classes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">linear</span><span class="o">=</span><span class="n">Linear</span><span class="p">,</span>
+            <span class="n">nearest</span><span class="o">=</span><span class="n">KNeighbors</span><span class="p">,</span>
+            <span class="n">cubic</span><span class="o">=</span><span class="n">Cubic</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid interpolation method &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39;. Must be one of </span><span class="si">{</span><span class="n">classes</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="n">classes</span><span class="p">[</span><span class="n">method</span><span class="p">]()</span>
+
+    <span class="c1"># Can be set to None for some data arrays depending on how they are created</span>
+    <span class="c1"># so we can&#39;t just rely on the default value for getattr.</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;scalars&quot;</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">grid_to_table</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="n">projection</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">grid</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">grid</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">data_region</span> <span class="o">=</span> <span class="n">get_region</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+
+    <span class="n">region</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;region&quot;</span><span class="p">,</span> <span class="n">data_region</span><span class="p">)</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;shape&quot;</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">spacing</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;spacing&quot;</span><span class="p">,</span> <span class="n">shape_to_spacing</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">shape</span><span class="p">))</span>
+
+    <span class="n">check_region</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
+
+    <span class="n">steps</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">antialias</span><span class="p">:</span>
+        <span class="n">steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="n">BlockReduce</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="n">data_region</span><span class="p">))</span>
+        <span class="p">)</span>
+    <span class="n">steps</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;interpolator&quot;</span><span class="p">,</span> <span class="n">method</span><span class="p">))</span>
+    <span class="n">interpolator</span> <span class="o">=</span> <span class="n">Chain</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
+    <span class="n">interpolator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+
+    <span class="n">projected</span> <span class="o">=</span> <span class="n">interpolator</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+        <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+        <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
+        <span class="n">data_names</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;data_names&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">name</span><span class="p">]),</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">projected</span> <span class="o">=</span> <span class="n">convexhull_mask</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">projected</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">projected</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2017-2024, The Verde Developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Jun 11, 2024.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
