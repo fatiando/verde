@@ -196,18 +196,22 @@ def maxabs(*args, nan=True):
     Examples
     --------
 
-    >>> maxabs((1, -10, 25, 2, 3))
-    25
-    >>> maxabs((1, -10.5, 25, 2), (0.1, 100, -500), (-200, -300, -0.1, -499))
+    >>> result = maxabs((1, -10, 25, 2, 3))
+    >>> float(result)
+    25.0
+    >>> result = maxabs((1, -10.5, 25, 2), (0.1, 100, -500), (-200, -300, -0.1, -499))
+    >>> float(result)
     500.0
 
     If the array contains NaNs, we'll use the ``nan`` version of of the numpy
     functions by default. You can turn this off through the *nan* argument.
 
     >>> import numpy as np
-    >>> maxabs((1, -10, 25, 2, 3, np.nan))
+    >>> result = maxabs((1, -10, 25, 2, 3, np.nan))
+    >>> float(result)
     25.0
-    >>> maxabs((1, -10, 25, 2, 3, np.nan), nan=False)
+    >>> result = maxabs((1, -10, 25, 2, 3, np.nan), nan=False)
+    >>> float(result)
     nan
 
     """

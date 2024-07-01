@@ -71,7 +71,8 @@ def get_region(coordinates):
     --------
 
     >>> coords = grid_coordinates((0, 1, -10, -6), shape=(10, 10))
-    >>> print(get_region(coords))
+    >>> region = get_region(coords)
+    >>> print(tuple(float(c) for c in region))
     (0.0, 1.0, -10.0, -6.0)
 
     """
