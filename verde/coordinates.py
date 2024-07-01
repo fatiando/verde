@@ -957,13 +957,13 @@ def rolling_window(
     Select points on a rolling (moving) window.
 
     A window of the given size is moved across the region at a given step
-    (specified by *spacing* or *shape*). Returns the indices of points falling
-    inside each window step. You can use the indices to select points falling
-    inside a given window.
+    (specified by ``spacing`` or ``shape``). Returns the indices of points
+    falling inside each window step. You can use the indices to select points
+    falling inside a given window.
 
-    The size of the step when moving the windows can be specified by the
-    *spacing* parameter. Alternatively, the number of windows in the
-    South-North and West-East directions can be specified using the *shape*
+    The length of the step when moving the windows can be specified by the
+    ``spacing`` parameter. Alternatively, the number of windows in the
+    South-North and West-East directions can be specified using the ``shape``
     parameter. **One of the two must be given.**
 
     Parameters
@@ -973,13 +973,15 @@ def rolling_window(
         following order: (easting, northing, vertical, ...). Only easting and
         northing will be used, all subsequent coordinates will be ignored.
     size : float
-        The size of the windows. Units should match the units of *coordinates*.
+        The size of the windows. Units should match the units of
+        ``coordinates``.
     spacing : float, tuple = (s_north, s_east), or None
-        The window size in the South-North and West-East directions,
-        respectively. A single value means that the size is equal in both
-        directions.
+        The distance between the center of neighboring windows in the
+        South-North and West-East directions, respectively. A single value
+        means that the size is equal in both directions. Units should match the
+        units of ``coordinates``.
     shape : tuple = (n_north, n_east) or None
-        The number of blocks in the South-North and West-East directions,
+        The number of windows in the South-North and West-East directions,
         respectively.
     region : list = [W, E, S, N]
         The boundaries of a given region in Cartesian or geographic
@@ -987,7 +989,7 @@ def rolling_window(
         the given points.
     adjust : {'spacing', 'region'}
         Whether to adjust the spacing or the region if required. Ignored if
-        *shape* is given instead of *spacing*. Defaults to adjusting the
+        ``shape`` is given instead of ``spacing``. Defaults to adjusting the
         spacing.
 
     Returns
@@ -996,11 +998,12 @@ def rolling_window(
         Coordinate arrays for the center of each window.
     indices : array
         Each element of the array corresponds the indices of points falling
-        inside a window. The array will have the same shape as the
-        *window_coordinates*. Use the array elements to index the coordinates
-        for each window. The indices will depend on the number of dimensions in
-        the input coordinates. For example, if the coordinates are 2D arrays,
-        each window will contain indices for 2 dimensions (row, column).
+        inside a window. The array will have the same shape as each of the ones
+        in ``window_coordinates``. Use the array elements to index the
+        coordinates for each window. The indices will depend on the number of
+        dimensions in the input coordinates. For example, if the coordinates
+        are 2D arrays, each window will contain indices for 2 dimensions (row,
+        column).
 
     See also
     --------
@@ -1009,6 +1012,57 @@ def rolling_window(
 
     Examples
     --------
+
+    Scatter points
+    ~~~~~~~~~~~~~~
+
+    Generate a set of scatter coordinates:
+
+    >>> from verde import scatter_points
+    >>> region = (-5, -1, 6, 10)
+    >>> coords = scatter_points(region, size=10, random_state=42)
+    >>> easting, northing = coords
+    >>> print(easting)
+    [-3.5  -1.2  -2.07 -2.61 -4.38 -4.38 -4.77 -1.54 -2.6  -2.17]
+    >>> print(northing)
+    [6.08 9.88 9.33 6.85 6.73 6.73 7.22 8.1  7.73 7.16]
+
+    Get the rolling window indices by defining rolling windows of 2 meters per
+    side. Use a separation of 1 meter so they have 50% overlap between
+    neighboring windows:
+
+    >>> window_coords, indices = rolling_window(
+    ...     coords, region=region, size=2, spacing=1
+    ... )
+
+    Each array in ``window_coords`` will be a 2D array, with the coordinates of
+    the center of each window.
+
+    >>> easting_window, northing_window = window_coords
+    >>> print(easting_window)
+    [[-4. -3. -2.]
+     [-4. -3. -2.]
+     [-4. -3. -2.]]
+    >>> print(northing_window)
+    [[7. 7. 7.]
+     [8. 8. 8.]
+     [9. 9. 9.]]
+
+    The ``indices`` will also be a 2D array:
+
+    >>> print(indices.shape)
+    (3, 3)
+
+    If we want to get the coordinates of the points that fall in the South-West
+    corner (the first one), we can do so with:
+
+    >>> print(easting[indices[0, 0]])
+    [-3.5  -4.38 -4.38 -4.77]
+    >>> print(northing[indices[0, 0]])
+    [6.08 6.73 6.73 7.22]
+
+    Gridded coordinates
+    ~~~~~~~~~~~~~~~~~~~
 
     Generate a set of sample coordinates on a grid and determine the indices
     of points for each rolling window:
