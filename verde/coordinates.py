@@ -1125,6 +1125,9 @@ def rolling_window(
     >>> print(coords[1][indices[0, 0]])
     [6. 6. 6. 7. 7. 7. 8. 8. 8.]
 
+    Shape of ``indices``
+    ~~~~~~~~~~~~~~~~~~~~
+
     If the coordinates are 1D, the indices will also be 1D:
 
     >>> coords1d = [coord.ravel() for coord in coords]
@@ -1144,6 +1147,9 @@ def rolling_window(
     [-5. -4. -3. -5. -4. -3. -5. -4. -3.]
     >>> print(coords1d[1][indices[0, 0]])
     [6. 6. 6. 7. 7. 7. 8. 8. 8.]
+
+    Use ``region`` argument
+    ~~~~~~~~~~~~~~~~~~~~~~~
 
     By default, the windows will span the entire data region. You can also
     control the specific region you'd like the windows to cover:
@@ -1166,6 +1172,9 @@ def rolling_window(
     [-5. -4. -3. -5. -4. -3. -5. -4. -3.]
     >>> print(coords[1][indices[0, 0]])
     [6. 6. 6. 7. 7. 7. 8. 8. 8.]
+
+    Passing extra coordinates
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Only the first 2 coordinates are considered (assumed to be the horizontal
     ones). All others will be ignored by the function.
