@@ -87,7 +87,7 @@ def test_rolling_window_oversized_window():
     ]
     for region in regions:
         coords = grid_coordinates(region, spacing=1)
-        err_msg = "Window size '2' is larger than dimensions of the region "
+        err_msg = f"Window size '{oversize}' is larger than dimensions of the region "
         with pytest.raises(ValueError, match=err_msg):
             rolling_window(coords, size=oversize, spacing=2)
 
