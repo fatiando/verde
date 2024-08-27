@@ -85,6 +85,11 @@ jobs:
       - name: Fetch git tags
         run: git fetch origin 'refs/tags/*:refs/tags/*'
 
+      - name: Echo architechture
+        run: |
+          uname -a
+          uname -p
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
