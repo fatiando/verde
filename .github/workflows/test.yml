@@ -52,11 +52,12 @@ jobs:
             python: "3.12"
           - dependencies: optional
             python: "3.12"
-          # test on macos-latest with python 3.10
-          - os: macos-latest
+          # test on macos-13 (x86) using oldest dependencies and python 3.9
+          - os: macos-13
             dependencies: oldest
-            python: "3.10"
+            python: "3.9"
         exclude:
+          # don't test on macos-latest (arm64) with oldest dependencies
           - os: macos-latest
             dependencies: oldest
     env:
