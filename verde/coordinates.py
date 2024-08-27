@@ -481,8 +481,6 @@ def grid_coordinates(
 
     >>> east, north = grid_coordinates(region=(0, 5, 0, 10), spacing=2.5,
     ...                                pixel_register=True)
-    >>> # Raise the printing precision for this example
-    >>> np.set_printoptions(precision=2, suppress=True)
     >>> # Notice that the shape is 1 less than when pixel_register=False
     >>> print(east.shape, north.shape)
     (4, 2) (4, 2)
