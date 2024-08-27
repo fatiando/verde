@@ -234,9 +234,6 @@ def line_coordinates(
     Examples
     --------
 
-    >>> # Lower printing precision to shorten this example
-    >>> import numpy as np; np.set_printoptions(precision=2, suppress=True)
-
     >>> values = line_coordinates(0, 5, spacing=2.5)
     >>> print(values.shape)
     (3,)
@@ -363,8 +360,6 @@ def grid_coordinates(
     >>> east, north = grid_coordinates(region=(0, 5, 0, 10), shape=(5, 3))
     >>> print(east.shape, north.shape)
     (5, 3) (5, 3)
-    >>> # Lower printing precision to shorten this example
-    >>> import numpy as np; np.set_printoptions(precision=1, suppress=True)
     >>> print(east)
     [[0.  2.5 5. ]
      [0.  2.5 5. ]
