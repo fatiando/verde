@@ -84,6 +84,14 @@ jobs:
           echo "Collected dependencies:"
           cat requirements-full.txt
 
+      - name: Rename conda-forge packages
+        run: |
+          echo "Rename conda-forge packages in requirements-full.txt"
+          # Replace "build" for "python-build"
+          sed -s --in-place 's/^build$/python-build/' requirements-full.txt
+          echo "Renamed dependencies:"
+          cat requirements-full.txt
+
       - name: Install requirements
         run: conda install --file requirements-full.txt python=$PYTHON -c conda-forge
 
