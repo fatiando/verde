@@ -114,6 +114,21 @@ jobs:
           echo "Collected dependencies:"
           cat requirements-full.txt
 
+      - name: Rename conda-forge packages
+        run: |
+          # Choose options to sed based on the OS (macos uses POSIX sed)
+          if [[ ${{ matrix.os }} == macos ]]; then
+            opts="-i''"
+          else
+            opts='-s --in-place'
+          fi
+          echo "OPTS:" $opts
+          echo "Rename conda-forge packages in requirements-full.txt"
+          # Replace "build" for "python-build"
+          sed $opts 's/^build$/python-build/' requirements-full.txt
+          echo "Renamed dependencies:"
+          cat requirements-full.txt
+
       - name: Install requirements
         run: conda install --quiet --file requirements-full.txt python=$PYTHON
 
