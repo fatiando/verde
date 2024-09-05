@@ -71,7 +71,8 @@ def get_region(coordinates):
     --------
 
     >>> coords = grid_coordinates((0, 1, -10, -6), shape=(10, 10))
-    >>> print(get_region(coords))
+    >>> region = get_region(coords)
+    >>> print(tuple(float(c) for c in region))
     (0.0, 1.0, -10.0, -6.0)
 
     """
@@ -233,9 +234,6 @@ def line_coordinates(
     Examples
     --------
 
-    >>> # Lower printing precision to shorten this example
-    >>> import numpy as np; np.set_printoptions(precision=2, suppress=True)
-
     >>> values = line_coordinates(0, 5, spacing=2.5)
     >>> print(values.shape)
     (3,)
@@ -362,8 +360,6 @@ def grid_coordinates(
     >>> east, north = grid_coordinates(region=(0, 5, 0, 10), shape=(5, 3))
     >>> print(east.shape, north.shape)
     (5, 3) (5, 3)
-    >>> # Lower printing precision to shorten this example
-    >>> import numpy as np; np.set_printoptions(precision=1, suppress=True)
     >>> print(east)
     [[0.  2.5 5. ]
      [0.  2.5 5. ]
@@ -485,8 +481,6 @@ def grid_coordinates(
 
     >>> east, north = grid_coordinates(region=(0, 5, 0, 10), spacing=2.5,
     ...                                pixel_register=True)
-    >>> # Raise the printing precision for this example
-    >>> np.set_printoptions(precision=2, suppress=True)
     >>> # Notice that the shape is 1 less than when pixel_register=False
     >>> print(east.shape, north.shape)
     (4, 2) (4, 2)
