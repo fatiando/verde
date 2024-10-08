@@ -1080,7 +1080,7 @@ To run :func:`verde.cross_val_score` with Dask, use the ``delayed`` argument:
 
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:125: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    Delayed k-fold scores: [Delayed('fit_score-70a38e35-435e-41aa-bd97-6d1e98c0f1f9'), Delayed('fit_score-0f431ec4-ddd9-40b9-81c6-2abc9fd0ae46'), Delayed('fit_score-f7cebfd0-1252-47bc-b258-40e74fbe3b1b'), Delayed('fit_score-04990632-b090-43aa-9ed1-e4528ac36199'), Delayed('fit_score-59f188b3-3d08-45ce-94c4-866f2ee8819e')]
+    Delayed k-fold scores: [Delayed('fit_score-d8c78fd3-b554-4f4c-8e72-60f0831e383d'), Delayed('fit_score-1b4be55e-e563-4de4-9f5c-074d88931e40'), Delayed('fit_score-9bb170b4-f0ae-4fac-8ce2-c82fac9941b8'), Delayed('fit_score-04cefee8-578a-45e0-acab-8fae42396a25'), Delayed('fit_score-7155bfb0-9717-491b-8f02-21449185400b')]
 
 
 
@@ -1108,7 +1108,7 @@ are interested only in the mean score, we can schedule the mean as well using
 
  .. code-block:: none
 
-    Delayed mean: Delayed('mean-28b2a493-fdc9-4fdf-b496-e6adf3948e05')
+    Delayed mean: Delayed('mean-aa9e29ec-e05c-47b7-b278-f20935c7d982')
 
 
 
@@ -1172,7 +1172,7 @@ that.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.058 seconds)
+   **Total running time of the script:** (0 minutes 0.466 seconds)
 
 
 .. _sphx_glr_download_tutorials_model_evaluation.py:
