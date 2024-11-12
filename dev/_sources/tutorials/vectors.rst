@@ -987,7 +987,7 @@ functions can be used to achieve better interpolation results. The
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.252 seconds)
+   **Total running time of the script:** (0 minutes 1.248 seconds)
 
 
 .. _sphx_glr_download_tutorials_vectors.py:

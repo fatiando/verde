@@ -246,7 +246,7 @@ choice.
       new_object = klass(**new_object_params)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    [0.7960368857076603, 0.8447749626358183, 0.8382287942980768, 0.8409658539038999]
+    [np.float64(0.7960368857076603), np.float64(0.8447749626358183), np.float64(0.8382287942980768), np.float64(0.8409658539038999)]
 
 
 
@@ -1020,7 +1020,7 @@ intermediate values in the scheduled computations.
 
  .. code-block:: none
 
-    Delayed scores: [Delayed('mean-f788e060-27fa-4247-b79e-1e7a0b745229'), Delayed('mean-b459ce9e-d2f4-4a00-a007-a5df3fb8f778'), Delayed('mean-c28db10a-4ba0-4adf-b506-101b01825378'), Delayed('mean-969c1625-2505-4b39-bcae-f67ad705a37c')]
+    Delayed scores: [Delayed('mean-ef78010e-8c8e-45f9-8557-406c3a831054'), Delayed('mean-5399e0a6-e148-4454-b7cd-d47faa1dcece'), Delayed('mean-9027ff0c-f7c2-40bc-b218-ab1d8bc86abc'), Delayed('mean-dc92fbcd-a829-4c37-a594-f3a6d33418b4')]
 
 
 
@@ -1120,7 +1120,7 @@ short wavelength features that we get from the defaults.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.524 seconds)
+   **Total running time of the script:** (0 minutes 0.548 seconds)
 
 
 .. _sphx_glr_download_tutorials_model_selection.py:
