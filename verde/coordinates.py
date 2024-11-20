@@ -135,7 +135,7 @@ def scatter_points(region, size, random_state=None, extra_coords=None):
         permutations. Use a fixed seed to make sure computations are
         reproducible. Use ``None`` to choose a seed automatically (resulting in
         different numbers with each run).
-    extra_coords : None, scalar, or list
+    extra_coords : None, scalar or list
         If not None, then value(s) of extra coordinate arrays to be generated.
         These extra arrays will have the same *size* as the others but will
         contain a constant value. Will generate an extra array per value given
@@ -331,7 +331,7 @@ def grid_coordinates(
         instead of the grid lines. In practice, this means that there will be
         one less element per dimension of the grid when compared to grid line
         registered (only if given *spacing* and not *shape*). Default is False.
-    extra_coords : None, scalar, or list
+    extra_coords : None, scalar or list
         If not None, then value(s) of extra coordinate arrays to be generated.
         These extra arrays will have the same *shape* as the others but will
         contain a constant value. Will generate an extra array per value given
@@ -709,7 +709,7 @@ def profile_coordinates(point1, point2, size, extra_coords=None):
         second point, respectively.
     size : int
         Number of points to sample along the line.
-    extra_coords : None, scalar, or list
+    extra_coords : None, scalar or list
         If not None, then value(s) of extra coordinate arrays to be generated.
         These extra arrays will have the same *size* as the others but will
         contain a constant value. Will generate an extra array per value given
