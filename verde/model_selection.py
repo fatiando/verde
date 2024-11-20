@@ -70,7 +70,7 @@ class BlockShuffleSplit(BaseBlockCrossValidator):
         absolute number of test samples. If None, the value is set to the
         complement of the train size. If ``train_size`` is also None, it will
         be set to 0.1.
-    train_size : float, int, or None, default=None
+    train_size : float, int or None, default=None
         If float, should be between 0.0 and 1.0 and represent the
         proportion of the dataset to include in the train split. If
         int, represents the absolute number of train samples. If None,
@@ -644,7 +644,7 @@ def cross_val_score(
         delayed objects. Call `.compute()` on each score or
         :func:`dask.compute` on the entire list to trigger the actual
         computations.
-    scoring : None, str, or callable
+    scoring : None, str or callable
         A scoring function (or name of a function) known to scikit-learn. See
         the description of *scoring* in
         :func:`sklearn.model_selection.cross_val_score` for details. If None,

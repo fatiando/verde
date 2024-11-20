@@ -94,7 +94,7 @@ class SplineCV(BaseGridder):
         If True, will use :func:`dask.delayed.delayed` to dispatch computations
         and allow mod:`dask` to execute the grid search in parallel (see note
         above).
-    scoring : None, str, or callable
+    scoring : None, str or callable
         The scoring function (or name of a function) used for cross-validation.
         Must be known to scikit-learn. See the description of *scoring* in
         :func:`sklearn.model_selection.cross_val_score` for details. If None,
