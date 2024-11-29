@@ -210,7 +210,7 @@ print("Delayed k-fold scores:", scores)
 # In this case, the scores haven't actually been computed yet (hence the
 # "delayed" term). Instead, Verde scheduled the operations with Dask. Since we
 # are interested only in the mean score, we can schedule the mean as well using
-# :func:`dask.delayed`:
+# :func:`dask.delayed.delayed`:
 
 mean_score = dask.delayed(np.mean)(scores)
 print("Delayed mean:", mean_score)
