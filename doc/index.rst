@@ -116,6 +116,13 @@ and more!
 .. toctree::
     :maxdepth: 1
     :hidden:
+    :caption: Tutorial
+
+    tutorial/first-grid.rst
+
+.. toctree::
+    :maxdepth: 1
+    :hidden:
     :caption: User Guide
 
     tutorials/grid_coordinates.rst
