@@ -13,6 +13,11 @@ cross-validation, and blocked operations.
 This example will show you some of what Verde can do to process some data and
 generate a grid.
 
+.. seealso::
+
+   Looking for a simpler and more detailed tutorial? Start with
+   :ref:`tutorial-first-grid`.
+
 The library
 -----------
 
