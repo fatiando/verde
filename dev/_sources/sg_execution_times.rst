@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:01.355** total execution time for 27 files **from all galleries**:
+**00:59.721** total execution time for 27 files **from all galleries**:
 
 .. container::
 
@@ -33,83 +33,83 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_blockkfold.py` (``gallery_src/blockkfold.py``)
-     - 00:18.446
+     - 00:17.385
      - 0.0
    * - :ref:`sphx_glr_gallery_train_test_split.py` (``gallery_src/train_test_split.py``)
-     - 00:05.528
+     - 00:05.156
      - 0.0
    * - :ref:`sphx_glr_tutorials_chain.py` (``tutorials_src/chain.py``)
-     - 00:04.088
+     - 00:04.170
      - 0.0
    * - :ref:`sphx_glr_gallery_convex_hull_mask.py` (``gallery_src/convex_hull_mask.py``)
-     - 00:03.487
+     - 00:03.471
      - 0.0
    * - :ref:`sphx_glr_tutorials_decimation.py` (``tutorials_src/decimation.py``)
-     - 00:03.434
+     - 00:03.231
      - 0.0
    * - :ref:`sphx_glr_gallery_kneighbors_gridder.py` (``gallery_src/kneighbors_gridder.py``)
-     - 00:03.348
-     - 0.0
-   * - :ref:`sphx_glr_gallery_distance_mask.py` (``gallery_src/distance_mask.py``)
-     - 00:02.795
+     - 00:03.160
      - 0.0
    * - :ref:`sphx_glr_gallery_project_grid.py` (``gallery_src/project_grid.py``)
-     - 00:02.458
+     - 00:02.688
      - 0.0
-   * - :ref:`sphx_glr_gallery_cubic_gridder.py` (``gallery_src/cubic_gridder.py``)
-     - 00:02.437
-     - 0.0
-   * - :ref:`sphx_glr_tutorials_weights.py` (``tutorials_src/weights.py``)
-     - 00:02.384
-     - 0.0
-   * - :ref:`sphx_glr_gallery_linear_gridder.py` (``gallery_src/linear_gridder.py``)
-     - 00:02.354
+   * - :ref:`sphx_glr_gallery_distance_mask.py` (``gallery_src/distance_mask.py``)
+     - 00:02.605
      - 0.0
    * - :ref:`sphx_glr_gallery_spline.py` (``gallery_src/spline.py``)
-     - 00:02.046
+     - 00:02.537
+     - 0.0
+   * - :ref:`sphx_glr_tutorials_weights.py` (``tutorials_src/weights.py``)
+     - 00:02.435
+     - 0.0
+   * - :ref:`sphx_glr_gallery_cubic_gridder.py` (``gallery_src/cubic_gridder.py``)
+     - 00:02.423
+     - 0.0
+   * - :ref:`sphx_glr_gallery_linear_gridder.py` (``gallery_src/linear_gridder.py``)
+     - 00:02.297
      - 0.0
    * - :ref:`sphx_glr_tutorials_projections.py` (``tutorials_src/projections.py``)
-     - 00:01.264
+     - 00:01.277
      - 0.0
    * - :ref:`sphx_glr_tutorials_vectors.py` (``tutorials_src/vectors.py``)
-     - 00:01.252
-     - 0.0
-   * - :ref:`sphx_glr_tutorials_model_evaluation.py` (``tutorials_src/model_evaluation.py``)
-     - 00:01.058
-     - 0.0
-   * - :ref:`sphx_glr_gallery_blockreduce_weights_mean.py` (``gallery_src/blockreduce_weights_mean.py``)
-     - 00:00.788
-     - 0.0
-   * - :ref:`sphx_glr_gallery_spline_cv.py` (``gallery_src/spline_cv.py``)
-     - 00:00.774
-     - 0.0
-   * - :ref:`sphx_glr_gallery_spline_weights.py` (``gallery_src/spline_weights.py``)
-     - 00:00.617
-     - 0.0
-   * - :ref:`sphx_glr_tutorials_model_selection.py` (``tutorials_src/model_selection.py``)
-     - 00:00.524
+     - 00:01.257
      - 0.0
    * - :ref:`sphx_glr_gallery_blockreduce_weights.py` (``gallery_src/blockreduce_weights.py``)
-     - 00:00.420
+     - 00:00.886
+     - 0.0
+   * - :ref:`sphx_glr_gallery_blockreduce_weights_mean.py` (``gallery_src/blockreduce_weights_mean.py``)
+     - 00:00.795
+     - 0.0
+   * - :ref:`sphx_glr_gallery_spline_weights.py` (``gallery_src/spline_weights.py``)
+     - 00:00.619
+     - 0.0
+   * - :ref:`sphx_glr_tutorials_model_evaluation.py` (``tutorials_src/model_evaluation.py``)
+     - 00:00.614
+     - 0.0
+   * - :ref:`sphx_glr_tutorials_model_selection.py` (``tutorials_src/model_selection.py``)
+     - 00:00.569
      - 0.0
    * - :ref:`sphx_glr_gallery_trend.py` (``gallery_src/trend.py``)
-     - 00:00.403
+     - 00:00.399
+     - 0.0
+   * - :ref:`sphx_glr_gallery_spline_cv.py` (``gallery_src/spline_cv.py``)
+     - 00:00.362
      - 0.0
    * - :ref:`sphx_glr_gallery_vector_trend.py` (``gallery_src/vector_trend.py``)
-     - 00:00.338
+     - 00:00.341
      - 0.0
    * - :ref:`sphx_glr_tutorials_trends.py` (``tutorials_src/trends.py``)
-     - 00:00.321
-     - 0.0
-   * - :ref:`sphx_glr_gallery_vector_uncoupled.py` (``gallery_src/vector_uncoupled.py``)
-     - 00:00.275
+     - 00:00.318
      - 0.0
    * - :ref:`sphx_glr_gallery_blockreduce.py` (``gallery_src/blockreduce.py``)
-     - 00:00.207
+     - 00:00.204
      - 0.0
    * - :ref:`sphx_glr_tutorials_grid_coordinates.py` (``tutorials_src/grid_coordinates.py``)
-     - 00:00.197
+     - 00:00.203
+     - 0.0
+   * - :ref:`sphx_glr_gallery_vector_uncoupled.py` (``gallery_src/vector_uncoupled.py``)
+     - 00:00.200
      - 0.0
    * - :ref:`sphx_glr_gallery_checkerboard.py` (``gallery_src/checkerboard.py``)
-     - 00:00.112
+     - 00:00.118
      - 0.0
