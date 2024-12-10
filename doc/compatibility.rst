@@ -59,3 +59,5 @@ following releases to ensure compatibility:
       - 1.8.0
     * - 3.8
       - 1.8.0
+    * - 3.9
+      - 1.8.1
