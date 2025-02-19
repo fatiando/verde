@@ -107,7 +107,7 @@ some other value.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.795 seconds)
+   **Total running time of the script:** (0 minutes 2.585 seconds)
 
 
 .. _sphx_glr_download_gallery_distance_mask.py:

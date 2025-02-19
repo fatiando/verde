@@ -19,20 +19,22 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
@@ -43,10 +45,11 @@
     <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=504d3d5d" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
@@ -54,7 +57,7 @@
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/thebelab-helper.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
@@ -80,19 +83,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -100,7 +92,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -108,8 +99,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -127,7 +118,8 @@
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -142,6 +134,8 @@
         <div class="sidebar-primary-item">
 
   
+    
+  
 
 <a class="navbar-brand logo" href="../../index.html">
   
@@ -155,15 +149,11 @@
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
@@ -282,9 +272,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -303,9 +298,9 @@
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -380,24 +375,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 
 </div></div>
       
@@ -433,28 +420,28 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Biharmonic splines in 2D.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">itertools</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_is_fitted</span>
 
-<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">BaseGridder</span><span class="p">,</span> <span class="n">check_fit_input</span><span class="p">,</span> <span class="n">least_squares</span><span class="p">,</span> <span class="n">n_1d_arrays</span>
-<span class="kn">from</span> <span class="nn">.coordinates</span> <span class="kn">import</span> <span class="n">get_region</span>
-<span class="kn">from</span> <span class="nn">.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">dispatch</span><span class="p">,</span> <span class="n">parse_engine</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseGridder</span><span class="p">,</span> <span class="n">check_fit_input</span><span class="p">,</span> <span class="n">least_squares</span><span class="p">,</span> <span class="n">n_1d_arrays</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_region</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">cross_val_score</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">dispatch</span><span class="p">,</span> <span class="n">parse_engine</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">numba</span>
-    <span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numba</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">numba</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">dummy_jit</span> <span class="k">as</span> <span class="n">jit</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">dummy_jit</span> <span class="k">as</span> <span class="n">jit</span>
 
 
 <div class="viewcode-block" id="SplineCV">
 <a class="viewcode-back" href="../../api/generated/verde.SplineCV.html#verde.SplineCV">[docs]</a>
-<span class="k">class</span> <span class="nc">SplineCV</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SplineCV</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Cross-validated biharmonic spline interpolation.</span>
 
@@ -464,15 +451,15 @@ document.write(`
 <span class="sd">    (or minimum) mean cross-validation score (i.e., a grid search).</span>
 
 <span class="sd">    This can optionally run in parallel using :mod:`dask`. To do this, use</span>
-<span class="sd">    ``delayed=True`` to dispatch computations with :func:`dask.delayed`.</span>
-<span class="sd">    In this case, each fit and score operation of the grid search will be</span>
-<span class="sd">    performed in parallel.</span>
+<span class="sd">    ``delayed=True`` to dispatch computations with</span>
+<span class="sd">    :func:`dask.delayed.delayed`. In this case, each fit and score</span>
+<span class="sd">    operation of the grid search will be performed in parallel.</span>
 
 <span class="sd">    .. note::</span>
 
 <span class="sd">        When using *delayed*, the ``scores_`` attribute will be</span>
-<span class="sd">        :func:`dask.delayed` objects instead of the actual scores. This is</span>
-<span class="sd">        because the scores are an intermediate step in the computations and</span>
+<span class="sd">        :func:`dask.delayed.delayed` objects instead of the actual scores. This</span>
+<span class="sd">        is because the scores are an intermediate step in the computations and</span>
 <span class="sd">        their results are not stored. If you need the scores, run</span>
 <span class="sd">        :func:`dask.compute` on ``scores_`` to calculate them. Be warned that</span>
 <span class="sd">        **this will run the grid search again**. It might still be faster than</span>
@@ -519,10 +506,10 @@ document.write(`
 <span class="sd">        be a dask ``Client`` object. It will be used to dispatch computations</span>
 <span class="sd">        to the dask cluster.</span>
 <span class="sd">    delayed : bool</span>
-<span class="sd">        If True, will use :func:`dask.delayed` to dispatch computations and</span>
-<span class="sd">        allow mod:`dask` to execute the grid search in parallel (see note</span>
+<span class="sd">        If True, will use :func:`dask.delayed.delayed` to dispatch computations</span>
+<span class="sd">        and allow mod:`dask` to execute the grid search in parallel (see note</span>
 <span class="sd">        above).</span>
-<span class="sd">    scoring : None, str, or callable</span>
+<span class="sd">    scoring : None, str or callable</span>
 <span class="sd">        The scoring function (or name of a function) used for cross-validation.</span>
 <span class="sd">        Must be known to scikit-learn. See the description of *scoring* in</span>
 <span class="sd">        :func:`sklearn.model_selection.cross_val_score` for details. If None,</span>
@@ -543,8 +530,8 @@ document.write(`
 <span class="sd">        methods.</span>
 <span class="sd">    scores_ : array</span>
 <span class="sd">        The mean cross-validation score for each parameter combination. If</span>
-<span class="sd">        ``delayed=True``, will be a list of :func:`dask.delayed` objects (see</span>
-<span class="sd">        note above).</span>
+<span class="sd">        ``delayed=True``, will be a list of :func:`dask.delayed.delayed`</span>
+<span class="sd">        objects (see note above).</span>
 <span class="sd">    mindist_ : float</span>
 <span class="sd">        The optimal value for the *mindist* parameter.</span>
 <span class="sd">    damping_ : float</span>
@@ -560,7 +547,7 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">mindists</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">dampings</span><span class="o">=</span><span class="p">(</span><span class="mf">1e-10</span><span class="p">,</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="mf">1e-1</span><span class="p">),</span>
@@ -610,7 +597,7 @@ document.write(`
 
 <div class="viewcode-block" id="SplineCV.fit">
 <a class="viewcode-back" href="../../api/generated/verde.SplineCV.html#verde.SplineCV.fit">[docs]</a>
-    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fit the spline to the given data and automatically tune parameters.</span>
 
@@ -695,33 +682,33 @@ document.write(`
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">force_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">force_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;The estimated forces that fit the data.&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spline_</span><span class="o">.</span><span class="n">force_</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">region_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">region_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;The bounding region of the data used to fit the spline&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spline_</span><span class="o">.</span><span class="n">region_</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">damping_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">damping_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;The optimal damping parameter&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spline_</span><span class="o">.</span><span class="n">damping</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">mindist_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mindist_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;The optimal mindist parameter&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spline_</span><span class="o">.</span><span class="n">mindist</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">force_coords_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">force_coords_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="s2">&quot;The optimal force locations&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">spline_</span><span class="o">.</span><span class="n">force_coords_</span>
 
 <div class="viewcode-block" id="SplineCV.predict">
 <a class="viewcode-back" href="../../api/generated/verde.SplineCV.html#verde.SplineCV.predict">[docs]</a>
-    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluate the best estimated spline on the given set of points.</span>
 
@@ -749,7 +736,7 @@ document.write(`
 
 <div class="viewcode-block" id="Spline">
 <a class="viewcode-back" href="../../api/generated/verde.Spline.html#verde.Spline">[docs]</a>
-<span class="k">class</span> <span class="nc">Spline</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Spline</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Biharmonic spline interpolation using Green&#39;s functions.</span>
 
@@ -834,7 +821,7 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mindist</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_coords</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mindist</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_coords</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">damping</span> <span class="o">=</span> <span class="n">damping</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">force_coords</span> <span class="o">=</span> <span class="n">force_coords</span>
@@ -862,7 +849,7 @@ document.write(`
 
 <div class="viewcode-block" id="Spline.fit">
 <a class="viewcode-back" href="../../api/generated/verde.Spline.html#verde.Spline.fit">[docs]</a>
-    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fit the biharmonic spline to the given data.</span>
 
@@ -905,7 +892,7 @@ document.write(`
 
 <div class="viewcode-block" id="Spline.predict">
 <a class="viewcode-back" href="../../api/generated/verde.Spline.html#verde.Spline.predict">[docs]</a>
-    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluate the estimated spline on the given set of points.</span>
 
@@ -943,7 +930,7 @@ document.write(`
 
 <div class="viewcode-block" id="Spline.jacobian">
 <a class="viewcode-back" href="../../api/generated/verde.Spline.html#verde.Spline.jacobian">[docs]</a>
-    <span class="k">def</span> <span class="nf">jacobian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">force_coords</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">jacobian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">force_coords</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Make the Jacobian matrix for the 2D biharmonic spline.</span>
 
@@ -985,7 +972,7 @@ document.write(`
 
 
 
-<span class="k">def</span> <span class="nf">warn_weighted_exact_solution</span><span class="p">(</span><span class="n">spline</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">warn_weighted_exact_solution</span><span class="p">(</span><span class="n">spline</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Warn the user that a weights doesn&#39;t work for the exact solution.</span>
 
@@ -1008,7 +995,7 @@ document.write(`
         <span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">greens_func_numpy</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">greens_func_numpy</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">):</span>
     <span class="s2">&quot;Calculate the Green&#39;s function for the Bi-Harmonic Spline&quot;</span>
     <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">east</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">north</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="c1"># The mindist factor was used to avoid NaNs when the distance approaches</span>
@@ -1032,7 +1019,7 @@ document.write(`
 
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">greens_func_jit</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">greens_func_jit</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">):</span>
     <span class="s2">&quot;Calculate the Green&#39;s function for the Bi-Harmonic Spline&quot;</span>
     <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">east</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">north</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="c1"># The mindist factor was used to avoid NaNs when the distance approaches</span>
@@ -1052,7 +1039,7 @@ document.write(`
     <span class="k">return</span> <span class="n">result</span>
 
 
-<span class="k">def</span> <span class="nf">predict_numpy</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">predict_numpy</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
     <span class="s2">&quot;Calculate the predicted data using numpy.&quot;</span>
     <span class="n">result</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">forces</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
@@ -1061,7 +1048,7 @@ document.write(`
     <span class="k">return</span> <span class="n">result</span>
 
 
-<span class="k">def</span> <span class="nf">jacobian_numpy</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">jac</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">jacobian_numpy</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">jac</span><span class="p">):</span>
     <span class="s2">&quot;Calculate the Jacobian using numpy broadcasting.&quot;</span>
     <span class="c1"># Reshaping the data to a column vector will automatically build a distance</span>
     <span class="c1"># matrix between each data point and force.</span>
@@ -1074,7 +1061,7 @@ document.write(`
 
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">predict_numba</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">predict_numba</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
     <span class="s2">&quot;Calculate the predicted data using numba to speed things up.&quot;</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">numba</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
         <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1087,7 +1074,7 @@ document.write(`
 
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">jacobian_numba</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">jac</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">jacobian_numba</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">jac</span><span class="p">):</span>
     <span class="s2">&quot;Calculate the Jacobian matrix using numba to speed things up.&quot;</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">numba</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">force_east</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
@@ -1129,7 +1116,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2017-2024, The Verde Developers.
+      © Copyright 2017-2025, The Verde Developers.
       <br/>
     
   </p>
@@ -1138,7 +1125,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Jun 11, 2024.
+  Last updated on Feb 19, 2025.
   <br/>
 </p>
   </div>
@@ -1156,8 +1143,8 @@ document.write(`
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>

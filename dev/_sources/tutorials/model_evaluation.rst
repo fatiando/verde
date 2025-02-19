@@ -356,7 +356,8 @@ symbol.
     <div class="output_subarea output_html rendered_html output_result">
     <style>#sk-container-id-2 {
       /* Definition of color scheme common for light and dark mode */
-      --sklearn-color-text: black;
+      --sklearn-color-text: #000;
+      --sklearn-color-text-muted: #666;
       --sklearn-color-line: gray;
       /* Definition of color scheme for unfitted estimators */
       --sklearn-color-unfitted-level-0: #fff5e6;
@@ -501,12 +502,21 @@ symbol.
     /* Toggleable label */
     #sk-container-id-2 label.sk-toggleable__label {
       cursor: pointer;
-      display: block;
+      display: flex;
       width: 100%;
       margin-bottom: 0;
       padding: 0.5em;
       box-sizing: border-box;
       text-align: center;
+      align-items: start;
+      justify-content: space-between;
+      gap: 0.5em;
+    }
+
+    #sk-container-id-2 label.sk-toggleable__label .caption {
+      font-size: 0.6rem;
+      font-weight: lighter;
+      color: var(--sklearn-color-text-muted);
     }
 
     #sk-container-id-2 label.sk-toggleable__label-arrow:before {
@@ -659,7 +669,8 @@ symbol.
       height: 1em;
       width: 1em;
       text-decoration: none !important;
-      margin-left: 1ex;
+      margin-left: 0.5em;
+      text-align: center;
       /* unfitted */
       border: var(--sklearn-color-unfitted-level-1) 1pt solid;
       color: var(--sklearn-color-unfitted-level-1);
@@ -758,7 +769,7 @@ symbol.
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-3);
     }
-    </style><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Spline(mindist=0)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow fitted">&nbsp;Spline<span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></label><div class="sk-toggleable__content fitted"><pre>Spline(mindist=0)</pre></div> </div></div></div></div>
+    </style><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Spline(mindist=0)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Spline</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted"><pre>Spline(mindist=0)</pre></div> </div></div></div></div>
     </div>
     <br />
     <br />
@@ -875,7 +886,7 @@ a perfect prediction, but has no lower bound.
 
     /home/runner/work/verde/verde/doc/tutorials_src/model_evaluation.py:144: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = spline.score(*test)
-    R² score: 0.8404552995850606
+    R² score: 0.8404552995880556
 
 
 
@@ -913,7 +924,7 @@ data that wasn't used in the gridding algorithm.
 
     /home/runner/work/verde/verde/doc/tutorials_src/model_evaluation.py:162: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       print("R² score with seed 1:", vd.Spline().fit(*train_other).score(*test_other))
-    R² score with seed 1: 0.7832246935451503
+    R² score with seed 1: 0.7832246935418062
 
 
 
@@ -947,28 +958,28 @@ by default. It will split the data *k* times and return the score on each
 
  .. code-block:: none
 
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:125: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:125: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:125: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:125: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:125: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
     k-fold scores: [0.81655898 0.72019255 0.81596348 0.87740087 0.75006854]
-    Mean score: 0.7960368857076603
+    Mean score: 0.7960368857064823
 
 
 
@@ -1001,49 +1012,49 @@ example, if we want to shuffle then split the data *n* times
 
  .. code-block:: none
 
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:125: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:125: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:125: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:125: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:125: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:125: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:125: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:125: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:125: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:125: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
     shuffle scores: [0.8404553  0.79219264 0.60098099 0.73123421 0.67325199 0.70560489
      0.68905623 0.83517217 0.86908658 0.84133251]
-    Mean score: 0.7578367521251231
+    Mean score: 0.7578367521259098
 
 
 
@@ -1078,9 +1089,9 @@ To run :func:`verde.cross_val_score` with Dask, use the ``delayed`` argument:
 
  .. code-block:: none
 
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:125: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    Delayed k-fold scores: [Delayed('fit_score-70a38e35-435e-41aa-bd97-6d1e98c0f1f9'), Delayed('fit_score-0f431ec4-ddd9-40b9-81c6-2abc9fd0ae46'), Delayed('fit_score-f7cebfd0-1252-47bc-b258-40e74fbe3b1b'), Delayed('fit_score-04990632-b090-43aa-9ed1-e4528ac36199'), Delayed('fit_score-59f188b3-3d08-45ce-94c4-866f2ee8819e')]
+    Delayed k-fold scores: [Delayed('fit_score-29f019ee-a930-48f1-804d-1c5078f4d3fc'), Delayed('fit_score-7c4f1281-b478-4689-9876-425c617d2884'), Delayed('fit_score-bfb1c499-408f-4c9e-8017-b7bd5a05431b'), Delayed('fit_score-5f6710b6-cfe3-492d-a7f5-910c19187633'), Delayed('fit_score-7c42b075-5e39-4583-8678-6da8a52aaff3')]
 
 
 
@@ -1090,7 +1101,7 @@ To run :func:`verde.cross_val_score` with Dask, use the ``delayed`` argument:
 In this case, the scores haven't actually been computed yet (hence the
 "delayed" term). Instead, Verde scheduled the operations with Dask. Since we
 are interested only in the mean score, we can schedule the mean as well using
-:func:`dask.delayed`:
+:func:`dask.delayed.delayed`:
 
 .. GENERATED FROM PYTHON SOURCE LINES 214-218
 
@@ -1108,7 +1119,7 @@ are interested only in the mean score, we can schedule the mean as well using
 
  .. code-block:: none
 
-    Delayed mean: Delayed('mean-28b2a493-fdc9-4fdf-b496-e6adf3948e05')
+    Delayed mean: Delayed('mean-1cbc3b2e-154b-49a1-83d5-36f64eb3ae24')
 
 
 
@@ -1135,17 +1146,15 @@ things in parallel.
 
  .. code-block:: none
 
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:784: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
-      score = estimator.score(*test_data)
-    Mean score: 0.7960368857076603
+    Mean score: 0.7960368857064823
 
 
 
@@ -1172,7 +1181,7 @@ that.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.058 seconds)
+   **Total running time of the script:** (0 minutes 0.524 seconds)
 
 
 .. _sphx_glr_download_tutorials_model_evaluation.py:

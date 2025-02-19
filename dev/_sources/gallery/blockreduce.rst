@@ -42,9 +42,9 @@ is a good choice.
 
  .. code-block:: none
 
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:179: FutureWarning: The provided callable <function median at 0x7f9d2ba73b00> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:179: FutureWarning: The provided callable <function median at 0x7f06bd7b7e20> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
       blocked = pd.DataFrame(columns).groupby("block").aggregate(reduction)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:236: FutureWarning: The provided callable <function median at 0x7f9d2ba73b00> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:236: FutureWarning: The provided callable <function median at 0x7f06bd7b7e20> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
       grouped = table.groupby("block").aggregate(self.reduction)
     Original data size: 82970
     Decimated data size: 1801
@@ -91,7 +91,7 @@ is a good choice.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.207 seconds)
+   **Total running time of the script:** (0 minutes 0.199 seconds)
 
 
 .. _sphx_glr_download_gallery_blockreduce.py:

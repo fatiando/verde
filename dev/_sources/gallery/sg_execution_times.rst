@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:46.833** total execution time for 18 files **from gallery**:
+**00:44.682** total execution time for 18 files **from gallery**:
 
 .. container::
 
@@ -33,56 +33,56 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_blockkfold.py` (``blockkfold.py``)
-     - 00:18.446
+     - 00:17.501
      - 0.0
    * - :ref:`sphx_glr_gallery_train_test_split.py` (``train_test_split.py``)
-     - 00:05.528
+     - 00:05.243
      - 0.0
    * - :ref:`sphx_glr_gallery_convex_hull_mask.py` (``convex_hull_mask.py``)
-     - 00:03.487
+     - 00:03.407
      - 0.0
    * - :ref:`sphx_glr_gallery_kneighbors_gridder.py` (``kneighbors_gridder.py``)
-     - 00:03.348
-     - 0.0
-   * - :ref:`sphx_glr_gallery_distance_mask.py` (``distance_mask.py``)
-     - 00:02.795
+     - 00:03.183
      - 0.0
    * - :ref:`sphx_glr_gallery_project_grid.py` (``project_grid.py``)
-     - 00:02.458
+     - 00:02.588
+     - 0.0
+   * - :ref:`sphx_glr_gallery_distance_mask.py` (``distance_mask.py``)
+     - 00:02.585
      - 0.0
    * - :ref:`sphx_glr_gallery_cubic_gridder.py` (``cubic_gridder.py``)
-     - 00:02.437
+     - 00:02.317
      - 0.0
    * - :ref:`sphx_glr_gallery_linear_gridder.py` (``linear_gridder.py``)
-     - 00:02.354
+     - 00:02.214
      - 0.0
    * - :ref:`sphx_glr_gallery_spline.py` (``spline.py``)
-     - 00:02.046
+     - 00:02.126
      - 0.0
    * - :ref:`sphx_glr_gallery_blockreduce_weights_mean.py` (``blockreduce_weights_mean.py``)
      - 00:00.788
      - 0.0
-   * - :ref:`sphx_glr_gallery_spline_cv.py` (``spline_cv.py``)
-     - 00:00.774
-     - 0.0
    * - :ref:`sphx_glr_gallery_spline_weights.py` (``spline_weights.py``)
-     - 00:00.617
+     - 00:00.621
      - 0.0
    * - :ref:`sphx_glr_gallery_blockreduce_weights.py` (``blockreduce_weights.py``)
-     - 00:00.420
+     - 00:00.456
+     - 0.0
+   * - :ref:`sphx_glr_gallery_spline_cv.py` (``spline_cv.py``)
+     - 00:00.427
      - 0.0
    * - :ref:`sphx_glr_gallery_trend.py` (``trend.py``)
-     - 00:00.403
+     - 00:00.393
      - 0.0
    * - :ref:`sphx_glr_gallery_vector_trend.py` (``vector_trend.py``)
-     - 00:00.338
-     - 0.0
-   * - :ref:`sphx_glr_gallery_vector_uncoupled.py` (``vector_uncoupled.py``)
-     - 00:00.275
+     - 00:00.330
      - 0.0
    * - :ref:`sphx_glr_gallery_blockreduce.py` (``blockreduce.py``)
-     - 00:00.207
+     - 00:00.199
+     - 0.0
+   * - :ref:`sphx_glr_gallery_vector_uncoupled.py` (``vector_uncoupled.py``)
+     - 00:00.190
      - 0.0
    * - :ref:`sphx_glr_gallery_checkerboard.py` (``checkerboard.py``)
-     - 00:00.112
+     - 00:00.115
      - 0.0

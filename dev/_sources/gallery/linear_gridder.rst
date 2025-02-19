@@ -49,11 +49,11 @@ projected prior to interpolation.
 
  .. code-block:: none
 
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:179: FutureWarning: The provided callable <function median at 0x7f9d2ba73b00> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:179: FutureWarning: The provided callable <function median at 0x7f06bd7b7e20> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
       blocked = pd.DataFrame(columns).groupby("block").aggregate(reduction)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:236: FutureWarning: The provided callable <function median at 0x7f9d2ba73b00> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:236: FutureWarning: The provided callable <function median at 0x7f06bd7b7e20> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
       grouped = table.groupby("block").aggregate(self.reduction)
-    Data region: (245.0, 254.705, 20.0, 29.99131)
+    Data region: (np.float64(245.0), np.float64(254.705), np.float64(20.0), np.float64(29.99131))
     Generated geographic grid:
     <xarray.Dataset> Size: 3MB
     Dimensions:       (latitude: 600, longitude: 583)
@@ -145,7 +145,7 @@ projected prior to interpolation.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.354 seconds)
+   **Total running time of the script:** (0 minutes 2.214 seconds)
 
 
 .. _sphx_glr_download_gallery_linear_gridder.py:

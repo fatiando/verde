@@ -228,7 +228,8 @@ different :class:`verde.Trend`.
     <div class="output_subarea output_html rendered_html output_result">
     <style>#sk-container-id-4 {
       /* Definition of color scheme common for light and dark mode */
-      --sklearn-color-text: black;
+      --sklearn-color-text: #000;
+      --sklearn-color-text-muted: #666;
       --sklearn-color-line: gray;
       /* Definition of color scheme for unfitted estimators */
       --sklearn-color-unfitted-level-0: #fff5e6;
@@ -373,12 +374,21 @@ different :class:`verde.Trend`.
     /* Toggleable label */
     #sk-container-id-4 label.sk-toggleable__label {
       cursor: pointer;
-      display: block;
+      display: flex;
       width: 100%;
       margin-bottom: 0;
       padding: 0.5em;
       box-sizing: border-box;
       text-align: center;
+      align-items: start;
+      justify-content: space-between;
+      gap: 0.5em;
+    }
+
+    #sk-container-id-4 label.sk-toggleable__label .caption {
+      font-size: 0.6rem;
+      font-weight: lighter;
+      color: var(--sklearn-color-text-muted);
     }
 
     #sk-container-id-4 label.sk-toggleable__label-arrow:before {
@@ -531,7 +541,8 @@ different :class:`verde.Trend`.
       height: 1em;
       width: 1em;
       text-decoration: none !important;
-      margin-left: 1ex;
+      margin-left: 0.5em;
+      text-align: center;
       /* unfitted */
       border: var(--sklearn-color-unfitted-level-1) 1pt solid;
       color: var(--sklearn-color-unfitted-level-1);
@@ -630,7 +641,7 @@ different :class:`verde.Trend`.
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-3);
     }
-    </style><div id="sk-container-id-4" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Vector(components=[Trend(degree=4), Trend(degree=1)])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox" checked><label for="sk-estimator-id-4" class="sk-toggleable__label fitted sk-toggleable__label-arrow fitted">&nbsp;Vector<span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></label><div class="sk-toggleable__content fitted"><pre>Vector(components=[Trend(degree=4), Trend(degree=1)])</pre></div> </div></div></div></div>
+    </style><div id="sk-container-id-4" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Vector(components=[Trend(degree=4), Trend(degree=1)])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox" checked><label for="sk-estimator-id-4" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Vector</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted"><pre>Vector(components=[Trend(degree=4), Trend(degree=1)])</pre></div> </div></div></div></div>
     </div>
     <br />
     <br />

@@ -20,20 +20,22 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
@@ -44,10 +46,11 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=504d3d5d" />
   
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
@@ -55,7 +58,7 @@
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/thebelab-helper.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script src="_static/design-tabs.js?v=36754332"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
@@ -81,19 +84,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -101,7 +93,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -109,8 +100,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -128,7 +119,8 @@
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -143,6 +135,8 @@
         <div class="sidebar-primary-item">
 
   
+    
+  
 
 <a class="navbar-brand logo" href="index.html">
   
@@ -156,15 +150,11 @@
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
@@ -283,9 +273,14 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -304,9 +299,9 @@
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -446,24 +441,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 
 </div></div>
       
@@ -491,7 +478,7 @@ document.write(`
                   
   <section id="computation-times">
 <span id="sphx-glr-sg-execution-times"></span><h1>Computation times<a class="headerlink" href="#computation-times" title="Link to this heading">#</a></h1>
-<p><strong>01:01.355</strong> total execution time for 27 files <strong>from all galleries</strong>:</p>
+<p><strong>00:58.717</strong> total execution time for 27 files <strong>from all galleries</strong>:</p>
 <div class="docutils container">
 <style scoped>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
@@ -513,111 +500,111 @@ $(document).ready( function () {
 </thead>
 <tbody>
 <tr class="row-even"><td><p><a class="reference internal" href="gallery/blockkfold.html#sphx-glr-gallery-blockkfold-py"><span class="std std-ref">K-Fold cross-validation with blocks</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/blockkfold.py</span></code>)</p></td>
-<td><p>00:18.446</p></td>
+<td><p>00:17.501</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="gallery/train_test_split.html#sphx-glr-gallery-train-test-split-py"><span class="std std-ref">Splitting data into train and test sets</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/train_test_split.py</span></code>)</p></td>
-<td><p>00:05.528</p></td>
+<td><p>00:05.243</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="tutorials/chain.html#sphx-glr-tutorials-chain-py"><span class="std std-ref">Chaining Operations</span></a> (<code class="docutils literal notranslate"><span class="pre">tutorials_src/chain.py</span></code>)</p></td>
-<td><p>00:04.088</p></td>
+<td><p>00:04.165</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="gallery/convex_hull_mask.html#sphx-glr-gallery-convex-hull-mask-py"><span class="std std-ref">Mask grid points by convex hull</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/convex_hull_mask.py</span></code>)</p></td>
-<td><p>00:03.487</p></td>
+<td><p>00:03.407</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="tutorials/decimation.html#sphx-glr-tutorials-decimation-py"><span class="std std-ref">Data Decimation</span></a> (<code class="docutils literal notranslate"><span class="pre">tutorials_src/decimation.py</span></code>)</p></td>
-<td><p>00:03.434</p></td>
+<td><p>00:03.279</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="gallery/kneighbors_gridder.html#sphx-glr-gallery-kneighbors-gridder-py"><span class="std std-ref">Gridding with a nearest-neighbors interpolator</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/kneighbors_gridder.py</span></code>)</p></td>
-<td><p>00:03.348</p></td>
+<td><p>00:03.183</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="gallery/distance_mask.html#sphx-glr-gallery-distance-mask-py"><span class="std std-ref">Mask grid points by distance</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/distance_mask.py</span></code>)</p></td>
-<td><p>00:02.795</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="gallery/project_grid.html#sphx-glr-gallery-project-grid-py"><span class="std std-ref">Projection of gridded data</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/project_grid.py</span></code>)</p></td>
+<td><p>00:02.588</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="gallery/project_grid.html#sphx-glr-gallery-project-grid-py"><span class="std std-ref">Projection of gridded data</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/project_grid.py</span></code>)</p></td>
-<td><p>00:02.458</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="gallery/distance_mask.html#sphx-glr-gallery-distance-mask-py"><span class="std std-ref">Mask grid points by distance</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/distance_mask.py</span></code>)</p></td>
+<td><p>00:02.585</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="gallery/cubic_gridder.html#sphx-glr-gallery-cubic-gridder-py"><span class="std std-ref">Gridding with a cubic interpolator</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/cubic_gridder.py</span></code>)</p></td>
-<td><p>00:02.437</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="tutorials/weights.html#sphx-glr-tutorials-weights-py"><span class="std std-ref">Using Weights</span></a> (<code class="docutils literal notranslate"><span class="pre">tutorials_src/weights.py</span></code>)</p></td>
+<td><p>00:02.416</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="tutorials/weights.html#sphx-glr-tutorials-weights-py"><span class="std std-ref">Using Weights</span></a> (<code class="docutils literal notranslate"><span class="pre">tutorials_src/weights.py</span></code>)</p></td>
-<td><p>00:02.384</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="gallery/cubic_gridder.html#sphx-glr-gallery-cubic-gridder-py"><span class="std std-ref">Gridding with a cubic interpolator</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/cubic_gridder.py</span></code>)</p></td>
+<td><p>00:02.317</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="gallery/linear_gridder.html#sphx-glr-gallery-linear-gridder-py"><span class="std std-ref">Gridding with a linear interpolator</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/linear_gridder.py</span></code>)</p></td>
-<td><p>00:02.354</p></td>
+<td><p>00:02.214</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="gallery/spline.html#sphx-glr-gallery-spline-py"><span class="std std-ref">Gridding with splines</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/spline.py</span></code>)</p></td>
-<td><p>00:02.046</p></td>
+<td><p>00:02.126</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="tutorials/projections.html#sphx-glr-tutorials-projections-py"><span class="std std-ref">Geographic Coordinates</span></a> (<code class="docutils literal notranslate"><span class="pre">tutorials_src/projections.py</span></code>)</p></td>
-<td><p>00:01.264</p></td>
+<td><p>00:01.321</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="tutorials/vectors.html#sphx-glr-tutorials-vectors-py"><span class="std std-ref">Vector Data</span></a> (<code class="docutils literal notranslate"><span class="pre">tutorials_src/vectors.py</span></code>)</p></td>
 <td><p>00:01.252</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="tutorials/model_evaluation.html#sphx-glr-tutorials-model-evaluation-py"><span class="std std-ref">Evaluating Performance</span></a> (<code class="docutils literal notranslate"><span class="pre">tutorials_src/model_evaluation.py</span></code>)</p></td>
-<td><p>00:01.058</p></td>
-<td><p>0.0</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="gallery/blockreduce_weights_mean.html#sphx-glr-gallery-blockreduce-weights-mean-py"><span class="std std-ref">Using weights in blocked means</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/blockreduce_weights_mean.py</span></code>)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="gallery/blockreduce_weights_mean.html#sphx-glr-gallery-blockreduce-weights-mean-py"><span class="std std-ref">Using weights in blocked means</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/blockreduce_weights_mean.py</span></code>)</p></td>
 <td><p>00:00.788</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="gallery/spline_cv.html#sphx-glr-gallery-spline-cv-py"><span class="std std-ref">Gridding with splines (cross-validated)</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/spline_cv.py</span></code>)</p></td>
-<td><p>00:00.774</p></td>
-<td><p>0.0</p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="gallery/spline_weights.html#sphx-glr-gallery-spline-weights-py"><span class="std std-ref">Gridding with splines and weights</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/spline_weights.py</span></code>)</p></td>
-<td><p>00:00.617</p></td>
+<td><p>00:00.621</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="tutorials/model_selection.html#sphx-glr-tutorials-model-selection-py"><span class="std std-ref">Model Selection</span></a> (<code class="docutils literal notranslate"><span class="pre">tutorials_src/model_selection.py</span></code>)</p></td>
+<td><p>00:00.554</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="tutorials/model_evaluation.html#sphx-glr-tutorials-model-evaluation-py"><span class="std std-ref">Evaluating Performance</span></a> (<code class="docutils literal notranslate"><span class="pre">tutorials_src/model_evaluation.py</span></code>)</p></td>
 <td><p>00:00.524</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="gallery/blockreduce_weights.html#sphx-glr-gallery-blockreduce-weights-py"><span class="std std-ref">Using weights in blocked reduction</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/blockreduce_weights.py</span></code>)</p></td>
-<td><p>00:00.420</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="gallery/blockreduce_weights.html#sphx-glr-gallery-blockreduce-weights-py"><span class="std std-ref">Using weights in blocked reduction</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/blockreduce_weights.py</span></code>)</p></td>
+<td><p>00:00.456</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="gallery/spline_cv.html#sphx-glr-gallery-spline-cv-py"><span class="std std-ref">Gridding with splines (cross-validated)</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/spline_cv.py</span></code>)</p></td>
+<td><p>00:00.427</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="gallery/trend.html#sphx-glr-gallery-trend-py"><span class="std std-ref">Polynomial trend</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/trend.py</span></code>)</p></td>
-<td><p>00:00.403</p></td>
+<td><p>00:00.393</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="gallery/vector_trend.html#sphx-glr-gallery-vector-trend-py"><span class="std std-ref">Trends in vector data</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/vector_trend.py</span></code>)</p></td>
-<td><p>00:00.338</p></td>
+<td><p>00:00.330</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="tutorials/trends.html#sphx-glr-tutorials-trends-py"><span class="std std-ref">Trend Estimation</span></a> (<code class="docutils literal notranslate"><span class="pre">tutorials_src/trends.py</span></code>)</p></td>
-<td><p>00:00.321</p></td>
-<td><p>0.0</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="gallery/vector_uncoupled.html#sphx-glr-gallery-vector-uncoupled-py"><span class="std std-ref">Gridding 2D vectors</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/vector_uncoupled.py</span></code>)</p></td>
-<td><p>00:00.275</p></td>
-<td><p>0.0</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="gallery/blockreduce.html#sphx-glr-gallery-blockreduce-py"><span class="std std-ref">Blocked reduction operations</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/blockreduce.py</span></code>)</p></td>
-<td><p>00:00.207</p></td>
+<td><p>00:00.319</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="tutorials/grid_coordinates.html#sphx-glr-tutorials-grid-coordinates-py"><span class="std std-ref">Grid Coordinates</span></a> (<code class="docutils literal notranslate"><span class="pre">tutorials_src/grid_coordinates.py</span></code>)</p></td>
-<td><p>00:00.197</p></td>
+<td><p>00:00.205</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="gallery/blockreduce.html#sphx-glr-gallery-blockreduce-py"><span class="std std-ref">Blocked reduction operations</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/blockreduce.py</span></code>)</p></td>
+<td><p>00:00.199</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="gallery/vector_uncoupled.html#sphx-glr-gallery-vector-uncoupled-py"><span class="std std-ref">Gridding 2D vectors</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/vector_uncoupled.py</span></code>)</p></td>
+<td><p>00:00.190</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="gallery/checkerboard.html#sphx-glr-gallery-checkerboard-py"><span class="std std-ref">Checkerboard function</span></a> (<code class="docutils literal notranslate"><span class="pre">gallery_src/checkerboard.py</span></code>)</p></td>
-<td><p>00:00.112</p></td>
+<td><p>00:00.115</p></td>
 <td><p>0.0</p></td>
 </tr>
 </tbody>
@@ -659,7 +646,7 @@ $(document).ready( function () {
 
   <p class="copyright">
     
-      © Copyright 2017-2024, The Verde Developers.
+      © Copyright 2017-2025, The Verde Developers.
       <br/>
     
   </p>
@@ -668,7 +655,7 @@ $(document).ready( function () {
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Jun 11, 2024.
+  Last updated on Feb 19, 2025.
   <br/>
 </p>
   </div>
@@ -686,8 +673,8 @@ $(document).ready( function () {
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>

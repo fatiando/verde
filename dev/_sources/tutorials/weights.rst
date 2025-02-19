@@ -233,7 +233,7 @@ variations end up having smaller weights, like the data points in the south.
 
  .. code-block:: none
 
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:469: FutureWarning: The provided callable <function var at 0x7f9d49726e80> is currently using SeriesGroupBy.var. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "var" instead.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:469: FutureWarning: The provided callable <function var at 0x7f06dfd691c0> is currently using SeriesGroupBy.var. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "var" instead.
       blocked = table.groupby("block").aggregate(reduction)
 
 
@@ -470,9 +470,9 @@ Calculate an unweighted spline as well for comparison.
 
  .. code-block:: none
 
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:179: FutureWarning: The provided callable <function mean at 0x7f9d49726c00> is currently using DataFrameGroupBy.mean. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "mean" instead.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:179: FutureWarning: The provided callable <function mean at 0x7f06dfd68f40> is currently using DataFrameGroupBy.mean. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "mean" instead.
       blocked = pd.DataFrame(columns).groupby("block").aggregate(reduction)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:236: FutureWarning: The provided callable <function mean at 0x7f9d49726c00> is currently using DataFrameGroupBy.mean. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "mean" instead.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:236: FutureWarning: The provided callable <function mean at 0x7f06dfd68f40> is currently using DataFrameGroupBy.mean. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "mean" instead.
       grouped = table.groupby("block").aggregate(self.reduction)
 
 
@@ -537,7 +537,7 @@ Finally, plot the weighted and unweighted grids side by side.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.384 seconds)
+   **Total running time of the script:** (0 minutes 2.416 seconds)
 
 
 .. _sphx_glr_download_tutorials_weights.py:

@@ -142,7 +142,7 @@ have very different numbers of data points.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 18.446 seconds)
+   **Total running time of the script:** (0 minutes 17.501 seconds)
 
 
 .. _sphx_glr_download_gallery_blockkfold.py:

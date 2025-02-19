@@ -51,7 +51,7 @@ projected prior to interpolation.
 
  .. code-block:: none
 
-    Data region: (245.0, 254.705, 20.0, 29.99131)
+    Data region: (np.float64(245.0), np.float64(254.705), np.float64(20.0), np.float64(29.99131))
     Generated geographic grid:
     <xarray.Dataset> Size: 3MB
     Dimensions:       (latitude: 600, longitude: 583)
@@ -142,7 +142,7 @@ projected prior to interpolation.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.348 seconds)
+   **Total running time of the script:** (0 minutes 3.183 seconds)
 
 
 .. _sphx_glr_download_gallery_kneighbors_gridder.py:

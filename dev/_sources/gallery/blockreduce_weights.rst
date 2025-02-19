@@ -132,7 +132,7 @@ well, use :class:`verde.BlockMean`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.420 seconds)
+   **Total running time of the script:** (0 minutes 0.456 seconds)
 
 
 .. _sphx_glr_download_gallery_blockreduce_weights.py:

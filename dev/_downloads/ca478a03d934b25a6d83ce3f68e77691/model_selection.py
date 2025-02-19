@@ -140,8 +140,8 @@ spline = vd.SplineCV(dampings=dampings, delayed=True)
 
 ###############################################################################
 # Unlike :func:`verde.cross_val_score`, calling :meth:`~verde.SplineCV.fit`
-# does **not** result in :func:`dask.delayed` objects. The full grid search is
-# executed and the optimal parameters are found immediately.
+# does **not** result in :func:`dask.delayed.delayed` objects. The full grid
+# search is executed and the optimal parameters are found immediately.
 
 spline.fit(proj_coords, data.air_temperature_c)
 
@@ -149,8 +149,8 @@ print("Best damping:", spline.damping_)
 
 ###############################################################################
 # The one caveat is the that the ``scores_`` attribute will be a list of
-# :func:`dask.delayed` objects instead because the scores are only computed as
-# intermediate values in the scheduled computations.
+# :func:`dask.delayed.delayed` objects instead because the scores are only
+# computed as intermediate values in the scheduled computations.
 
 print("Delayed scores:", spline.scores_)
 

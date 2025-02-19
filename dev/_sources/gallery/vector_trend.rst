@@ -158,7 +158,7 @@ all vector components directly using using :meth:`verde.Vector.predict`,
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.338 seconds)
+   **Total running time of the script:** (0 minutes 0.330 seconds)
 
 
 .. _sphx_glr_download_gallery_vector_trend.py:

@@ -155,9 +155,9 @@ convert it to Cartesian using the 1 degree approx. 111 km rule-of-thumb.
 
  .. code-block:: none
 
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:179: FutureWarning: The provided callable <function median at 0x7f9d2ba73b00> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:179: FutureWarning: The provided callable <function median at 0x7f06bd7b7e20> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
       blocked = pd.DataFrame(columns).groupby("block").aggregate(reduction)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:236: FutureWarning: The provided callable <function median at 0x7f9d2ba73b00> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:236: FutureWarning: The provided callable <function median at 0x7f06bd7b7e20> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
       grouped = table.groupby("block").aggregate(self.reduction)
 
 
@@ -277,7 +277,7 @@ spline.
 
  .. code-block:: none
 
-    Data region in degrees: (245.0, 254.705, 20.0, 29.99131)
+    Data region in degrees: (np.float64(245.0), np.float64(254.705), np.float64(20.0), np.float64(29.99131))
     Geographic grid:
     <xarray.Dataset> Size: 30kB
     Dimensions:     (latitude: 61, longitude: 59)
@@ -402,16 +402,16 @@ longitude and latitude points taken from the map above).
 
           latitude   longitude       distance   bathymetry
     0    24.700000 -114.500000       0.000000 -4115.540285
-    1    24.679226 -114.477387    3276.548360 -4397.069051
+    1    24.679226 -114.477387    3276.548360 -4397.069052
     2    24.658449 -114.454774    6553.096720 -4766.953632
     3    24.637668 -114.432161    9829.645080 -5198.947537
     4    24.616884 -114.409548   13106.193440 -5639.303390
     ..         ...         ...            ...          ...
     195  20.585669 -110.090452  638926.930221 -3016.467547
-    196  20.564257 -110.067839  642203.478581 -2969.351779
-    197  20.542841 -110.045226  645480.026941 -2914.069305
-    198  20.521422 -110.022613  648756.575301 -2859.557817
-    199  20.500000 -110.000000  652033.123661 -2818.101948
+    196  20.564257 -110.067839  642203.478581 -2969.351780
+    197  20.542841 -110.045226  645480.026941 -2914.069306
+    198  20.521422 -110.022613  648756.575301 -2859.557818
+    199  20.500000 -110.000000  652033.123661 -2818.101949
 
     [200 rows x 4 columns]
 
@@ -493,7 +493,7 @@ And finally plot the profile.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.264 seconds)
+   **Total running time of the script:** (0 minutes 1.321 seconds)
 
 
 .. _sphx_glr_download_tutorials_projections.py:

@@ -50,12 +50,12 @@ model evaluation.
  .. code-block:: none
 
     Chain(steps=[('mean',
-                  BlockReduce(reduction=<function mean at 0x7f9d2bb7a5b0>,
+                  BlockReduce(reduction=<function mean at 0x7f06dfd6cc30>,
                               spacing=27750.0)),
                  ('spline', Spline(damping=1e-10, mindist=0))])
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:179: FutureWarning: The provided callable <function mean at 0x7f9d49726c00> is currently using DataFrameGroupBy.mean. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "mean" instead.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:179: FutureWarning: The provided callable <function mean at 0x7f06dfd68f40> is currently using DataFrameGroupBy.mean. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "mean" instead.
       blocked = pd.DataFrame(columns).groupby("block").aggregate(reduction)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:236: FutureWarning: The provided callable <function mean at 0x7f9d49726c00> is currently using DataFrameGroupBy.mean. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "mean" instead.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:236: FutureWarning: The provided callable <function mean at 0x7f06dfd68f40> is currently using DataFrameGroupBy.mean. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "mean" instead.
       grouped = table.groupby("block").aggregate(self.reduction)
     /home/runner/work/verde/verde/doc/gallery_src/spline.py:67: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = chain.score(*test)
@@ -156,7 +156,7 @@ model evaluation.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.046 seconds)
+   **Total running time of the script:** (0 minutes 2.126 seconds)
 
 
 .. _sphx_glr_download_gallery_spline.py:
