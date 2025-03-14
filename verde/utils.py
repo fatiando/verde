@@ -13,7 +13,9 @@ import dask
 import numpy as np
 import pandas as pd
 import xarray as xr
+import verde as vd
 from scipy.spatial import cKDTree
+
 
 try:
     from pykdtree.kdtree import KDTree as pyKDTree
@@ -706,6 +708,37 @@ def kdtree(coordinates, use_pykdtree=True, **kwargs):
     else:
         tree = cKDTree(points, **kwargs)
     return tree
+
+
+def fill_nans(grid):
+    """
+    Fill missing values in a grid by nearest neighbor interpolation
+
+    Parameters
+    ----------
+    grid : :class:`xarray.DataArray`
+        A 2D grid with one or more data variables.
+    Returns
+    -------
+    grid : :class:`xarray.DataArray`
+        A 2D grid with the NaN values filled.
+    """
+
+    filled_grid = grid.copy()
+
+    not_nan_values = np.argwhere(~np.isnan(grid.values))
+    unknown_indices = np.argwhere(np.isnan(grid.values))
+
+    knn = vd.KNeighbors()
+    easting, northing = not_nan_values[:, 0], not_nan_values[:, 1]
+    knn.fit((easting, northing), grid.values[not_nan_values[:, 0],
+                    not_nan_values[:, 1]])
+    predicted_values = knn_imputer.predict((easting, northing))
+
+    for i, idx in enumerate(unknown_indices):
+        filled_grid[tuple(idx)] = predicted_values[i]
+
+    return filled_grid
 
 
 def partition_by_sum(array, parts):
