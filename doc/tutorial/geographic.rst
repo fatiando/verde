@@ -32,88 +32,86 @@ Cartesian interpolators to generate geographic grids and profiles.
    # either.
    pygmt.set_display(method="notebook")
 
-To demonstrate how to do this, we'll use the Caribbean bathymetry data from
-:mod:`ensaio`:
+Fetch some data
+---------------
+
+To demonstrate how to do this, we'll use Alps GPS velocity data from
+:mod:`ensaio` once again:
 
 .. jupyter-execute::
 
-   path_to_data = ensaio.fetch_caribbean_bathymetry(version=2)
+   path_to_data = ensaio.fetch_alps_gps(version=1)
    data = pd.read_csv(path_to_data)
-   data
 
-Let's plot the data on a map to see what it looks like:
+We'll get the data region and add a little padding to it so that our
+interpolation goes beyond the data bounding box.
+
+.. jupyter-execute::
+
+   region = vd.pad_region(
+       vd.get_region((data.longitude, data.latitude)),
+       1,  # degree
+   )
+
+Let's plot the data on a map with coastlines and country borders to see what it
+looks like:
 
 .. jupyter-execute::
 
    fig = pygmt.Figure()
+   fig.coast(
+       region=region, projection="M15c", frame="af",
+       land="#eeeeee", borders="1/#666666", area_thresh=1e4,
+   )
    pygmt.makecpt(
-       cmap="cmocean/topo+h",
-       series=[data.bathymetry_m.min(), data.bathymetry_m.max()],
+       cmap="polar+h",
+       series=[data.velocity_up_mmyr.min(), data.velocity_up_mmyr.max()],
    )
    fig.plot(
        x=data.longitude,
        y=data.latitude,
-       fill=data.bathymetry_m,
+       fill=data.velocity_up_mmyr,
+       style="c0.2c",
        cmap=True,
-       style="c0.02c",
-       projection="M15c",
+       pen="0.5p,black",
    )
-   fig.coast(land="#666666", frame=True)
-   fig.colorbar(frame='af+l"bathymetry [m]"')
+   fig.colorbar(frame='af+l"vertical velocity [mm/yr]"')
    fig.show()
+
+This is much better than just plotting the projected data with no context! Now
+we can see that the Alps region is moving upward (red dots) and the surrounding
+regions are moving downward (blue dots).
 
 Projecting data
 ---------------
 
-For this region, a Mercator projection will do fine since we're far away from
-the poles and the latitude range isn't very large.
-We'll create a projection function and use to project the data coordinates.
+For this region, a Mercator projection will do fine since we're not too close
+to the poles and the latitude range isn't very large. We'll create a projection
+function and use to project the data coordinates.
 
 .. jupyter-execute::
 
    projection = pyproj.Proj(proj="merc", lat_ts=data.latitude.mean())
-   easting, northing = projection(data.longitude, data.latitude)
+   coordinates = projection(data.longitude, data.latitude)
 
 We've done this before in :ref:`tutorial-first-grid`. We'll still use the
 projected coordinates to decimate the data and fit the interpolator. What's
 different is how we'll use the interpolator to make a grid in geographic
 coordinates.
 
-Decimating the data
--------------------
-
-The data are a bit too large for an example and oversampled along the ship
-tracks. We'll decimate it before interpolation using a block-median operation.
-It's easier to think of the block size in degrees so we'll do a rough
-conversion to Cartesian for the block reduction.
-
-.. jupyter-execute::
-
-   block_size = 0.15  # degrees. 1 deg is roughly 111e3 meters
-   median = vd.BlockReduce(np.median, spacing=block_size * 111e3)
-   coordinates, bathymetry = median.filter(
-      (easting, northing), data.bathymetry_m,
-   )
-   print(bathymetry.size)
-
-.. tip::
-
-   The block size used here is larger than we would use normally for this
-   dataset. We use it here because this example needs to run relatively quickly
-   and on very modest hardward. On your own maching, try using a smaller
-   block size, like 0.05 degrees.
-
 Fit an interpolator to the Cartesian data
 -----------------------------------------
 
-Use a Cartesian :class:`~verde.Spline` to fit the data and then interpolate.
+Use a Cartesian :class:`~verde.Spline` to fit the data, like we did previously.
 
 .. jupyter-execute::
 
-   interpolator = vd.Spline().fit(coordinates, bathymetry)
+   interpolator = vd.Spline().fit(coordinates, data.velocity_up_mmyr)
 
-Generate a grid in geographic coordinates
------------------------------------------
+Now we can use this interpolator for gridding and predicting a profile.
+
+Make a grid in geographic coordinates
+-------------------------------------
 
 The interpolator is inherently Cartesian. If we wanted to use to generate
 a grid in geographic coordinates, we would have to:
@@ -133,37 +131,47 @@ In this case, the ``region`` and ``spacing`` arguments must be given in
 
 .. jupyter-execute::
 
-   region = vd.get_region((data.longitude, data.latitude))
-   spacing = 2 / 60  # 2 arc-minutes in decimal degrees
    grid = interpolator.grid(
-      region=region, spacing=spacing, projection=projection,
-      dims=("latitude", "longitude"), data_names="bathymetry",
+       spacing=10 / 60,  # 10 arc-minutes in decimal degrees
+       region=region,
+       projection=projection,
+       dims=("latitude", "longitude"),
+       data_names="velocity_up",
    )
    grid
 
 Notice that the grid has longitude and latitude coordinates and that they are
 evenly spaced.
-We can use this grid to plot a map of the bathymetry with coastlines added.
+We can use this grid to plot a map of the vertical velocity with coastlines
+and country borders added.
 
 .. jupyter-execute::
 
    fig = pygmt.Figure()
    pygmt.makecpt(
-       cmap="cmocean/topo+h",
-       series=[data.bathymetry_m.min(), data.bathymetry_m.max()],
+       cmap="polar+h",
+       series=[data.velocity_up_mmyr.min(), data.velocity_up_mmyr.max()],
    )
    fig.grdimage(
-       grid.bathymetry,
+       grid.velocity_up,
        cmap=True,
        projection="M15c",
-       shading=True,
+       frame="af",
    )
-   fig.coast(land="#666666", frame=True)
-   fig.colorbar(frame='af+l"bathymetry [m]"')
+   fig.colorbar(frame='af+l"upward velocity (mm/yr)"')
+   fig.coast(
+       shorelines="#333333", borders="1/#666666", area_thresh=1e4,
+   )
+   fig.plot(
+       x=data.longitude,
+       y=data.latitude,
+       style="c0.1c",
+       fill="#888888",
+   )
    fig.show()
 
-Generating a profile in geographic coordinates
-----------------------------------------------
+Make a profile in geographic coordinates
+----------------------------------------
 
 Profiles in geographic coordinates would require a similar workflow to grids:
 
@@ -180,11 +188,11 @@ the interpolator and let it do the work for us.
 .. jupyter-execute::
 
    profile = interpolator.profile(
-       point1=(-67, 14),  # longitude, latitude
-       point2=(-58.5, 14),
+       point1=(4, 51),  # longitude, latitude
+       point2=(11, 42),
        size=200,  # number of points
        dims=("latitude", "longitude"),
-       data_names="bathymetry_m",
+       data_names="velocity_up",
        projection=projection,
    )
    profile
@@ -202,27 +210,27 @@ what it looks like:
    fig = pygmt.Figure()
    # Plot the grid
    pygmt.makecpt(
-       cmap="cmocean/topo+h",
-       series=[data.bathymetry_m.min(), data.bathymetry_m.max()],
+       cmap="polar+h",
+       series=[data.velocity_up_mmyr.min(), data.velocity_up_mmyr.max()],
    )
-   fig.grdimage(grid.bathymetry, cmap=True, projection="M15c", shading=True)
-   fig.coast(land="#666666", frame=True)
-   fig.colorbar(frame='af+l"bathymetry [m]"')
+   fig.grdimage(grid.velocity_up, cmap=True, projection="M15c", frame="af")
+   fig.colorbar(frame='af+l"upward velocity (mm/yr)"')
+   fig.coast(shorelines="#333333", borders="1/#666666", area_thresh=1e4)
    fig.plot(
        x=profile.longitude,
        y=profile.latitude,
-       fill="black",
+       fill="#888888",
        style="c0.1c",
    )
    # Plot the profile above it
    fig.shift_origin(yshift="h+1.5c")
    fig.plot(
        x=profile.distance,
-       y=profile.bathymetry_m,
+       y=profile.velocity_up,
        pen="1p",
        projection="X15c/5c",
-       frame=["WSne", "xaf+lDistance along profile (m)", "yaf+lBathymetry (m)"],
-       region=vd.get_region((profile.distance, profile.bathymetry_m)),
+       frame=["WSne", "xaf+lDistance along profile (m)", "yaf+lUpward velocity (mm/yr)"],
+       region=vd.get_region((profile.distance, profile.velocity_up)),
    )
    fig.show()
 
