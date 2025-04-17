@@ -20,7 +20,6 @@ our data from geographic to Cartesian coordinates.
 
 .. jupyter-execute::
 
-   import numpy as np
    import pandas as pd
    import matplotlib.pyplot as plt
 

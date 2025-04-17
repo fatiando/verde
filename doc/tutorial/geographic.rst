@@ -15,9 +15,7 @@ Cartesian interpolators to generate geographic grids and profiles.
 
 .. jupyter-execute::
 
-   import numpy as np
    import pandas as pd
-   import matplotlib.pyplot as plt
    import pygmt
    import pyproj
    import ensaio
@@ -233,5 +231,3 @@ what it looks like:
        region=vd.get_region((profile.distance, profile.velocity_up)),
    )
    fig.show()
-
-
