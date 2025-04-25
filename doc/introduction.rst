@@ -39,7 +39,6 @@ We'll also import other modules for this example:
 .. jupyter-execute::
 
     # Standard Scipy stack
-    import numpy as np
     import pandas as pd
     import matplotlib.pyplot as plt
     # For projecting data
