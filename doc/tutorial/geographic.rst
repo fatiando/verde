@@ -138,6 +138,14 @@ In this case, the ``region`` and ``spacing`` arguments must be given in
    )
    grid
 
+
+.. hint::
+
+   Notice that we set the ``dims`` and ``data_names`` arguments above. Those
+   control the names of the coordinates and the data variables in the final
+   grid. It's useful to set those to avoid Verde's default names, which for
+   this case wouldn't be appropriate.
+
 Notice that the grid has longitude and latitude coordinates and that they are
 evenly spaced.
 We can use this grid to plot a map of the vertical velocity with coastlines
