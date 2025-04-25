@@ -119,6 +119,7 @@ and more!
     :caption: Tutorial
 
     tutorial/first-grid.rst
+    tutorial/geographic.rst
 
 .. toctree::
     :maxdepth: 1
