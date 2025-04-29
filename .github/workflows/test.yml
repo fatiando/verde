@@ -145,22 +145,8 @@ jobs:
       - name: Install the package
         run: python -m pip install --no-deps dist/*.whl
 
-      - name: Copy test data to the cache
-        run: |
-          echo "Copy data to " ${VERDE_DATA_DIR}/main
-          set -x -e
-          mkdir -p ${VERDE_DATA_DIR}/main
-          cp -r data/* ${VERDE_DATA_DIR}/main
-        env:
-          # Define directory where sample data will be copied
-          VERDE_DATA_DIR: ${{ runner.temp }}/cache/verde
-
       - name: Run the tests
-        run: |
-          make test
-        env:
-          # Define directory where sample data have been copied
-          VERDE_DATA_DIR: ${{ runner.temp }}/cache/verde
+        run: make test
 
       - name: Convert coverage report to XML for codecov
         run: coverage xml
