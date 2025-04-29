@@ -12,9 +12,7 @@ import warnings
 import numpy as np
 import numpy.testing as npt
 import pytest
-from dask.distributed import Client
 from sklearn.metrics import get_scorer
-from sklearn.model_selection import ShuffleSplit
 
 from .. import Trend, Vector, grid_coordinates, scatter_points
 from ..model_selection import BlockKFold, BlockShuffleSplit, cross_val_score
@@ -53,20 +51,6 @@ def test_cross_val_score_vector(trend, metric, expected):
     model = Vector([Trend(degree=1), Trend(degree=1)])
     scores = cross_val_score(model, coords, (data, data), scoring=metric)
     npt.assert_allclose(scores, expected, atol=1e-10)
-
-
-def test_cross_val_score_client(trend):
-    "Test the deprecated dask Client interface"
-    coords, data = trend[:2]
-    model = Trend(degree=1)
-    nsplits = 5
-    cross_validator = ShuffleSplit(n_splits=nsplits, random_state=0)
-    client = Client(processes=False)
-    futures = cross_val_score(model, coords, data, cv=cross_validator, client=client)
-    scores = [future.result() for future in futures]
-    client.close()
-    assert len(scores) == nsplits
-    npt.assert_allclose(scores, 1)
 
 
 def test_blockshufflesplit_fails_balancing():

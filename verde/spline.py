@@ -50,11 +50,6 @@ class SplineCV(BaseGridder):
         **this will run the grid search again**. It might still be faster than
         serial execution but not necessarily.
 
-    .. warning::
-
-        The ``client`` parameter is deprecated and will be removed in Verde
-        v2.0.0. Use ``delayed`` instead.
-
     Other cross-validation generators from :mod:`sklearn.model_selection` can
     be used by passing them through the *cv* argument.
 
@@ -85,11 +80,6 @@ class SplineCV(BaseGridder):
     cv : None or cross-validation generator
         Any scikit-learn cross-validation generator. If not given, will use the
         default set by :func:`verde.cross_val_score`.
-    client : None or dask.distributed.Client
-        **DEPRECATED:** This option is deprecated and will be removed in Verde
-        v2.0.0. If None, then computations are run serially. Otherwise, should
-        be a dask ``Client`` object. It will be used to dispatch computations
-        to the dask cluster.
     delayed : bool
         If True, will use :func:`dask.delayed.delayed` to dispatch computations
         and allow mod:`dask` to execute the grid search in parallel (see note
@@ -139,7 +129,6 @@ class SplineCV(BaseGridder):
         force_coords=None,
         engine="auto",
         cv=None,
-        client=None,
         delayed=False,
         scoring=None,
     ):
@@ -159,7 +148,6 @@ class SplineCV(BaseGridder):
         self.force_coords = force_coords
         self.engine = engine
         self.cv = cv
-        self.client = client
         self.delayed = delayed
         self.scoring = scoring
         if engine != "auto":
@@ -168,14 +156,6 @@ class SplineCV(BaseGridder):
                 "deprecated and will be removed in Verde 2.0.0. "
                 "The faster and memory efficient numba engine will be "
                 "the only option.",
-                FutureWarning,
-                stacklevel=2,
-            )
-        if client is not None:
-            warnings.warn(
-                "The 'client' parameter of 'verde.SplineCV' is "
-                "deprecated and will be removed in Verde 2.0.0. "
-                "Use the 'delayed' parameter instead.",
                 FutureWarning,
                 stacklevel=2,
             )
@@ -223,36 +203,19 @@ class SplineCV(BaseGridder):
             )
             for combo in itertools.product(self.mindists, self.dampings)
         ]
-        if self.client is not None:
-            # Deprecated and will be removed in v2.0.0
-            scores = []
-            for params in parameter_sets:
-                spline = Spline(**params)
-                scores.append(
-                    self.client.submit(
-                        cross_val_score,
-                        spline,
-                        coordinates=coordinates,
-                        data=data,
-                        weights=weights,
-                        cv=self.cv,
-                    )
-                )
-            scores = [np.mean(score.result()) for score in scores]
-        else:
-            scores = []
-            for params in parameter_sets:
-                spline = Spline(**params)
-                score = cross_val_score(
-                    spline,
-                    coordinates=coordinates,
-                    data=data,
-                    weights=weights,
-                    cv=self.cv,
-                    delayed=self.delayed,
-                    scoring=self.scoring,
-                )
-                scores.append(dispatch(np.mean, delayed=self.delayed)(score))
+        scores = []
+        for params in parameter_sets:
+            spline = Spline(**params)
+            score = cross_val_score(
+                spline,
+                coordinates=coordinates,
+                data=data,
+                weights=weights,
+                cv=self.cv,
+                delayed=self.delayed,
+                scoring=self.scoring,
+            )
+            scores.append(dispatch(np.mean, delayed=self.delayed)(score))
         best = dispatch(np.argmax, delayed=self.delayed)(scores)
         if self.delayed:
             best = best.compute()

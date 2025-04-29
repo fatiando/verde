@@ -12,7 +12,6 @@ import warnings
 import numpy as np
 import numpy.testing as npt
 import pytest
-from dask.distributed import Client
 from sklearn.model_selection import ShuffleSplit
 
 from ..model_selection import cross_val_score
@@ -22,15 +21,16 @@ from .utils import requires_numba
 
 
 @pytest.mark.parametrize(
-    "delayed,client,engine",
+    "delayed,engine",
     [
-        (False, None, "auto"),
-        (True, None, "numpy"),
-        (False, Client(processes=False), "numpy"),
+        (False, "auto"),
+        (False, "numpy"),
+        (True, "auto"),
+        (True, "numpy"),
     ],
-    ids=["serial", "delayed", "distributed"],
+    ids=["serial-auto", "serial-numpy", "delayed-auto", "delayed-numpy"],
 )
-def test_spline_cv(delayed, client, engine):
+def test_spline_cv(delayed, engine):
     "See if the cross-validated spline solution matches the synthetic data"
     region = (100, 500, -800, -700)
     synth = CheckerBoard(region=region)
@@ -42,11 +42,8 @@ def test_spline_cv(delayed, client, engine):
         dampings=[None, 1e3],
         cv=ShuffleSplit(n_splits=1, random_state=0),
         delayed=delayed,
-        client=client,
         engine=engine,
     ).fit(coords, data.scalars)
-    if client is not None:
-        client.close()
     assert spline.damping_ is None
     # The interpolation should be perfect on top of the data points
     npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-5)
