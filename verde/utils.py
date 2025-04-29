@@ -34,7 +34,7 @@ from .base.utils import (
 )
 
 
-def dispatch(function, delayed=False, client=None):
+def dispatch(function, delayed):
     """
     Decide how to wrap a function for Dask depending on the options given.
 
@@ -44,20 +44,15 @@ def dispatch(function, delayed=False, client=None):
         The function that will be called.
     delayed : bool
         If True, will wrap the function in :func:`dask.delayed.delayed`.
-    client : None or dask.distributed Client
-        If *delayed* is False and *client* is not None, will return a partial
-        execution of the ``client.submit`` with the function as first argument.
 
     Returns
     -------
     function : callable
-        The function wrapped in Dask.
+        The function wrapped in Dask or just itself if *delayed* is False.
 
     """
     if delayed:
         return dask.delayed(function)
-    if client is not None:
-        return functools.partial(client.submit, function)
     return function
 
 
