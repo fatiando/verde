@@ -20,7 +20,7 @@
 
 .. raw:: html
 
-    <p class="sd-fs-3">
+    <p class="sd-fs-4">
     Processing and gridding spatial data, machine-learning style.
     </p>
 
