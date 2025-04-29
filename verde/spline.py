@@ -443,9 +443,7 @@ class Spline(BaseGridder):
         force_east, force_north = n_1d_arrays(force_coords, n=2)
         east, north = n_1d_arrays(coordinates, n=2)
         jac = np.empty((east.size, force_east.size), dtype=dtype)
-        jac = jacobian(
-            east, north, force_east, force_north, self.mindist, jac
-        )
+        jac = jacobian(east, north, force_east, force_north, self.mindist, jac)
         return jac
 
 

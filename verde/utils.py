@@ -7,8 +7,6 @@
 """
 General utilities.
 """
-import functools
-
 import dask
 import numpy as np
 import pandas as pd
@@ -19,11 +17,6 @@ try:
     from pykdtree.kdtree import KDTree as pyKDTree
 except ImportError:
     pyKDTree = None  # noqa: N816
-
-try:
-    import numba
-except ImportError:
-    numba = None
 
 from .base.utils import (
     check_coordinates,

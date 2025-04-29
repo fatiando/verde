@@ -7,8 +7,6 @@
 """
 Classes for dealing with vector data.
 """
-import warnings
-
 import numba
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
@@ -204,7 +202,11 @@ class VectorSpline2D(BaseGridder):
     """
 
     def __init__(
-        self, poisson=0.5, mindist=10e3, damping=None, force_coords=None,
+        self,
+        poisson=0.5,
+        mindist=10e3,
+        damping=None,
+        force_coords=None,
     ):
         super().__init__()
         self.poisson = poisson
@@ -346,6 +348,7 @@ class VectorSpline2D(BaseGridder):
             east, north, force_east, force_north, self.mindist, self.poisson, jac
         )
         return jac
+
 
 @numba.jit(nopython=True, fastmath=True)
 def greens_function(east, north, mindist, poisson):
