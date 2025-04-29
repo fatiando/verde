@@ -17,7 +17,7 @@ from sklearn.utils.validation import check_is_fitted
 from .base import BaseGridder, check_fit_input, least_squares, n_1d_arrays
 from .coordinates import get_region
 from .model_selection import cross_val_score
-from .utils import dispatch
+from .utils import dispatch, jit
 
 
 class SplineCV(BaseGridder):
@@ -470,7 +470,7 @@ def warn_weighted_exact_solution(spline, weights):
         )
 
 
-@numba.jit(nopython=True)
+@jit()
 def greens_function(east, north, mindist):
     "Calculate the Green's function for the Bi-Harmonic Spline"
     distance = np.sqrt(east**2 + north**2)
@@ -491,7 +491,7 @@ def greens_function(east, north, mindist):
     return result
 
 
-@numba.jit(nopython=True, parallel=True)
+@jit(parallel=True)
 def predict(east, north, force_east, force_north, mindist, forces, result):
     "Calculate the predicted data using numba to speed things up."
     for i in numba.prange(east.size):
@@ -504,7 +504,7 @@ def predict(east, north, force_east, force_north, mindist, forces, result):
     return result
 
 
-@numba.jit(nopython=True, parallel=True)
+@jit(parallel=True)
 def jacobian(east, north, force_east, force_north, mindist, jac):
     "Calculate the Jacobian matrix using numba to speed things up."
     for i in numba.prange(east.size):

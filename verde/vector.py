@@ -14,6 +14,7 @@ from sklearn.utils.validation import check_is_fitted
 from .base import BaseGridder, check_fit_input, least_squares, n_1d_arrays
 from .coordinates import get_region
 from .spline import warn_weighted_exact_solution
+from .utils import jit
 
 
 class Vector(BaseGridder):
@@ -350,7 +351,7 @@ class VectorSpline2D(BaseGridder):
         return jac
 
 
-@numba.jit(nopython=True, fastmath=True)
+@jit()
 def greens_function(east, north, mindist, poisson):
     "Calculate the Green's functions for the 2D elastic case."
     distance = np.sqrt(east**2 + north**2)
@@ -366,7 +367,7 @@ def greens_function(east, north, mindist, poisson):
     return green_ee, green_nn, green_ne
 
 
-@numba.jit(nopython=True, fastmath=True, parallel=True)
+@jit(parallel=True)
 def predict(
     east, north, force_east, force_north, mindist, poisson, forces, vec_east, vec_north
 ):
@@ -384,7 +385,7 @@ def predict(
     return vec_east, vec_north
 
 
-@numba.jit(nopython=True, fastmath=True, parallel=True)
+@jit(parallel=True)
 def jacobian(east, north, force_east, force_north, mindist, poisson, jac):
     "Calculate the Jacobian matrix using numba to speed things up."
     nforces = force_east.size
