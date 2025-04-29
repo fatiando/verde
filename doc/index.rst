@@ -111,7 +111,6 @@ and more!
 
     install.rst
     introduction.rst
-    gallery/index.rst
 
 .. toctree::
     :maxdepth: 1
@@ -120,21 +119,6 @@ and more!
 
     tutorial/first-grid.rst
     tutorial/geographic.rst
-
-.. toctree::
-    :maxdepth: 1
-    :hidden:
-    :caption: User Guide
-
-    tutorials/grid_coordinates.rst
-    tutorials/trends.rst
-    tutorials/decimation.rst
-    tutorials/projections.rst
-    tutorials/chain.rst
-    tutorials/model_evaluation.rst
-    tutorials/model_selection.rst
-    tutorials/weights.rst
-    tutorials/vectors.rst
 
 .. toctree::
     :maxdepth: 1
