@@ -32,11 +32,15 @@ from .base.utils import (
 
 
 def jit(parallel=False):
+    if parallel:
+        target = "parallel"
+    else:
+        target = "cpu"
     if _is_in_unsafe_thread_pool():
-        parallel = False
+        target = "cpu"
 
     def jitted_funtion(function):
-        return numba.jit(function, nopython=True, parallel=parallel)
+        return numba.jit(function, nopython=True, target=target)
 
     return jitted_funtion
 
