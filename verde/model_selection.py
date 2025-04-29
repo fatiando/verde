@@ -585,7 +585,6 @@ def cross_val_score(
     data,
     weights=None,
     cv=None,
-    client=None,
     delayed=False,
     scoring=None,
 ):
@@ -611,11 +610,6 @@ def cross_val_score(
     parallel) call the `.compute()` method of each score or
     :func:`dask.compute` with the entire list of scores.
 
-    .. warning::
-
-        The ``client`` parameter is deprecated and will be removed in Verde
-        v2.0.0. Use ``delayed`` instead.
-
     Parameters
     ----------
     estimator : verde gridder
@@ -633,11 +627,6 @@ def cross_val_score(
     cv : None or cross-validation generator
         Any scikit-learn or Verde cross-validation generator. Defaults to
         :class:`sklearn.model_selection.KFold`.
-    client : None or dask.distributed.Client
-        **DEPRECATED:** This option is deprecated and will be removed in Verde
-        v2.0.0. If None, then computations are run serially. Otherwise, should
-        be a dask ``Client`` object. It will be used to dispatch computations
-        to the dask cluster.
     delayed : bool
         If True, will use :func:`dask.delayed.delayed` to dispatch computations
         without actually executing them. The returned scores will be a list of
@@ -655,7 +644,7 @@ def cross_val_score(
     scores : array
         Array of scores for each split of the cross-validation generator. If
         *delayed*, will be a list of Dask delayed objects (see the *delayed*
-        option). If *client* is not None, then the scores will be futures.
+        option).
 
     See also
     --------
@@ -745,14 +734,6 @@ def cross_val_score(
     So this is best used when fitting several smaller models.
 
     """
-    if client is not None:
-        warnings.warn(
-            "The 'client' parameter of 'verde.cross_val_score' is deprecated "
-            "and will be removed in Verde 2.0.0. "
-            "Use the 'delayed' parameter instead.",
-            FutureWarning,
-            stacklevel=2,
-        )
     coordinates, data, weights = check_fit_input(
         coordinates, data, weights, unpack=False
     )
@@ -764,14 +745,14 @@ def cross_val_score(
     for train_index, test_index in cv.split(feature_matrix):
         # Clone the estimator to avoid fitting the same object simultaneously
         # when delayed=True.
-        score = dispatch(fit_score, client=client, delayed=delayed)(
+        score = dispatch(fit_score, delayed)(
             clone(estimator),
             tuple(select(i, train_index) for i in fit_args),
             tuple(select(i, test_index) for i in fit_args),
             scoring,
         )
         scores.append(score)
-    if not delayed and client is None:
+    if not delayed:
         scores = np.asarray(scores)
     return scores
 
