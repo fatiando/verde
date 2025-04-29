@@ -7,8 +7,6 @@
 """
 General utilities.
 """
-import functools
-
 import dask
 import numpy as np
 import pandas as pd
@@ -19,11 +17,6 @@ try:
     from pykdtree.kdtree import KDTree as pyKDTree
 except ImportError:
     pyKDTree = None  # noqa: N816
-
-try:
-    import numba
-except ImportError:
-    numba = None
 
 from .base.utils import (
     check_coordinates,
@@ -54,64 +47,6 @@ def dispatch(function, delayed):
     if delayed:
         return dask.delayed(function)
     return function
-
-
-def parse_engine(engine):
-    """
-    Choose the best engine available and check if it's valid.
-
-    Parameters
-    ----------
-    engine : str
-        The name of the engine. If ``"auto"`` will favor numba if it's
-        available.
-
-    Returns
-    -------
-    engine : str
-        The name of the engine that should be used.
-
-    """
-    engines = {"auto", "numba", "numpy"}
-    if engine not in engines:
-        raise ValueError("Invalid engine '{}'. Must be in {}.".format(engine, engines))
-    if engine == "auto":
-        if numba is None:
-            return "numpy"
-        return "numba"
-    return engine
-
-
-def dummy_jit(**kwargs):  # noqa: U100
-    """
-    Replace numba.jit if not installed with a function that raises RunTimeError
-
-    Use as a decorator.
-
-    Parameters
-    ----------
-    function
-        A function that you would decorate with :func:`numba.jit`.
-
-    Returns
-    -------
-    function
-        A function that raises :class:`RunTimeError` warning that numba isn't
-        installed.
-
-    """
-
-    def dummy_decorator(function):
-        "The actual decorator"
-
-        @functools.wraps(function)
-        def dummy_function(*args, **kwargs):  # noqa: U100
-            "Just raise an exception."
-            raise RuntimeError("Could not find numba.")
-
-        return dummy_function
-
-    return dummy_decorator
 
 
 def variance_to_weights(variance, tol=1e-15, dtype="float64"):

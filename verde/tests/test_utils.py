@@ -7,8 +7,6 @@
 """
 Test the utility functions.
 """
-from unittest import mock
-
 import numpy as np
 import numpy.testing as npt
 import pandas as pd
@@ -16,10 +14,8 @@ import pytest
 import xarray as xr
 from scipy.spatial import cKDTree
 
-from .. import utils
 from ..coordinates import grid_coordinates, scatter_points
 from ..utils import (
-    dummy_jit,
     get_ndim_horizontal_coords,
     grid_to_table,
     kdtree,
@@ -28,38 +24,9 @@ from ..utils import (
     meshgrid_from_1d,
     meshgrid_to_1d,
     minmax,
-    parse_engine,
     partition_by_sum,
     variance_to_weights,
 )
-
-
-def test_parse_engine():
-    "Check that it works for common input"
-    assert parse_engine("numba") == "numba"
-    assert parse_engine("numpy") == "numpy"
-    with mock.patch.object(utils, "numba", None):
-        assert parse_engine("auto") == "numpy"
-    with mock.patch.object(utils, "numba", mock.MagicMock()):
-        assert parse_engine("auto") == "numba"
-
-
-def test_parse_engine_fails():
-    "Check that the exception is raised for invalid engines"
-    with pytest.raises(ValueError):
-        parse_engine("some invalid engine")
-
-
-def test_dummy_jit():
-    "Make sure the dummy function raises an exception"
-
-    @dummy_jit(target="cpt")
-    def function():
-        "Some random function"
-        return 0
-
-    with pytest.raises(RuntimeError):
-        function()
 
 
 def test_kdtree():
