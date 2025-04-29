@@ -9,20 +9,13 @@ Classes for dealing with vector data.
 """
 import warnings
 
+import numba
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
 from .base import BaseGridder, check_fit_input, least_squares, n_1d_arrays
 from .coordinates import get_region
 from .spline import warn_weighted_exact_solution
-from .utils import parse_engine
-
-try:
-    import numba
-    from numba import jit
-except ImportError:
-    numba = None
-    from .utils import dummy_jit as jit
 
 
 class Vector(BaseGridder):
@@ -197,13 +190,6 @@ class VectorSpline2D(BaseGridder):
         The easting and northing coordinates of the point forces. If None
         (default), then will be set to the data coordinates the first time
         :meth:`~verde.VectorSpline2D.fit` is called.
-    engine : str
-        **DEPRECATED:** This option is deprecated and will be removed in Verde
-        v2.0.0. The numba engine will be the only option. Computation engine
-        for the Jacobian matrix and prediction. Can be ``'auto'``, ``'numba'``,
-        or ``'numpy'``. If ``'auto'``, will use numba if it is installed or
-        numpy otherwise. The numba version is multi-threaded and usually
-        faster, which makes fitting and predicting faster.
 
     Attributes
     ----------
@@ -218,23 +204,13 @@ class VectorSpline2D(BaseGridder):
     """
 
     def __init__(
-        self, poisson=0.5, mindist=10e3, damping=None, force_coords=None, engine="auto"
+        self, poisson=0.5, mindist=10e3, damping=None, force_coords=None,
     ):
         super().__init__()
         self.poisson = poisson
         self.mindist = mindist
         self.damping = damping
         self.force_coords = force_coords
-        self.engine = engine
-        if engine != "auto":
-            warnings.warn(
-                "The 'engine' parameter of 'verde.VectorSpline2D' is "
-                "deprecated and will be removed in Verde 2.0.0. "
-                "The faster and memory efficient numba engine will be "
-                "the only option.",
-                FutureWarning,
-                stacklevel=2,
-            )
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -318,30 +294,17 @@ class VectorSpline2D(BaseGridder):
             np.empty(npoints, dtype=east.dtype),
             np.empty(npoints, dtype=east.dtype),
         )
-        if parse_engine(self.engine) == "numba":
-            components = predict_2d_numba(
-                east,
-                north,
-                force_east,
-                force_north,
-                self.mindist,
-                self.poisson,
-                self.force_,
-                components[0],
-                components[1],
-            )
-        else:
-            components = predict_2d_numpy(
-                east,
-                north,
-                force_east,
-                force_north,
-                self.mindist,
-                self.poisson,
-                self.force_,
-                components[0],
-                components[1],
-            )
+        components = predict(
+            east,
+            north,
+            force_east,
+            force_north,
+            self.mindist,
+            self.poisson,
+            self.force_,
+            components[0],
+            components[1],
+        )
         return tuple(comp.reshape(cast.shape) for comp in components)
 
     def jacobian(self, coordinates, force_coords, dtype="float64"):
@@ -379,18 +342,13 @@ class VectorSpline2D(BaseGridder):
         force_east, force_north = n_1d_arrays(force_coords, n=2)
         east, north = n_1d_arrays(coordinates, n=2)
         jac = np.empty((east.size * 2, force_east.size * 2), dtype=dtype)
-        if parse_engine(self.engine) == "numba":
-            jac = jacobian_2d_numba(
-                east, north, force_east, force_north, self.mindist, self.poisson, jac
-            )
-        else:
-            jac = jacobian_2d_numpy(
-                east, north, force_east, force_north, self.mindist, self.poisson, jac
-            )
+        jac = jacobian(
+            east, north, force_east, force_north, self.mindist, self.poisson, jac
+        )
         return jac
 
-
-def greens_func_2d(east, north, mindist, poisson):
+@numba.jit(nopython=True, fastmath=True)
+def greens_function(east, north, mindist, poisson):
     "Calculate the Green's functions for the 2D elastic case."
     distance = np.sqrt(east**2 + north**2)
     # The mindist factor helps avoid singular matrices when the force and
@@ -405,43 +363,8 @@ def greens_func_2d(east, north, mindist, poisson):
     return green_ee, green_nn, green_ne
 
 
-def predict_2d_numpy(
-    east, north, force_east, force_north, mindist, poisson, forces, vec_east, vec_north
-):
-    "Calculate the predicted data using numpy."
-    vec_east[:] = 0
-    vec_north[:] = 0
-    nforces = forces.size // 2
-    for j in range(nforces):
-        green_ee, green_nn, green_ne = greens_func_2d(
-            east - force_east[j], north - force_north[j], mindist, poisson
-        )
-        vec_east += green_ee * forces[j] + green_ne * forces[j + nforces]
-        vec_north += green_ne * forces[j] + green_nn * forces[j + nforces]
-    return vec_east, vec_north
-
-
-def jacobian_2d_numpy(east, north, force_east, force_north, mindist, poisson, jac):
-    "Calculate the Jacobian matrix using numpy broadcasting."
-    npoints = east.size
-    nforces = force_east.size
-    # Reshaping the data coordinates to a column vector will automatically
-    # build a Green's functions matrix between each data point and force.
-    green_ee, green_nn, green_ne = greens_func_2d(
-        east.reshape((npoints, 1)) - force_east,
-        north.reshape((npoints, 1)) - force_north,
-        mindist,
-        poisson,
-    )
-    jac[:npoints, :nforces] = green_ee
-    jac[npoints:, nforces:] = green_nn
-    jac[:npoints, nforces:] = green_ne
-    jac[npoints:, :nforces] = green_ne  # J is symmetric
-    return jac
-
-
-@jit(nopython=True, fastmath=True, parallel=True)
-def predict_2d_numba(
+@numba.jit(nopython=True, fastmath=True, parallel=True)
+def predict(
     east, north, force_east, force_north, mindist, poisson, forces, vec_east, vec_north
 ):
     "Calculate the predicted data using numba to speed things up."
@@ -450,7 +373,7 @@ def predict_2d_numba(
         vec_east[i] = 0
         vec_north[i] = 0
         for j in range(nforces):
-            green_ee, green_nn, green_ne = GREENS_FUNC_2D_JIT(
+            green_ee, green_nn, green_ne = greens_function(
                 east[i] - force_east[j], north[i] - force_north[j], mindist, poisson
             )
             vec_east[i] += green_ee * forces[j] + green_ne * forces[j + nforces]
@@ -458,14 +381,14 @@ def predict_2d_numba(
     return vec_east, vec_north
 
 
-@jit(nopython=True, fastmath=True, parallel=True)
-def jacobian_2d_numba(east, north, force_east, force_north, mindist, poisson, jac):
+@numba.jit(nopython=True, fastmath=True, parallel=True)
+def jacobian(east, north, force_east, force_north, mindist, poisson, jac):
     "Calculate the Jacobian matrix using numba to speed things up."
     nforces = force_east.size
     npoints = east.size
     for i in numba.prange(npoints):
         for j in range(nforces):
-            green_ee, green_nn, green_ne = GREENS_FUNC_2D_JIT(
+            green_ee, green_nn, green_ne = greens_function(
                 east[i] - force_east[j], north[i] - force_north[j], mindist, poisson
             )
             jac[i, j] = green_ee
@@ -473,7 +396,3 @@ def jacobian_2d_numba(east, north, force_east, force_north, mindist, poisson, ja
             jac[i, j + nforces] = green_ne
             jac[i + npoints, j] = green_ne  # J is symmetric
     return jac
-
-
-# JIT compile the Greens functions for use in numba functions
-GREENS_FUNC_2D_JIT = jit(nopython=True, fastmath=True)(greens_func_2d)

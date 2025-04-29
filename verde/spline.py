@@ -10,20 +10,14 @@ Biharmonic splines in 2D.
 import itertools
 import warnings
 
+import numba
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
 from .base import BaseGridder, check_fit_input, least_squares, n_1d_arrays
 from .coordinates import get_region
 from .model_selection import cross_val_score
-from .utils import dispatch, parse_engine
-
-try:
-    import numba
-    from numba import jit
-except ImportError:
-    numba = None
-    from .utils import dummy_jit as jit
+from .utils import dispatch
 
 
 class SplineCV(BaseGridder):
@@ -70,13 +64,6 @@ class SplineCV(BaseGridder):
         The easting and northing coordinates of the point forces. If None
         (default), then will be set to the data coordinates the first time
         :meth:`~verde.SplineCV.fit` is called.
-    engine : str
-        **DEPRECATED:** This option is deprecated and will be removed in Verde
-        v2.0.0. The numba engine will be the only option. Computation engine
-        for the Jacobian matrix and prediction. Can be ``'auto'``, ``'numba'``,
-        or ``'numpy'``. If ``'auto'``, will use numba if it is installed or
-        numpy otherwise. The numba version is multi-threaded and usually
-        faster, which makes fitting and predicting faster.
     cv : None or cross-validation generator
         Any scikit-learn cross-validation generator. If not given, will use the
         default set by :func:`verde.cross_val_score`.
@@ -127,7 +114,6 @@ class SplineCV(BaseGridder):
         mindists=None,
         dampings=(1e-10, 1e-5, 1e-1),
         force_coords=None,
-        engine="auto",
         cv=None,
         delayed=False,
         scoring=None,
@@ -146,19 +132,9 @@ class SplineCV(BaseGridder):
                 stacklevel=2,
             )
         self.force_coords = force_coords
-        self.engine = engine
         self.cv = cv
         self.delayed = delayed
         self.scoring = scoring
-        if engine != "auto":
-            warnings.warn(
-                "The 'engine' parameter of 'verde.SplineCV' is "
-                "deprecated and will be removed in Verde 2.0.0. "
-                "The faster and memory efficient numba engine will be "
-                "the only option.",
-                FutureWarning,
-                stacklevel=2,
-            )
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -198,7 +174,6 @@ class SplineCV(BaseGridder):
             dict(
                 mindist=combo[0],
                 damping=combo[1],
-                engine=self.engine,
                 force_coords=self.force_coords,
             )
             for combo in itertools.product(self.mindists, self.dampings)
@@ -333,13 +308,6 @@ class Spline(BaseGridder):
         The easting and northing coordinates of the point forces. If None
         (default), then will be set to the data coordinates used to fit the
         spline.
-    engine : str
-        **DEPRECATED:** This option is deprecated and will be removed in Verde
-        v2.0.0. The numba engine will be the only option. Computation engine
-        for the Jacobian matrix and prediction. Can be ``'auto'``, ``'numba'``,
-        or ``'numpy'``. If ``'auto'``, will use numba if it is installed or
-        numpy otherwise. The numba version is multi-threaded and usually
-        faster, which makes fitting and predicting faster.
 
     Attributes
     ----------
@@ -360,20 +328,10 @@ class Spline(BaseGridder):
 
     """
 
-    def __init__(self, mindist=None, damping=None, force_coords=None, engine="auto"):
+    def __init__(self, mindist=None, damping=None, force_coords=None):
         super().__init__()
         self.damping = damping
         self.force_coords = force_coords
-        self.engine = engine
-        if engine != "auto":
-            warnings.warn(
-                "The 'engine' parameter of 'verde.Spline' is "
-                "deprecated and will be removed in Verde 2.0.0. "
-                "The faster and memory efficient numba engine will be "
-                "the only option.",
-                FutureWarning,
-                stacklevel=2,
-            )
         if mindist is None:
             self.mindist = 0
         else:
@@ -451,14 +409,9 @@ class Spline(BaseGridder):
         force_east, force_north = n_1d_arrays(self.force_coords_, n=2)
         east, north = n_1d_arrays(coordinates, n=2)
         data = np.empty(east.size, dtype=east.dtype)
-        if parse_engine(self.engine) == "numba":
-            data = predict_numba(
-                east, north, force_east, force_north, self.mindist, self.force_, data
-            )
-        else:
-            data = predict_numpy(
-                east, north, force_east, force_north, self.mindist, self.force_, data
-            )
+        data = predict(
+            east, north, force_east, force_north, self.mindist, self.force_, data
+        )
         return data.reshape(shape)
 
     def jacobian(self, coordinates, force_coords, dtype="float64"):
@@ -490,14 +443,9 @@ class Spline(BaseGridder):
         force_east, force_north = n_1d_arrays(force_coords, n=2)
         east, north = n_1d_arrays(coordinates, n=2)
         jac = np.empty((east.size, force_east.size), dtype=dtype)
-        if parse_engine(self.engine) == "numba":
-            jac = jacobian_numba(
-                east, north, force_east, force_north, self.mindist, jac
-            )
-        else:
-            jac = jacobian_numpy(
-                east, north, force_east, force_north, self.mindist, jac
-            )
+        jac = jacobian(
+            east, north, force_east, force_north, self.mindist, jac
+        )
         return jac
 
 
@@ -524,31 +472,8 @@ def warn_weighted_exact_solution(spline, weights):
         )
 
 
-def greens_func_numpy(east, north, mindist):
-    "Calculate the Green's function for the Bi-Harmonic Spline"
-    distance = np.sqrt(east**2 + north**2)
-    # The mindist factor was used to avoid NaNs when the distance approaches
-    # zero and the log tents to -infinity. This is no longer needed with
-    # current implementation below. Keep it for compatibility only but remove
-    # in Verde 2.0.0.
-    distance += mindist
-    # Calculate this way instead of x²(log(x) - 1) to avoid calculating log of
-    # 0. The limit for this as x->0 is 0 anyway. This is good for small values
-    # of distance but for larger distances it fails because of an overflow in
-    # the power operator. Saw this on Wikipedia but there was no citation in
-    # December 2022: https://en.wikipedia.org/wiki/Radial_basis_function
-    result = np.empty_like(distance)
-    small = distance < 1
-    big = ~small
-    result[small] = distance[small] * (
-        np.log(distance[small] ** distance[small]) - distance[small]
-    )
-    result[big] = distance[big] ** 2 * (np.log(distance[big]) - 1)
-    return result
-
-
-@jit(nopython=True)
-def greens_func_jit(east, north, mindist):
+@numba.jit(nopython=True)
+def greens_function(east, north, mindist):
     "Calculate the Green's function for the Bi-Harmonic Spline"
     distance = np.sqrt(east**2 + north**2)
     # The mindist factor was used to avoid NaNs when the distance approaches
@@ -568,46 +493,25 @@ def greens_func_jit(east, north, mindist):
     return result
 
 
-def predict_numpy(east, north, force_east, force_north, mindist, forces, result):
-    "Calculate the predicted data using numpy."
-    result[:] = 0
-    for j in range(forces.size):
-        green = greens_func_numpy(east - force_east[j], north - force_north[j], mindist)
-        result += green * forces[j]
-    return result
-
-
-def jacobian_numpy(east, north, force_east, force_north, mindist, jac):
-    "Calculate the Jacobian using numpy broadcasting."
-    # Reshaping the data to a column vector will automatically build a distance
-    # matrix between each data point and force.
-    jac[:] = greens_func_numpy(
-        east.reshape((east.size, 1)) - force_east,
-        north.reshape((north.size, 1)) - force_north,
-        mindist,
-    )
-    return jac
-
-
-@jit(nopython=True, parallel=True)
-def predict_numba(east, north, force_east, force_north, mindist, forces, result):
+@numba.jit(nopython=True, parallel=True)
+def predict(east, north, force_east, force_north, mindist, forces, result):
     "Calculate the predicted data using numba to speed things up."
     for i in numba.prange(east.size):
         result[i] = 0
         for j in range(forces.size):
-            green = greens_func_jit(
+            green = greens_function(
                 east[i] - force_east[j], north[i] - force_north[j], mindist
             )
             result[i] += green * forces[j]
     return result
 
 
-@jit(nopython=True, parallel=True)
-def jacobian_numba(east, north, force_east, force_north, mindist, jac):
+@numba.jit(nopython=True, parallel=True)
+def jacobian(east, north, force_east, force_north, mindist, jac):
     "Calculate the Jacobian matrix using numba to speed things up."
     for i in numba.prange(east.size):
         for j in range(force_east.size):
-            jac[i, j] = greens_func_jit(
+            jac[i, j] = greens_function(
                 east[i] - force_east[j], north[i] - force_north[j], mindist
             )
     return jac
