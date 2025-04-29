@@ -32,8 +32,7 @@ from .base.utils import (
 
 
 def jit(parallel=False):
-    """ """
-    if parallel and _is_in_unsafe_thread_pool():
+    if _is_in_unsafe_thread_pool():
         parallel = False
 
     def jitted_funtion(function):
@@ -42,6 +41,9 @@ def jit(parallel=False):
     return jitted_funtion
 
 
+###############################################################################
+# This code is from the numbaag project, licensed BSD-3-clause.
+# https://github.com/numbagg/numbagg/blob/d1cf0e77f7f5f4a23db5473f11fbe1f605cf357b/numbagg/decorators.py#L737
 def _is_in_unsafe_thread_pool():
     current_thread = threading.current_thread()
     # ThreadPoolExecutor threads typically have names like
