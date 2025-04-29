@@ -8,6 +8,7 @@
 Test the scipy based interpolator.
 """
 import warnings
+
 import numpy as np
 import numpy.testing as npt
 import pandas as pd
