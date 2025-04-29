@@ -61,13 +61,11 @@ Required:
 * `scikit-learn <http://scikit-learn.org/>`__
 * `pooch <http://www.fatiando.org/pooch/>`__
 * `dask <https://dask.org/>`__
+* `numba <https://numba.pydata.org/>`__
 
 The following are optional dependencies that can make some parts of the code
 more efficient if they are installed:
 
-* `numba <https://numba.pydata.org/>`__: replaces numpy calculations of
-  predictions and Jacobian matrices in splines with faster and more memory
-  efficient multi-threaded versions.
 * `pykdtree <https://github.com/storpipfugl/pykdtree>`__: replaces
   :class:`scipy.spatial.cKDTree` for better performance in near neighbor
   calculations used in blocked operations, distance masking, etc.
