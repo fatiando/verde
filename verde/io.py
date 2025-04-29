@@ -35,7 +35,7 @@ def load_surfer(fname, dtype="float64"):
         ``float32`` if the data are large and precision is not an issue.
 
     Returns
-    ----------
+    -------
     data : :class:`xarray.DataArray`
         A 2D grid with the data.
 
