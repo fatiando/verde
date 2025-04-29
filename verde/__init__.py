@@ -33,7 +33,7 @@ from .model_selection import (
 )
 from .neighbors import KNeighbors
 from .projections import project_grid, project_region
-from .scipygridder import Cubic, Linear, ScipyGridder
+from .scipygridder import Cubic, Linear
 from .spline import Spline, SplineCV
 from .trend import Trend
 from .utils import grid_to_table, make_xarray_grid, maxabs, variance_to_weights

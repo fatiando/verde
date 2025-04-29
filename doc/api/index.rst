@@ -128,16 +128,3 @@ Base Classes and Functions
     base.n_1d_arrays
     base.check_fit_input
     base.least_squares
-
-Deprecated classes and functions
---------------------------------
-
-The following classes and functions are deprecated and **will be removed in
-Verde 2.0.0**. Alternatives are provided in the function/class docstrings.
-
-.. currentmodule:: verde
-
-.. autosummary::
-   :toctree: generated/
-
-    ScipyGridder
