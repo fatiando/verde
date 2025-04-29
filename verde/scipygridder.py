@@ -11,11 +11,7 @@ from abc import abstractmethod
 from warnings import warn
 
 import numpy as np
-from scipy.interpolate import (
-    CloughTocher2DInterpolator,
-    LinearNDInterpolator,
-    NearestNDInterpolator,
-)
+from scipy.interpolate import CloughTocher2DInterpolator, LinearNDInterpolator
 from sklearn.utils.validation import check_is_fitted
 
 from .base import BaseGridder, check_fit_input
@@ -184,73 +180,3 @@ class Cubic(_BaseScipyGridder):
         a dictionary.
         """
         return CloughTocher2DInterpolator, {"rescale": self.rescale}
-
-
-class ScipyGridder(_BaseScipyGridder):
-    """
-    A scipy.interpolate based gridder for scalar Cartesian data.
-
-    .. warning::
-
-        The ``ScipyGridder`` class is **deprecated** and will be **removed in
-        Verde v2.0.0**. Use :class:`~verde.KNeighbors`, :class:`~verde.Linear`,
-        and :class:`~verde.Cubic` instead.
-
-    Provides a verde gridder interface to the scipy interpolators
-    :class:`scipy.interpolate.LinearNDInterpolator`,
-    :class:`scipy.interpolate.NearestNDInterpolator`, and
-    :class:`scipy.interpolate.CloughTocher2DInterpolator` (cubic).
-
-    Parameters
-    ----------
-    method : str
-        The interpolation method. Either ``'linear'``, ``'nearest'``, or
-        ``'cubic'``.
-    extra_args : None or dict
-        Extra keyword arguments to pass to the scipy interpolator class. See
-        the documentation for each interpolator for a list of possible
-        arguments.
-
-    Attributes
-    ----------
-    interpolator_ : scipy interpolator class
-        An instance of the corresponding scipy interpolator class.
-    region_ : tuple
-        The boundaries (``[W, E, S, N]``) of the data used to fit the
-        interpolator. Used as the default region for the
-        :meth:`~verde.ScipyGridder.grid` and
-        :meth:`~verde.ScipyGridder.scatter` methods.
-
-    """
-
-    def __init__(self, method="cubic", extra_args=None):
-        super().__init__()
-        self.method = method
-        self.extra_args = extra_args
-        warn(
-            "verde.ScipyGridder is deprecated and will be removed in Verde "
-            "v2.0.0. Use the KNeighbors, Linear, and Cubic classes instead.",
-            FutureWarning,
-        )
-
-    def _get_interpolator(self):
-        """
-        Return the SciPy interpolator class and any extra keyword arguments as
-        a dictionary.
-        """
-        classes = dict(
-            linear=LinearNDInterpolator,
-            nearest=NearestNDInterpolator,
-            cubic=CloughTocher2DInterpolator,
-        )
-        if self.method not in classes:
-            raise ValueError(
-                "Invalid interpolation method '{}'. Must be one of {}.".format(
-                    self.method, str(classes.keys())
-                )
-            )
-        if self.extra_args is None:
-            kwargs = {}
-        else:
-            kwargs = self.extra_args
-        return classes[self.method], kwargs
