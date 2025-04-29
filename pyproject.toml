@@ -1,13 +1,57 @@
-# Specify that we use setuptools and setuptools_scm (to generate the version
-# string). Actual configuration is in setup.cfg.
+[project]
+name = "verde"
+description = "Processing and gridding spatial data, machine-learning style"
+dynamic = ["version"]
+authors = [
+  {name="The Verde Developers", email="fatiandoaterra@protonmail.com"},
+]
+maintainers = [
+  {name = "Leonardo Uieda", email = "leo@uieda.com"}
+]
+readme = "README.md"
+license = {text = "BSD-3-Clause"}
+keywords = ["spatial", "geoscience", "geophysics", "gridding", "interpolation"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: BSD License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Libraries",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.23",
+    "scipy>=1.8",
+    "pandas>=1.4",
+    "xarray>=2022.03",
+    "scikit-learn>=1.0",
+    "pooch>=1.2",
+    "dask>=2022.01.0",
+]
+
+[project.urls]
+"Documentation" = "https://www.fatiando.org/verde"
+"Changelog" = "https://www.fatiando.org/verde/latest/changes.html"
+"Bug Tracker" = "https://github.com/fatiando/verde/issues"
+"Source Code" = "https://github.com/fatiando/verde"
+
 [build-system]
-requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+requires = ["setuptools>=61", "wheel", "setuptools_scm[toml]>=8.0.3"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
 version_scheme =  "post-release"
-local_scheme =  "node-and-date"
-write_to =  "verde/_version_generated.py"
+local_scheme =  "no-local-version"
+write_to =  "verde/_version.py"
 
 # Make sure isort and Black are compatible
 [tool.isort]
@@ -22,3 +66,15 @@ notice = '''
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #'''
+
+[tool.coverage.run]
+branch = true
+omit = [
+    "**/_version.py",
+    "**/__init__.py",
+]
+# Needed to combine coverage data from multiple OSs on CI
+relative_files = true
+
+[tool.coverage.report]
+show_missing = true
