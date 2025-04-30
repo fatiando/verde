@@ -32,11 +32,6 @@ def median_distance(coordinates, k_nearest=1, projection=None):
     latitude and longitude, provide a *projection* function to convert them to
     Cartesian before doing the computations.
 
-    .. note::
-
-        If installed, package ``pykdtree`` will be used instead of
-        :class:`scipy.spatial.cKDTree` for better performance.
-
     Parameters
     ----------
     coordinates : tuple of arrays
