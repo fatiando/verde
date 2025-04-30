@@ -319,17 +319,9 @@ class BaseGridder(BaseEstimator):
         """
         Score the gridder predictions against the given data.
 
-        Calculates the R^2 coefficient of determination of between the
-        predicted values and the given data values. A maximum score of 1 means
-        a perfect fit. The score can be negative.
-
-        .. warning::
-
-            The default scoring will change from R² to negative root mean
-            squared error (RMSE) in Verde 2.0.0. This may change model
-            selection results slightly. The negative version will be used to
-            maintain the behaviour of larger scores being better, which is more
-            compatible with current model selection code.
+        Calculates the R² coefficient of determination of between the predicted
+        values and the given data values. A maximum score of 1 means a perfect
+        fit. The score can be negative.
 
         If the data has more than 1 component, the scores of each component
         will be averaged.
@@ -353,16 +345,9 @@ class BaseGridder(BaseEstimator):
         Returns
         -------
         score : float
-            The R^2 score
+            The R² score.
 
         """
-        warnings.warn(
-            "The default scoring will change from R² to negative root mean "
-            "squared error (RMSE) in Verde 2.0.0. "
-            "This may change model selection results slightly.",
-            FutureWarning,
-            stacklevel=2,
-        )
         return score_estimator("r2", self, coordinates, data, weights=weights)
 
     def grid(
