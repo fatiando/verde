@@ -147,15 +147,11 @@ def test_basegridder():
     grids.append(grd.grid(coordinates=tuple(np.unique(c) for c in coordinates_true)))
     # Grid on profile
     prof = grd.profile((0, -10), (10, -10), 30)
-    # Grid on scatter
-    with pytest.warns(FutureWarning):
-        scat = grd.scatter(region=region, size=1000, random_state=0)
 
     for grid in grids:
         npt.assert_allclose(grid.scalars.values, data_true)
         npt.assert_allclose(grid.easting.values, coordinates_true[0][0, :])
         npt.assert_allclose(grid.northing.values, coordinates_true[1][:, 0])
-    npt.assert_allclose(scat.scalars, data)
     npt.assert_allclose(
         prof.scalars,
         angular * coordinates_true[0][0, :] + linear,
@@ -210,12 +206,6 @@ def test_basegridder_projection():
     coordinates_true = grid_coordinates(region, shape)
     data_true = angular * coordinates_true[0] + linear
 
-    # Check the scatter
-    scat = grd.scatter(region, 1000, random_state=0, projection=proj)
-    npt.assert_allclose(scat.scalars, data)
-    npt.assert_allclose(scat.easting, coordinates[0])
-    npt.assert_allclose(scat.northing, coordinates[1])
-
     # Check the grid
     grid = grd.grid(region=region, shape=shape, projection=proj)
     npt.assert_allclose(grid.scalars.values, data_true)
@@ -264,20 +254,6 @@ def test_basegridder_extra_coords():
         assert name in grid.coords
         assert grid.coords[name].dims == ("northing", "easting")
         npt.assert_allclose(grid.coords[name], coord)
-
-    # Test scatter with a single extra coord
-    extra_coords = 9
-    scat = grd.scatter(region, 1000, extra_coords=extra_coords)
-    assert "extra_coord" in scat.columns
-    npt.assert_allclose(scat["extra_coord"], extra_coords)
-
-    # Test scatter with multiple extra coord
-    extra_coords = [9, 18, 27]
-    scat = grd.scatter(region, 1000, extra_coords=extra_coords)
-    extra_coord_names = ["extra_coord", "extra_coord_1", "extra_coord_2"]
-    for name, coord in zip(extra_coord_names, extra_coords):
-        assert name in scat.columns
-        npt.assert_allclose(scat[name], coord)
 
     # Test profile with a single extra coord
     extra_coords = 9
@@ -332,14 +308,6 @@ def test_basegridder_projection_multiple_coordinates():
     # The actual values for a grid
     coordinates_true = grid_coordinates(region, shape=shape, extra_coords=(13, 17))
     data_true = angular * coordinates_true[0] + linear
-
-    # Check the scatter
-    scat = grd.scatter(
-        region, 1000, random_state=0, projection=proj, extra_coords=(13, 17)
-    )
-    npt.assert_allclose(scat.scalars, data)
-    npt.assert_allclose(scat.easting, coordinates[0])
-    npt.assert_allclose(scat.northing, coordinates[1])
 
     # Check the grid
     grid = grd.grid(region=region, shape=shape, projection=proj, extra_coords=(13, 17))
