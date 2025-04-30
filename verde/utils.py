@@ -40,7 +40,7 @@ def jit(parallel=False):
         target = "cpu"
 
     def jitted_funtion(function):
-        return numba.jit(function, nopython=True)
+        return numba.jit(function, nopython=True, parallel=False)
 
     return jitted_funtion
 
