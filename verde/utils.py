@@ -114,9 +114,10 @@ def maxabs(*args, nan=True, percentile=100):
     args
         One or more arrays. If more than one are given, a single maximum will
         be calculated across all arrays.
-    nan : bool, optional
-        If True, will use the ``nan`` version of numpy functions to ignore
-        NaNs.
+    nan : bool
+        If True, will use the NaN compatible version of the numpy functions,
+        which ignore NaNs in the arrays. Otherwise, any NaNs will result in the
+        return value being also a NaN.
     percentile : float, optional
         Instead of return the maximum absolute value, return a given
         percentile of the absolute values. Must be between 0 and 100. A
@@ -200,8 +201,9 @@ def minmax(*args, nan=True, min_percentile=0, max_percentile=100):
         One or more arrays. If more than one are given, a minimum and maximum
         will be calculated across all arrays.
     nan : bool, optional
-        If True, will use the ``nan`` version of numpy functions to ignore
-        NaNs.
+        If True, will use the NaN compatible version of the numpy functions,
+        which ignore NaNs in the arrays. Otherwise, any NaNs will result in the
+        return value being also a NaN.
     min_percentile : float
         Return the supplied percentile (0 to 100) instead of the minimum value
         of the arrays. Defaults to 0, giving the minimum value.
