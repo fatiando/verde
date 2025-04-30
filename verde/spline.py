@@ -7,7 +7,6 @@
 """
 Biharmonic splines in 2D.
 """
-import itertools
 import warnings
 
 import numba
@@ -25,14 +24,14 @@ class SplineCV(BaseGridder):
     Cross-validated biharmonic spline interpolation.
 
     Similar to :class:`verde.Spline` but automatically chooses the best
-    *damping* and *mindist* parameters using cross-validation. Tests all
-    combinations of the given *dampings* and *mindists* and selects the maximum
-    (or minimum) mean cross-validation score (i.e., a grid search).
+    *damping* parameter using cross-validation. Tests all the given *dampings*
+    and selects the maximum (or minimum) mean cross-validation score (i.e.,
+    a grid search).
 
     This can optionally run in parallel using :mod:`dask`. To do this, use
     ``delayed=True`` to dispatch computations with
-    :func:`dask.delayed.delayed`. In this case, each fit and score
-    operation of the grid search will be performed in parallel.
+    :func:`dask.delayed.delayed`. In this case, each fit and score operation of
+    the grid search will be performed in parallel.
 
     .. note::
 
@@ -49,13 +48,6 @@ class SplineCV(BaseGridder):
 
     Parameters
     ----------
-    mindists : iterable or 1d array or None
-        **DEPRECATED:** This argument is no longer needed and will be removed
-        in Verde 2.0.0. This fudge factor is no longer required since a new
-        formulation eliminates the singularity at zero distance. Use the
-        default value of ``mindists=None`` to get the future behaviour.
-        List (or other iterable) of *mindist* parameter values to try. Can be
-        considered a minimum distance between the point forces and data points.
     dampings : iterable or 1d array
         List (or other iterable) of *damping* parameter values to try. Is the
         positive damping regularization parameter. Controls how much smoothness
@@ -94,8 +86,6 @@ class SplineCV(BaseGridder):
         The mean cross-validation score for each parameter combination. If
         ``delayed=True``, will be a list of :func:`dask.delayed.delayed`
         objects (see note above).
-    mindist_ : float
-        The optimal value for the *mindist* parameter.
     damping_ : float
         The optimal value for the *damping* parameter.
     spline_ : :class:`verde.Spline`
@@ -111,7 +101,6 @@ class SplineCV(BaseGridder):
 
     def __init__(
         self,
-        mindists=None,
         dampings=(1e-10, 1e-5, 1e-1),
         force_coords=None,
         cv=None,
@@ -120,17 +109,6 @@ class SplineCV(BaseGridder):
     ):
         super().__init__()
         self.dampings = dampings
-        if mindists is None:
-            self.mindists = [0]
-        else:
-            self.mindists = mindists
-            warnings.warn(
-                "The mindists parameter of verde.SplineCV is no longer "
-                "required and will be removed in Verde 2.0.0. Use the default "
-                "value to obtain the future behavior.",
-                FutureWarning,
-                stacklevel=2,
-            )
         self.force_coords = force_coords
         self.cv = cv
         self.delayed = delayed
@@ -171,12 +149,8 @@ class SplineCV(BaseGridder):
 
         """
         parameter_sets = [
-            dict(
-                mindist=combo[0],
-                damping=combo[1],
-                force_coords=self.force_coords,
-            )
-            for combo in itertools.product(self.mindists, self.dampings)
+            {"damping": damping, "force_coords": self.force_coords}
+            for damping in self.dampings
         ]
         if self.delayed:
             parallel = False
@@ -203,32 +177,11 @@ class SplineCV(BaseGridder):
         self.spline_ = Spline(**parameter_sets[best])
         self.spline_.fit(coordinates, data, weights=weights)
         self.scores_ = scores
+        self.force_ = self.spline_.force_
+        self.region_ = self.spline_.region_
+        self.damping_ = self.spline_.damping
+        self.force_coords_ = self.spline_.force_coords_
         return self
-
-    @property
-    def force_(self):
-        "The estimated forces that fit the data."
-        return self.spline_.force_
-
-    @property
-    def region_(self):
-        "The bounding region of the data used to fit the spline"
-        return self.spline_.region_
-
-    @property
-    def damping_(self):
-        "The optimal damping parameter"
-        return self.spline_.damping
-
-    @property
-    def mindist_(self):
-        "The optimal mindist parameter"
-        return self.spline_.mindist
-
-    @property
-    def force_coords_(self):
-        "The optimal force locations"
-        return self.spline_.force_coords_
 
     def predict(self, coordinates):
         """
@@ -298,12 +251,6 @@ class Spline(BaseGridder):
 
     Parameters
     ----------
-    mindist : float or None
-        **DEPRECATED:** This argument is no longer needed and will be removed
-        in Verde 2.0.0. This fudge factor is no longer required since a new
-        formulation eliminates the singularity at zero distance. Use the
-        default value of ``mindist=None`` to get the future behaviour. A
-        minimum distance between the point forces and data points.
     damping : None or float
         The positive damping regularization parameter. Controls how much
         smoothness is imposed on the estimated forces. If None, no
@@ -338,22 +285,11 @@ class Spline(BaseGridder):
 
     """
 
-    def __init__(self, mindist=None, damping=None, force_coords=None, parallel=True):
+    def __init__(self, damping=None, force_coords=None, parallel=True):
         super().__init__()
         self.damping = damping
         self.force_coords = force_coords
         self.parallel = parallel
-        if mindist is None:
-            self.mindist = 0
-        else:
-            self.mindist = mindist
-            warnings.warn(
-                "The mindist parameter of verde.Spline is no longer required "
-                "and will be removed in Verde 2.0.0. Use the default value "
-                "to obtain the future behavior.",
-                FutureWarning,
-                stacklevel=2,
-            )
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -424,9 +360,7 @@ class Spline(BaseGridder):
             predict = predict_parallel
         else:
             predict = predict_serial
-        data = predict(
-            east, north, force_east, force_north, self.mindist, self.force_, data
-        )
+        data = predict(east, north, force_east, force_north, self.force_, data)
         return data.reshape(shape)
 
     def jacobian(self, coordinates, force_coords, dtype="float64"):
@@ -462,7 +396,7 @@ class Spline(BaseGridder):
             jacobian = jacobian_parallel
         else:
             jacobian = jacobian_serial
-        jac = jacobian(east, north, force_east, force_north, self.mindist, jac)
+        jac = jacobian(east, north, force_east, force_north, jac)
         return jac
 
 
@@ -490,14 +424,9 @@ def warn_weighted_exact_solution(spline, weights):
 
 
 @numba.jit(nopython=True)
-def greens_function(east, north, mindist):
+def greens_function(east, north):
     "Calculate the Green's function for the Bi-Harmonic Spline"
     distance = np.sqrt(east**2 + north**2)
-    # The mindist factor was used to avoid NaNs when the distance approaches
-    # zero and the log tents to -infinity. This is no longer needed with
-    # current implementation below. Keep it for compatibility only but remove
-    # in Verde 2.0.0.
-    distance += mindist
     # Calculate this way instead of x²(log(x) - 1) to avoid calculating log of
     # 0. The limit for this as x->0 is 0 anyway. This is good for small values
     # of distance but for larger distances it fails because of an overflow in
@@ -510,24 +439,22 @@ def greens_function(east, north, mindist):
     return result
 
 
-def _predict(east, north, force_east, force_north, mindist, forces, result):
+def _predict(east, north, force_east, force_north, forces, result):
     "Calculate the predicted data using numba to speed things up."
     for i in numba.prange(east.size):
         result[i] = 0
         for j in range(forces.size):
-            green = greens_function(
-                east[i] - force_east[j], north[i] - force_north[j], mindist
-            )
+            green = greens_function(east[i] - force_east[j], north[i] - force_north[j])
             result[i] += green * forces[j]
     return result
 
 
-def _jacobian(east, north, force_east, force_north, mindist, jac):
+def _jacobian(east, north, force_east, force_north, jac):
     "Calculate the Jacobian matrix using numba to speed things up."
     for i in numba.prange(east.size):
         for j in range(force_east.size):
             jac[i, j] = greens_function(
-                east[i] - force_east[j], north[i] - force_north[j], mindist
+                east[i] - force_east[j], north[i] - force_north[j]
             )
     return jac
 
