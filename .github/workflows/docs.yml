@@ -6,7 +6,7 @@
 #
 name: documentation
 
-# Only build PRs, the main branch, and releases. Pushes to branches will only
+# Only run on PRs, the main branch, and releases. Pushes to branches will only
 # be built when a PR is opened. This avoids duplicated buids in PRs comming
 # from branches in the origin repository (1 for PR and 1 for push).
 on:
@@ -35,17 +35,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-docs.txt
-      PYTHON: "3.12"
-
+      PYTHON: "3.13"
     steps:
-      # Cancel any previous run of the test job
-      # We pin the commit hash corresponding to v0.5.0, and not pinning the tag
-      # because we are giving full access through the github.token.
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.12.1
-        with:
-          access_token: ${{ github.token }}
-
       # Checks-out your repository under $GITHUB_WORKSPACE
       - name: Checkout
         uses: actions/checkout@v4
@@ -67,7 +58,8 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           python-version: ${{ env.PYTHON }}
-          channels: conda-forge,defaults
+          miniforge-version: latest
+          channels: conda-forge
 
       - name: Collect requirements
         run: |
@@ -94,21 +86,33 @@ jobs:
           echo "Renamed dependencies:"
           cat requirements-full.txt
 
+      - name: Setup caching for conda packages
+        uses: actions/cache@v4
+        with:
+          path: ~/conda_pkgs_dir
+          key: conda-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('requirements-full.txt') }}
+
       - name: Install requirements
-        run: conda install --file requirements-full.txt python=$PYTHON -c conda-forge
+        run: conda install --file requirements-full.txt python=$PYTHON
 
       - name: List installed packages
         run: conda list
 
       - name: Build source and wheel distributions
-        run: |
-          make build
-          echo ""
-          echo "Generated files:"
-          ls -lh dist/
+        run: make build
 
       - name: Install the package
         run: python -m pip install --no-deps dist/*.whl
+
+      - name: Get the version of ensaio
+        id: ensaio-version
+        run: echo "v=$(grep ensaio env/requirements-docs.txt)" >> $GITHUB_OUTPUT
+
+      - name: Setup caching of Ensaio datasets
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/cache/ensaio
+          key: ensaio-data-${{ steps.ensaio-version.outputs.v }}
 
       - name: Build the documentation
         run: make -C doc clean all
