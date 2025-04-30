@@ -112,6 +112,10 @@ def maxabs(*args, nan=True):
     args
         One or more arrays. If more than one are given, a single maximum will
         be calculated across all arrays.
+    nan : bool
+        If True, will use the NaN compatible version of the numpy functions,
+        which ignore NaNs in the arrays. Otherwise, any NaNs will result in the
+        return value being also a NaN.
 
     Returns
     -------
