@@ -857,11 +857,6 @@ def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=
     Alternatively, the number of blocks in the South-North and West-East
     directions can be specified using the *shape* parameter.
 
-    .. note::
-
-        If installed, package ``pykdtree`` will be used instead of
-        :class:`scipy.spatial.cKDTree` for better performance.
-
     Parameters
     ----------
     coordinates : tuple of arrays
@@ -1175,8 +1170,7 @@ def rolling_window(
     centers = grid_coordinates(
         window_region, spacing=spacing, shape=shape, adjust=adjust
     )
-    # pykdtree doesn't support query_ball_point yet and we need that
-    tree = kdtree(coordinates, use_pykdtree=False)
+    tree = kdtree(coordinates)
     # Coordinates must be transposed because the kd-tree wants them as columns
     # of a matrix
     # Use p=inf (infinity norm) to get square windows instead of circular ones
@@ -1366,8 +1360,7 @@ def expanding_window(coordinates, center, sizes):
     coordinates = check_coordinates(coordinates)[:2]
     shape = coordinates[0].shape
     center = np.atleast_2d(center)
-    # pykdtree doesn't support query_ball_point yet and we need that
-    tree = kdtree(coordinates, use_pykdtree=False)
+    tree = kdtree(coordinates)
     indices = []
     for size in sizes:
         # Use p=inf (infinity norm) to get square windows instead of circular
