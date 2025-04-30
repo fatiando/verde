@@ -7,11 +7,7 @@
 """
 General utilities.
 """
-import functools
-import threading
-
 import dask
-import numba
 import numpy as np
 import pandas as pd
 import xarray as xr
@@ -29,51 +25,6 @@ from .base.utils import (
     check_extra_coords_names,
     n_1d_arrays,
 )
-
-
-def jit(parallel=False):
-    if _is_in_unsafe_thread_pool():
-        print("unsafe")
-        parallel = False
-
-    def jitted_funtion(function):
-        return numba.jit(function, nopython=True, parallel=parallel)
-
-    return jitted_funtion
-
-
-###############################################################################
-# This code is from the numbaag project, licensed BSD-3-clause.
-# https://github.com/numbagg/numbagg/blob/d1cf0e77f7f5f4a23db5473f11fbe1f605cf357b/numbagg/decorators.py#L737
-def _is_in_unsafe_thread_pool():
-    current_thread = threading.current_thread()
-    # ThreadPoolExecutor threads typically have names like
-    # 'ThreadPoolExecutor-0_1'
-    return current_thread.name.startswith(
-        "ThreadPoolExecutor"
-    ) and _thread_backend() in {"workqueue", None}
-
-
-@functools.cache
-def _thread_backend():
-    # Note that `importlib.util.find_spec` doesn't work for these; it will
-    # falsely return True
-
-    try:
-        from numba.np.ufunc import tbbpool  # noqa
-
-        return "tbb"
-    except ImportError:
-        pass
-
-    try:
-        from numba.np.ufunc import omppool  # noqa
-
-        return "omp"
-    except ImportError:
-        pass
-
-    return "workqueue"
 
 
 def dispatch(function, delayed):

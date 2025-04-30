@@ -17,7 +17,7 @@ from sklearn.utils.validation import check_is_fitted
 from .base import BaseGridder, check_fit_input, least_squares, n_1d_arrays
 from .coordinates import get_region
 from .model_selection import cross_val_score
-from .utils import dispatch, jit
+from .utils import dispatch
 
 
 class SplineCV(BaseGridder):
@@ -178,9 +178,13 @@ class SplineCV(BaseGridder):
             )
             for combo in itertools.product(self.mindists, self.dampings)
         ]
+        if self.delayed:
+            parallel = False
+        else:
+            parallel = True
         scores = []
         for params in parameter_sets:
-            spline = Spline(**params)
+            spline = Spline(**params, parallel=parallel)
             score = cross_val_score(
                 spline,
                 coordinates=coordinates,
@@ -308,6 +312,12 @@ class Spline(BaseGridder):
         The easting and northing coordinates of the point forces. If None
         (default), then will be set to the data coordinates used to fit the
         spline.
+    parallel : bool
+        Whether or not to run computations in parallel (multithreaded).
+        **WARNING:** Using ``parallel=True`` inside a ``ThreadPoolExecutor`` or
+        :func:`dask.delayed` context will cause crashes on Mac if :mod:`numba`
+        was installed with pip (this won't happen if you use conda). Default is
+        True.
 
     Attributes
     ----------
@@ -328,10 +338,11 @@ class Spline(BaseGridder):
 
     """
 
-    def __init__(self, mindist=None, damping=None, force_coords=None):
+    def __init__(self, mindist=None, damping=None, force_coords=None, parallel=True):
         super().__init__()
         self.damping = damping
         self.force_coords = force_coords
+        self.parallel = parallel
         if mindist is None:
             self.mindist = 0
         else:
@@ -409,6 +420,10 @@ class Spline(BaseGridder):
         force_east, force_north = n_1d_arrays(self.force_coords_, n=2)
         east, north = n_1d_arrays(coordinates, n=2)
         data = np.empty(east.size, dtype=east.dtype)
+        if self.parallel:
+            predict = predict_parallel
+        else:
+            predict = predict_serial
         data = predict(
             east, north, force_east, force_north, self.mindist, self.force_, data
         )
@@ -443,6 +458,10 @@ class Spline(BaseGridder):
         force_east, force_north = n_1d_arrays(force_coords, n=2)
         east, north = n_1d_arrays(coordinates, n=2)
         jac = np.empty((east.size, force_east.size), dtype=dtype)
+        if self.parallel:
+            jacobian = jacobian_parallel
+        else:
+            jacobian = jacobian_serial
         jac = jacobian(east, north, force_east, force_north, self.mindist, jac)
         return jac
 
@@ -470,7 +489,7 @@ def warn_weighted_exact_solution(spline, weights):
         )
 
 
-@jit()
+@numba.jit(nopython=True)
 def greens_function(east, north, mindist):
     "Calculate the Green's function for the Bi-Harmonic Spline"
     distance = np.sqrt(east**2 + north**2)
@@ -491,8 +510,7 @@ def greens_function(east, north, mindist):
     return result
 
 
-@jit(parallel=True)
-def predict(east, north, force_east, force_north, mindist, forces, result):
+def _predict(east, north, force_east, force_north, mindist, forces, result):
     "Calculate the predicted data using numba to speed things up."
     for i in numba.prange(east.size):
         result[i] = 0
@@ -504,8 +522,7 @@ def predict(east, north, force_east, force_north, mindist, forces, result):
     return result
 
 
-@jit(parallel=True)
-def jacobian(east, north, force_east, force_north, mindist, jac):
+def _jacobian(east, north, force_east, force_north, mindist, jac):
     "Calculate the Jacobian matrix using numba to speed things up."
     for i in numba.prange(east.size):
         for j in range(force_east.size):
@@ -513,3 +530,9 @@ def jacobian(east, north, force_east, force_north, mindist, jac):
                 east[i] - force_east[j], north[i] - force_north[j], mindist
             )
     return jac
+
+
+predict_serial = numba.jit(_predict, nopython=True)
+predict_parallel = numba.jit(_predict, nopython=True, parallel=True)
+jacobian_serial = numba.jit(_jacobian, nopython=True)
+jacobian_parallel = numba.jit(_jacobian, nopython=True, parallel=True)
