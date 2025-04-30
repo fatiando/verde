@@ -21,10 +21,7 @@ from ..synthetic import CheckerBoard
 
 @pytest.mark.parametrize(
     "delayed",
-    [
-        (False,),
-        (True,),
-    ],
+    [(False,), (True,)],
     ids=["serial", "delayed"],
 )
 def test_spline_cv(delayed):
