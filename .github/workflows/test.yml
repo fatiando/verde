@@ -41,13 +41,10 @@ jobs:
         dependencies:
           - oldest
           - latest
-          - optional
         include:
           - dependencies: oldest
             python: "3.10"
           - dependencies: latest
-            python: "3.13"
-          - dependencies: optional
             python: "3.13"
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-test.txt
@@ -88,8 +85,6 @@ jobs:
           echo "Capturing run-time dependencies:"
           if [[ "${{ matrix.dependencies }}" == "oldest" ]]; then
             dependente --source install --oldest > requirements-full.txt
-          elif [[ "${{ matrix.dependencies }}" == "optional" ]]; then
-            dependente --source install,extras > requirements-full.txt
           else
             dependente --source install > requirements-full.txt
           fi
