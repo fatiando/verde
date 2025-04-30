@@ -188,6 +188,12 @@ class VectorSpline2D(BaseGridder):
         The easting and northing coordinates of the point forces. If None
         (default), then will be set to the data coordinates the first time
         :meth:`~verde.VectorSpline2D.fit` is called.
+    parallel : bool
+        Whether or not to run computations in parallel (multithreaded).
+        **WARNING:** Using ``parallel=True`` inside a ``ThreadPoolExecutor`` or
+        :func:`dask.delayed` context will cause crashes on Mac if :mod:`numba`
+        was installed with pip (this won't happen if you use conda). Default is
+        True.
 
     Attributes
     ----------
@@ -207,12 +213,14 @@ class VectorSpline2D(BaseGridder):
         mindist=10e3,
         damping=None,
         force_coords=None,
+        parallel=True,
     ):
         super().__init__()
         self.poisson = poisson
         self.mindist = mindist
         self.damping = damping
         self.force_coords = force_coords
+        self.parallel = parallel
 
     def fit(self, coordinates, data, weights=None):
         """
@@ -296,6 +304,10 @@ class VectorSpline2D(BaseGridder):
             np.empty(npoints, dtype=east.dtype),
             np.empty(npoints, dtype=east.dtype),
         )
+        if self.parallel:
+            predict = predict_parallel
+        else:
+            predict = predict_serial
         components = predict(
             east,
             north,
@@ -344,13 +356,17 @@ class VectorSpline2D(BaseGridder):
         force_east, force_north = n_1d_arrays(force_coords, n=2)
         east, north = n_1d_arrays(coordinates, n=2)
         jac = np.empty((east.size * 2, force_east.size * 2), dtype=dtype)
+        if self.parallel:
+            jacobian = jacobian_parallel
+        else:
+            jacobian = jacobian_serial
         jac = jacobian(
             east, north, force_east, force_north, self.mindist, self.poisson, jac
         )
         return jac
 
 
-@numba.jit(nopython=True, fastmath=True)
+@numba.jit(nopython=True)
 def greens_function(east, north, mindist, poisson):
     "Calculate the Green's functions for the 2D elastic case."
     distance = np.sqrt(east**2 + north**2)
@@ -366,8 +382,7 @@ def greens_function(east, north, mindist, poisson):
     return green_ee, green_nn, green_ne
 
 
-@numba.jit(nopython=True, fastmath=True, parallel=True)
-def predict(
+def _predict(
     east, north, force_east, force_north, mindist, poisson, forces, vec_east, vec_north
 ):
     "Calculate the predicted data using numba to speed things up."
@@ -384,8 +399,7 @@ def predict(
     return vec_east, vec_north
 
 
-@numba.jit(nopython=True, fastmath=True, parallel=True)
-def jacobian(east, north, force_east, force_north, mindist, poisson, jac):
+def _jacobian(east, north, force_east, force_north, mindist, poisson, jac):
     "Calculate the Jacobian matrix using numba to speed things up."
     nforces = force_east.size
     npoints = east.size
@@ -399,3 +413,9 @@ def jacobian(east, north, force_east, force_north, mindist, poisson, jac):
             jac[i, j + nforces] = green_ne
             jac[i + npoints, j] = green_ne  # J is symmetric
     return jac
+
+
+predict_serial = numba.jit(_predict, nopython=True)
+predict_parallel = numba.jit(_predict, nopython=True, parallel=True)
+jacobian_serial = numba.jit(_jacobian, nopython=True)
+jacobian_parallel = numba.jit(_jacobian, nopython=True, parallel=True)
