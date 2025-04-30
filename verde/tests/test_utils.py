@@ -12,7 +12,6 @@ import numpy.testing as npt
 import pandas as pd
 import pytest
 import xarray as xr
-from scipy.spatial import cKDTree
 
 from ..coordinates import grid_coordinates, scatter_points
 from ..utils import (
@@ -32,14 +31,11 @@ from ..utils import (
 def test_kdtree():
     "Test that the kdtree returned works for query"
     coords = grid_coordinates((-10, 0, 0, 20), spacing=1)
-    for use_pykdtree in [True, False]:
-        tree = kdtree(coords, use_pykdtree=use_pykdtree)
-        dist, labels = tree.query(np.array([[-10, 0.1]]))
-        assert labels.size == 1
-        assert labels[0] == 0
-        npt.assert_allclose(dist, 0.1)
-        if not use_pykdtree:
-            assert isinstance(tree, cKDTree)
+    tree = kdtree(coords)
+    dist, labels = tree.query(np.array([[-10, 0.1]]))
+    assert labels.size == 1
+    assert labels[0] == 0
+    npt.assert_allclose(dist, 0.1)
 
 
 def test_grid_to_table_order():

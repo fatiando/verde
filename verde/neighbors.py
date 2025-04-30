@@ -31,12 +31,6 @@ class KNeighbors(BaseGridder):
     value by a reduction function, which defaults to the mean. This can also be
     configured.
 
-    .. note::
-
-        If installed, package ``pykdtree`` will be used for the nearest
-        neighbors look-up instead of :class:`scipy.spatial.cKDTree` for better
-        performance.
-
     Parameters
     ----------
     k : int
