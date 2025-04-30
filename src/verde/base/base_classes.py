@@ -29,13 +29,13 @@ class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
 
     Parameters
     ----------
-    spacing : float, tuple = (s_north, s_east), or None
+    block_size : float, tuple = (s_north, s_east), or None
         The block size in the South-North and West-East directions,
-        respectively. A single value means that the spacing is equal in both
-        directions. If None, then *shape* **must be provided**.
-    shape : tuple = (n_north, n_east) or None
+        respectively. A single value means that the size is equal in both
+        directions.
+    block_shape : tuple = (n_north, n_east) or None
         The number of blocks in the South-North and West-East directions,
-        respectively. If None, then *spacing* **must be provided**.
+        respectively.
     n_splits : int
         Number of splitting iterations.
 
@@ -43,14 +43,14 @@ class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):
 
     def __init__(
         self,
-        spacing=None,
-        shape=None,
+        block_size=None,
+        block_shape=None,
         n_splits=10,
     ):
-        if spacing is None and shape is None:
-            raise ValueError("Either 'spacing' or 'shape' must be provided.")
-        self.spacing = spacing
-        self.shape = shape
+        if block_size is None and block_shape is None:
+            raise ValueError("Either 'block_size' or 'block_shape' must be provided.")
+        self.block_size = block_size
+        self.block_shape = block_shape
         self.n_splits = n_splits
 
     def split(self, X, y=None, groups=None):  # noqa: N803

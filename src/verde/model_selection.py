@@ -9,6 +9,7 @@ Functions for automating model selection through cross-validation.
 """
 import warnings
 
+import bordado as bd
 import numpy as np
 from sklearn.base import clone
 from sklearn.model_selection import KFold, ShuffleSplit
@@ -16,7 +17,6 @@ from sklearn.utils import check_random_state
 
 from .base import BaseBlockCrossValidator, check_fit_input, n_1d_arrays
 from .base.utils import score_estimator
-from .coordinates import block_split
 from .utils import dispatch, partition_by_sum
 
 
@@ -25,10 +25,10 @@ class BlockShuffleSplit(BaseBlockCrossValidator):
     Random permutation of spatial blocks cross-validator.
 
     Yields indices to split data into training and test sets. Data are first
-    grouped into rectangular blocks of size given by the *spacing* argument.
+    grouped into rectangular blocks of size given by the *block_size* argument.
     Alternatively, blocks can be defined by the number of blocks in each
-    dimension using the *shape* argument instead of *spacing*. The blocks are
-    then split into testing and training sets randomly.
+    dimension using the *block_shape* argument instead. The blocks are then
+    split into testing and training sets randomly.
 
     The proportion of blocks assigned to each set is controlled by *test_size*
     and/or *train_size*. However, the total amount of actual data points in
@@ -55,13 +55,13 @@ class BlockShuffleSplit(BaseBlockCrossValidator):
 
     Parameters
     ----------
-    spacing : float, tuple = (s_north, s_east), or None
+    block_size : float, tuple = (s_north, s_east), or None
         The block size in the South-North and West-East directions,
-        respectively. A single value means that the spacing is equal in both
-        directions. If None, then *shape* **must be provided**.
-    shape : tuple = (n_north, n_east) or None
+        respectively. A single value means that the size is equal in both
+        directions.
+    block_shape : tuple = (n_north, n_east) or None
         The number of blocks in the South-North and West-East directions,
-        respectively. If None, then *spacing* **must be provided**.
+        respectively.
     n_splits : int, default 10
         Number of re-shuffling & splitting iterations.
     test_size : float, int, None, default=None
@@ -100,7 +100,7 @@ class BlockShuffleSplit(BaseBlockCrossValidator):
     >>> coords = grid_coordinates(region=(0, 3, -10, -7), spacing=1)
     >>> # Need to convert the coordinates into a feature matrix
     >>> X = np.transpose([i.ravel() for i in coords])
-    >>> shuffle = BlockShuffleSplit(spacing=1.5, n_splits=3, random_state=0)
+    >>> shuffle = BlockShuffleSplit(block_size=1.5, n_splits=3, random_state=0)
     >>> # These are the 1D indices of the points belonging to each set
     >>> for train, test in shuffle.split(X):
     ...     print("Train: {} Test: {}".format(train, test))
@@ -137,15 +137,17 @@ class BlockShuffleSplit(BaseBlockCrossValidator):
 
     def __init__(
         self,
-        spacing=None,
-        shape=None,
+        block_size=None,
+        block_shape=None,
         n_splits=10,
         test_size=0.1,
         train_size=None,
         random_state=None,
         balancing=10,
     ):
-        super().__init__(spacing=spacing, shape=shape, n_splits=n_splits)
+        super().__init__(
+            block_size=block_size, block_shape=block_shape, n_splits=n_splits
+        )
         if balancing < 1:
             raise ValueError(
                 "The *balancing* argument must be >= 1. To disable balancing, use 1."
@@ -180,12 +182,12 @@ class BlockShuffleSplit(BaseBlockCrossValidator):
             The testing set indices for that split.
 
         """
-        labels = block_split(
+        labels = bd.block_split(
             coordinates=(X[:, 0], X[:, 1]),
-            spacing=self.spacing,
-            shape=self.shape,
+            block_size=self.block_size,
+            block_shape=self.block_shape,
             region=None,
-            adjust="spacing",
+            adjust="block_size",
         )[1]
         block_ids = np.unique(labels)
         # Generate many more splits so that we can pick and choose the ones
@@ -220,11 +222,11 @@ class BlockKFold(BaseBlockCrossValidator):
     K-Folds over spatial blocks cross-validator.
 
     Yields indices to split data into training and test sets. Data are first
-    grouped into rectangular blocks of size given by the *spacing* argument.
+    grouped into rectangular blocks of size given by the *block_size* argument.
     Alternatively, blocks can be defined by the number of blocks in each
-    dimension using the *shape* argument instead of *spacing*. The blocks are
-    then split into testing and training sets iteratively along k folds of the
-    data (k is given by *n_splits*).
+    dimension using the *block_shape* argument instead of *block_size*. The
+    blocks are then split into testing and training sets iteratively along
+    k folds of the data (k is given by *n_splits*).
 
     By default, the blocks are split into folds in a way that makes each fold
     have approximately the same number of data points. Sometimes this might not
@@ -248,13 +250,13 @@ class BlockKFold(BaseBlockCrossValidator):
 
     Parameters
     ----------
-    spacing : float, tuple = (s_north, s_east), or None
+    block_size : float, tuple = (s_north, s_east), or None
         The block size in the South-North and West-East directions,
-        respectively. A single value means that the spacing is equal in both
-        directions. If None, then *shape* **must be provided**.
-    shape : tuple = (n_north, n_east) or None
+        respectively. A single value means that the size is equal in both
+        directions.
+    block_shape : tuple = (n_north, n_east) or None
         The number of blocks in the South-North and West-East directions,
-        respectively. If None, then *spacing* **must be provided**.
+        respectively.
     n_splits : int
         Number of folds. Must be at least 2.
     shuffle : bool
@@ -345,14 +347,16 @@ class BlockKFold(BaseBlockCrossValidator):
 
     def __init__(
         self,
-        spacing=None,
-        shape=None,
+        block_size=None,
+        block_shape=None,
         n_splits=5,
         shuffle=False,
         random_state=None,
         balance=True,
     ):
-        super().__init__(spacing=spacing, shape=shape, n_splits=n_splits)
+        super().__init__(
+            block_size=block_size, block_shape=block_shape, n_splits=n_splits
+        )
         if n_splits < 2:
             raise ValueError(
                 "Number of splits must be >=2 for BlockKFold. Given {}.".format(
@@ -385,12 +389,12 @@ class BlockKFold(BaseBlockCrossValidator):
             The testing set indices for that split.
 
         """
-        labels = block_split(
+        labels = bd.block_split(
             coordinates=(X[:, 0], X[:, 1]),
-            spacing=self.spacing,
-            shape=self.shape,
+            block_size=self.block_size,
+            block_shape=self.block_shape,
             region=None,
-            adjust="spacing",
+            adjust="block_size",
         )[1]
         block_ids = np.unique(labels)
         if self.n_splits > block_ids.size:
@@ -424,7 +428,7 @@ class BlockKFold(BaseBlockCrossValidator):
 
 
 def train_test_split(
-    coordinates, data, weights=None, spacing=None, shape=None, **kwargs
+    coordinates, data, weights=None, block_size=None, block_shape=None, **kwargs
 ):
     r"""
     Split a dataset into a training and a testing set for cross-validation.
@@ -432,12 +436,12 @@ def train_test_split(
     Similar to :func:`sklearn.model_selection.train_test_split` but is tuned to
     work on single- or multi-component spatial data with optional weights.
 
-    If arguments *shape* or *spacing* are provided, will group the data by
-    spatial blocks before random splitting (using
+    If arguments *block_shape* or *block_size* are provided, will group the
+    data by spatial blocks before random splitting (using
     :class:`verde.BlockShuffleSplit` instead of
-    :class:`sklearn.model_selection.ShuffleSplit`). The argument *spacing*
-    specifies the size of the spatial blocks. Alternatively, use *shape* to
-    specify the number of blocks in each dimension.
+    :class:`sklearn.model_selection.ShuffleSplit`). The argument *block_size*
+    specifies the size of the spatial blocks. Alternatively, use *block_shape*
+    to specify the number of blocks in each dimension.
 
     Extra keyword arguments will be passed to the cross-validation class. The
     exception is ``n_splits`` which is always 1.
@@ -447,8 +451,8 @@ def train_test_split(
     because of the inherent autocorrelation that is usually associated with
     this type of data (points that are close together are more likely to have
     similar values). See [Roberts_etal2017]_ for an overview of this topic. To
-    use spatial blocking, you **must provide** a *spacing* or *shape* argument
-    (see below).
+    use spatial blocking, you **must provide** a *block_size* or *block_shape*
+    argument (see below).
 
     Parameters
     ----------
@@ -462,15 +466,13 @@ def train_test_split(
         if not none, then the weights assigned to each data point. If more than
         one data component is provided, you must provide a weights array for
         each data component (if not none).
-    spacing : float, tuple = (s_north, s_east), or None
-        The spatial block size in the South-North and West-East directions,
-        respectively. A single value means that the spacing is equal in both
-        directions. If None, then *shape* must be provided in order to use
-        spatial blocking.
-    shape : tuple = (n_north, n_east) or None
+    block_shape : tuple = (n_north, n_east) or None
         The number of blocks in the South-North and West-East directions,
-        respectively. If None, then *spacing* must be provided in order to use
-        spatial blocking.
+        respectively.
+    block_size : float, tuple = (s_north, s_east), or None
+        The block size in the South-North and West-East directions,
+        respectively. A single value means that the size is equal in both
+        directions.
 
     Returns
     -------
@@ -566,13 +568,13 @@ def train_test_split(
 
     """
     args = check_fit_input(coordinates, data, weights, unpack=False)
-    if spacing is None and shape is None:
+    if block_size is None and block_shape is None:
         indices = np.arange(args[1][0].size)
         shuffle = ShuffleSplit(n_splits=1, **kwargs).split(indices)
     else:
         feature_matrix = np.transpose(n_1d_arrays(coordinates, 2))
         shuffle = BlockShuffleSplit(
-            n_splits=1, spacing=spacing, shape=shape, **kwargs
+            n_splits=1, block_size=block_size, block_shape=block_shape, **kwargs
         ).split(feature_matrix)
     split = next(shuffle)
     train, test = (tuple(select(i, index) for i in args) for index in split)
