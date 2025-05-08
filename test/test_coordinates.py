@@ -13,7 +13,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from ..coordinates import (
+from verde.coordinates import (
     check_region,
     grid_coordinates,
     line_coordinates,

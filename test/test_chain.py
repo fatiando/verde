@@ -10,14 +10,14 @@ Test the Chain class
 import numpy as np
 import numpy.testing as npt
 
-from ..blockreduce import BlockReduce
-from ..chain import Chain
-from ..coordinates import grid_coordinates
-from ..scipygridder import Cubic
-from ..spline import Spline
-from ..synthetic import CheckerBoard
-from ..trend import Trend
-from ..vector import Vector
+from verde.blockreduce import BlockReduce
+from verde.chain import Chain
+from verde.coordinates import grid_coordinates
+from verde.scipygridder import Cubic
+from verde.spline import Spline
+from verde.synthetic import CheckerBoard
+from verde.trend import Trend
+from verde.vector import Vector
 
 
 def test_chain():

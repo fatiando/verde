@@ -14,9 +14,9 @@ import numpy.testing as npt
 import pytest
 from sklearn.model_selection import ShuffleSplit
 
-from ..model_selection import cross_val_score
-from ..spline import Spline, SplineCV
-from ..synthetic import CheckerBoard
+from verde.model_selection import cross_val_score
+from verde.spline import Spline, SplineCV
+from verde.synthetic import CheckerBoard
 
 
 @pytest.mark.parametrize(

@@ -9,14 +9,13 @@ maintainers = [
   {name = "Leonardo Uieda", email = "leo@uieda.com"}
 ]
 readme = "README.md"
-license = {text = "BSD-3-Clause"}
+license = "BSD-3-Clause"
 keywords = ["spatial", "geoscience", "geophysics", "gridding", "interpolation"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Science/Research",
     "Intended Audience :: Developers",
     "Intended Audience :: Education",
-    "License :: OSI Approved :: BSD License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Topic :: Scientific/Engineering",
@@ -51,7 +50,7 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools_scm]
 version_scheme =  "post-release"
 local_scheme =  "no-local-version"
-write_to =  "verde/_version_generated.py"
+write_to =  "src/verde/_version.py"
 
 # Make sure isort and Black are compatible
 [tool.isort]
@@ -67,3 +66,23 @@ notice = '''
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #'''
+
+[tool.coverage.run]
+source = ["verde"]
+omit = [
+    "**/_version.py",
+    "**/__init__.py",
+]
+branch = true
+# Needed to combine coverage data from multiple OSs on CI
+relative_files = true
+
+[tool.coverage.paths]
+source = [
+    "src/verde",
+    "*/verde",
+    "*\\verde",
+]
+
+[tool.coverage.report]
+show_missing = true

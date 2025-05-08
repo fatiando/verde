@@ -9,7 +9,7 @@ Test the synthetic data generation functions and classes.
 """
 import numpy.testing as npt
 
-from ..synthetic import CheckerBoard
+from verde.synthetic import CheckerBoard
 
 
 def test_checkerboard_scatter_projection():

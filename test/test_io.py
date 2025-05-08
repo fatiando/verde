@@ -15,7 +15,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from ..io import _check_surfer_integrity, _read_surfer_header, load_surfer
+from verde.io import _check_surfer_integrity, _read_surfer_header, load_surfer
 
 
 @pytest.fixture

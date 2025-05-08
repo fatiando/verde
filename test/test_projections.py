@@ -12,8 +12,8 @@ import numpy.testing as npt
 import pytest
 import xarray as xr
 
-from ..neighbors import KNeighbors
-from ..projections import project_grid
+from verde.neighbors import KNeighbors
+from verde.projections import project_grid
 
 
 def projection(longitude, latitude):

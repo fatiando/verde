@@ -14,9 +14,9 @@ import numpy.testing as npt
 import pandas as pd
 import pytest
 
-from ..coordinates import grid_coordinates
-from ..scipygridder import Cubic, Linear
-from ..synthetic import CheckerBoard
+from verde.coordinates import grid_coordinates
+from verde.scipygridder import Cubic, Linear
+from verde.synthetic import CheckerBoard
 
 
 @pytest.mark.parametrize(

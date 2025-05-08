@@ -11,8 +11,8 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from ..coordinates import grid_coordinates
-from ..trend import Trend, polynomial_power_combinations
+from verde.coordinates import grid_coordinates
+from verde.trend import Trend, polynomial_power_combinations
 
 
 @pytest.fixture()
