@@ -64,19 +64,31 @@ def test_spline_cv(delayed):
     )
 
 
-def test_spline():
+@pytest.mark.parametrize(
+    "nodes", ["default", "custom"], ids=["default_nodes", "custom_nodes"]
+)
+@pytest.mark.parametrize("parallel", [True, False], ids=["parallel", "serial"])
+def test_spline(parallel, nodes):
     "See if the exact spline solution matches the synthetic data"
     region = (100, 500, -800, -700)
     synth = CheckerBoard(region=region)
     data = synth.scatter(size=1500, random_state=1)
     coords = (data.easting, data.northing)
+    if nodes == "default":
+        force_coords = None
+    else:
+        # Shit the coordinates slightly just so they're not exactly the same
+        force_coords = (data.easting + 0.1, data.northing - 0.1)
+    spline = Spline(force_coords=force_coords, parallel=parallel).fit(
+        coords, data.scalars
+    )
     # The interpolation should be perfect on top of the data points
-    spline = Spline().fit(coords, data.scalars)
     npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-5)
     npt.assert_allclose(spline.score(coords, data.scalars), 1)
-    # There should be 1 force per data point
-    assert data.scalars.size == spline.force_.size
-    npt.assert_allclose(spline.force_coords_, coords)
+    if nodes == "default":
+        # There should be 1 force per data point
+        assert data.scalars.size == spline.force_.size
+        npt.assert_allclose(spline.force_coords_, coords)
     shape = (5, 5)
     region = (270, 320, -770, -720)
     # Tolerance needs to be kind of high to allow for error due to small
@@ -88,23 +100,23 @@ def test_spline():
     )
 
 
-def test_spline_cv_scoring():
+@pytest.mark.parametrize("scoring", ["r2", "neg_root_mean_squared_error"])
+def test_spline_cv_scoring(scoring):
     "Check scoring parameter works with SplineCV"
     region = (100, 500, -800, -700)
     synth = CheckerBoard(region=region)
-    data = synth.scatter(size=1500, random_state=1)
+    data = synth.scatter(size=1000, random_state=1)
     coords = (data.easting, data.northing)
     # Compare SplineCV to results from Spline with cross_val_score
-    for score in ["r2", "neg_root_mean_squared_error"]:
-        spline = Spline(damping=None)
-        score_spline = np.mean(
-            cross_val_score(spline, coords, data.scalars, scoring=score)
-        )
-        # Limit SplineCV to a single parameter set equal to Spline's defaults
-        spline_cv = SplineCV(dampings=[None], scoring=score)
-        spline_cv.fit(coords, data.scalars)
-        score_spline_cv = spline_cv.scores_[0]
-        npt.assert_allclose(score_spline, score_spline_cv, rtol=1e-5)
+    spline = Spline(damping=None, parallel=False)
+    score_spline = np.mean(
+        cross_val_score(spline, coords, data.scalars, scoring=scoring)
+    )
+    # Limit SplineCV to a single parameter set equal to Spline's defaults
+    spline_cv = SplineCV(dampings=[None], scoring=scoring)
+    spline_cv.fit(coords, data.scalars)
+    score_spline_cv = spline_cv.scores_[0]
+    npt.assert_allclose(score_spline, score_spline_cv, rtol=1e-5)
 
 
 def test_spline_weights():

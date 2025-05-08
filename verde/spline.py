@@ -324,10 +324,12 @@ class Spline(BaseGridder):
         # Capture the data region to use as a default when gridding.
         self.region_ = get_region(coordinates[:2])
         if self.force_coords is None:
+            symmetric = True
             self.force_coords_ = tuple(i.copy() for i in n_1d_arrays(coordinates, n=2))
         else:
+            symmetric = False
             self.force_coords_ = self.force_coords
-        jacobian = self.jacobian(coordinates[:2], self.force_coords_)
+        jacobian = self.jacobian(coordinates[:2], self.force_coords_, symmetric)
         self.force_ = least_squares(jacobian, data, weights, self.damping)
         return self
 
@@ -363,7 +365,7 @@ class Spline(BaseGridder):
         data = predict(east, north, force_east, force_north, self.force_, data)
         return data.reshape(shape)
 
-    def jacobian(self, coordinates, force_coords, dtype="float64"):
+    def jacobian(self, coordinates, force_coords, symmetric, dtype="float64"):
         """
         Make the Jacobian matrix for the 2D biharmonic spline.
 
@@ -393,10 +395,13 @@ class Spline(BaseGridder):
         east, north = n_1d_arrays(coordinates, n=2)
         jac = np.empty((east.size, force_east.size), dtype=dtype)
         if self.parallel:
-            jacobian = jacobian_parallel
+            jacobian_function = jacobian_parallel
         else:
-            jacobian = jacobian_serial
-        jac = jacobian(east, north, force_east, force_north, jac)
+            if symmetric:
+                jacobian_function = jacobian_symmetric
+            else:
+                jacobian_function = jacobian_serial
+        jac = jacobian_function(east, north, force_east, force_north, jac)
         return jac
 
 
@@ -440,7 +445,7 @@ def greens_function(east, north):
 
 
 def _predict(east, north, force_east, force_north, forces, result):
-    "Calculate the predicted data using numba to speed things up."
+    "Calculate the predicted data from given node weights."
     for i in numba.prange(east.size):
         result[i] = 0
         for j in range(forces.size):
@@ -450,7 +455,7 @@ def _predict(east, north, force_east, force_north, forces, result):
 
 
 def _jacobian(east, north, force_east, force_north, jac):
-    "Calculate the Jacobian matrix using numba to speed things up."
+    "Calculate the Jacobian matrix for general node and data placements"
     for i in numba.prange(east.size):
         for j in range(force_east.size):
             jac[i, j] = greens_function(
@@ -459,7 +464,19 @@ def _jacobian(east, north, force_east, force_north, jac):
     return jac
 
 
+def _jacobian_symmetric(east, north, force_east, force_north, jac):
+    "Calculate the Jacobian matrix when nodes and data are at the same points"
+    for i in range(east.size):
+        for j in range(i, east.size):
+            jac[i, j] = greens_function(
+                east[i] - force_east[j], north[i] - force_north[j]
+            )
+            jac[j, i] = jac[i, j]
+    return jac
+
+
 predict_serial = numba.jit(_predict, nopython=True)
 predict_parallel = numba.jit(_predict, nopython=True, parallel=True)
 jacobian_serial = numba.jit(_jacobian, nopython=True)
 jacobian_parallel = numba.jit(_jacobian, nopython=True, parallel=True)
+jacobian_symmetric = numba.jit(_jacobian_symmetric, nopython=True)
