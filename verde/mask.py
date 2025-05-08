@@ -32,12 +32,6 @@ def distance_mask(
     * If *grid* is not None, produces a mask and applies it to *grid* (an
       :class:`xarray.Dataset`).
 
-    .. note::
-
-        If installed, package ``pykdtree`` will be used instead of
-        :class:`scipy.spatial.cKDTree` for better performance.
-
-
     Parameters
     ----------
     data_coordinates : tuple of arrays

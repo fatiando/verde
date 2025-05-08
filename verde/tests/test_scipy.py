@@ -15,25 +15,19 @@ import pandas as pd
 import pytest
 
 from ..coordinates import grid_coordinates
-from ..scipygridder import Cubic, Linear, ScipyGridder
+from ..scipygridder import Cubic, Linear
 from ..synthetic import CheckerBoard
 
 
 @pytest.mark.parametrize(
     "gridder",
     [
-        ScipyGridder(method="nearest"),
-        ScipyGridder(method="linear"),
-        ScipyGridder(method="cubic"),
         Linear(),
         Linear(rescale=False),
         Cubic(),
         Cubic(rescale=False),
     ],
     ids=[
-        "nearest(scipy)",
-        "linear(scipy)",
-        "cubic(scipy)",
         "linear",
         "linear_norescale",
         "cubic",
@@ -56,16 +50,12 @@ def test_scipy_gridder_same_points(gridder):
 @pytest.mark.parametrize(
     "gridder",
     [
-        ScipyGridder(method="linear"),
-        ScipyGridder(method="cubic"),
         Linear(),
         Linear(rescale=False),
         Cubic(),
         Cubic(rescale=False),
     ],
     ids=[
-        "cubic(scipy)",
-        "cubic(scipy)",
         "linear",
         "linear_norescale",
         "cubic",
@@ -87,13 +77,13 @@ def test_scipy_gridder(gridder):
 @pytest.mark.parametrize(
     "gridder",
     [
-        ScipyGridder(method="cubic"),
+        Cubic(),
         Linear(),
     ],
-    ids=["cubic(scipy)", "linear"],
+    ids=["cubic", "linear"],
 )
 def test_scipy_gridder_region_xarray(gridder):
-    "See if the region is gotten from the data is correct."
+    "See if the region gotten from the data is correct."
     region = (1000, 5000, -8000, -6000)
     synth = CheckerBoard(region=region)
     grid = synth.grid(shape=(101, 101))
@@ -105,10 +95,10 @@ def test_scipy_gridder_region_xarray(gridder):
 @pytest.mark.parametrize(
     "gridder",
     [
-        ScipyGridder(method="cubic"),
+        Cubic(),
         Linear(),
     ],
-    ids=["cubic(scipy)", "linear"],
+    ids=["cubic", "linear"],
 )
 def test_scipy_gridder_region_pandas(gridder):
     "See if the region is gotten from the data is correct."
@@ -127,32 +117,21 @@ def test_scipy_gridder_region_pandas(gridder):
     npt.assert_allclose(gridder.region_, region)
 
 
-def test_scipy_gridder_extra_args():
-    "Passing in extra arguments to scipy"
-    data = CheckerBoard().scatter(random_state=100)
-    coords = (data.easting, data.northing)
-    grd = ScipyGridder(method="linear", extra_args=dict(rescale=True))
-    grd.fit(coords, data.scalars)
-    predicted = grd.predict(coords)
-    npt.assert_allclose(predicted, data.scalars)
-
-
-def test_scipy_gridder_fails():
-    "fit should fail for invalid method name"
-    data = CheckerBoard().scatter(random_state=0)
-    grd = ScipyGridder(method="some invalid method name")
-    with pytest.raises(ValueError):
-        grd.fit((data.easting, data.northing), data.scalars)
-
-
-def test_scipy_gridder_warns():
+@pytest.mark.parametrize(
+    "gridder",
+    [
+        Cubic(),
+        Linear(),
+    ],
+    ids=["cubic", "linear"],
+)
+def test_scipy_gridder_warns(gridder):
     "Check that a warning is issued when using weights."
     data = CheckerBoard().scatter(random_state=100)
     weights = np.ones_like(data.scalars)
-    grd = ScipyGridder()
-    msg = "ScipyGridder does not support weights and they will be ignored."
+    msg = "does not support weights and they will be ignored."
     with warnings.catch_warnings(record=True) as warn:
-        grd.fit((data.easting, data.northing), data.scalars, weights=weights)
+        gridder.fit((data.easting, data.northing), data.scalars, weights=weights)
         assert len(warn) == 1
         assert issubclass(warn[-1].category, UserWarning)
-        assert str(warn[-1].message) == msg
+        assert str(warn[-1].message).endswith(msg)

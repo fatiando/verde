@@ -174,11 +174,11 @@ class BlockReduce(BaseEstimator):
                 "data{}".format(i): attach_weights(self.reduction, w)
                 for i, w in enumerate(weights)
             }
-        columns = {"data{}".format(i): comp.ravel() for i, comp in enumerate(data)}
+        columns = {"data{}".format(i): np.ravel(comp) for i, comp in enumerate(data)}
         columns["block"] = labels
         blocked = pd.DataFrame(columns).groupby("block").aggregate(reduction)
         blocked_data = tuple(
-            blocked["data{}".format(i)].values.ravel() for i, _ in enumerate(data)
+            np.ravel(blocked["data{}".format(i)]) for i, _ in enumerate(data)
         )
         blocked_coords = self._block_coordinates(coordinates, blocks, labels)
         if len(blocked_data) == 1:
@@ -228,7 +228,7 @@ class BlockReduce(BaseEstimator):
         if self.drop_coords:
             coordinates = coordinates[:2]
         coords = {
-            "coordinate{}".format(i): coord.ravel()
+            "coordinate{}".format(i): np.ravel(coord)
             for i, coord in enumerate(coordinates)
         }
         coords["block"] = labels
@@ -237,7 +237,7 @@ class BlockReduce(BaseEstimator):
         if self.center_coordinates:
             unique = np.unique(labels)
             for i, block_coord in enumerate(block_coordinates[:2]):
-                grouped["coordinate{}".format(i)] = block_coord[unique].ravel()
+                grouped["coordinate{}".format(i)] = np.ravel(block_coord[unique])
         return tuple(
             grouped["coordinate{}".format(i)].values for i in range(len(coordinates))
         )
@@ -414,23 +414,21 @@ class BlockMean(BlockReduce):
             region=self.region,
         )
         ncomps = len(data)
-        columns = {"data{}".format(i): comp.ravel() for i, comp in enumerate(data)}
+        columns = {"data{}".format(i): np.ravel(comp) for i, comp in enumerate(data)}
         columns["block"] = labels
         if any(w is None for w in weights):
             mean, variance = self._blocked_mean_variance(pd.DataFrame(columns), ncomps)
         else:
             columns.update(
-                {"weight{}".format(i): comp.ravel() for i, comp in enumerate(weights)}
+                {"weight{}".format(i): np.ravel(comp) for i, comp in enumerate(weights)}
             )
             table = pd.DataFrame(columns)
             if self.uncertainty:
                 mean, variance = self._blocked_mean_uncertainty(table, ncomps)
             else:
                 mean, variance = self._blocked_mean_variance_weighted(table, ncomps)
-        blocked_data = tuple(comp.values.ravel() for comp in mean)
-        blocked_weights = tuple(
-            variance_to_weights(var.values.ravel()) for var in variance
-        )
+        blocked_data = tuple(np.ravel(comp) for comp in mean)
+        blocked_weights = tuple(variance_to_weights(np.ravel(var)) for var in variance)
         blocked_coords = self._block_coordinates(coordinates, blocks, labels)
         if ncomps == 1:
             return blocked_coords, blocked_data[0], blocked_weights[0]

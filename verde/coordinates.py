@@ -71,7 +71,8 @@ def get_region(coordinates):
     --------
 
     >>> coords = grid_coordinates((0, 1, -10, -6), shape=(10, 10))
-    >>> print(get_region(coords))
+    >>> region = get_region(coords)
+    >>> print(tuple(float(c) for c in region))
     (0.0, 1.0, -10.0, -6.0)
 
     """
@@ -134,7 +135,7 @@ def scatter_points(region, size, random_state=None, extra_coords=None):
         permutations. Use a fixed seed to make sure computations are
         reproducible. Use ``None`` to choose a seed automatically (resulting in
         different numbers with each run).
-    extra_coords : None, scalar, or list
+    extra_coords : None, scalar or list
         If not None, then value(s) of extra coordinate arrays to be generated.
         These extra arrays will have the same *size* as the others but will
         contain a constant value. Will generate an extra array per value given
@@ -233,9 +234,6 @@ def line_coordinates(
     Examples
     --------
 
-    >>> # Lower printing precision to shorten this example
-    >>> import numpy as np; np.set_printoptions(precision=2, suppress=True)
-
     >>> values = line_coordinates(0, 5, spacing=2.5)
     >>> print(values.shape)
     (3,)
@@ -333,7 +331,7 @@ def grid_coordinates(
         instead of the grid lines. In practice, this means that there will be
         one less element per dimension of the grid when compared to grid line
         registered (only if given *spacing* and not *shape*). Default is False.
-    extra_coords : None, scalar, or list
+    extra_coords : None, scalar or list
         If not None, then value(s) of extra coordinate arrays to be generated.
         These extra arrays will have the same *shape* as the others but will
         contain a constant value. Will generate an extra array per value given
@@ -362,8 +360,6 @@ def grid_coordinates(
     >>> east, north = grid_coordinates(region=(0, 5, 0, 10), shape=(5, 3))
     >>> print(east.shape, north.shape)
     (5, 3) (5, 3)
-    >>> # Lower printing precision to shorten this example
-    >>> import numpy as np; np.set_printoptions(precision=1, suppress=True)
     >>> print(east)
     [[0.  2.5 5. ]
      [0.  2.5 5. ]
@@ -485,8 +481,6 @@ def grid_coordinates(
 
     >>> east, north = grid_coordinates(region=(0, 5, 0, 10), spacing=2.5,
     ...                                pixel_register=True)
-    >>> # Raise the printing precision for this example
-    >>> np.set_printoptions(precision=2, suppress=True)
     >>> # Notice that the shape is 1 less than when pixel_register=False
     >>> print(east.shape, north.shape)
     (4, 2) (4, 2)
@@ -715,7 +709,7 @@ def profile_coordinates(point1, point2, size, extra_coords=None):
         second point, respectively.
     size : int
         Number of points to sample along the line.
-    extra_coords : None, scalar, or list
+    extra_coords : None, scalar or list
         If not None, then value(s) of extra coordinate arrays to be generated.
         These extra arrays will have the same *size* as the others but will
         contain a constant value. Will generate an extra array per value given
@@ -862,11 +856,6 @@ def block_split(coordinates, spacing=None, adjust="spacing", region=None, shape=
     The size of the blocks can be specified by the *spacing* parameter.
     Alternatively, the number of blocks in the South-North and West-East
     directions can be specified using the *shape* parameter.
-
-    .. note::
-
-        If installed, package ``pykdtree`` will be used instead of
-        :class:`scipy.spatial.cKDTree` for better performance.
 
     Parameters
     ----------
@@ -1181,8 +1170,7 @@ def rolling_window(
     centers = grid_coordinates(
         window_region, spacing=spacing, shape=shape, adjust=adjust
     )
-    # pykdtree doesn't support query_ball_point yet and we need that
-    tree = kdtree(coordinates, use_pykdtree=False)
+    tree = kdtree(coordinates)
     # Coordinates must be transposed because the kd-tree wants them as columns
     # of a matrix
     # Use p=inf (infinity norm) to get square windows instead of circular ones
@@ -1372,8 +1360,7 @@ def expanding_window(coordinates, center, sizes):
     coordinates = check_coordinates(coordinates)[:2]
     shape = coordinates[0].shape
     center = np.atleast_2d(center)
-    # pykdtree doesn't support query_ball_point yet and we need that
-    tree = kdtree(coordinates, use_pykdtree=False)
+    tree = kdtree(coordinates)
     indices = []
     for size in sizes:
         # Use p=inf (infinity norm) to get square windows instead of circular

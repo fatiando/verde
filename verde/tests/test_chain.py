@@ -13,7 +13,7 @@ import numpy.testing as npt
 from ..blockreduce import BlockReduce
 from ..chain import Chain
 from ..coordinates import grid_coordinates
-from ..scipygridder import ScipyGridder
+from ..scipygridder import Cubic
 from ..spline import Spline
 from ..synthetic import CheckerBoard
 from ..trend import Trend
@@ -30,7 +30,7 @@ def test_chain():
     trend = coefs[0] + coefs[1] * east + coefs[2] * north
     all_data = trend + data.scalars
 
-    grd = Chain([("trend", Trend(degree=1)), ("gridder", ScipyGridder())])
+    grd = Chain([("trend", Trend(degree=1)), ("gridder", Cubic())])
     grd.fit(coords, all_data)
 
     npt.assert_allclose(grd.predict(coords), all_data)

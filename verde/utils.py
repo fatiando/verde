@@ -7,23 +7,11 @@
 """
 General utilities.
 """
-import functools
-
 import dask
 import numpy as np
 import pandas as pd
 import xarray as xr
-from scipy.spatial import cKDTree
-
-try:
-    from pykdtree.kdtree import KDTree as pyKDTree
-except ImportError:
-    pyKDTree = None  # noqa: N816
-
-try:
-    import numba
-except ImportError:
-    numba = None
+from scipy.spatial import KDTree
 
 from .base.utils import (
     check_coordinates,
@@ -34,7 +22,7 @@ from .base.utils import (
 )
 
 
-def dispatch(function, delayed=False, client=None):
+def dispatch(function, delayed):
     """
     Decide how to wrap a function for Dask depending on the options given.
 
@@ -43,80 +31,17 @@ def dispatch(function, delayed=False, client=None):
     function : callable
         The function that will be called.
     delayed : bool
-        If True, will wrap the function in :func:`dask.delayed`.
-    client : None or dask.distributed Client
-        If *delayed* is False and *client* is not None, will return a partial
-        execution of the ``client.submit`` with the function as first argument.
+        If True, will wrap the function in :func:`dask.delayed.delayed`.
 
     Returns
     -------
     function : callable
-        The function wrapped in Dask.
+        The function wrapped in Dask or just itself if *delayed* is False.
 
     """
     if delayed:
         return dask.delayed(function)
-    if client is not None:
-        return functools.partial(client.submit, function)
     return function
-
-
-def parse_engine(engine):
-    """
-    Choose the best engine available and check if it's valid.
-
-    Parameters
-    ----------
-    engine : str
-        The name of the engine. If ``"auto"`` will favor numba if it's
-        available.
-
-    Returns
-    -------
-    engine : str
-        The name of the engine that should be used.
-
-    """
-    engines = {"auto", "numba", "numpy"}
-    if engine not in engines:
-        raise ValueError("Invalid engine '{}'. Must be in {}.".format(engine, engines))
-    if engine == "auto":
-        if numba is None:
-            return "numpy"
-        return "numba"
-    return engine
-
-
-def dummy_jit(**kwargs):  # noqa: U100
-    """
-    Replace numba.jit if not installed with a function that raises RunTimeError
-
-    Use as a decorator.
-
-    Parameters
-    ----------
-    function
-        A function that you would decorate with :func:`numba.jit`.
-
-    Returns
-    -------
-    function
-        A function that raises :class:`RunTimeError` warning that numba isn't
-        installed.
-
-    """
-
-    def dummy_decorator(function):
-        "The actual decorator"
-
-        @functools.wraps(function)
-        def dummy_function(*args, **kwargs):  # noqa: U100
-            "Just raise an exception."
-            raise RuntimeError("Could not find numba.")
-
-        return dummy_function
-
-    return dummy_decorator
 
 
 def variance_to_weights(variance, tol=1e-15, dtype="float64"):
@@ -187,6 +112,10 @@ def maxabs(*args, nan=True):
     args
         One or more arrays. If more than one are given, a single maximum will
         be calculated across all arrays.
+    nan : bool
+        If True, will use the NaN compatible version of the numpy functions,
+        which ignore NaNs in the arrays. Otherwise, any NaNs will result in the
+        return value being also a NaN.
 
     Returns
     -------
@@ -196,18 +125,24 @@ def maxabs(*args, nan=True):
     Examples
     --------
 
-    >>> maxabs((1, -10, 25, 2, 3))
-    25
-    >>> maxabs((1, -10.5, 25, 2), (0.1, 100, -500), (-200, -300, -0.1, -499))
+    >>> result = maxabs((1, -10, 25, 2, 3))
+    >>> float(result)
+    25.0
+    >>> result = maxabs(
+    ...     (1, -10.5, 25, 2), (0.1, 100, -500), (-200, -300, -0.1, -499)
+    ... )
+    >>> float(result)
     500.0
 
     If the array contains NaNs, we'll use the ``nan`` version of of the numpy
     functions by default. You can turn this off through the *nan* argument.
 
     >>> import numpy as np
-    >>> maxabs((1, -10, 25, 2, 3, np.nan))
+    >>> result = maxabs((1, -10, 25, 2, 3, np.nan))
+    >>> float(result)
     25.0
-    >>> maxabs((1, -10, 25, 2, 3, np.nan), nan=False)
+    >>> result = maxabs((1, -10, 25, 2, 3, np.nan), nan=False)
+    >>> float(result)
     nan
 
     """
@@ -620,7 +555,23 @@ def grid_to_table(grid):
     [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]
     >>> print(table.wind_speed.values)
     [20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39]
-
+    >>> # Non-dimensional coordinates are also handled
+    >>> temperature = xr.DataArray(
+    ...     np.arange(20).reshape((4, 5)),
+    ...     coords=(np.arange(4), np.arange(5, 10)),
+    ...     dims=['northing', 'easting']
+    ... )
+    >>> temperature = temperature.assign_coords(
+    ...     upward=(
+    ...         ("northing", "easting"),
+    ...         np.arange(20).reshape((4, 5))
+    ...     )
+    ... )
+    >>> table = grid_to_table(temperature)
+    >>> list(sorted(table.columns))
+    ['easting', 'northing', 'scalars', 'upward']
+    >>> print(table.upward.values)
+    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]
     """
     if hasattr(grid, "data_vars"):
         # It's a Dataset
@@ -637,24 +588,23 @@ def grid_to_table(grid):
     # Need to flip the coordinates because the names are in northing and
     # easting order
     coordinates = [i.ravel() for i in np.meshgrid(east, north)][::-1]
+    # Identify and add extra coordinates
+    extra = [coord for coord in grid.coords.keys() if coord not in coordinate_names]
+    for coord in extra:
+        coordinates.append(grid[coord].values.ravel())
+        coordinate_names.append(coord)
     data_dict = dict(zip(coordinate_names, coordinates))
     data_dict.update(dict(zip(data_names, data_arrays)))
     return pd.DataFrame(data_dict)
 
 
-def kdtree(coordinates, use_pykdtree=True, **kwargs):
+def kdtree(coordinates, **kwargs):
     """
     Create a KD-Tree object with the given coordinate arrays.
 
     Automatically transposes and flattens the coordinate arrays into a single
-    matrix for use in the KD-Tree classes.
-
-    All other keyword arguments are passed to the KD-Tree class.
-
-    If installed, package ``pykdtree`` will be used instead of
-    :class:`scipy.spatial.cKDTree` for better performance. Not all features are
-    available in ``pykdtree`` so if you require the scipy version set
-    ``use_pykdtee=False``.
+    matrix for use in :class:`scipy.spatial.KDTree`. All other keyword
+    arguments are passed to the KD-Tree class.
 
     Parameters
     ----------
@@ -662,22 +612,15 @@ def kdtree(coordinates, use_pykdtree=True, **kwargs):
         Arrays with the coordinates of each data point. Should be in the
         following order: (easting, northing, vertical, ...). All coordinate
         arrays are used.
-    use_pykdtree : bool
-        If True, will prefer ``pykdtree`` (if installed) over
-        :class:`scipy.spatial.cKDTree`. Otherwise, always use the scipy
-        version.
 
     Returns
     -------
-    tree : :class:`scipy.spatial.cKDTree` or ``pykdtree.kdtree.KDTree``
+    tree : :class:`scipy.spatial.KDTree`
         The tree instance initialized with the given coordinates and arguments.
 
     """
     points = np.transpose(n_1d_arrays(coordinates, len(coordinates)))
-    if pyKDTree is not None and use_pykdtree:
-        tree = pyKDTree(points, **kwargs)
-    else:
-        tree = cKDTree(points, **kwargs)
+    tree = KDTree(points, **kwargs)
     return tree
 
 
