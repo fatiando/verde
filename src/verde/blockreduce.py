@@ -7,12 +7,12 @@
 """
 Classes for reducing/aggregating data in blocks.
 """
+import bordado as bd
 import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator
 
 from .base import check_fit_input
-from .coordinates import block_split
 from .utils import variance_to_weights
 
 
@@ -43,16 +43,16 @@ class BlockReduce(BaseEstimator):
 
     If a data region to be divided into blocks is not given, it will be the
     bounding region of the data. When using this class to decimate data before
-    gridding, it's best to use the same region and spacing as the desired grid.
+    gridding, it's best to use the desired grid spacing as the block size.
 
-    The size of the blocks can be specified by the *spacing* parameter.
+    The size of the blocks can be specified by the *block_size* parameter.
     Alternatively, the number of blocks in the South-North and West-East
-    directions can be specified using the *shape* parameter.
+    directions can be specified using the *block_shape* parameter.
 
-    If the given region is not divisible by the spacing (block size), either
-    the region or the spacing will have to be adjusted. By default, the spacing
-    will be rounded to the nearest multiple. Optionally, the East and North
-    boundaries of the region can be adjusted to fit the exact spacing given.
+    If the given region is not divisible by the block size, either the region
+    or the size will have to be adjusted. By default, the block size will be
+    rounded to the nearest multiple. Optionally, the East and North boundaries
+    of the region can be adjusted to fit the exact block size given.
 
     Blocks without any data are omitted from the output.
 
@@ -65,20 +65,20 @@ class BlockReduce(BaseEstimator):
     reduction : function
         A reduction function that takes an array and returns a single value
         (e.g., ``np.mean``, ``np.median``, etc).
-    shape : tuple = (n_north, n_east) or None
+    block_shape : tuple = (n_north, n_east) or None
         The number of blocks in the South-North and West-East directions,
         respectively.
-    spacing : float, tuple = (s_north, s_east), or None
+    block_size : float, tuple = (s_north, s_east), or None
         The block size in the South-North and West-East directions,
         respectively. A single value means that the size is equal in both
         directions.
     region : list = [W, E, S, N]
         The boundaries of a given region in Cartesian or geographic
         coordinates.
-    adjust : {'spacing', 'region'}
-        Whether to adjust the spacing or the region if required. Ignored if
-        *shape* is given instead of *spacing*. Defaults to adjusting the
-        spacing.
+    adjust : {'block_size', 'region'}
+        Whether to adjust the block_size or the region if required. Ignored if
+        *block_shape* is given instead of *block_size*. Defaults to adjusting
+        the block size.
     center_coordinates : bool
         If True, then the returned coordinates correspond to the center of each
         block. Otherwise, the coordinates are calculated by applying the same
@@ -90,7 +90,6 @@ class BlockReduce(BaseEstimator):
 
     See also
     --------
-    block_split : Split a region into blocks and label points accordingly.
     BlockMean : Apply the mean in blocks. Will output weights.
     verde.Chain : Apply filter operations successively on data.
 
@@ -99,16 +98,16 @@ class BlockReduce(BaseEstimator):
     def __init__(
         self,
         reduction,
-        spacing=None,
+        block_shape=None,
+        block_size=None,
         region=None,
-        adjust="spacing",
+        adjust="block_size",
         center_coordinates=False,
-        shape=None,
         drop_coords=True,
     ):
         self.reduction = reduction
-        self.shape = shape
-        self.spacing = spacing
+        self.block_shape = block_shape
+        self.block_size = block_size
         self.region = region
         self.adjust = adjust
         self.center_coordinates = center_coordinates
@@ -160,13 +159,16 @@ class BlockReduce(BaseEstimator):
         coordinates, data, weights = check_fit_input(
             coordinates, data, weights, unpack=False
         )
-        blocks, labels = block_split(
-            coordinates,
-            spacing=self.spacing,
-            shape=self.shape,
+        blocks, labels = bd.block_split(
+            coordinates[:2],
+            block_size=self.block_size,
+            block_shape=self.block_shape,
             adjust=self.adjust,
             region=self.region,
         )
+        # All the rest of the code expect raveled arrays
+        labels = labels.ravel()
+        blocks = [b.ravel() for b in blocks]
         if any(w is None for w in weights):
             reduction = self.reduction
         else:
@@ -198,7 +200,7 @@ class BlockReduce(BaseEstimator):
         Blocks without any data will be omitted.
 
         *block_coordinates* and *labels* should be the outputs of
-        :func:`verde.block_split`.
+        :func:`bordado.block_split`.
 
         Parameters
         ----------
@@ -279,16 +281,16 @@ class BlockMean(BlockReduce):
 
     If a data region to be divided into blocks is not given, it will be the
     bounding region of the data. When using this class to decimate data before
-    gridding, it's best to use the same region and spacing as the desired grid.
+    gridding, it's best to use the desired grid spacing as the block size.
 
-    The size of the blocks can be specified by the *spacing* parameter.
+    The size of the blocks can be specified by the *block_size* parameter.
     Alternatively, the number of blocks in the South-North and West-East
-    directions can be specified using the *shape* parameter.
+    directions can be specified using the *block_shape* parameter.
 
-    If the given region is not divisible by the spacing (block size), either
-    the region or the spacing will have to be adjusted. By default, the spacing
-    will be rounded to the nearest multiple. Optionally, the East and North
-    boundaries of the region can be adjusted to fit the exact spacing given.
+    If the given region is not divisible by the block size, either the region
+    or the size will have to be adjusted. By default, the block size will be
+    rounded to the nearest multiple. Optionally, the East and North boundaries
+    of the region can be adjusted to fit the exact block size given.
 
     Blocks without any data are omitted from the output.
 
@@ -298,20 +300,20 @@ class BlockMean(BlockReduce):
 
     Parameters
     ----------
-    shape : tuple = (n_north, n_east) or None
+    block_shape : tuple = (n_north, n_east) or None
         The number of blocks in the South-North and West-East directions,
         respectively.
-    spacing : float, tuple = (s_north, s_east), or None
+    block_size : float, tuple = (s_north, s_east), or None
         The block size in the South-North and West-East directions,
         respectively. A single value means that the size is equal in both
         directions.
     region : list = [W, E, S, N]
         The boundaries of a given region in Cartesian or geographic
         coordinates.
-    adjust : {'spacing', 'region'}
-        Whether to adjust the spacing or the region if required. Ignored if
-        *shape* is given instead of *spacing*. Defaults to adjusting the
-        spacing.
+    adjust : {'block_size', 'region'}
+        Whether to adjust the block_size or the region if required. Ignored if
+        *block_shape* is given instead of *block_size*. Defaults to adjusting
+        the block size.
     center_coordinates : bool
         If True, then the returned coordinates correspond to the center of each
         block. Otherwise, the coordinates are calculated by applying the same
@@ -330,7 +332,6 @@ class BlockMean(BlockReduce):
 
     See also
     --------
-    block_split : Split a region into blocks and label points accordingly.
     BlockReduce : Apply the mean in blocks. Will output weights.
     verde.Chain : Apply filter operations successively on data.
 
@@ -338,18 +339,18 @@ class BlockMean(BlockReduce):
 
     def __init__(
         self,
-        spacing=None,
+        block_shape=None,
+        block_size=None,
         region=None,
-        adjust="spacing",
+        adjust="block_size",
         center_coordinates=False,
         uncertainty=False,
-        shape=None,
         drop_coords=True,
     ):
         super().__init__(
             reduction=np.average,
-            shape=shape,
-            spacing=spacing,
+            block_shape=block_shape,
+            block_size=block_size,
             region=region,
             adjust=adjust,
             center_coordinates=center_coordinates,
@@ -406,13 +407,14 @@ class BlockMean(BlockReduce):
                 "Either provide weights (as 1/uncertainty**2) or use "
                 "'uncertainty=False' to produce variance weights instead."
             )
-        blocks, labels = block_split(
+        blocks, labels = bd.block_split(
             coordinates,
-            spacing=self.spacing,
-            shape=self.shape,
+            block_size=self.block_size,
+            block_shape=self.block_shape,
             adjust=self.adjust,
             region=self.region,
         )
+        labels = labels.ravel()
         ncomps = len(data)
         columns = {"data{}".format(i): np.ravel(comp) for i, comp in enumerate(data)}
         columns["block"] = labels

@@ -405,19 +405,19 @@ class DummyCrossValidator(BaseBlockCrossValidator):
 
 def test_baseblockedcrossvalidator_n_splits():
     "Make sure get_n_splits returns the correct value"
-    cv = DummyCrossValidator(spacing=1, n_splits=14)
+    cv = DummyCrossValidator(block_size=1, n_splits=14)
     assert cv.get_n_splits() == 14
 
 
-def test_baseblockedcrossvalidator_fails_spacing_shape():
-    "Should raise an exception if not given spacing or shape."
+def test_baseblockedcrossvalidator_fails_block_size_shape():
+    "Should raise an exception if not given block size or shape."
     with pytest.raises(ValueError):
         DummyCrossValidator()
 
 
 def test_baseblockedcrossvalidator_fails_data_shape():
     "Should raise an exception if the X array doesn't have 2 columns."
-    cv = DummyCrossValidator(spacing=1)
+    cv = DummyCrossValidator(block_size=1)
     with pytest.raises(ValueError):
         next(cv.split(np.ones(shape=(10, 4))))
     with pytest.raises(ValueError):

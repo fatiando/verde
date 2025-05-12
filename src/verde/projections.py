@@ -160,7 +160,7 @@ def project_grid(grid, projection, method="linear", antialias=True, **kwargs):
     steps = []
     if antialias:
         steps.append(
-            ("mean", BlockReduce(np.mean, spacing=spacing, region=data_region))
+            ("mean", BlockReduce(np.mean, block_size=spacing, region=data_region))
         )
     steps.append(("interpolator", method))
     interpolator = Chain(steps)

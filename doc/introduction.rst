@@ -141,7 +141,7 @@ In Verde, this is done by :class:`verde.BlockMean`:
 
    # Desired grid spacing in degrees
    spacing = 0.2
-   blockmean = vd.BlockMean(spacing=spacing)
+   blockmean = vd.BlockMean(block_size=spacing)
 
 The :meth:`verde.BlockMean.filter` method applies the blocked average operation
 with the given spacing to some data.
@@ -165,7 +165,7 @@ let :class:`verde.BlockMean` know that our input weights are uncertainties.
 
 .. jupyter-execute::
 
-   blockmean = vd.BlockMean(spacing=spacing, uncertainty=True)
+   blockmean = vd.BlockMean(block_size=spacing, uncertainty=True)
    block_coordinates, block_velocity, block_weights = blockmean.filter(
        coordinates=(data.longitude, data.latitude),
        data=data.velocity_up_mmyr,
