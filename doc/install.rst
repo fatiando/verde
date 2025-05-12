@@ -61,6 +61,7 @@ Required:
 * `scikit-learn <http://scikit-learn.org/>`__
 * `dask <https://dask.org/>`__
 * `numba <https://numba.pydata.org/>`__
+* `bordado <https://www.fatiando.org/bordado>`__
 
 Our examples use other packages as well which are not used within Verde itself.
 If you wish to **run the examples in the documentation**, you will also have to

@@ -70,7 +70,7 @@ def test_chain_vector():
     data = (trend, trend.copy())
     chain = Chain(
         [
-            ("mean", BlockReduce(np.mean, spacing=0.5)),
+            ("mean", BlockReduce(np.mean, block_size=0.5)),
             ("trend", Vector([Trend(degree=1), Trend(degree=1)])),
         ]
     )

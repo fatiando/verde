@@ -10,7 +10,6 @@ from ._version import __version__
 from .blockreduce import BlockMean, BlockReduce
 from .chain import Chain
 from .coordinates import (
-    block_split,
     expanding_window,
     get_region,
     grid_coordinates,
