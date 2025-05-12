@@ -63,7 +63,6 @@ Coordinate Manipulation
     get_region
     pad_region
     inside
-    block_split
     rolling_window
     expanding_window
 
