@@ -12,8 +12,8 @@ import numpy.testing as npt
 import pandas as pd
 import pytest
 
-from ..blockreduce import BlockMean, BlockReduce
-from ..coordinates import grid_coordinates, scatter_points
+from verde.blockreduce import BlockMean, BlockReduce
+from verde.coordinates import grid_coordinates, scatter_points
 
 
 def test_block_reduce():

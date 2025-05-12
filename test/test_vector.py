@@ -11,11 +11,11 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from ..base import n_1d_arrays
-from ..coordinates import grid_coordinates
-from ..synthetic import CheckerBoard
-from ..trend import Trend
-from ..vector import Vector, VectorSpline2D
+from verde.base import n_1d_arrays
+from verde.coordinates import grid_coordinates
+from verde.synthetic import CheckerBoard
+from verde.trend import Trend
+from verde.vector import Vector, VectorSpline2D
 
 
 @pytest.fixture

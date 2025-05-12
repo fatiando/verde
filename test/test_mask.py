@@ -12,8 +12,8 @@ import numpy.testing as npt
 import pytest
 import xarray as xr
 
-from ..coordinates import grid_coordinates
-from ..mask import convexhull_mask, distance_mask
+from verde.coordinates import grid_coordinates
+from verde.mask import convexhull_mask, distance_mask
 
 
 def test_convexhull_mask():

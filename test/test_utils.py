@@ -13,8 +13,8 @@ import pandas as pd
 import pytest
 import xarray as xr
 
-from ..coordinates import grid_coordinates, scatter_points
-from ..utils import (
+from verde.coordinates import grid_coordinates, scatter_points
+from verde.utils import (
     get_ndim_horizontal_coords,
     grid_to_table,
     kdtree,

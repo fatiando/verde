@@ -11,14 +11,14 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from ..base.base_classes import (
+from verde.base.base_classes import (
     BaseBlockCrossValidator,
     BaseGridder,
     get_instance_region,
 )
-from ..base.least_squares import least_squares
-from ..base.utils import check_coordinates, check_fit_input
-from ..coordinates import grid_coordinates, scatter_points
+from verde.base.least_squares import least_squares
+from verde.base.utils import check_coordinates, check_fit_input
+from verde.coordinates import grid_coordinates, scatter_points
 
 
 def test_check_coordinates():
