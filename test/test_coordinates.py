@@ -16,11 +16,9 @@ import pytest
 from verde.coordinates import (
     check_region,
     grid_coordinates,
-    line_coordinates,
     longitude_continuity,
     profile_coordinates,
     rolling_window,
-    spacing_to_size,
 )
 
 
@@ -92,65 +90,6 @@ def test_rolling_window_oversized_window(region):
     err_msg = f"Window size '{oversize}' is larger than dimensions of the region "
     with pytest.raises(ValueError, match=err_msg):
         rolling_window(coords, size=oversize, spacing=2)
-
-
-def test_spacing_to_size():
-    "Check that correct size and stop are returned"
-    start, stop = -10, 0
-
-    size, new_stop = spacing_to_size(start, stop, spacing=2.5, adjust="spacing")
-    npt.assert_allclose(size, 5)
-    npt.assert_allclose(new_stop, stop)
-
-    size, new_stop = spacing_to_size(start, stop, spacing=2, adjust="spacing")
-    npt.assert_allclose(size, 6)
-    npt.assert_allclose(new_stop, stop)
-
-    size, new_stop = spacing_to_size(start, stop, spacing=2.6, adjust="spacing")
-    npt.assert_allclose(size, 5)
-    npt.assert_allclose(new_stop, stop)
-
-    size, new_stop = spacing_to_size(start, stop, spacing=2.4, adjust="spacing")
-    npt.assert_allclose(size, 5)
-    npt.assert_allclose(new_stop, stop)
-
-    size, new_stop = spacing_to_size(start, stop, spacing=2.6, adjust="region")
-    npt.assert_allclose(size, 5)
-    npt.assert_allclose(new_stop, 0.4)
-
-    size, new_stop = spacing_to_size(start, stop, spacing=2.4, adjust="region")
-    npt.assert_allclose(size, 5)
-    npt.assert_allclose(new_stop, -0.4)
-
-
-def test_line_coordinates_fails():
-    "Check failures for invalid arguments"
-    start, stop = 0, 1
-    size = 10
-    spacing = 0.1
-    # Make sure it doesn't fail for these parameters
-    line_coordinates(start, stop, size=size)
-    line_coordinates(start, stop, spacing=spacing)
-    with pytest.raises(ValueError):
-        line_coordinates(start, stop)
-    with pytest.raises(ValueError):
-        line_coordinates(start, stop, size=size, spacing=spacing)
-
-
-def test_line_coordinates_spacing_larger_than_twice_interval():
-    "Check if pixel_register works when the spacing is greater than the limits"
-    start, stop = 0, 1
-    spacing = 3
-    coordinates = line_coordinates(start, stop, spacing=spacing)
-    npt.assert_allclose(coordinates, [0, 1])
-    coordinates = line_coordinates(start, stop, spacing=spacing, pixel_register=True)
-    npt.assert_allclose(coordinates, [0.5])
-    coordinates = line_coordinates(start, stop, spacing=spacing, adjust="region")
-    npt.assert_allclose(coordinates, [0, 3])
-    coordinates = line_coordinates(
-        start, stop, spacing=spacing, pixel_register=True, adjust="region"
-    )
-    npt.assert_allclose(coordinates, [1.5])
 
 
 def test_grid_coordinates_fails():
