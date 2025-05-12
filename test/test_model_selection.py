@@ -69,7 +69,9 @@ def test_blockshufflesplit_balancing(test_size):
     )
     npoints = coords.shape[0]
     train_size = 1 - test_size
-    cv = BlockShuffleSplit(block_size=1, random_state=0, test_size=test_size, balancing=20)
+    cv = BlockShuffleSplit(
+        block_size=1, random_state=0, test_size=test_size, balancing=20
+    )
     for train, test in cv.split(coords):
         npt.assert_allclose(train.size / npoints, train_size, atol=0.01)
         npt.assert_allclose(test.size / npoints, test_size, atol=0.01)

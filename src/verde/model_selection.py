@@ -285,7 +285,7 @@ class BlockKFold(BaseBlockCrossValidator):
     >>> coords = grid_coordinates(region=(0, 3, -10, -7), spacing=1)
     >>> # Need to convert the coordinates into a feature matrix
     >>> X = np.transpose([i.ravel() for i in coords])
-    >>> kfold = BlockKFold(spacing=1.5, n_splits=4)
+    >>> kfold = BlockKFold(block_size=1.5, n_splits=4)
     >>> # These are the 1D indices of the points belonging to each set
     >>> for train, test in kfold.split(X):
     ...     print("Train: {} Test: {}".format(train, test))
@@ -329,7 +329,7 @@ class BlockKFold(BaseBlockCrossValidator):
 
     >>> # Set the random_state to make sure we always get the same result.
     >>> kfold = BlockKFold(
-    ...     spacing=1.5, n_splits=4, shuffle=True, random_state=123,
+    ...     block_size=1.5, n_splits=4, shuffle=True, random_state=123,
     ... )
     >>> for train, test in kfold.split(X):
     ...     print("Train: {} Test: {}".format(train, test))
@@ -551,7 +551,7 @@ def train_test_split(
     >>> # We must specify the size of the blocks via the spacing argument.
     >>> # Blocks of 1.5 will split the domain into 4 blocks.
     >>> train, test = train_test_split(
-    ...     coordinates, data, random_state=0, spacing=1.5,
+    ...     coordinates, data, random_state=0, block_size=1.5,
     ... )
     >>> # The training set:
     >>> print("coords:", train[0][0], train[0][1], sep="\n")
@@ -709,7 +709,7 @@ def cross_val_score(
     >>> from verde import BlockShuffleSplit
     >>> # spacing controls the size of the spatial blocks
     >>> cross_validator = BlockShuffleSplit(
-    ...     spacing=2, n_splits=3, random_state=0
+    ...     block_size=2, n_splits=3, random_state=0
     ... )
     >>> scores = cross_val_score(model, coords, data, cv=cross_validator)
     >>> print(', '.join(['{:.2f}'.format(score) for score in scores]))

@@ -160,13 +160,15 @@ class BlockReduce(BaseEstimator):
             coordinates, data, weights, unpack=False
         )
         blocks, labels = bd.block_split(
-            coordinates,
+            coordinates[:2],
             block_size=self.block_size,
             block_shape=self.block_shape,
             adjust=self.adjust,
             region=self.region,
         )
+        # All the rest of the code expect raveled arrays
         labels = labels.ravel()
+        blocks = [b.ravel() for b in blocks]
         if any(w is None for w in weights):
             reduction = self.reduction
         else:

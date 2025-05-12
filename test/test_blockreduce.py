@@ -72,9 +72,9 @@ def test_block_reduce_weights():
     outlier = 1000
     data[outlier] = 10000
     weights[outlier] = 0
-    block_coords, block_data = BlockReduce(np.average, block_size=1, region=region).filter(
-        coords, data, weights
-    )
+    block_coords, block_data = BlockReduce(
+        np.average, block_size=1, region=region
+    ).filter(coords, data, weights)
     assert len(block_coords[0]) == 25
     assert len(block_coords[1]) == 25
     assert len(block_data) == 25
