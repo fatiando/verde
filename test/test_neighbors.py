@@ -13,9 +13,9 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from ..coordinates import grid_coordinates
-from ..neighbors import KNeighbors
-from ..synthetic import CheckerBoard
+from verde.coordinates import grid_coordinates
+from verde.neighbors import KNeighbors
+from verde.synthetic import CheckerBoard
 
 
 def test_neighbors_same_points():

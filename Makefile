@@ -1,8 +1,8 @@
 # Build, package, test, and clean
 PROJECT=verde
-TESTDIR=tmp-test-dir-with-unique-name
-PYTEST_ARGS=--cov-config=../.coveragerc --cov-report=term-missing --cov=$(PROJECT) --doctest-modules -v --pyargs
-CHECK_STYLE=$(PROJECT) doc
+CHECK_STYLE=src/$(PROJECT) doc test
+
+.PHONY: build install test format check check-format check_style check-actions clean
 
 help:
 	@echo "Commands:"
@@ -22,23 +22,19 @@ install:
 	python -m pip install --no-deps -e .
 
 test:
-	# Run a tmp folder to make sure the tests are run on the installed version
-	mkdir -p $(TESTDIR)
-	cd $(TESTDIR); MPLBACKEND='agg' pytest $(PYTEST_ARGS) $(PROJECT)
-	cp $(TESTDIR)/.coverage* .
-	rm -rvf $(TESTDIR)
+	pytest --cov-report=term-missing --cov --doctest-modules --verbose test src/$(PROJECT)
 
 format:
 	isort $(CHECK_STYLE)
 	black $(CHECK_STYLE)
-	burocrata --extension=py $(PROJECT)
+	burocrata --extension=py $(CHECK_STYLE)
 
 check: check-format check-style
 
 check-format:
 	black --check $(CHECK_STYLE)
 	isort --check $(CHECK_STYLE)
-	burocrata --check --extension=py $(PROJECT)
+	burocrata --check --extension=py $(CHECK_STYLE)
 
 check-style:
 	flake8 $(CHECK_STYLE)
@@ -47,5 +43,7 @@ clean:
 	find . -name "*.pyc" -exec rm -v {} \;
 	find . -name ".coverage.*" -exec rm -v {} \;
 	find . -name "*.orig" -exec rm -v {} \;
+	find . -name "__pycache__" -exec rm -v {} \;
+	rm src/$(PROJECT)/_version.py
 	rm -rvf build dist MANIFEST *.egg-info __pycache__ .coverage .cache .pytest_cache
-	rm -rvf $(TESTDIR) dask-worker-space
+	rm -rvf dask-worker-space

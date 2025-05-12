@@ -14,8 +14,8 @@ import numpy.testing as npt
 import pytest
 from sklearn.metrics import get_scorer
 
-from .. import Trend, Vector, grid_coordinates, scatter_points
-from ..model_selection import BlockKFold, BlockShuffleSplit, cross_val_score
+from verde import Trend, Vector, grid_coordinates, scatter_points
+from verde.model_selection import BlockKFold, BlockShuffleSplit, cross_val_score
 
 
 @pytest.fixture(name="trend")
