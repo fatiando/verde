@@ -5,7 +5,7 @@
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #
 """
-Test the I/O functions.
+Test the Surfer I/O functions.
 """
 import os
 from io import StringIO
@@ -15,7 +15,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from verde.io import _check_surfer_integrity, _read_surfer_header, load_surfer
+from verde.surfer import _check_surfer_integrity, _read_surfer_header, load_surfer
 
 
 @pytest.fixture
