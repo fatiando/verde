@@ -43,8 +43,6 @@ intersphinx_mapping = {
     "sklearn": ("https://scikit-learn.org/stable/", None),
     "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
     "xarray": ("https://docs.xarray.dev/en/stable/", None),
-    "cartopy": ("https://scitools.org.uk/cartopy/docs/latest/", None),
-    "pooch": ("https://www.fatiando.org/pooch/latest/", None),
     "ensaio": ("https://www.fatiando.org/ensaio/latest/", None),
     "matplotlib": ("https://matplotlib.org/stable/", None),
     "dask": ("https://docs.dask.org/en/latest/", None),
@@ -58,9 +56,11 @@ autosummary_generate = []
 # Create cross-references for the parameter types in the Parameters, Other
 # Returns and Yields sections of the docstring
 numpydoc_xref_param_type = True
-
 # Format the Attributes like the Parameters section.
 numpydoc_attributes_as_param_list = True
+# Disable the creation of a toctree for class members to avoid missing stub
+# file warnings. See https://stackoverflow.com/a/73294408
+numpydoc_class_members_toctree = False
 
 # Always show the source code that generates a plot
 plot_include_source = True
