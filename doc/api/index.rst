@@ -36,7 +36,6 @@ Composite Estimators
 .. autosummary::
    :toctree: generated/
 
-    Chain
     Vector
 
 Model Selection

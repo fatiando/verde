@@ -10,7 +10,6 @@ Operations with projections for grids, regions, etc.
 import numpy as np
 
 from .blockreduce import BlockReduce
-from .chain import Chain
 from .coordinates import check_region, get_region, grid_coordinates, shape_to_spacing
 from .mask import convexhull_mask
 from .neighbors import KNeighbors
@@ -139,7 +138,9 @@ def project_grid(grid, projection, method="linear", antialias=True, **kwargs):
             raise ValueError(
                 f"Invalid interpolation method '{method}'. Must be one of {classes.keys()}."
             )
-        method = classes[method]()
+        interpolator = classes[method]()
+    else:
+        interpolator = method
 
     # Can be set to None for some data arrays depending on how they are created
     # so we can't just rely on the default value for getattr.
@@ -150,6 +151,7 @@ def project_grid(grid, projection, method="linear", antialias=True, **kwargs):
     data = grid_to_table(grid).dropna()
     coordinates = projection(data[grid.dims[1]].values, data[grid.dims[0]].values)
     data_region = get_region(coordinates)
+    data_vector = data[name]
 
     region = kwargs.pop("region", data_region)
     shape = kwargs.pop("shape", grid.shape)
@@ -157,14 +159,13 @@ def project_grid(grid, projection, method="linear", antialias=True, **kwargs):
 
     check_region(region)
 
-    steps = []
     if antialias:
-        steps.append(
-            ("mean", BlockReduce(np.mean, block_size=spacing, region=data_region))
-        )
-    steps.append(("interpolator", method))
-    interpolator = Chain(steps)
-    interpolator.fit(coordinates, data[name])
+        coordinates, data_vector = BlockReduce(
+            np.mean,
+            block_size=spacing,
+            region=data_region,
+        ).filter(coordinates, data_vector)
+    interpolator.fit(coordinates, data_vector)
 
     projected = interpolator.grid(
         region=region,

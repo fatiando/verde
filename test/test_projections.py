@@ -77,10 +77,6 @@ def test_project_grid_antialias(antialias):
     data = np.ones(shape, dtype="float")
     grid = xr.DataArray(data, coords=[lons, lats], dims=("latitude", "longitude"))
     proj = project_grid(grid, projection, antialias=antialias)
-    if antialias:
-        assert "BlockReduce" in proj.attrs["metadata"]
-    else:
-        assert "BlockReduce" not in proj.attrs["metadata"]
     assert proj.dims == ("northing", "easting")
     assert proj.name == "scalars"
     assert proj.shape == shape

@@ -8,7 +8,6 @@
 from . import synthetic
 from ._version import __version__
 from .blockreduce import BlockMean, BlockReduce
-from .chain import Chain
 from .coordinates import (
     expanding_window,
     get_region,
