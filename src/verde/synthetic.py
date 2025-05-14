@@ -50,6 +50,10 @@ class CheckerBoard(BaseGridder):
     >>> # Default values for the wavelengths are selected automatically
     >>> print(synth.w_east_, synth.w_north_)
     2500.0 2500.0
+    >>> # They can also be specified
+    >>> synth = CheckerBoard(w_east=1000, w_north=500)
+    >>> print(synth.w_east_, synth.w_north_)
+    1000 500
     >>> # CheckerBoard.grid produces an xarray.Dataset with data on a grid
     >>> grid = synth.grid(shape=(11, 6))
     >>> # scatter and profile generate pandas.DataFrame objects
