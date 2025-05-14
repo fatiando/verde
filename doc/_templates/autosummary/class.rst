@@ -4,22 +4,10 @@
 
 .. autoclass:: {{ objname }}
 
-{% if attributes %}
-
-Attributes
-----------
-
-{% for item in attributes %}
-.. autoattribute:: {{ objname }}.{{ item }}
-{% endfor %}
-
-{% endif %}
-
-
 {% if methods %}
 
-Methods
--------
+Method documentation
+--------------------
 
 {% for item in methods %}
 {% if item != '__init__' %}
