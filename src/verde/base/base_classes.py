@@ -269,51 +269,6 @@ class BaseGridder(BaseEstimator):
         """
         raise NotImplementedError()
 
-    def filter(self, coordinates, data, weights=None):  # noqa: A003
-        """
-        Filter the data through the gridder and produce residuals.
-
-        Calls ``fit`` on the data, evaluates the residuals (data - predicted
-        data), and returns the coordinates, residuals, and weights.
-
-        Not very useful by itself but this interface makes gridders compatible
-        with other processing operations and is used by :class:`verde.Chain` to
-        join them together (for example, so you can fit a spline on the
-        residuals of a trend).
-
-        Parameters
-        ----------
-        coordinates : tuple of arrays
-            Arrays with the coordinates of each data point. Should be in the
-            following order: (easting, northing, vertical, ...).
-            For the specific definition of coordinate systems and what these
-            names mean, see the class docstring.
-        data : array or tuple of arrays
-            The data values of each data point. If the data has more than one
-            component, *data* must be a tuple of arrays (one for each
-            component).
-        weights : None or array or tuple of arrays
-            If not None, then the weights assigned to each data point. If more
-            than one data component is provided, you must provide a weights
-            array for each data component (if not None).
-
-        Returns
-        -------
-        coordinates, residuals, weights
-            The coordinates and weights are same as the input. Residuals are
-            the input data minus the predicted data.
-
-        """
-        self.fit(coordinates, data, weights)
-        data = check_data(data)
-        pred = check_data(self.predict(coordinates))
-        residuals = tuple(
-            datai - predi.reshape(datai.shape) for datai, predi in zip(data, pred)
-        )
-        if len(residuals) == 1:
-            residuals = residuals[0]
-        return coordinates, residuals, weights
-
     def score(self, coordinates, data, weights=None):
         """
         Score the gridder predictions against the given data.
