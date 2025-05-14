@@ -53,12 +53,6 @@ version_scheme =  "post-release"
 local_scheme =  "no-local-version"
 write_to =  "src/verde/_version.py"
 
-# Make sure isort and Black are compatible
-[tool.isort]
-profile = "black"
-multi_line_output = 3
-skip_gitignore = true
-
 [tool.burocrata]
 notice = '''
 # Copyright (c) 2017 The Verde Developers.
@@ -67,6 +61,60 @@ notice = '''
 #
 # This code is part of the Fatiando a Terra project (https://www.fatiando.org)
 #'''
+
+[tool.ruff]
+line-length = 88
+exclude = [
+    "doc/_build",
+    "src/verde/_version.py",
+]
+
+[tool.ruff.lint]
+extend-select = [
+  "ARG",      # flake8-unused-arguments
+  "B",        # flake8-bugbear
+  "C4",       # flake8-comprehensions
+  "D",        # pydocstyle
+  "EM",       # flake8-errmsg
+  "EXE",      # flake8-executable
+  "FURB",     # refurb
+  "G",        # flake8-logging-format
+  "I",        # isort
+  "ICN",      # flake8-import-conventions
+  "NPY",      # NumPy specific rules
+  "PD",       # pandas-vet
+  "PGH",      # pygrep-hooks
+  "PIE",      # flake8-pie
+  "PL",       # pylint
+  "PT",       # flake8-pytest-style
+  "PTH",      # flake8-use-pathlib
+  "PYI",      # flake8-pyi
+  "RET",      # flake8-return
+  "RUF",      # Ruff-specific
+  "SIM",      # flake8-simplify
+  "T20",      # flake8-print
+  "UP",       # pyupgrade
+  "YTT",      # flake8-2020
+]
+ignore = [
+  "ISC001",   # Conflicts with formatter
+  "PLR09",    # Too many <...>
+  "PLR2004",  # Magic value used in comparison
+  "RET504",   # Allow variable assignment only for return
+  "PT001",    # Conventions for parenthesis on pytest.fixture
+  "D200",     # Allow single line docstrings in their own line
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]  # disable unused-imports errors on __init__.py
+"test/**" = [
+    "T20", # allow print statements in tests
+    "D",   # ignore pydocstyle warnings in tests
+]
+"doc/conf.py" = ["D"]  # ignore pydocstyle warnings in Sphinx config
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
 
 [tool.coverage.run]
 source = ["verde"]
