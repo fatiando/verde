@@ -12,7 +12,6 @@ import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator
 
-from .base import check_fit_input
 from .utils import variance_to_weights
 
 

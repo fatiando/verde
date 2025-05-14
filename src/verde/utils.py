@@ -13,13 +13,7 @@ import pandas as pd
 import xarray as xr
 from scipy.spatial import KDTree
 
-from .base.utils import (
-    check_coordinates,
-    check_data,
-    check_data_names,
-    check_extra_coords_names,
-    n_1d_arrays,
-)
+from .base.utils import n_1d_arrays
 
 
 def dispatch(function, delayed):

@@ -10,7 +10,7 @@ Mask grid points based on different criteria.
 import numpy as np
 from scipy.spatial import Delaunay
 
-from .base.utils import check_coordinates, n_1d_arrays
+from .base.utils import n_1d_arrays
 from .utils import kdtree
 
 

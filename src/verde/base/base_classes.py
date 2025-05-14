@@ -20,7 +20,7 @@ from ..utils import (
     make_xarray_grid,
     meshgrid_from_1d,
 )
-from .utils import check_data, check_data_names, score_estimator
+from .utils import score_estimator
 
 
 class BaseBlockCrossValidator(BaseCrossValidator, metaclass=ABCMeta):

@@ -13,7 +13,7 @@ import numba
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
-from .base import BaseGridder, check_fit_input, least_squares, n_1d_arrays
+from .base import BaseGridder, least_squares, n_1d_arrays
 from .coordinates import get_region
 from .model_selection import cross_val_score
 from .utils import dispatch

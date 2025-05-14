@@ -15,7 +15,7 @@ from sklearn.base import clone
 from sklearn.model_selection import KFold, ShuffleSplit
 from sklearn.utils import check_random_state
 
-from .base import BaseBlockCrossValidator, check_fit_input, n_1d_arrays
+from .base import BaseBlockCrossValidator, n_1d_arrays
 from .base.utils import score_estimator
 from .utils import dispatch, partition_by_sum
 

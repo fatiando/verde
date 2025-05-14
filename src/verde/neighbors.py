@@ -12,7 +12,7 @@ import warnings
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
-from .base import BaseGridder, check_fit_input, n_1d_arrays
+from .base import BaseGridder, n_1d_arrays
 from .coordinates import get_region
 from .utils import kdtree
 

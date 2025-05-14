@@ -14,7 +14,7 @@ import numpy as np
 from scipy.interpolate import CloughTocher2DInterpolator, LinearNDInterpolator
 from sklearn.utils.validation import check_is_fitted
 
-from .base import BaseGridder, check_fit_input
+from .base import BaseGridder
 from .coordinates import get_region
 
 

@@ -9,7 +9,6 @@ import pandas as pd
 
 from .base import BaseGridder
 from .base.base_classes import get_instance_region, project_coordinates
-from .base.utils import check_data
 from .coordinates import check_region, scatter_points
 
 
