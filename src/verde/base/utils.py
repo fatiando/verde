@@ -10,6 +10,8 @@ Utility functions for building gridders and checking arguments.
 import numpy as np
 from sklearn.metrics import check_scoring
 
+from .._validation import check_fit_input, check_tuple_of_arrays
+
 
 def score_estimator(scoring, estimator, coordinates, data, weights=None):
     """
@@ -46,10 +48,8 @@ def score_estimator(scoring, estimator, coordinates, data, weights=None):
         The score.
 
     """
-    coordinates, data, weights = check_fit_input(
-        coordinates, data, weights, unpack=False
-    )
-    predicted = check_data(estimator.predict(coordinates))
+    coordinates, data, weights = check_fit_input(coordinates, data, weights)
+    predicted = check_tuple_of_arrays(estimator.predict(coordinates), name="data")
     scorer = check_scoring(DummyEstimator, scoring=scoring)
     result = np.mean(
         [

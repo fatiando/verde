@@ -44,6 +44,21 @@ def test_names_raises(arrays, names, name):
 
 
 @pytest.mark.parametrize(
+    ["arrays", "names", "name"],
+    [
+        (([1, 2], [1, 2]), None, "data"),
+        (([1, 2], [1, 2]), (None,), "data"),
+        (([1, 2], [1, 2]), [None], "data"),
+        (([1, 2], [1, 2]), ["one", None, "three"], "DatA"),
+    ],
+)
+def test_names_none_raises(arrays, names, name):
+    "Make sure an exception is raised when the inputs are invalid."
+    with pytest.raises(ValueError, match="Using None as data name"):
+        check_names(arrays, names, name)
+
+
+@pytest.mark.parametrize(
     ["coordinates", "data", "weights"],
     [
         (([1, 2], [1, 2]), [1, 2], None),

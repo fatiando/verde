@@ -13,6 +13,7 @@ import pandas as pd
 from sklearn.base import BaseEstimator
 from sklearn.model_selection import BaseCrossValidator
 
+from .._validation import check_names, check_tuple_of_arrays
 from ..coordinates import grid_coordinates, profile_coordinates
 from ..utils import (
     check_meshgrid,
@@ -414,11 +415,10 @@ class BaseGridder(BaseEstimator):
             )
         # Predict on the grid points (project the coordinates if needed)
         if projection is None:
-            data = check_data(self.predict(coordinates))
+            data = self.predict(coordinates)
         else:
-            data = check_data(
-                self.predict(project_coordinates(coordinates, projection))
-            )
+            data = self.predict(project_coordinates(coordinates, projection))
+        data = check_tuple_of_arrays(data, name="data")
         # Get names for dims, data and any extra coordinates
         dims = self._get_dims(dims)
         data_names = self._get_data_names(data, data_names)
@@ -537,7 +537,7 @@ class BaseGridder(BaseEstimator):
             point1 = project_coordinates(point1, projection)
             point2 = project_coordinates(point2, projection)
         coordinates, distances = profile_coordinates(point1, point2, size, **kwargs)
-        data = check_data(self.predict(coordinates))
+        data = check_tuple_of_arrays(self.predict(coordinates), name="data")
         # Project the coordinates back to have geographic coordinates for the
         # profile but Cartesian distances.
         if projection is not None:
@@ -613,7 +613,7 @@ class BaseGridder(BaseEstimator):
         ... )
         ('ringo', 'george')
         >>> gridder._get_data_names((north,), data_names=["brian"])
-        ['brian']
+        ('brian',)
 
         """
         # Return the defaults data_names for the class
@@ -625,7 +625,7 @@ class BaseGridder(BaseEstimator):
                 )
             return self.data_names_defaults[len(data) - 1]
         # Return the passed data_names if valid
-        data_names = check_data_names(data, data_names)
+        data_names = check_names(data, data_names, name="data")
         return data_names
 
 

@@ -11,6 +11,7 @@ import numba
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
+from ._validation import check_fit_input
 from .base import BaseGridder, least_squares, n_1d_arrays
 from .coordinates import get_region
 from .spline import warn_weighted_exact_solution
@@ -253,9 +254,7 @@ class VectorSpline2D(BaseGridder):
             Returns this estimator instance for chaining operations.
 
         """
-        coordinates, data, weights = check_fit_input(
-            coordinates, data, weights, unpack=False
-        )
+        coordinates, data, weights = check_fit_input(coordinates, data, weights)
         if len(data) != 2:
             raise ValueError(
                 "Need two data components. Only {} given.".format(len(data))

@@ -10,6 +10,7 @@
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
+from ._validation import check_fit_input
 from .base import BaseGridder, least_squares, n_1d_arrays
 from .coordinates import get_region
 
@@ -131,8 +132,8 @@ class Trend(BaseGridder):
         coordinates, data, weights = check_fit_input(coordinates, data, weights)
         easting, northing = n_1d_arrays(coordinates, 2)
         self.region_ = get_region((easting, northing))
-        jac = self.jacobian((easting, northing), dtype=data.dtype)
-        self.coef_ = least_squares(jac, data, weights, damping=None)
+        jac = self.jacobian((easting, northing), dtype=data[0].dtype)
+        self.coef_ = least_squares(jac, data[0], weights[0], damping=None)
         return self
 
     def predict(self, coordinates):

@@ -13,6 +13,7 @@ import pandas as pd
 import xarray as xr
 from scipy.spatial import KDTree
 
+from ._validation import check_names, check_tuple_of_arrays
 from .base.utils import n_1d_arrays
 
 
@@ -80,7 +81,7 @@ def variance_to_weights(variance, tol=1e-15, dtype="float64"):
     [1.   0.5  0.25]
 
     """
-    variance = check_data(variance)
+    variance = check_tuple_of_arrays(variance, name="variance")
     weights = []
     for var in variance:
         var = np.nan_to_num(np.atleast_1d(var), copy=False)
@@ -288,15 +289,17 @@ def make_xarray_grid(
     # Extra coordinates are handled like 2D data arrays with
     # the same dims and the data.
     if coordinates[2:]:
-        extra_coords_names = check_extra_coords_names(coordinates, extra_coords_names)
+        extra_coords_names = check_names(
+            coordinates[2:], extra_coords_names, name="coordinate"
+        )
         for name, extra_coord in zip(extra_coords_names, coordinates[2:]):
             coords[name] = (dims, extra_coord)
     # Initialize data_vars as None. If data is not None, build data_vars as
     # a dirctionary to be passed to xr.Dataset constructor.
     data_vars = None
     if data is not None:
-        data = check_data(data)
-        data_names = check_data_names(data, data_names)
+        data = check_tuple_of_arrays(data, name="data")
+        data_names = check_names(data, data_names, name="data")
         data_vars = {name: (dims, value) for name, value in zip(data_names, data)}
     return xr.Dataset(data_vars, coords)
 
@@ -342,7 +345,7 @@ def meshgrid_to_1d(coordinates):
      [2. 2. 2. 2. 2.]
      [2. 2. 2. 2. 2.]]
     """
-    check_coordinates(coordinates)
+    check_tuple_of_arrays(coordinates, name="coordinate")
     check_meshgrid(coordinates)
     easting, northing = coordinates[0][0, :], coordinates[1][:, 0]
     coordinates = (easting, northing, *coordinates[2:])
@@ -403,7 +406,6 @@ def meshgrid_from_1d(coordinates):
         )
     easting, northing = np.meshgrid(coordinates[0], coordinates[1])
     coordinates = (easting, northing, *coordinates[2:])
-    coordinates = check_coordinates(coordinates)
     return coordinates
 
 

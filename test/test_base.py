@@ -17,22 +17,7 @@ from verde.base.base_classes import (
     get_instance_region,
 )
 from verde.base.least_squares import least_squares
-from verde.base.utils import check_coordinates, check_fit_input
 from verde.coordinates import grid_coordinates, scatter_points
-
-
-def test_check_coordinates():
-    "Should raise a ValueError is the coordinates have different shapes."
-    # Should not raise an error
-    check_coordinates([np.arange(10), np.arange(10)])
-    check_coordinates([np.arange(10).reshape((5, 2)), np.arange(10).reshape((5, 2))])
-    # Should raise an error
-    with pytest.raises(ValueError):
-        check_coordinates([np.arange(10), np.arange(10).reshape((5, 2))])
-    with pytest.raises(ValueError):
-        check_coordinates(
-            [np.arange(10).reshape((2, 5)), np.arange(10).reshape((5, 2))]
-        )
 
 
 def test_get_dims():
@@ -355,40 +340,6 @@ def test_basegridder_grid_invalid_arguments():
     # Check error is raised if both coordinates and region are passed
     with pytest.raises(ValueError):
         grd.grid(coordinates=grid_coords, region=region)
-
-
-def test_check_fit_input():
-    "Make sure no exceptions are raised for standard cases"
-    size = 20
-    data = np.arange(size)
-    coords = (np.arange(size), np.arange(size))
-    weights = np.arange(size)
-    check_fit_input(coords, data, None)
-    check_fit_input(coords, data, weights)
-    check_fit_input(coords, (data, data), None)
-    check_fit_input(coords, (data, data), (weights, weights))
-    check_fit_input(coords, (data, data), (None, None))
-    check_fit_input(coords, (data,), (None,))
-    check_fit_input(coords, (data,), (weights,))
-
-
-def test_check_fit_input_fails_coordinates():
-    "Test the failing conditions for check_fit_input"
-    coords = (np.arange(20), np.arange(20))
-    data = np.arange(30)
-    with pytest.raises(ValueError):
-        check_fit_input(coords, data, weights=None)
-
-
-def test_check_fit_input_fails_weights():
-    "Test the failing conditions for check_fit_input"
-    data = np.arange(20)
-    coords = (data, data)
-    weights = np.arange(30)
-    with pytest.raises(ValueError):
-        check_fit_input(coords, data, weights)
-    with pytest.raises(ValueError):
-        check_fit_input(coords, (data, data), weights)
 
 
 class DummyCrossValidator(BaseBlockCrossValidator):

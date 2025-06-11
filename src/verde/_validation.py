@@ -98,7 +98,8 @@ def check_names(data, names, name):
     Raises
     ------
     ValueError
-        If the number of elements in data and names are not the same.
+        If the number of elements in data and names are not the same or if any
+        of the names is None.
 
     Examples
     --------
@@ -115,6 +116,11 @@ def check_names(data, names, name):
     # Convert single string to tuple
     if isinstance(names, str):
         names = (names,)
+    if names is None or any(n is None for n in names):
+        message = (
+            f"Using None as {name.lower()} name is invalid. Names should be strings."
+        )
+        raise ValueError(message)
     # Raise error if data and names don't have the same number of elements
     if len(data) != len(names):
         message = (
@@ -161,7 +167,7 @@ def check_fit_input(coordinates, data, weights):
     coordinates, data, weights : tuple
         The validated inputs in the same order.
     """
-    null_weights = weights is None
+    null_weights = weights is None or all(w is None for w in weights)
     data = check_tuple_of_arrays(data, name="data")
     weights = check_tuple_of_arrays(weights, name="weights")
     coordinates = check_tuple_of_arrays(coordinates, name="coordinates")
