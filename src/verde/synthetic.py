@@ -7,9 +7,9 @@
 import numpy as np
 import pandas as pd
 
+from ._validation import check_tuple_of_arrays
 from .base import BaseGridder
 from .base.base_classes import get_instance_region, project_coordinates
-from .base.utils import check_data
 from .coordinates import check_region, scatter_points
 
 
@@ -188,10 +188,10 @@ class CheckerBoard(BaseGridder):
         region = get_instance_region(self, region)
         coordinates = scatter_points(region, size, random_state=random_state, **kwargs)
         if projection is None:
-            data = check_data(self.predict(coordinates))
+            data = check_tuple_of_arrays(self.predict(coordinates), name="data")
         else:
-            data = check_data(
-                self.predict(project_coordinates(coordinates, projection))
+            data = check_tuple_of_arrays(
+                self.predict(project_coordinates(coordinates, projection)), name="data"
             )
         data_names = self._get_data_names(data, data_names)
         columns = [(dims[0], coordinates[1]), (dims[1], coordinates[0])]

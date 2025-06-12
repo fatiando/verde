@@ -15,7 +15,8 @@ from sklearn.base import clone
 from sklearn.model_selection import KFold, ShuffleSplit
 from sklearn.utils import check_random_state
 
-from .base import BaseBlockCrossValidator, check_fit_input, n_1d_arrays
+from ._validation import check_fit_input
+from .base import BaseBlockCrossValidator, n_1d_arrays
 from .base.utils import score_estimator
 from .utils import dispatch, partition_by_sum
 
@@ -567,7 +568,7 @@ def train_test_split(
     data: (array([ 8,  9, 12, 13]),)
 
     """
-    args = check_fit_input(coordinates, data, weights, unpack=False)
+    args = check_fit_input(coordinates, data, weights)
     if block_size is None and block_shape is None:
         indices = np.arange(args[1][0].size)
         shuffle = ShuffleSplit(n_splits=1, **kwargs).split(indices)
@@ -736,9 +737,7 @@ def cross_val_score(
     So this is best used when fitting several smaller models.
 
     """
-    coordinates, data, weights = check_fit_input(
-        coordinates, data, weights, unpack=False
-    )
+    coordinates, data, weights = check_fit_input(coordinates, data, weights)
     if cv is None:
         cv = KFold(shuffle=True, random_state=0, n_splits=5)
     feature_matrix = np.transpose(n_1d_arrays(coordinates, 2))
@@ -775,8 +774,7 @@ def select(arrays, index):
     """
     Index each array in a tuple of arrays.
 
-    If the arrays tuple contains a ``None``, the entire tuple will be returned
-    as is.
+    If any array in the tuple is ``None``, ``None`` will be returned.
 
     Parameters
     ----------
@@ -795,10 +793,16 @@ def select(arrays, index):
     >>> import numpy as np
     >>> select((np.arange(5), np.arange(-3, 2, 1)), [1, 3])
     (array([1, 3]), array([-2,  0]))
-    >>> select((None, None, None, None), [1, 2])
-    (None, None, None, None)
+    >>> select((np.arange(5), None), [1, 3])
+    (array([1, 3]), None)
+    >>> select((None,), [1, 2])
+    (None,)
 
     """
-    if arrays is None or any(i is None for i in arrays):
-        return arrays
-    return tuple(np.ravel(i)[index] for i in arrays)
+    result = []
+    for array in arrays:
+        if array is None:
+            result.append(None)
+        else:
+            result.append(np.ravel(array)[index])
+    return tuple(result)

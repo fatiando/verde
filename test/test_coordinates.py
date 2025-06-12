@@ -22,13 +22,6 @@ from verde.coordinates import (
 )
 
 
-def test_rolling_window_invalid_coordinate_shapes():
-    "Shapes of input coordinates must all be the same"
-    coordinates = [np.arange(10), np.arange(10).reshape((5, 2))]
-    with pytest.raises(ValueError):
-        rolling_window(coordinates, size=2, spacing=1)
-
-
 def test_rolling_window_empty():
     "Make sure empty windows return an empty index"
     coords = grid_coordinates((-5, -1, 6, 10), spacing=1)

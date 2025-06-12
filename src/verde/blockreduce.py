@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator
 
-from .base import check_fit_input
+from ._validation import check_fit_input
 from .utils import variance_to_weights
 
 
@@ -156,9 +156,7 @@ class BlockReduce(BaseEstimator):
             The block reduced data values.
 
         """
-        coordinates, data, weights = check_fit_input(
-            coordinates, data, weights, unpack=False
-        )
+        coordinates, data, weights = check_fit_input(coordinates, data, weights)
         blocks, labels = bd.block_split(
             coordinates[:2],
             block_size=self.block_size,
@@ -398,9 +396,7 @@ class BlockMean(BlockReduce):
             The weights calculated for the blocked data values.
 
         """
-        coordinates, data, weights = check_fit_input(
-            coordinates, data, weights, unpack=False
-        )
+        coordinates, data, weights = check_fit_input(coordinates, data, weights)
         if any(w is None for w in weights) and self.uncertainty:
             raise ValueError(
                 "Weights are required for uncertainty propagation."

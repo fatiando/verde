@@ -10,7 +10,7 @@ Mask grid points based on different criteria.
 import numpy as np
 from scipy.spatial import Delaunay
 
-from .base.utils import check_coordinates, n_1d_arrays
+from .base.utils import n_1d_arrays
 from .utils import kdtree
 
 
@@ -223,6 +223,5 @@ def _get_grid_coordinates(coordinates, grid):
     if coordinates is None:
         dims = [grid[var].dims for var in grid.data_vars][0]
         coordinates = np.meshgrid(grid.coords[dims[1]], grid.coords[dims[0]])
-    check_coordinates(coordinates)
     shape = coordinates[0].shape
     return coordinates, shape
