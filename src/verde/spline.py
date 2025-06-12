@@ -13,7 +13,8 @@ import numba
 import numpy as np
 from sklearn.utils.validation import check_is_fitted
 
-from .base import BaseGridder, check_fit_input, least_squares, n_1d_arrays
+from ._validation import check_fit_input
+from .base import BaseGridder, least_squares, n_1d_arrays
 from .coordinates import get_region
 from .model_selection import cross_val_score
 from .utils import dispatch
@@ -330,7 +331,7 @@ class Spline(BaseGridder):
             symmetric = False
             self.force_coords_ = self.force_coords
         jacobian = self.jacobian(coordinates[:2], self.force_coords_, symmetric)
-        self.force_ = least_squares(jacobian, data, weights, self.damping)
+        self.force_ = least_squares(jacobian, data[0], weights[0], self.damping)
         return self
 
     def predict(self, coordinates):

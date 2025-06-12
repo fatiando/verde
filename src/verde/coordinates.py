@@ -13,7 +13,7 @@ import bordado as bd
 import numpy as np
 from sklearn.utils import check_random_state
 
-from .base.utils import check_coordinates, n_1d_arrays
+from .base.utils import n_1d_arrays
 from .utils import kdtree
 
 
@@ -909,7 +909,7 @@ def rolling_window(
         raise ValueError("Either a shape or a spacing must be provided.")
     # Select the coordinates after checking to make sure indexing will still
     # work on the ignored coordinates.
-    coordinates = check_coordinates(coordinates)[:2]
+    coordinates = coordinates[:2]
     if region is None:
         region = get_region(coordinates)
     # Check if window size is bigger than the minimum dimension of the region
@@ -1114,7 +1114,7 @@ def expanding_window(coordinates, center, sizes):
     """
     # Select the coordinates after checking to make sure indexing will still
     # work on the ignored coordinates.
-    coordinates = check_coordinates(coordinates)[:2]
+    coordinates = coordinates[:2]
     shape = coordinates[0].shape
     center = np.atleast_2d(center)
     tree = kdtree(coordinates)

@@ -142,7 +142,7 @@ def test_spline_region():
     "See if the region is gotten from the data is correct."
     region = (1000, 5000, -8000, -6000)
     grid = CheckerBoard(region=region).grid(shape=(10, 10))
-    coords = np.meshgrid(grid.easting, grid.northing)
+    coords = tuple(np.meshgrid(grid.easting, grid.northing))
     grd = Spline().fit(coords, grid.scalars.values)
     npt.assert_allclose(grd.region_, region)
 
