@@ -36,7 +36,6 @@ Composite Estimators
 .. autosummary::
    :toctree: generated/
 
-    Chain
     Vector
 
 Model Selection
@@ -56,14 +55,12 @@ Coordinate Manipulation
 .. autosummary::
    :toctree: generated/
 
-    line_coordinates
     grid_coordinates
     scatter_points
     profile_coordinates
     get_region
     pad_region
     inside
-    block_split
     rolling_window
     expanding_window
 
@@ -126,27 +123,4 @@ Base Classes and Functions
     base.BaseGridder
     base.BaseBlockCrossValidator
     base.n_1d_arrays
-    base.check_fit_input
     base.least_squares
-
-Deprecated classes and functions
---------------------------------
-
-The following classes and functions are deprecated and **will be removed in
-Verde 2.0.0**. Alternatives are provided in the function/class docstrings.
-
-.. currentmodule:: verde
-
-.. autosummary::
-   :toctree: generated/
-
-    ScipyGridder
-    datasets.locate
-    datasets.fetch_baja_bathymetry
-    datasets.setup_baja_bathymetry_map
-    datasets.fetch_california_gps
-    datasets.setup_california_gps_map
-    datasets.fetch_texas_wind
-    datasets.setup_texas_wind_map
-    datasets.fetch_rio_magnetic
-    datasets.setup_rio_magnetic_map

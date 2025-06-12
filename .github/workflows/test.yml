@@ -21,10 +21,7 @@ on:
 # Use bash by default in all jobs
 defaults:
   run:
-    # The -l {0} is necessary for conda environments to be activated
-    # But this breaks on MacOS if using actions/setup-python:
-    # https://github.com/actions/setup-python/issues/132
-    shell: bash -l {0}
+    shell: bash
 
 jobs:
   #############################################################################
@@ -44,14 +41,11 @@ jobs:
         dependencies:
           - oldest
           - latest
-          - optional
         include:
           - dependencies: oldest
-            python: "3.9"
+            python: "3.10"
           - dependencies: latest
-            python: "3.12"
-          - dependencies: optional
-            python: "3.12"
+            python: "3.13"
     env:
       REQUIREMENTS: env/requirements-build.txt env/requirements-test.txt
       # Used to tag codecov submissions
@@ -60,13 +54,6 @@ jobs:
       DEPENDENCIES: ${{ matrix.dependencies }}
 
     steps:
-      # Cancel any previous run of the test job
-      # We pin the commit hash corresponding to v0.5.0, and not pinning the tag
-      # because we are giving full access through the github.token.
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.12.1
-        with:
-          access_token: ${{ github.token }}
 
       # Checks-out your repository under $GITHUB_WORKSPACE
       - name: Checkout
@@ -85,22 +72,19 @@ jobs:
       - name: Fetch git tags
         run: git fetch origin 'refs/tags/*:refs/tags/*'
 
-      - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v3
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON }}
-          channels: conda-forge,defaults
 
       - name: Collect requirements
         run: |
           echo "Install Dependente to capture dependencies:"
-          conda install dependente==0.1.0 -c conda-forge
+          python -m pip install dependente==0.3.0
           echo ""
           echo "Capturing run-time dependencies:"
           if [[ "${{ matrix.dependencies }}" == "oldest" ]]; then
             dependente --source install --oldest > requirements-full.txt
-          elif [[ "${{ matrix.dependencies }}" == "optional" ]]; then
-            dependente --source install,extras > requirements-full.txt
           else
             dependente --source install > requirements-full.txt
           fi
@@ -114,53 +98,27 @@ jobs:
           echo "Collected dependencies:"
           cat requirements-full.txt
 
-      - name: Rename conda-forge packages
-        run: |
-          # Choose options to sed based on the OS (macos uses POSIX sed)
-          if [[ ${{ matrix.os }} == macos ]]; then
-            opts="-i''"
-          else
-            opts='-s --in-place'
-          fi
-          echo "OPTS:" $opts
-          echo "Rename conda-forge packages in requirements-full.txt"
-          # Replace "build" for "python-build"
-          sed $opts 's/^build$/python-build/' requirements-full.txt
-          echo "Renamed dependencies:"
-          cat requirements-full.txt
+      - name: Get the pip cache folder
+        id: pip-cache
+        run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+
+      - name: Setup caching for pip packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: pip-${{ runner.os }}-${{ env.PYTHON }}-${{ hashFiles('env/requirements-full.txt') }}
 
       - name: Install requirements
-        run: conda install --quiet --file requirements-full.txt python=$PYTHON
+        run: python -m pip install -r requirements-full.txt
 
       - name: List installed packages
-        run: conda list
+        run: python -m pip freeze
 
-      - name: Build source and wheel distributions
-        run: |
-          make build
-          echo ""
-          echo "Generated files:"
-          ls -lh dist/
-
-      - name: Install the package
-        run: python -m pip install --no-deps dist/*.whl
-
-      - name: Copy test data to the cache
-        run: |
-          echo "Copy data to " ${VERDE_DATA_DIR}/main
-          set -x -e
-          mkdir -p ${VERDE_DATA_DIR}/main
-          cp -r data/* ${VERDE_DATA_DIR}/main
-        env:
-          # Define directory where sample data will be copied
-          VERDE_DATA_DIR: ${{ runner.temp }}/cache/verde
+      - name: Install the package in editable mode
+        run: python -m pip install --no-deps --editable .
 
       - name: Run the tests
-        run: |
-          make test
-        env:
-          # Define directory where sample data have been copied
-          VERDE_DATA_DIR: ${{ runner.temp }}/cache/verde
+        run: make test
 
       - name: Convert coverage report to XML for codecov
         run: coverage xml
@@ -193,7 +151,7 @@ jobs:
         run: ls -l -R .
 
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@ad3126e916f78f00edff4ed0317cf185271ccc2d
         with:
           # Upload all coverage report files
           files: ./coverage_*/coverage.xml
