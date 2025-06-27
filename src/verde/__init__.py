@@ -34,7 +34,7 @@ from .spline import Spline, SplineCV
 from .surfer import load_surfer
 from .trend import Trend
 from .utils import grid_to_table, make_xarray_grid, maxabs, variance_to_weights
-from .vector import Vector, VectorSpline2D
+from .vector import VectorSpline2D
 
 # Append a leading "v" to the generated version by setuptools_scm
 __version__ = f"v{__version__}"

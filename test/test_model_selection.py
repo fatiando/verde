@@ -14,7 +14,7 @@ import numpy.testing as npt
 import pytest
 from sklearn.metrics import get_scorer
 
-from verde import Trend, Vector, grid_coordinates, scatter_points
+from verde import Trend, VectorSpline2D, grid_coordinates, scatter_points
 from verde.model_selection import BlockKFold, BlockShuffleSplit, cross_val_score
 
 
@@ -46,9 +46,9 @@ def test_cross_val_score(trend, metric, expected):
     ids=["none", "R2", "MSE"],
 )
 def test_cross_val_score_vector(trend, metric, expected):
-    "Check that CV works on Vector data types as well"
+    "Check that CV works on vector data types as well"
     coords, data = trend[:2]
-    model = Vector([Trend(degree=1), Trend(degree=1)])
+    model = VectorSpline2D()
     scores = cross_val_score(model, coords, (data, data), scoring=metric)
     npt.assert_allclose(scores, expected, atol=1e-10)
 
