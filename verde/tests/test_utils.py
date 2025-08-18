@@ -27,7 +27,25 @@ from ..utils import (
     meshgrid_to_1d,
     parse_engine,
     partition_by_sum,
+    fill_nans
 )
+
+
+def test_fill_nans():
+    """
+    Test filling NaNs on a small sample grid
+    """
+    grid = xr.DataArray([[1, np.nan, 3],
+                        [4, 5, np.nan],
+                        [np.nan, 7, 8]])
+
+    filled_grid = fill_nans(grid)
+    expected_values = xr.DataArray([[1, 1, 3],
+                            [4, 5, 3],
+                            [4, 7, 8]])
+
+    assert np.any(np.isnan(filled_grid))
+    assert np.allclose(filled_grid, expected_values)
 
 
 def test_parse_engine():
