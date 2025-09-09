@@ -194,7 +194,7 @@ only one value. When calling :meth:`verde.SplineCV.fit`, the class will:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.427 seconds)
+   **Total running time of the script:** (0 minutes 0.226 seconds)
 
 
 .. _sphx_glr_download_gallery_spline_cv.py:

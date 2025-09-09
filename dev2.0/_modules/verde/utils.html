@@ -1,0 +1,1200 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+        <title>verde.utils | Verde v1.8.1.post42</title>
+    
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=504d3d5d" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/verde/utils';</script>
+    <link rel="icon" href="../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Verde <span class="project-version">v1.8.1.post42</span></p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">A taste of Verde</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/first-grid.html">Making your first grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/geographic.html">Interpolation in geographic coordinates</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">List of functions and classes (API)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.Spline.html">verde.Spline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.SplineCV.html">verde.SplineCV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.KNeighbors.html">verde.KNeighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.Linear.html">verde.Linear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.Cubic.html">verde.Cubic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.VectorSpline2D.html">verde.VectorSpline2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.BlockReduce.html">verde.BlockReduce</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.BlockMean.html">verde.BlockMean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.Trend.html">verde.Trend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.Vector.html">verde.Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.train_test_split.html">verde.train_test_split</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.cross_val_score.html">verde.cross_val_score</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.BlockShuffleSplit.html">verde.BlockShuffleSplit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.BlockKFold.html">verde.BlockKFold</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.grid_coordinates.html">verde.grid_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.scatter_points.html">verde.scatter_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.profile_coordinates.html">verde.profile_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.get_region.html">verde.get_region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.pad_region.html">verde.pad_region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.inside.html">verde.inside</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.rolling_window.html">verde.rolling_window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.expanding_window.html">verde.expanding_window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.project_region.html">verde.project_region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.project_grid.html">verde.project_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.distance_mask.html">verde.distance_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.convexhull_mask.html">verde.convexhull_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.maxabs.html">verde.maxabs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.variance_to_weights.html">verde.variance_to_weights</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.grid_to_table.html">verde.grid_to_table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.make_xarray_grid.html">verde.make_xarray_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.median_distance.html">verde.median_distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.load_surfer.html">verde.load_surfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.synthetic.CheckerBoard.html">verde.synthetic.CheckerBoard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.base.BaseGridder.html">verde.base.BaseGridder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.base.BaseBlockCrossValidator.html">verde.base.BaseBlockCrossValidator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.base.n_1d_arrays.html">verde.base.n_1d_arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.base.least_squares.html">verde.base.least_squares</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../conventions.html">Definitions and conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Verde</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compatibility.html">Version compatibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../versions.html">Documentation for other versions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact/">Join the community</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fatiando/verde" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/verde/issues/new?title=Issue%20on%20page%20%2F_modules/verde/utils.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for verde.utils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2017 The Verde Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="c1">#</span>
+<span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
+<span class="c1">#</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">General utilities.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dask</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">KDTree</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">._validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_names</span><span class="p">,</span> <span class="n">check_tuple_of_arrays</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.base.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">n_1d_arrays</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">dispatch</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">delayed</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decide how to wrap a function for Dask depending on the options given.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    function : callable</span>
+<span class="sd">        The function that will be called.</span>
+<span class="sd">    delayed : bool</span>
+<span class="sd">        If True, will wrap the function in :func:`dask.delayed.delayed`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    function : callable</span>
+<span class="sd">        The function wrapped in Dask or just itself if *delayed* is False.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">delayed</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">function</span>
+
+
+<div class="viewcode-block" id="variance_to_weights">
+<a class="viewcode-back" href="../../api/generated/verde.variance_to_weights.html#verde.variance_to_weights">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">variance_to_weights</span><span class="p">(</span><span class="n">variance</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-15</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts data variances to weights for gridding.</span>
+
+<span class="sd">    Weights are defined as the inverse of the variance, scaled to the range</span>
+<span class="sd">    [0, 1], i.e. ``variance.min()/variance``.</span>
+
+<span class="sd">    Any variance that is smaller than *tol* will automatically receive a weight</span>
+<span class="sd">    of 1 to avoid zero division or blown up weights.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    variance : array or tuple of arrays</span>
+<span class="sd">        An array with the variance of each point. If there are multiple arrays</span>
+<span class="sd">        in a tuple, will calculated weights for each of them separately. Can</span>
+<span class="sd">        have NaNs but they will be converted to zeros and therefore receive a</span>
+<span class="sd">        weight of 1.</span>
+<span class="sd">    tol : float</span>
+<span class="sd">        The tolerance, or cutoff threshold, for small variances.</span>
+<span class="sd">    dtype : str or numpy dtype</span>
+<span class="sd">        The type of the output weights array.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    weights : array or tuple of arrays</span>
+<span class="sd">        Data weights in the range [0, 1] with the same shape as *variance*. If</span>
+<span class="sd">        more than one variance array was provided, then this will be a tuple</span>
+<span class="sd">        with the weights corresponding to each variance array.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; print(variance_to_weights([0, 2, 0.2, 1e-16]))</span>
+<span class="sd">    [1.  0.1 1.  1. ]</span>
+<span class="sd">    &gt;&gt;&gt; print(variance_to_weights([0, 0, 0, 0]))</span>
+<span class="sd">    [1. 1. 1. 1.]</span>
+<span class="sd">    &gt;&gt;&gt; for w  in variance_to_weights(([0, 1, 10], [2, 4.0, 8])):</span>
+<span class="sd">    ...     print(w)</span>
+<span class="sd">    [1.  1.  0.1]</span>
+<span class="sd">    [1.   0.5  0.25]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">variance</span> <span class="o">=</span> <span class="n">check_tuple_of_arrays</span><span class="p">(</span><span class="n">variance</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;variance&quot;</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">variance</span><span class="p">:</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">var</span><span class="p">),</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">nonzero</span> <span class="o">=</span> <span class="n">var</span> <span class="o">&gt;</span> <span class="n">tol</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">nonzero</span><span class="p">):</span>
+            <span class="n">nonzero_var</span> <span class="o">=</span> <span class="n">var</span><span class="p">[</span><span class="n">nonzero</span><span class="p">]</span>
+            <span class="n">w</span><span class="p">[</span><span class="n">nonzero</span><span class="p">]</span> <span class="o">=</span> <span class="n">nonzero_var</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">/</span> <span class="n">nonzero_var</span>
+        <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="maxabs">
+<a class="viewcode-back" href="../../api/generated/verde.maxabs.html#verde.maxabs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">maxabs</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">nan</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the maximum absolute value of the given array(s).</span>
+
+<span class="sd">    Use this to set the limits of your colorbars and center them on zero.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    args</span>
+<span class="sd">        One or more arrays. If more than one are given, a single maximum will</span>
+<span class="sd">        be calculated across all arrays.</span>
+<span class="sd">    nan : bool</span>
+<span class="sd">        If True, will use the NaN compatible version of the numpy functions,</span>
+<span class="sd">        which ignore NaNs in the arrays. Otherwise, any NaNs will result in the</span>
+<span class="sd">        return value being also a NaN.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    maxabs : float</span>
+<span class="sd">        The maximum absolute value across all arrays.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; result = maxabs((1, -10, 25, 2, 3))</span>
+<span class="sd">    &gt;&gt;&gt; float(result)</span>
+<span class="sd">    25.0</span>
+<span class="sd">    &gt;&gt;&gt; result = maxabs(</span>
+<span class="sd">    ...     (1, -10.5, 25, 2), (0.1, 100, -500), (-200, -300, -0.1, -499)</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; float(result)</span>
+<span class="sd">    500.0</span>
+
+<span class="sd">    If the array contains NaNs, we&#39;ll use the ``nan`` version of of the numpy</span>
+<span class="sd">    functions by default. You can turn this off through the *nan* argument.</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; result = maxabs((1, -10, 25, 2, 3, np.nan))</span>
+<span class="sd">    &gt;&gt;&gt; float(result)</span>
+<span class="sd">    25.0</span>
+<span class="sd">    &gt;&gt;&gt; result = maxabs((1, -10, 25, 2, 3, np.nan), nan=False)</span>
+<span class="sd">    &gt;&gt;&gt; float(result)</span>
+<span class="sd">    nan</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">nan</span><span class="p">:</span>
+        <span class="n">npmin</span><span class="p">,</span> <span class="n">npmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">npmin</span><span class="p">,</span> <span class="n">npmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span>
+    <span class="n">absolute</span> <span class="o">=</span> <span class="p">[</span><span class="n">npmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">([</span><span class="n">npmin</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">npmax</span><span class="p">(</span><span class="n">i</span><span class="p">)]))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">npmax</span><span class="p">(</span><span class="n">absolute</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="make_xarray_grid">
+<a class="viewcode-back" href="../../api/generated/verde.make_xarray_grid.html#verde.make_xarray_grid">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_xarray_grid</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">,</span>
+    <span class="n">data_names</span><span class="p">,</span>
+    <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;northing&quot;</span><span class="p">,</span> <span class="s2">&quot;easting&quot;</span><span class="p">),</span>
+    <span class="n">extra_coords_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create an :class:`xarray.Dataset` grid from 2D numpy arrays</span>
+
+<span class="sd">    This function creates an :class:`xarray.Dataset` out of 2d gridded data</span>
+<span class="sd">    including easting and northing coordinates, any extra coordinates (like</span>
+<span class="sd">    upward elevation, time, etc) and data arrays.</span>
+
+<span class="sd">    Use this to transform the outputs of :func:`verde.grid_coordinates` and</span>
+<span class="sd">    the ``predict`` method of a gridder into an :class:`xarray.Dataset`.</span>
+
+<span class="sd">    .. important::</span>
+
+<span class="sd">        This function does not perform any interpolation or gridding. If you</span>
+<span class="sd">        are dealing with 1d arrays and need to interpolate them on a regular</span>
+<span class="sd">        grid (a.k.a _grid_ them) you might want to use one of the available</span>
+<span class="sd">        interpolators in Verde, like :class:`verde.Spline`,</span>
+<span class="sd">        :class:`verde.KNeighbors`, :class:`Linear`, etc.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        This is a utility function to help create 2D grids (i.e., grids with</span>
+<span class="sd">        two ``dims`` coordinates). For arbitrary N-dimensional arrays, use</span>
+<span class="sd">        :mod:`xarray` directly.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : tuple of arrays</span>
+<span class="sd">        Arrays with coordinates of each point in the grid. Each array must</span>
+<span class="sd">        contain values for a dimension in the order: easting, northing,</span>
+<span class="sd">        vertical, etc. All arrays must be 2d and need to have the same *shape*.</span>
+<span class="sd">        These coordinates can be generated through</span>
+<span class="sd">        :func:`verde.grid_coordinates`.</span>
+<span class="sd">    data : array, tuple of arrays or None</span>
+<span class="sd">        Array or tuple of arrays with data values on each point in the grid.</span>
+<span class="sd">        Each array must contain values for a dimension in the same order as</span>
+<span class="sd">        the coordinates. All arrays need to have the same *shape*.</span>
+<span class="sd">        If None, the :class:`xarray.Dataset` will not have any ``data_var``</span>
+<span class="sd">        array.</span>
+<span class="sd">    data_names : str or list</span>
+<span class="sd">        The name(s) of the data variables in the output grid.</span>
+<span class="sd">        Ignored if ``data`` is None.</span>
+<span class="sd">    dims : list (optional)</span>
+<span class="sd">        The names of the northing and easting data dimensions, respectively,</span>
+<span class="sd">        in the output grid. Must be defined in the following order: northing</span>
+<span class="sd">        dimension, easting dimension.</span>
+<span class="sd">        **NOTE: This is an exception to the &quot;easting&quot; then</span>
+<span class="sd">        &quot;northing&quot; pattern but is required for compatibility with xarray.**</span>
+<span class="sd">        The easting and northing coordinates in the :class:`xarray.Dataset`</span>
+<span class="sd">        will have the same names as the passed dimensions.</span>
+<span class="sd">    extra_coords_names : str or list (optional)</span>
+<span class="sd">        Name or list of names for any additional coordinates besides the</span>
+<span class="sd">        easting and northing ones. Ignored if coordinates has</span>
+<span class="sd">        only two elements. The extra coordinates are non-index coordinates of</span>
+<span class="sd">        the grid array.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    grid : :class:`xarray.Dataset`</span>
+<span class="sd">        A 2D grid with one or more data variables.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; import verde as vd</span>
+<span class="sd">    &gt;&gt;&gt; # Create the coordinates of the regular grid</span>
+<span class="sd">    &gt;&gt;&gt; coordinates = vd.grid_coordinates((-10, -6, 8, 10), spacing=2)</span>
+<span class="sd">    &gt;&gt;&gt; # And some dummy data for each point of the grid</span>
+<span class="sd">    &gt;&gt;&gt; data = np.ones_like(coordinates[0])</span>
+<span class="sd">    &gt;&gt;&gt; # Create the grid</span>
+<span class="sd">    &gt;&gt;&gt; grid = make_xarray_grid(coordinates, data, data_names=&quot;dummy&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print(grid) # doctest: +SKIP</span>
+<span class="sd">    &lt;xarray.Dataset&gt;</span>
+<span class="sd">    Dimensions:   (northing: 2, easting: 3)</span>
+<span class="sd">    Coordinates:</span>
+<span class="sd">      * easting   (easting) float64 -10.0 -8.0 -6.0</span>
+<span class="sd">      * northing  (northing) float64 8.0 10.0</span>
+<span class="sd">    Data variables:</span>
+<span class="sd">        dummy     (northing, easting) float64 1.0 1.0 1.0 1.0 1.0 1.0</span>
+
+<span class="sd">    &gt;&gt;&gt; # Create a grid with an extra coordinate</span>
+<span class="sd">    &gt;&gt;&gt; coordinates = vd.grid_coordinates(</span>
+<span class="sd">    ...     (-10, -6, 8, 10), spacing=2, extra_coords=5</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; # And some dummy data for each point of the grid</span>
+<span class="sd">    &gt;&gt;&gt; data = np.ones_like(coordinates[0])</span>
+<span class="sd">    &gt;&gt;&gt; # Create the grid</span>
+<span class="sd">    &gt;&gt;&gt; grid = make_xarray_grid(</span>
+<span class="sd">    ...     coordinates, data, data_names=&quot;dummy&quot;, extra_coords_names=&quot;upward&quot;</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; print(grid) # doctest: +SKIP</span>
+<span class="sd">    &lt;xarray.Dataset&gt;</span>
+<span class="sd">    Dimensions:   (northing: 2, easting: 3)</span>
+<span class="sd">    Coordinates:</span>
+<span class="sd">      * easting   (easting) float64 -10.0 -8.0 -6.0</span>
+<span class="sd">      * northing  (northing) float64 8.0 10.0</span>
+<span class="sd">        upward    (northing, easting) float64 5.0 5.0 5.0 5.0 5.0 5.0</span>
+<span class="sd">    Data variables:</span>
+<span class="sd">        dummy     (northing, easting) float64 1.0 1.0 1.0 1.0 1.0 1.0</span>
+
+<span class="sd">    &gt;&gt;&gt; # Create a grid containing only coordinates and no data</span>
+<span class="sd">    &gt;&gt;&gt; coordinates = vd.grid_coordinates(</span>
+<span class="sd">    ...     (-10, -6, 8, 10), spacing=2, extra_coords=-7</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; grid = make_xarray_grid(</span>
+<span class="sd">    ...     coordinates,</span>
+<span class="sd">    ...     data=None,</span>
+<span class="sd">    ...     data_names=None,</span>
+<span class="sd">    ...     extra_coords_names=&quot;upward&quot;,</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; print(grid) # doctest: +SKIP</span>
+<span class="sd">    &lt;xarray.Dataset&gt;</span>
+<span class="sd">    Dimensions:   (easting: 3, northing: 2)</span>
+<span class="sd">    Coordinates:</span>
+<span class="sd">      * easting   (easting) float64 -10.0 -8.0 -6.0</span>
+<span class="sd">      * northing  (northing) float64 8.0 10.0</span>
+<span class="sd">        upward    (northing, easting) float64 -7.0 -7.0 -7.0 -7.0 -7.0 -7.0</span>
+<span class="sd">    Data variables:</span>
+<span class="sd">        *empty*</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Check dimensions of the horizontal coordinates of the regular grid</span>
+    <span class="n">ndim</span> <span class="o">=</span> <span class="n">get_ndim_horizontal_coords</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+    <span class="c1"># Convert 2d horizontal coordinates to 1d arrays if needed</span>
+    <span class="k">if</span> <span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">coordinates</span> <span class="o">=</span> <span class="n">meshgrid_to_1d</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+    <span class="c1"># dims is like shape with order (rows, cols) for the array</span>
+    <span class="c1"># so the first element is northing and second is easting</span>
+    <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span>
+    <span class="c1"># Extra coordinates are handled like 2D data arrays with</span>
+    <span class="c1"># the same dims and the data.</span>
+    <span class="k">if</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:]:</span>
+        <span class="n">extra_coords_names</span> <span class="o">=</span> <span class="n">check_names</span><span class="p">(</span>
+            <span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">extra_coords_names</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;coordinate&quot;</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">extra_coord</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">extra_coords_names</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:]):</span>
+            <span class="n">coords</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">extra_coord</span><span class="p">)</span>
+    <span class="c1"># Initialize data_vars as None. If data is not None, build data_vars as</span>
+    <span class="c1"># a dirctionary to be passed to xr.Dataset constructor.</span>
+    <span class="n">data_vars</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">check_tuple_of_arrays</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+        <span class="n">data_names</span> <span class="o">=</span> <span class="n">check_names</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_names</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+        <span class="n">data_vars</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">data_names</span><span class="p">,</span> <span class="n">data</span><span class="p">)}</span>
+    <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">data_vars</span><span class="p">,</span> <span class="n">coords</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">meshgrid_to_1d</span><span class="p">(</span><span class="n">coordinates</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert horizontal coordinates of 2d grids into 1d-arrays</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : tuple of arrays</span>
+<span class="sd">        Arrays with coordinates of each point in the grid. Each array must</span>
+<span class="sd">        contain values for a dimension in the order: easting, northing,</span>
+<span class="sd">        vertical, etc. All arrays must be 2d and need to have the same</span>
+<span class="sd">        *shape*. The horizontal coordinates should be actual meshgrids.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    coordinates : tuple of arrays</span>
+<span class="sd">        Arrays with coordinates of each point in the grid. The horizontal</span>
+<span class="sd">        coordinates have been converted to 1d-arrays, having only a single</span>
+<span class="sd">        coordinate point per its corresponding axis.</span>
+<span class="sd">        All extra coordinates have not been modified.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; import verde as vd</span>
+<span class="sd">    &gt;&gt;&gt; coordinates = vd.grid_coordinates(</span>
+<span class="sd">    ...     region=(0, 4, -3, 3), spacing=1, extra_coords=2</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; easting, northing, height = meshgrid_to_1d(coordinates)</span>
+<span class="sd">    &gt;&gt;&gt; print(easting)</span>
+<span class="sd">    [0. 1. 2. 3. 4.]</span>
+<span class="sd">    &gt;&gt;&gt; print(northing)</span>
+<span class="sd">    [-3. -2. -1.  0.  1.  2.  3.]</span>
+<span class="sd">    &gt;&gt;&gt; print(height)</span>
+<span class="sd">    [[2. 2. 2. 2. 2.]</span>
+<span class="sd">     [2. 2. 2. 2. 2.]</span>
+<span class="sd">     [2. 2. 2. 2. 2.]</span>
+<span class="sd">     [2. 2. 2. 2. 2.]</span>
+<span class="sd">     [2. 2. 2. 2. 2.]</span>
+<span class="sd">     [2. 2. 2. 2. 2.]</span>
+<span class="sd">     [2. 2. 2. 2. 2.]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">check_tuple_of_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;coordinate&quot;</span><span class="p">)</span>
+    <span class="n">check_meshgrid</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+    <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="p">(</span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="o">*</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
+    <span class="k">return</span> <span class="n">coordinates</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">meshgrid_from_1d</span><span class="p">(</span><span class="n">coordinates</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert horizontal coordinates of 2d grids from 1d-arrays to 2d-arrays</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : tuple of arrays</span>
+<span class="sd">        Arrays with coordinates of each point in the grid. Each array must</span>
+<span class="sd">        contain values for a dimension in the order: easting, northing,</span>
+<span class="sd">        vertical, etc. The horizontal coordinates (easting and northing) should</span>
+<span class="sd">        be 1d arrays, any extra coordinate should be an array with a shape of</span>
+<span class="sd">        ``(northing.size, easting.size)``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    coordinates : tuple of arrays</span>
+<span class="sd">        Arrays with coordinates of each point in the grid.</span>
+<span class="sd">        The horizontal coordinates have been converted to 2d-arrays with the</span>
+<span class="sd">        same shape, forming a meshgrid. All extra coordinates have not been</span>
+<span class="sd">        modified.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; easting = np.linspace(0, 4, 5)</span>
+<span class="sd">    &gt;&gt;&gt; northing = np.linspace(-3, 3, 7)</span>
+<span class="sd">    &gt;&gt;&gt; height = 2 * np.ones((7, 5))</span>
+<span class="sd">    &gt;&gt;&gt; coordinates = (easting, northing, height)</span>
+<span class="sd">    &gt;&gt;&gt; easting, northing, height = meshgrid_from_1d(coordinates)</span>
+<span class="sd">    &gt;&gt;&gt; print(easting)</span>
+<span class="sd">    [[0. 1. 2. 3. 4.]</span>
+<span class="sd">     [0. 1. 2. 3. 4.]</span>
+<span class="sd">     [0. 1. 2. 3. 4.]</span>
+<span class="sd">     [0. 1. 2. 3. 4.]</span>
+<span class="sd">     [0. 1. 2. 3. 4.]</span>
+<span class="sd">     [0. 1. 2. 3. 4.]</span>
+<span class="sd">     [0. 1. 2. 3. 4.]]</span>
+<span class="sd">    &gt;&gt;&gt; print(northing)</span>
+<span class="sd">    [[-3. -3. -3. -3. -3.]</span>
+<span class="sd">     [-2. -2. -2. -2. -2.]</span>
+<span class="sd">     [-1. -1. -1. -1. -1.]</span>
+<span class="sd">     [ 0.  0.  0.  0.  0.]</span>
+<span class="sd">     [ 1.  1.  1.  1.  1.]</span>
+<span class="sd">     [ 2.  2.  2.  2.  2.]</span>
+<span class="sd">     [ 3.  3.  3.  3.  3.]]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ndim</span> <span class="o">=</span> <span class="n">get_ndim_horizontal_coords</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Horizontal coordinates must be 1d-arrays. &quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ndim</span><span class="si">}</span><span class="s2">d-arrays provided.&quot;</span>
+        <span class="p">)</span>
+    <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="p">(</span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="o">*</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
+    <span class="k">return</span> <span class="n">coordinates</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_ndim_horizontal_coords</span><span class="p">(</span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the number of dimensions of the horizontal coordinates arrays</span>
+
+<span class="sd">    Also check if the two horizontal coordinates arrays same dimensions.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    easting : nd-array</span>
+<span class="sd">        Array for the easting coordinates</span>
+<span class="sd">    northing : nd-array</span>
+<span class="sd">        Array for the northing coordinates</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndim : int</span>
+<span class="sd">        Number of dimensions of the ``easting`` and ``northing`` arrays.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ndim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">easting</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ndim</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">northing</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Horizontal coordinates dimensions mismatch. &quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;The easting coordinate array has </span><span class="si">{</span><span class="n">easting</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> dimensions &quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;while the northing has </span><span class="si">{</span><span class="n">northing</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">ndim</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">check_meshgrid</span><span class="p">(</span><span class="n">coordinates</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if the given horizontal coordinates define a meshgrid</span>
+
+<span class="sd">    Check if the rows of the easting 2d-array are identical. Check if the</span>
+<span class="sd">    columns of the northing 2d-array are identical. This function does not</span>
+<span class="sd">    check if the easting and northing coordinates are evenly spaced.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : tuple of arrays</span>
+<span class="sd">        Arrays with coordinates of each point in the grid. Each array must</span>
+<span class="sd">        contain values for a dimension in the order: easting, northing,</span>
+<span class="sd">        vertical, etc. Only easting and northing will be checked, the other</span>
+<span class="sd">        ones will be ignored. All arrays must be 2d and need to have the same</span>
+<span class="sd">        *shape*.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get the two first arrays as easting and northing</span>
+    <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="c1"># Check if all elements of easting along the zeroth axis are equal</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;Invalid coordinate array. The arrays for the horizontal &quot;</span>
+        <span class="o">+</span> <span class="s2">&quot;coordinates of a regular grid must be meshgrids.&quot;</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">easting</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">easting</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="c1"># Check if all elements of northing along the first axis are equal</span>
+    <span class="c1"># (need to make northing[:, 0] a vertical array so numpy can compare)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">northing</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">northing</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="grid_to_table">
+<a class="viewcode-back" href="../../api/generated/verde.grid_to_table.html#verde.grid_to_table">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">grid_to_table</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a grid to a table with the values and coordinates of each point.</span>
+
+<span class="sd">    Takes a 2D grid as input, extracts the coordinates and runs them through</span>
+<span class="sd">    :func:`numpy.meshgrid` to create a 2D table. Works for 2D grids and any</span>
+<span class="sd">    number of variables. Use cases includes passing gridded data to functions</span>
+<span class="sd">    that expect data in XYZ format, such as :class:`verde.BlockReduce`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    grid : :class:`xarray.Dataset` or :class:`xarray.DataArray`</span>
+<span class="sd">        A 2D grid with one or more data variables.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    table : :class:`pandas.DataFrame`</span>
+<span class="sd">        Table with coordinates and variable values for each point in the grid.</span>
+<span class="sd">        Column names are taken from the grid. If *grid* is a</span>
+<span class="sd">        :class:`xarray.DataArray` that doesn&#39;t have a ``name`` attribute</span>
+<span class="sd">        defined, the column with data values will be called ``&quot;scalars&quot;``.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; import xarray as xr</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; # Create a sample grid with a single data variable</span>
+<span class="sd">    &gt;&gt;&gt; temperature = xr.DataArray(</span>
+<span class="sd">    ...     np.arange(20).reshape((4, 5)),</span>
+<span class="sd">    ...     coords=(np.arange(4), np.arange(5, 10)),</span>
+<span class="sd">    ...     dims=[&#39;northing&#39;, &#39;easting&#39;]</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; print(temperature.values)</span>
+<span class="sd">    [[ 0  1  2  3  4]</span>
+<span class="sd">     [ 5  6  7  8  9]</span>
+<span class="sd">     [10 11 12 13 14]</span>
+<span class="sd">     [15 16 17 18 19]]</span>
+<span class="sd">    &gt;&gt;&gt; # For DataArrays, the data column will be &quot;scalars&quot; by default</span>
+<span class="sd">    &gt;&gt;&gt; table = grid_to_table(temperature)</span>
+<span class="sd">    &gt;&gt;&gt; list(sorted(table.columns))</span>
+<span class="sd">    [&#39;easting&#39;, &#39;northing&#39;, &#39;scalars&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; print(table.scalars.values)</span>
+<span class="sd">    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]</span>
+<span class="sd">    &gt;&gt;&gt; print(table.northing.values)</span>
+<span class="sd">    [0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]</span>
+<span class="sd">    &gt;&gt;&gt; print(table.easting.values)</span>
+<span class="sd">    [5 6 7 8 9 5 6 7 8 9 5 6 7 8 9 5 6 7 8 9]</span>
+<span class="sd">    &gt;&gt;&gt; # If the DataArray defines a &quot;name&quot;, we will use that instead</span>
+<span class="sd">    &gt;&gt;&gt; temperature.name = &quot;temperature_K&quot;</span>
+<span class="sd">    &gt;&gt;&gt; table = grid_to_table(temperature)</span>
+<span class="sd">    &gt;&gt;&gt; list(sorted(table.columns))</span>
+<span class="sd">    [&#39;easting&#39;, &#39;northing&#39;, &#39;temperature_K&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; # Conversion of Datasets will preserve the data variable names</span>
+<span class="sd">    &gt;&gt;&gt; grid = xr.Dataset({&quot;temperature&quot;: temperature})</span>
+<span class="sd">    &gt;&gt;&gt; table  = grid_to_table(grid)</span>
+<span class="sd">    &gt;&gt;&gt; list(sorted(table.columns))</span>
+<span class="sd">    [&#39;easting&#39;, &#39;northing&#39;, &#39;temperature&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; print(table.temperature.values)</span>
+<span class="sd">    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]</span>
+<span class="sd">    &gt;&gt;&gt; print(table.northing.values)</span>
+<span class="sd">    [0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]</span>
+<span class="sd">    &gt;&gt;&gt; print(table.easting.values)</span>
+<span class="sd">    [5 6 7 8 9 5 6 7 8 9 5 6 7 8 9 5 6 7 8 9]</span>
+<span class="sd">    &gt;&gt;&gt; # Grids with multiple data variables will have more columns.</span>
+<span class="sd">    &gt;&gt;&gt; wind_speed = xr.DataArray(</span>
+<span class="sd">    ...     np.arange(20, 40).reshape((4, 5)),</span>
+<span class="sd">    ...     coords=(np.arange(4), np.arange(5, 10)),</span>
+<span class="sd">    ...     dims=[&#39;northing&#39;, &#39;easting&#39;]</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; grid[&#39;wind_speed&#39;] = wind_speed</span>
+<span class="sd">    &gt;&gt;&gt; table = grid_to_table(grid)</span>
+<span class="sd">    &gt;&gt;&gt; list(sorted(table.columns))</span>
+<span class="sd">    [&#39;easting&#39;, &#39;northing&#39;, &#39;temperature&#39;, &#39;wind_speed&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; print(table.northing.values)</span>
+<span class="sd">    [0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]</span>
+<span class="sd">    &gt;&gt;&gt; print(table.easting.values)</span>
+<span class="sd">    [5 6 7 8 9 5 6 7 8 9 5 6 7 8 9 5 6 7 8 9]</span>
+<span class="sd">    &gt;&gt;&gt; print(table.temperature.values)</span>
+<span class="sd">    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]</span>
+<span class="sd">    &gt;&gt;&gt; print(table.wind_speed.values)</span>
+<span class="sd">    [20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39]</span>
+<span class="sd">    &gt;&gt;&gt; # Non-dimensional coordinates are also handled</span>
+<span class="sd">    &gt;&gt;&gt; temperature = xr.DataArray(</span>
+<span class="sd">    ...     np.arange(20).reshape((4, 5)),</span>
+<span class="sd">    ...     coords=(np.arange(4), np.arange(5, 10)),</span>
+<span class="sd">    ...     dims=[&#39;northing&#39;, &#39;easting&#39;]</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; temperature = temperature.assign_coords(</span>
+<span class="sd">    ...     upward=(</span>
+<span class="sd">    ...         (&quot;northing&quot;, &quot;easting&quot;),</span>
+<span class="sd">    ...         np.arange(20).reshape((4, 5))</span>
+<span class="sd">    ...     )</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; table = grid_to_table(temperature)</span>
+<span class="sd">    &gt;&gt;&gt; list(sorted(table.columns))</span>
+<span class="sd">    [&#39;easting&#39;, &#39;northing&#39;, &#39;scalars&#39;, &#39;upward&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; print(table.upward.values)</span>
+<span class="sd">    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="s2">&quot;data_vars&quot;</span><span class="p">):</span>
+        <span class="c1"># It&#39;s a Dataset</span>
+        <span class="n">data_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">data_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">data_arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">grid</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">data_names</span><span class="p">]</span>
+        <span class="n">coordinate_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">data_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># It&#39;s a DataArray</span>
+        <span class="n">data_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">grid</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">grid</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;scalars&quot;</span><span class="p">]</span>
+        <span class="n">data_arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">grid</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]</span>
+        <span class="n">coordinate_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
+    <span class="n">north</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">coordinate_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">east</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">coordinate_names</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+    <span class="c1"># Need to flip the coordinates because the names are in northing and</span>
+    <span class="c1"># easting order</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">)][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># Identify and add extra coordinates</span>
+    <span class="n">extra</span> <span class="o">=</span> <span class="p">[</span><span class="n">coord</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">grid</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">coord</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">coordinate_names</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">extra</span><span class="p">:</span>
+        <span class="n">coordinates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">coord</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+        <span class="n">coordinate_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span>
+    <span class="n">data_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">coordinate_names</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">))</span>
+    <span class="n">data_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">data_names</span><span class="p">,</span> <span class="n">data_arrays</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">kdtree</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a KD-Tree object with the given coordinate arrays.</span>
+
+<span class="sd">    Automatically transposes and flattens the coordinate arrays into a single</span>
+<span class="sd">    matrix for use in :class:`scipy.spatial.KDTree`. All other keyword</span>
+<span class="sd">    arguments are passed to the KD-Tree class.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coordinates : tuple of arrays</span>
+<span class="sd">        Arrays with the coordinates of each data point. Should be in the</span>
+<span class="sd">        following order: (easting, northing, vertical, ...). All coordinate</span>
+<span class="sd">        arrays are used.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tree : :class:`scipy.spatial.KDTree`</span>
+<span class="sd">        The tree instance initialized with the given coordinates and arguments.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)))</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">KDTree</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tree</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">partition_by_sum</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">parts</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Partition an array into parts of approximately equal sum.</span>
+
+<span class="sd">    Does not change the order of the array elements.</span>
+
+<span class="sd">    Produces the partition indices on the array. Use :func:`numpy.split` to</span>
+<span class="sd">    divide the array along these indices.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        Depending on the input and number of parts, there might not exist</span>
+<span class="sd">        partition points. In these cases, the function will raise</span>
+<span class="sd">        ``ValueError``. This is more likely to happen as the number of parts</span>
+<span class="sd">        approaches the number of elements in the array.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    array : array or array-like</span>
+<span class="sd">        The 1D array that will be partitioned. The array will be raveled before</span>
+<span class="sd">        computations.</span>
+<span class="sd">    parts : int</span>
+<span class="sd">        Number of parts to split the array. Can be at most the number of</span>
+<span class="sd">        elements in the array.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    indices : array</span>
+<span class="sd">        The indices in which the array should be split.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+
+<span class="sd">    Solution from https://stackoverflow.com/a/54024280</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; array = np.arange(10)</span>
+<span class="sd">    &gt;&gt;&gt; split_points = partition_by_sum(array, parts=2)</span>
+<span class="sd">    &gt;&gt;&gt; print(split_points)</span>
+<span class="sd">    [7]</span>
+<span class="sd">    &gt;&gt;&gt; for part in np.split(array, split_points):</span>
+<span class="sd">    ...     print(part, part.sum())</span>
+<span class="sd">    [0 1 2 3 4 5 6] 21</span>
+<span class="sd">    [7 8 9] 24</span>
+<span class="sd">    &gt;&gt;&gt; split_points = partition_by_sum(array, parts=3)</span>
+<span class="sd">    &gt;&gt;&gt; print(split_points)</span>
+<span class="sd">    [6 8]</span>
+<span class="sd">    &gt;&gt;&gt; for part in np.split(array, split_points):</span>
+<span class="sd">    ...     print(part, part.sum())</span>
+<span class="sd">    [0 1 2 3 4 5] 15</span>
+<span class="sd">    [6 7] 13</span>
+<span class="sd">    [8 9] 17</span>
+<span class="sd">    &gt;&gt;&gt; split_points = partition_by_sum(array, parts=5)</span>
+<span class="sd">    &gt;&gt;&gt; print(split_points)</span>
+<span class="sd">    [4 6 7 9]</span>
+<span class="sd">    &gt;&gt;&gt; for part in np.split(array, split_points):</span>
+<span class="sd">    ...     print(part, part.sum())</span>
+<span class="sd">    [0 1 2 3] 6</span>
+<span class="sd">    [4 5] 9</span>
+<span class="sd">    [6] 6</span>
+<span class="sd">    [7 8] 15</span>
+<span class="sd">    [9] 9</span>
+<span class="sd">    &gt;&gt;&gt; # Use an array with a random looking element order</span>
+<span class="sd">    &gt;&gt;&gt; array = [5, 6, 4, 6, 8, 1, 2, 6, 3, 3]</span>
+<span class="sd">    &gt;&gt;&gt; split_points = partition_by_sum(array, parts=2)</span>
+<span class="sd">    &gt;&gt;&gt; print(split_points)</span>
+<span class="sd">    [4]</span>
+<span class="sd">    &gt;&gt;&gt; for part in np.split(array, split_points):</span>
+<span class="sd">    ...     print(part, part.sum())</span>
+<span class="sd">    [5 6 4 6] 21</span>
+<span class="sd">    [8 1 2 6 3 3] 23</span>
+<span class="sd">    &gt;&gt;&gt; # Splits can have very different sums but this is best that can be done</span>
+<span class="sd">    &gt;&gt;&gt; # without changing the order of the array.</span>
+<span class="sd">    &gt;&gt;&gt; split_points = partition_by_sum(array, parts=5)</span>
+<span class="sd">    &gt;&gt;&gt; print(split_points)</span>
+<span class="sd">    [1 3 4 7]</span>
+<span class="sd">    &gt;&gt;&gt; for part in np.split(array, split_points):</span>
+<span class="sd">    ...     print(part, part.sum())</span>
+<span class="sd">    [5] 5</span>
+<span class="sd">    [6 4] 10</span>
+<span class="sd">    [6] 6</span>
+<span class="sd">    [8 1 2] 11</span>
+<span class="sd">    [6 3 3] 12</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">array</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">parts</span> <span class="o">&gt;</span> <span class="n">array</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Cannot partition an array of size </span><span class="si">{}</span><span class="s2"> into </span><span class="si">{}</span><span class="s2"> parts of equal sum.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">array</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">parts</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="n">cumulative_sum</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+    <span class="c1"># Ideally, we want each part to have the same number of points (total /</span>
+    <span class="c1"># parts).</span>
+    <span class="n">ideal_sum</span> <span class="o">=</span> <span class="n">cumulative_sum</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="n">parts</span>
+    <span class="c1"># If the parts are ideal, the cumulative sum of each part will be this</span>
+    <span class="n">ideal_cumsum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">parts</span><span class="p">)</span> <span class="o">*</span> <span class="n">ideal_sum</span>
+    <span class="c1"># Find the places in the real cumulative sum where the ideal values would</span>
+    <span class="c1"># be. These are the split points. Between each split point, the sum of</span>
+    <span class="c1"># elements will be approximately the ideal sum. Need to insert to the right</span>
+    <span class="c1"># side so that we find cumsum[i - 1] &lt;= ideal &lt; cumsum[i]. This way, if a</span>
+    <span class="c1"># part has ideal sum, the last element (i - 1) will be included. Otherwise,</span>
+    <span class="c1"># we would never have ideal sums.</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">cumulative_sum</span><span class="p">,</span> <span class="n">ideal_cumsum</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+    <span class="c1"># Check for repeated split points, which indicates that there is no way to</span>
+    <span class="c1"># split the array.</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">indices</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Could not find partition points to split the array into </span><span class="si">{}</span><span class="s2"> parts &quot;</span>
+            <span class="s2">&quot;of equal sum.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">indices</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2017-2025, The Verde Developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Jun 12, 2025.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

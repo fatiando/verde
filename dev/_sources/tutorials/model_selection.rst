@@ -106,7 +106,7 @@ default parameters.
       new_object = klass(**new_object_params)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    R² with defaults: 0.7960368857064823
+    R² with defaults: 0.796036885708074
 
 
 
@@ -246,7 +246,7 @@ choice.
       new_object = klass(**new_object_params)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    [np.float64(0.7960368857064823), np.float64(0.8447749626446782), np.float64(0.83822879430101), np.float64(0.8409658539039297)]
+    [np.float64(0.796036885708074), np.float64(0.8447749626446782), np.float64(0.83822879430101), np.float64(0.8409658539039297)]
 
 
 
@@ -274,7 +274,7 @@ The largest score will yield the best parameter combination.
  .. code-block:: none
 
     Best score: 0.8447749626446782
-    Score with defaults: 0.7960368857064823
+    Score with defaults: 0.796036885708074
     Best damping: 0.0001
 
 
@@ -609,9 +609,7 @@ values to find the one that maximizes the cross-validation score.
     /* Toggleable content - dropdown */
 
     #sk-container-id-3 div.sk-toggleable__content {
-      max-height: 0;
-      max-width: 0;
-      overflow: hidden;
+      display: none;
       text-align: left;
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-0);
@@ -637,9 +635,9 @@ values to find the one that maximizes the cross-validation score.
 
     #sk-container-id-3 input.sk-toggleable__control:checked~div.sk-toggleable__content {
       /* Expand drop-down */
-      max-height: 200px;
-      max-width: 100%;
-      overflow: auto;
+      display: block;
+      width: 100%;
+      overflow: visible;
     }
 
     #sk-container-id-3 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
@@ -844,7 +842,203 @@ values to find the one that maximizes the cross-validation score.
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-3);
     }
-    </style><div id="sk-container-id-3" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>SplineCV(dampings=[None, 0.0001, 0.001, 0.01], mindists=[0])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox" checked><label for="sk-estimator-id-3" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>SplineCV</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted"><pre>SplineCV(dampings=[None, 0.0001, 0.001, 0.01], mindists=[0])</pre></div> </div></div></div></div>
+
+    .estimator-table summary {
+        padding: .5rem;
+        font-family: monospace;
+        cursor: pointer;
+    }
+
+    .estimator-table details[open] {
+        padding-left: 0.1rem;
+        padding-right: 0.1rem;
+        padding-bottom: 0.3rem;
+    }
+
+    .estimator-table .parameters-table {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    .estimator-table .parameters-table tr:nth-child(odd) {
+        background-color: #fff;
+    }
+
+    .estimator-table .parameters-table tr:nth-child(even) {
+        background-color: #f6f6f6;
+    }
+
+    .estimator-table .parameters-table tr:hover {
+        background-color: #e0e0e0;
+    }
+
+    .estimator-table table td {
+        border: 1px solid rgba(106, 105, 104, 0.232);
+    }
+
+    .user-set td {
+        color:rgb(255, 94, 0);
+        text-align: left;
+    }
+
+    .user-set td.value pre {
+        color:rgb(255, 94, 0) !important;
+        background-color: transparent !important;
+    }
+
+    .default td {
+        color: black;
+        text-align: left;
+    }
+
+    .user-set td i,
+    .default td i {
+        color: black;
+    }
+
+    .copy-paste-icon {
+        background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNy4yIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjUgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTIwOCAwTDMzMi4xIDBjMTIuNyAwIDI0LjkgNS4xIDMzLjkgMTQuMWw2Ny45IDY3LjljOSA5IDE0LjEgMjEuMiAxNC4xIDMzLjlMNDQ4IDMzNmMwIDI2LjUtMjEuNSA0OC00OCA0OGwtMTkyIDBjLTI2LjUgMC00OC0yMS41LTQ4LTQ4bDAtMjg4YzAtMjYuNSAyMS41LTQ4IDQ4LTQ4ek00OCAxMjhsODAgMCAwIDY0LTY0IDAgMCAyNTYgMTkyIDAgMC0zMiA2NCAwIDAgNDhjMCAyNi41LTIxLjUgNDgtNDggNDhMNDggNTEyYy0yNi41IDAtNDgtMjEuNS00OC00OEwwIDE3NmMwLTI2LjUgMjEuNS00OCA0OC00OHoiLz48L3N2Zz4=);
+        background-repeat: no-repeat;
+        background-size: 14px 14px;
+        background-position: 0;
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+    }
+    </style><body><div id="sk-container-id-3" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>SplineCV(dampings=[None, 0.0001, 0.001, 0.01], mindists=[0])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-3" type="checkbox" checked><label for="sk-estimator-id-3" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>SplineCV</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+            <div class="estimator-table">
+                <details>
+                    <summary>Parameters</summary>
+                    <table class="parameters-table">
+                      <tbody>
+                    
+            <tr class="user-set">
+                <td><i class="copy-paste-icon"
+                     onclick="copyToClipboard('mindists',
+                              this.parentElement.nextElementSibling)"
+                ></i></td>
+                <td class="param">mindists&nbsp;</td>
+                <td class="value">[0]</td>
+            </tr>
+    
+
+            <tr class="user-set">
+                <td><i class="copy-paste-icon"
+                     onclick="copyToClipboard('dampings',
+                              this.parentElement.nextElementSibling)"
+                ></i></td>
+                <td class="param">dampings&nbsp;</td>
+                <td class="value">[None, 0.0001, ...]</td>
+            </tr>
+    
+
+            <tr class="default">
+                <td><i class="copy-paste-icon"
+                     onclick="copyToClipboard('force_coords',
+                              this.parentElement.nextElementSibling)"
+                ></i></td>
+                <td class="param">force_coords&nbsp;</td>
+                <td class="value">None</td>
+            </tr>
+    
+
+            <tr class="default">
+                <td><i class="copy-paste-icon"
+                     onclick="copyToClipboard('engine',
+                              this.parentElement.nextElementSibling)"
+                ></i></td>
+                <td class="param">engine&nbsp;</td>
+                <td class="value">&#x27;auto&#x27;</td>
+            </tr>
+    
+
+            <tr class="default">
+                <td><i class="copy-paste-icon"
+                     onclick="copyToClipboard('cv',
+                              this.parentElement.nextElementSibling)"
+                ></i></td>
+                <td class="param">cv&nbsp;</td>
+                <td class="value">None</td>
+            </tr>
+    
+
+            <tr class="default">
+                <td><i class="copy-paste-icon"
+                     onclick="copyToClipboard('client',
+                              this.parentElement.nextElementSibling)"
+                ></i></td>
+                <td class="param">client&nbsp;</td>
+                <td class="value">None</td>
+            </tr>
+    
+
+            <tr class="default">
+                <td><i class="copy-paste-icon"
+                     onclick="copyToClipboard('delayed',
+                              this.parentElement.nextElementSibling)"
+                ></i></td>
+                <td class="param">delayed&nbsp;</td>
+                <td class="value">False</td>
+            </tr>
+    
+
+            <tr class="default">
+                <td><i class="copy-paste-icon"
+                     onclick="copyToClipboard('scoring',
+                              this.parentElement.nextElementSibling)"
+                ></i></td>
+                <td class="param">scoring&nbsp;</td>
+                <td class="value">None</td>
+            </tr>
+    
+                      </tbody>
+                    </table>
+                </details>
+            </div>
+        </div></div></div></div></div><script>function copyToClipboard(text, element) {
+        // Get the parameter prefix from the closest toggleable content
+        const toggleableContent = element.closest('.sk-toggleable__content');
+        const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+        const fullParamName = paramPrefix ? `${paramPrefix}${text}` : text;
+
+        const originalStyle = element.style;
+        const computedStyle = window.getComputedStyle(element);
+        const originalWidth = computedStyle.width;
+        const originalHTML = element.innerHTML.replace('Copied!', '');
+
+        navigator.clipboard.writeText(fullParamName)
+            .then(() => {
+                element.style.width = originalWidth;
+                element.style.color = 'green';
+                element.innerHTML = "Copied!";
+
+                setTimeout(() => {
+                    element.innerHTML = originalHTML;
+                    element.style = originalStyle;
+                }, 2000);
+            })
+            .catch(err => {
+                console.error('Failed to copy:', err);
+                element.style.color = 'red';
+                element.innerHTML = "Failed!";
+                setTimeout(() => {
+                    element.innerHTML = originalHTML;
+                    element.style = originalStyle;
+                }, 2000);
+            });
+        return false;
+    }
+
+    document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
+        const toggleableContent = element.closest('.sk-toggleable__content');
+        const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+        const paramName = element.parentElement.nextElementSibling.textContent.trim();
+        const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
+
+        element.setAttribute('title', fullParamName);
+    });
+    </script></body>
     </div>
     <br />
     <br />
@@ -999,6 +1193,10 @@ search is executed and the optimal parameters are found immediately.
       score = estimator.score(*test_data)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      score = estimator.score(*test_data)
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      score = estimator.score(*test_data)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/spline.py:261: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       self.spline_ = Spline(**parameter_sets[best])
     Best damping: 0.0001
@@ -1027,7 +1225,7 @@ computed as intermediate values in the scheduled computations.
 
  .. code-block:: none
 
-    Delayed scores: [Delayed('mean-45510e84-3d41-44fc-93aa-b0488613a81f'), Delayed('mean-5db1e623-a97c-4d1e-acdc-c04a9406a730'), Delayed('mean-55378ef3-6d56-4ebd-9ef4-e1a182fcf8a6'), Delayed('mean-eacd6355-8d34-4dd1-bb45-2e339f637ed7')]
+    Delayed scores: [Delayed('mean-7f617f0f-1a77-4126-8ff7-e4b9d7654bb9'), Delayed('mean-26e63b51-9c5f-4df2-8ea4-8fe17a177538'), Delayed('mean-2ca71a73-4592-4c89-a919-efc6cc523e5c'), Delayed('mean-c0d81651-c728-40b1-bb2c-db9eda9cf6c9')]
 
 
 
@@ -1127,7 +1325,7 @@ short wavelength features that we get from the defaults.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.554 seconds)
+   **Total running time of the script:** (0 minutes 0.535 seconds)
 
 
 .. _sphx_glr_download_tutorials_model_selection.py:

@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:14.035** total execution time for 9 files **from tutorials**:
+**00:13.255** total execution time for 9 files **from tutorials**:
 
 .. container::
 
@@ -33,29 +33,29 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_tutorials_chain.py` (``chain.py``)
-     - 00:04.165
+     - 00:04.075
      - 0.0
    * - :ref:`sphx_glr_tutorials_decimation.py` (``decimation.py``)
-     - 00:03.279
+     - 00:03.058
      - 0.0
    * - :ref:`sphx_glr_tutorials_weights.py` (``weights.py``)
-     - 00:02.416
+     - 00:02.182
      - 0.0
    * - :ref:`sphx_glr_tutorials_projections.py` (``projections.py``)
-     - 00:01.321
+     - 00:01.242
      - 0.0
    * - :ref:`sphx_glr_tutorials_vectors.py` (``vectors.py``)
-     - 00:01.252
-     - 0.0
-   * - :ref:`sphx_glr_tutorials_model_selection.py` (``model_selection.py``)
-     - 00:00.554
+     - 00:01.137
      - 0.0
    * - :ref:`sphx_glr_tutorials_model_evaluation.py` (``model_evaluation.py``)
-     - 00:00.524
+     - 00:00.557
+     - 0.0
+   * - :ref:`sphx_glr_tutorials_model_selection.py` (``model_selection.py``)
+     - 00:00.535
      - 0.0
    * - :ref:`sphx_glr_tutorials_trends.py` (``trends.py``)
-     - 00:00.319
+     - 00:00.271
      - 0.0
    * - :ref:`sphx_glr_tutorials_grid_coordinates.py` (``grid_coordinates.py``)
-     - 00:00.205
+     - 00:00.197
      - 0.0

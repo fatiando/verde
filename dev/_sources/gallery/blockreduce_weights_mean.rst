@@ -55,8 +55,19 @@ uncertainties. This is also the best choice if your data weights aren't
    :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:503: FutureWarning: DataFrameGroupBy.apply operated on the grouping columns. This behavior is deprecated, and in a future version of pandas the grouping columns will be excluded from the operation. Either pass `include_groups=False` to exclude the groupings or explicitly select the grouping columns after groupby to silence this warning.
+      blocked = table.groupby("block").apply(weighted_average_variance)
 
 
+
+
+
+
+|
 
 .. code-block:: Python
 
@@ -126,7 +137,7 @@ uncertainties. This is also the best choice if your data weights aren't
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.788 seconds)
+   **Total running time of the script:** (0 minutes 0.721 seconds)
 
 
 .. _sphx_glr_download_gallery_blockreduce_weights_mean.py:

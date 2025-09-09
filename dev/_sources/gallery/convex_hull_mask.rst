@@ -105,7 +105,7 @@ outside of the convex hull of the data points to NaN or some other value.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.407 seconds)
+   **Total running time of the script:** (0 minutes 3.244 seconds)
 
 
 .. _sphx_glr_download_gallery_convex_hull_mask.py:

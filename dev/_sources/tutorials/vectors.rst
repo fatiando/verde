@@ -406,9 +406,7 @@ different :class:`verde.Trend`.
     /* Toggleable content - dropdown */
 
     #sk-container-id-4 div.sk-toggleable__content {
-      max-height: 0;
-      max-width: 0;
-      overflow: hidden;
+      display: none;
       text-align: left;
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-0);
@@ -434,9 +432,9 @@ different :class:`verde.Trend`.
 
     #sk-container-id-4 input.sk-toggleable__control:checked~div.sk-toggleable__content {
       /* Expand drop-down */
-      max-height: 200px;
-      max-width: 100%;
-      overflow: auto;
+      display: block;
+      width: 100%;
+      overflow: visible;
     }
 
     #sk-container-id-4 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
@@ -641,7 +639,133 @@ different :class:`verde.Trend`.
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-3);
     }
-    </style><div id="sk-container-id-4" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Vector(components=[Trend(degree=4), Trend(degree=1)])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox" checked><label for="sk-estimator-id-4" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Vector</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted"><pre>Vector(components=[Trend(degree=4), Trend(degree=1)])</pre></div> </div></div></div></div>
+
+    .estimator-table summary {
+        padding: .5rem;
+        font-family: monospace;
+        cursor: pointer;
+    }
+
+    .estimator-table details[open] {
+        padding-left: 0.1rem;
+        padding-right: 0.1rem;
+        padding-bottom: 0.3rem;
+    }
+
+    .estimator-table .parameters-table {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    .estimator-table .parameters-table tr:nth-child(odd) {
+        background-color: #fff;
+    }
+
+    .estimator-table .parameters-table tr:nth-child(even) {
+        background-color: #f6f6f6;
+    }
+
+    .estimator-table .parameters-table tr:hover {
+        background-color: #e0e0e0;
+    }
+
+    .estimator-table table td {
+        border: 1px solid rgba(106, 105, 104, 0.232);
+    }
+
+    .user-set td {
+        color:rgb(255, 94, 0);
+        text-align: left;
+    }
+
+    .user-set td.value pre {
+        color:rgb(255, 94, 0) !important;
+        background-color: transparent !important;
+    }
+
+    .default td {
+        color: black;
+        text-align: left;
+    }
+
+    .user-set td i,
+    .default td i {
+        color: black;
+    }
+
+    .copy-paste-icon {
+        background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNy4yIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjUgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTIwOCAwTDMzMi4xIDBjMTIuNyAwIDI0LjkgNS4xIDMzLjkgMTQuMWw2Ny45IDY3LjljOSA5IDE0LjEgMjEuMiAxNC4xIDMzLjlMNDQ4IDMzNmMwIDI2LjUtMjEuNSA0OC00OCA0OGwtMTkyIDBjLTI2LjUgMC00OC0yMS41LTQ4LTQ4bDAtMjg4YzAtMjYuNSAyMS41LTQ4IDQ4LTQ4ek00OCAxMjhsODAgMCAwIDY0LTY0IDAgMCAyNTYgMTkyIDAgMC0zMiA2NCAwIDAgNDhjMCAyNi41LTIxLjUgNDgtNDggNDhMNDggNTEyYy0yNi41IDAtNDgtMjEuNS00OC00OEwwIDE3NmMwLTI2LjUgMjEuNS00OCA0OC00OHoiLz48L3N2Zz4=);
+        background-repeat: no-repeat;
+        background-size: 14px 14px;
+        background-position: 0;
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+    }
+    </style><body><div id="sk-container-id-4" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Vector(components=[Trend(degree=4), Trend(degree=1)])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox" checked><label for="sk-estimator-id-4" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Vector</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+            <div class="estimator-table">
+                <details>
+                    <summary>Parameters</summary>
+                    <table class="parameters-table">
+                      <tbody>
+                    
+            <tr class="user-set">
+                <td><i class="copy-paste-icon"
+                     onclick="copyToClipboard('components',
+                              this.parentElement.nextElementSibling)"
+                ></i></td>
+                <td class="param">components&nbsp;</td>
+                <td class="value">[Trend(degree=4), Trend(degree=1)]</td>
+            </tr>
+    
+                      </tbody>
+                    </table>
+                </details>
+            </div>
+        </div></div></div></div></div><script>function copyToClipboard(text, element) {
+        // Get the parameter prefix from the closest toggleable content
+        const toggleableContent = element.closest('.sk-toggleable__content');
+        const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+        const fullParamName = paramPrefix ? `${paramPrefix}${text}` : text;
+
+        const originalStyle = element.style;
+        const computedStyle = window.getComputedStyle(element);
+        const originalWidth = computedStyle.width;
+        const originalHTML = element.innerHTML.replace('Copied!', '');
+
+        navigator.clipboard.writeText(fullParamName)
+            .then(() => {
+                element.style.width = originalWidth;
+                element.style.color = 'green';
+                element.innerHTML = "Copied!";
+
+                setTimeout(() => {
+                    element.innerHTML = originalHTML;
+                    element.style = originalStyle;
+                }, 2000);
+            })
+            .catch(err => {
+                console.error('Failed to copy:', err);
+                element.style.color = 'red';
+                element.innerHTML = "Failed!";
+                setTimeout(() => {
+                    element.innerHTML = originalHTML;
+                    element.style = originalStyle;
+                }, 2000);
+            });
+        return false;
+    }
+
+    document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
+        const toggleableContent = element.closest('.sk-toggleable__content');
+        const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+        const paramName = element.parentElement.nextElementSibling.textContent.trim();
+        const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
+
+        element.setAttribute('title', fullParamName);
+    });
+    </script></body>
     </div>
     <br />
     <br />
@@ -998,7 +1122,7 @@ functions can be used to achieve better interpolation results. The
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.252 seconds)
+   **Total running time of the script:** (0 minutes 1.137 seconds)
 
 
 .. _sphx_glr_download_tutorials_vectors.py:

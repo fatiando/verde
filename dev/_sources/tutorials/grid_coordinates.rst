@@ -704,7 +704,7 @@ And we can print the time array as well
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.205 seconds)
+   **Total running time of the script:** (0 minutes 0.197 seconds)
 
 
 .. _sphx_glr_download_tutorials_grid_coordinates.py:

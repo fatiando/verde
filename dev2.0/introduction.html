@@ -1,0 +1,3100 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    
+        <title>A taste of Verde | Verde v1.8.1.post42</title>
+    
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=504d3d5d" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/thebelab-helper.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="_static/design-tabs.js?v=36754332"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'introduction';</script>
+    <link rel="icon" href="_static/favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Making your first grid" href="tutorial/first-grid.html" />
+    <link rel="prev" title="Installing" href="install.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Verde <span class="project-version">v1.8.1.post42</span></p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installing</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">A taste of Verde</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="tutorial/first-grid.html">Making your first grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/geographic.html">Interpolation in geographic coordinates</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/index.html">List of functions and classes (API)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.Spline.html">verde.Spline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.SplineCV.html">verde.SplineCV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.KNeighbors.html">verde.KNeighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.Linear.html">verde.Linear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.Cubic.html">verde.Cubic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.VectorSpline2D.html">verde.VectorSpline2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.BlockReduce.html">verde.BlockReduce</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.BlockMean.html">verde.BlockMean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.Trend.html">verde.Trend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.Vector.html">verde.Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.train_test_split.html">verde.train_test_split</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.cross_val_score.html">verde.cross_val_score</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.BlockShuffleSplit.html">verde.BlockShuffleSplit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.BlockKFold.html">verde.BlockKFold</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.grid_coordinates.html">verde.grid_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.scatter_points.html">verde.scatter_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.profile_coordinates.html">verde.profile_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.get_region.html">verde.get_region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.pad_region.html">verde.pad_region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.inside.html">verde.inside</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.rolling_window.html">verde.rolling_window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.expanding_window.html">verde.expanding_window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.project_region.html">verde.project_region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.project_grid.html">verde.project_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.distance_mask.html">verde.distance_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.convexhull_mask.html">verde.convexhull_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.maxabs.html">verde.maxabs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.variance_to_weights.html">verde.variance_to_weights</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.grid_to_table.html">verde.grid_to_table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.make_xarray_grid.html">verde.make_xarray_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.median_distance.html">verde.median_distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.load_surfer.html">verde.load_surfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.synthetic.CheckerBoard.html">verde.synthetic.CheckerBoard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.base.BaseGridder.html">verde.base.BaseGridder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.base.BaseBlockCrossValidator.html">verde.base.BaseBlockCrossValidator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.base.n_1d_arrays.html">verde.base.n_1d_arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.base.least_squares.html">verde.base.least_squares</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="conventions.html">Definitions and conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citing.html">Citing Verde</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compatibility.html">Version compatibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="versions.html">Documentation for other versions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact/">Join the community</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fatiando/verde" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/verde/edit/main/doc/introduction.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/verde/issues/new?title=Issue%20on%20page%20%2Fintroduction.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/introduction.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>A taste of Verde</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-library">The library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-some-sample-data">Loading some sample data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decimate-the-data">Decimate the data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-the-data">Project the data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spline-interpolation">Spline interpolation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-a-grid">Generating a grid</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-a-profile">Extracting a profile</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wrapping-up">Wrapping up</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="a-taste-of-verde">
+<span id="overview"></span><h1>A taste of Verde<a class="headerlink" href="#a-taste-of-verde" title="Link to this heading">#</a></h1>
+<p>Verde offers a wealth of functionality for processing spatial and geophysical
+data, like <strong>bathymetry, GPS, temperature, gravity, or anything else that is
+measured along a surface</strong>.
+While our main focus is on gridding (interpolating on a regular grid), you’ll
+also find other things like trend removal, data decimation, spatial
+cross-validation, and blocked operations.</p>
+<p>This example will show you some of what Verde can do to process some data and
+generate a grid.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Looking for a simpler and more detailed tutorial? Start with
+<a class="reference internal" href="tutorial/first-grid.html#tutorial-first-grid"><span class="std std-ref">Making your first grid</span></a>.</p>
+</div>
+<section id="the-library">
+<h2>The library<a class="headerlink" href="#the-library" title="Link to this heading">#</a></h2>
+<p>Most classes and functions are available through the <a class="reference internal" href="api/index.html#module-verde" title="verde"><code class="xref py py-mod docutils literal notranslate"><span class="pre">verde</span></code></a> top level
+package. So we can import only that and we’ll have everything Verde has to offer:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">verde</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vd</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Throughout the documentation we’ll use <code class="docutils literal notranslate"><span class="pre">vd</span></code> as the alias for
+<a class="reference internal" href="api/index.html#module-verde" title="verde"><code class="xref py py-mod docutils literal notranslate"><span class="pre">verde</span></code></a>.</p>
+</div>
+<p>We’ll also import other modules for this example:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Standard Scipy stack</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="c1"># For projecting data</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyproj</span>
+<span class="c1"># For plotting data on a map</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pygmt</span>
+<span class="c1"># For fetching sample datasets</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ensaio</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</section>
+<section id="loading-some-sample-data">
+<h2>Loading some sample data<a class="headerlink" href="#loading-some-sample-data" title="Link to this heading">#</a></h2>
+<p>For this example, we’ll download some sample GPS/GNSS velocity data from across
+the Alps using <a class="reference external" href="https://www.fatiando.org/ensaio/latest/api/index.html#module-ensaio" title="(in Ensaio vv0.7.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ensaio</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path_to_data_file</span> <span class="o">=</span> <span class="n">ensaio</span><span class="o">.</span><span class="n">fetch_alps_gps</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">path_to_data_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>/home/runner/.cache/ensaio/v1/alps-gps-velocity.csv.xz
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since our data are in <a class="reference external" href="https://en.wikipedia.org/wiki/Comma-separated_values">CSV</a>
+format, the best way to load them is with <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/index.html#module-pandas" title="(in pandas v2.3.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_to_data_file</span><span class="p">)</span>
+<span class="n">data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>station_id</th>
+      <th>longitude</th>
+      <th>latitude</th>
+      <th>height_m</th>
+      <th>velocity_east_mmyr</th>
+      <th>velocity_north_mmyr</th>
+      <th>velocity_up_mmyr</th>
+      <th>longitude_error_m</th>
+      <th>latitude_error_m</th>
+      <th>height_error_m</th>
+      <th>velocity_east_error_mmyr</th>
+      <th>velocity_north_error_mmyr</th>
+      <th>velocity_up_error_mmyr</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>ACOM</td>
+      <td>13.514900</td>
+      <td>46.547935</td>
+      <td>1774.682</td>
+      <td>0.2</td>
+      <td>1.2</td>
+      <td>1.1</td>
+      <td>0.0005</td>
+      <td>0.0009</td>
+      <td>0.001</td>
+      <td>0.1</td>
+      <td>0.1</td>
+      <td>0.1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AFAL</td>
+      <td>12.174517</td>
+      <td>46.527144</td>
+      <td>2284.085</td>
+      <td>-0.7</td>
+      <td>0.9</td>
+      <td>1.3</td>
+      <td>0.0009</td>
+      <td>0.0009</td>
+      <td>0.001</td>
+      <td>0.1</td>
+      <td>0.2</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>AGDE</td>
+      <td>3.466427</td>
+      <td>43.296383</td>
+      <td>65.785</td>
+      <td>-0.2</td>
+      <td>-0.2</td>
+      <td>0.1</td>
+      <td>0.0009</td>
+      <td>0.0018</td>
+      <td>0.002</td>
+      <td>0.1</td>
+      <td>0.3</td>
+      <td>0.3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>AGNE</td>
+      <td>7.139620</td>
+      <td>45.467942</td>
+      <td>2354.600</td>
+      <td>0.0</td>
+      <td>-0.2</td>
+      <td>1.5</td>
+      <td>0.0009</td>
+      <td>0.0036</td>
+      <td>0.004</td>
+      <td>0.2</td>
+      <td>0.6</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>AIGL</td>
+      <td>3.581261</td>
+      <td>44.121398</td>
+      <td>1618.764</td>
+      <td>0.0</td>
+      <td>0.1</td>
+      <td>0.7</td>
+      <td>0.0009</td>
+      <td>0.0009</td>
+      <td>0.002</td>
+      <td>0.1</td>
+      <td>0.5</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>181</th>
+      <td>WLBH</td>
+      <td>7.351299</td>
+      <td>48.415171</td>
+      <td>819.069</td>
+      <td>0.0</td>
+      <td>-0.2</td>
+      <td>-2.8</td>
+      <td>0.0005</td>
+      <td>0.0009</td>
+      <td>0.001</td>
+      <td>0.1</td>
+      <td>0.2</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <th>182</th>
+      <td>WTZR</td>
+      <td>12.878911</td>
+      <td>49.144199</td>
+      <td>666.025</td>
+      <td>0.1</td>
+      <td>0.2</td>
+      <td>-0.1</td>
+      <td>0.0005</td>
+      <td>0.0005</td>
+      <td>0.001</td>
+      <td>0.1</td>
+      <td>0.1</td>
+      <td>0.1</td>
+    </tr>
+    <tr>
+      <th>183</th>
+      <td>ZADA</td>
+      <td>15.227590</td>
+      <td>44.113177</td>
+      <td>64.307</td>
+      <td>0.2</td>
+      <td>3.1</td>
+      <td>-0.3</td>
+      <td>0.0018</td>
+      <td>0.0036</td>
+      <td>0.004</td>
+      <td>0.2</td>
+      <td>0.4</td>
+      <td>0.4</td>
+    </tr>
+    <tr>
+      <th>184</th>
+      <td>ZIMM</td>
+      <td>7.465278</td>
+      <td>46.877098</td>
+      <td>956.341</td>
+      <td>-0.1</td>
+      <td>0.4</td>
+      <td>1.0</td>
+      <td>0.0005</td>
+      <td>0.0009</td>
+      <td>0.001</td>
+      <td>0.1</td>
+      <td>0.1</td>
+      <td>0.1</td>
+    </tr>
+    <tr>
+      <th>185</th>
+      <td>ZOUF</td>
+      <td>12.973553</td>
+      <td>46.557221</td>
+      <td>1946.508</td>
+      <td>0.1</td>
+      <td>1.0</td>
+      <td>1.3</td>
+      <td>0.0005</td>
+      <td>0.0009</td>
+      <td>0.001</td>
+      <td>0.1</td>
+      <td>0.1</td>
+      <td>0.1</td>
+    </tr>
+  </tbody>
+</table>
+<p>186 rows × 13 columns</p>
+</div></div></div>
+</div>
+<p>The data are the observed 3D velocity vectors of each GPS/GNSS station in
+mm/year and show the deformation of the crust that is caused by the subduction
+in the Alps.
+For this example, <strong>we’ll only the vertical component</strong> (but Verde can handle
+all 3 components as well).</p>
+<p>Before we do anything with this data, it would be useful to extract from it the
+West, East, South, North bounding box (this is called a <strong>region</strong> in Verde).
+This will help us make a map and can be useful in other operations as well.
+Verde offers the function <a class="reference internal" href="api/generated/verde.get_region.html#verde.get_region" title="verde.get_region"><code class="xref py py-func docutils literal notranslate"><span class="pre">verde.get_region</span></code></a> function for doing just
+that:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">region</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">get_region</span><span class="p">([</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>(np.float64(-4.4965935), np.float64(16.5830568), np.float64(41.9274581), np.float64(52.3792981))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">Coordinate order</p>
+<p>In Verde, coordinates are always given in the order:
+<strong>West-East, South-North</strong>. All functions and classes expect coordinates in
+this order. The <strong>only exceptions</strong> are the <code class="docutils literal notranslate"><span class="pre">dims</span></code> and <code class="docutils literal notranslate"><span class="pre">shape</span></code> arguments
+that some functions take.</p>
+</div>
+<p>Let’s plot this on a <a class="reference external" href="https://www.pygmt.org/latest/api/index.html#module-pygmt" title="(in PyGMT vv0.15.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygmt</span></code></a> map so we can see it more clearly:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start a figure</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="c1"># Add a basemap with the data region, Mercator projection, default frame</span>
+<span class="c1"># and ticks, color in the continents, and display national borders</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;M15c&quot;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="s2">&quot;af&quot;</span><span class="p">,</span>
+    <span class="n">land</span><span class="o">=</span><span class="s2">&quot;#eeeeee&quot;</span><span class="p">,</span> <span class="n">borders</span><span class="o">=</span><span class="s2">&quot;1/#666666&quot;</span><span class="p">,</span> <span class="n">area_thresh</span><span class="o">=</span><span class="mf">1e4</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="c1"># Create a colormap for the velocity</span>
+<span class="n">pygmt</span><span class="o">.</span><span class="n">makecpt</span><span class="p">(</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;polar+h&quot;</span><span class="p">,</span>
+    <span class="n">series</span><span class="o">=</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">velocity_up_mmyr</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">data</span><span class="o">.</span><span class="n">velocity_up_mmyr</span><span class="o">.</span><span class="n">max</span><span class="p">()],</span>
+<span class="p">)</span>
+<span class="c1"># Plot colored points for the velocities</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+    <span class="n">fill</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">velocity_up_mmyr</span><span class="p">,</span>
+    <span class="n">style</span><span class="o">=</span><span class="s2">&quot;c0.2c&quot;</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">pen</span><span class="o">=</span><span class="s2">&quot;0.5p,black&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="c1"># Add a colorbar with automatic frame and ticks and a label</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="s1">&#39;af+l&quot;vertical velocity [mm/yr]&quot;&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/introduction_5_0.png" src="_images/introduction_5_0.png" />
+</div>
+</div>
+</section>
+<section id="decimate-the-data">
+<h2>Decimate the data<a class="headerlink" href="#decimate-the-data" title="Link to this heading">#</a></h2>
+<p>You may have noticed that that the spacing between the points is highly
+variable.
+This can sometimes cause aliasing problems when gridding and also wastes
+computation when multiple points would fall on the same grid cell.
+To avoid all of the this, it’s customary to <strong>block average</strong> the data first.</p>
+<p>Block averaging means splitting the region into blocks (usually with the size
+of the desired grid spacing) and then taking the average of all points inside
+each block.
+In Verde, this is done by <a class="reference internal" href="api/generated/verde.BlockMean.html#verde.BlockMean" title="verde.BlockMean"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.BlockMean</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Desired grid spacing in degrees</span>
+<span class="n">spacing</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="n">blockmean</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">BlockMean</span><span class="p">(</span><span class="n">block_size</span><span class="o">=</span><span class="n">spacing</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The <a class="reference internal" href="api/generated/verde.BlockMean.html#verde.BlockMean.filter" title="verde.BlockMean.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">verde.BlockMean.filter</span></code></a> method applies the blocked average operation
+with the given spacing to some data.
+It returns for each block: the mean coordinates, the mean data value, and
+a weight (we’ll get to that soon).</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">block_coordinates</span><span class="p">,</span> <span class="n">block_velocity</span><span class="p">,</span> <span class="n">block_weights</span> <span class="o">=</span> <span class="n">blockmean</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">),</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">velocity_up_mmyr</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">block_coordinates</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>(array([ 8.7626159 ,  2.434972  ,  2.7949003 ,  6.2060949 , 12.3557044 ,
+        13.1239995 ,  1.0860528 ,  2.02959   ,  2.7660378 ,  3.4876973 ,
+         5.3537886 ,  6.2289099 ,  6.6010118 ,  2.8234738 ,  3.6991176 ,
+         4.4216344 ,  4.8104624 ,  5.3331971 ,  1.4808917 ,  2.3408725 ,
+         2.7275844 ,  3.3143753 ,  3.8648417 ,  4.0958931 ,  5.7869818 ,
+         7.0541003 ,  7.26361955,  3.2682596 ,  3.9669648 ,  4.8617726 ,
+         5.7173553 ,  6.366692  ,  6.7236848 ,  6.9205745 , 11.0991283 ,
+        11.2138006 ,  3.5812609 ,  5.4836986 ,  8.1594175 , 15.2275901 ,
+         2.8551187 ,  4.4669187 ,  4.5738468 ,  5.2725628 ,  6.3455153 ,
+         6.9770648 ,  4.156319  ,  8.0811275 ,  8.9211444 , 11.6468163 ,
+         3.2836469 ,  5.9105951 ,  6.6618686 , 10.9491953 , 12.2494364 ,
+         6.4789542 ,  6.7100358 ,  3.8788733 ,  4.2874656 ,  5.3984569 ,
+         5.881079  ,  6.0834629 ,  7.6503444 ,  7.7653026 ,  4.665694  ,
+         4.7979068 ,  5.4725132 ,  5.7617809 ,  6.358558  ,  6.7100867 ,
+        13.5950464 ,  2.0519965 ,  7.1396203 , 11.8960633 , 12.3540792 ,
+         4.0678111 ,  4.9058086 ,  5.1521292 ,  5.9021552 ,  5.985685  ,
+         6.6282299 , 11.0342814 , 12.5884184 , 13.7635214 ,  3.1110763 ,
+         4.6765767 ,  4.8089593 ,  5.624649  ,  9.0956236 , 10.1088147 ,
+        11.042103  , 12.2085197 , 13.0525523 , 13.4356375 , -0.4076986 ,
+         4.8029182 ,  8.6802049 , 11.1434418 , 11.8270897 , 12.4350216 ,
+        12.9790963 , 13.2530207 , 14.543717  , -1.2193156 ,  4.6061776 ,
+         5.416495  ,  6.2830311 ,  8.2610005 ,  9.8502544 , 11.7237974 ,
+        12.987684  , 13.4160616 ,  5.7956604 , 11.3367981 , 12.174517  ,
+        12.5653448 , 13.0011467 , 13.5149004 ,  5.0751405 , 11.2946668 ,
+        12.9914523 , 13.850455  , 14.6260666 ,  7.4652781 , 10.8315721 ,
+         4.2889755 , 10.6268236 , 15.4934817 ,  1.7196751 ,  5.9893868 ,
+        11.3860936 ,  7.2681933 ,  9.7846655 , 10.0725985 , 10.5510003 ,
+        12.3594601 , 13.7713212 , -3.5079805 , -3.427339  ,  5.8265567 ,
+         6.7456111 ,  7.4288212 , 11.3149642 , 12.2492719 , 12.8075351 ,
+        16.5830568 ,  7.0315242 ,  7.5961676 , 13.1104313 , 15.8589121 ,
+         0.1552863 ,  5.3508882 , 11.2798716 , 14.0207379 ,  7.1967089 ,
+        13.486385  , 14.2830623 , 16.3730836 , -4.4965935 ,  5.3535964 ,
+         7.3512992 ,  7.6399038 ,  5.8411017 ,  6.7838184 ,  7.6710324 ,
+         7.7624948 , 13.9953591 ,  2.5873124 ,  7.3642111 ,  8.4112604 ,
+        12.8789111 ,  6.2915779 ,  6.6996722 , -1.7779594 , 11.0045746 ,
+         8.6649682 , 11.8758926 , 13.7296944 ,  9.9505607 , 13.0660927 ]),
+ array([41.9274581 , 42.7275495 , 43.0481629 , 42.9832846 , 43.1193923 ,
+        43.1119865 , 43.2068502 , 43.1571519 , 43.2419319 , 43.2913725 ,
+        43.2787706 , 43.3010132 , 43.2194846 , 43.4313718 , 43.3976493 ,
+        43.4491472 , 43.3759731 , 43.4912152 , 43.5606955 , 43.7203399 ,
+        43.6809908 , 43.6933643 , 43.6374387 , 43.6923772 , 43.6757239 ,
+        43.6114285 , 43.71438235, 43.9198043 , 43.8769014 , 43.8813695 ,
+        43.9241573 , 43.873539  , 43.7974659 , 43.7547386 , 43.8855632 ,
+        43.7956496 , 44.1213985 , 43.9409571 , 44.1095454 , 44.1131766 ,
+        44.1996596 , 44.2554513 , 44.1853354 , 44.2778955 , 44.1772974 ,
+        44.2678215 , 44.3692026 , 44.4459918 , 44.4193884 , 44.5199581 ,
+        44.7217941 , 44.6328399 , 44.6622451 , 44.6293541 , 44.6769027 ,
+        44.8576702 , 44.9103636 , 45.0436188 , 45.124571  , 45.1166293 ,
+        45.1107151 , 45.0866148 , 45.0392507 , 45.0415489 , 45.2413805 ,
+        45.3071052 , 45.2493163 , 45.2352196 , 45.3041378 , 45.2137781 ,
+        45.2260172 , 45.4033539 , 45.4679419 , 45.4111544 , 45.4305709 ,
+        45.7156927 , 45.7137762 , 45.7333733 , 45.6776851 , 45.6430025 ,
+        45.6914899 , 45.599783  , 45.6684352 , 45.7097578 , 45.7609636 ,
+        45.8790852 , 45.7990205 , 45.916077  , 45.802164  , 45.8860062 ,
+        45.8935061 , 45.8570112 , 45.805723  , 45.9244697 , 46.1334636 ,
+        46.1482756 , 46.0423417 , 46.0981198 , 46.0321389 , 46.0082949 ,
+        45.958532  , 46.0374798 , 46.0481344 , 46.158943  , 46.1948277 ,
+        46.2247145 , 46.2176766 , 46.3135602 , 46.1700344 , 46.3039483 ,
+        46.2407539 , 46.1839611 , 46.528575  , 46.4990246 , 46.527144  ,
+        46.4570897 , 46.4141535 , 46.5479352 , 46.7255889 , 46.685116  ,
+        46.615732  , 46.6070306 , 46.6614109 , 46.8770983 , 46.8665916 ,
+        46.9538414 , 47.14623   , 47.0671307 , 47.2941957 , 47.246882  ,
+        47.3129057 , 47.4383509 , 47.5153293 , 47.4925837 , 47.5487161 ,
+        47.4182421 , 47.3772563 , 47.6480085 , 47.7461152 , 47.6595708 ,
+        47.6596952 , 47.6831756 , 47.6067929 , 47.7474651 , 47.6511983 ,
+        47.6836476 , 47.923005  , 47.8339487 , 47.8034215 , 47.9279647 ,
+        48.0186173 , 48.1244335 , 48.0861707 , 48.1583438 , 48.2168508 ,
+        48.2034179 , 48.309783  , 48.2188572 , 48.3804944 , 48.486154  ,
+        48.4151715 , 48.5493608 , 48.6123195 , 48.6751878 , 48.66522695,
+        48.5798433 , 48.5698369 , 48.8410585 , 48.8730278 , 49.0112461 ,
+        49.1441992 , 49.2039455 , 49.3715652 , 49.5806623 , 49.5864936 ,
+        50.0905788 , 50.3129033 , 51.029827  , 51.5002153 , 52.3792981 ]))
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this case, we have <strong>uncertainty</strong> data for each observation and so we can
+pass that as <strong>input weights</strong> to the block averaging (and compute a
+weighted average instead).
+The weights should usually be <strong>1 over the uncertainty squared</strong> and we need to
+let <a class="reference internal" href="api/generated/verde.BlockMean.html#verde.BlockMean" title="verde.BlockMean"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.BlockMean</span></code></a> know that our input weights are uncertainties.
+<strong>It’s always recommended to use weights if you have them!</strong></p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">blockmean</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">BlockMean</span><span class="p">(</span><span class="n">block_size</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">uncertainty</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">block_coordinates</span><span class="p">,</span> <span class="n">block_velocity</span><span class="p">,</span> <span class="n">block_weights</span> <span class="o">=</span> <span class="n">blockmean</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">),</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">velocity_up_mmyr</span><span class="p">,</span>
+    <span class="n">weights</span><span class="o">=</span><span class="mi">1</span> <span class="o">/</span> <span class="n">data</span><span class="o">.</span><span class="n">velocity_up_error_mmyr</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<div class="attention admonition">
+<p class="admonition-title">What if I don’t have uncertainties?</p>
+<p>Don’t worry! <strong>Input weights are optional</strong> in Verde and can always be
+ommited.</p>
+</div>
+<div class="admonition-block-weights admonition">
+<p class="admonition-title">Block weights</p>
+<p>The weights that are returned by <a class="reference internal" href="api/generated/verde.BlockMean.html#verde.BlockMean.filter" title="verde.BlockMean.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">verde.BlockMean.filter</span></code></a> can be
+different things. See <a class="reference internal" href="api/generated/verde.BlockMean.html#verde.BlockMean" title="verde.BlockMean"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.BlockMean</span></code></a> for a detailed explanation.
+In our case, they are 1 over the propagated uncertainty of the mean values
+for each block.
+These can be used in the gridding process to give less weight to the data
+that have higher uncertainties.</p>
+</div>
+<p>Now let’s plot the block-averaged data:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;M15c&quot;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="s2">&quot;af&quot;</span><span class="p">,</span>
+    <span class="n">land</span><span class="o">=</span><span class="s2">&quot;#eeeeee&quot;</span><span class="p">,</span> <span class="n">borders</span><span class="o">=</span><span class="s2">&quot;1/#666666&quot;</span><span class="p">,</span> <span class="n">area_thresh</span><span class="o">=</span><span class="mf">1e4</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">pygmt</span><span class="o">.</span><span class="n">makecpt</span><span class="p">(</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;polar+h&quot;</span><span class="p">,</span> <span class="n">series</span><span class="o">=</span><span class="p">[</span><span class="n">block_velocity</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">block_velocity</span><span class="o">.</span><span class="n">max</span><span class="p">()],</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">block_coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">block_coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">fill</span><span class="o">=</span><span class="n">block_velocity</span><span class="p">,</span>
+    <span class="n">style</span><span class="o">=</span><span class="s2">&quot;c0.2c&quot;</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">pen</span><span class="o">=</span><span class="s2">&quot;0.5p,black&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="s1">&#39;af+l&quot;vertical velocity [mm/yr]&quot;&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/introduction_9_0.png" src="_images/introduction_9_0.png" />
+</div>
+</div>
+<p>It may not seem like much happened, but if you look closely you’ll see that
+data points that were closer than the spacing were combined into one.</p>
+</section>
+<section id="project-the-data">
+<h2>Project the data<a class="headerlink" href="#project-the-data" title="Link to this heading">#</a></h2>
+<p>In this example, we’ll use Verde’s Cartesian interpolators.
+So we need to project the geographic data we have to Cartesian coordinates
+first.
+We’ll use <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyproj</span></code> to create a projection function and convert our
+longitude and latitude to easting and northing Mercator projection coordinates.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a Mercator projection with latitude of true scale as the data mean</span>
+<span class="n">projection</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span><span class="p">(</span><span class="n">proj</span><span class="o">=</span><span class="s2">&quot;merc&quot;</span><span class="p">,</span> <span class="n">lat_ts</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+
+<span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">projection</span><span class="p">(</span><span class="n">block_coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">block_coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</section>
+<section id="spline-interpolation">
+<h2>Spline interpolation<a class="headerlink" href="#spline-interpolation" title="Link to this heading">#</a></h2>
+<p>Since our data are relatively small (&lt; 10k points), we can use the
+<a class="reference internal" href="api/generated/verde.Spline.html#verde.Spline" title="verde.Spline"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Spline</span></code></a> class for bi-harmonic spline interpolation
+<a class="reference internal" href="references.html#sandwell1987" id="id1"><span>[Sandwell1987]</span></a> to get a smooth surface that best fits the data:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a spline with the default arguments</span>
+<span class="n">spline</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">Spline</span><span class="p">()</span>
+<span class="c1"># Fit the spline to our decimated and projected data</span>
+<span class="n">spline</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">),</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">block_velocity</span><span class="p">,</span>
+    <span class="n">weights</span><span class="o">=</span><span class="n">block_weights</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>#sk-container-id-1 {
+  /* Definition of color scheme common for light and dark mode */
+  --sklearn-color-text: #000;
+  --sklearn-color-text-muted: #666;
+  --sklearn-color-line: gray;
+  /* Definition of color scheme for unfitted estimators */
+  --sklearn-color-unfitted-level-0: #fff5e6;
+  --sklearn-color-unfitted-level-1: #f6e4d2;
+  --sklearn-color-unfitted-level-2: #ffe0b3;
+  --sklearn-color-unfitted-level-3: chocolate;
+  /* Definition of color scheme for fitted estimators */
+  --sklearn-color-fitted-level-0: #f0f8ff;
+  --sklearn-color-fitted-level-1: #d4ebff;
+  --sklearn-color-fitted-level-2: #b3dbfd;
+  --sklearn-color-fitted-level-3: cornflowerblue;
+
+  /* Specific color for light theme */
+  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
+  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-icon: #696969;
+
+  @media (prefers-color-scheme: dark) {
+    /* Redefinition of color scheme for dark theme */
+    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
+    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-icon: #878787;
+  }
+}
+
+#sk-container-id-1 {
+  color: var(--sklearn-color-text);
+}
+
+#sk-container-id-1 pre {
+  padding: 0;
+}
+
+#sk-container-id-1 input.sk-hidden--visually {
+  border: 0;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+#sk-container-id-1 div.sk-dashed-wrapped {
+  border: 1px dashed var(--sklearn-color-line);
+  margin: 0 0.4em 0.5em 0.4em;
+  box-sizing: border-box;
+  padding-bottom: 0.4em;
+  background-color: var(--sklearn-color-background);
+}
+
+#sk-container-id-1 div.sk-container {
+  /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
+     but bootstrap.min.css set `[hidden] { display: none !important; }`
+     so we also need the `!important` here to be able to override the
+     default hidden behavior on the sphinx rendered scikit-learn.org.
+     See: https://github.com/scikit-learn/scikit-learn/issues/21755 */
+  display: inline-block !important;
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-text-repr-fallback {
+  display: none;
+}
+
+div.sk-parallel-item,
+div.sk-serial,
+div.sk-item {
+  /* draw centered vertical line to link estimators */
+  background-image: linear-gradient(var(--sklearn-color-text-on-default-background), var(--sklearn-color-text-on-default-background));
+  background-size: 2px 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+/* Parallel-specific style estimator block */
+
+#sk-container-id-1 div.sk-parallel-item::after {
+  content: "";
+  width: 100%;
+  border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
+  flex-grow: 1;
+}
+
+#sk-container-id-1 div.sk-parallel {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background-color: var(--sklearn-color-background);
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-parallel-item {
+  display: flex;
+  flex-direction: column;
+}
+
+#sk-container-id-1 div.sk-parallel-item:first-child::after {
+  align-self: flex-end;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:last-child::after {
+  align-self: flex-start;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:only-child::after {
+  width: 0;
+}
+
+/* Serial-specific style estimator block */
+
+#sk-container-id-1 div.sk-serial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--sklearn-color-background);
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+
+/* Toggleable style: style used for estimator/Pipeline/ColumnTransformer box that is
+clickable and can be expanded/collapsed.
+- Pipeline and ColumnTransformer use this feature and define the default style
+- Estimators will overwrite some part of the style using the `sk-estimator` class
+*/
+
+/* Pipeline and ColumnTransformer style (default) */
+
+#sk-container-id-1 div.sk-toggleable {
+  /* Default theme specific background. It is overwritten whether we have a
+  specific estimator or a Pipeline/ColumnTransformer */
+  background-color: var(--sklearn-color-background);
+}
+
+/* Toggleable label */
+#sk-container-id-1 label.sk-toggleable__label {
+  cursor: pointer;
+  display: flex;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0.5em;
+  box-sizing: border-box;
+  text-align: center;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.5em;
+}
+
+#sk-container-id-1 label.sk-toggleable__label .caption {
+  font-size: 0.6rem;
+  font-weight: lighter;
+  color: var(--sklearn-color-text-muted);
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:before {
+  /* Arrow on the left of the label */
+  content: "▸";
+  float: left;
+  margin-right: 0.25em;
+  color: var(--sklearn-color-icon);
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {
+  color: var(--sklearn-color-text);
+}
+
+/* Toggleable content - dropdown */
+
+#sk-container-id-1 div.sk-toggleable__content {
+  display: none;
+  text-align: left;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content pre {
+  margin: 0.2em;
+  border-radius: 0.25em;
+  color: var(--sklearn-color-text);
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted pre {
+  /* unfitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+  /* Expand drop-down */
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+  content: "▾";
+}
+
+/* Pipeline/ColumnTransformer-specific style */
+
+#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator-specific style */
+
+/* Colorize estimator box */
+#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label label.sk-toggleable__label,
+#sk-container-id-1 div.sk-label label {
+  /* The background is the default theme color */
+  color: var(--sklearn-color-text-on-default-background);
+}
+
+/* On hover, darken the color of the background */
+#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+/* Label box, darken color on hover, fitted */
+#sk-container-id-1 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator label */
+
+#sk-container-id-1 div.sk-label label {
+  font-family: monospace;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 1.2em;
+}
+
+#sk-container-id-1 div.sk-label-container {
+  text-align: center;
+}
+
+/* Estimator-specific */
+#sk-container-id-1 div.sk-estimator {
+  font-family: monospace;
+  border: 1px dotted var(--sklearn-color-border-box);
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  margin-bottom: 0.5em;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+/* on hover */
+#sk-container-id-1 div.sk-estimator:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Specification for estimator info (e.g. "i" and "?") */
+
+/* Common style for "i" and "?" */
+
+.sk-estimator-doc-link,
+a:link.sk-estimator-doc-link,
+a:visited.sk-estimator-doc-link {
+  float: right;
+  font-size: smaller;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1em;
+  height: 1em;
+  width: 1em;
+  text-decoration: none !important;
+  margin-left: 0.5em;
+  text-align: center;
+  /* unfitted */
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-1);
+}
+
+.sk-estimator-doc-link.fitted,
+a:link.sk-estimator-doc-link.fitted,
+a:visited.sk-estimator-doc-link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+div.sk-estimator:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover,
+div.sk-label-container:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+div.sk-estimator.fitted:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover,
+div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+/* Span, style for the box shown on hovering the info icon */
+.sk-estimator-doc-link span {
+  display: none;
+  z-index: 9999;
+  position: relative;
+  font-weight: normal;
+  right: .2ex;
+  padding: .5ex;
+  margin: .5ex;
+  width: min-content;
+  min-width: 20ex;
+  max-width: 50ex;
+  color: var(--sklearn-color-text);
+  box-shadow: 2pt 2pt 4pt #999;
+  /* unfitted */
+  background: var(--sklearn-color-unfitted-level-0);
+  border: .5pt solid var(--sklearn-color-unfitted-level-3);
+}
+
+.sk-estimator-doc-link.fitted span {
+  /* fitted */
+  background: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3);
+}
+
+.sk-estimator-doc-link:hover span {
+  display: block;
+}
+
+/* "?"-specific style due to the `<a>` HTML tag */
+
+#sk-container-id-1 a.estimator_doc_link {
+  float: right;
+  font-size: 1rem;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1rem;
+  height: 1rem;
+  width: 1rem;
+  text-decoration: none;
+  /* unfitted */
+  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+#sk-container-id-1 a.estimator_doc_link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+}
+
+.estimator-table summary {
+    padding: .5rem;
+    font-family: monospace;
+    cursor: pointer;
+}
+
+.estimator-table details[open] {
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
+    padding-bottom: 0.3rem;
+}
+
+.estimator-table .parameters-table {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.estimator-table .parameters-table tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+.estimator-table .parameters-table tr:nth-child(even) {
+    background-color: #f6f6f6;
+}
+
+.estimator-table .parameters-table tr:hover {
+    background-color: #e0e0e0;
+}
+
+.estimator-table table td {
+    border: 1px solid rgba(106, 105, 104, 0.232);
+}
+
+.user-set td {
+    color:rgb(255, 94, 0);
+    text-align: left;
+}
+
+.user-set td.value pre {
+    color:rgb(255, 94, 0) !important;
+    background-color: transparent !important;
+}
+
+.default td {
+    color: black;
+    text-align: left;
+}
+
+.user-set td i,
+.default td i {
+    color: black;
+}
+
+.copy-paste-icon {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNy4yIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjUgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTIwOCAwTDMzMi4xIDBjMTIuNyAwIDI0LjkgNS4xIDMzLjkgMTQuMWw2Ny45IDY3LjljOSA5IDE0LjEgMjEuMiAxNC4xIDMzLjlMNDQ4IDMzNmMwIDI2LjUtMjEuNSA0OC00OCA0OGwtMTkyIDBjLTI2LjUgMC00OC0yMS41LTQ4LTQ4bDAtMjg4YzAtMjYuNSAyMS41LTQ4IDQ4LTQ4ek00OCAxMjhsODAgMCAwIDY0LTY0IDAgMCAyNTYgMTkyIDAgMC0zMiA2NCAwIDAgNDhjMCAyNi41LTIxLjUgNDgtNDggNDhMNDggNTEyYy0yNi41IDAtNDgtMjEuNS00OC00OEwwIDE3NmMwLTI2LjUgMjEuNS00OCA0OC00OHoiLz48L3N2Zz4=);
+    background-repeat: no-repeat;
+    background-size: 14px 14px;
+    background-position: 0;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Spline()</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Spline</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+        <div class="estimator-table">
+            <details>
+                <summary>Parameters</summary>
+                <table class="parameters-table">
+                  <tbody>
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('damping',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">damping&nbsp;</td>
+            <td class="value">None</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('force_coords',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">force_coords&nbsp;</td>
+            <td class="value">None</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('parallel',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">parallel&nbsp;</td>
+            <td class="value">True</td>
+        </tr>
+
+                  </tbody>
+                </table>
+            </details>
+        </div>
+    </div></div></div></div></div><script>function copyToClipboard(text, element) {
+    // Get the parameter prefix from the closest toggleable content
+    const toggleableContent = element.closest('.sk-toggleable__content');
+    const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+    const fullParamName = paramPrefix ? `${paramPrefix}${text}` : text;
+
+    const originalStyle = element.style;
+    const computedStyle = window.getComputedStyle(element);
+    const originalWidth = computedStyle.width;
+    const originalHTML = element.innerHTML.replace('Copied!', '');
+
+    navigator.clipboard.writeText(fullParamName)
+        .then(() => {
+            element.style.width = originalWidth;
+            element.style.color = 'green';
+            element.innerHTML = "Copied!";
+
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 2000);
+        })
+        .catch(err => {
+            console.error('Failed to copy:', err);
+            element.style.color = 'red';
+            element.innerHTML = "Failed!";
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 2000);
+        });
+    return false;
+}
+
+document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
+    const toggleableContent = element.closest('.sk-toggleable__content');
+    const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+    const paramName = element.parentElement.nextElementSibling.textContent.trim();
+    const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
+
+    element.setAttribute('title', fullParamName);
+});
+</script></body></div></div>
+</div>
+<div class="seealso admonition">
+<p class="admonition-title">Have more than 10k data?</p>
+<p>You may want to use some of our other interpolators instead, like
+<a class="reference internal" href="api/generated/verde.KNeighbors.html#verde.KNeighbors" title="verde.KNeighbors"><code class="xref py py-class docutils literal notranslate"><span class="pre">KNeighbors</span></code></a> or <a class="reference internal" href="api/generated/verde.Cubic.html#verde.Cubic" title="verde.Cubic"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cubic</span></code></a>. The bi-harmonic spline
+is very memory intensive so avoid using it for &gt;10k data unless you have a
+lot of RAM.</p>
+</div>
+<p>Now that we have a fitted spline, we can use it to <strong>make predictions</strong> at any
+location we want using <a class="reference internal" href="api/generated/verde.Spline.html#verde.Spline.predict" title="verde.Spline.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">verde.Spline.predict</span></code></a>.
+For example, we can predict on the original data points to calculate the
+<strong>residuals</strong> and evaluate how well the spline fits our data.
+To do this, we’ll have to project the original coordinates first:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prediction</span> <span class="o">=</span> <span class="n">spline</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">projection</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">))</span>
+<span class="n">residuals</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">velocity_up_mmyr</span> <span class="o">-</span> <span class="n">prediction</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;M15c&quot;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="s2">&quot;af&quot;</span><span class="p">,</span>
+    <span class="n">land</span><span class="o">=</span><span class="s2">&quot;#eeeeee&quot;</span><span class="p">,</span> <span class="n">borders</span><span class="o">=</span><span class="s2">&quot;1/#666666&quot;</span><span class="p">,</span> <span class="n">area_thresh</span><span class="o">=</span><span class="mf">1e4</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">pygmt</span><span class="o">.</span><span class="n">makecpt</span><span class="p">(</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;polar+h&quot;</span><span class="p">,</span> <span class="n">series</span><span class="o">=</span><span class="p">[</span><span class="n">residuals</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">residuals</span><span class="o">.</span><span class="n">max</span><span class="p">()],</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+    <span class="n">fill</span><span class="o">=</span><span class="n">residuals</span><span class="p">,</span>
+    <span class="n">style</span><span class="o">=</span><span class="s2">&quot;c0.2c&quot;</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">pen</span><span class="o">=</span><span class="s2">&quot;0.5p,black&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="s1">&#39;af+l&quot;fit residuals [mm/yr]&quot;&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/introduction_12_0.png" src="_images/introduction_12_0.png" />
+</div>
+</div>
+<p>As you can see by the colorbar, the residuals are quite small meaning that the
+spline fits the decimated data very well.</p>
+</section>
+<section id="generating-a-grid">
+<h2>Generating a grid<a class="headerlink" href="#generating-a-grid" title="Link to this heading">#</a></h2>
+<p>To make a grid using our spline interpolation, we can use
+<a class="reference internal" href="api/generated/verde.Spline.html#verde.Spline.grid" title="verde.Spline.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">verde.Spline.grid</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the spacing between grid nodes in km</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">spline</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="mf">20e3</span><span class="p">)</span>
+<span class="n">grid</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(
+    --jp-content-font-color0,
+    var(--pst-color-text-base rgba(0, 0, 0, 1))
+  );
+  --xr-font-color2: var(
+    --jp-content-font-color2,
+    var(--pst-color-text-base, rgba(0, 0, 0, 0.54))
+  );
+  --xr-font-color3: var(
+    --jp-content-font-color3,
+    var(--pst-color-text-base, rgba(0, 0, 0, 0.38))
+  );
+  --xr-border-color: var(
+    --jp-border-color2,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 10))
+  );
+  --xr-disabled-color: var(
+    --jp-layout-color3,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 40))
+  );
+  --xr-background-color: var(
+    --jp-layout-color0,
+    var(--pst-color-on-background, white)
+  );
+  --xr-background-color-row-even: var(
+    --jp-layout-color1,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 5))
+  );
+  --xr-background-color-row-odd: var(
+    --jp-layout-color2,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 15))
+  );
+}
+
+html[theme="dark"],
+html[data-theme="dark"],
+body[data-theme="dark"],
+body.vscode-dark {
+  --xr-font-color0: var(
+    --jp-content-font-color0,
+    var(--pst-color-text-base, rgba(255, 255, 255, 1))
+  );
+  --xr-font-color2: var(
+    --jp-content-font-color2,
+    var(--pst-color-text-base, rgba(255, 255, 255, 0.54))
+  );
+  --xr-font-color3: var(
+    --jp-content-font-color3,
+    var(--pst-color-text-base, rgba(255, 255, 255, 0.38))
+  );
+  --xr-border-color: var(
+    --jp-border-color2,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 10))
+  );
+  --xr-disabled-color: var(
+    --jp-layout-color3,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 40))
+  );
+  --xr-background-color: var(
+    --jp-layout-color0,
+    var(--pst-color-on-background, #111111)
+  );
+  --xr-background-color-row-even: var(
+    --jp-layout-color1,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 5))
+  );
+  --xr-background-color-row-odd: var(
+    --jp-layout-color2,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 15))
+  );
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: inline-block;
+  opacity: 0;
+  height: 0;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+  border: 2px solid transparent !important;
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:focus + label {
+  border: 2px solid var(--xr-font-color0) !important;
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: "►";
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: "▼";
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: "(";
+}
+
+.xr-dim-list:after {
+  content: ")";
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ",";
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  border-color: var(--xr-background-color-row-odd);
+  margin-bottom: 0;
+  padding-top: 2px;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+  border-color: var(--xr-background-color-row-even);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-index-preview {
+  grid-column: 2 / 5;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  display: none;
+  border-top: 2px dotted var(--xr-background-color);
+  padding-bottom: 20px !important;
+  padding-top: 10px !important;
+}
+
+.xr-var-attrs-in + label,
+.xr-var-data-in + label,
+.xr-index-data-in + label {
+  padding: 0 1px;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data,
+.xr-index-data-in:checked ~ .xr-index-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-data > pre,
+.xr-index-data > pre,
+.xr-var-data > table > tbody > tr {
+  background-color: transparent !important;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-index-name div,
+.xr-index-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2,
+.xr-no-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+.xr-var-attrs-in:checked + label > .xr-icon-file-text2,
+.xr-var-data-in:checked + label > .xr-icon-database,
+.xr-index-data-in:checked + label > .xr-icon-database {
+  color: var(--xr-font-color0);
+  filter: drop-shadow(1px 1px 5px var(--xr-font-color2));
+  stroke-width: 0.8px;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt; Size: 42kB
+Dimensions:   (northing: 61, easting: 83)
+Coordinates:
+  * easting   (easting) float64 664B -3.485e+05 -3.285e+05 ... 1.285e+06
+  * northing  (northing) float64 488B 3.565e+06 3.585e+06 ... 4.758e+06
+Data variables:
+    scalars   (northing, easting) float64 41kB -1.83 -1.795 ... -0.08501 -0.1041
+Attributes:
+    metadata:  Generated by Spline()</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-520e9318-a0b1-4079-a555-09597606d5d1' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-520e9318-a0b1-4079-a555-09597606d5d1' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>northing</span>: 61</li><li><span class='xr-has-index'>easting</span>: 83</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-89935289-9099-469c-8428-85977f67cc5d' class='xr-section-summary-in' type='checkbox'  checked><label for='section-89935289-9099-469c-8428-85977f67cc5d' class='xr-section-summary' >Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>easting</span></div><div class='xr-var-dims'>(easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-3.485e+05 -3.285e+05 ... 1.285e+06</div><input id='attrs-429be717-53ed-45be-83ea-56d7a7d0fdaa' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-429be717-53ed-45be-83ea-56d7a7d0fdaa' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-a2ebe4ba-db05-4c78-ae53-894b354b0359' class='xr-var-data-in' type='checkbox'><label for='data-a2ebe4ba-db05-4c78-ae53-894b354b0359' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([-348462.717042, -328541.207685, -308619.698328, -288698.18897 ,
+       -268776.679613, -248855.170256, -228933.660899, -209012.151542,
+       -189090.642184, -169169.132827, -149247.62347 , -129326.114113,
+       -109404.604756,  -89483.095398,  -69561.586041,  -49640.076684,
+        -29718.567327,   -9797.05797 ,   10124.451388,   30045.960745,
+         49967.470102,   69888.979459,   89810.488816,  109731.998174,
+        129653.507531,  149575.016888,  169496.526245,  189418.035602,
+        209339.54496 ,  229261.054317,  249182.563674,  269104.073031,
+        289025.582388,  308947.091746,  328868.601103,  348790.11046 ,
+        368711.619817,  388633.129174,  408554.638532,  428476.147889,
+        448397.657246,  468319.166603,  488240.67596 ,  508162.185318,
+        528083.694675,  548005.204032,  567926.713389,  587848.222746,
+        607769.732104,  627691.241461,  647612.750818,  667534.260175,
+        687455.769532,  707377.27889 ,  727298.788247,  747220.297604,
+        767141.806961,  787063.316318,  806984.825676,  826906.335033,
+        846827.84439 ,  866749.353747,  886670.863104,  906592.372462,
+        926513.881819,  946435.391176,  966356.900533,  986278.40989 ,
+       1006199.919248, 1026121.428605, 1046042.937962, 1065964.447319,
+       1085885.956677, 1105807.466034, 1125728.975391, 1145650.484748,
+       1165571.994105, 1185493.503463, 1205415.01282 , 1225336.522177,
+       1245258.031534, 1265179.540891, 1285101.050249])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>northing</span></div><div class='xr-var-dims'>(northing)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>3.565e+06 3.585e+06 ... 4.758e+06</div><input id='attrs-0d5a25b5-662d-4e9a-bd71-2bf1bd82eb29' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-0d5a25b5-662d-4e9a-bd71-2bf1bd82eb29' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c9e64017-1e89-4763-aaf4-7f2808dc8cc8' class='xr-var-data-in' type='checkbox'><label for='data-c9e64017-1e89-4763-aaf4-7f2808dc8cc8' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([3565363.347553, 3585245.011304, 3605126.675055, 3625008.338806,
+       3644890.002556, 3664771.666307, 3684653.330058, 3704534.993809,
+       3724416.65756 , 3744298.321311, 3764179.985062, 3784061.648813,
+       3803943.312563, 3823824.976314, 3843706.640065, 3863588.303816,
+       3883469.967567, 3903351.631318, 3923233.295069, 3943114.958819,
+       3962996.62257 , 3982878.286321, 4002759.950072, 4022641.613823,
+       4042523.277574, 4062404.941325, 4082286.605076, 4102168.268826,
+       4122049.932577, 4141931.596328, 4161813.260079, 4181694.92383 ,
+       4201576.587581, 4221458.251332, 4241339.915082, 4261221.578833,
+       4281103.242584, 4300984.906335, 4320866.570086, 4340748.233837,
+       4360629.897588, 4380511.561339, 4400393.225089, 4420274.88884 ,
+       4440156.552591, 4460038.216342, 4479919.880093, 4499801.543844,
+       4519683.207595, 4539564.871345, 4559446.535096, 4579328.198847,
+       4599209.862598, 4619091.526349, 4638973.1901  , 4658854.853851,
+       4678736.517602, 4698618.181352, 4718499.845103, 4738381.508854,
+       4758263.172605])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-a970e22a-48c3-4edb-9a5c-f792ec26ba25' class='xr-section-summary-in' type='checkbox'  checked><label for='section-a970e22a-48c3-4edb-9a5c-f792ec26ba25' class='xr-section-summary' >Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>scalars</span></div><div class='xr-var-dims'>(northing, easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-1.83 -1.795 ... -0.08501 -0.1041</div><input id='attrs-08320ca1-963d-4cf9-851b-a37b34abf5fa' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-08320ca1-963d-4cf9-851b-a37b34abf5fa' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-d0db0036-b044-4d9f-bec4-fbb65c8600ef' class='xr-var-data-in' type='checkbox'><label for='data-d0db0036-b044-4d9f-bec4-fbb65c8600ef' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Spline()</dd></dl></div><div class='xr-var-data'><pre>array([[-1.82977492, -1.79473545, -1.75996041, ...,  0.67762339,
+         0.62565407,  0.58349659],
+       [-1.76738988, -1.73257668, -1.69802946, ...,  0.60077785,
+         0.55053339,  0.5115023 ],
+       [-1.70455805, -1.66998467, -1.63568351, ...,  0.51425903,
+         0.46741859,  0.43315551],
+       ...,
+       [-1.23779357, -1.19141329, -1.14497   , ..., -0.01984241,
+        -0.04407997, -0.06601961],
+       [-1.27124599, -1.22472314, -1.1782028 , ..., -0.04182153,
+        -0.0642371 , -0.08467204],
+       [-1.30437194, -1.25768902, -1.21106622, ..., -0.06417643,
+        -0.08500706, -0.10411131]], shape=(61, 83))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-6f221623-329f-4d20-b142-df184dc0c272' class='xr-section-summary-in' type='checkbox'  ><label for='section-6f221623-329f-4d20-b142-df184dc0c272' class='xr-section-summary' >Indexes: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>easting</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-32af55c6-b427-4061-bd65-ad73e18f632d' class='xr-index-data-in' type='checkbox'/><label for='index-32af55c6-b427-4061-bd65-ad73e18f632d' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([-348462.71704205236,  -328541.2076848502,  -308619.6983276481,
+       -288698.18897044595,  -268776.6796132438, -248855.17025604163,
+        -228933.6608988395, -209012.15154163737, -189090.64218443522,
+       -169169.13282723306, -149247.62347003093,  -129326.1141128288,
+       -109404.60475562664,  -89483.09539842448,  -69561.58604122238,
+        -49640.07668402023,  -29718.56732681807,  -9797.057969615911,
+        10124.451387586247,  30045.960744788346,  49967.470101990504,
+         69888.97945919266,   89810.48881639476,  109731.99817359692,
+        129653.50753079908,  149575.01688800124,   169496.5262452034,
+         189418.0356024055,   209339.5449596076,   229261.0543168098,
+         249182.5636740119,   269104.0730312141,   289025.5823884162,
+         308947.0917456183,  328868.60110282054,  348790.11046002264,
+        368711.61981722486,  388633.12917442695,  408554.63853162905,
+        428476.14788883127,  448397.65724603337,  468319.16660323547,
+         488240.6759604377,   508162.1853176398,   528083.6946748418,
+         548005.2040320442,   567926.7133892463,   587848.2227464484,
+         607769.7321036505,   627691.2414608526,   647612.7508180549,
+          667534.260175257,   687455.7695324591,   707377.2788896612,
+         727298.7882468633,   747220.2976040654,   767141.8069612675,
+         787063.3163184698,   806984.8256756719,    826906.335032874,
+         846827.8443900761,   866749.3537472782,   886670.8631044806,
+         906592.3724616827,   926513.8818188848,   946435.3911760869,
+          966356.900533289,   986278.4098904913,  1006199.9192476934,
+        1026121.4286048955,  1046042.9379620976,  1065964.4473192997,
+         1085885.956676502,   1105807.466033704,  1125728.9753909062,
+        1145650.4847481083,  1165571.9941053104,  1185493.5034625125,
+        1205415.0128197148,   1225336.522176917,   1245258.031534119,
+        1265179.5408913211,  1285101.0502485232],
+      dtype=&#x27;float64&#x27;, name=&#x27;easting&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>northing</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-500dc91f-b00b-481e-9ed1-cb55090cb46e' class='xr-index-data-in' type='checkbox'/><label for='index-500dc91f-b00b-481e-9ed1-cb55090cb46e' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([ 3565363.347552966,  3585245.011303833, 3605126.6750547006,
+        3625008.338805568, 3644890.0025564353, 3664771.6663073027,
+         3684653.33005817, 3704534.9938090374, 3724416.6575599047,
+        3744298.321310772, 3764179.9850616395,  3784061.648812507,
+        3803943.312563374, 3823824.9763142415,  3843706.640065109,
+       3863588.3038159763, 3883469.9675668436,  3903351.631317711,
+       3923233.2950685783, 3943114.9588194457,  3962996.622570313,
+       3982878.2863211804, 4002759.9500720478,  4022641.613822915,
+       4042523.2775737825,   4062404.94132465,  4082286.605075517,
+        4102168.268826385, 4122049.9325772524, 4141931.5963281197,
+        4161813.260078987, 4181694.9238298545,  4201576.587580722,
+        4221458.251331589,  4241339.915082457,  4261221.578833324,
+        4281103.242584191,  4300984.906335059,  4320866.570085926,
+        4340748.233836793,  4360629.897587661,  4380511.561338528,
+        4400393.225089395,  4420274.888840263,   4440156.55259113,
+       4460038.2163419975,  4479919.880092865,  4499801.543843732,
+          4519683.2075946,  4539564.871345467,  4559446.535096334,
+        4579328.198847202,  4599209.862598069,  4619091.526348936,
+        4638973.190099804,  4658854.853850671,  4678736.517601538,
+        4698618.181352406,  4718499.845103273, 4738381.5088541405,
+        4758263.172605008],
+      dtype=&#x27;float64&#x27;, name=&#x27;northing&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-8aee34d2-98ba-42f2-a2f8-c29627d85610' class='xr-section-summary-in' type='checkbox'  checked><label for='section-8aee34d2-98ba-42f2-a2f8-c29627d85610' class='xr-section-summary' >Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Spline()</dd></dl></div></li></ul></div></div></div></div>
+</div>
+<p>The generated grid is an <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> and is <strong>Cartesian by
+default</strong>.
+The grid contains some metadata and default names for the coordinates and data
+variables.
+Plotting the grid with matplotlib is as easy as:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># scalars is the default name Verde gives to data variables</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">scalars</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x7fd917d98ec0&gt;
+</pre></div>
+</div>
+<img alt="_images/introduction_14_1.png" src="_images/introduction_14_1.png" />
+</div>
+</div>
+<p>But it’s not that easy to draw borders and coastlines on top of this Cartesian
+grid.</p>
+<p>To generate a <strong>geographic grid</strong> with longitude and latitude, we can pass in
+the geographic region and the projection used like so:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Spacing in degrees and customize the names of the dimensions and variables</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">spline</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+    <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
+    <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">),</span>
+    <span class="n">data_names</span><span class="o">=</span><span class="s2">&quot;velocity_up&quot;</span><span class="p">,</span>
+    <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>  <span class="c1"># Our projection function from earlier</span>
+<span class="p">)</span>
+<span class="n">grid</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(
+    --jp-content-font-color0,
+    var(--pst-color-text-base rgba(0, 0, 0, 1))
+  );
+  --xr-font-color2: var(
+    --jp-content-font-color2,
+    var(--pst-color-text-base, rgba(0, 0, 0, 0.54))
+  );
+  --xr-font-color3: var(
+    --jp-content-font-color3,
+    var(--pst-color-text-base, rgba(0, 0, 0, 0.38))
+  );
+  --xr-border-color: var(
+    --jp-border-color2,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 10))
+  );
+  --xr-disabled-color: var(
+    --jp-layout-color3,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 40))
+  );
+  --xr-background-color: var(
+    --jp-layout-color0,
+    var(--pst-color-on-background, white)
+  );
+  --xr-background-color-row-even: var(
+    --jp-layout-color1,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 5))
+  );
+  --xr-background-color-row-odd: var(
+    --jp-layout-color2,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 15))
+  );
+}
+
+html[theme="dark"],
+html[data-theme="dark"],
+body[data-theme="dark"],
+body.vscode-dark {
+  --xr-font-color0: var(
+    --jp-content-font-color0,
+    var(--pst-color-text-base, rgba(255, 255, 255, 1))
+  );
+  --xr-font-color2: var(
+    --jp-content-font-color2,
+    var(--pst-color-text-base, rgba(255, 255, 255, 0.54))
+  );
+  --xr-font-color3: var(
+    --jp-content-font-color3,
+    var(--pst-color-text-base, rgba(255, 255, 255, 0.38))
+  );
+  --xr-border-color: var(
+    --jp-border-color2,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 10))
+  );
+  --xr-disabled-color: var(
+    --jp-layout-color3,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 40))
+  );
+  --xr-background-color: var(
+    --jp-layout-color0,
+    var(--pst-color-on-background, #111111)
+  );
+  --xr-background-color-row-even: var(
+    --jp-layout-color1,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 5))
+  );
+  --xr-background-color-row-odd: var(
+    --jp-layout-color2,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 15))
+  );
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: inline-block;
+  opacity: 0;
+  height: 0;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+  border: 2px solid transparent !important;
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:focus + label {
+  border: 2px solid var(--xr-font-color0) !important;
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: "►";
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: "▼";
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: "(";
+}
+
+.xr-dim-list:after {
+  content: ")";
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ",";
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  border-color: var(--xr-background-color-row-odd);
+  margin-bottom: 0;
+  padding-top: 2px;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+  border-color: var(--xr-background-color-row-even);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-index-preview {
+  grid-column: 2 / 5;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  display: none;
+  border-top: 2px dotted var(--xr-background-color);
+  padding-bottom: 20px !important;
+  padding-top: 10px !important;
+}
+
+.xr-var-attrs-in + label,
+.xr-var-data-in + label,
+.xr-index-data-in + label {
+  padding: 0 1px;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data,
+.xr-index-data-in:checked ~ .xr-index-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-data > pre,
+.xr-index-data > pre,
+.xr-var-data > table > tbody > tr {
+  background-color: transparent !important;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-index-name div,
+.xr-index-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2,
+.xr-no-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+.xr-var-attrs-in:checked + label > .xr-icon-file-text2,
+.xr-var-data-in:checked + label > .xr-icon-database,
+.xr-index-data-in:checked + label > .xr-icon-database {
+  color: var(--xr-font-color0);
+  filter: drop-shadow(1px 1px 5px var(--xr-font-color2));
+  stroke-width: 0.8px;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt; Size: 46kB
+Dimensions:      (latitude: 53, longitude: 106)
+Coordinates:
+  * longitude    (longitude) float64 848B -4.497 -4.296 -4.095 ... 16.38 16.58
+  * latitude     (latitude) float64 424B 41.93 42.13 42.33 ... 51.98 52.18 52.38
+Data variables:
+    velocity_up  (latitude, longitude) float64 45kB -1.83 -1.802 ... -0.1041
+Attributes:
+    metadata:  Generated by Spline()</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-bb5cb4a5-263b-4abe-bd76-126c8a8ed0bd' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-bb5cb4a5-263b-4abe-bd76-126c8a8ed0bd' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>latitude</span>: 53</li><li><span class='xr-has-index'>longitude</span>: 106</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-255009fa-2c4d-4ea4-a28b-80513c651bac' class='xr-section-summary-in' type='checkbox'  checked><label for='section-255009fa-2c4d-4ea4-a28b-80513c651bac' class='xr-section-summary' >Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>longitude</span></div><div class='xr-var-dims'>(longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-4.497 -4.296 ... 16.38 16.58</div><input id='attrs-c970a7fb-6614-4435-bc5f-3326ad94c2f7' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-c970a7fb-6614-4435-bc5f-3326ad94c2f7' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c03add6f-223a-4a01-ba41-f024e9372edd' class='xr-var-data-in' type='checkbox'><label for='data-c03add6f-223a-4a01-ba41-f024e9372edd' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([-4.496594, -4.295835, -4.095076, -3.894318, -3.693559, -3.492801,
+       -3.292042, -3.091283, -2.890525, -2.689766, -2.489008, -2.288249,
+       -2.087491, -1.886732, -1.685973, -1.485215, -1.284456, -1.083698,
+       -0.882939, -0.682181, -0.481422, -0.280663, -0.079905,  0.120854,
+        0.321612,  0.522371,  0.723129,  0.923888,  1.124647,  1.325405,
+        1.526164,  1.726922,  1.927681,  2.128439,  2.329198,  2.529957,
+        2.730715,  2.931474,  3.132232,  3.332991,  3.533749,  3.734508,
+        3.935267,  4.136025,  4.336784,  4.537542,  4.738301,  4.939059,
+        5.139818,  5.340577,  5.541335,  5.742094,  5.942852,  6.143611,
+        6.34437 ,  6.545128,  6.745887,  6.946645,  7.147404,  7.348162,
+        7.548921,  7.74968 ,  7.950438,  8.151197,  8.351955,  8.552714,
+        8.753472,  8.954231,  9.15499 ,  9.355748,  9.556507,  9.757265,
+        9.958024, 10.158782, 10.359541, 10.5603  , 10.761058, 10.961817,
+       11.162575, 11.363334, 11.564092, 11.764851, 11.96561 , 12.166368,
+       12.367127, 12.567885, 12.768644, 12.969402, 13.170161, 13.37092 ,
+       13.571678, 13.772437, 13.973195, 14.173954, 14.374712, 14.575471,
+       14.77623 , 14.976988, 15.177747, 15.378505, 15.579264, 15.780023,
+       15.980781, 16.18154 , 16.382298, 16.583057])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>latitude</span></div><div class='xr-var-dims'>(latitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>41.93 42.13 42.33 ... 52.18 52.38</div><input id='attrs-0081d45b-3dc4-4979-a9bb-4cdd4edc0cae' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-0081d45b-3dc4-4979-a9bb-4cdd4edc0cae' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-30f3c9b5-7747-4494-9cd0-a44791dfb912' class='xr-var-data-in' type='checkbox'><label for='data-30f3c9b5-7747-4494-9cd0-a44791dfb912' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([41.927458, 42.128455, 42.329452, 42.530449, 42.731446, 42.932443,
+       43.13344 , 43.334437, 43.535433, 43.73643 , 43.937427, 44.138424,
+       44.339421, 44.540418, 44.741415, 44.942412, 45.143409, 45.344406,
+       45.545403, 45.7464  , 45.947397, 46.148393, 46.34939 , 46.550387,
+       46.751384, 46.952381, 47.153378, 47.354375, 47.555372, 47.756369,
+       47.957366, 48.158363, 48.35936 , 48.560357, 48.761353, 48.96235 ,
+       49.163347, 49.364344, 49.565341, 49.766338, 49.967335, 50.168332,
+       50.369329, 50.570326, 50.771323, 50.97232 , 51.173317, 51.374313,
+       51.57531 , 51.776307, 51.977304, 52.178301, 52.379298])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-dd812baa-bb23-4272-8fe5-cb226913d810' class='xr-section-summary-in' type='checkbox'  checked><label for='section-dd812baa-bb23-4272-8fe5-cb226913d810' class='xr-section-summary' >Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>velocity_up</span></div><div class='xr-var-dims'>(latitude, longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-1.83 -1.802 ... -0.08935 -0.1041</div><input id='attrs-bf1112c6-14af-49c6-8223-2e847e34bc03' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-bf1112c6-14af-49c6-8223-2e847e34bc03' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-5909dd4a-7717-45fe-9641-27c99a51c677' class='xr-var-data-in' type='checkbox'><label for='data-5909dd4a-7717-45fe-9641-27c99a51c677' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Spline()</dd></dl></div><div class='xr-var-data'><pre>array([[-1.82977492, -1.80238182, -1.77517444, ...,  0.65364321,
+         0.61558604,  0.58349659],
+       [-1.76420933, -1.73700141, -1.70998255, ...,  0.57324158,
+         0.53704499,  0.5076676 ],
+       [-1.69793936, -1.67092877, -1.64411414, ...,  0.48270895,
+         0.44984394,  0.42461284],
+       ...,
+       [-1.21927433, -1.18311497, -1.14690301, ..., -0.01953255,
+        -0.03868206, -0.05628033],
+       [-1.26200488, -1.22570422, -1.18940215, ..., -0.04593886,
+        -0.0633128 , -0.07940249],
+       [-1.30437194, -1.26790805, -1.2314868 , ..., -0.07350369,
+        -0.08934526, -0.10411131]], shape=(53, 106))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-7fbaae53-3fd0-4d41-9ce1-c8f191782cf4' class='xr-section-summary-in' type='checkbox'  ><label for='section-7fbaae53-3fd0-4d41-9ce1-c8f191782cf4' class='xr-section-summary' >Indexes: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>longitude</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-aa295e0b-de72-4ea1-9b26-673911e1df6f' class='xr-index-data-in' type='checkbox'/><label for='index-aa295e0b-de72-4ea1-9b26-673911e1df6f' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([         -4.4965935,  -4.295834925714286,  -4.095076351428572,
+       -3.8943177771428577,  -3.693559202857143,  -3.492800628571429,
+        -3.292042054285715, -3.0912834800000004,  -2.890524905714286,
+        -2.689766331428572,
+       ...
+         14.77622963142857,  14.976988205714285,         15.17774678,
+        15.378505354285714,  15.579263928571429,  15.780022502857143,
+        15.980781077142858,  16.181539651428572,  16.382298225714287,
+                16.5830568],
+      dtype=&#x27;float64&#x27;, name=&#x27;longitude&#x27;, length=106))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>latitude</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-8edbc4f2-a964-4726-80ef-904200426904' class='xr-index-data-in' type='checkbox'/><label for='index-8edbc4f2-a964-4726-80ef-904200426904' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([        41.9274581, 42.128455023076924, 42.329451946153846,
+       42.530448869230774, 42.731445792307696,  42.93244271538462,
+        43.13343963846154,  43.33443656153846,  43.53543348461539,
+        43.73643040769231,  43.93742733076923,  44.13842425384615,
+        44.33942117692308, 44.540418100000004, 44.741415023076925,
+        44.94241194615385,  45.14340886923077,   45.3444057923077,
+        45.54540271538462,  45.74639963846154,  45.94739656153846,
+        46.14839348461538,  46.34939040769231,  46.55038733076923,
+       46.751384253846155, 46.952381176923076,         47.1533781,
+       47.354375023076926,  47.55537194615385,  47.75636886923077,
+        47.95736579230769,  48.15836271538461,  48.35935963846154,
+        48.56035656153846, 48.761353484615384, 48.962350407692306,
+       49.163347330769234, 49.364344253846156,  49.56534117692308,
+               49.7663381,  49.96733502307693,  50.16833194615385,
+        50.36932886923077,  50.57032579230769,  50.77132271538461,
+        50.97231963846154,  51.17331656153846, 51.374313484615385,
+        51.57531040769231,  51.77630733076923,  51.97730425384616,
+        52.17830117692308,         52.3792981],
+      dtype=&#x27;float64&#x27;, name=&#x27;latitude&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-d7c119cd-deff-450a-aefb-e3acf11f5ad8' class='xr-section-summary-in' type='checkbox'  checked><label for='section-d7c119cd-deff-450a-aefb-e3acf11f5ad8' class='xr-section-summary' >Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Spline()</dd></dl></div></li></ul></div></div></div></div>
+</div>
+<p>Plotting a geographic grid is easier done with PyGMT so we can add coastlines
+and country borders:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">grdimage</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">velocity_up</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;polar+h&quot;</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;M15c&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span>
+    <span class="n">frame</span><span class="o">=</span><span class="s2">&quot;af&quot;</span><span class="p">,</span> <span class="n">shorelines</span><span class="o">=</span><span class="s2">&quot;#333333&quot;</span><span class="p">,</span> <span class="n">borders</span><span class="o">=</span><span class="s2">&quot;1/#666666&quot;</span><span class="p">,</span> <span class="n">area_thresh</span><span class="o">=</span><span class="mf">1e4</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="s1">&#39;af+l&quot;vertical velocity [mm/yr]&quot;&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+    <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;#333333&quot;</span><span class="p">,</span>
+    <span class="n">style</span><span class="o">=</span><span class="s2">&quot;c0.1c&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/introduction_16_0.png" src="_images/introduction_16_0.png" />
+</div>
+</div>
+<div class="hint admonition">
+<p class="admonition-title">Did you notice?</p>
+<p>The <a class="reference internal" href="api/generated/verde.Spline.html#verde.Spline" title="verde.Spline"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Spline</span></code></a> was fitted only once on the input that and we then
+used it to generate 3 separate interpolations. In general, fitting is the
+most time-consuming part for bi-harmonic splines.</p>
+</div>
+</section>
+<section id="extracting-a-profile">
+<h2>Extracting a profile<a class="headerlink" href="#extracting-a-profile" title="Link to this heading">#</a></h2>
+<p>Once we have a fitted spline, we can also use it to predict data along a
+profile with the <a class="reference internal" href="api/generated/verde.Spline.html#verde.Spline.profile" title="verde.Spline.profile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">verde.Spline.profile</span></code></a> method. For example, let’s
+extract a profile that cuts across the Alps:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">profile</span> <span class="o">=</span> <span class="n">spline</span><span class="o">.</span><span class="n">profile</span><span class="p">(</span>
+    <span class="n">point1</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">51</span><span class="p">),</span>  <span class="c1"># longitude, latitude of a point</span>
+    <span class="n">point2</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">42</span><span class="p">),</span>
+    <span class="n">size</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>  <span class="c1"># number of points</span>
+    <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">),</span>
+    <span class="n">data_names</span><span class="o">=</span><span class="s2">&quot;velocity_up_mmyr&quot;</span><span class="p">,</span>
+    <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">profile</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>distance</th>
+      <th>velocity_up_mmyr</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>51.000000</td>
+      <td>4.000000</td>
+      <td>0.000000e+00</td>
+      <td>-0.126214</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>50.958517</td>
+      <td>4.035176</td>
+      <td>5.776034e+03</td>
+      <td>-0.124948</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>50.916997</td>
+      <td>4.070352</td>
+      <td>1.155207e+04</td>
+      <td>-0.123690</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>50.875440</td>
+      <td>4.105528</td>
+      <td>1.732810e+04</td>
+      <td>-0.122425</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>50.833845</td>
+      <td>4.140704</td>
+      <td>2.310414e+04</td>
+      <td>-0.121140</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>195</th>
+      <td>42.195756</td>
+      <td>10.859296</td>
+      <td>1.126327e+06</td>
+      <td>0.652267</td>
+    </tr>
+    <tr>
+      <th>196</th>
+      <td>42.146874</td>
+      <td>10.894472</td>
+      <td>1.132103e+06</td>
+      <td>0.668127</td>
+    </tr>
+    <tr>
+      <th>197</th>
+      <td>42.097954</td>
+      <td>10.929648</td>
+      <td>1.137879e+06</td>
+      <td>0.684209</td>
+    </tr>
+    <tr>
+      <th>198</th>
+      <td>42.048996</td>
+      <td>10.964824</td>
+      <td>1.143655e+06</td>
+      <td>0.700388</td>
+    </tr>
+    <tr>
+      <th>199</th>
+      <td>42.000000</td>
+      <td>11.000000</td>
+      <td>1.149431e+06</td>
+      <td>0.716551</td>
+    </tr>
+  </tbody>
+</table>
+<p>200 rows × 4 columns</p>
+</div></div></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We passed in a <strong>projection</strong> because our spline is Cartesian but we want to
+generate a profile between 2 points specified with geographic coordinates.
+The resulting points will be evenly spaced in the projected coordinates.</p>
+</div>
+<p>The result is a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> with the coordinates, distance along
+the profile, and interpolated data values.
+Let’s plot the location of the profile on our map:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">grdimage</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">velocity_up</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;polar+h&quot;</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;M15c&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span>
+    <span class="n">frame</span><span class="o">=</span><span class="s2">&quot;af&quot;</span><span class="p">,</span> <span class="n">shorelines</span><span class="o">=</span><span class="s2">&quot;#333333&quot;</span><span class="p">,</span> <span class="n">borders</span><span class="o">=</span><span class="s2">&quot;1/#666666&quot;</span><span class="p">,</span> <span class="n">area_thresh</span><span class="o">=</span><span class="mf">1e4</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="s1">&#39;af+l&quot;vertical velocity [mm/yr]&quot;&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+    <span class="n">pen</span><span class="o">=</span><span class="s2">&quot;2p,#333333&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/introduction_18_0.png" src="_images/introduction_18_0.png" />
+</div>
+</div>
+<p>Finally, we can plot the profile data using <a class="reference external" href="https://matplotlib.org/stable/index.html#module-matplotlib" title="(in Matplotlib v3.10.3)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code></a>:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">velocity_up_mmyr</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Vertical GPS/GNSS velocity across the Alps&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Distance along North-South profile (m)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;velocity (mm/yr)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">distance</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">profile</span><span class="o">.</span><span class="n">distance</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/introduction_19_0.png" src="_images/introduction_19_0.png" />
+</div>
+</div>
+</section>
+<section id="wrapping-up">
+<h2>Wrapping up<a class="headerlink" href="#wrapping-up" title="Link to this heading">#</a></h2>
+<p>This covers the basics of using Verde. Most use cases will involve some
+variation of the following workflow:</p>
+<ol class="arabic simple">
+<li><p>Load data (coordinates and data values)</p></li>
+<li><p>Create a gridder</p></li>
+<li><p>Fit the gridder to the data</p></li>
+<li><p>Predict new values (using <a class="reference internal" href="api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.predict" title="verde.base.BaseGridder.predict"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict</span></code></a>,
+<a class="reference internal" href="api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.grid" title="verde.base.BaseGridder.grid"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grid</span></code></a>, or
+<a class="reference internal" href="api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.profile" title="verde.base.BaseGridder.profile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">profile</span></code></a>)</p></li>
+</ol>
+<p><strong>Now go explore the rest of the documentation and try out Verde on your own
+data!</strong></p>
+<div class="seealso admonition">
+<p class="admonition-title">Questions or comments?</p>
+<p>Reach out to us through one of our <a class="reference external" href="https://www.fatiando.org/contact/">communication channels</a>! We love hearing from users and are
+always looking for more people to get involved with developing Verde.</p>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="install.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Installing</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="tutorial/first-grid.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Making your first grid</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-library">The library</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-some-sample-data">Loading some sample data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decimate-the-data">Decimate the data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-the-data">Project the data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spline-interpolation">Spline interpolation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-a-grid">Generating a grid</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-a-profile">Extracting a profile</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wrapping-up">Wrapping up</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2017-2025, The Verde Developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Jun 12, 2025.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -142,7 +142,7 @@ projected prior to interpolation.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.183 seconds)
+   **Total running time of the script:** (0 minutes 3.019 seconds)
 
 
 .. _sphx_glr_download_gallery_kneighbors_gridder.py:

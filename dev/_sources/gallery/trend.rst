@@ -148,7 +148,7 @@ temperature dataset (:func:`verde.datasets.fetch_texas_wind`).
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.393 seconds)
+   **Total running time of the script:** (0 minutes 0.341 seconds)
 
 
 .. _sphx_glr_download_gallery_trend.py:

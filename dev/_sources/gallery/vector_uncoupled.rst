@@ -52,15 +52,15 @@ pipeline.
 
     [5 rows x 6 columns]
     Chain(steps=[('mean',
-                  BlockReduce(reduction=<function mean at 0x7f06dfd6cc30>,
+                  BlockReduce(reduction=<function mean at 0x7f747ed4b8b0>,
                               spacing=37000.0)),
                  ('trend', Vector(components=[Trend(degree=1), Trend(degree=1)])),
                  ('spline',
                   Vector(components=[Spline(damping=1e-10, mindist=0),
                                      Spline(damping=1e-10, mindist=0)]))])
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:179: FutureWarning: The provided callable <function mean at 0x7f06dfd68f40> is currently using DataFrameGroupBy.mean. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "mean" instead.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:179: FutureWarning: The provided callable <function mean at 0x7f747ed50900> is currently using DataFrameGroupBy.mean. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "mean" instead.
       blocked = pd.DataFrame(columns).groupby("block").aggregate(reduction)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:236: FutureWarning: The provided callable <function mean at 0x7f06dfd68f40> is currently using DataFrameGroupBy.mean. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "mean" instead.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:236: FutureWarning: The provided callable <function mean at 0x7f747ed50900> is currently using DataFrameGroupBy.mean. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "mean" instead.
       grouped = table.groupby("block").aggregate(self.reduction)
     /home/runner/work/verde/verde/doc/gallery_src/vector_uncoupled.py:68: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = chain.score(*test)
@@ -172,7 +172,7 @@ pipeline.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.190 seconds)
+   **Total running time of the script:** (0 minutes 0.181 seconds)
 
 
 .. _sphx_glr_download_gallery_vector_uncoupled.py:

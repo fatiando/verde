@@ -1,0 +1,707 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    
+        <title>verde.cross_val_score | Verde v1.8.1.post42</title>
+    
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=504d3d5d" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/thebelab-helper.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/verde.cross_val_score';</script>
+    <link rel="icon" href="../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="verde.BlockShuffleSplit" href="verde.BlockShuffleSplit.html" />
+    <link rel="prev" title="verde.train_test_split" href="verde.train_test_split.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Verde <span class="project-version">v1.8.1.post42</span></p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">A taste of Verde</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/first-grid.html">Making your first grid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/geographic.html">Interpolation in geographic coordinates</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">List of functions and classes (API)</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="verde.Spline.html">verde.Spline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.SplineCV.html">verde.SplineCV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.KNeighbors.html">verde.KNeighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.Linear.html">verde.Linear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.Cubic.html">verde.Cubic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.VectorSpline2D.html">verde.VectorSpline2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.BlockReduce.html">verde.BlockReduce</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.BlockMean.html">verde.BlockMean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.Trend.html">verde.Trend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.Vector.html">verde.Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.train_test_split.html">verde.train_test_split</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">verde.cross_val_score</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.BlockShuffleSplit.html">verde.BlockShuffleSplit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.BlockKFold.html">verde.BlockKFold</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.grid_coordinates.html">verde.grid_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.scatter_points.html">verde.scatter_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.profile_coordinates.html">verde.profile_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.get_region.html">verde.get_region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.pad_region.html">verde.pad_region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.inside.html">verde.inside</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.rolling_window.html">verde.rolling_window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.expanding_window.html">verde.expanding_window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.project_region.html">verde.project_region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.project_grid.html">verde.project_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.distance_mask.html">verde.distance_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.convexhull_mask.html">verde.convexhull_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.maxabs.html">verde.maxabs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.variance_to_weights.html">verde.variance_to_weights</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.grid_to_table.html">verde.grid_to_table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.make_xarray_grid.html">verde.make_xarray_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.median_distance.html">verde.median_distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.load_surfer.html">verde.load_surfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.synthetic.CheckerBoard.html">verde.synthetic.CheckerBoard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.base.BaseGridder.html">verde.base.BaseGridder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.base.BaseBlockCrossValidator.html">verde.base.BaseBlockCrossValidator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.base.n_1d_arrays.html">verde.base.n_1d_arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.base.least_squares.html">verde.base.least_squares</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../conventions.html">Definitions and conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing Verde</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../compatibility.html">Version compatibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../versions.html">Documentation for other versions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact/">Join the community</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fatiando/verde" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/verde/edit/main/doc/api/generated/verde.cross_val_score.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/verde/issues/new?title=Issue%20on%20page%20%2Fapi/generated/verde.cross_val_score.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/api/generated/verde.cross_val_score.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>verde.cross_val_score</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verde.cross_val_score"><code class="docutils literal notranslate"><span class="pre">cross_val_score</span></code></a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="verde-cross-val-score">
+<h1>verde.cross_val_score<a class="headerlink" href="#verde-cross-val-score" title="Link to this heading">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="verde.cross_val_score">
+<span class="sig-prename descclassname"><span class="pre">verde.</span></span><span class="sig-name descname"><span class="pre">cross_val_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">estimator</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delayed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scoring</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/model_selection.html#cross_val_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#verde.cross_val_score" title="Link to this definition">#</a></dt>
+<dd><p>Score an estimator/gridder using cross-validation.</p>
+<p>Similar to <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="(in scikit-learn v1.7)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.model_selection.cross_val_score</span></code></a> but modified to
+accept spatial multi-component data with weights.</p>
+<p>By default, will use <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html#sklearn.model_selection.KFold" title="(in scikit-learn v1.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.KFold</span></code></a> with
+<code class="docutils literal notranslate"><span class="pre">n_splits=5</span></code> and <code class="docutils literal notranslate"><span class="pre">random_state=0</span></code> to split the dataset. Any other
+cross-validation class from scikit-learn or Verde can be passed in through
+the <em>cv</em> argument.</p>
+<p>The score is calculated using the estimator/gridder’s <code class="docutils literal notranslate"><span class="pre">.score</span></code> method by
+default. Alternatively, use the <em>scoring</em> parameter to specify a different
+scoring function (e.g., mean square error, mean absolute error, etc).</p>
+<p>Can optionally run in parallel using <code class="xref py py-mod docutils literal notranslate"><span class="pre">dask</span></code>. To do this, use
+<code class="docutils literal notranslate"><span class="pre">delayed=True</span></code> to dispatch computations with <a class="reference external" href="https://docs.dask.org/en/latest/delayed-api.html#dask.delayed.delayed" title="(in Dask)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dask.delayed.delayed</span></code></a>
+instead of running them. The returned scores will be “lazy” objects instead
+of the actual scores. To trigger the computation (which Dask will run in
+parallel) call the <cite>.compute()</cite> method of each score or
+<a class="reference external" href="https://docs.dask.org/en/latest/api.html#dask.compute" title="(in Dask)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dask.compute</span></code></a> with the entire list of scores.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>estimator</strong><span class="classifier"><a class="reference internal" href="../index.html#module-verde" title="verde"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verde</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">gridder</span></code></span></dt><dd><p>Any verde gridder class that has the <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">score</span></code> methods.</p>
+</dd>
+<dt><strong>coordinates</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">of</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">arrays</span></code></span></dt><dd><p>Arrays with the coordinates of each data point. Should be in the
+following order: (easting, northing, vertical, …).</p>
+</dd>
+<dt><strong>data</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">of</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">arrays</span></code></span></dt><dd><p>the data values of each data point. If the data has more than one
+component, <em>data</em> must be a tuple of arrays (one for each component).</p>
+</dd>
+<dt><strong>weights</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">none</span></code> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">of</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">arrays</span></code></span></dt><dd><p>if not none, then the weights assigned to each data point. If more than
+one data component is provided, you must provide a weights array for
+each data component (if not none).</p>
+</dd>
+<dt><strong>cv</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a> or cross-validation <a class="reference external" href="https://docs.python.org/3/glossary.html#term-generator" title="(in Python v3.13)"><span>generator</span></a></span></dt><dd><p>Any scikit-learn or Verde cross-validation generator. Defaults to
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html#sklearn.model_selection.KFold" title="(in scikit-learn v1.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.KFold</span></code></a>.</p>
+</dd>
+<dt><strong>delayed</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a></span></dt><dd><p>If True, will use <a class="reference external" href="https://docs.dask.org/en/latest/delayed-api.html#dask.delayed.delayed" title="(in Dask)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dask.delayed.delayed</span></code></a> to dispatch computations
+without actually executing them. The returned scores will be a list of
+delayed objects. Call <cite>.compute()</cite> on each score or
+<a class="reference external" href="https://docs.dask.org/en/latest/api.html#dask.compute" title="(in Dask)"><code class="xref py py-func docutils literal notranslate"><span class="pre">dask.compute</span></code></a> on the entire list to trigger the actual
+computations.</p>
+</dd>
+<dt><strong>scoring</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">callable</span></code></a></span></dt><dd><p>A scoring function (or name of a function) known to scikit-learn. See
+the description of <em>scoring</em> in
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score" title="(in scikit-learn v1.7)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.model_selection.cross_val_score</span></code></a> for details. If None,
+will fall back to the estimator’s <code class="docutils literal notranslate"><span class="pre">.score</span></code> method.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>scores</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a></span></dt><dd><p>Array of scores for each split of the cross-validation generator. If
+<em>delayed</em>, will be a list of Dask delayed objects (see the <em>delayed</em>
+option).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="verde.train_test_split.html#verde.train_test_split" title="verde.train_test_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">train_test_split</span></code></a></dt><dd><p>Split a dataset into a training and a testing set.</p>
+</dd>
+<dt><a class="reference internal" href="verde.BlockShuffleSplit.html#verde.BlockShuffleSplit" title="verde.BlockShuffleSplit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BlockShuffleSplit</span></code></a></dt><dd><p>Random permutation of spatial blocks cross-validator.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<p>As an example, we can score <a class="reference internal" href="verde.Trend.html#verde.Trend" title="verde.Trend"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.Trend</span></code></a> on data that actually
+follows a linear trend.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">verde</span><span class="w"> </span><span class="kn">import</span> <span class="n">grid_coordinates</span><span class="p">,</span> <span class="n">Trend</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coords</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">),</span> <span class="n">spacing</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">-</span> <span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">Trend</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this case, the model should perfectly predict the data and R² scores
+should be equal to 1.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">scores</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">score</span><span class="p">)</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">]))</span>
+<span class="go">1.00, 1.00, 1.00, 1.00, 1.00</span>
+</pre></div>
+</div>
+<p>There are 5 scores because the default cross-validator is
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html#sklearn.model_selection.KFold" title="(in scikit-learn v1.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.KFold</span></code></a> with <code class="docutils literal notranslate"><span class="pre">n_splits=5</span></code>.</p>
+<p>To calculate the score with a different metric, use the <em>scoring</em> argument:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">scores</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">model</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;neg_mean_squared_error&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">-</span><span class="n">score</span><span class="p">)</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">]))</span>
+<span class="go">0.00, 0.00, 0.00, 0.00, 0.00</span>
+</pre></div>
+</div>
+<p>In this case, we calculated the (negative) mean squared error (MSE) which
+measures the distance between test data and predictions. This way, 0 is the
+best possible value meaning that the data and prediction are the same. The
+“neg” part indicates that this is the negative mean square error. This is
+required because scikit-learn assumes that higher scores are always treated
+as better (which is the opposite for MSE). For display, we take the
+negative of the score to get the actual MSE.</p>
+<p>We can use different cross-validators by assigning them to the <code class="docutils literal notranslate"><span class="pre">cv</span></code>
+argument:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">ShuffleSplit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Set the random state to get reproducible results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cross_validator</span> <span class="o">=</span> <span class="n">ShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scores</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cross_validator</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">score</span><span class="p">)</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">]))</span>
+<span class="go">1.00, 1.00, 1.00</span>
+</pre></div>
+</div>
+<p>Often, spatial data are autocorrelated (points that are close together are
+more likely to have similar values), which can cause cross-validation with
+random splits to overestimate the prediction accuracy <a class="reference internal" href="../../references.html#roberts-etal2017" id="id1"><span>[Roberts_etal2017]</span></a>.
+To account for the autocorrelation, we can split the data in blocks rather
+than randomly with <a class="reference internal" href="verde.BlockShuffleSplit.html#verde.BlockShuffleSplit" title="verde.BlockShuffleSplit"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.BlockShuffleSplit</span></code></a>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">verde</span><span class="w"> </span><span class="kn">import</span> <span class="n">BlockShuffleSplit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># spacing controls the size of the spatial blocks</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cross_validator</span> <span class="o">=</span> <span class="n">BlockShuffleSplit</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">block_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scores</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cross_validator</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">score</span><span class="p">)</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">]))</span>
+<span class="go">1.00, 1.00, 1.00</span>
+</pre></div>
+</div>
+<p>We didn’t see a difference here since our model and data are perfect. See
+<a class="reference external" href="https://scikit-learn.org/stable/modules/model_evaluation.html#model-evaluation" title="(in scikit-learn v1.7)"><span>Metrics and scoring: quantifying the quality of predictions</span></a> for an example with real data.</p>
+<p>If using many splits, we can speed up computations by running them in
+parallel with Dask:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cross_validator</span> <span class="o">=</span> <span class="n">ShuffleSplit</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scores_delayed</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">model</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cross_validator</span><span class="p">,</span> <span class="n">delayed</span><span class="o">=</span><span class="kc">True</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># The scores are delayed objects.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># To actually run the computations, call dask.compute</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">dask</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scores</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="o">*</span><span class="n">scores_delayed</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">score</span><span class="p">)</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">]))</span>
+<span class="go">1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00</span>
+</pre></div>
+</div>
+<p>Note that you must have enough RAM to fit multiple models simultaneously.
+So this is best used when fitting several smaller models.</p>
+</dd></dl>
+
+<div style='clear:both'></div></section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="verde.train_test_split.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">verde.train_test_split</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="verde.BlockShuffleSplit.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">verde.BlockShuffleSplit</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verde.cross_val_score"><code class="docutils literal notranslate"><span class="pre">cross_val_score</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2017-2025, The Verde Developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Jun 12, 2025.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
