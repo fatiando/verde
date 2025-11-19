@@ -23,6 +23,7 @@ from ..utils import (
     grid_to_table,
     kdtree,
     make_xarray_grid,
+    maxabs,
     meshgrid_from_1d,
     meshgrid_to_1d,
     parse_engine,
@@ -334,3 +335,12 @@ def test_check_ndim_easting_northing():
     northing = np.linspace(-5, 5, 16).reshape(4, 4)
     with pytest.raises(ValueError):
         get_ndim_horizontal_coords(easting, northing)
+
+
+def test_maxabs_nans():
+    """
+    Test maxabs handles nans correctly
+    """
+    assert float(maxabs((0, 100, 1, 2, np.nan))) == 100
+    assert float(maxabs((np.nan, -3.2, -1, -2, 3.1))) == 3.2
+    assert np.isnan(maxabs((np.nan, -3, -1, 3), nan=False))
