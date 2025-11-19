@@ -344,3 +344,25 @@ def test_maxabs_nans():
     assert float(maxabs((0, 100, 1, 2, np.nan))) == 100
     assert float(maxabs((np.nan, -3.2, -1, -2, 3.1))) == 3.2
     assert np.isnan(maxabs((np.nan, -3, -1, 3), nan=False))
+
+
+def test_maxabs_percentile():
+    """
+    Test maxabs with percentile option
+    """
+    data = np.arange(1, 101)
+    assert float(maxabs(data, percentile=100)) == 100
+    assert pytest.approx(float(maxabs(data, percentile=90)), 0.1) == 90
+    assert pytest.approx(float(maxabs(data, percentile=50)), 0.1) == 50
+
+    # with nans
+    data_with_nans = np.append(data, np.nan)
+    assert float(maxabs(data_with_nans, percentile=100)) == 100
+    assert pytest.approx(float(maxabs(data_with_nans, percentile=90)), 0.1) == 90
+    assert pytest.approx(float(maxabs(data_with_nans, percentile=50)), 0.1) == 50
+
+    assert (
+        pytest.approx(float(maxabs(data_with_nans, percentile=90, nan=True)), 0.1) == 90
+    )
+
+    assert np.isnan(float(maxabs(data_with_nans, percentile=90, nan=False)))
