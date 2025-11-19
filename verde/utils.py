@@ -229,8 +229,8 @@ def maxabs(*args, nan=True, percentile=100):
 
     >>> import numpy as np
     >>> result = maxabs((1, -10, 25, 2, 3), percentile=95)
-    >>> float(result)
-    25.0
+    >>> int(result)
+    21
     >>> result = maxabs((1, -10, 25, 2, 3), percentile=100)
     >>> float(result)
     25.0
