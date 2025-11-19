@@ -187,6 +187,9 @@ def maxabs(*args, nan=True):
     args
         One or more arrays. If more than one are given, a single maximum will
         be calculated across all arrays.
+    nan : bool
+        If True, will use the ``nan`` version of numpy functions to ignore
+        NaNs.
 
     Returns
     -------
