@@ -279,7 +279,7 @@ def minmax(*args, nan=True, percentile=(0, 100)):
     the values at given percentiles instead of the minimum and maximum.
 
     >>> import numpy as np
-    >>> result = minmax((1, -10, 25, 2, 3), percentile=95)
+    >>> result = minmax((1, -10, 25, 2, 3), percentile=[2, 98])
     >>> tuple(map(float, result))
     (-9.12, 23.24)
     >>> result = minmax((1, -10, 25, 2, 3), percentile=[0, 100])
