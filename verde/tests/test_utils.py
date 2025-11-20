@@ -351,17 +351,17 @@ def test_minmax_percentile():
     Test minmax with percentile option
     """
     # test generic functionality
-    data = np.arange(1, 101)
+    data = np.arange(0, 101)
 
     result = tuple(map(float, minmax(data, percentile=(0, 100))))
-    assert result == (1, 100)
+    assert result == (0, 100)
     result = tuple(map(float, minmax(data, percentile=(10, 90))))
     assert pytest.approx(result, 0.1) == (10, 90)
 
     # test with nans
     data_with_nans = np.append(data, np.nan)
     result = tuple(map(float, minmax(data_with_nans, percentile=(0, 100))))
-    assert result == (1, 100)
+    assert result == (0, 100)
     result = tuple(map(float, minmax(data_with_nans, percentile=(10, 90))))
     assert pytest.approx(result, 0.1) == (10, 90)
     result = tuple(map(float, minmax(data_with_nans, percentile=(10, 90), nan=True)))
