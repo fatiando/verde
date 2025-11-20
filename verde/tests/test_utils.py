@@ -25,6 +25,7 @@ from ..utils import (
     make_xarray_grid,
     meshgrid_from_1d,
     meshgrid_to_1d,
+    minmax,
     parse_engine,
     partition_by_sum,
 )
@@ -334,3 +335,72 @@ def test_check_ndim_easting_northing():
     northing = np.linspace(-5, 5, 16).reshape(4, 4)
     with pytest.raises(ValueError):
         get_ndim_horizontal_coords(easting, northing)
+
+
+def test_minmax_nans():
+    """
+    Test minmax handles nans correctly
+    """
+    assert tuple(map(float, minmax((-1, 100, 1, 2, np.nan)))) == (-1, 100)
+    assert tuple(map(float, minmax((np.nan, -3.2, -1, -2, 3.1)))) == (-3.2, 3.1)
+    assert np.all(np.isnan(minmax((np.nan, -3, -1, 3), nan=False)))
+
+
+def test_minmax_percentile():
+    """
+    Test minmax with percentile option
+    """
+    # test generic functionality
+    data = np.arange(1, 101)
+
+    result = tuple(map(float, minmax(data, percentile=(0, 100))))
+    assert result == (1, 100)
+    result = tuple(map(float, minmax(data, percentile=(10, 90))))
+    assert pytest.approx(result, 0.1) == (10, 90)
+
+    # test with nans
+    data_with_nans = np.append(data, np.nan)
+    result = tuple(map(float, minmax(data_with_nans, percentile=(0, 100))))
+    assert result == (1, 100)
+    result = tuple(map(float, minmax(data_with_nans, percentile=(10, 90))))
+    assert pytest.approx(result, 0.1) == (10, 90)
+    result = tuple(map(float, minmax(data_with_nans, percentile=(10, 90), nan=True)))
+    assert pytest.approx(result, 0.1) == (10, 90)
+    result = minmax(data_with_nans, percentile=(10, 90), nan=False)
+    assert np.all(np.isnan(result))
+
+    # test with varying array sizes
+    result = tuple(
+        map(float, minmax([0, 1, 2, 3, 4], [[-2, 2], [0, 5]], percentile=(0, 100)))
+    )
+    assert result == (-2, 5)
+    result = tuple(
+        map(float, minmax([0, 1, 2, 3, 4], [[-2, 2], [0, 5]], percentile=(1, 99)))
+    )
+    assert pytest.approx(result, 0.1) == (-1.84, 4.92)
+
+    # test invalid percentile types
+    with pytest.raises(TypeError):
+        minmax(data, percentile="90")
+    with pytest.raises(TypeError):
+        minmax(data, percentile=100)
+    with pytest.raises(TypeError):
+        minmax(data, percentile=None)
+    minmax(data, percentile=(1, 99))  # should not raise
+    minmax(data, percentile=[1, 99])  # should not raise
+
+    # test invalid percentile values
+    with pytest.raises(ValueError):
+        minmax(data, percentile=[-10, 90])
+    with pytest.raises(ValueError):
+        minmax(data, percentile=[0, 110])
+    with pytest.raises(ValueError):
+        minmax(data, percentile=[-10, 110])
+
+    # test invalid percentile length
+    with pytest.raises(TypeError):
+        minmax(data, percentile=[10, 50, 90])
+    with pytest.raises(TypeError):
+        minmax(data, percentile=[])
+    with pytest.raises(TypeError):
+        minmax(data, percentile=(50))
