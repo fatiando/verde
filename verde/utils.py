@@ -254,8 +254,8 @@ def maxabs(*args, nan=True, percentile=100):
             nppercentile = np.nanpercentile
         else:
             nppercentile = np.percentile
-        combined_array = np.concatenate(arrays)
-        return nppercentile(np.abs(combined_array), percentile)
+        combined_array = np.concatenate([np.abs(a.ravel()) for a in arrays])
+        return nppercentile(combined_array, percentile)
 
 
 def make_xarray_grid(
