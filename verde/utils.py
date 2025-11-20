@@ -249,7 +249,7 @@ def maxabs(*args, nan=True, percentile=100):
         if not isinstance(percentile, (int, float)):
             raise TypeError(f"Invalid 'percentile' of type '{type(percentile).__name__}'. Percentile must be a float or an integer.")
         if percentile < 0 or percentile > 100:
-            raise ValueError("Percentile must be between 0 and 100.")
+            raise ValueError(f"Invalid 'percentile' value of '{percentile}'. It must be between 0 and 100.")
         if nan:
             nppercentile = np.nanpercentile
         else:
