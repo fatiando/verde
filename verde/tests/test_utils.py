@@ -350,19 +350,40 @@ def test_maxabs_percentile():
     """
     Test maxabs with percentile option
     """
+    # test generic functionality
     data = np.arange(1, 101)
     assert float(maxabs(data, percentile=100)) == 100
     assert pytest.approx(float(maxabs(data, percentile=90)), 0.1) == 90
     assert pytest.approx(float(maxabs(data, percentile=50)), 0.1) == 50
 
-    # with nans
+    # test with nans
     data_with_nans = np.append(data, np.nan)
     assert float(maxabs(data_with_nans, percentile=100)) == 100
     assert pytest.approx(float(maxabs(data_with_nans, percentile=90)), 0.1) == 90
     assert pytest.approx(float(maxabs(data_with_nans, percentile=50)), 0.1) == 50
-
     assert (
         pytest.approx(float(maxabs(data_with_nans, percentile=90, nan=True)), 0.1) == 90
     )
-
     assert np.isnan(float(maxabs(data_with_nans, percentile=90, nan=False)))
+
+    # test with varying array sizes
+    assert (
+        pytest.approx(
+            float(maxabs([0, 1, 2, 3, 4], [[-2, 2], [0, 5]], percentile=80)), 0.1
+        )
+        == 3.4
+    )
+
+    # test invalid percentile types
+    with pytest.raises(TypeError):
+        maxabs(data, percentile="90")
+    with pytest.raises(TypeError):
+        maxabs(data, percentile=[90])
+    with pytest.raises(TypeError):
+        maxabs(data, percentile=None)
+
+    # test invalid percentile values
+    with pytest.raises(ValueError):
+        maxabs(data, percentile=-10)
+    with pytest.raises(ValueError):
+        maxabs(data, percentile=110)
