@@ -386,7 +386,8 @@ def test_maxabs_percentile():
         maxabs(data, percentile=None)
 
     # test invalid percentile values
-    with pytest.raises(ValueError):
+    msg = "Invalid 'percentile' value of"
+    with pytest.raises(ValueError, match=msg):
         maxabs(data, percentile=-10)
     with pytest.raises(ValueError):
         maxabs(data, percentile=110)
