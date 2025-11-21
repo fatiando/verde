@@ -295,9 +295,9 @@ def minmax(*args, nan=True, min_percentile=0, max_percentile=100):
         else:
             npmin, npmax = np.min, np.max
         # Get min and max of each array
-        mins_maxs = [([npmin(i), npmax(i)]) for i in arrays]
-        # Get min of mins and max of maxs
-        return (npmin([i[0] for i in mins_maxs]), npmax([i[1] for i in mins_maxs]))
+        min_ = npmin([npmin(i) for i in arrays])
+        max_ = npmax([npmax(i) for i in arrays])
+        return min_, max_
     else:
         if not isinstance(percentile, tuple | list):
             raise TypeError(
