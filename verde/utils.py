@@ -237,7 +237,7 @@ def minmax(*args, nan=True, percentile=(0, 100)):
     args
         One or more arrays. If more than one are given, a minimum and maximum
         will be calculated across all arrays.
-    nan : bool
+    nan : bool, optional
         If True, will use the ``nan`` version of numpy functions to ignore
         NaNs.
     percentile : tuple[float, float]
