@@ -187,7 +187,7 @@ def maxabs(*args, nan=True, percentile=100):
     args
         One or more arrays. If more than one are given, a single maximum will
         be calculated across all arrays.
-    nan : bool
+    nan : bool, optional
         If True, will use the ``nan`` version of numpy functions to ignore
         NaNs.
     percentile : float
