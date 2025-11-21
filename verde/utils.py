@@ -228,8 +228,8 @@ def maxabs(*args, nan=True, percentile=100):
     the value at a given percentile instead of the maximum.
 
     >>> result = maxabs((1, -10, 25, 2, 3), percentile=95)
-    >>> int(result)
-    21
+    >>> float(result)
+    21.99
     >>> result = maxabs((1, -10, 25, 2, 3), percentile=100)
     >>> float(result)
     25.0
