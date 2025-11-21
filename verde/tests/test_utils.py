@@ -375,7 +375,8 @@ def test_maxabs_percentile():
     )
 
     # test invalid percentile types
-    with pytest.raises(TypeError):
+    msg = "Invalid 'percentile' of type"
+    with pytest.raises(TypeError, match=msg):
         maxabs(data, percentile="90")
     with pytest.raises(TypeError):
         maxabs(data, percentile=[90])
