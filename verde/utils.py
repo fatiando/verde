@@ -227,7 +227,6 @@ def maxabs(*args, nan=True, percentile=100):
     If a more robust statistic is desired, you can use ``percentile`` to get
     the value at a given percentile instead of the maximum.
 
-    >>> import numpy as np
     >>> result = maxabs((1, -10, 25, 2, 3), percentile=95)
     >>> int(result)
     21
