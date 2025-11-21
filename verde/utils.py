@@ -228,7 +228,8 @@ def maxabs(*args, nan=True):
 
 def minmax(*args, nan=True, min_percentile=0, max_percentile=100):
     """
-    Calculate the minimum and maximum values of the given array(s).
+    Calculate the minimum and maximum values (or percentiles) of the given
+    array(s).
 
     Use this to set the limits of your colorbars for non-diverging data.
 
@@ -240,12 +241,12 @@ def minmax(*args, nan=True, min_percentile=0, max_percentile=100):
     nan : bool, optional
         If True, will use the ``nan`` version of numpy functions to ignore
         NaNs.
-    percentile : tuple[float, float]
-        Instead of return the minimum and maximum values, return the two
-        percentilesprovided. Each must be between 0 and 100. (0, 100) (default)
-        will give the minimum and maximum values, while (2, 98) will give the
-        2% and 98% percentiles of the data, respectively, which is more robust
-        to outliers.
+    min_percentile: float
+        Return the supplied percentile (0 to 100) instead of the minimum value
+        of the arrays. Defaults to 0, giving the minimum value.
+    max_percentile : float
+        Return the supplied percentile (0 to 100) instead of the maximum value
+        of the arrays. Defaults to 100, giving the maximum value.
 
     Returns
     -------
@@ -275,53 +276,85 @@ def minmax(*args, nan=True, min_percentile=0, max_percentile=100):
     >>> tuple(map(float, result))
     (nan, nan)
 
-    If a more robust statistic is desired, you can use ``percentile`` to get
-    the values at given percentiles instead of the minimum and maximum.
+    If a more robust statistic is desired, you can use ``min_percentile`` and
+    or ``max_percentile`` to get the values at given percentiles instead of
+    the minimum and maximum.
 
     >>> import numpy as np
-    >>> result = minmax((1, -10, 25, 2, 3), percentile=[2, 98])
+    >>> result = minmax(
+    ...     (1, -10, 25, 2, 3), min_percentile=2, max_percentile=98
+    ... )
     >>> tuple(map(float, result))
     (-9.12, 23.24)
-    >>> result = minmax((1, -10, 25, 2, 3), percentile=[0, 100])
+    >>> result = minmax(
+    ...     (1, -10, 25, 2, 3), min_percentile=0, max_percentile=100
+    ... )
     >>> tuple(map(float, result))
     (-10.0, 25.0)
 
     """
     arrays = [np.atleast_1d(i) for i in args]
 
-    if percentile == (0, 100) or percentile == [0, 100]:
-        if nan:
-            npmin, npmax = np.nanmin, np.nanmax
-        else:
-            npmin, npmax = np.min, np.max
-        # Get min and max of each array
-        min_ = npmin([npmin(i) for i in arrays])
-        max_ = npmax([npmax(i) for i in arrays])
-        return min_, max_
+    # checks
+    if not isinstance(min_percentile, float | int):
+        raise TypeError(
+            f"Invalid 'min_percentile' of type '{type(min_percentile).__name__}'. Must be a float or int."
+        )
+    if not isinstance(max_percentile, float | int):
+        raise TypeError(
+            f"Invalid 'max_percentile' of type '{type(max_percentile).__name__}'. Must be a float or int."
+        )
+    if not min_percentile <= max_percentile:
+        raise ValueError(
+            f"'min_percentile' ({min_percentile}) must not be larger than 'max_percentile' ({max_percentile})."
+        )
+    if min_percentile < 0 or min_percentile > 100:
+        raise ValueError(
+            f"Invalid value for 'min_percentile' ({min_percentile}). Must be between 0 and 100."
+        )
+    if max_percentile < 0 or max_percentile > 100:
+        raise ValueError(
+            f"Invalid value for 'max_percentile' ({max_percentile}). Must be between 0 and 100."
+        )
+
+    # determine which functions to use
+    if nan:
+        npmin = np.nanmin
+        npmax = np.nanmax
+        nppercentile = np.nanpercentile
+    elif not nan:
+        npmin = np.min
+        npmax = np.max
+        nppercentile = np.percentile
     else:
-        if not isinstance(percentile, tuple | list):
-            raise TypeError(
-                f"Invalid 'percentile' of type '{type(percentile).__name__}'. Percentile must be a tuple or list."
-            )
-        if not all(isinstance(p, float | int) for p in percentile):
-            raise TypeError(
-                "Invalid type for elements of 'percentile'; should contain only floats or integers."
-            )
-        if len(percentile) != 2:
-            raise TypeError(
-                f"Invalid length ({len(percentile)}) for 'percentile'. It must have exactly two elements."
-            )
-        if any(p < 0 or p > 100 for p in percentile):
-            raise ValueError(
-                f"Invalid values in 'percentile' '{percentile}'. Values must be between 0 and 100."
-            )
-        if nan:
-            nppercentile = np.nanpercentile
-        else:
-            nppercentile = np.percentile
+        raise TypeError(f"The 'nan' parameter ({nan}) must be a boolean.")
+
+    # get min value
+    if min_percentile == 0:
+        min_ = npmin([npmin(i) for i in arrays])
+
+    # get max value
+    if max_percentile == 100:
+        max_ = npmax([npmax(i) for i in arrays])
+
+    # calculate min, max or both percentiles
+    if min_percentile != 0 or max_percentile != 100:
         # concatenate values of all arrays
         combined_array = np.concatenate([a.ravel() for a in arrays])
-        return tuple(nppercentile(combined_array, percentile))
+
+        # if neither percentiles are defaults, calculate them together
+        if min_percentile != 0 and max_percentile != 100:
+            min_, max_ = nppercentile(combined_array, [min_percentile, max_percentile])
+
+        # only calculate min percentile
+        elif min_percentile != 0:
+            min_ = nppercentile(combined_array, min_percentile)
+
+        # only calculate max percentile
+        if max_percentile != 100:
+            max_ = nppercentile(combined_array, max_percentile)
+
+    return min_, max_
 
 
 def make_xarray_grid(
