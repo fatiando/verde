@@ -350,57 +350,75 @@ def test_minmax_percentile():
     """
     Test minmax with percentile option
     """
-    # test generic functionality
     data = np.arange(0, 101)
 
-    result = tuple(map(float, minmax(data, percentile=(0, 100))))
+    # test generic functionality
+    result = tuple(map(float, minmax(data, min_percentile=0, max_percentile=100)))
     assert result == (0, 100)
-    result = tuple(map(float, minmax(data, percentile=(10, 90))))
+    result = tuple(map(float, minmax(data, min_percentile=0.0, max_percentile=100.0)))
+    assert result == (0, 100)
+    result = tuple(map(float, minmax(data, min_percentile=10, max_percentile=90)))
+    assert pytest.approx(result, 0.1) == (10, 90)
+    result = tuple(map(float, minmax(data, min_percentile=10.0, max_percentile=90.0)))
     assert pytest.approx(result, 0.1) == (10, 90)
 
     # test with nans
     data_with_nans = np.append(data, np.nan)
-    result = tuple(map(float, minmax(data_with_nans, percentile=(0, 100))))
+    result = tuple(
+        map(float, minmax(data_with_nans, min_percentile=0, max_percentile=100))
+    )
     assert result == (0, 100)
-    result = tuple(map(float, minmax(data_with_nans, percentile=(10, 90))))
+    result = tuple(
+        map(float, minmax(data_with_nans, min_percentile=10, max_percentile=90))
+    )
     assert pytest.approx(result, 0.1) == (10, 90)
-    result = tuple(map(float, minmax(data_with_nans, percentile=(10, 90), nan=True)))
+    result = tuple(
+        map(
+            float,
+            minmax(data_with_nans, min_percentile=10, max_percentile=90, nan=True),
+        )
+    )
     assert pytest.approx(result, 0.1) == (10, 90)
-    result = minmax(data_with_nans, percentile=(10, 90), nan=False)
+    result = minmax(data_with_nans, min_percentile=10, max_percentile=90, nan=False)
     assert np.all(np.isnan(result))
 
     # test with varying array sizes
     result = tuple(
-        map(float, minmax([0, 1, 2, 3, 4], [[-2, 2], [0, 5]], percentile=(0, 100)))
+        map(
+            float,
+            minmax(
+                [0, 1, 2, 3, 4], [[-2, 2], [0, 5]], min_percentile=0, max_percentile=100
+            ),
+        )
     )
     assert result == (-2, 5)
     result = tuple(
-        map(float, minmax([0, 1, 2, 3, 4], [[-2, 2], [0, 5]], percentile=(1, 99)))
+        map(
+            float,
+            minmax(
+                [0, 1, 2, 3, 4], [[-2, 2], [0, 5]], min_percentile=1, max_percentile=99
+            ),
+        )
     )
     assert pytest.approx(result, 0.1) == (-1.84, 4.92)
 
     # test invalid percentile types
-    with pytest.raises(TypeError):
-        minmax(data, percentile="90")
-    with pytest.raises(TypeError):
-        minmax(data, percentile=100)
-    with pytest.raises(TypeError):
-        minmax(data, percentile=None)
-    minmax(data, percentile=(1, 99))  # should not raise
-    minmax(data, percentile=[1, 99])  # should not raise
+    msg = "Invalid 'min_percentile' of type '"
+    with pytest.raises(TypeError, match=msg):
+        minmax(data, min_percentile="90")
+    with pytest.raises(TypeError, match=msg):
+        minmax(data, min_percentile=None)
+    msg = "Invalid 'max_percentile' of type '"
+    with pytest.raises(TypeError, match=msg):
+        minmax(data, max_percentile=[90])
 
     # test invalid percentile values
-    with pytest.raises(ValueError):
-        minmax(data, percentile=[-10, 90])
-    with pytest.raises(ValueError):
-        minmax(data, percentile=[0, 110])
-    with pytest.raises(ValueError):
-        minmax(data, percentile=[-10, 110])
-
-    # test invalid percentile length
-    with pytest.raises(TypeError):
-        minmax(data, percentile=[10, 50, 90])
-    with pytest.raises(TypeError):
-        minmax(data, percentile=[])
-    with pytest.raises(TypeError):
-        minmax(data, percentile=(50))
+    msg = "'min_percentile'"
+    with pytest.raises(ValueError, match=msg):
+        minmax(data, min_percentile=99, max_percentile=90)
+    msg = "Invalid value for 'min_percentile'"
+    with pytest.raises(ValueError, match=msg):
+        minmax(data, min_percentile=-10)
+    msg = "Invalid value for 'max_percentile'"
+    with pytest.raises(ValueError, match=msg):
+        minmax(data, max_percentile=110)
