@@ -226,7 +226,7 @@ def maxabs(*args, nan=True):
     return npmax(absolute)
 
 
-def minmax(*args, nan=True, percentile=(0, 100)):
+def minmax(*args, nan=True, min_percentile=0, max_percentile=100):
     """
     Calculate the minimum and maximum values of the given array(s).
 
