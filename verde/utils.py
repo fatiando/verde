@@ -296,11 +296,11 @@ def minmax(*args, nan=True, min_percentile=0, max_percentile=100):
     arrays = [np.atleast_1d(i) for i in args]
 
     # checks
-    if not isinstance(min_percentile, float | int):
+    if not isinstance(min_percentile, (float, int)):
         raise TypeError(
             f"Invalid 'min_percentile' of type '{type(min_percentile).__name__}'. Must be a float or int."
         )
-    if not isinstance(max_percentile, float | int):
+    if not isinstance(max_percentile, (float, int)):
         raise TypeError(
             f"Invalid 'max_percentile' of type '{type(max_percentile).__name__}'. Must be a float or int."
         )
