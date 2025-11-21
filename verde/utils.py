@@ -249,7 +249,7 @@ def minmax(*args, nan=True, min_percentile=0, max_percentile=100):
 
     Returns
     -------
-    minmax : tuple[float, float]
+    min, max : float
         The minimum and maximum (or percentile) values across all arrays.
 
     Examples
