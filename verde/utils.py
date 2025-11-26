@@ -192,7 +192,7 @@ def maxabs(*args, nan=True, percentile=100):
         NaNs.
     percentile : float, optional
         Instead of return the maximum absolute value, return a given
-        percentile and the absolute values. Must be between 0 and 100. A
+        percentile of the absolute values. Must be between 0 and 100. A
         value of 100 (default) will give the maximum absolute value, while
         a value of 50 will give the median of the absolute values.
 
