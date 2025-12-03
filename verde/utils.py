@@ -176,7 +176,7 @@ def variance_to_weights(variance, tol=1e-15, dtype="float64"):
     return tuple(weights)
 
 
-def maxabs(*args, nan=True):
+def maxabs(*args, nan=True, percentile=100):
     """
     Calculate the maximum absolute value of the given array(s).
 
@@ -187,11 +187,19 @@ def maxabs(*args, nan=True):
     args
         One or more arrays. If more than one are given, a single maximum will
         be calculated across all arrays.
+    nan : bool, optional
+        If True, will use the ``nan`` version of numpy functions to ignore
+        NaNs.
+    percentile : float, optional
+        Instead of return the maximum absolute value, return a given
+        percentile of the absolute values. Must be between 0 and 100. A
+        value of 100 (default) will give the maximum absolute value, while
+        a value of 50 will give the median of the absolute values.
 
     Returns
     -------
     maxabs : float
-        The maximum absolute value across all arrays.
+        The maximum (or percentile) absolute value across all arrays.
 
     Examples
     --------
@@ -216,14 +224,41 @@ def maxabs(*args, nan=True):
     >>> float(result)
     nan
 
+    If a more robust statistic is desired, you can use ``percentile`` to get
+    the value at a given percentile instead of the maximum.
+
+    >>> result = maxabs((1, -10, 25, 2, 3), percentile=95)
+    >>> float(result)
+    21.99
+    >>> result = maxabs((1, -10, 25, 2, 3), percentile=100)
+    >>> float(result)
+    25.0
+
     """
     arrays = [np.atleast_1d(i) for i in args]
-    if nan:
-        npmin, npmax = np.nanmin, np.nanmax
+
+    if percentile == 100:
+        if nan:
+            npmin, npmax = np.nanmin, np.nanmax
+        else:
+            npmin, npmax = np.min, np.max
+        absolute = [npmax(np.abs([npmin(i), npmax(i)])) for i in arrays]
+        return npmax(absolute)
     else:
-        npmin, npmax = np.min, np.max
-    absolute = [npmax(np.abs([npmin(i), npmax(i)])) for i in arrays]
-    return npmax(absolute)
+        if not isinstance(percentile, (int, float)):
+            raise TypeError(
+                f"Invalid 'percentile' of type '{type(percentile).__name__}'. Percentile must be a float or an integer."
+            )
+        if percentile < 0 or percentile > 100:
+            raise ValueError(
+                f"Invalid 'percentile' value of '{percentile}'. It must be between 0 and 100."
+            )
+        if nan:
+            nppercentile = np.nanpercentile
+        else:
+            nppercentile = np.percentile
+        combined_array = np.concatenate([np.abs(a.ravel()) for a in arrays])
+        return nppercentile(combined_array, percentile)
 
 
 def make_xarray_grid(

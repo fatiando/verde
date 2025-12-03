@@ -23,6 +23,7 @@ from ..utils import (
     grid_to_table,
     kdtree,
     make_xarray_grid,
+    maxabs,
     meshgrid_from_1d,
     meshgrid_to_1d,
     parse_engine,
@@ -334,3 +335,60 @@ def test_check_ndim_easting_northing():
     northing = np.linspace(-5, 5, 16).reshape(4, 4)
     with pytest.raises(ValueError):
         get_ndim_horizontal_coords(easting, northing)
+
+
+def test_maxabs_nans():
+    """
+    Test maxabs handles nans correctly
+    """
+    assert float(maxabs((0, 100, 1, 2, np.nan))) == 100
+    assert float(maxabs((np.nan, -3.2, -1, -2, 3.1))) == 3.2
+    assert np.isnan(maxabs((np.nan, -3, -1, 3), nan=False))
+
+
+def test_maxabs_percentile():
+    """
+    Test maxabs with percentile option
+    """
+    # test generic functionality
+    data = np.arange(1, 101)
+    assert float(maxabs(data, percentile=100)) == 100
+    assert pytest.approx(float(maxabs(data, percentile=90)), 0.1) == 90
+    assert pytest.approx(float(maxabs(data, percentile=50)), 0.1) == 50
+
+    # test with nans
+    data_with_nans = np.append(data, np.nan)
+    assert float(maxabs(data_with_nans, percentile=100)) == 100
+    assert pytest.approx(float(maxabs(data_with_nans, percentile=90)), 0.1) == 90
+    assert pytest.approx(float(maxabs(data_with_nans, percentile=50)), 0.1) == 50
+    assert (
+        pytest.approx(float(maxabs(data_with_nans, percentile=90, nan=True)), 0.1) == 90
+    )
+    assert np.isnan(float(maxabs(data_with_nans, percentile=90, nan=False)))
+
+    # test with varying array sizes
+    assert (
+        pytest.approx(
+            float(maxabs([0, 1, 2, 3, 4], [[-2, 2], [0, 5]], percentile=80)), 0.1
+        )
+        == 3.4
+    )
+
+    # test invalid percentile types
+    msg = "Invalid 'percentile' of type"
+    with pytest.raises(TypeError, match=msg):
+        maxabs(data, percentile="90")
+    msg = "Invalid 'percentile' of type"
+    with pytest.raises(TypeError, match=msg):
+        maxabs(data, percentile=[90])
+    msg = "Invalid 'percentile' of type"
+    with pytest.raises(TypeError, match=msg):
+        maxabs(data, percentile=None)
+
+    # test invalid percentile values
+    msg = "Invalid 'percentile' value of"
+    with pytest.raises(ValueError, match=msg):
+        maxabs(data, percentile=-10)
+    msg = "Invalid 'percentile' value of"
+    with pytest.raises(ValueError, match=msg):
+        maxabs(data, percentile=110)
