@@ -347,7 +347,7 @@ def minmax(*args, nan=True, min_percentile=0, max_percentile=100):
         raise ValueError(
             f"Invalid value for 'min_percentile' ({min_percentile}). Must be between 0 and 100."
         )
-    if max_percentile < 0 or max_percentile > 100:
+    if max_percentile > 100:
         raise ValueError(
             f"Invalid value for 'max_percentile' ({max_percentile}). Must be between 0 and 100."
         )
