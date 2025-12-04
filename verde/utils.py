@@ -353,11 +353,11 @@ def minmax(*args, nan=True, min_percentile=0, max_percentile=100):
         )
 
     # determine which functions to use
-    if nan:
+    if nan is True:
         npmin = np.nanmin
         npmax = np.nanmax
         nppercentile = np.nanpercentile
-    elif not nan:
+    elif nan is False:
         npmin = np.min
         npmax = np.max
         nppercentile = np.percentile
