@@ -276,7 +276,7 @@ def minmax(*args, nan=True, min_percentile=0, max_percentile=100):
     nan : bool, optional
         If True, will use the ``nan`` version of numpy functions to ignore
         NaNs.
-    min_percentile: float
+    min_percentile : float
         Return the supplied percentile (0 to 100) instead of the minimum value
         of the arrays. Defaults to 0, giving the minimum value.
     max_percentile : float
