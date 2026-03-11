@@ -55,6 +55,15 @@ def test_cross_val_score_vector(trend, metric, expected):
     npt.assert_allclose(scores, expected, atol=1e-10)
 
 
+def test_gridder_score(trend):
+    "Check that gridder.score works with the default R² scorer."
+    coords, data = trend[:2]
+    model = Trend(degree=1).fit(coords, data)
+    with pytest.warns(FutureWarning):
+        score = model.score(coords, data)
+    npt.assert_allclose(score, 1, atol=1e-10)
+
+
 def test_cross_val_score_client(trend):
     "Test the deprecated dask Client interface"
     coords, data = trend[:2]
