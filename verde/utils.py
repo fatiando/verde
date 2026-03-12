@@ -164,7 +164,9 @@ def variance_to_weights(variance, tol=1e-15, dtype="float64"):
     variance = check_data(variance)
     weights = []
     for var in variance:
-        var = np.nan_to_num(np.atleast_1d(var), copy=False)
+        # Pandas 3 can expose Series-backed arrays as read-only, so normalize
+        # NaNs on a private writeable copy.
+        var = np.nan_to_num(np.atleast_1d(var), copy=True)
         w = np.ones_like(var, dtype=dtype)
         nonzero = var > tol
         if np.any(nonzero):
