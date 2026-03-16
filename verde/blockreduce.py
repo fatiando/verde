@@ -463,7 +463,7 @@ class BlockMean(BlockReduce):
         The variance will be the unweighted variance of the blocks.
         """
         reduction = {
-            "data{}".format(i): (("mean", self.reduction), ("variance", np.var))
+            "data{}".format(i): (("mean", "mean"), ("variance", "var"))
             for i in range(ncomps)
         }
         blocked = table.groupby("block").aggregate(reduction)

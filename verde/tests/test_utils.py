@@ -11,6 +11,7 @@ from unittest import mock
 
 import numpy as np
 import numpy.testing as npt
+import pandas as pd
 import pytest
 import xarray as xr
 from scipy.spatial import cKDTree
@@ -29,6 +30,7 @@ from ..utils import (
     minmax,
     parse_engine,
     partition_by_sum,
+    variance_to_weights,
 )
 
 
@@ -107,6 +109,21 @@ def test_partition_by_sum_fails_no_partitions():
     with pytest.raises(ValueError) as error:
         partition_by_sum(np.arange(10), 8)
     assert "Could not find partition points" in str(error)
+
+
+def test_variance_to_weights_pandas_series():
+    "A pandas Series input should work even if its backing array is read-only."
+    variance = pd.Series([0, 2, 0.2, np.nan])
+    weights = variance_to_weights(variance)
+    npt.assert_allclose(weights, [1, 0.1, 1, 1])
+
+
+def test_variance_to_weights_readonly_array():
+    "A read-only NumPy array input should still produce normalized weights."
+    variance = np.array([0, 2, 0.2, np.nan])
+    variance.flags.writeable = False
+    weights = variance_to_weights(variance)
+    npt.assert_allclose(weights, [1, 0.1, 1, 1])
 
 
 def test_make_xarray_grid():
