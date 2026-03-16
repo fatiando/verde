@@ -64,7 +64,7 @@ jobs:
       # We pin the commit hash corresponding to v0.5.0, and not pinning the tag
       # because we are giving full access through the github.token.
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.12.1
+        uses: styfle/cancel-workflow-action@0.13.0
         with:
           access_token: ${{ github.token }}
 
@@ -166,7 +166,7 @@ jobs:
         run: coverage xml
 
       - name: Upload coverage report as an artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: coverage_${{ matrix.os }}_${{ matrix.dependencies }}
           path: ./coverage.xml
@@ -180,12 +180,24 @@ jobs:
 
     steps:
 
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          # Need to fetch more than the last commit so that setuptools-scm can
+          # create the correct version string. If the number of commits since
+          # the last release is greater than this, the version still be wrong.
+          # Increase if necessary.
+          fetch-depth: 100
+          # The GitHub token is preserved by default but this job doesn't need
+          # to be able to push to GitHub.
+          persist-credentials: false
+
       - name: Download coverage report artifacts
         # Download coverage reports from every runner.
         # Maximum coverage is achieved by combining reports from every runner.
         # Each coverage file will live in its own folder with the same name as
         # the artifact.
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           pattern: coverage_*
 
