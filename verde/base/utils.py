@@ -8,6 +8,7 @@
 Utility functions for building gridders and checking arguments.
 """
 import numpy as np
+from sklearn.base import BaseEstimator
 from sklearn.metrics import check_scoring
 
 
@@ -65,7 +66,7 @@ def score_estimator(scoring, estimator, coordinates, data, weights=None):
     return result
 
 
-class DummyEstimator:
+class DummyEstimator(BaseEstimator):
     """
     Dummy estimator that does nothing but pass along the predicted data.
     Used to fool the scikit-learn scorer functions to fit our API
