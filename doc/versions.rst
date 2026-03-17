@@ -7,6 +7,7 @@ Use the links below to access documentation for specific versions
 * `Latest release <http://www.fatiando.org/verde/latest>`__
 * `Development <http://www.fatiando.org/verde/dev>`__
   (reflects the *main* branch on GitHub)
+* `v1.8.1 <http://www.fatiando.org/verde/v1.8.1>`__
 * `v1.8.0 <http://www.fatiando.org/verde/v1.8.0>`__
 * `v1.7.0 <http://www.fatiando.org/verde/v1.7.0>`__
 * `v1.6.1 <http://www.fatiando.org/verde/v1.6.1>`__

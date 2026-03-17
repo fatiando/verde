@@ -36,15 +36,15 @@ class SplineCV(BaseGridder):
     (or minimum) mean cross-validation score (i.e., a grid search).
 
     This can optionally run in parallel using :mod:`dask`. To do this, use
-    ``delayed=True`` to dispatch computations with :func:`dask.delayed`.
-    In this case, each fit and score operation of the grid search will be
-    performed in parallel.
+    ``delayed=True`` to dispatch computations with
+    :func:`dask.delayed.delayed`. In this case, each fit and score
+    operation of the grid search will be performed in parallel.
 
     .. note::
 
         When using *delayed*, the ``scores_`` attribute will be
-        :func:`dask.delayed` objects instead of the actual scores. This is
-        because the scores are an intermediate step in the computations and
+        :func:`dask.delayed.delayed` objects instead of the actual scores. This
+        is because the scores are an intermediate step in the computations and
         their results are not stored. If you need the scores, run
         :func:`dask.compute` on ``scores_`` to calculate them. Be warned that
         **this will run the grid search again**. It might still be faster than
@@ -91,10 +91,10 @@ class SplineCV(BaseGridder):
         be a dask ``Client`` object. It will be used to dispatch computations
         to the dask cluster.
     delayed : bool
-        If True, will use :func:`dask.delayed` to dispatch computations and
-        allow mod:`dask` to execute the grid search in parallel (see note
+        If True, will use :func:`dask.delayed.delayed` to dispatch computations
+        and allow mod:`dask` to execute the grid search in parallel (see note
         above).
-    scoring : None, str, or callable
+    scoring : None, str or callable
         The scoring function (or name of a function) used for cross-validation.
         Must be known to scikit-learn. See the description of *scoring* in
         :func:`sklearn.model_selection.cross_val_score` for details. If None,
@@ -115,8 +115,8 @@ class SplineCV(BaseGridder):
         methods.
     scores_ : array
         The mean cross-validation score for each parameter combination. If
-        ``delayed=True``, will be a list of :func:`dask.delayed` objects (see
-        note above).
+        ``delayed=True``, will be a list of :func:`dask.delayed.delayed`
+        objects (see note above).
     mindist_ : float
         The optimal value for the *mindist* parameter.
     damping_ : float

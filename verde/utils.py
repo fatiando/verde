@@ -45,7 +45,7 @@ def dispatch(function, delayed=False, client=None):
     function : callable
         The function that will be called.
     delayed : bool
-        If True, will wrap the function in :func:`dask.delayed`.
+        If True, will wrap the function in :func:`dask.delayed.delayed`.
     client : None or dask.distributed Client
         If *delayed* is False and *client* is not None, will return a partial
         execution of the ``client.submit`` with the function as first argument.
@@ -166,7 +166,9 @@ def variance_to_weights(variance, tol=1e-15, dtype="float64"):
     variance = check_data(variance)
     weights = []
     for var in variance:
-        var = np.nan_to_num(np.atleast_1d(var), copy=False)
+        # Pandas 3 can expose Series-backed arrays as read-only, so normalize
+        # NaNs on a private writeable copy.
+        var = np.nan_to_num(np.atleast_1d(var), copy=True)
         w = np.ones_like(var, dtype=dtype)
         nonzero = var > tol
         if np.any(nonzero):
@@ -178,7 +180,7 @@ def variance_to_weights(variance, tol=1e-15, dtype="float64"):
     return tuple(weights)
 
 
-def maxabs(*args, nan=True):
+def maxabs(*args, nan=True, percentile=100):
     """
     Calculate the maximum absolute value of the given array(s).
 
@@ -189,37 +191,78 @@ def maxabs(*args, nan=True):
     args
         One or more arrays. If more than one are given, a single maximum will
         be calculated across all arrays.
+    nan : bool, optional
+        If True, will use the ``nan`` version of numpy functions to ignore
+        NaNs.
+    percentile : float, optional
+        Instead of return the maximum absolute value, return a given
+        percentile of the absolute values. Must be between 0 and 100. A
+        value of 100 (default) will give the maximum absolute value, while
+        a value of 50 will give the median of the absolute values.
 
     Returns
     -------
     maxabs : float
-        The maximum absolute value across all arrays.
+        The maximum (or percentile) absolute value across all arrays.
 
     Examples
     --------
 
-    >>> maxabs((1, -10, 25, 2, 3))
-    25
-    >>> maxabs((1, -10.5, 25, 2), (0.1, 100, -500), (-200, -300, -0.1, -499))
+    >>> result = maxabs((1, -10, 25, 2, 3))
+    >>> float(result)
+    25.0
+    >>> result = maxabs(
+    ...     (1, -10.5, 25, 2), (0.1, 100, -500), (-200, -300, -0.1, -499)
+    ... )
+    >>> float(result)
     500.0
 
     If the array contains NaNs, we'll use the ``nan`` version of of the numpy
     functions by default. You can turn this off through the *nan* argument.
 
     >>> import numpy as np
-    >>> maxabs((1, -10, 25, 2, 3, np.nan))
+    >>> result = maxabs((1, -10, 25, 2, 3, np.nan))
+    >>> float(result)
     25.0
-    >>> maxabs((1, -10, 25, 2, 3, np.nan), nan=False)
+    >>> result = maxabs((1, -10, 25, 2, 3, np.nan), nan=False)
+    >>> float(result)
     nan
+
+    If a more robust statistic is desired, you can use ``percentile`` to get
+    the value at a given percentile instead of the maximum.
+
+    >>> result = maxabs((1, -10, 25, 2, 3), percentile=95)
+    >>> float(result)
+    21.99
+    >>> result = maxabs((1, -10, 25, 2, 3), percentile=100)
+    >>> float(result)
+    25.0
 
     """
     arrays = [np.atleast_1d(i) for i in args]
-    if nan:
-        npmin, npmax = np.nanmin, np.nanmax
+
+    if percentile == 100:
+        if nan:
+            npmin, npmax = np.nanmin, np.nanmax
+        else:
+            npmin, npmax = np.min, np.max
+        absolute = [npmax(np.abs([npmin(i), npmax(i)])) for i in arrays]
+        return npmax(absolute)
     else:
-        npmin, npmax = np.min, np.max
-    absolute = [npmax(np.abs([npmin(i), npmax(i)])) for i in arrays]
-    return npmax(absolute)
+        if not isinstance(percentile, (int, float)):
+            raise TypeError(
+                f"Invalid 'percentile' of type '{type(percentile).__name__}'. Percentile must be a float or an integer."
+            )
+        if percentile < 0 or percentile > 100:
+            raise ValueError(
+                f"Invalid 'percentile' value of '{percentile}'. It must be between 0 and 100."
+            )
+        if nan:
+            nppercentile = np.nanpercentile
+        else:
+            nppercentile = np.percentile
+        combined_array = np.concatenate([np.abs(a.ravel()) for a in arrays])
+        return nppercentile(combined_array, percentile)
 
 
 def make_xarray_grid(
@@ -622,7 +665,23 @@ def grid_to_table(grid):
     [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]
     >>> print(table.wind_speed.values)
     [20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39]
-
+    >>> # Non-dimensional coordinates are also handled
+    >>> temperature = xr.DataArray(
+    ...     np.arange(20).reshape((4, 5)),
+    ...     coords=(np.arange(4), np.arange(5, 10)),
+    ...     dims=['northing', 'easting']
+    ... )
+    >>> temperature = temperature.assign_coords(
+    ...     upward=(
+    ...         ("northing", "easting"),
+    ...         np.arange(20).reshape((4, 5))
+    ...     )
+    ... )
+    >>> table = grid_to_table(temperature)
+    >>> list(sorted(table.columns))
+    ['easting', 'northing', 'scalars', 'upward']
+    >>> print(table.upward.values)
+    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]
     """
     if hasattr(grid, "data_vars"):
         # It's a Dataset
@@ -639,6 +698,11 @@ def grid_to_table(grid):
     # Need to flip the coordinates because the names are in northing and
     # easting order
     coordinates = [i.ravel() for i in np.meshgrid(east, north)][::-1]
+    # Identify and add extra coordinates
+    extra = [coord for coord in grid.coords.keys() if coord not in coordinate_names]
+    for coord in extra:
+        coordinates.append(grid[coord].values.ravel())
+        coordinate_names.append(coord)
     data_dict = dict(zip(coordinate_names, coordinates))
     data_dict.update(dict(zip(data_names, data_arrays)))
     return pd.DataFrame(data_dict)

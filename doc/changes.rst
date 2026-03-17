@@ -3,6 +3,43 @@
 Changelog
 =========
 
+Version 1.8.1
+-------------
+
+Released on: 2023/06/11
+
+DOI: https://doi.org/10.5281/zenodo.10964877
+
+Breaking changes:
+
+* Drop support for Python 3.7 and 3.8 (`#418 <https://github.com/fatiando/verde/pull/418>`__).
+
+Bug fixes:
+
+* Fix pandas warnings about ``.ravel()`` (`#449 <https://github.com/fatiando/verde/pull/449>`__)
+* Fix dropping non-dimensional coordinates in ``grid_to_table`` (`#441 <https://github.com/fatiando/verde/pull/441>`__)
+
+Maintenance:
+
+* Remove dependence on ``pkg_resources`` (`#448 <https://github.com/fatiando/verde/pull/448>`__)
+* Extend support for Python 3.12 (`#442 <https://github.com/fatiando/verde/pull/442>`__)
+* Use Trusted Publishers for PyPI deployment (`#436 <https://github.com/fatiando/verde/pull/436>`__)
+* Use Burocrata to check/add license notices (`#435 <https://github.com/fatiando/verde/pull/435>`__)
+* Add Dependabot config to update GitHub Actions (`#421 <https://github.com/fatiando/verde/pull/421>`__)
+
+Documentation:
+
+* Replace Sphinx napoleon for numpydoc (`#450 <https://github.com/fatiando/verde/pull/450>`__)
+* Refactor the Overview introductory tutorial (`#429 <https://github.com/fatiando/verde/pull/429>`__)
+* Update the versions of documentation tools (`#419 <https://github.com/fatiando/verde/pull/419>`__)
+
+This release contains contributions from:
+
+* Leonardo Uieda
+* Santiago Soler
+* Gelson Ferreira Souza Junior
+
+
 Version 1.8.0
 -------------
 

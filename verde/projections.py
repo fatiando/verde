@@ -43,7 +43,8 @@ def project_region(region, projection):
 
     >>> def projection(x, y):
     ...     return (2*x, -1*y)
-    >>> project_region((3, 5, -9, -4), projection)
+    >>> region_proj = project_region((3, 5, -9, -4), projection)
+    >>> print(tuple(float(c) for c in region_proj))
     (6.0, 10.0, 4.0, 9.0)
 
     """

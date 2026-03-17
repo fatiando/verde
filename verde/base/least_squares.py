@@ -9,6 +9,7 @@ Functions for least-squares fitting with optional regularization.
 """
 from warnings import warn
 
+import numpy as np
 from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.preprocessing import StandardScaler
 
@@ -65,6 +66,6 @@ def least_squares(jacobian, data, weights, damping=None, copy_jacobian=False):
         regr = LinearRegression(fit_intercept=False)
     else:
         regr = Ridge(alpha=damping, fit_intercept=False)
-    regr.fit(jacobian, data.ravel(), sample_weight=weights)
+    regr.fit(jacobian, np.ravel(data), sample_weight=weights)
     params = regr.coef_ / scaler.scale_
     return params
