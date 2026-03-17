@@ -27,6 +27,7 @@ from ..utils import (
     maxabs,
     meshgrid_from_1d,
     meshgrid_to_1d,
+    minmax,
     parse_engine,
     partition_by_sum,
     variance_to_weights,
@@ -352,6 +353,89 @@ def test_check_ndim_easting_northing():
     northing = np.linspace(-5, 5, 16).reshape(4, 4)
     with pytest.raises(ValueError):
         get_ndim_horizontal_coords(easting, northing)
+
+
+def test_minmax_nans():
+    """
+    Test minmax handles nans correctly
+    """
+    assert tuple(map(float, minmax((-1, 100, 1, 2, np.nan)))) == (-1, 100)
+    assert tuple(map(float, minmax((np.nan, -3.2, -1, -2, 3.1)))) == (-3.2, 3.1)
+    assert np.all(np.isnan(minmax((np.nan, -3, -1, 3), nan=False)))
+
+
+def test_minmax_percentile():
+    """
+    Test minmax with percentile option
+    """
+    data = np.arange(0, 101)
+
+    # test generic functionality
+    result = tuple(map(float, minmax(data, min_percentile=0, max_percentile=100)))
+    assert result == (0, 100)
+    result = tuple(map(float, minmax(data, min_percentile=0.0, max_percentile=100.0)))
+    assert result == (0, 100)
+    result = tuple(map(float, minmax(data, min_percentile=10, max_percentile=90)))
+    assert pytest.approx(result, 0.1) == (10, 90)
+    result = tuple(map(float, minmax(data, min_percentile=10.0, max_percentile=90.0)))
+    assert pytest.approx(result, 0.1) == (10, 90)
+
+    # test with nans
+    data_with_nans = np.append(data, np.nan)
+    result = tuple(
+        map(float, minmax(data_with_nans, min_percentile=0, max_percentile=100))
+    )
+    assert result == (0, 100)
+    result = tuple(
+        map(float, minmax(data_with_nans, min_percentile=10, max_percentile=90))
+    )
+    assert pytest.approx(result, 0.1) == (10, 90)
+    result = tuple(
+        map(
+            float,
+            minmax(data_with_nans, min_percentile=10, max_percentile=90, nan=True),
+        )
+    )
+    assert pytest.approx(result, 0.1) == (10, 90)
+    result = minmax(data_with_nans, min_percentile=10, max_percentile=90, nan=False)
+    assert np.all(np.isnan(result))
+
+    # test with varying array sizes
+    result = tuple(
+        map(
+            float,
+            minmax(
+                [0, 1, 2, 3, 4], [[-2, 2], [0, 5]], min_percentile=0, max_percentile=100
+            ),
+        )
+    )
+    assert result == (-2, 5)
+    result = tuple(
+        map(
+            float,
+            minmax(
+                [0, 1, 2, 3, 4], [[-2, 2], [0, 5]], min_percentile=1, max_percentile=99
+            ),
+        )
+    )
+    assert pytest.approx(result, 0.1) == (-1.84, 4.92)
+
+    # test invalid percentile types
+    with pytest.raises(TypeError):
+        minmax(data, min_percentile=None)
+    with pytest.raises(TypeError):
+        minmax(data, max_percentile=[90])
+
+    # test invalid percentile values
+    msg = "'min_percentile'"
+    with pytest.raises(ValueError, match=msg):
+        minmax(data, min_percentile=99, max_percentile=90)
+    msg = "Invalid value for 'min_percentile'"
+    with pytest.raises(ValueError, match=msg):
+        minmax(data, min_percentile=-10)
+    msg = "Invalid value for 'max_percentile'"
+    with pytest.raises(ValueError, match=msg):
+        minmax(data, max_percentile=110)
 
 
 def test_maxabs_nans():
