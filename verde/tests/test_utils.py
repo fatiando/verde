@@ -39,8 +39,8 @@ fill_nans_test = [
         {"k": 1},
         np.array(
             [
-                [2.0, 2.0, 1.0, 1.0, 1.0, 1.0],
-                [2.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                [4.0, 4.0, 1.0, 1.0, 1.0, 1.0],
+                [4.0, 1.0, 1.0, 1.0, 1.0, 1.0],
                 [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
                 [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
                 [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
@@ -51,9 +51,9 @@ fill_nans_test = [
         {"k": 2},
         np.array(
             [
-                [2.0, 1.5, 1.5, 1.0, 1.0, 1.0],
-                [1.5, 1.5, 1.0, 1.0, 1.0, 1.0],
-                [1.5, 1.0, 1.0, 1.0, 1.0, 1.0],
+                [4.0, 2.5, 2.5, 1.0, 1.0, 1.0],
+                [2.5, 2.5, 1.0, 1.0, 1.0, 1.0],
+                [2.5, 1.0, 1.0, 1.0, 1.0, 1.0],
                 [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
                 [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
             ]
@@ -77,8 +77,8 @@ def test_fill_nans(test_input, expected):
     # corners have values of 2 instead of 1
     data1[0][0] = np.nan
     data1[-1][-1] = np.nan
-    data1[0][1] = 2
-    data1[1][0] = 2
+    data1[0][1] = 4
+    data1[1][0] = 4
 
     # for data2 make center value nan
     data2[2][2] = np.nan
@@ -106,6 +106,12 @@ def test_fill_nans(test_input, expected):
     assert list(filled_ds.variables) == ["east", "north", "dummy1", "dummy2"]
     assert filled_ds.dummy1.notnull().any()
     assert filled_ds.dummy2.notnull().any()
+    np.testing.assert_allclose(filled_ds.dummy1.values, expected)
+
+    # test passing dataset with 1 variable
+    filled_ds = fill_nans(grid.dummy1.to_dataset(name="dummy1"), **test_input)
+    assert list(filled_ds.variables) == ["east", "north", "dummy1"]
+    assert filled_ds.dummy1.notnull().any()
     np.testing.assert_allclose(filled_ds.dummy1.values, expected)
 
 

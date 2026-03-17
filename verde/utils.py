@@ -906,8 +906,8 @@ def fill_nans(grid, k=1, reduction=np.mean):
             dims=(coord_names[1], coord_names[0]),
         )[series_name]
 
-        # if only 1 variable, return it
-        if len(df.columns) - 2 == 1:
+        # if input was a datarray, return that
+        if isinstance(grid, xr.DataArray):
             return filled_da
 
         filled_dataarrays.append(filled_da)
