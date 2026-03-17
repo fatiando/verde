@@ -3,6 +3,46 @@
 Changelog
 =========
 
+Version 1.9.0
+-------------
+
+Released on: 2023/06/18
+
+DOI: https://doi.org/10.5281/zenodo.19052803
+
+Bug fixes:
+
+-  Fix compatibility issues with Pandas > 3.0 (`#535 <https://github.com/fatiando/verde/pull/535>`__)
+-  Make ``DummyEstimator`` a child of scikit-learn’s ``BaseEstimator`` for compatibility with ``skelarn>=1.8.0`` (`#531 <https://github.com/fatiando/verde/pull/531>`__)
+
+New features:
+
+-  Add new function ``minmax`` to calculate min and max of arrays, optionally as user-specified percentiles of the values, which is useful for 1) if you want to plot a series of datasets with the same colorscale so you need to calculate the overall min/max for all the datasets 2) if you want to get robust colormap limits, excluding outliers by using percentiles, such as the 2nd and 98th percentiles (`#526 <https://github.com/fatiando/verde/pull/526>`__)
+-  Add ``percentile`` parameter to the ``maxabs`` function to be able to easily remove outliers when setting colorbar limits and other actions (`#524 <https://github.com/fatiando/verde/pull/524>`__)
+
+Documentation:
+
+-  Minor wording, punctuation, and cross-referencing fixes to docs (`#473 <https://github.com/fatiando/verde/pull/473>`__)
+-  Add a link to the Fatiando Forum in the README (`#480 <https://github.com/fatiando/verde/pull/480>`__)
+
+Maintenance:
+
+-  Fix examples and tests to pass with Numpy 2 (`#459 <https://github.com/fatiando/verde/pull/459>`__)
+-  Don’t raise Numpy’s precision in doctests (`#463 <https://github.com/fatiando/verde/pull/463>`__)
+-  Don’t configure Numpy precision in doctests (`#462 <https://github.com/fatiando/verde/pull/462>`__)
+-  Fix upload of coverage reports to codecov (`#520 <https://github.com/fatiando/verde/pull/520>`__)
+-  Move push to codecov to its own job in Actions (`#455 <https://github.com/fatiando/verde/pull/455>`__)
+-  Replace ``build`` for ``python-build`` in ``environment.yml`` since the package was renamed in conda-forge (`#460 <https://github.com/fatiando/verde/pull/460>`__)
+-  Use ``python-build`` instead of ``build`` in ``test.yml`` workflow (`#465 <https://github.com/fatiando/verde/pull/465>`__)
+
+This release contains contributions from:
+
+-  Gabriel Goes
+-  Santiago Soler
+-  Matt Tankersley
+-  Leonardo Uieda
+
+
 Version 1.8.1
 -------------
 
