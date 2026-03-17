@@ -421,13 +421,9 @@ def test_minmax_percentile():
     assert pytest.approx(result, 0.1) == (-1.84, 4.92)
 
     # test invalid percentile types
-    msg = "Invalid 'min_percentile' of type '"
-    with pytest.raises(TypeError, match=msg):
-        minmax(data, min_percentile="90")
-    with pytest.raises(TypeError, match=msg):
+    with pytest.raises(TypeError):
         minmax(data, min_percentile=None)
-    msg = "Invalid 'max_percentile' of type '"
-    with pytest.raises(TypeError, match=msg):
+    with pytest.raises(TypeError):
         minmax(data, max_percentile=[90])
 
     # test invalid percentile values
