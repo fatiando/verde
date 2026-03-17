@@ -41,6 +41,7 @@ from .utils import (
     grid_to_table,
     make_xarray_grid,
     maxabs,
+    minmax,
     variance_to_weights,
 )
 from .vector import Vector, VectorSpline2D

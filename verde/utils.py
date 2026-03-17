@@ -265,6 +265,113 @@ def maxabs(*args, nan=True, percentile=100):
         return nppercentile(combined_array, percentile)
 
 
+def minmax(*args, nan=True, min_percentile=0, max_percentile=100):
+    """
+    Calculate the minimum and maximum values of the given array(s).
+
+    Use this to set the limits of your colorbars for non-diverging data.
+
+    Parameters
+    ----------
+    args
+        One or more arrays. If more than one are given, a minimum and maximum
+        will be calculated across all arrays.
+    nan : bool, optional
+        If True, will use the ``nan`` version of numpy functions to ignore
+        NaNs.
+    min_percentile : float
+        Return the supplied percentile (0 to 100) instead of the minimum value
+        of the arrays. Defaults to 0, giving the minimum value.
+    max_percentile : float
+        Return the supplied percentile (0 to 100) instead of the maximum value
+        of the arrays. Defaults to 100, giving the maximum value.
+
+    Returns
+    -------
+    min, max : float
+        The minimum and maximum (or percentile) values across all arrays.
+
+    Examples
+    --------
+
+    >>> result = minmax((1, -10, 25, 2, 3))
+    >>> tuple(map(float, result))
+    (-10.0, 25.0)
+    >>> result = minmax(
+    ...     (1, -10.5, 25, 2), (0.1, 100, -500), (-200, -300, -0.1, -499)
+    ... )
+    >>> tuple(map(float, result))
+    (-500.0, 100.0)
+
+    If the array contains NaNs, we'll use the ``nan`` version of of the numpy
+    functions by default. You can turn this off through the *nan* argument.
+
+    >>> import numpy as np
+    >>> result = minmax((1, -10, 25, 2, 3, np.nan))
+    >>> tuple(map(float, result))
+    (-10.0, 25.0)
+    >>> result = minmax((1, -10, 25, 2, 3, np.nan), nan=False)
+    >>> tuple(map(float, result))
+    (nan, nan)
+
+    If a more robust statistic is desired, you can use ``min_percentile`` and
+    or ``max_percentile`` to get the values at given percentiles instead of
+    the minimum and maximum.
+
+    >>> import numpy as np
+    >>> result = minmax(
+    ...     (1, -10, 25, 2, 3), min_percentile=2, max_percentile=98
+    ... )
+    >>> tuple(map(float, result))
+    (-9.12, 23.24)
+    >>> result = minmax(
+    ...     (1, -10, 25, 2, 3), min_percentile=0, max_percentile=100
+    ... )
+    >>> tuple(map(float, result))
+    (-10.0, 25.0)
+
+    """
+    # ensure percentiles are numeric
+    min_percentile = float(min_percentile)
+    max_percentile = float(max_percentile)
+
+    arrays = [np.atleast_1d(i) for i in args]
+
+    # checks
+    if not min_percentile <= max_percentile:
+        raise ValueError(
+            f"'min_percentile' ({min_percentile}) must not be larger than 'max_percentile' ({max_percentile})."
+        )
+    if min_percentile < 0:
+        raise ValueError(
+            f"Invalid value for 'min_percentile' ({min_percentile}). Must be between 0 and 100."
+        )
+    if max_percentile > 100:
+        raise ValueError(
+            f"Invalid value for 'max_percentile' ({max_percentile}). Must be between 0 and 100."
+        )
+
+    # determine which functions to use
+    if nan:
+        npmin = np.nanmin
+        npmax = np.nanmax
+        nppercentile = np.nanpercentile
+    else:
+        npmin = np.min
+        npmax = np.max
+        nppercentile = np.percentile
+
+    if min_percentile == 0 and max_percentile == 100:
+        min_ = npmin([npmin(i) for i in arrays])
+        max_ = npmax([npmax(i) for i in arrays])
+        return min_, max_
+
+    # concatenate values of all arrays
+    combined_array = np.concatenate([a.ravel() for a in arrays])
+    min_, max_ = nppercentile(combined_array, [min_percentile, max_percentile])
+    return min_, max_
+
+
 def make_xarray_grid(
     coordinates,
     data,
