@@ -20,6 +20,7 @@ from .. import utils
 from ..coordinates import grid_coordinates, scatter_points
 from ..utils import (
     dummy_jit,
+    fill_nans,
     get_ndim_horizontal_coords,
     grid_to_table,
     kdtree,
@@ -29,25 +30,82 @@ from ..utils import (
     meshgrid_to_1d,
     parse_engine,
     partition_by_sum,
-    fill_nans
+    variance_to_weights,
 )
 
+fill_nans_test = [
+    (
+        {"k": 1},
+        np.array(
+            [
+                [2.0, 2.0, 1.0, 1.0, 1.0, 1.0],
+                [2.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+            ]
+        ),
+    ),
+    (
+        {"k": 2},
+        np.array(
+            [
+                [2.0, 1.5, 1.5, 1.0, 1.0, 1.0],
+                [1.5, 1.5, 1.0, 1.0, 1.0, 1.0],
+                [1.5, 1.0, 1.0, 1.0, 1.0, 1.0],
+                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+            ]
+        ),
+    ),
+]
 
-def test_fill_nans():
+
+@pytest.mark.parametrize(("test_input", "expected"), fill_nans_test)
+def test_fill_nans(test_input, expected):
     """
-    Test filling NaNs on a small sample grid
+    Test filling NaNs on a small sample grid with multiple numbers of neighbors
     """
-    grid = xr.DataArray([[1, np.nan, 3],
-                        [4, 5, np.nan],
-                        [np.nan, 7, 8]])
+    region = (-10, -5, 6, 10)
+    easting = np.linspace(*region[:2], 6, dtype=float)
+    northing = np.linspace(*region[2:], 5, dtype=float)
+    data1 = np.ones((northing.size, easting.size))
+    data2 = np.ones((northing.size, easting.size))
 
-    filled_grid = fill_nans(grid)
-    expected_values = xr.DataArray([[1, 1, 3],
-                            [4, 5, 3],
-                            [4, 7, 8]])
+    # for data1 make 2 corners nan, and the nearest two points to one of the
+    # corners have values of 2 instead of 1
+    data1[0][0] = np.nan
+    data1[-1][-1] = np.nan
+    data1[0][1] = 2
+    data1[1][0] = 2
 
-    assert np.any(np.isnan(filled_grid))
-    assert np.allclose(filled_grid, expected_values)
+    # for data2 make center value nan
+    data2[2][2] = np.nan
+    data2[2][2] = np.nan
+
+    # make dataset with 2 variables
+    grid = make_xarray_grid(
+        (easting, northing),
+        (data1, data2),
+        data_names=("dummy1", "dummy2"),
+        dims=("north", "east"),
+    )
+
+    # test passing a DataArray
+    filled_da = fill_nans(grid.dummy1, **test_input)
+    assert isinstance(filled_da, xr.DataArray)
+    assert filled_da.name == "dummy1"
+    assert filled_da.dims == ("north", "east")
+    assert filled_da.notnull().any()
+    assert np.allclose(filled_da.values, expected)
+
+    # test passing a Dataset, which also tests that variables names are
+    # preserved
+    filled_ds = fill_nans(grid, **test_input)
+    assert list(filled_ds.variables) == ["east", "north", "dummy1", "dummy2"]
+    assert filled_ds.dummy1.notnull().any()
+    assert filled_ds.dummy2.notnull().any()
+    assert np.allclose(filled_ds.dummy1.values, expected)
 
 
 def test_parse_engine():

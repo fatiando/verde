@@ -96,6 +96,7 @@ Utilities
     grid_to_table
     make_xarray_grid
     median_distance
+    fill_nans
 
 Input/Output
 ------------

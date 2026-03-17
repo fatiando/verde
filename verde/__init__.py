@@ -36,7 +36,13 @@ from .projections import project_grid, project_region
 from .scipygridder import Cubic, Linear, ScipyGridder
 from .spline import Spline, SplineCV
 from .trend import Trend
-from .utils import grid_to_table, make_xarray_grid, maxabs, variance_to_weights
+from .utils import (
+    fill_nans,
+    grid_to_table,
+    make_xarray_grid,
+    maxabs,
+    variance_to_weights,
+)
 from .vector import Vector, VectorSpline2D
 
 

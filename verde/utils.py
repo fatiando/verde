@@ -13,9 +13,9 @@ import dask
 import numpy as np
 import pandas as pd
 import xarray as xr
-import verde as vd
 from scipy.spatial import cKDTree
 
+import verde as vd
 
 try:
     from pykdtree.kdtree import KDTree as pyKDTree
@@ -747,35 +747,84 @@ def kdtree(coordinates, use_pykdtree=True, **kwargs):
     return tree
 
 
-def fill_nans(grid):
+def fill_nans(grid, k=1, reduction=np.mean):
     """
-    Fill missing values in a grid by nearest neighbor interpolation
+    Fill missing values in a grid by nearest neighbor interpolation. This will
+    fill missing values for all variables in the supplied grid.
 
     Parameters
     ----------
-    grid : :class:`xarray.DataArray`
-        A 2D grid with one or more data variables.
+    grid : :class:`xarray.DataArray` | :class:`xarray.Dataset`
+        A 2D grid with one or more data variable, some of which may have
+        missing values (NaNs).
+    k : int
+        The number of neighbors to use for each interpolated point. Default is
+        1.
+    reduction : function
+        Function used to combine the values of the *k* neighbors into a single
+        value. Can be any function that takes a 1D numpy array as input and
+        outputs a single value. Default is :func:`numpy.mean`.
+
     Returns
     -------
-    grid : :class:`xarray.DataArray`
-        A 2D grid with the NaN values filled.
+    filled_grid : :class:`xarray.DataArray` | :class:`xarray.Dataset`
+        A 2D grid with the NaN values filled for each variable.
     """
+    # get grid coordinate names
+    coord_names = list(grid.coords)
 
-    filled_grid = grid.copy()
+    # turn grid into dataframe
+    df = vd.grid_to_table(grid)
 
-    not_nan_values = np.argwhere(~np.isnan(grid.values))
-    unknown_indices = np.argwhere(np.isnan(grid.values))
+    filled_dataarrays = []
+    # iterate over columns
+    for series_name, _series in df.items():
+        if series_name in coord_names:
+            continue
 
-    knn = vd.KNeighbors()
-    easting, northing = not_nan_values[:, 0], not_nan_values[:, 1]
-    knn.fit((easting, northing), grid.values[not_nan_values[:, 0],
-                    not_nan_values[:, 1]])
-    predicted_values = knn_imputer.predict((easting, northing))
+        # drop rows with data column is NaN
+        df_no_nans = df[df[series_name].notna()]
 
-    for i, idx in enumerate(unknown_indices):
-        filled_grid[tuple(idx)] = predicted_values[i]
+        # get coordinate columns (first two columns)
+        coords = (df_no_nans.iloc[:, 1], df_no_nans.iloc[:, 0])
 
-    return filled_grid
+        # find the K nearest neighbors to each NaN
+        kn = vd.KNeighbors(k=k, reduction=reduction)
+        kn.fit(coords, df_no_nans[series_name])
+
+        # predict back onto a grid and append to list
+        filled_da = kn.grid(
+            coordinates=(grid[coord_names[0]], grid[coord_names[1]]),
+            data_names=series_name,
+            dims=(coord_names[1], coord_names[0]),
+        )[series_name]
+
+        # if only 1 variable, return it
+        if len(df.columns) - 2 == 1:
+            return filled_da
+
+        filled_dataarrays.append(filled_da)
+
+    return xr.merge(filled_dataarrays)
+
+    # if we only want to support 1 variable use below code instead
+    # # turn grid into dataframe
+    # df = vd.grid_to_table(grid)
+
+    # # drop rows with data column is NaN
+    # df_no_nans = df[df.iloc[:, -1].notna()]
+
+    # # get coordinate columns (first two columns)
+    # coords = (df_no_nans.iloc[:, 1], df_no_nans.iloc[:, 0])
+
+    # # find the K nearest neighbors to each NaN
+    # kn = vd.KNeighbors(k=k, reduction=reduction)
+    # kn.fit(coords, df_no_nans.iloc[:, -1])
+
+    # # predict back onto a grid and return
+    # return kn.grid(
+    #   coordinates=(grid[coord_names[0]], grid[coord_names[1]]),
+    # ).scalars
 
 
 def partition_by_sum(array, parts):
