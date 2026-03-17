@@ -265,8 +265,7 @@ def maxabs(*args, nan=True, percentile=100):
 
 def minmax(*args, nan=True, min_percentile=0, max_percentile=100):
     """
-    Calculate the minimum and maximum values (or percentiles) of the given
-    array(s).
+    Calculate the minimum and maximum values of the given array(s).
 
     Use this to set the limits of your colorbars for non-diverging data.
 
