@@ -441,7 +441,7 @@ def test_minmax_percentile():
     with pytest.raises(ValueError, match=msg):
         minmax(data, max_percentile=110)
 
-        
+
 def test_maxabs_nans():
     """
     Test maxabs handles nans correctly
