@@ -98,7 +98,7 @@ def test_fill_nans(test_input, expected):
     assert filled_da.name == "dummy1"
     assert filled_da.dims == ("north", "east")
     assert filled_da.notnull().any()
-    assert np.allclose(filled_da.values, expected)
+    np.testing.assert_allclose(filled_da.values, expected)
 
     # test passing a Dataset, which also tests that variables names are
     # preserved
@@ -106,7 +106,7 @@ def test_fill_nans(test_input, expected):
     assert list(filled_ds.variables) == ["east", "north", "dummy1", "dummy2"]
     assert filled_ds.dummy1.notnull().any()
     assert filled_ds.dummy2.notnull().any()
-    assert np.allclose(filled_ds.dummy1.values, expected)
+    np.testing.assert_allclose(filled_ds.dummy1.values, expected)
 
 
 def test_parse_engine():
