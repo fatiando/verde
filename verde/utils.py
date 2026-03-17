@@ -359,7 +359,7 @@ def minmax(*args, nan=True, min_percentile=0, max_percentile=100):
         npmax = np.max
         nppercentile = np.percentile
 
-    if min_percentile == 0 and max_percentile == 0:
+    if min_percentile == 0 and max_percentile == 100:
         min_ = npmin([npmin(i) for i in arrays])
         max_ = npmax([npmax(i) for i in arrays])
         return min_, max_
