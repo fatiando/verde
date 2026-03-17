@@ -366,31 +366,14 @@ def minmax(*args, nan=True, min_percentile=0, max_percentile=100):
     else:
         raise TypeError(f"The 'nan' parameter ({nan}) must be a boolean.")
 
-    # get min value
-    if min_percentile == 0:
+    if min_percentile == 0 and max_percentile == 0:
         min_ = npmin([npmin(i) for i in arrays])
-
-    # get max value
-    if max_percentile == 100:
         max_ = npmax([npmax(i) for i in arrays])
+        return min_, max_
 
-    # calculate min, max or both percentiles
-    if min_percentile != 0 or max_percentile != 100:
-        # concatenate values of all arrays
-        combined_array = np.concatenate([a.ravel() for a in arrays])
-
-        # if neither percentiles are defaults, calculate them together
-        if min_percentile != 0 and max_percentile != 100:
-            min_, max_ = nppercentile(combined_array, [min_percentile, max_percentile])
-
-        # only calculate min percentile
-        elif min_percentile != 0:
-            min_ = nppercentile(combined_array, min_percentile)
-
-        # only calculate max percentile
-        if max_percentile != 100:
-            max_ = nppercentile(combined_array, max_percentile)
-
+    # concatenate values of all arrays
+    combined_array = np.concatenate([a.ravel() for a in arrays])
+    min_, max_ = nppercentile(combined_array, [min_percentile, max_percentile])
     return min_, max_
 
 
