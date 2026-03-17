@@ -354,16 +354,14 @@ def minmax(*args, nan=True, min_percentile=0, max_percentile=100):
         )
 
     # determine which functions to use
-    if nan is True:
+    if nan:
         npmin = np.nanmin
         npmax = np.nanmax
         nppercentile = np.nanpercentile
-    elif nan is False:
+    else:
         npmin = np.min
         npmax = np.max
         nppercentile = np.percentile
-    else:
-        raise TypeError(f"The 'nan' parameter ({nan}) must be a boolean.")
 
     if min_percentile == 0 and max_percentile == 0:
         min_ = npmin([npmin(i) for i in arrays])
