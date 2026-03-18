@@ -3,6 +3,7 @@
 The following people have made contributions to the project (in alphabetical
 order by last name) and are considered "The Verde Developers":
 
+* [Gabriel G. R. de Lima](https://github.com/Gabriel-Goes) - Universidade de São Paulo, Brazil (ORCID: [0009-0009-7325-8524](https://orcid.org/0009-0009-7325-8524))
 * [Sarah Margrethe Askevold](https://github.com/SAskevold) - University of Liverpool, UK (ORCID: [0000-0002-9434-3594](https://www.orcid.org/0000-0002-9434-3594))
 * [David Hoese](https://github.com/djhoese) - University of Wisconsin - Madison, USA (ORCID: [0000-0003-1167-7829](https://www.orcid.org/0000-0003-1167-7829))
 * [Lindsey Heagy](https://github.com/lheagy) - University of California Berkeley, Department of Statistics, USA (ORCID: [0000-0002-1551-5926](https://www.orcid.org/0000-0002-1551-5926))
