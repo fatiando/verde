@@ -7,13 +7,17 @@
 """
 General utilities.
 """
+import copy
 import functools
+import warnings
 
 import dask
 import numpy as np
 import pandas as pd
 import xarray as xr
 from scipy.spatial import cKDTree
+from sklearn.exceptions import NotFittedError
+from sklearn.utils.validation import check_is_fitted
 
 import verde as vd
 
@@ -854,23 +858,29 @@ def kdtree(coordinates, use_pykdtree=True, **kwargs):
     return tree
 
 
-def fill_nans(grid, k=1, reduction=np.mean):
+def fill_nans(
+    grid,
+    interpolator=None,
+):
     """
-    Fill missing values in a grid by nearest neighbor interpolation. This will
-    fill missing values for all variables in the supplied grid.
+    Fill missing values in a grid with a choice of methods.
+    This will  fill missing values for all variables in the supplied grid.
+
+    Methods include 'linear', 'cubic', 'spline', 'trend', and 'nearest'.
+
+    All keyword arguments are passed to the `fit` methods of the relevant
+    verde class based on the selected 'method'.
 
     Parameters
     ----------
     grid : :class:`xarray.DataArray` | :class:`xarray.Dataset`
         A 2D grid with one or more data variable, some of which may have
         missing values (NaNs).
-    k : int
-        The number of neighbors to use for each interpolated point. Default is
-        1.
-    reduction : function
-        Function used to combine the values of the *k* neighbors into a single
-        value. Can be any function that takes a 1D numpy array as input and
-        outputs a single value. Default is :func:`numpy.mean`.
+    interpolator : class | None
+        The verde interpolator class instance to use for filling missing
+        values. Can be one of the following  :class:`verde.KNeighbors`,
+        :class:`verde.Linear`, :class:`verde.Cubic`, :class:`verde.Spline`,
+        :class:`verde.Trend`, by default is class:`verde.KNeighbors`
 
     Returns
     -------
@@ -878,6 +888,9 @@ def fill_nans(grid, k=1, reduction=np.mean):
         A 2D grid with the NaN values filled for each variable.
     """
     grid = grid.copy()
+
+    if interpolator is None:
+        interpolator = vd.KNeighbors()
 
     # if input was a datarray turn into dataset
     if isinstance(grid, xr.DataArray):
@@ -898,47 +911,50 @@ def fill_nans(grid, k=1, reduction=np.mean):
         df_no_nans = df[df[var_name].notna()]
 
         # get coordinate columns (first two columns)
-        coords = (df_no_nans.iloc[:, 1], df_no_nans.iloc[:, 0])
+        coords_no_nans = (df_no_nans.iloc[:, 1], df_no_nans.iloc[:, 0])
 
-        # find the K nearest neighbors to each NaN
-        kn = vd.KNeighbors(k=k, reduction=reduction)
-        kn.fit(coords, df_no_nans[var_name])
+        interp = copy.deepcopy(interpolator)
+
+        # interpolator.fit(coords, df_no_nans[var_name])
+
+        # raise error if supplied interpolator is already fitted
+        try:
+            check_is_fitted(interp)
+            msg = "The supplied interpolator is already fitted!"
+            raise UserWarning(msg)
+        except NotFittedError:
+            pass
+
+        interp.fit(coords_no_nans, df_no_nans[var_name])
 
         # predict back onto a grid
-        filled_da = kn.grid(
+        filled_da = interp.grid(
             coordinates=(ds[coord_names[0]], ds[coord_names[1]]),
             data_names=var_name,
             dims=(coord_names[1], coord_names[0]),
         )[var_name]
 
-        # if input was a datarray, fill nans with new values and return that
-        if isinstance(grid, xr.DataArray):
-            # fill nans in original grid with new values
-            return grid.where(grid.notnull(), filled_da)
+        # warn if still nans due to no extrapolation allowed for
+        # `Cubic` and `Linear` interpolators
+        if (filled_da.isnull().any()) and (
+            isinstance(interp, (vd.scipygridder.Cubic, vd.scipygridder.Linear))
+        ):
+            msg = (
+                "NaNs are still present due to the choice of interpolator "
+                f"{type(interp)}, which doesn't allow extrapolation. "
+                "Run `fill_na()` again with an interpolator of either "
+                "`vd.KNeighbors` or `vd.Spline` to fill remaining values."
+            )
+            warnings.warn(msg, UserWarning, stacklevel=2)
 
-        # if input was a dataset, update each dataarray and append to list
-        grid[var_name] = grid[var_name].where(grid[var_name].notnull(), filled_da)
+        # if input was a datarray, fill nans with new values and return that
+        # if it was a dataset, update each variable
+        if isinstance(grid, xr.DataArray):
+            grid = grid.where(grid.notnull(), filled_da)
+        else:
+            grid[var_name] = grid[var_name].where(grid[var_name].notnull(), filled_da)
 
     return grid
-
-    # if we only want to support 1 variable use below code instead
-    # # turn grid into dataframe
-    # df = vd.grid_to_table(grid)
-
-    # # drop rows with data column is NaN
-    # df_no_nans = df[df.iloc[:, -1].notna()]
-
-    # # get coordinate columns (first two columns)
-    # coords = (df_no_nans.iloc[:, 1], df_no_nans.iloc[:, 0])
-
-    # # find the K nearest neighbors to each NaN
-    # kn = vd.KNeighbors(k=k, reduction=reduction)
-    # kn.fit(coords, df_no_nans.iloc[:, -1])
-
-    # # predict back onto a grid and return
-    # return kn.grid(
-    #   coordinates=(grid[coord_names[0]], grid[coord_names[1]]),
-    # ).scalars
 
 
 def partition_by_sum(array, parts):

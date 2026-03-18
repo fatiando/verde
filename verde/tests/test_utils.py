@@ -16,6 +16,8 @@ import pytest
 import xarray as xr
 from scipy.spatial import cKDTree
 
+import verde
+
 from .. import utils
 from ..coordinates import grid_coordinates, scatter_points
 from ..utils import (
@@ -34,50 +36,11 @@ from ..utils import (
     variance_to_weights,
 )
 
-fill_nans_test = [
-    (
-        {"k": 1},
-        np.array(
-            [
-                [4.0, 4.0, 1.0, 1.0, 1.0, 1.0],
-                [4.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-            ]
-        ),
-    ),
-    (
-        {"k": 2},
-        np.array(
-            [
-                [4.0, 4.0, 1.0, 1.0, 1.0, 1.0],
-                [4.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-            ]
-        ),
-    ),
-    (
-        {"k": 3},
-        np.array(
-            [
-                [3.0, 4.0, 1.0, 1.0, 1.0, 1.0],
-                [4.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-            ]
-        ),
-    ),
-]
 
-
-@pytest.mark.parametrize(("test_input", "expected"), fill_nans_test)
-def test_fill_nans(test_input, expected):
+def test_fill_nans_types_metadata_names():
     """
-    Test filling NaNs on a small sample grid with multiple numbers of neighbors
+    Test for correct types, retained metadata, and names when filling grid
+    NaNs.
     """
     region = (-10, -5, 6, 10)
     easting = np.linspace(*region[:2], 6, dtype=float)
@@ -86,7 +49,7 @@ def test_fill_nans(test_input, expected):
     data2 = np.ones((northing.size, easting.size))
 
     # for data1 make 2 corners nan, and the nearest two points to one of the
-    # corners have values of 2 instead of 1
+    # corners have values of 4 instead of 1
     data1[0][0] = np.nan
     data1[-1][-1] = np.nan
     data1[0][1] = 4
@@ -105,33 +68,247 @@ def test_fill_nans(test_input, expected):
     )
     # add attribute to test it's retained
     grid = grid.assign_attrs({"units": "mGal"})
+    ds = grid.dummy1.to_dataset(name="dummy1").assign_attrs({"units": "mGal"})
 
-    # test passing a DataArray
-    filled_da = fill_nans(grid.dummy1, **test_input)
+    # 3 types passed, dataarray, dataset with 2 vars, dataset with 1 var
+    filled_da = fill_nans(grid.dummy1)
+    filled_ds_2var = fill_nans(grid)
+    filled_ds_1var = fill_nans(ds)
+
+    # check return types match inputs
     assert isinstance(filled_da, xr.DataArray)
+    assert isinstance(filled_ds_2var, xr.Dataset)
+    assert isinstance(filled_ds_1var, xr.Dataset)
+
+    # check dimensions and names haven't changed
     assert filled_da.name == "dummy1"
     assert filled_da.dims == ("north", "east")
-    assert filled_da.notnull().any()
+    assert set(filled_ds_2var.variables) == set(["east", "north", "dummy1", "dummy2"])
+    assert set(filled_ds_1var.variables) == set(["east", "north", "dummy1"])
+
+    # assert metadata hasn't changed
     with pytest.raises(AttributeError):
         filled_da.units  # attribute only for dataset, not variable
+    assert filled_ds_2var.units == "mGal"
+    assert filled_ds_1var.units == "mGal"
+
+
+fill_nans_nearest_test = [
+    (
+        None,
+        np.array(
+            [
+                [4.0, 4.0, 1.0, 1.0, 1.0, 1.0],
+                [4.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+            ]
+        ),
+    ),
+    (
+        verde.KNeighbors(k=2),
+        np.array(
+            [
+                [4.0, 4.0, 1.0, 1.0, 1.0, 1.0],
+                [4.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+            ]
+        ),
+    ),
+    (
+        verde.KNeighbors(k=3),
+        np.array(
+            [
+                [3.0, 4.0, 1.0, 1.0, 1.0, 1.0],
+                [4.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                [1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+            ]
+        ),
+    ),
+]
+
+
+@pytest.mark.parametrize(("interpolator", "expected"), fill_nans_nearest_test)
+def test_fill_nans_nearest(interpolator, expected):
+    """
+    Test filling NaNs on a small sample grid with multiple numbers of neighbors
+    """
+    region = (-10, -5, 6, 10)
+    easting = np.linspace(*region[:2], 6, dtype=float)
+    northing = np.linspace(*region[2:], 5, dtype=float)
+    data1 = np.ones((northing.size, easting.size))
+    data2 = np.ones((northing.size, easting.size))
+
+    # for data1 make 2 corners nan, and the nearest two points to one of the
+    # corners have values of 4 instead of 1
+    data1[0][0] = np.nan
+    data1[-1][-1] = np.nan
+    data1[0][1] = 4
+    data1[1][0] = 4
+
+    # for data2 make center value nan
+    data2[2][2] = np.nan
+    data2[2][2] = np.nan
+
+    # make dataset with 2 variables
+    grid = make_xarray_grid(
+        (easting, northing),
+        (data1, data2),
+        data_names=("dummy1", "dummy2"),
+    )
+    ds = grid.dummy1.to_dataset(name="dummy1")
+
+    # 3 types passed, dataarray, dataset with 2 vars, dataset with 1 var
+    filled_da = fill_nans(grid.dummy1, interpolator)
+    filled_ds_2var = fill_nans(grid, interpolator)
+    filled_ds_1var = fill_nans(ds, interpolator)
+
+    # check no nans remain
+    assert filled_da.notnull().any()
+    assert filled_ds_2var.dummy1.notnull().any()
+    assert filled_ds_2var.dummy2.notnull().any()
+    assert filled_ds_1var.dummy1.notnull().any()
+
+    # check correct values
     np.testing.assert_allclose(filled_da.values, expected)
+    np.testing.assert_allclose(filled_ds_2var.dummy1.values, expected)
+    np.testing.assert_allclose(filled_ds_1var.dummy1.values, expected)
 
-    # test passing a Dataset, which also tests that variables names are
-    # preserved
-    filled_ds = fill_nans(grid, **test_input)
-    assert set(filled_ds.variables) == set(["east", "north", "dummy1", "dummy2"])
-    assert filled_ds.dummy1.notnull().any()
-    assert filled_ds.dummy2.notnull().any()
-    assert filled_ds.units == "mGal"
-    np.testing.assert_allclose(filled_ds.dummy1.values, expected)
 
-    # test passing dataset with 1 variable
-    ds = grid.dummy1.to_dataset(name="dummy1").assign_attrs({"units": "mGal"})
-    filled_ds = fill_nans(ds, **test_input)
-    assert set(filled_ds.variables) == set(["east", "north", "dummy1"])
-    assert filled_ds.dummy1.notnull().any()
-    assert filled_ds.units == "mGal"
-    np.testing.assert_allclose(filled_ds.dummy1.values, expected)
+fill_nans_extrapolation = [
+    (
+        verde.Linear(),
+        np.array(
+            [
+                [np.nan, 1, 1, 1, 1, 1],
+                [1, 2, 2, 2, 1, 1],
+                [1, 2, 2, 2, 1, 1],
+                [1, 2, 2, 2, 1, 1],
+                [1, 1, 1, 1, 1, np.nan],
+            ]
+        ),
+    ),
+    (
+        verde.Cubic(),
+        np.array(
+            [
+                [np.nan, 1, 1, 1, 1, 1],
+                [1, 2, 2, 2, 1, 1],
+                [1, 2, 2.3629, 2, 1, 1],
+                [1, 2, 2, 2, 1, 1],
+                [1, 1, 1, 1, 1, np.nan],
+            ]
+        ),
+    ),
+]
+
+
+@pytest.mark.parametrize(("interpolator", "expected"), fill_nans_extrapolation)
+def test_fill_nans_linear_and_cubic(interpolator, expected):
+    """
+    Test filling NaNs on a small sample grid with a linear interpolation
+    """
+    region = (-10, -5, 6, 10)
+    easting = np.linspace(*region[:2], 6, dtype=float)
+    northing = np.linspace(*region[2:], 5, dtype=float)
+
+    # make data with 2 corners as nans, and a nan in the middle surrounded
+    # by 2's, and 1's elsewhere
+    data = np.array(
+        [
+            [np.nan, 1, 1, 1, 1, 1],
+            [1, 2, 2, 2, 1, 1],
+            [1, 2, np.nan, 2, 1, 1],
+            [1, 2, 2, 2, 1, 1],
+            [1, 1, 1, 1, 1, np.nan],
+        ]
+    )
+
+    # make dataset
+    grid = make_xarray_grid(
+        (easting, northing),
+        data,
+        data_names="dummy",
+    )
+
+    # check warning about extrapolation raised
+    with pytest.warns(
+        UserWarning, match="NaNs are still present due to the choice of interpolator"
+    ):
+        filled_da = fill_nans(grid.dummy, interpolator)
+
+    # check correct values
+    np.testing.assert_allclose(filled_da.values, expected, rtol=1e-4)
+
+
+fill_nans_spline = [
+    (
+        verde.Spline(),
+        np.array(
+            [
+                [0.00254, 1, 1, 1, 1, 1],
+                [1, 2, 2, 2, 1, 1],
+                [1, 2, 2.33529, 2, 1, 1],
+                [1, 2, 2, 2, 1, 1],
+                [1, 1, 1, 1, 1, 0.58934],
+            ]
+        ),
+    ),
+    (
+        verde.Spline(damping=100),
+        np.array(
+            [
+                [0.80490, 1, 1, 1, 1, 1],
+                [1, 2, 2, 2, 1, 1],
+                [1, 2, 0.25299, 2, 1, 1],
+                [1, 2, 2, 2, 1, 1],
+                [1, 1, 1, 1, 1, 0.76676],
+            ]
+        ),
+    ),
+]
+
+
+@pytest.mark.parametrize(("interpolator", "expected"), fill_nans_spline)
+def test_fill_nans_spline(interpolator, expected):
+    """
+    Test filling NaNs on a small sample grid with a spline interpolation
+    """
+    region = (-10, -5, 6, 10)
+    easting = np.linspace(*region[:2], 6, dtype=float)
+    northing = np.linspace(*region[2:], 5, dtype=float)
+
+    # make data with 2 corners as nans, and a nan in the middle surrounded
+    # by 2's, and 1's elsewhere
+    data = np.array(
+        [
+            [np.nan, 1, 1, 1, 1, 1],
+            [1, 2, 2, 2, 1, 1],
+            [1, 2, np.nan, 2, 1, 1],
+            [1, 2, 2, 2, 1, 1],
+            [1, 1, 1, 1, 1, np.nan],
+        ]
+    )
+
+    # make dataset
+    grid = make_xarray_grid(
+        (easting, northing),
+        data,
+        data_names="dummy",
+    )
+
+    filled_da = fill_nans(grid.dummy, interpolator)
+
+    # check no nans remain
+    assert filled_da.notnull().any()
+
+    # check correct values
+    np.testing.assert_allclose(filled_da.values, expected, rtol=1e-3)
 
 
 def test_parse_engine():
