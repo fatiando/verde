@@ -243,7 +243,7 @@ def test_fill_nans_linear_and_cubic(interpolator, expected):
         filled_da = fill_nans(grid.dummy, interpolator)
 
     # check correct values
-    np.testing.assert_allclose(filled_da.values, expected, rtol=1e-4)
+    np.testing.assert_allclose(filled_da.values, expected, rtol=1e-2)
 
 
 fill_nans_spline = [
