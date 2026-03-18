@@ -877,34 +877,43 @@ def fill_nans(grid, k=1, reduction=np.mean):
     filled_grid : :class:`xarray.DataArray` | :class:`xarray.Dataset`
         A 2D grid with the NaN values filled for each variable.
     """
-    # get grid coordinate names
-    coord_names = list(grid.coords)
+    grid = grid.copy()
 
-    # turn grid into dataframe
-    df = vd.grid_to_table(grid)
+    # if input was a datarray turn into dataset
+    if isinstance(grid, xr.DataArray):
+        ds = grid.to_dataset()
+    else:
+        ds = grid
+
+    # get grid coordinate names
+    coord_names = list(ds.coords)
 
     filled_dataarrays = []
-    # iterate over columns
-    for series_name, _series in df.items():
-        if series_name in coord_names:
-            continue
+    # iterate over variables
+    for var_name, var_da in ds.items():
+
+        # turn grid into dataframe
+        df = vd.grid_to_table(var_da)
 
         # drop rows with data column is NaN
-        df_no_nans = df[df[series_name].notna()]
+        df_no_nans = df[df[var_name].notna()]
 
         # get coordinate columns (first two columns)
         coords = (df_no_nans.iloc[:, 1], df_no_nans.iloc[:, 0])
 
         # find the K nearest neighbors to each NaN
         kn = vd.KNeighbors(k=k, reduction=reduction)
-        kn.fit(coords, df_no_nans[series_name])
+        kn.fit(coords, df_no_nans[var_name])
 
-        # predict back onto a grid and append to list
+        # predict back onto a grid
         filled_da = kn.grid(
-            coordinates=(grid[coord_names[0]], grid[coord_names[1]]),
-            data_names=series_name,
+            coordinates=(ds[coord_names[0]], ds[coord_names[1]]),
+            data_names=var_name,
             dims=(coord_names[1], coord_names[0]),
-        )[series_name]
+        )[var_name]
+
+        # fill nans in original grid with new values
+        filled_da = var_da.where(var_da.notnull(), filled_da)
 
         # if input was a datarray, return that
         if isinstance(grid, xr.DataArray):
