@@ -103,6 +103,8 @@ def test_fill_nans(test_input, expected):
         data_names=("dummy1", "dummy2"),
         dims=("north", "east"),
     )
+    # add attribute to test it's retained
+    grid = grid.assign_attrs({"units": "mGal"})
 
     # test passing a DataArray
     filled_da = fill_nans(grid.dummy1, **test_input)
@@ -110,20 +112,25 @@ def test_fill_nans(test_input, expected):
     assert filled_da.name == "dummy1"
     assert filled_da.dims == ("north", "east")
     assert filled_da.notnull().any()
+    with pytest.raises(AttributeError):
+        filled_da.units  # attribute only for dataset, not variable
     np.testing.assert_allclose(filled_da.values, expected)
 
     # test passing a Dataset, which also tests that variables names are
     # preserved
     filled_ds = fill_nans(grid, **test_input)
-    assert list(filled_ds.variables) == ["east", "north", "dummy1", "dummy2"]
+    assert set(filled_ds.variables) == set(["east", "north", "dummy1", "dummy2"])
     assert filled_ds.dummy1.notnull().any()
     assert filled_ds.dummy2.notnull().any()
+    assert filled_ds.units == "mGal"
     np.testing.assert_allclose(filled_ds.dummy1.values, expected)
 
     # test passing dataset with 1 variable
-    filled_ds = fill_nans(grid.dummy1.to_dataset(name="dummy1"), **test_input)
-    assert list(filled_ds.variables) == ["east", "north", "dummy1"]
+    ds = grid.dummy1.to_dataset(name="dummy1").assign_attrs({"units": "mGal"})
+    filled_ds = fill_nans(ds, **test_input)
+    assert set(filled_ds.variables) == set(["east", "north", "dummy1"])
     assert filled_ds.dummy1.notnull().any()
+    assert filled_ds.units == "mGal"
     np.testing.assert_allclose(filled_ds.dummy1.values, expected)
 
 

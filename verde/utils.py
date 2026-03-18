@@ -888,7 +888,6 @@ def fill_nans(grid, k=1, reduction=np.mean):
     # get grid coordinate names
     coord_names = list(ds.coords)
 
-    filled_dataarrays = []
     # iterate over variables
     for var_name, var_da in ds.items():
 
@@ -912,16 +911,15 @@ def fill_nans(grid, k=1, reduction=np.mean):
             dims=(coord_names[1], coord_names[0]),
         )[var_name]
 
-        # fill nans in original grid with new values
-        filled_da = var_da.where(var_da.notnull(), filled_da)
-
-        # if input was a datarray, return that
+        # if input was a datarray, fill nans with new values and return that
         if isinstance(grid, xr.DataArray):
-            return filled_da
+            # fill nans in original grid with new values
+            return grid.where(grid.notnull(), filled_da)
 
-        filled_dataarrays.append(filled_da)
+        # if input was a dataset, update each dataarray and append to list
+        grid[var_name] = grid[var_name].where(grid[var_name].notnull(), filled_da)
 
-    return xr.merge(filled_dataarrays)
+    return grid
 
     # if we only want to support 1 variable use below code instead
     # # turn grid into dataframe
