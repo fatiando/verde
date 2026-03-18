@@ -180,6 +180,83 @@ def test_fill_nans_nearest(interpolator, expected):
     np.testing.assert_allclose(filled_ds_1var.dummy1.values, expected)
 
 
+fill_nans_trend_test = [
+    (
+        verde.Trend(0),
+        np.array(
+            [
+                [1.2962963, 1, 1, 1, 1, 1],
+                [1, 2, 2, 2, 1, 1],
+                [1, 2, 1.2962963, 2, 1, 1],
+                [1, 2, 2, 2, 1, 1],
+                [1, 1, 1, 1, 1, 1.2962963],
+            ]
+        ),
+    ),
+    (
+        verde.Trend(1),
+        np.array(
+            [
+                [1.4616769, 1, 1, 1, 1, 1],
+                [1, 2, 2, 2, 1, 1],
+                [1, 2, 1.32583434, 2, 1, 1],
+                [1, 2, 2, 2, 1, 1],
+                [1, 1, 1, 1, 1, 1.13302555],
+            ]
+        ),
+    ),
+    (
+        verde.Trend(5),
+        np.array(
+            [
+                [0.23084858, 1, 1, 1, 1, 1],
+                [1, 2, 2, 2, 1, 1],
+                [1, 2, 2.22928874, 2, 1, 1],
+                [1, 2, 2, 2, 1, 1],
+                [1, 1, 1, 1, 1, 2.22563067],
+            ]
+        ),
+    ),
+]
+
+
+@pytest.mark.parametrize(("interpolator", "expected"), fill_nans_trend_test)
+def test_fill_nans_trend(interpolator, expected):
+    """
+    Test filling NaNs on a small sample grid with multiple trend orders
+    """
+    region = (-10, -5, 6, 10)
+    easting = np.linspace(*region[:2], 6, dtype=float)
+    northing = np.linspace(*region[2:], 5, dtype=float)
+
+    # make data with 2 corners as nans, and a nan in the middle surrounded
+    # by 2's, and 1's elsewhere
+    data = np.array(
+        [
+            [np.nan, 1, 1, 1, 1, 1],
+            [1, 2, 2, 2, 1, 1],
+            [1, 2, np.nan, 2, 1, 1],
+            [1, 2, 2, 2, 1, 1],
+            [1, 1, 1, 1, 1, np.nan],
+        ]
+    )
+
+    # make dataset
+    grid = make_xarray_grid(
+        (easting, northing),
+        data,
+        data_names="dummy",
+    )
+
+    filled_da = fill_nans(grid.dummy, interpolator)
+
+    # check no nans remain
+    assert filled_da.notnull().any()
+
+    # check correct values
+    np.testing.assert_allclose(filled_da.values, expected)
+
+
 fill_nans_extrapolation = [
     (
         verde.Linear(),

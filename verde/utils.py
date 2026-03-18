@@ -863,13 +863,11 @@ def fill_nans(
     interpolator=None,
 ):
     """
-    Fill missing values in a grid with a choice of methods.
+    Fill missing values in a grid with a choice of interpolation method.
     This will  fill missing values for all variables in the supplied grid.
 
-    Methods include 'linear', 'cubic', 'spline', 'trend', and 'nearest'.
-
-    All keyword arguments are passed to the `fit` methods of the relevant
-    verde class based on the selected 'method'.
+    Interpolation methods include nearest neighbor, linear, trend, cubic,
+    or splines.
 
     Parameters
     ----------
@@ -943,7 +941,8 @@ def fill_nans(
                 "NaNs are still present due to the choice of interpolator "
                 f"{type(interp)}, which doesn't allow extrapolation. "
                 "Run `fill_na()` again with an interpolator of either "
-                "`vd.KNeighbors` or `vd.Spline` to fill remaining values."
+                "`vd.KNeighbors`, `vd.Trend`, or `vd.Spline` to fill "
+                "remaining values."
             )
             warnings.warn(msg, UserWarning, stacklevel=2)
 
