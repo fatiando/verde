@@ -911,17 +911,15 @@ def fill_nans(
         # get coordinate columns (first two columns)
         coords_no_nans = (df_no_nans.iloc[:, 1], df_no_nans.iloc[:, 0])
 
-        interp = copy.deepcopy(interpolator)
-
-        # interpolator.fit(coords, df_no_nans[var_name])
-
         # raise error if supplied interpolator is already fitted
         try:
-            check_is_fitted(interp)
+            check_is_fitted(interpolator)
             msg = "The supplied interpolator is already fitted!"
             raise UserWarning(msg)
         except NotFittedError:
             pass
+
+        interp = copy.deepcopy(interpolator)
 
         interp.fit(coords_no_nans, df_no_nans[var_name])
 
