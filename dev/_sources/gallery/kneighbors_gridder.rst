@@ -56,8 +56,8 @@ projected prior to interpolation.
     <xarray.Dataset> Size: 3MB
     Dimensions:       (latitude: 600, longitude: 583)
     Coordinates:
-      * longitude     (longitude) float64 5kB 245.0 245.0 245.0 ... 254.7 254.7
       * latitude      (latitude) float64 5kB 20.0 20.02 20.03 ... 29.96 29.97 29.99
+      * longitude     (longitude) float64 5kB 245.0 245.0 245.0 ... 254.7 254.7
     Data variables:
         bathymetry_m  (latitude, longitude) float64 3MB -3.669e+03 ... -66.5
     Attributes:
@@ -142,7 +142,7 @@ projected prior to interpolation.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.183 seconds)
+   **Total running time of the script:** (0 minutes 2.932 seconds)
 
 
 .. _sphx_glr_download_gallery_kneighbors_gridder.py:

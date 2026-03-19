@@ -46,8 +46,8 @@ are shared with most other gridders: predict, grid, profile, and scatter.
      <xarray.Dataset> Size: 122kB
     Dimensions:   (northing: 150, easting: 100)
     Coordinates:
-      * easting   (easting) float64 800B 0.0 50.51 101.0 ... 4.949e+03 5e+03
       * northing  (northing) float64 1kB -5e+03 -4.966e+03 -4.933e+03 ... -33.56 0.0
+      * easting   (easting) float64 800B 0.0 50.51 101.0 ... 4.949e+03 5e+03
     Data variables:
         scalars   (northing, easting) float64 120kB 0.0 126.6 ... -126.6 -4.899e-13
     Attributes:
@@ -106,7 +106,7 @@ are shared with most other gridders: predict, grid, profile, and scatter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.115 seconds)
+   **Total running time of the script:** (0 minutes 0.108 seconds)
 
 
 .. _sphx_glr_download_gallery_checkerboard.py:

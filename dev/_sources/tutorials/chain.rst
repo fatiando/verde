@@ -130,7 +130,7 @@ polynomial trend, and then fits a standard gridder to the trend residuals.
  .. code-block:: none
 
     Chain(steps=[('reduce',
-                  BlockReduce(reduction=<function median at 0x7f06bd7b99f0>,
+                  BlockReduce(reduction=<function median at 0x7f0d36285730>,
                               spacing=18500.0)),
                  ('trend', Trend(degree=1)), ('spline', Spline(mindist=0))])
 
@@ -161,9 +161,9 @@ chain:
 
  .. code-block:: none
 
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:179: FutureWarning: The provided callable <function median at 0x7f06bd7b7e20> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:179: FutureWarning: The provided callable <function median at 0x7f0d36282d40> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
       blocked = pd.DataFrame(columns).groupby("block").aggregate(reduction)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:236: FutureWarning: The provided callable <function median at 0x7f06bd7b7e20> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:236: FutureWarning: The provided callable <function median at 0x7f0d36282d40> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
       grouped = table.groupby("block").aggregate(self.reduction)
 
 
@@ -185,20 +185,21 @@ chain:
       --sklearn-color-fitted-level-1: #d4ebff;
       --sklearn-color-fitted-level-2: #b3dbfd;
       --sklearn-color-fitted-level-3: cornflowerblue;
+    }
 
+    #sk-container-id-1.light {
       /* Specific color for light theme */
-      --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
-      --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
-      --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+      --sklearn-color-text-on-default-background: black;
+      --sklearn-color-background: white;
+      --sklearn-color-border-box: black;
       --sklearn-color-icon: #696969;
+    }
 
-      @media (prefers-color-scheme: dark) {
-        /* Redefinition of color scheme for dark theme */
-        --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
-        --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
-        --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
-        --sklearn-color-icon: #878787;
-      }
+    #sk-container-id-1.dark {
+      --sklearn-color-text-on-default-background: white;
+      --sklearn-color-background: #111;
+      --sklearn-color-border-box: white;
+      --sklearn-color-icon: #878787;
     }
 
     #sk-container-id-1 {
@@ -324,8 +325,8 @@ chain:
       padding: 0.5em;
       box-sizing: border-box;
       text-align: center;
-      align-items: start;
-      justify-content: space-between;
+      align-items: center;
+      justify-content: center;
       gap: 0.5em;
     }
 
@@ -350,9 +351,7 @@ chain:
     /* Toggleable content - dropdown */
 
     #sk-container-id-1 div.sk-toggleable__content {
-      max-height: 0;
-      max-width: 0;
-      overflow: hidden;
+      display: none;
       text-align: left;
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-0);
@@ -378,9 +377,9 @@ chain:
 
     #sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
       /* Expand drop-down */
-      max-height: 200px;
-      max-width: 100%;
-      overflow: auto;
+      display: block;
+      width: 100%;
+      overflow: visible;
     }
 
     #sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
@@ -434,7 +433,6 @@ chain:
     #sk-container-id-1 div.sk-label label {
       font-family: monospace;
       font-weight: bold;
-      display: inline-block;
       line-height: 1.2em;
     }
 
@@ -480,7 +478,7 @@ chain:
       font-size: smaller;
       line-height: 1em;
       font-family: monospace;
-      background-color: var(--sklearn-color-background);
+      background-color: var(--sklearn-color-unfitted-level-0);
       border-radius: 1em;
       height: 1em;
       width: 1em;
@@ -488,16 +486,17 @@ chain:
       margin-left: 0.5em;
       text-align: center;
       /* unfitted */
-      border: var(--sklearn-color-unfitted-level-1) 1pt solid;
-      color: var(--sklearn-color-unfitted-level-1);
+      border: var(--sklearn-color-unfitted-level-3) 1pt solid;
+      color: var(--sklearn-color-unfitted-level-3);
     }
 
     .sk-estimator-doc-link.fitted,
     a:link.sk-estimator-doc-link.fitted,
     a:visited.sk-estimator-doc-link.fitted {
       /* fitted */
-      border: var(--sklearn-color-fitted-level-1) 1pt solid;
-      color: var(--sklearn-color-fitted-level-1);
+      background-color: var(--sklearn-color-fitted-level-0);
+      border: var(--sklearn-color-fitted-level-3) 1pt solid;
+      color: var(--sklearn-color-fitted-level-3);
     }
 
     /* On hover */
@@ -507,7 +506,8 @@ chain:
     .sk-estimator-doc-link:hover {
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-3);
-      color: var(--sklearn-color-background);
+      border: var(--sklearn-color-fitted-level-0) 1pt solid;
+      color: var(--sklearn-color-unfitted-level-0);
       text-decoration: none;
     }
 
@@ -517,7 +517,8 @@ chain:
     .sk-estimator-doc-link.fitted:hover {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-3);
-      color: var(--sklearn-color-background);
+      border: var(--sklearn-color-fitted-level-0) 1pt solid;
+      color: var(--sklearn-color-fitted-level-0);
       text-decoration: none;
     }
 
@@ -557,7 +558,7 @@ chain:
       font-size: 1rem;
       line-height: 1em;
       font-family: monospace;
-      background-color: var(--sklearn-color-background);
+      background-color: var(--sklearn-color-unfitted-level-0);
       border-radius: 1rem;
       height: 1rem;
       width: 1rem;
@@ -569,6 +570,7 @@ chain:
 
     #sk-container-id-1 a.estimator_doc_link.fitted {
       /* fitted */
+      background-color: var(--sklearn-color-fitted-level-0);
       border: var(--sklearn-color-fitted-level-1) 1pt solid;
       color: var(--sklearn-color-fitted-level-1);
     }
@@ -585,13 +587,278 @@ chain:
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-3);
     }
-    </style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Chain(steps=[(&#x27;reduce&#x27;,
-                  BlockReduce(reduction=&lt;function median at 0x7f06bd7b99f0&gt;,
+
+    .estimator-table {
+        font-family: monospace;
+    }
+
+    .estimator-table summary {
+        padding: .5rem;
+        cursor: pointer;
+    }
+
+    .estimator-table summary::marker {
+        font-size: 0.7rem;
+    }
+
+    .estimator-table details[open] {
+        padding-left: 0.1rem;
+        padding-right: 0.1rem;
+        padding-bottom: 0.3rem;
+    }
+
+    .estimator-table .parameters-table {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        margin-top: 0;
+    }
+
+    .estimator-table .parameters-table tr:nth-child(odd) {
+        background-color: #fff;
+    }
+
+    .estimator-table .parameters-table tr:nth-child(even) {
+        background-color: #f6f6f6;
+    }
+
+    .estimator-table .parameters-table tr:hover {
+        background-color: #e0e0e0;
+    }
+
+    .estimator-table table td {
+        border: 1px solid rgba(106, 105, 104, 0.232);
+    }
+
+    /*
+        `table td`is set in notebook with right text-align.
+        We need to overwrite it.
+    */
+    .estimator-table table td.param {
+        text-align: left;
+        position: relative;
+        padding: 0;
+    }
+
+    .user-set td {
+        color:rgb(255, 94, 0);
+        text-align: left !important;
+    }
+
+    .user-set td.value {
+        color:rgb(255, 94, 0);
+        background-color: transparent;
+    }
+
+    .default td {
+        color: black;
+        text-align: left !important;
+    }
+
+    .user-set td i,
+    .default td i {
+        color: black;
+    }
+
+    /*
+        Styles for parameter documentation links
+        We need styling for visited so jupyter doesn't overwrite it
+    */
+    a.param-doc-link,
+    a.param-doc-link:link,
+    a.param-doc-link:visited {
+        text-decoration: underline dashed;
+        text-underline-offset: .3em;
+        color: inherit;
+        display: block;
+        padding: .5em;
+    }
+
+    /* "hack" to make the entire area of the cell containing the link clickable */
+    a.param-doc-link::before {
+        position: absolute;
+        content: "";
+        inset: 0;
+    }
+
+    .param-doc-description {
+        display: none;
+        position: absolute;
+        z-index: 9999;
+        left: 0;
+        padding: .5ex;
+        margin-left: 1.5em;
+        color: var(--sklearn-color-text);
+        box-shadow: .3em .3em .4em #999;
+        width: max-content;
+        text-align: left;
+        max-height: 10em;
+        overflow-y: auto;
+
+        /* unfitted */
+        background: var(--sklearn-color-unfitted-level-0);
+        border: thin solid var(--sklearn-color-unfitted-level-3);
+    }
+
+    /* Fitted state for parameter tooltips */
+    .fitted .param-doc-description {
+        /* fitted */
+        background: var(--sklearn-color-fitted-level-0);
+        border: thin solid var(--sklearn-color-fitted-level-3);
+    }
+
+    .param-doc-link:hover .param-doc-description {
+        display: block;
+    }
+
+    .copy-paste-icon {
+        background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNy4yIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjUgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTIwOCAwTDMzMi4xIDBjMTIuNyAwIDI0LjkgNS4xIDMzLjkgMTQuMWw2Ny45IDY3LjljOSA5IDE0LjEgMjEuMiAxNC4xIDMzLjlMNDQ4IDMzNmMwIDI2LjUtMjEuNSA0OC00OCA0OGwtMTkyIDBjLTI2LjUgMC00OC0yMS41LTQ4LTQ4bDAtMjg4YzAtMjYuNSAyMS41LTQ4IDQ4LTQ4ek00OCAxMjhsODAgMCAwIDY0LTY0IDAgMCAyNTYgMTkyIDAgMC0zMiA2NCAwIDAgNDhjMCAyNi41LTIxLjUgNDgtNDggNDhMNDggNTEyYy0yNi41IDAtNDgtMjEuNS00OC00OEwwIDE3NmMwLTI2LjUgMjEuNS00OCA0OC00OHoiLz48L3N2Zz4=);
+        background-repeat: no-repeat;
+        background-size: 14px 14px;
+        background-position: 0;
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+    }
+    </style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Chain(steps=[(&#x27;reduce&#x27;,
+                  BlockReduce(reduction=&lt;function median at 0x7f0d36285730&gt;,
                               spacing=18500.0)),
-                 (&#x27;trend&#x27;, Trend(degree=1)), (&#x27;spline&#x27;, Spline(mindist=0))])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Chain</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted"><pre>Chain(steps=[(&#x27;reduce&#x27;,
-                  BlockReduce(reduction=&lt;function median at 0x7f06bd7b99f0&gt;,
-                              spacing=18500.0)),
-                 (&#x27;trend&#x27;, Trend(degree=1)), (&#x27;spline&#x27;, Spline(mindist=0))])</pre></div> </div></div></div></div>
+                 (&#x27;trend&#x27;, Trend(degree=1)), (&#x27;spline&#x27;, Spline(mindist=0))])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Chain</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+            <div class="estimator-table">
+                <details>
+                    <summary>Parameters</summary>
+                    <table class="parameters-table">
+                      <tbody>
+                    
+            <tr class="user-set">
+                <td><i class="copy-paste-icon"
+                     onclick="copyToClipboard('steps',
+                              this.parentElement.nextElementSibling)"
+                ></i></td>
+                <td class="param">steps</td>
+                <td class="value">[(&#x27;reduce&#x27;, ...), (&#x27;trend&#x27;, ...), ...]</td>
+            </tr>
+    
+                      </tbody>
+                    </table>
+                </details>
+            </div>
+        </div></div></div></div></div><script>function copyToClipboard(text, element) {
+        // Get the parameter prefix from the closest toggleable content
+        const toggleableContent = element.closest('.sk-toggleable__content');
+        const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+        const fullParamName = paramPrefix ? `${paramPrefix}${text}` : text;
+
+        const originalStyle = element.style;
+        const computedStyle = window.getComputedStyle(element);
+        const originalWidth = computedStyle.width;
+        const originalHTML = element.innerHTML.replace('Copied!', '');
+
+        navigator.clipboard.writeText(fullParamName)
+            .then(() => {
+                element.style.width = originalWidth;
+                element.style.color = 'green';
+                element.innerHTML = "Copied!";
+
+                setTimeout(() => {
+                    element.innerHTML = originalHTML;
+                    element.style = originalStyle;
+                }, 2000);
+            })
+            .catch(err => {
+                console.error('Failed to copy:', err);
+                element.style.color = 'red';
+                element.innerHTML = "Failed!";
+                setTimeout(() => {
+                    element.innerHTML = originalHTML;
+                    element.style = originalStyle;
+                }, 2000);
+            });
+        return false;
+    }
+
+    document.querySelectorAll('.copy-paste-icon').forEach(function(element) {
+        const toggleableContent = element.closest('.sk-toggleable__content');
+        const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+        const paramName = element.parentElement.nextElementSibling
+            .textContent.trim().split(' ')[0];
+        const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
+
+        element.setAttribute('title', fullParamName);
+    });
+
+
+    /**
+     * Adapted from Skrub
+     * https://github.com/skrub-data/skrub/blob/403466d1d5d4dc76a7ef569b3f8228db59a31dc3/skrub/_reporting/_data/templates/report.js#L789
+     * @returns "light" or "dark"
+     */
+    function detectTheme(element) {
+        const body = document.querySelector('body');
+
+        // Check VSCode theme
+        const themeKindAttr = body.getAttribute('data-vscode-theme-kind');
+        const themeNameAttr = body.getAttribute('data-vscode-theme-name');
+
+        if (themeKindAttr && themeNameAttr) {
+            const themeKind = themeKindAttr.toLowerCase();
+            const themeName = themeNameAttr.toLowerCase();
+
+            if (themeKind.includes("dark") || themeName.includes("dark")) {
+                return "dark";
+            }
+            if (themeKind.includes("light") || themeName.includes("light")) {
+                return "light";
+            }
+        }
+
+        // Check Jupyter theme
+        if (body.getAttribute('data-jp-theme-light') === 'false') {
+            return 'dark';
+        } else if (body.getAttribute('data-jp-theme-light') === 'true') {
+            return 'light';
+        }
+
+        // Guess based on a parent element's color
+        const color = window.getComputedStyle(element.parentNode, null).getPropertyValue('color');
+        const match = color.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i);
+        if (match) {
+            const [r, g, b] = [
+                parseFloat(match[1]),
+                parseFloat(match[2]),
+                parseFloat(match[3])
+            ];
+
+            // https://en.wikipedia.org/wiki/HSL_and_HSV#Lightness
+            const luma = 0.299 * r + 0.587 * g + 0.114 * b;
+
+            if (luma > 180) {
+                // If the text is very bright we have a dark theme
+                return 'dark';
+            }
+            if (luma < 75) {
+                // If the text is very dark we have a light theme
+                return 'light';
+            }
+            // Otherwise fall back to the next heuristic.
+        }
+
+        // Fallback to system preference
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+
+    function forceTheme(elementId) {
+        const estimatorElement = document.querySelector(`#${elementId}`);
+        if (estimatorElement === null) {
+            console.error(`Element with id ${elementId} not found.`);
+        } else {
+            const theme = detectTheme(estimatorElement);
+            estimatorElement.classList.add(theme);
+        }
+    }
+
+    forceTheme('sk-container-id-1');</script></body>
     </div>
     <br />
     <br />
@@ -683,39 +950,87 @@ procedure that should be familiar to the geodesists among us.
     </symbol>
     </defs>
     </svg>
-    <style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
-     *
-     */
+    <style>/* CSS stylesheet for displaying xarray objects in notebooks */
 
     :root {
-      --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
-      --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
-      --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
-      --xr-border-color: var(--jp-border-color2, #e0e0e0);
-      --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
-      --xr-background-color: var(--jp-layout-color0, white);
-      --xr-background-color-row-even: var(--jp-layout-color1, white);
-      --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+      --xr-font-color0: var(
+        --jp-content-font-color0,
+        var(--pst-color-text-base rgba(0, 0, 0, 1))
+      );
+      --xr-font-color2: var(
+        --jp-content-font-color2,
+        var(--pst-color-text-base, rgba(0, 0, 0, 0.54))
+      );
+      --xr-font-color3: var(
+        --jp-content-font-color3,
+        var(--pst-color-text-base, rgba(0, 0, 0, 0.38))
+      );
+      --xr-border-color: var(
+        --jp-border-color2,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 10))
+      );
+      --xr-disabled-color: var(
+        --jp-layout-color3,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 40))
+      );
+      --xr-background-color: var(
+        --jp-layout-color0,
+        var(--pst-color-on-background, white)
+      );
+      --xr-background-color-row-even: var(
+        --jp-layout-color1,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 5))
+      );
+      --xr-background-color-row-odd: var(
+        --jp-layout-color2,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 15))
+      );
     }
 
     html[theme="dark"],
     html[data-theme="dark"],
     body[data-theme="dark"],
     body.vscode-dark {
-      --xr-font-color0: rgba(255, 255, 255, 1);
-      --xr-font-color2: rgba(255, 255, 255, 0.54);
-      --xr-font-color3: rgba(255, 255, 255, 0.38);
-      --xr-border-color: #1f1f1f;
-      --xr-disabled-color: #515151;
-      --xr-background-color: #111111;
-      --xr-background-color-row-even: #111111;
-      --xr-background-color-row-odd: #313131;
+      --xr-font-color0: var(
+        --jp-content-font-color0,
+        var(--pst-color-text-base, rgba(255, 255, 255, 1))
+      );
+      --xr-font-color2: var(
+        --jp-content-font-color2,
+        var(--pst-color-text-base, rgba(255, 255, 255, 0.54))
+      );
+      --xr-font-color3: var(
+        --jp-content-font-color3,
+        var(--pst-color-text-base, rgba(255, 255, 255, 0.38))
+      );
+      --xr-border-color: var(
+        --jp-border-color2,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 10))
+      );
+      --xr-disabled-color: var(
+        --jp-layout-color3,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 40))
+      );
+      --xr-background-color: var(
+        --jp-layout-color0,
+        var(--pst-color-on-background, #111111)
+      );
+      --xr-background-color-row-even: var(
+        --jp-layout-color1,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 5))
+      );
+      --xr-background-color-row-odd: var(
+        --jp-layout-color2,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 15))
+      );
     }
 
     .xr-wrap {
       display: block !important;
       min-width: 300px;
       max-width: 700px;
+      line-height: 1.6;
+      padding-bottom: 4px;
     }
 
     .xr-text-repr-fallback {
@@ -726,8 +1041,11 @@ procedure that should be familiar to the geodesists among us.
     .xr-header {
       padding-top: 6px;
       padding-bottom: 6px;
-      margin-bottom: 4px;
+    }
+
+    .xr-header {
       border-bottom: solid 1px var(--xr-border-color);
+      margin-bottom: 4px;
     }
 
     .xr-header > div,
@@ -738,45 +1056,62 @@ procedure that should be familiar to the geodesists among us.
     }
 
     .xr-obj-type,
-    .xr-array-name {
+    .xr-obj-name {
       margin-left: 2px;
       margin-right: 10px;
     }
 
-    .xr-obj-type {
+    .xr-obj-type,
+    .xr-group-box-contents > label {
       color: var(--xr-font-color2);
+      display: block;
     }
 
     .xr-sections {
       padding-left: 0 !important;
       display: grid;
       grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+      margin-block-start: 0;
+      margin-block-end: 0;
     }
 
     .xr-section-item {
       display: contents;
     }
 
-    .xr-section-item input {
-      display: inline-block;
+    .xr-section-item > input,
+    .xr-group-box-contents > input,
+    .xr-array-wrap > input {
+      display: block;
       opacity: 0;
       height: 0;
+      margin: 0;
     }
 
-    .xr-section-item input + label {
+    .xr-section-item > input + label,
+    .xr-var-item > input + label {
       color: var(--xr-disabled-color);
     }
 
-    .xr-section-item input:enabled + label {
+    .xr-section-item > input:enabled + label,
+    .xr-var-item > input:enabled + label,
+    .xr-array-wrap > input:enabled + label,
+    .xr-group-box-contents > input:enabled + label {
       cursor: pointer;
       color: var(--xr-font-color2);
     }
 
-    .xr-section-item input:focus + label {
-      border: 2px solid var(--xr-font-color0);
+    .xr-section-item > input:focus-visible + label,
+    .xr-var-item > input:focus-visible + label,
+    .xr-array-wrap > input:focus-visible + label,
+    .xr-group-box-contents > input:focus-visible + label {
+      outline: auto;
     }
 
-    .xr-section-item input:enabled + label:hover {
+    .xr-section-item > input:enabled + label:hover,
+    .xr-var-item > input:enabled + label:hover,
+    .xr-array-wrap > input:enabled + label:hover,
+    .xr-group-box-contents > input:enabled + label:hover {
       color: var(--xr-font-color0);
     }
 
@@ -784,11 +1119,25 @@ procedure that should be familiar to the geodesists among us.
       grid-column: 1;
       color: var(--xr-font-color2);
       font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .xr-section-summary > em {
+      font-weight: normal;
+    }
+
+    .xr-span-grid {
+      grid-column-end: -1;
     }
 
     .xr-section-summary > span {
       display: inline-block;
-      padding-left: 0.5em;
+      padding-left: 0.3em;
+    }
+
+    .xr-group-box-contents > input:checked + label > span {
+      display: inline-block;
+      padding-left: 0.6em;
     }
 
     .xr-section-summary-in:disabled + label {
@@ -816,9 +1165,9 @@ procedure that should be familiar to the geodesists among us.
     }
 
     .xr-section-summary,
-    .xr-section-inline-details {
+    .xr-section-inline-details,
+    .xr-group-box-contents > label {
       padding-top: 4px;
-      padding-bottom: 4px;
     }
 
     .xr-section-inline-details {
@@ -826,13 +1175,79 @@ procedure that should be familiar to the geodesists among us.
     }
 
     .xr-section-details {
-      display: none;
       grid-column: 1 / -1;
+      margin-top: 4px;
       margin-bottom: 5px;
+    }
+
+    .xr-section-summary-in ~ .xr-section-details {
+      display: none;
     }
 
     .xr-section-summary-in:checked ~ .xr-section-details {
       display: contents;
+    }
+
+    .xr-children {
+      display: inline-grid;
+      grid-template-columns: 100%;
+      grid-column: 1 / -1;
+      padding-top: 4px;
+    }
+
+    .xr-group-box {
+      display: inline-grid;
+      grid-template-columns: 0px 30px auto;
+    }
+
+    .xr-group-box-vline {
+      grid-column-start: 1;
+      border-right: 0.2em solid;
+      border-color: var(--xr-border-color);
+      width: 0px;
+    }
+
+    .xr-group-box-hline {
+      grid-column-start: 2;
+      grid-row-start: 1;
+      height: 1em;
+      width: 26px;
+      border-bottom: 0.2em solid;
+      border-color: var(--xr-border-color);
+    }
+
+    .xr-group-box-contents {
+      grid-column-start: 3;
+      padding-bottom: 4px;
+    }
+
+    .xr-group-box-contents > label::before {
+      content: "📂";
+      padding-right: 0.3em;
+    }
+
+    .xr-group-box-contents > input:checked + label::before {
+      content: "📁";
+    }
+
+    .xr-group-box-contents > input:checked + label {
+      padding-bottom: 0px;
+    }
+
+    .xr-group-box-contents > input:checked ~ .xr-sections {
+      display: none;
+    }
+
+    .xr-group-box-contents > input + label > span {
+      display: none;
+    }
+
+    .xr-group-box-ellipsis {
+      font-size: 1.4em;
+      font-weight: 900;
+      color: var(--xr-font-color2);
+      letter-spacing: 0.15em;
+      cursor: default;
     }
 
     .xr-array-wrap {
@@ -905,7 +1320,9 @@ procedure that should be familiar to the geodesists among us.
     .xr-var-item label,
     .xr-var-item > .xr-var-name span {
       background-color: var(--xr-background-color-row-even);
+      border-color: var(--xr-background-color-row-odd);
       margin-bottom: 0;
+      padding-top: 2px;
     }
 
     .xr-var-item > .xr-var-name:hover span {
@@ -916,6 +1333,7 @@ procedure that should be familiar to the geodesists among us.
     .xr-var-list > li:nth-child(odd) > label,
     .xr-var-list > li:nth-child(odd) > .xr-var-name span {
       background-color: var(--xr-background-color-row-odd);
+      border-color: var(--xr-background-color-row-even);
     }
 
     .xr-var-name {
@@ -965,8 +1383,15 @@ procedure that should be familiar to the geodesists among us.
     .xr-var-data,
     .xr-index-data {
       display: none;
-      background-color: var(--xr-background-color) !important;
-      padding-bottom: 5px !important;
+      border-top: 2px dotted var(--xr-background-color);
+      padding-bottom: 20px !important;
+      padding-top: 10px !important;
+    }
+
+    .xr-var-attrs-in + label,
+    .xr-var-data-in + label,
+    .xr-index-data-in + label {
+      padding: 0 1px;
     }
 
     .xr-var-attrs-in:checked ~ .xr-var-attrs,
@@ -977,6 +1402,12 @@ procedure that should be familiar to the geodesists among us.
 
     .xr-var-data > table {
       float: right;
+    }
+
+    .xr-var-data > pre,
+    .xr-index-data > pre,
+    .xr-var-data > table > tbody > tr {
+      background-color: transparent !important;
     }
 
     .xr-var-name span,
@@ -1038,24 +1469,23 @@ procedure that should be familiar to the geodesists among us.
       stroke: currentColor;
       fill: currentColor;
     }
+
+    .xr-var-attrs-in:checked + label > .xr-icon-file-text2,
+    .xr-var-data-in:checked + label > .xr-icon-database,
+    .xr-index-data-in:checked + label > .xr-icon-database {
+      color: var(--xr-font-color0);
+      filter: drop-shadow(1px 1px 5px var(--xr-font-color2));
+      stroke-width: 0.8px;
+    }
     </style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt; Size: 30kB
     Dimensions:     (latitude: 61, longitude: 59)
     Coordinates:
-      * longitude   (longitude) float64 472B 245.0 245.2 245.3 ... 254.4 254.5 254.7
       * latitude    (latitude) float64 488B 20.0 20.17 20.33 ... 29.66 29.82 29.99
+      * longitude   (longitude) float64 472B 245.0 245.2 245.3 ... 254.4 254.5 254.7
     Data variables:
         bathymetry  (latitude, longitude) float64 29kB -3.621e+03 -3.709e+03 ... nan
     Attributes:
-        metadata:  Generated by Chain(steps=[(&#x27;reduce&#x27;,\n              BlockReduc...</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-53ee9e54-734b-4b55-b84e-a153520bbc3a' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-53ee9e54-734b-4b55-b84e-a153520bbc3a' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>latitude</span>: 61</li><li><span class='xr-has-index'>longitude</span>: 59</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-121961f0-7400-4c36-a249-815b9c0a0fcf' class='xr-section-summary-in' type='checkbox'  checked><label for='section-121961f0-7400-4c36-a249-815b9c0a0fcf' class='xr-section-summary' >Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>longitude</span></div><div class='xr-var-dims'>(longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>245.0 245.2 245.3 ... 254.5 254.7</div><input id='attrs-f374616a-ba23-4828-90bc-3c6103699421' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-f374616a-ba23-4828-90bc-3c6103699421' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c5b3c32a-d4e0-45b1-b0b9-b8d82130f187' class='xr-var-data-in' type='checkbox'><label for='data-c5b3c32a-d4e0-45b1-b0b9-b8d82130f187' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([245.      , 245.167328, 245.334655, 245.501983, 245.66931 , 245.836638,
-           246.003966, 246.171293, 246.338621, 246.505948, 246.673276, 246.840603,
-           247.007931, 247.175259, 247.342586, 247.509914, 247.677241, 247.844569,
-           248.011897, 248.179224, 248.346552, 248.513879, 248.681207, 248.848534,
-           249.015862, 249.18319 , 249.350517, 249.517845, 249.685172, 249.8525  ,
-           250.019828, 250.187155, 250.354483, 250.52181 , 250.689138, 250.856466,
-           251.023793, 251.191121, 251.358448, 251.525776, 251.693103, 251.860431,
-           252.027759, 252.195086, 252.362414, 252.529741, 252.697069, 252.864397,
-           253.031724, 253.199052, 253.366379, 253.533707, 253.701034, 253.868362,
-           254.03569 , 254.203017, 254.370345, 254.537672, 254.705   ])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>latitude</span></div><div class='xr-var-dims'>(latitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>20.0 20.17 20.33 ... 29.82 29.99</div><input id='attrs-6d3bc16e-92f9-4245-88bb-262d109d191d' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-6d3bc16e-92f9-4245-88bb-262d109d191d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-d2ab8806-e62a-4cfb-898b-86a9240c26bc' class='xr-var-data-in' type='checkbox'><label for='data-d2ab8806-e62a-4cfb-898b-86a9240c26bc' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([20.      , 20.166522, 20.333044, 20.499565, 20.666087, 20.832609,
+        metadata:  Generated by Chain(steps=[(&#x27;reduce&#x27;,\n              BlockReduc...</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-7dca58c1-27f9-4866-b037-c29b50eb34f8' class='xr-section-summary-in' type='checkbox' disabled /><label for='section-7dca58c1-27f9-4866-b037-c29b50eb34f8' class='xr-section-summary'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>latitude</span>: 61</li><li><span class='xr-has-index'>longitude</span>: 59</li></ul></div></li><li class='xr-section-item'><input id='section-26c3c9b3-d153-4d06-beec-c71919dde692' class='xr-section-summary-in' type='checkbox' checked /><label for='section-26c3c9b3-d153-4d06-beec-c71919dde692' class='xr-section-summary' title='Expand/collapse section'>Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>latitude</span></div><div class='xr-var-dims'>(latitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>20.0 20.17 20.33 ... 29.82 29.99</div><input id='attrs-979697b8-8426-4033-94ff-75410b99178d' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-979697b8-8426-4033-94ff-75410b99178d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-b3050437-595f-44f4-aa53-4f7c2eba560f' class='xr-var-data-in' type='checkbox'><label for='data-b3050437-595f-44f4-aa53-4f7c2eba560f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([20.      , 20.166522, 20.333044, 20.499565, 20.666087, 20.832609,
            20.999131, 21.165653, 21.332175, 21.498697, 21.665218, 21.83174 ,
            21.998262, 22.164784, 22.331306, 22.497827, 22.664349, 22.830871,
            22.997393, 23.163915, 23.330437, 23.496958, 23.66348 , 23.830002,
@@ -1065,64 +1495,32 @@ procedure that should be familiar to the geodesists among us.
            26.993917, 27.160439, 27.326961, 27.493482, 27.660004, 27.826526,
            27.993048, 28.15957 , 28.326092, 28.492613, 28.659135, 28.825657,
            28.992179, 29.158701, 29.325223, 29.491744, 29.658266, 29.824788,
-           29.99131 ])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-630aeb0a-bec3-4c21-b38e-423ab0004b07' class='xr-section-summary-in' type='checkbox'  checked><label for='section-630aeb0a-bec3-4c21-b38e-423ab0004b07' class='xr-section-summary' >Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>bathymetry</span></div><div class='xr-var-dims'>(latitude, longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-3.621e+03 -3.709e+03 ... nan nan</div><input id='attrs-5242ae03-f735-4a13-8f1e-123f451f272d' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-5242ae03-f735-4a13-8f1e-123f451f272d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-48750390-c8f7-4d1d-959d-08c22d36b664' class='xr-var-data-in' type='checkbox'><label for='data-48750390-c8f7-4d1d-959d-08c22d36b664' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Chain(steps=[(&#x27;reduce&#x27;,
-                  BlockReduce(reduction=&lt;function median at 0x7f06bd7b99f0&gt;,
+           29.99131 ])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>longitude</span></div><div class='xr-var-dims'>(longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>245.0 245.2 245.3 ... 254.5 254.7</div><input id='attrs-93d59e0f-eb7a-48c1-9179-e2df5fecda8f' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-93d59e0f-eb7a-48c1-9179-e2df5fecda8f' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-fba2e917-3e15-4523-afeb-cc085eb05914' class='xr-var-data-in' type='checkbox'><label for='data-fba2e917-3e15-4523-afeb-cc085eb05914' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([245.      , 245.167328, 245.334655, 245.501983, 245.66931 , 245.836638,
+           246.003966, 246.171293, 246.338621, 246.505948, 246.673276, 246.840603,
+           247.007931, 247.175259, 247.342586, 247.509914, 247.677241, 247.844569,
+           248.011897, 248.179224, 248.346552, 248.513879, 248.681207, 248.848534,
+           249.015862, 249.18319 , 249.350517, 249.517845, 249.685172, 249.8525  ,
+           250.019828, 250.187155, 250.354483, 250.52181 , 250.689138, 250.856466,
+           251.023793, 251.191121, 251.358448, 251.525776, 251.693103, 251.860431,
+           252.027759, 252.195086, 252.362414, 252.529741, 252.697069, 252.864397,
+           253.031724, 253.199052, 253.366379, 253.533707, 253.701034, 253.868362,
+           254.03569 , 254.203017, 254.370345, 254.537672, 254.705   ])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-76a29709-6e0e-4921-ba56-82cf9e787b94' class='xr-section-summary-in' type='checkbox' checked /><label for='section-76a29709-6e0e-4921-ba56-82cf9e787b94' class='xr-section-summary' title='Expand/collapse section'>Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>bathymetry</span></div><div class='xr-var-dims'>(latitude, longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-3.621e+03 -3.709e+03 ... nan nan</div><input id='attrs-b1118775-8cf6-4074-8d3d-d65cc268f3cb' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-b1118775-8cf6-4074-8d3d-d65cc268f3cb' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-8ee1e4dc-6e8a-4f9c-b6d6-8f3539fb4d33' class='xr-var-data-in' type='checkbox'><label for='data-8ee1e4dc-6e8a-4f9c-b6d6-8f3539fb4d33' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Chain(steps=[(&#x27;reduce&#x27;,
+                  BlockReduce(reduction=&lt;function median at 0x7f0d36285730&gt;,
                               spacing=18500.0)),
-                 (&#x27;trend&#x27;, Trend(degree=1)), (&#x27;spline&#x27;, Spline(mindist=0))])</dd></dl></div><div class='xr-var-data'><pre>array([[-3620.55694141, -3708.83531425, -3770.71865027, ...,
-             -382.20217949,    76.30770925,            nan],
-           [-3685.62921335, -3781.6692343 ,            nan, ...,
-             -109.13716722,            nan,            nan],
-           [-3649.29234527, -3814.40699586,            nan, ...,
-             -584.59173067,            nan,            nan],
+                 (&#x27;trend&#x27;, Trend(degree=1)), (&#x27;spline&#x27;, Spline(mindist=0))])</dd></dl></div><div class='xr-var-data'><pre>array([[-3620.55694118, -3708.83531399, -3770.71865008, ...,
+             -382.20217909,    76.30770964,            nan],
+           [-3685.62921311, -3781.66923417,            nan, ...,
+             -109.13716685,            nan,            nan],
+           [-3649.29234512, -3814.40699563,            nan, ...,
+             -584.59173034,            nan,            nan],
            ...,
            [           nan,            nan,            nan, ...,
                        nan,            nan,            nan],
            [           nan,            nan,            nan, ...,
                        nan,            nan,            nan],
            [           nan,            nan,            nan, ...,
-                       nan,            nan,            nan]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-938928ef-cbb5-40e9-91e1-c5a318d39008' class='xr-section-summary-in' type='checkbox'  ><label for='section-938928ef-cbb5-40e9-91e1-c5a318d39008' class='xr-section-summary' >Indexes: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>longitude</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-b0cb9238-133e-4aac-bade-a0efcce47eb8' class='xr-index-data-in' type='checkbox'/><label for='index-b0cb9238-133e-4aac-bade-a0efcce47eb8' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([             245.0,  245.1673275862069,  245.3346551724138,
-            245.5019827586207, 245.66931034482758,  245.8366379310345,
-           246.00396551724137, 246.17129310344828,  246.3386206896552,
-           246.50594827586207, 246.67327586206898, 246.84060344827586,
-           247.00793103448277, 247.17525862068965, 247.34258620689656,
-           247.50991379310346, 247.67724137931035, 247.84456896551725,
-           248.01189655172413, 248.17922413793104, 248.34655172413792,
-           248.51387931034483, 248.68120689655174, 248.84853448275862,
-           249.01586206896553,  249.1831896551724, 249.35051724137932,
-            249.5178448275862,  249.6851724137931, 249.85250000000002,
-            250.0198275862069,  250.1871551724138,  250.3544827586207,
-            250.5218103448276, 250.68913793103448,  250.8564655172414,
-           251.02379310344827, 251.19112068965518,  251.3584482758621,
-           251.52577586206897, 251.69310344827588, 251.86043103448276,
-           252.02775862068967, 252.19508620689655, 252.36241379310346,
-           252.52974137931037, 252.69706896551725, 252.86439655172416,
-           253.03172413793104, 253.19905172413795, 253.36637931034483,
-           253.53370689655173, 253.70103448275864, 253.86836206896552,
-           254.03568965517243,  254.2030172413793, 254.37034482758622,
-            254.5376724137931,            254.705],
-          dtype=&#x27;float64&#x27;, name=&#x27;longitude&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>latitude</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-6ca6d2db-9567-4bb4-9929-76279faec605' class='xr-index-data-in' type='checkbox'/><label for='index-6ca6d2db-9567-4bb4-9929-76279faec605' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([              20.0, 20.166521833333334, 20.333043666666665,
-                   20.4995655, 20.666087333333333, 20.832609166666668,
-                    20.999131, 21.165652833333333, 21.332174666666667,
-                   21.4986965, 21.665218333333332, 21.831740166666666,
-                    21.998262,  22.16478383333333, 22.331305666666665,
-                   22.4978275, 22.664349333333334, 22.830871166666668,
-                    22.997393, 23.163914833333333, 23.330436666666667,
-           23.496958499999998, 23.663480333333332, 23.830002166666667,
-                    23.996524,  24.16304583333333, 24.329567666666666,
-                   24.4960895,  24.66261133333333, 24.829133166666665,
-                    24.995655, 25.162176833333334, 25.328698666666668,
-                   25.4952205, 25.661742333333333, 25.828264166666667,
-           25.994785999999998, 26.161307833333332, 26.327829666666666,
-                   26.4943515, 26.660873333333335, 26.827395166666665,
-                    26.993917,  27.16043883333333, 27.326960666666665,
-                   27.4934825, 27.660004333333333, 27.826526166666667,
-           27.993047999999998, 28.159569833333332, 28.326091666666663,
-           28.492613499999997,  28.65913533333333, 28.825657166666666,
-                    28.992179, 29.158700833333334, 29.325222666666665,
-                   29.4917445,  29.65826633333333, 29.824788166666664,
-                     29.99131],
-          dtype=&#x27;float64&#x27;, name=&#x27;latitude&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-5a5e82df-f274-4ee7-8950-50b988de0da3' class='xr-section-summary-in' type='checkbox'  checked><label for='section-5a5e82df-f274-4ee7-8950-50b988de0da3' class='xr-section-summary' >Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Chain(steps=[(&#x27;reduce&#x27;,
-                  BlockReduce(reduction=&lt;function median at 0x7f06bd7b99f0&gt;,
+                       nan,            nan,            nan]], shape=(61, 59))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-357b9252-cc0c-463d-834d-ec223fa789c5' class='xr-section-summary-in' type='checkbox' checked /><label for='section-357b9252-cc0c-463d-834d-ec223fa789c5' class='xr-section-summary' title='Expand/collapse section'>Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Chain(steps=[(&#x27;reduce&#x27;,
+                  BlockReduce(reduction=&lt;function median at 0x7f0d36285730&gt;,
                               spacing=18500.0)),
                  (&#x27;trend&#x27;, Trend(degree=1)), (&#x27;spline&#x27;, Spline(mindist=0))])</dd></dl></div></li></ul></div></div>
     </div>
@@ -1238,39 +1636,87 @@ estimated trend:
     </symbol>
     </defs>
     </svg>
-    <style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
-     *
-     */
+    <style>/* CSS stylesheet for displaying xarray objects in notebooks */
 
     :root {
-      --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
-      --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
-      --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
-      --xr-border-color: var(--jp-border-color2, #e0e0e0);
-      --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
-      --xr-background-color: var(--jp-layout-color0, white);
-      --xr-background-color-row-even: var(--jp-layout-color1, white);
-      --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+      --xr-font-color0: var(
+        --jp-content-font-color0,
+        var(--pst-color-text-base rgba(0, 0, 0, 1))
+      );
+      --xr-font-color2: var(
+        --jp-content-font-color2,
+        var(--pst-color-text-base, rgba(0, 0, 0, 0.54))
+      );
+      --xr-font-color3: var(
+        --jp-content-font-color3,
+        var(--pst-color-text-base, rgba(0, 0, 0, 0.38))
+      );
+      --xr-border-color: var(
+        --jp-border-color2,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 10))
+      );
+      --xr-disabled-color: var(
+        --jp-layout-color3,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 40))
+      );
+      --xr-background-color: var(
+        --jp-layout-color0,
+        var(--pst-color-on-background, white)
+      );
+      --xr-background-color-row-even: var(
+        --jp-layout-color1,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 5))
+      );
+      --xr-background-color-row-odd: var(
+        --jp-layout-color2,
+        hsl(from var(--pst-color-on-background, white) h s calc(l - 15))
+      );
     }
 
     html[theme="dark"],
     html[data-theme="dark"],
     body[data-theme="dark"],
     body.vscode-dark {
-      --xr-font-color0: rgba(255, 255, 255, 1);
-      --xr-font-color2: rgba(255, 255, 255, 0.54);
-      --xr-font-color3: rgba(255, 255, 255, 0.38);
-      --xr-border-color: #1f1f1f;
-      --xr-disabled-color: #515151;
-      --xr-background-color: #111111;
-      --xr-background-color-row-even: #111111;
-      --xr-background-color-row-odd: #313131;
+      --xr-font-color0: var(
+        --jp-content-font-color0,
+        var(--pst-color-text-base, rgba(255, 255, 255, 1))
+      );
+      --xr-font-color2: var(
+        --jp-content-font-color2,
+        var(--pst-color-text-base, rgba(255, 255, 255, 0.54))
+      );
+      --xr-font-color3: var(
+        --jp-content-font-color3,
+        var(--pst-color-text-base, rgba(255, 255, 255, 0.38))
+      );
+      --xr-border-color: var(
+        --jp-border-color2,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 10))
+      );
+      --xr-disabled-color: var(
+        --jp-layout-color3,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 40))
+      );
+      --xr-background-color: var(
+        --jp-layout-color0,
+        var(--pst-color-on-background, #111111)
+      );
+      --xr-background-color-row-even: var(
+        --jp-layout-color1,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 5))
+      );
+      --xr-background-color-row-odd: var(
+        --jp-layout-color2,
+        hsl(from var(--pst-color-on-background, #111111) h s calc(l + 15))
+      );
     }
 
     .xr-wrap {
       display: block !important;
       min-width: 300px;
       max-width: 700px;
+      line-height: 1.6;
+      padding-bottom: 4px;
     }
 
     .xr-text-repr-fallback {
@@ -1281,8 +1727,11 @@ estimated trend:
     .xr-header {
       padding-top: 6px;
       padding-bottom: 6px;
-      margin-bottom: 4px;
+    }
+
+    .xr-header {
       border-bottom: solid 1px var(--xr-border-color);
+      margin-bottom: 4px;
     }
 
     .xr-header > div,
@@ -1293,45 +1742,62 @@ estimated trend:
     }
 
     .xr-obj-type,
-    .xr-array-name {
+    .xr-obj-name {
       margin-left: 2px;
       margin-right: 10px;
     }
 
-    .xr-obj-type {
+    .xr-obj-type,
+    .xr-group-box-contents > label {
       color: var(--xr-font-color2);
+      display: block;
     }
 
     .xr-sections {
       padding-left: 0 !important;
       display: grid;
       grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+      margin-block-start: 0;
+      margin-block-end: 0;
     }
 
     .xr-section-item {
       display: contents;
     }
 
-    .xr-section-item input {
-      display: inline-block;
+    .xr-section-item > input,
+    .xr-group-box-contents > input,
+    .xr-array-wrap > input {
+      display: block;
       opacity: 0;
       height: 0;
+      margin: 0;
     }
 
-    .xr-section-item input + label {
+    .xr-section-item > input + label,
+    .xr-var-item > input + label {
       color: var(--xr-disabled-color);
     }
 
-    .xr-section-item input:enabled + label {
+    .xr-section-item > input:enabled + label,
+    .xr-var-item > input:enabled + label,
+    .xr-array-wrap > input:enabled + label,
+    .xr-group-box-contents > input:enabled + label {
       cursor: pointer;
       color: var(--xr-font-color2);
     }
 
-    .xr-section-item input:focus + label {
-      border: 2px solid var(--xr-font-color0);
+    .xr-section-item > input:focus-visible + label,
+    .xr-var-item > input:focus-visible + label,
+    .xr-array-wrap > input:focus-visible + label,
+    .xr-group-box-contents > input:focus-visible + label {
+      outline: auto;
     }
 
-    .xr-section-item input:enabled + label:hover {
+    .xr-section-item > input:enabled + label:hover,
+    .xr-var-item > input:enabled + label:hover,
+    .xr-array-wrap > input:enabled + label:hover,
+    .xr-group-box-contents > input:enabled + label:hover {
       color: var(--xr-font-color0);
     }
 
@@ -1339,11 +1805,25 @@ estimated trend:
       grid-column: 1;
       color: var(--xr-font-color2);
       font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .xr-section-summary > em {
+      font-weight: normal;
+    }
+
+    .xr-span-grid {
+      grid-column-end: -1;
     }
 
     .xr-section-summary > span {
       display: inline-block;
-      padding-left: 0.5em;
+      padding-left: 0.3em;
+    }
+
+    .xr-group-box-contents > input:checked + label > span {
+      display: inline-block;
+      padding-left: 0.6em;
     }
 
     .xr-section-summary-in:disabled + label {
@@ -1371,9 +1851,9 @@ estimated trend:
     }
 
     .xr-section-summary,
-    .xr-section-inline-details {
+    .xr-section-inline-details,
+    .xr-group-box-contents > label {
       padding-top: 4px;
-      padding-bottom: 4px;
     }
 
     .xr-section-inline-details {
@@ -1381,13 +1861,79 @@ estimated trend:
     }
 
     .xr-section-details {
-      display: none;
       grid-column: 1 / -1;
+      margin-top: 4px;
       margin-bottom: 5px;
+    }
+
+    .xr-section-summary-in ~ .xr-section-details {
+      display: none;
     }
 
     .xr-section-summary-in:checked ~ .xr-section-details {
       display: contents;
+    }
+
+    .xr-children {
+      display: inline-grid;
+      grid-template-columns: 100%;
+      grid-column: 1 / -1;
+      padding-top: 4px;
+    }
+
+    .xr-group-box {
+      display: inline-grid;
+      grid-template-columns: 0px 30px auto;
+    }
+
+    .xr-group-box-vline {
+      grid-column-start: 1;
+      border-right: 0.2em solid;
+      border-color: var(--xr-border-color);
+      width: 0px;
+    }
+
+    .xr-group-box-hline {
+      grid-column-start: 2;
+      grid-row-start: 1;
+      height: 1em;
+      width: 26px;
+      border-bottom: 0.2em solid;
+      border-color: var(--xr-border-color);
+    }
+
+    .xr-group-box-contents {
+      grid-column-start: 3;
+      padding-bottom: 4px;
+    }
+
+    .xr-group-box-contents > label::before {
+      content: "📂";
+      padding-right: 0.3em;
+    }
+
+    .xr-group-box-contents > input:checked + label::before {
+      content: "📁";
+    }
+
+    .xr-group-box-contents > input:checked + label {
+      padding-bottom: 0px;
+    }
+
+    .xr-group-box-contents > input:checked ~ .xr-sections {
+      display: none;
+    }
+
+    .xr-group-box-contents > input + label > span {
+      display: none;
+    }
+
+    .xr-group-box-ellipsis {
+      font-size: 1.4em;
+      font-weight: 900;
+      color: var(--xr-font-color2);
+      letter-spacing: 0.15em;
+      cursor: default;
     }
 
     .xr-array-wrap {
@@ -1460,7 +2006,9 @@ estimated trend:
     .xr-var-item label,
     .xr-var-item > .xr-var-name span {
       background-color: var(--xr-background-color-row-even);
+      border-color: var(--xr-background-color-row-odd);
       margin-bottom: 0;
+      padding-top: 2px;
     }
 
     .xr-var-item > .xr-var-name:hover span {
@@ -1471,6 +2019,7 @@ estimated trend:
     .xr-var-list > li:nth-child(odd) > label,
     .xr-var-list > li:nth-child(odd) > .xr-var-name span {
       background-color: var(--xr-background-color-row-odd);
+      border-color: var(--xr-background-color-row-even);
     }
 
     .xr-var-name {
@@ -1520,8 +2069,15 @@ estimated trend:
     .xr-var-data,
     .xr-index-data {
       display: none;
-      background-color: var(--xr-background-color) !important;
-      padding-bottom: 5px !important;
+      border-top: 2px dotted var(--xr-background-color);
+      padding-bottom: 20px !important;
+      padding-top: 10px !important;
+    }
+
+    .xr-var-attrs-in + label,
+    .xr-var-data-in + label,
+    .xr-index-data-in + label {
+      padding: 0 1px;
     }
 
     .xr-var-attrs-in:checked ~ .xr-var-attrs,
@@ -1532,6 +2088,12 @@ estimated trend:
 
     .xr-var-data > table {
       float: right;
+    }
+
+    .xr-var-data > pre,
+    .xr-index-data > pre,
+    .xr-var-data > table > tbody > tr {
+      background-color: transparent !important;
     }
 
     .xr-var-name span,
@@ -1593,24 +2155,23 @@ estimated trend:
       stroke: currentColor;
       fill: currentColor;
     }
+
+    .xr-var-attrs-in:checked + label > .xr-icon-file-text2,
+    .xr-var-data-in:checked + label > .xr-icon-database,
+    .xr-index-data-in:checked + label > .xr-icon-database {
+      color: var(--xr-font-color0);
+      filter: drop-shadow(1px 1px 5px var(--xr-font-color2));
+      stroke-width: 0.8px;
+    }
     </style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt; Size: 30kB
     Dimensions:     (latitude: 61, longitude: 59)
     Coordinates:
-      * longitude   (longitude) float64 472B 245.0 245.2 245.3 ... 254.4 254.5 254.7
       * latitude    (latitude) float64 488B 20.0 20.17 20.33 ... 29.66 29.82 29.99
+      * longitude   (longitude) float64 472B 245.0 245.2 245.3 ... 254.4 254.5 254.7
     Data variables:
         bathymetry  (latitude, longitude) float64 29kB -4.911e+03 -4.864e+03 ... nan
     Attributes:
-        metadata:  Generated by Trend(degree=1)</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-efa3f980-5107-4d7f-a523-2de6d1c3a5fe' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-efa3f980-5107-4d7f-a523-2de6d1c3a5fe' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>latitude</span>: 61</li><li><span class='xr-has-index'>longitude</span>: 59</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-101238a5-0c99-49ae-be84-8eed36a88cfa' class='xr-section-summary-in' type='checkbox'  checked><label for='section-101238a5-0c99-49ae-be84-8eed36a88cfa' class='xr-section-summary' >Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>longitude</span></div><div class='xr-var-dims'>(longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>245.0 245.2 245.3 ... 254.5 254.7</div><input id='attrs-aaa83f48-b5b4-42ed-8baf-6b94aa2daf55' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-aaa83f48-b5b4-42ed-8baf-6b94aa2daf55' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-4ecb97a6-4002-4448-920a-af1963d833fb' class='xr-var-data-in' type='checkbox'><label for='data-4ecb97a6-4002-4448-920a-af1963d833fb' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([245.      , 245.167328, 245.334655, 245.501983, 245.66931 , 245.836638,
-           246.003966, 246.171293, 246.338621, 246.505948, 246.673276, 246.840603,
-           247.007931, 247.175259, 247.342586, 247.509914, 247.677241, 247.844569,
-           248.011897, 248.179224, 248.346552, 248.513879, 248.681207, 248.848534,
-           249.015862, 249.18319 , 249.350517, 249.517845, 249.685172, 249.8525  ,
-           250.019828, 250.187155, 250.354483, 250.52181 , 250.689138, 250.856466,
-           251.023793, 251.191121, 251.358448, 251.525776, 251.693103, 251.860431,
-           252.027759, 252.195086, 252.362414, 252.529741, 252.697069, 252.864397,
-           253.031724, 253.199052, 253.366379, 253.533707, 253.701034, 253.868362,
-           254.03569 , 254.203017, 254.370345, 254.537672, 254.705   ])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>latitude</span></div><div class='xr-var-dims'>(latitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>20.0 20.17 20.33 ... 29.82 29.99</div><input id='attrs-9e466364-847a-407c-9ce4-f9583db1cf37' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-9e466364-847a-407c-9ce4-f9583db1cf37' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-007969ab-dcc9-455d-9593-d191799cabc9' class='xr-var-data-in' type='checkbox'><label for='data-007969ab-dcc9-455d-9593-d191799cabc9' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([20.      , 20.166522, 20.333044, 20.499565, 20.666087, 20.832609,
+        metadata:  Generated by Trend(degree=1)</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-42352177-7e17-4d44-a914-28476dfa832f' class='xr-section-summary-in' type='checkbox' disabled /><label for='section-42352177-7e17-4d44-a914-28476dfa832f' class='xr-section-summary'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>latitude</span>: 61</li><li><span class='xr-has-index'>longitude</span>: 59</li></ul></div></li><li class='xr-section-item'><input id='section-46d8ca5d-904a-4695-a163-4362e3e5e852' class='xr-section-summary-in' type='checkbox' checked /><label for='section-46d8ca5d-904a-4695-a163-4362e3e5e852' class='xr-section-summary' title='Expand/collapse section'>Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>latitude</span></div><div class='xr-var-dims'>(latitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>20.0 20.17 20.33 ... 29.82 29.99</div><input id='attrs-2eaf359b-8541-4ca4-ae1e-c4a736b4e011' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-2eaf359b-8541-4ca4-ae1e-c4a736b4e011' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-dce458d4-9168-4559-bdda-f13588e58ab4' class='xr-var-data-in' type='checkbox'><label for='data-dce458d4-9168-4559-bdda-f13588e58ab4' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([20.      , 20.166522, 20.333044, 20.499565, 20.666087, 20.832609,
            20.999131, 21.165653, 21.332175, 21.498697, 21.665218, 21.83174 ,
            21.998262, 22.164784, 22.331306, 22.497827, 22.664349, 22.830871,
            22.997393, 23.163915, 23.330437, 23.496958, 23.66348 , 23.830002,
@@ -1620,7 +2181,16 @@ estimated trend:
            26.993917, 27.160439, 27.326961, 27.493482, 27.660004, 27.826526,
            27.993048, 28.15957 , 28.326092, 28.492613, 28.659135, 28.825657,
            28.992179, 29.158701, 29.325223, 29.491744, 29.658266, 29.824788,
-           29.99131 ])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-a8cb9487-545a-41bb-97d6-6fe1ae53251d' class='xr-section-summary-in' type='checkbox'  checked><label for='section-a8cb9487-545a-41bb-97d6-6fe1ae53251d' class='xr-section-summary' >Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>bathymetry</span></div><div class='xr-var-dims'>(latitude, longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-4.911e+03 -4.864e+03 ... nan nan</div><input id='attrs-3e5a81cf-0519-4861-9d46-2c281cd2424c' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-3e5a81cf-0519-4861-9d46-2c281cd2424c' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-4a7c38a3-5ddc-43ae-ba88-8bf8268f2a39' class='xr-var-data-in' type='checkbox'><label for='data-4a7c38a3-5ddc-43ae-ba88-8bf8268f2a39' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Trend(degree=1)</dd></dl></div><div class='xr-var-data'><pre>array([[-4910.61091961, -4864.15471186, -4817.6985041 , ...,
+           29.99131 ])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>longitude</span></div><div class='xr-var-dims'>(longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>245.0 245.2 245.3 ... 254.5 254.7</div><input id='attrs-35d54c8b-cc87-40be-aec4-9c1c6f264689' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-35d54c8b-cc87-40be-aec4-9c1c6f264689' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-13d27044-e892-4ba7-b1c2-be8445e4665c' class='xr-var-data-in' type='checkbox'><label for='data-13d27044-e892-4ba7-b1c2-be8445e4665c' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([245.      , 245.167328, 245.334655, 245.501983, 245.66931 , 245.836638,
+           246.003966, 246.171293, 246.338621, 246.505948, 246.673276, 246.840603,
+           247.007931, 247.175259, 247.342586, 247.509914, 247.677241, 247.844569,
+           248.011897, 248.179224, 248.346552, 248.513879, 248.681207, 248.848534,
+           249.015862, 249.18319 , 249.350517, 249.517845, 249.685172, 249.8525  ,
+           250.019828, 250.187155, 250.354483, 250.52181 , 250.689138, 250.856466,
+           251.023793, 251.191121, 251.358448, 251.525776, 251.693103, 251.860431,
+           252.027759, 252.195086, 252.362414, 252.529741, 252.697069, 252.864397,
+           253.031724, 253.199052, 253.366379, 253.533707, 253.701034, 253.868362,
+           254.03569 , 254.203017, 254.370345, 254.537672, 254.705   ])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-ef59d3f5-75be-4556-b07b-3e1cae43b2e7' class='xr-section-summary-in' type='checkbox' checked /><label for='section-ef59d3f5-75be-4556-b07b-3e1cae43b2e7' class='xr-section-summary' title='Expand/collapse section'>Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>bathymetry</span></div><div class='xr-var-dims'>(latitude, longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-4.911e+03 -4.864e+03 ... nan nan</div><input id='attrs-867a6cea-57b7-4997-8b62-df94e03044ee' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-867a6cea-57b7-4997-8b62-df94e03044ee' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-287e2ad5-df1b-4392-bd82-7276bde29121' class='xr-var-data-in' type='checkbox'><label for='data-287e2ad5-df1b-4392-bd82-7276bde29121' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Trend(degree=1)</dd></dl></div><div class='xr-var-data'><pre>array([[-4910.61091961, -4864.15471186, -4817.6985041 , ...,
             -2309.06328524, -2262.60707748,            nan],
            [-4838.72028329, -4792.26407553,            nan, ...,
             -2237.17264891,            nan,            nan],
@@ -1632,48 +2202,7 @@ estimated trend:
            [           nan,            nan,            nan, ...,
                        nan,            nan,            nan],
            [           nan,            nan,            nan, ...,
-                       nan,            nan,            nan]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-0b71456c-6a66-44c1-a188-f791b6d333c0' class='xr-section-summary-in' type='checkbox'  ><label for='section-0b71456c-6a66-44c1-a188-f791b6d333c0' class='xr-section-summary' >Indexes: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>longitude</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-c2baee21-4b4c-4ba0-8922-86903abc6a7e' class='xr-index-data-in' type='checkbox'/><label for='index-c2baee21-4b4c-4ba0-8922-86903abc6a7e' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([             245.0,  245.1673275862069,  245.3346551724138,
-            245.5019827586207, 245.66931034482758,  245.8366379310345,
-           246.00396551724137, 246.17129310344828,  246.3386206896552,
-           246.50594827586207, 246.67327586206898, 246.84060344827586,
-           247.00793103448277, 247.17525862068965, 247.34258620689656,
-           247.50991379310346, 247.67724137931035, 247.84456896551725,
-           248.01189655172413, 248.17922413793104, 248.34655172413792,
-           248.51387931034483, 248.68120689655174, 248.84853448275862,
-           249.01586206896553,  249.1831896551724, 249.35051724137932,
-            249.5178448275862,  249.6851724137931, 249.85250000000002,
-            250.0198275862069,  250.1871551724138,  250.3544827586207,
-            250.5218103448276, 250.68913793103448,  250.8564655172414,
-           251.02379310344827, 251.19112068965518,  251.3584482758621,
-           251.52577586206897, 251.69310344827588, 251.86043103448276,
-           252.02775862068967, 252.19508620689655, 252.36241379310346,
-           252.52974137931037, 252.69706896551725, 252.86439655172416,
-           253.03172413793104, 253.19905172413795, 253.36637931034483,
-           253.53370689655173, 253.70103448275864, 253.86836206896552,
-           254.03568965517243,  254.2030172413793, 254.37034482758622,
-            254.5376724137931,            254.705],
-          dtype=&#x27;float64&#x27;, name=&#x27;longitude&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>latitude</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-fc37149c-53f5-458b-a4ab-b59a0e165dc3' class='xr-index-data-in' type='checkbox'/><label for='index-fc37149c-53f5-458b-a4ab-b59a0e165dc3' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([              20.0, 20.166521833333334, 20.333043666666665,
-                   20.4995655, 20.666087333333333, 20.832609166666668,
-                    20.999131, 21.165652833333333, 21.332174666666667,
-                   21.4986965, 21.665218333333332, 21.831740166666666,
-                    21.998262,  22.16478383333333, 22.331305666666665,
-                   22.4978275, 22.664349333333334, 22.830871166666668,
-                    22.997393, 23.163914833333333, 23.330436666666667,
-           23.496958499999998, 23.663480333333332, 23.830002166666667,
-                    23.996524,  24.16304583333333, 24.329567666666666,
-                   24.4960895,  24.66261133333333, 24.829133166666665,
-                    24.995655, 25.162176833333334, 25.328698666666668,
-                   25.4952205, 25.661742333333333, 25.828264166666667,
-           25.994785999999998, 26.161307833333332, 26.327829666666666,
-                   26.4943515, 26.660873333333335, 26.827395166666665,
-                    26.993917,  27.16043883333333, 27.326960666666665,
-                   27.4934825, 27.660004333333333, 27.826526166666667,
-           27.993047999999998, 28.159569833333332, 28.326091666666663,
-           28.492613499999997,  28.65913533333333, 28.825657166666666,
-                    28.992179, 29.158700833333334, 29.325222666666665,
-                   29.4917445,  29.65826633333333, 29.824788166666664,
-                     29.99131],
-          dtype=&#x27;float64&#x27;, name=&#x27;latitude&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-72b35cf5-8fd1-4b6f-a658-b52573045f3c' class='xr-section-summary-in' type='checkbox'  checked><label for='section-72b35cf5-8fd1-4b6f-a658-b52573045f3c' class='xr-section-summary' >Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Trend(degree=1)</dd></dl></div></li></ul></div></div>
+                       nan,            nan,            nan]], shape=(61, 59))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-123067ac-3591-4242-930b-5f9de53486ad' class='xr-section-summary-in' type='checkbox' checked /><label for='section-123067ac-3591-4242-930b-5f9de53486ad' class='xr-section-summary' title='Expand/collapse section'>Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Trend(degree=1)</dd></dl></div></li></ul></div></div>
     </div>
     <br />
     <br />
@@ -1708,7 +2237,7 @@ estimated trend:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.165 seconds)
+   **Total running time of the script:** (0 minutes 3.600 seconds)
 
 
 .. _sphx_glr_download_tutorials_chain.py:

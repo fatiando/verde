@@ -20,22 +20,20 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="_static/thebelab.css" />
@@ -46,11 +44,10 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=504d3d5d" />
   
-  <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
@@ -86,8 +83,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -95,6 +103,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -102,8 +111,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -119,8 +128,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -150,11 +158,15 @@
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
@@ -227,6 +239,7 @@
 <li class="toctree-l2"><a class="reference internal" href="api/generated/verde.project_grid.html">verde.project_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/verde.distance_mask.html">verde.distance_mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/verde.convexhull_mask.html">verde.convexhull_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.minmax.html">verde.minmax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/verde.maxabs.html">verde.maxabs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/verde.variance_to_weights.html">verde.variance_to_weights</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/verde.grid_to_table.html">verde.grid_to_table</a></li>
@@ -273,14 +286,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -441,16 +449,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
@@ -563,7 +579,7 @@ the Alps using <code class="xref py py-mod docutils literal notranslate"><span c
 </div>
 </div>
 <p>Since our data are in <a class="reference external" href="https://en.wikipedia.org/wiki/Comma-separated_values">CSV</a>
-format, the best way to load them is with <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/index.html#module-pandas" title="(in pandas v2.2.3)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code></a>:</p>
+format, the best way to load them is with <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/index.html#module-pandas" title="(in pandas v3.0.1)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pandas</span></code></a>:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_to_data_file</span><span class="p">)</span>
@@ -817,7 +833,7 @@ that:</p>
 this order. The <strong>only exceptions</strong> are the <code class="docutils literal notranslate"><span class="pre">dims</span></code> and <code class="docutils literal notranslate"><span class="pre">shape</span></code> arguments
 that some functions take.</p>
 </div>
-<p>Let’s plot this on a <a class="reference external" href="https://www.pygmt.org/latest/api/index.html#module-pygmt" title="(in PyGMT vv0.14.2)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pygmt</span></code></a> map so we can see it more clearly:</p>
+<p>Let’s plot this on a <code class="xref py py-mod docutils literal notranslate"><span class="pre">pygmt</span></code> map so we can see it more clearly:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start a figure</span>
@@ -1085,20 +1101,21 @@ longitude and latitude to easting and northing Mercator projection coordinates.<
   --sklearn-color-fitted-level-1: #d4ebff;
   --sklearn-color-fitted-level-2: #b3dbfd;
   --sklearn-color-fitted-level-3: cornflowerblue;
+}
 
+#sk-container-id-1.light {
   /* Specific color for light theme */
-  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
-  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
-  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-text-on-default-background: black;
+  --sklearn-color-background: white;
+  --sklearn-color-border-box: black;
   --sklearn-color-icon: #696969;
+}
 
-  @media (prefers-color-scheme: dark) {
-    /* Redefinition of color scheme for dark theme */
-    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
-    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
-    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
-    --sklearn-color-icon: #878787;
-  }
+#sk-container-id-1.dark {
+  --sklearn-color-text-on-default-background: white;
+  --sklearn-color-background: #111;
+  --sklearn-color-border-box: white;
+  --sklearn-color-icon: #878787;
 }
 
 #sk-container-id-1 {
@@ -1224,8 +1241,8 @@ clickable and can be expanded/collapsed.
   padding: 0.5em;
   box-sizing: border-box;
   text-align: center;
-  align-items: start;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
   gap: 0.5em;
 }
 
@@ -1250,9 +1267,7 @@ clickable and can be expanded/collapsed.
 /* Toggleable content - dropdown */
 
 #sk-container-id-1 div.sk-toggleable__content {
-  max-height: 0;
-  max-width: 0;
-  overflow: hidden;
+  display: none;
   text-align: left;
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-0);
@@ -1278,9 +1293,9 @@ clickable and can be expanded/collapsed.
 
 #sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
   /* Expand drop-down */
-  max-height: 200px;
-  max-width: 100%;
-  overflow: auto;
+  display: block;
+  width: 100%;
+  overflow: visible;
 }
 
 #sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
@@ -1334,7 +1349,6 @@ clickable and can be expanded/collapsed.
 #sk-container-id-1 div.sk-label label {
   font-family: monospace;
   font-weight: bold;
-  display: inline-block;
   line-height: 1.2em;
 }
 
@@ -1380,7 +1394,7 @@ a:visited.sk-estimator-doc-link {
   font-size: smaller;
   line-height: 1em;
   font-family: monospace;
-  background-color: var(--sklearn-color-background);
+  background-color: var(--sklearn-color-unfitted-level-0);
   border-radius: 1em;
   height: 1em;
   width: 1em;
@@ -1388,16 +1402,17 @@ a:visited.sk-estimator-doc-link {
   margin-left: 0.5em;
   text-align: center;
   /* unfitted */
-  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
-  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-3) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-3);
 }
 
 .sk-estimator-doc-link.fitted,
 a:link.sk-estimator-doc-link.fitted,
 a:visited.sk-estimator-doc-link.fitted {
   /* fitted */
-  border: var(--sklearn-color-fitted-level-1) 1pt solid;
-  color: var(--sklearn-color-fitted-level-1);
+  background-color: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3) 1pt solid;
+  color: var(--sklearn-color-fitted-level-3);
 }
 
 /* On hover */
@@ -1407,7 +1422,8 @@ div.sk-label-container:hover .sk-estimator-doc-link:hover,
 .sk-estimator-doc-link:hover {
   /* unfitted */
   background-color: var(--sklearn-color-unfitted-level-3);
-  color: var(--sklearn-color-background);
+  border: var(--sklearn-color-fitted-level-0) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-0);
   text-decoration: none;
 }
 
@@ -1417,7 +1433,8 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 .sk-estimator-doc-link.fitted:hover {
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-3);
-  color: var(--sklearn-color-background);
+  border: var(--sklearn-color-fitted-level-0) 1pt solid;
+  color: var(--sklearn-color-fitted-level-0);
   text-decoration: none;
 }
 
@@ -1457,7 +1474,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   font-size: 1rem;
   line-height: 1em;
   font-family: monospace;
-  background-color: var(--sklearn-color-background);
+  background-color: var(--sklearn-color-unfitted-level-0);
   border-radius: 1rem;
   height: 1rem;
   width: 1rem;
@@ -1469,6 +1486,7 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
 
 #sk-container-id-1 a.estimator_doc_link.fitted {
   /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
   border: var(--sklearn-color-fitted-level-1) 1pt solid;
   color: var(--sklearn-color-fitted-level-1);
 }
@@ -1485,7 +1503,305 @@ div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
   /* fitted */
   background-color: var(--sklearn-color-fitted-level-3);
 }
-</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Spline(mindist=0)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Spline</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted"><pre>Spline(mindist=0)</pre></div> </div></div></div></div></div></div>
+
+.estimator-table {
+    font-family: monospace;
+}
+
+.estimator-table summary {
+    padding: .5rem;
+    cursor: pointer;
+}
+
+.estimator-table summary::marker {
+    font-size: 0.7rem;
+}
+
+.estimator-table details[open] {
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
+    padding-bottom: 0.3rem;
+}
+
+.estimator-table .parameters-table {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 0;
+}
+
+.estimator-table .parameters-table tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+.estimator-table .parameters-table tr:nth-child(even) {
+    background-color: #f6f6f6;
+}
+
+.estimator-table .parameters-table tr:hover {
+    background-color: #e0e0e0;
+}
+
+.estimator-table table td {
+    border: 1px solid rgba(106, 105, 104, 0.232);
+}
+
+/*
+    `table td`is set in notebook with right text-align.
+    We need to overwrite it.
+*/
+.estimator-table table td.param {
+    text-align: left;
+    position: relative;
+    padding: 0;
+}
+
+.user-set td {
+    color:rgb(255, 94, 0);
+    text-align: left !important;
+}
+
+.user-set td.value {
+    color:rgb(255, 94, 0);
+    background-color: transparent;
+}
+
+.default td {
+    color: black;
+    text-align: left !important;
+}
+
+.user-set td i,
+.default td i {
+    color: black;
+}
+
+/*
+    Styles for parameter documentation links
+    We need styling for visited so jupyter doesn't overwrite it
+*/
+a.param-doc-link,
+a.param-doc-link:link,
+a.param-doc-link:visited {
+    text-decoration: underline dashed;
+    text-underline-offset: .3em;
+    color: inherit;
+    display: block;
+    padding: .5em;
+}
+
+/* "hack" to make the entire area of the cell containing the link clickable */
+a.param-doc-link::before {
+    position: absolute;
+    content: "";
+    inset: 0;
+}
+
+.param-doc-description {
+    display: none;
+    position: absolute;
+    z-index: 9999;
+    left: 0;
+    padding: .5ex;
+    margin-left: 1.5em;
+    color: var(--sklearn-color-text);
+    box-shadow: .3em .3em .4em #999;
+    width: max-content;
+    text-align: left;
+    max-height: 10em;
+    overflow-y: auto;
+
+    /* unfitted */
+    background: var(--sklearn-color-unfitted-level-0);
+    border: thin solid var(--sklearn-color-unfitted-level-3);
+}
+
+/* Fitted state for parameter tooltips */
+.fitted .param-doc-description {
+    /* fitted */
+    background: var(--sklearn-color-fitted-level-0);
+    border: thin solid var(--sklearn-color-fitted-level-3);
+}
+
+.param-doc-link:hover .param-doc-description {
+    display: block;
+}
+
+.copy-paste-icon {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNy4yIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjUgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTIwOCAwTDMzMi4xIDBjMTIuNyAwIDI0LjkgNS4xIDMzLjkgMTQuMWw2Ny45IDY3LjljOSA5IDE0LjEgMjEuMiAxNC4xIDMzLjlMNDQ4IDMzNmMwIDI2LjUtMjEuNSA0OC00OCA0OGwtMTkyIDBjLTI2LjUgMC00OC0yMS41LTQ4LTQ4bDAtMjg4YzAtMjYuNSAyMS41LTQ4IDQ4LTQ4ek00OCAxMjhsODAgMCAwIDY0LTY0IDAgMCAyNTYgMTkyIDAgMC0zMiA2NCAwIDAgNDhjMCAyNi41LTIxLjUgNDgtNDggNDhMNDggNTEyYy0yNi41IDAtNDgtMjEuNS00OC00OEwwIDE3NmMwLTI2LjUgMjEuNS00OCA0OC00OHoiLz48L3N2Zz4=);
+    background-repeat: no-repeat;
+    background-size: 14px 14px;
+    background-position: 0;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Spline(mindist=0)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Spline</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+        <div class="estimator-table">
+            <details>
+                <summary>Parameters</summary>
+                <table class="parameters-table">
+                  <tbody>
+
+        <tr class="user-set">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('mindist',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">mindist</td>
+            <td class="value">0</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('damping',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">damping</td>
+            <td class="value">None</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('force_coords',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">force_coords</td>
+            <td class="value">None</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('engine',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">engine</td>
+            <td class="value">&#x27;auto&#x27;</td>
+        </tr>
+
+                  </tbody>
+                </table>
+            </details>
+        </div>
+    </div></div></div></div></div><script>function copyToClipboard(text, element) {
+    // Get the parameter prefix from the closest toggleable content
+    const toggleableContent = element.closest('.sk-toggleable__content');
+    const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+    const fullParamName = paramPrefix ? `${paramPrefix}${text}` : text;
+
+    const originalStyle = element.style;
+    const computedStyle = window.getComputedStyle(element);
+    const originalWidth = computedStyle.width;
+    const originalHTML = element.innerHTML.replace('Copied!', '');
+
+    navigator.clipboard.writeText(fullParamName)
+        .then(() => {
+            element.style.width = originalWidth;
+            element.style.color = 'green';
+            element.innerHTML = "Copied!";
+
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 2000);
+        })
+        .catch(err => {
+            console.error('Failed to copy:', err);
+            element.style.color = 'red';
+            element.innerHTML = "Failed!";
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 2000);
+        });
+    return false;
+}
+
+document.querySelectorAll('.copy-paste-icon').forEach(function(element) {
+    const toggleableContent = element.closest('.sk-toggleable__content');
+    const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+    const paramName = element.parentElement.nextElementSibling
+        .textContent.trim().split(' ')[0];
+    const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
+
+    element.setAttribute('title', fullParamName);
+});
+
+
+/**
+ * Adapted from Skrub
+ * https://github.com/skrub-data/skrub/blob/403466d1d5d4dc76a7ef569b3f8228db59a31dc3/skrub/_reporting/_data/templates/report.js#L789
+ * @returns "light" or "dark"
+ */
+function detectTheme(element) {
+    const body = document.querySelector('body');
+
+    // Check VSCode theme
+    const themeKindAttr = body.getAttribute('data-vscode-theme-kind');
+    const themeNameAttr = body.getAttribute('data-vscode-theme-name');
+
+    if (themeKindAttr && themeNameAttr) {
+        const themeKind = themeKindAttr.toLowerCase();
+        const themeName = themeNameAttr.toLowerCase();
+
+        if (themeKind.includes("dark") || themeName.includes("dark")) {
+            return "dark";
+        }
+        if (themeKind.includes("light") || themeName.includes("light")) {
+            return "light";
+        }
+    }
+
+    // Check Jupyter theme
+    if (body.getAttribute('data-jp-theme-light') === 'false') {
+        return 'dark';
+    } else if (body.getAttribute('data-jp-theme-light') === 'true') {
+        return 'light';
+    }
+
+    // Guess based on a parent element's color
+    const color = window.getComputedStyle(element.parentNode, null).getPropertyValue('color');
+    const match = color.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i);
+    if (match) {
+        const [r, g, b] = [
+            parseFloat(match[1]),
+            parseFloat(match[2]),
+            parseFloat(match[3])
+        ];
+
+        // https://en.wikipedia.org/wiki/HSL_and_HSV#Lightness
+        const luma = 0.299 * r + 0.587 * g + 0.114 * b;
+
+        if (luma > 180) {
+            // If the text is very bright we have a dark theme
+            return 'dark';
+        }
+        if (luma < 75) {
+            // If the text is very dark we have a light theme
+            return 'light';
+        }
+        // Otherwise fall back to the next heuristic.
+    }
+
+    // Fallback to system preference
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+
+function forceTheme(elementId) {
+    const estimatorElement = document.querySelector(`#${elementId}`);
+    if (estimatorElement === null) {
+        console.error(`Element with id ${elementId} not found.`);
+    } else {
+        const theme = detectTheme(estimatorElement);
+        estimatorElement.classList.add(theme);
+    }
+}
+
+forceTheme('sk-container-id-1');</script></body></div></div>
 </div>
 <div class="seealso admonition">
 <p class="admonition-title">Have more than 10k data?</p>
@@ -1560,39 +1876,87 @@ spline fits the decimated data very well.</p>
 </symbol>
 </defs>
 </svg>
-<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
- *
- */
+<style>/* CSS stylesheet for displaying xarray objects in notebooks */
 
 :root {
-  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
-  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
-  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
-  --xr-border-color: var(--jp-border-color2, #e0e0e0);
-  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
-  --xr-background-color: var(--jp-layout-color0, white);
-  --xr-background-color-row-even: var(--jp-layout-color1, white);
-  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+  --xr-font-color0: var(
+    --jp-content-font-color0,
+    var(--pst-color-text-base rgba(0, 0, 0, 1))
+  );
+  --xr-font-color2: var(
+    --jp-content-font-color2,
+    var(--pst-color-text-base, rgba(0, 0, 0, 0.54))
+  );
+  --xr-font-color3: var(
+    --jp-content-font-color3,
+    var(--pst-color-text-base, rgba(0, 0, 0, 0.38))
+  );
+  --xr-border-color: var(
+    --jp-border-color2,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 10))
+  );
+  --xr-disabled-color: var(
+    --jp-layout-color3,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 40))
+  );
+  --xr-background-color: var(
+    --jp-layout-color0,
+    var(--pst-color-on-background, white)
+  );
+  --xr-background-color-row-even: var(
+    --jp-layout-color1,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 5))
+  );
+  --xr-background-color-row-odd: var(
+    --jp-layout-color2,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 15))
+  );
 }
 
 html[theme="dark"],
 html[data-theme="dark"],
 body[data-theme="dark"],
 body.vscode-dark {
-  --xr-font-color0: rgba(255, 255, 255, 1);
-  --xr-font-color2: rgba(255, 255, 255, 0.54);
-  --xr-font-color3: rgba(255, 255, 255, 0.38);
-  --xr-border-color: #1f1f1f;
-  --xr-disabled-color: #515151;
-  --xr-background-color: #111111;
-  --xr-background-color-row-even: #111111;
-  --xr-background-color-row-odd: #313131;
+  --xr-font-color0: var(
+    --jp-content-font-color0,
+    var(--pst-color-text-base, rgba(255, 255, 255, 1))
+  );
+  --xr-font-color2: var(
+    --jp-content-font-color2,
+    var(--pst-color-text-base, rgba(255, 255, 255, 0.54))
+  );
+  --xr-font-color3: var(
+    --jp-content-font-color3,
+    var(--pst-color-text-base, rgba(255, 255, 255, 0.38))
+  );
+  --xr-border-color: var(
+    --jp-border-color2,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 10))
+  );
+  --xr-disabled-color: var(
+    --jp-layout-color3,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 40))
+  );
+  --xr-background-color: var(
+    --jp-layout-color0,
+    var(--pst-color-on-background, #111111)
+  );
+  --xr-background-color-row-even: var(
+    --jp-layout-color1,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 5))
+  );
+  --xr-background-color-row-odd: var(
+    --jp-layout-color2,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 15))
+  );
 }
 
 .xr-wrap {
   display: block !important;
   min-width: 300px;
   max-width: 700px;
+  line-height: 1.6;
+  padding-bottom: 4px;
 }
 
 .xr-text-repr-fallback {
@@ -1603,8 +1967,11 @@ body.vscode-dark {
 .xr-header {
   padding-top: 6px;
   padding-bottom: 6px;
-  margin-bottom: 4px;
+}
+
+.xr-header {
   border-bottom: solid 1px var(--xr-border-color);
+  margin-bottom: 4px;
 }
 
 .xr-header > div,
@@ -1615,45 +1982,62 @@ body.vscode-dark {
 }
 
 .xr-obj-type,
-.xr-array-name {
+.xr-obj-name {
   margin-left: 2px;
   margin-right: 10px;
 }
 
-.xr-obj-type {
+.xr-obj-type,
+.xr-group-box-contents > label {
   color: var(--xr-font-color2);
+  display: block;
 }
 
 .xr-sections {
   padding-left: 0 !important;
   display: grid;
   grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 
 .xr-section-item {
   display: contents;
 }
 
-.xr-section-item input {
-  display: inline-block;
+.xr-section-item > input,
+.xr-group-box-contents > input,
+.xr-array-wrap > input {
+  display: block;
   opacity: 0;
   height: 0;
+  margin: 0;
 }
 
-.xr-section-item input + label {
+.xr-section-item > input + label,
+.xr-var-item > input + label {
   color: var(--xr-disabled-color);
 }
 
-.xr-section-item input:enabled + label {
+.xr-section-item > input:enabled + label,
+.xr-var-item > input:enabled + label,
+.xr-array-wrap > input:enabled + label,
+.xr-group-box-contents > input:enabled + label {
   cursor: pointer;
   color: var(--xr-font-color2);
 }
 
-.xr-section-item input:focus + label {
-  border: 2px solid var(--xr-font-color0);
+.xr-section-item > input:focus-visible + label,
+.xr-var-item > input:focus-visible + label,
+.xr-array-wrap > input:focus-visible + label,
+.xr-group-box-contents > input:focus-visible + label {
+  outline: auto;
 }
 
-.xr-section-item input:enabled + label:hover {
+.xr-section-item > input:enabled + label:hover,
+.xr-var-item > input:enabled + label:hover,
+.xr-array-wrap > input:enabled + label:hover,
+.xr-group-box-contents > input:enabled + label:hover {
   color: var(--xr-font-color0);
 }
 
@@ -1661,11 +2045,25 @@ body.vscode-dark {
   grid-column: 1;
   color: var(--xr-font-color2);
   font-weight: 500;
+  white-space: nowrap;
+}
+
+.xr-section-summary > em {
+  font-weight: normal;
+}
+
+.xr-span-grid {
+  grid-column-end: -1;
 }
 
 .xr-section-summary > span {
   display: inline-block;
-  padding-left: 0.5em;
+  padding-left: 0.3em;
+}
+
+.xr-group-box-contents > input:checked + label > span {
+  display: inline-block;
+  padding-left: 0.6em;
 }
 
 .xr-section-summary-in:disabled + label {
@@ -1693,9 +2091,9 @@ body.vscode-dark {
 }
 
 .xr-section-summary,
-.xr-section-inline-details {
+.xr-section-inline-details,
+.xr-group-box-contents > label {
   padding-top: 4px;
-  padding-bottom: 4px;
 }
 
 .xr-section-inline-details {
@@ -1703,13 +2101,79 @@ body.vscode-dark {
 }
 
 .xr-section-details {
-  display: none;
   grid-column: 1 / -1;
+  margin-top: 4px;
   margin-bottom: 5px;
+}
+
+.xr-section-summary-in ~ .xr-section-details {
+  display: none;
 }
 
 .xr-section-summary-in:checked ~ .xr-section-details {
   display: contents;
+}
+
+.xr-children {
+  display: inline-grid;
+  grid-template-columns: 100%;
+  grid-column: 1 / -1;
+  padding-top: 4px;
+}
+
+.xr-group-box {
+  display: inline-grid;
+  grid-template-columns: 0px 30px auto;
+}
+
+.xr-group-box-vline {
+  grid-column-start: 1;
+  border-right: 0.2em solid;
+  border-color: var(--xr-border-color);
+  width: 0px;
+}
+
+.xr-group-box-hline {
+  grid-column-start: 2;
+  grid-row-start: 1;
+  height: 1em;
+  width: 26px;
+  border-bottom: 0.2em solid;
+  border-color: var(--xr-border-color);
+}
+
+.xr-group-box-contents {
+  grid-column-start: 3;
+  padding-bottom: 4px;
+}
+
+.xr-group-box-contents > label::before {
+  content: "📂";
+  padding-right: 0.3em;
+}
+
+.xr-group-box-contents > input:checked + label::before {
+  content: "📁";
+}
+
+.xr-group-box-contents > input:checked + label {
+  padding-bottom: 0px;
+}
+
+.xr-group-box-contents > input:checked ~ .xr-sections {
+  display: none;
+}
+
+.xr-group-box-contents > input + label > span {
+  display: none;
+}
+
+.xr-group-box-ellipsis {
+  font-size: 1.4em;
+  font-weight: 900;
+  color: var(--xr-font-color2);
+  letter-spacing: 0.15em;
+  cursor: default;
 }
 
 .xr-array-wrap {
@@ -1782,7 +2246,9 @@ body.vscode-dark {
 .xr-var-item label,
 .xr-var-item > .xr-var-name span {
   background-color: var(--xr-background-color-row-even);
+  border-color: var(--xr-background-color-row-odd);
   margin-bottom: 0;
+  padding-top: 2px;
 }
 
 .xr-var-item > .xr-var-name:hover span {
@@ -1793,6 +2259,7 @@ body.vscode-dark {
 .xr-var-list > li:nth-child(odd) > label,
 .xr-var-list > li:nth-child(odd) > .xr-var-name span {
   background-color: var(--xr-background-color-row-odd);
+  border-color: var(--xr-background-color-row-even);
 }
 
 .xr-var-name {
@@ -1842,8 +2309,15 @@ body.vscode-dark {
 .xr-var-data,
 .xr-index-data {
   display: none;
-  background-color: var(--xr-background-color) !important;
-  padding-bottom: 5px !important;
+  border-top: 2px dotted var(--xr-background-color);
+  padding-bottom: 20px !important;
+  padding-top: 10px !important;
+}
+
+.xr-var-attrs-in + label,
+.xr-var-data-in + label,
+.xr-index-data-in + label {
+  padding: 0 1px;
 }
 
 .xr-var-attrs-in:checked ~ .xr-var-attrs,
@@ -1854,6 +2328,12 @@ body.vscode-dark {
 
 .xr-var-data > table {
   float: right;
+}
+
+.xr-var-data > pre,
+.xr-index-data > pre,
+.xr-var-data > table > tbody > tr {
+  background-color: transparent !important;
 }
 
 .xr-var-name span,
@@ -1915,15 +2395,38 @@ dl.xr-attrs {
   stroke: currentColor;
   fill: currentColor;
 }
+
+.xr-var-attrs-in:checked + label > .xr-icon-file-text2,
+.xr-var-data-in:checked + label > .xr-icon-database,
+.xr-index-data-in:checked + label > .xr-icon-database {
+  color: var(--xr-font-color0);
+  filter: drop-shadow(1px 1px 5px var(--xr-font-color2));
+  stroke-width: 0.8px;
+}
 </style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt; Size: 42kB
 Dimensions:   (northing: 61, easting: 83)
 Coordinates:
-  * easting   (easting) float64 664B -3.485e+05 -3.285e+05 ... 1.285e+06
   * northing  (northing) float64 488B 3.565e+06 3.585e+06 ... 4.758e+06
+  * easting   (easting) float64 664B -3.485e+05 -3.285e+05 ... 1.285e+06
 Data variables:
     scalars   (northing, easting) float64 41kB -1.83 -1.795 ... -0.08501 -0.1041
 Attributes:
-    metadata:  Generated by Spline(mindist=0)</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-751479b8-721f-4b92-85c1-3b6262995c8e' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-751479b8-721f-4b92-85c1-3b6262995c8e' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>northing</span>: 61</li><li><span class='xr-has-index'>easting</span>: 83</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-8465c2fe-4c90-42e7-ba02-78444bc3d90d' class='xr-section-summary-in' type='checkbox'  checked><label for='section-8465c2fe-4c90-42e7-ba02-78444bc3d90d' class='xr-section-summary' >Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>easting</span></div><div class='xr-var-dims'>(easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-3.485e+05 -3.285e+05 ... 1.285e+06</div><input id='attrs-38e9eae8-a36d-4ba9-9377-e7206327a8ec' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-38e9eae8-a36d-4ba9-9377-e7206327a8ec' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-7a18d97f-bb4b-4b26-b136-172dc2914a75' class='xr-var-data-in' type='checkbox'><label for='data-7a18d97f-bb4b-4b26-b136-172dc2914a75' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([-348462.717042, -328541.207685, -308619.698328, -288698.18897 ,
+    metadata:  Generated by Spline(mindist=0)</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-7607d6ee-dd07-4176-9fb0-48c1e6f7b6b6' class='xr-section-summary-in' type='checkbox' disabled /><label for='section-7607d6ee-dd07-4176-9fb0-48c1e6f7b6b6' class='xr-section-summary'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>northing</span>: 61</li><li><span class='xr-has-index'>easting</span>: 83</li></ul></div></li><li class='xr-section-item'><input id='section-ab85f7b3-4d14-434b-8187-049fcabe8aa3' class='xr-section-summary-in' type='checkbox' checked /><label for='section-ab85f7b3-4d14-434b-8187-049fcabe8aa3' class='xr-section-summary' title='Expand/collapse section'>Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>northing</span></div><div class='xr-var-dims'>(northing)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>3.565e+06 3.585e+06 ... 4.758e+06</div><input id='attrs-e7247158-b2f9-4f7c-85ca-94f999c30468' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-e7247158-b2f9-4f7c-85ca-94f999c30468' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-847da625-c455-46af-ab33-3019ab405ab2' class='xr-var-data-in' type='checkbox'><label for='data-847da625-c455-46af-ab33-3019ab405ab2' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([3565363.347553, 3585245.011304, 3605126.675055, 3625008.338806,
+       3644890.002556, 3664771.666307, 3684653.330058, 3704534.993809,
+       3724416.65756 , 3744298.321311, 3764179.985062, 3784061.648813,
+       3803943.312563, 3823824.976314, 3843706.640065, 3863588.303816,
+       3883469.967567, 3903351.631318, 3923233.295069, 3943114.958819,
+       3962996.62257 , 3982878.286321, 4002759.950072, 4022641.613823,
+       4042523.277574, 4062404.941325, 4082286.605076, 4102168.268826,
+       4122049.932577, 4141931.596328, 4161813.260079, 4181694.92383 ,
+       4201576.587581, 4221458.251332, 4241339.915082, 4261221.578833,
+       4281103.242584, 4300984.906335, 4320866.570086, 4340748.233837,
+       4360629.897588, 4380511.561339, 4400393.225089, 4420274.88884 ,
+       4440156.552591, 4460038.216342, 4479919.880093, 4499801.543844,
+       4519683.207595, 4539564.871345, 4559446.535096, 4579328.198847,
+       4599209.862598, 4619091.526349, 4638973.1901  , 4658854.853851,
+       4678736.517602, 4698618.181352, 4718499.845103, 4738381.508854,
+       4758263.172605])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>easting</span></div><div class='xr-var-dims'>(easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-3.485e+05 -3.285e+05 ... 1.285e+06</div><input id='attrs-fef88c84-aff1-44a1-a4cc-52a7d2baf387' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-fef88c84-aff1-44a1-a4cc-52a7d2baf387' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-74eb644a-54c5-4d08-b017-652e6059e294' class='xr-var-data-in' type='checkbox'><label for='data-74eb644a-54c5-4d08-b017-652e6059e294' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([-348462.717042, -328541.207685, -308619.698328, -288698.18897 ,
        -268776.679613, -248855.170256, -228933.660899, -209012.151542,
        -189090.642184, -169169.132827, -149247.62347 , -129326.114113,
        -109404.604756,  -89483.095398,  -69561.586041,  -49640.076684,
@@ -1943,22 +2446,7 @@ Attributes:
        1006199.919248, 1026121.428605, 1046042.937962, 1065964.447319,
        1085885.956677, 1105807.466034, 1125728.975391, 1145650.484748,
        1165571.994105, 1185493.503463, 1205415.01282 , 1225336.522177,
-       1245258.031534, 1265179.540891, 1285101.050249])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>northing</span></div><div class='xr-var-dims'>(northing)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>3.565e+06 3.585e+06 ... 4.758e+06</div><input id='attrs-67ae9a17-d42a-42e9-9f6c-2a62e8d4a453' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-67ae9a17-d42a-42e9-9f6c-2a62e8d4a453' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c408e2fc-9fa1-4768-bafa-f872080c665f' class='xr-var-data-in' type='checkbox'><label for='data-c408e2fc-9fa1-4768-bafa-f872080c665f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([3565363.347553, 3585245.011304, 3605126.675055, 3625008.338806,
-       3644890.002556, 3664771.666307, 3684653.330058, 3704534.993809,
-       3724416.65756 , 3744298.321311, 3764179.985062, 3784061.648813,
-       3803943.312563, 3823824.976314, 3843706.640065, 3863588.303816,
-       3883469.967567, 3903351.631318, 3923233.295069, 3943114.958819,
-       3962996.62257 , 3982878.286321, 4002759.950072, 4022641.613823,
-       4042523.277574, 4062404.941325, 4082286.605076, 4102168.268826,
-       4122049.932577, 4141931.596328, 4161813.260079, 4181694.92383 ,
-       4201576.587581, 4221458.251332, 4241339.915082, 4261221.578833,
-       4281103.242584, 4300984.906335, 4320866.570086, 4340748.233837,
-       4360629.897588, 4380511.561339, 4400393.225089, 4420274.88884 ,
-       4440156.552591, 4460038.216342, 4479919.880093, 4499801.543844,
-       4519683.207595, 4539564.871345, 4559446.535096, 4579328.198847,
-       4599209.862598, 4619091.526349, 4638973.1901  , 4658854.853851,
-       4678736.517602, 4698618.181352, 4718499.845103, 4738381.508854,
-       4758263.172605])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-803e41bd-6cff-4a06-b7d4-c8834912ec63' class='xr-section-summary-in' type='checkbox'  checked><label for='section-803e41bd-6cff-4a06-b7d4-c8834912ec63' class='xr-section-summary' >Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>scalars</span></div><div class='xr-var-dims'>(northing, easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-1.83 -1.795 ... -0.08501 -0.1041</div><input id='attrs-85be4345-774f-48a8-ba0f-daa3333caf90' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-85be4345-774f-48a8-ba0f-daa3333caf90' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-534a8cb1-fa5a-4773-84fd-7b7d401bb3ea' class='xr-var-data-in' type='checkbox'><label for='data-534a8cb1-fa5a-4773-84fd-7b7d401bb3ea' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Spline(mindist=0)</dd></dl></div><div class='xr-var-data'><pre>array([[-1.82977492, -1.79473545, -1.75996041, ...,  0.67762339,
+       1245258.031534, 1265179.540891, 1285101.050249])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-faf3a818-f589-4d2c-b4e9-f7d6eec0ba99' class='xr-section-summary-in' type='checkbox' checked /><label for='section-faf3a818-f589-4d2c-b4e9-f7d6eec0ba99' class='xr-section-summary' title='Expand/collapse section'>Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>scalars</span></div><div class='xr-var-dims'>(northing, easting)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-1.83 -1.795 ... -0.08501 -0.1041</div><input id='attrs-fae0accb-a789-4eb9-af2d-cc81fdedb09a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-fae0accb-a789-4eb9-af2d-cc81fdedb09a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-3b57e17c-c4aa-4b2d-a965-441122ffb931' class='xr-var-data-in' type='checkbox'><label for='data-3b57e17c-c4aa-4b2d-a965-441122ffb931' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Spline(mindist=0)</dd></dl></div><div class='xr-var-data'><pre>array([[-1.82977492, -1.79473545, -1.75996041, ...,  0.67762339,
          0.62565407,  0.58349659],
        [-1.76738988, -1.73257668, -1.69802946, ...,  0.60077785,
          0.55053339,  0.5115023 ],
@@ -1970,58 +2458,9 @@ Attributes:
        [-1.27124599, -1.22472314, -1.1782028 , ..., -0.04182153,
         -0.0642371 , -0.08467204],
        [-1.30437194, -1.25768902, -1.21106622, ..., -0.06417643,
-        -0.08500706, -0.10411131]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-b01f182a-70ab-465d-b9bc-721eda020c6b' class='xr-section-summary-in' type='checkbox'  ><label for='section-b01f182a-70ab-465d-b9bc-721eda020c6b' class='xr-section-summary' >Indexes: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>easting</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-8b0504a9-f9a6-4e4e-8f08-2be6da88e107' class='xr-index-data-in' type='checkbox'/><label for='index-8b0504a9-f9a6-4e4e-8f08-2be6da88e107' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([-348462.71704205236,  -328541.2076848502,  -308619.6983276481,
-       -288698.18897044595,  -268776.6796132438, -248855.17025604163,
-        -228933.6608988395, -209012.15154163737, -189090.64218443522,
-       -169169.13282723306, -149247.62347003093,  -129326.1141128288,
-       -109404.60475562664,  -89483.09539842448,  -69561.58604122238,
-        -49640.07668402023,  -29718.56732681807,  -9797.057969615911,
-        10124.451387586247,  30045.960744788346,  49967.470101990504,
-         69888.97945919266,   89810.48881639476,  109731.99817359692,
-        129653.50753079908,  149575.01688800124,   169496.5262452034,
-         189418.0356024055,   209339.5449596076,   229261.0543168098,
-         249182.5636740119,   269104.0730312141,   289025.5823884162,
-         308947.0917456183,  328868.60110282054,  348790.11046002264,
-        368711.61981722486,  388633.12917442695,  408554.63853162905,
-        428476.14788883127,  448397.65724603337,  468319.16660323547,
-         488240.6759604377,   508162.1853176398,   528083.6946748418,
-         548005.2040320442,   567926.7133892463,   587848.2227464484,
-         607769.7321036505,   627691.2414608526,   647612.7508180549,
-          667534.260175257,   687455.7695324591,   707377.2788896612,
-         727298.7882468633,   747220.2976040654,   767141.8069612675,
-         787063.3163184698,   806984.8256756719,    826906.335032874,
-         846827.8443900761,   866749.3537472782,   886670.8631044806,
-         906592.3724616827,   926513.8818188848,   946435.3911760869,
-          966356.900533289,   986278.4098904913,  1006199.9192476934,
-        1026121.4286048955,  1046042.9379620976,  1065964.4473192997,
-         1085885.956676502,   1105807.466033704,  1125728.9753909062,
-        1145650.4847481083,  1165571.9941053104,  1185493.5034625125,
-        1205415.0128197148,   1225336.522176917,   1245258.031534119,
-        1265179.5408913211,  1285101.0502485232],
-      dtype=&#x27;float64&#x27;, name=&#x27;easting&#x27;))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>northing</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-33a1a89f-04da-4a21-ae50-0f40c23cbc4c' class='xr-index-data-in' type='checkbox'/><label for='index-33a1a89f-04da-4a21-ae50-0f40c23cbc4c' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([ 3565363.347552966,  3585245.011303833, 3605126.6750547006,
-        3625008.338805568, 3644890.0025564353, 3664771.6663073027,
-         3684653.33005817, 3704534.9938090374, 3724416.6575599047,
-        3744298.321310772, 3764179.9850616395,  3784061.648812507,
-        3803943.312563374, 3823824.9763142415,  3843706.640065109,
-       3863588.3038159763, 3883469.9675668436,  3903351.631317711,
-       3923233.2950685783, 3943114.9588194457,  3962996.622570313,
-       3982878.2863211804, 4002759.9500720478,  4022641.613822915,
-       4042523.2775737825,   4062404.94132465,  4082286.605075517,
-        4102168.268826385, 4122049.9325772524, 4141931.5963281197,
-        4161813.260078987, 4181694.9238298545,  4201576.587580722,
-        4221458.251331589,  4241339.915082457,  4261221.578833324,
-        4281103.242584191,  4300984.906335059,  4320866.570085926,
-        4340748.233836793,  4360629.897587661,  4380511.561338528,
-        4400393.225089395,  4420274.888840263,   4440156.55259113,
-       4460038.2163419975,  4479919.880092865,  4499801.543843732,
-          4519683.2075946,  4539564.871345467,  4559446.535096334,
-        4579328.198847202,  4599209.862598069,  4619091.526348936,
-        4638973.190099804,  4658854.853850671,  4678736.517601538,
-        4698618.181352406,  4718499.845103273, 4738381.5088541405,
-        4758263.172605008],
-      dtype=&#x27;float64&#x27;, name=&#x27;northing&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-fd54823c-2bab-40af-a66b-7c7a45c48318' class='xr-section-summary-in' type='checkbox'  checked><label for='section-fd54823c-2bab-40af-a66b-7c7a45c48318' class='xr-section-summary' >Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Spline(mindist=0)</dd></dl></div></li></ul></div></div></div></div>
+        -0.08500706, -0.10411131]], shape=(61, 83))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-bb62438c-112d-4a06-882f-1a8b34040c2d' class='xr-section-summary-in' type='checkbox' checked /><label for='section-bb62438c-112d-4a06-882f-1a8b34040c2d' class='xr-section-summary' title='Expand/collapse section'>Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Spline(mindist=0)</dd></dl></div></li></ul></div></div></div></div>
 </div>
-<p>The generated grid is an <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.1.3.dev0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> and is <strong>Cartesian by
+<p>The generated grid is an <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> and is <strong>Cartesian by
 default</strong>.
 The grid contains some metadata and default names for the coordinates and data
 variables.
@@ -2034,7 +2473,7 @@ Plotting the grid with matplotlib is as easy as:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x7f0ee46a78c0&gt;
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x7f68e4463dd0&gt;
 </pre></div>
 </div>
 <img alt="_images/introduction_15_1.png" src="_images/introduction_15_1.png" />
@@ -2074,39 +2513,87 @@ the geographic region and the projection used like so:</p>
 </symbol>
 </defs>
 </svg>
-<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
- *
- */
+<style>/* CSS stylesheet for displaying xarray objects in notebooks */
 
 :root {
-  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
-  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
-  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
-  --xr-border-color: var(--jp-border-color2, #e0e0e0);
-  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
-  --xr-background-color: var(--jp-layout-color0, white);
-  --xr-background-color-row-even: var(--jp-layout-color1, white);
-  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
+  --xr-font-color0: var(
+    --jp-content-font-color0,
+    var(--pst-color-text-base rgba(0, 0, 0, 1))
+  );
+  --xr-font-color2: var(
+    --jp-content-font-color2,
+    var(--pst-color-text-base, rgba(0, 0, 0, 0.54))
+  );
+  --xr-font-color3: var(
+    --jp-content-font-color3,
+    var(--pst-color-text-base, rgba(0, 0, 0, 0.38))
+  );
+  --xr-border-color: var(
+    --jp-border-color2,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 10))
+  );
+  --xr-disabled-color: var(
+    --jp-layout-color3,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 40))
+  );
+  --xr-background-color: var(
+    --jp-layout-color0,
+    var(--pst-color-on-background, white)
+  );
+  --xr-background-color-row-even: var(
+    --jp-layout-color1,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 5))
+  );
+  --xr-background-color-row-odd: var(
+    --jp-layout-color2,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 15))
+  );
 }
 
 html[theme="dark"],
 html[data-theme="dark"],
 body[data-theme="dark"],
 body.vscode-dark {
-  --xr-font-color0: rgba(255, 255, 255, 1);
-  --xr-font-color2: rgba(255, 255, 255, 0.54);
-  --xr-font-color3: rgba(255, 255, 255, 0.38);
-  --xr-border-color: #1f1f1f;
-  --xr-disabled-color: #515151;
-  --xr-background-color: #111111;
-  --xr-background-color-row-even: #111111;
-  --xr-background-color-row-odd: #313131;
+  --xr-font-color0: var(
+    --jp-content-font-color0,
+    var(--pst-color-text-base, rgba(255, 255, 255, 1))
+  );
+  --xr-font-color2: var(
+    --jp-content-font-color2,
+    var(--pst-color-text-base, rgba(255, 255, 255, 0.54))
+  );
+  --xr-font-color3: var(
+    --jp-content-font-color3,
+    var(--pst-color-text-base, rgba(255, 255, 255, 0.38))
+  );
+  --xr-border-color: var(
+    --jp-border-color2,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 10))
+  );
+  --xr-disabled-color: var(
+    --jp-layout-color3,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 40))
+  );
+  --xr-background-color: var(
+    --jp-layout-color0,
+    var(--pst-color-on-background, #111111)
+  );
+  --xr-background-color-row-even: var(
+    --jp-layout-color1,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 5))
+  );
+  --xr-background-color-row-odd: var(
+    --jp-layout-color2,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 15))
+  );
 }
 
 .xr-wrap {
   display: block !important;
   min-width: 300px;
   max-width: 700px;
+  line-height: 1.6;
+  padding-bottom: 4px;
 }
 
 .xr-text-repr-fallback {
@@ -2117,8 +2604,11 @@ body.vscode-dark {
 .xr-header {
   padding-top: 6px;
   padding-bottom: 6px;
-  margin-bottom: 4px;
+}
+
+.xr-header {
   border-bottom: solid 1px var(--xr-border-color);
+  margin-bottom: 4px;
 }
 
 .xr-header > div,
@@ -2129,45 +2619,62 @@ body.vscode-dark {
 }
 
 .xr-obj-type,
-.xr-array-name {
+.xr-obj-name {
   margin-left: 2px;
   margin-right: 10px;
 }
 
-.xr-obj-type {
+.xr-obj-type,
+.xr-group-box-contents > label {
   color: var(--xr-font-color2);
+  display: block;
 }
 
 .xr-sections {
   padding-left: 0 !important;
   display: grid;
   grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 
 .xr-section-item {
   display: contents;
 }
 
-.xr-section-item input {
-  display: inline-block;
+.xr-section-item > input,
+.xr-group-box-contents > input,
+.xr-array-wrap > input {
+  display: block;
   opacity: 0;
   height: 0;
+  margin: 0;
 }
 
-.xr-section-item input + label {
+.xr-section-item > input + label,
+.xr-var-item > input + label {
   color: var(--xr-disabled-color);
 }
 
-.xr-section-item input:enabled + label {
+.xr-section-item > input:enabled + label,
+.xr-var-item > input:enabled + label,
+.xr-array-wrap > input:enabled + label,
+.xr-group-box-contents > input:enabled + label {
   cursor: pointer;
   color: var(--xr-font-color2);
 }
 
-.xr-section-item input:focus + label {
-  border: 2px solid var(--xr-font-color0);
+.xr-section-item > input:focus-visible + label,
+.xr-var-item > input:focus-visible + label,
+.xr-array-wrap > input:focus-visible + label,
+.xr-group-box-contents > input:focus-visible + label {
+  outline: auto;
 }
 
-.xr-section-item input:enabled + label:hover {
+.xr-section-item > input:enabled + label:hover,
+.xr-var-item > input:enabled + label:hover,
+.xr-array-wrap > input:enabled + label:hover,
+.xr-group-box-contents > input:enabled + label:hover {
   color: var(--xr-font-color0);
 }
 
@@ -2175,11 +2682,25 @@ body.vscode-dark {
   grid-column: 1;
   color: var(--xr-font-color2);
   font-weight: 500;
+  white-space: nowrap;
+}
+
+.xr-section-summary > em {
+  font-weight: normal;
+}
+
+.xr-span-grid {
+  grid-column-end: -1;
 }
 
 .xr-section-summary > span {
   display: inline-block;
-  padding-left: 0.5em;
+  padding-left: 0.3em;
+}
+
+.xr-group-box-contents > input:checked + label > span {
+  display: inline-block;
+  padding-left: 0.6em;
 }
 
 .xr-section-summary-in:disabled + label {
@@ -2207,9 +2728,9 @@ body.vscode-dark {
 }
 
 .xr-section-summary,
-.xr-section-inline-details {
+.xr-section-inline-details,
+.xr-group-box-contents > label {
   padding-top: 4px;
-  padding-bottom: 4px;
 }
 
 .xr-section-inline-details {
@@ -2217,13 +2738,79 @@ body.vscode-dark {
 }
 
 .xr-section-details {
-  display: none;
   grid-column: 1 / -1;
+  margin-top: 4px;
   margin-bottom: 5px;
+}
+
+.xr-section-summary-in ~ .xr-section-details {
+  display: none;
 }
 
 .xr-section-summary-in:checked ~ .xr-section-details {
   display: contents;
+}
+
+.xr-children {
+  display: inline-grid;
+  grid-template-columns: 100%;
+  grid-column: 1 / -1;
+  padding-top: 4px;
+}
+
+.xr-group-box {
+  display: inline-grid;
+  grid-template-columns: 0px 30px auto;
+}
+
+.xr-group-box-vline {
+  grid-column-start: 1;
+  border-right: 0.2em solid;
+  border-color: var(--xr-border-color);
+  width: 0px;
+}
+
+.xr-group-box-hline {
+  grid-column-start: 2;
+  grid-row-start: 1;
+  height: 1em;
+  width: 26px;
+  border-bottom: 0.2em solid;
+  border-color: var(--xr-border-color);
+}
+
+.xr-group-box-contents {
+  grid-column-start: 3;
+  padding-bottom: 4px;
+}
+
+.xr-group-box-contents > label::before {
+  content: "📂";
+  padding-right: 0.3em;
+}
+
+.xr-group-box-contents > input:checked + label::before {
+  content: "📁";
+}
+
+.xr-group-box-contents > input:checked + label {
+  padding-bottom: 0px;
+}
+
+.xr-group-box-contents > input:checked ~ .xr-sections {
+  display: none;
+}
+
+.xr-group-box-contents > input + label > span {
+  display: none;
+}
+
+.xr-group-box-ellipsis {
+  font-size: 1.4em;
+  font-weight: 900;
+  color: var(--xr-font-color2);
+  letter-spacing: 0.15em;
+  cursor: default;
 }
 
 .xr-array-wrap {
@@ -2296,7 +2883,9 @@ body.vscode-dark {
 .xr-var-item label,
 .xr-var-item > .xr-var-name span {
   background-color: var(--xr-background-color-row-even);
+  border-color: var(--xr-background-color-row-odd);
   margin-bottom: 0;
+  padding-top: 2px;
 }
 
 .xr-var-item > .xr-var-name:hover span {
@@ -2307,6 +2896,7 @@ body.vscode-dark {
 .xr-var-list > li:nth-child(odd) > label,
 .xr-var-list > li:nth-child(odd) > .xr-var-name span {
   background-color: var(--xr-background-color-row-odd);
+  border-color: var(--xr-background-color-row-even);
 }
 
 .xr-var-name {
@@ -2356,8 +2946,15 @@ body.vscode-dark {
 .xr-var-data,
 .xr-index-data {
   display: none;
-  background-color: var(--xr-background-color) !important;
-  padding-bottom: 5px !important;
+  border-top: 2px dotted var(--xr-background-color);
+  padding-bottom: 20px !important;
+  padding-top: 10px !important;
+}
+
+.xr-var-attrs-in + label,
+.xr-var-data-in + label,
+.xr-index-data-in + label {
+  padding: 0 1px;
 }
 
 .xr-var-attrs-in:checked ~ .xr-var-attrs,
@@ -2368,6 +2965,12 @@ body.vscode-dark {
 
 .xr-var-data > table {
   float: right;
+}
+
+.xr-var-data > pre,
+.xr-index-data > pre,
+.xr-var-data > table > tbody > tr {
+  background-color: transparent !important;
 }
 
 .xr-var-name span,
@@ -2429,15 +3032,31 @@ dl.xr-attrs {
   stroke: currentColor;
   fill: currentColor;
 }
+
+.xr-var-attrs-in:checked + label > .xr-icon-file-text2,
+.xr-var-data-in:checked + label > .xr-icon-database,
+.xr-index-data-in:checked + label > .xr-icon-database {
+  color: var(--xr-font-color0);
+  filter: drop-shadow(1px 1px 5px var(--xr-font-color2));
+  stroke-width: 0.8px;
+}
 </style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt; Size: 46kB
 Dimensions:      (latitude: 53, longitude: 106)
 Coordinates:
-  * longitude    (longitude) float64 848B -4.497 -4.296 -4.095 ... 16.38 16.58
   * latitude     (latitude) float64 424B 41.93 42.13 42.33 ... 51.98 52.18 52.38
+  * longitude    (longitude) float64 848B -4.497 -4.296 -4.095 ... 16.38 16.58
 Data variables:
     velocity_up  (latitude, longitude) float64 45kB -1.83 -1.802 ... -0.1041
 Attributes:
-    metadata:  Generated by Spline(mindist=0)</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-837b19e6-7204-4ded-9570-31dab46c9cfb' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-837b19e6-7204-4ded-9570-31dab46c9cfb' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>latitude</span>: 53</li><li><span class='xr-has-index'>longitude</span>: 106</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-c19dd35b-92ed-4ad1-a516-81af05e816c6' class='xr-section-summary-in' type='checkbox'  checked><label for='section-c19dd35b-92ed-4ad1-a516-81af05e816c6' class='xr-section-summary' >Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>longitude</span></div><div class='xr-var-dims'>(longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-4.497 -4.296 ... 16.38 16.58</div><input id='attrs-a4923440-e3e2-40c2-9fc6-98d3e70a2437' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-a4923440-e3e2-40c2-9fc6-98d3e70a2437' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-2e4042a2-f3fa-469d-9c60-247a7ec5983a' class='xr-var-data-in' type='checkbox'><label for='data-2e4042a2-f3fa-469d-9c60-247a7ec5983a' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([-4.496594, -4.295835, -4.095076, -3.894318, -3.693559, -3.492801,
+    metadata:  Generated by Spline(mindist=0)</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-51e66cff-5e71-4374-8b28-e947035d1e45' class='xr-section-summary-in' type='checkbox' disabled /><label for='section-51e66cff-5e71-4374-8b28-e947035d1e45' class='xr-section-summary'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>latitude</span>: 53</li><li><span class='xr-has-index'>longitude</span>: 106</li></ul></div></li><li class='xr-section-item'><input id='section-7cd68a96-796c-4f64-b8dc-6cd5548a7b2e' class='xr-section-summary-in' type='checkbox' checked /><label for='section-7cd68a96-796c-4f64-b8dc-6cd5548a7b2e' class='xr-section-summary' title='Expand/collapse section'>Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>latitude</span></div><div class='xr-var-dims'>(latitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>41.93 42.13 42.33 ... 52.18 52.38</div><input id='attrs-c0e0f243-4de2-4a9c-a9bd-8f3d583e636c' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-c0e0f243-4de2-4a9c-a9bd-8f3d583e636c' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-5b86e726-0c7b-4c87-9b70-46f059b70b9e' class='xr-var-data-in' type='checkbox'><label for='data-5b86e726-0c7b-4c87-9b70-46f059b70b9e' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([41.927458, 42.128455, 42.329452, 42.530449, 42.731446, 42.932443,
+       43.13344 , 43.334437, 43.535433, 43.73643 , 43.937427, 44.138424,
+       44.339421, 44.540418, 44.741415, 44.942412, 45.143409, 45.344406,
+       45.545403, 45.7464  , 45.947397, 46.148393, 46.34939 , 46.550387,
+       46.751384, 46.952381, 47.153378, 47.354375, 47.555372, 47.756369,
+       47.957366, 48.158363, 48.35936 , 48.560357, 48.761353, 48.96235 ,
+       49.163347, 49.364344, 49.565341, 49.766338, 49.967335, 50.168332,
+       50.369329, 50.570326, 50.771323, 50.97232 , 51.173317, 51.374313,
+       51.57531 , 51.776307, 51.977304, 52.178301, 52.379298])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>longitude</span></div><div class='xr-var-dims'>(longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-4.497 -4.296 ... 16.38 16.58</div><input id='attrs-29dded66-f991-4fbf-8efa-027b9c1e5b91' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-29dded66-f991-4fbf-8efa-027b9c1e5b91' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-265f8a4c-27a9-410f-b086-4b6f5f27e255' class='xr-var-data-in' type='checkbox'><label for='data-265f8a4c-27a9-410f-b086-4b6f5f27e255' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([-4.496594, -4.295835, -4.095076, -3.894318, -3.693559, -3.492801,
        -3.292042, -3.091283, -2.890525, -2.689766, -2.489008, -2.288249,
        -2.087491, -1.886732, -1.685973, -1.485215, -1.284456, -1.083698,
        -0.882939, -0.682181, -0.481422, -0.280663, -0.079905,  0.120854,
@@ -2454,15 +3073,7 @@ Attributes:
        12.367127, 12.567885, 12.768644, 12.969402, 13.170161, 13.37092 ,
        13.571678, 13.772437, 13.973195, 14.173954, 14.374712, 14.575471,
        14.77623 , 14.976988, 15.177747, 15.378505, 15.579264, 15.780023,
-       15.980781, 16.18154 , 16.382298, 16.583057])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>latitude</span></div><div class='xr-var-dims'>(latitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>41.93 42.13 42.33 ... 52.18 52.38</div><input id='attrs-ef3fbe2a-b2ba-4db2-9129-8275ad648901' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-ef3fbe2a-b2ba-4db2-9129-8275ad648901' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-29a8b310-58f4-4e32-9b1d-89f5ce52a96f' class='xr-var-data-in' type='checkbox'><label for='data-29a8b310-58f4-4e32-9b1d-89f5ce52a96f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([41.927458, 42.128455, 42.329452, 42.530449, 42.731446, 42.932443,
-       43.13344 , 43.334437, 43.535433, 43.73643 , 43.937427, 44.138424,
-       44.339421, 44.540418, 44.741415, 44.942412, 45.143409, 45.344406,
-       45.545403, 45.7464  , 45.947397, 46.148393, 46.34939 , 46.550387,
-       46.751384, 46.952381, 47.153378, 47.354375, 47.555372, 47.756369,
-       47.957366, 48.158363, 48.35936 , 48.560357, 48.761353, 48.96235 ,
-       49.163347, 49.364344, 49.565341, 49.766338, 49.967335, 50.168332,
-       50.369329, 50.570326, 50.771323, 50.97232 , 51.173317, 51.374313,
-       51.57531 , 51.776307, 51.977304, 52.178301, 52.379298])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-5fad2717-023e-4ee4-89f0-08be1a83c951' class='xr-section-summary-in' type='checkbox'  checked><label for='section-5fad2717-023e-4ee4-89f0-08be1a83c951' class='xr-section-summary' >Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>velocity_up</span></div><div class='xr-var-dims'>(latitude, longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-1.83 -1.802 ... -0.08935 -0.1041</div><input id='attrs-05660532-50c3-4907-ab0f-a83c05cbee40' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-05660532-50c3-4907-ab0f-a83c05cbee40' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c19eed12-1ae5-4ceb-af1d-972b867c3152' class='xr-var-data-in' type='checkbox'><label for='data-c19eed12-1ae5-4ceb-af1d-972b867c3152' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Spline(mindist=0)</dd></dl></div><div class='xr-var-data'><pre>array([[-1.82977492, -1.80238182, -1.77517444, ...,  0.65364321,
+       15.980781, 16.18154 , 16.382298, 16.583057])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-d8a00515-39e7-4b58-b99d-6a3c167d7897' class='xr-section-summary-in' type='checkbox' checked /><label for='section-d8a00515-39e7-4b58-b99d-6a3c167d7897' class='xr-section-summary' title='Expand/collapse section'>Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>velocity_up</span></div><div class='xr-var-dims'>(latitude, longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-1.83 -1.802 ... -0.08935 -0.1041</div><input id='attrs-ed4a4bd3-a928-4f83-bffc-ac0656f3fb56' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-ed4a4bd3-a928-4f83-bffc-ac0656f3fb56' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-3a77b379-c073-4a30-8db2-d785ca7448a4' class='xr-var-data-in' type='checkbox'><label for='data-3a77b379-c073-4a30-8db2-d785ca7448a4' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Spline(mindist=0)</dd></dl></div><div class='xr-var-data'><pre>array([[-1.82977492, -1.80238182, -1.77517444, ...,  0.65364321,
          0.61558604,  0.58349659],
        [-1.76420933, -1.73700141, -1.70998255, ...,  0.57324158,
          0.53704499,  0.5076676 ],
@@ -2473,35 +3084,8 @@ Attributes:
         -0.03868206, -0.05628033],
        [-1.26200488, -1.22570422, -1.18940215, ..., -0.04593886,
         -0.0633128 , -0.07940249],
-       [-1.30437194, -1.26790806, -1.2314868 , ..., -0.07350369,
-        -0.08934526, -0.10411131]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-2134e19f-bf86-4609-95bb-3dba4b1e9b53' class='xr-section-summary-in' type='checkbox'  ><label for='section-2134e19f-bf86-4609-95bb-3dba4b1e9b53' class='xr-section-summary' >Indexes: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>longitude</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-cf749cdd-179c-42ac-93f7-bc34ac9c65ed' class='xr-index-data-in' type='checkbox'/><label for='index-cf749cdd-179c-42ac-93f7-bc34ac9c65ed' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([         -4.4965935,  -4.295834925714286,  -4.095076351428572,
-       -3.8943177771428577,  -3.693559202857143,  -3.492800628571429,
-        -3.292042054285715, -3.0912834800000004,  -2.890524905714286,
-        -2.689766331428572,
-       ...
-         14.77622963142857,  14.976988205714285,         15.17774678,
-        15.378505354285714,  15.579263928571429,  15.780022502857143,
-        15.980781077142858,  16.181539651428572,  16.382298225714287,
-                16.5830568],
-      dtype=&#x27;float64&#x27;, name=&#x27;longitude&#x27;, length=106))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>latitude</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-f093d415-abb1-4cd2-9f46-39fbf28b2477' class='xr-index-data-in' type='checkbox'/><label for='index-f093d415-abb1-4cd2-9f46-39fbf28b2477' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([        41.9274581, 42.128455023076924, 42.329451946153846,
-       42.530448869230774, 42.731445792307696,  42.93244271538462,
-        43.13343963846154,  43.33443656153846,  43.53543348461539,
-        43.73643040769231,  43.93742733076923,  44.13842425384615,
-        44.33942117692308, 44.540418100000004, 44.741415023076925,
-        44.94241194615385,  45.14340886923077,   45.3444057923077,
-        45.54540271538462,  45.74639963846154,  45.94739656153846,
-        46.14839348461538,  46.34939040769231,  46.55038733076923,
-       46.751384253846155, 46.952381176923076,         47.1533781,
-       47.354375023076926,  47.55537194615385,  47.75636886923077,
-        47.95736579230769,  48.15836271538461,  48.35935963846154,
-        48.56035656153846, 48.761353484615384, 48.962350407692306,
-       49.163347330769234, 49.364344253846156,  49.56534117692308,
-               49.7663381,  49.96733502307693,  50.16833194615385,
-        50.36932886923077,  50.57032579230769,  50.77132271538461,
-        50.97231963846154,  51.17331656153846, 51.374313484615385,
-        51.57531040769231,  51.77630733076923,  51.97730425384616,
-        52.17830117692308,         52.3792981],
-      dtype=&#x27;float64&#x27;, name=&#x27;latitude&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-a64a2f66-5333-411e-bce6-631e84ef6b0f' class='xr-section-summary-in' type='checkbox'  checked><label for='section-a64a2f66-5333-411e-bce6-631e84ef6b0f' class='xr-section-summary' >Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Spline(mindist=0)</dd></dl></div></li></ul></div></div></div></div>
+       [-1.30437194, -1.26790805, -1.2314868 , ..., -0.07350369,
+        -0.08934526, -0.10411131]], shape=(53, 106))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-9b061eae-118e-40d3-90c8-79353444389d' class='xr-section-summary-in' type='checkbox' checked /><label for='section-9b061eae-118e-40d3-90c8-79353444389d' class='xr-section-summary' title='Expand/collapse section'>Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Spline(mindist=0)</dd></dl></div></li></ul></div></div></div></div>
 </div>
 <p>Plotting a geographic grid is easier done with PyGMT so we can add coastlines
 and country borders:</p>
@@ -2667,7 +3251,7 @@ extract a profile that cuts across the Alps:</p>
 generate a profile between 2 points specified with geographic coordinates.
 The resulting points will be evenly spaced in the projected coordinates.</p>
 </div>
-<p>The result is a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> with the coordinates, distance along
+<p>The result is a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> with the coordinates, distance along
 the profile, and interpolated data values.
 Let’s plot the location of the profile on our map:</p>
 <div class="jupyter_cell jupyter_container docutils container">
@@ -2691,7 +3275,7 @@ Let’s plot the location of the profile on our map:</p>
 <img alt="_images/introduction_19_0.png" src="_images/introduction_19_0.png" />
 </div>
 </div>
-<p>Finally, we can plot the profile data using <a class="reference external" href="https://matplotlib.org/stable/index.html#module-matplotlib" title="(in Matplotlib v3.10.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code></a>:</p>
+<p>Finally, we can plot the profile data using <a class="reference external" href="https://matplotlib.org/stable/index.html#module-matplotlib" title="(in Matplotlib v3.10.8)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">matplotlib</span></code></a>:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -2768,8 +3352,7 @@ always looking for more people to get involved with developing Verde.</p>
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -2806,7 +3389,7 @@ always looking for more people to get involved with developing Verde.</p>
 
   <p class="copyright">
     
-      © Copyright 2017-2025, The Verde Developers.
+      © Copyright 2017-2026, The Verde Developers.
       <br/>
     
   </p>
@@ -2815,7 +3398,7 @@ always looking for more people to get involved with developing Verde.</p>
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 19, 2025.
+  Last updated on Mar 19, 2026.
   <br/>
 </p>
   </div>
@@ -2833,8 +3416,8 @@ always looking for more people to get involved with developing Verde.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

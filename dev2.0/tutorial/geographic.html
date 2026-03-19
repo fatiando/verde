@@ -1,0 +1,1471 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    
+        <title>Interpolation in geographic coordinates | Verde v1.8.1.post42</title>
+    
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/jupyter-sphinx.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/thebelab.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=504d3d5d" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/thebelab-helper.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@^1.0.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorial/geographic';</script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="List of functions and classes (API)" href="../api/index.html" />
+    <link rel="prev" title="Making your first grid" href="first-grid.html" />
+    <!-- Plausible analytics for anonymous usage statistics -->
+    <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Verde <span class="project-version">v1.8.1.post42</span></p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">A taste of Verde</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tutorial</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="first-grid.html">Making your first grid</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Interpolation in geographic coordinates</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Reference documentation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">List of functions and classes (API)</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.Spline.html">verde.Spline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.SplineCV.html">verde.SplineCV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.KNeighbors.html">verde.KNeighbors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.Linear.html">verde.Linear</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.Cubic.html">verde.Cubic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.VectorSpline2D.html">verde.VectorSpline2D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.BlockReduce.html">verde.BlockReduce</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.BlockMean.html">verde.BlockMean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.Trend.html">verde.Trend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.Vector.html">verde.Vector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.train_test_split.html">verde.train_test_split</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.cross_val_score.html">verde.cross_val_score</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.BlockShuffleSplit.html">verde.BlockShuffleSplit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.BlockKFold.html">verde.BlockKFold</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.grid_coordinates.html">verde.grid_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.scatter_points.html">verde.scatter_points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.profile_coordinates.html">verde.profile_coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.get_region.html">verde.get_region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.pad_region.html">verde.pad_region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.inside.html">verde.inside</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.rolling_window.html">verde.rolling_window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.expanding_window.html">verde.expanding_window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.project_region.html">verde.project_region</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.project_grid.html">verde.project_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.distance_mask.html">verde.distance_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.convexhull_mask.html">verde.convexhull_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.maxabs.html">verde.maxabs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.variance_to_weights.html">verde.variance_to_weights</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.grid_to_table.html">verde.grid_to_table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.make_xarray_grid.html">verde.make_xarray_grid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.median_distance.html">verde.median_distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.load_surfer.html">verde.load_surfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.synthetic.CheckerBoard.html">verde.synthetic.CheckerBoard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.base.BaseGridder.html">verde.base.BaseGridder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.base.BaseBlockCrossValidator.html">verde.base.BaseBlockCrossValidator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.base.n_1d_arrays.html">verde.base.n_1d_arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/generated/verde.base.least_squares.html">verde.base.least_squares</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../conventions.html">Definitions and conventions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing Verde</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compatibility.html">Version compatibility</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../versions.html">Documentation for other versions</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Community</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org/contact/">Join the community</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/fatiando/verde" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/verde/edit/main/doc/tutorial/geographic.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/fatiando/verde/issues/new?title=Issue%20on%20page%20%2Ftutorial/geographic.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/tutorial/geographic.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Interpolation in geographic coordinates</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fetch-some-data">Fetch some data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#projecting-data">Projecting data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fit-an-interpolator-to-the-cartesian-data">Fit an interpolator to the Cartesian data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-a-grid-in-geographic-coordinates">Make a grid in geographic coordinates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-a-profile-in-geographic-coordinates">Make a profile in geographic coordinates</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="interpolation-in-geographic-coordinates">
+<span id="tutorial-geographic"></span><h1>Interpolation in geographic coordinates<a class="headerlink" href="#interpolation-in-geographic-coordinates" title="Link to this heading">#</a></h1>
+<p>Most interpolators and processing methods in Verde operate under the assumption
+that the data coordinates are Cartesian. To process data in geographic
+(longitude and latitude) coordinates, we must first project them. There are
+different ways of doing this in Python but most of them rely on the <a class="reference external" href="https://proj4.org/">PROJ
+library</a> under the hood. We’ll use <a class="reference external" href="https://github.com/jswhit/pyproj">pyproj</a> to access PROJ directly and handle the
+projection operations.
+Verde then offers ways of passing the projection information to use the
+Cartesian interpolators to generate geographic grids and profiles.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pygmt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyproj</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ensaio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">verde</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vd</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<section id="fetch-some-data">
+<h2>Fetch some data<a class="headerlink" href="#fetch-some-data" title="Link to this heading">#</a></h2>
+<p>To demonstrate how to do this, we’ll use Alps GPS velocity data from
+<a class="reference external" href="https://www.fatiando.org/ensaio/latest/api/index.html#module-ensaio" title="(in Ensaio vv0.7.0)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ensaio</span></code></a> once again:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">path_to_data</span> <span class="o">=</span> <span class="n">ensaio</span><span class="o">.</span><span class="n">fetch_alps_gps</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_to_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>We’ll get the data region and add a little padding to it so that our
+interpolation goes beyond the data bounding box.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">region</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">pad_region</span><span class="p">(</span>
+    <span class="n">vd</span><span class="o">.</span><span class="n">get_region</span><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">)),</span>
+    <span class="mi">1</span><span class="p">,</span>  <span class="c1"># degree</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Let’s plot the data on a map with coastlines and country borders to see what it
+looks like:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;M15c&quot;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="s2">&quot;af&quot;</span><span class="p">,</span>
+    <span class="n">land</span><span class="o">=</span><span class="s2">&quot;#eeeeee&quot;</span><span class="p">,</span> <span class="n">borders</span><span class="o">=</span><span class="s2">&quot;1/#666666&quot;</span><span class="p">,</span> <span class="n">area_thresh</span><span class="o">=</span><span class="mf">1e4</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">pygmt</span><span class="o">.</span><span class="n">makecpt</span><span class="p">(</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;polar+h&quot;</span><span class="p">,</span>
+    <span class="n">series</span><span class="o">=</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">velocity_up_mmyr</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">data</span><span class="o">.</span><span class="n">velocity_up_mmyr</span><span class="o">.</span><span class="n">max</span><span class="p">()],</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+    <span class="n">fill</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">velocity_up_mmyr</span><span class="p">,</span>
+    <span class="n">style</span><span class="o">=</span><span class="s2">&quot;c0.2c&quot;</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">pen</span><span class="o">=</span><span class="s2">&quot;0.5p,black&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="s1">&#39;af+l&quot;vertical velocity [mm/yr]&quot;&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/geographic_3_0.png" src="../_images/geographic_3_0.png" />
+</div>
+</div>
+<p>This is much better than just plotting the projected data with no context! Now
+we can see that the Alps region is moving upward (red dots) and the surrounding
+regions are moving downward (blue dots).</p>
+</section>
+<section id="projecting-data">
+<h2>Projecting data<a class="headerlink" href="#projecting-data" title="Link to this heading">#</a></h2>
+<p>For this region, a Mercator projection will do fine since we’re not too close
+to the poles and the latitude range isn’t very large. We’ll create a projection
+function and use to project the data coordinates.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">projection</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span><span class="p">(</span><span class="n">proj</span><span class="o">=</span><span class="s2">&quot;merc&quot;</span><span class="p">,</span> <span class="n">lat_ts</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+<span class="n">coordinates</span> <span class="o">=</span> <span class="n">projection</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>We’ve done this before in <a class="reference internal" href="first-grid.html#tutorial-first-grid"><span class="std std-ref">Making your first grid</span></a>. We’ll still use the
+projected coordinates to decimate the data and fit the interpolator. What’s
+different is how we’ll use the interpolator to make a grid in geographic
+coordinates.</p>
+</section>
+<section id="fit-an-interpolator-to-the-cartesian-data">
+<h2>Fit an interpolator to the Cartesian data<a class="headerlink" href="#fit-an-interpolator-to-the-cartesian-data" title="Link to this heading">#</a></h2>
+<p>Use a Cartesian <a class="reference internal" href="../api/generated/verde.Spline.html#verde.Spline" title="verde.Spline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spline</span></code></a> to fit the data, like we did previously.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">interpolator</span> <span class="o">=</span> <span class="n">vd</span><span class="o">.</span><span class="n">Spline</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">velocity_up_mmyr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>Now we can use this interpolator for gridding and predicting a profile.</p>
+</section>
+<section id="make-a-grid-in-geographic-coordinates">
+<h2>Make a grid in geographic coordinates<a class="headerlink" href="#make-a-grid-in-geographic-coordinates" title="Link to this heading">#</a></h2>
+<p>The interpolator is inherently Cartesian. If we wanted to use to generate
+a grid in geographic coordinates, we would have to:</p>
+<ol class="arabic simple">
+<li><p>Generate grid coordinates on a geographic system.</p></li>
+<li><p>Project the grid coordinates to Cartesian.</p></li>
+<li><p>Pass the projected coordinates to the <code class="docutils literal notranslate"><span class="pre">predict</span></code> method of the
+interpolator.</p></li>
+<li><p>Generate an <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> with the grid values and the geographic
+coordinates.</p></li>
+</ol>
+<p>To facilitate this, the <code class="docutils literal notranslate"><span class="pre">grid</span></code> and <code class="docutils literal notranslate"><span class="pre">profile</span></code> methods of Verde interpolators
+take a <code class="docutils literal notranslate"><span class="pre">projection</span></code> argument. If this is passed, Verde will do the steps
+above and generate a grid/profile in geographic coordinates.
+In this case, the <code class="docutils literal notranslate"><span class="pre">region</span></code> and <code class="docutils literal notranslate"><span class="pre">spacing</span></code> arguments must be given in
+<strong>geographic</strong> coordinates.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">interpolator</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
+    <span class="n">spacing</span><span class="o">=</span><span class="mi">10</span> <span class="o">/</span> <span class="mi">60</span><span class="p">,</span>  <span class="c1"># 10 arc-minutes in decimal degrees</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
+    <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
+    <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">),</span>
+    <span class="n">data_names</span><span class="o">=</span><span class="s2">&quot;velocity_up&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">grid</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<defs>
+<symbol id="icon-database" viewBox="0 0 32 32">
+<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
+<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
+</symbol>
+<symbol id="icon-file-text2" viewBox="0 0 32 32">
+<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
+<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
+</symbol>
+</defs>
+</svg>
+<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
+ *
+ */
+
+:root {
+  --xr-font-color0: var(
+    --jp-content-font-color0,
+    var(--pst-color-text-base rgba(0, 0, 0, 1))
+  );
+  --xr-font-color2: var(
+    --jp-content-font-color2,
+    var(--pst-color-text-base, rgba(0, 0, 0, 0.54))
+  );
+  --xr-font-color3: var(
+    --jp-content-font-color3,
+    var(--pst-color-text-base, rgba(0, 0, 0, 0.38))
+  );
+  --xr-border-color: var(
+    --jp-border-color2,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 10))
+  );
+  --xr-disabled-color: var(
+    --jp-layout-color3,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 40))
+  );
+  --xr-background-color: var(
+    --jp-layout-color0,
+    var(--pst-color-on-background, white)
+  );
+  --xr-background-color-row-even: var(
+    --jp-layout-color1,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 5))
+  );
+  --xr-background-color-row-odd: var(
+    --jp-layout-color2,
+    hsl(from var(--pst-color-on-background, white) h s calc(l - 15))
+  );
+}
+
+html[theme="dark"],
+html[data-theme="dark"],
+body[data-theme="dark"],
+body.vscode-dark {
+  --xr-font-color0: var(
+    --jp-content-font-color0,
+    var(--pst-color-text-base, rgba(255, 255, 255, 1))
+  );
+  --xr-font-color2: var(
+    --jp-content-font-color2,
+    var(--pst-color-text-base, rgba(255, 255, 255, 0.54))
+  );
+  --xr-font-color3: var(
+    --jp-content-font-color3,
+    var(--pst-color-text-base, rgba(255, 255, 255, 0.38))
+  );
+  --xr-border-color: var(
+    --jp-border-color2,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 10))
+  );
+  --xr-disabled-color: var(
+    --jp-layout-color3,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 40))
+  );
+  --xr-background-color: var(
+    --jp-layout-color0,
+    var(--pst-color-on-background, #111111)
+  );
+  --xr-background-color-row-even: var(
+    --jp-layout-color1,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 5))
+  );
+  --xr-background-color-row-odd: var(
+    --jp-layout-color2,
+    hsl(from var(--pst-color-on-background, #111111) h s calc(l + 15))
+  );
+}
+
+.xr-wrap {
+  display: block !important;
+  min-width: 300px;
+  max-width: 700px;
+}
+
+.xr-text-repr-fallback {
+  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
+  display: none;
+}
+
+.xr-header {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  border-bottom: solid 1px var(--xr-border-color);
+}
+
+.xr-header > div,
+.xr-header > ul {
+  display: inline;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.xr-obj-type,
+.xr-array-name {
+  margin-left: 2px;
+  margin-right: 10px;
+}
+
+.xr-obj-type {
+  color: var(--xr-font-color2);
+}
+
+.xr-sections {
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: 150px auto auto 1fr 0 20px 0 20px;
+}
+
+.xr-section-item {
+  display: contents;
+}
+
+.xr-section-item input {
+  display: inline-block;
+  opacity: 0;
+  height: 0;
+}
+
+.xr-section-item input + label {
+  color: var(--xr-disabled-color);
+  border: 2px solid transparent !important;
+}
+
+.xr-section-item input:enabled + label {
+  cursor: pointer;
+  color: var(--xr-font-color2);
+}
+
+.xr-section-item input:focus + label {
+  border: 2px solid var(--xr-font-color0) !important;
+}
+
+.xr-section-item input:enabled + label:hover {
+  color: var(--xr-font-color0);
+}
+
+.xr-section-summary {
+  grid-column: 1;
+  color: var(--xr-font-color2);
+  font-weight: 500;
+}
+
+.xr-section-summary > span {
+  display: inline-block;
+  padding-left: 0.5em;
+}
+
+.xr-section-summary-in:disabled + label {
+  color: var(--xr-font-color2);
+}
+
+.xr-section-summary-in + label:before {
+  display: inline-block;
+  content: "►";
+  font-size: 11px;
+  width: 15px;
+  text-align: center;
+}
+
+.xr-section-summary-in:disabled + label:before {
+  color: var(--xr-disabled-color);
+}
+
+.xr-section-summary-in:checked + label:before {
+  content: "▼";
+}
+
+.xr-section-summary-in:checked + label > span {
+  display: none;
+}
+
+.xr-section-summary,
+.xr-section-inline-details {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.xr-section-inline-details {
+  grid-column: 2 / -1;
+}
+
+.xr-section-details {
+  display: none;
+  grid-column: 1 / -1;
+  margin-bottom: 5px;
+}
+
+.xr-section-summary-in:checked ~ .xr-section-details {
+  display: contents;
+}
+
+.xr-array-wrap {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 20px auto;
+}
+
+.xr-array-wrap > label {
+  grid-column: 1;
+  vertical-align: top;
+}
+
+.xr-preview {
+  color: var(--xr-font-color3);
+}
+
+.xr-array-preview,
+.xr-array-data {
+  padding: 0 5px !important;
+  grid-column: 2;
+}
+
+.xr-array-data,
+.xr-array-in:checked ~ .xr-array-preview {
+  display: none;
+}
+
+.xr-array-in:checked ~ .xr-array-data,
+.xr-array-preview {
+  display: inline-block;
+}
+
+.xr-dim-list {
+  display: inline-block !important;
+  list-style: none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.xr-dim-list li {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.xr-dim-list:before {
+  content: "(";
+}
+
+.xr-dim-list:after {
+  content: ")";
+}
+
+.xr-dim-list li:not(:last-child):after {
+  content: ",";
+  padding-right: 5px;
+}
+
+.xr-has-index {
+  font-weight: bold;
+}
+
+.xr-var-list,
+.xr-var-item {
+  display: contents;
+}
+
+.xr-var-item > div,
+.xr-var-item label,
+.xr-var-item > .xr-var-name span {
+  background-color: var(--xr-background-color-row-even);
+  border-color: var(--xr-background-color-row-odd);
+  margin-bottom: 0;
+  padding-top: 2px;
+}
+
+.xr-var-item > .xr-var-name:hover span {
+  padding-right: 5px;
+}
+
+.xr-var-list > li:nth-child(odd) > div,
+.xr-var-list > li:nth-child(odd) > label,
+.xr-var-list > li:nth-child(odd) > .xr-var-name span {
+  background-color: var(--xr-background-color-row-odd);
+  border-color: var(--xr-background-color-row-even);
+}
+
+.xr-var-name {
+  grid-column: 1;
+}
+
+.xr-var-dims {
+  grid-column: 2;
+}
+
+.xr-var-dtype {
+  grid-column: 3;
+  text-align: right;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-preview {
+  grid-column: 4;
+}
+
+.xr-index-preview {
+  grid-column: 2 / 5;
+  color: var(--xr-font-color2);
+}
+
+.xr-var-name,
+.xr-var-dims,
+.xr-var-dtype,
+.xr-preview,
+.xr-attrs dt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 10px;
+}
+
+.xr-var-name:hover,
+.xr-var-dims:hover,
+.xr-var-dtype:hover,
+.xr-attrs dt:hover {
+  overflow: visible;
+  width: auto;
+  z-index: 1;
+}
+
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  display: none;
+  border-top: 2px dotted var(--xr-background-color);
+  padding-bottom: 20px !important;
+  padding-top: 10px !important;
+}
+
+.xr-var-attrs-in + label,
+.xr-var-data-in + label,
+.xr-index-data-in + label {
+  padding: 0 1px;
+}
+
+.xr-var-attrs-in:checked ~ .xr-var-attrs,
+.xr-var-data-in:checked ~ .xr-var-data,
+.xr-index-data-in:checked ~ .xr-index-data {
+  display: block;
+}
+
+.xr-var-data > table {
+  float: right;
+}
+
+.xr-var-data > pre,
+.xr-index-data > pre,
+.xr-var-data > table > tbody > tr {
+  background-color: transparent !important;
+}
+
+.xr-var-name span,
+.xr-var-data,
+.xr-index-name div,
+.xr-index-data,
+.xr-attrs {
+  padding-left: 25px !important;
+}
+
+.xr-attrs,
+.xr-var-attrs,
+.xr-var-data,
+.xr-index-data {
+  grid-column: 1 / -1;
+}
+
+dl.xr-attrs {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 125px auto;
+}
+
+.xr-attrs dt,
+.xr-attrs dd {
+  padding: 0;
+  margin: 0;
+  float: left;
+  padding-right: 10px;
+  width: auto;
+}
+
+.xr-attrs dt {
+  font-weight: normal;
+  grid-column: 1;
+}
+
+.xr-attrs dt:hover span {
+  display: inline-block;
+  background: var(--xr-background-color);
+  padding-right: 10px;
+}
+
+.xr-attrs dd {
+  grid-column: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.xr-icon-database,
+.xr-icon-file-text2,
+.xr-no-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1em;
+  height: 1.5em !important;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+.xr-var-attrs-in:checked + label > .xr-icon-file-text2,
+.xr-var-data-in:checked + label > .xr-icon-database,
+.xr-index-data-in:checked + label > .xr-icon-database {
+  color: var(--xr-font-color0);
+  filter: drop-shadow(1px 1px 5px var(--xr-font-color2));
+  stroke-width: 0.8px;
+}
+</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt; Size: 86kB
+Dimensions:      (latitude: 76, longitude: 139)
+Coordinates:
+  * longitude    (longitude) float64 1kB -5.497 -5.329 -5.162 ... 17.42 17.58
+  * latitude     (latitude) float64 608B 40.93 41.09 41.26 ... 53.05 53.21 53.38
+Data variables:
+    velocity_up  (latitude, longitude) float64 85kB -2.309 -2.283 ... -0.2871
+Attributes:
+    metadata:  Generated by Spline()</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-78429cea-8b21-4515-9f0b-127601058ff4' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-78429cea-8b21-4515-9f0b-127601058ff4' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>latitude</span>: 76</li><li><span class='xr-has-index'>longitude</span>: 139</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-b1e09265-1dbb-4563-abac-ca7a68388f5c' class='xr-section-summary-in' type='checkbox'  checked><label for='section-b1e09265-1dbb-4563-abac-ca7a68388f5c' class='xr-section-summary' >Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>longitude</span></div><div class='xr-var-dims'>(longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-5.497 -5.329 ... 17.42 17.58</div><input id='attrs-811ff96b-2768-4ec4-90ac-63b7f7f7718c' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-811ff96b-2768-4ec4-90ac-63b7f7f7718c' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-0784eb97-eda8-4d80-86ad-a5dd8de2518c' class='xr-var-data-in' type='checkbox'><label for='data-0784eb97-eda8-4d80-86ad-a5dd8de2518c' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([-5.496594, -5.32935 , -5.162106, -4.994862, -4.827618, -4.660374,
+       -4.49313 , -4.325887, -4.158643, -3.991399, -3.824155, -3.656911,
+       -3.489667, -3.322424, -3.15518 , -2.987936, -2.820692, -2.653448,
+       -2.486204, -2.31896 , -2.151717, -1.984473, -1.817229, -1.649985,
+       -1.482741, -1.315497, -1.148254, -0.98101 , -0.813766, -0.646522,
+       -0.479278, -0.312034, -0.144791,  0.022453,  0.189697,  0.356941,
+        0.524185,  0.691429,  0.858673,  1.025916,  1.19316 ,  1.360404,
+        1.527648,  1.694892,  1.862136,  2.029379,  2.196623,  2.363867,
+        2.531111,  2.698355,  2.865599,  3.032842,  3.200086,  3.36733 ,
+        3.534574,  3.701818,  3.869062,  4.036306,  4.203549,  4.370793,
+        4.538037,  4.705281,  4.872525,  5.039769,  5.207012,  5.374256,
+        5.5415  ,  5.708744,  5.875988,  6.043232,  6.210475,  6.377719,
+        6.544963,  6.712207,  6.879451,  7.046695,  7.213939,  7.381182,
+        7.548426,  7.71567 ,  7.882914,  8.050158,  8.217402,  8.384645,
+        8.551889,  8.719133,  8.886377,  9.053621,  9.220865,  9.388109,
+        9.555352,  9.722596,  9.88984 , 10.057084, 10.224328, 10.391572,
+       10.558815, 10.726059, 10.893303, 11.060547, 11.227791, 11.395035,
+       11.562278, 11.729522, 11.896766, 12.06401 , 12.231254, 12.398498,
+       12.565742, 12.732985, 12.900229, 13.067473, 13.234717, 13.401961,
+       13.569205, 13.736448, 13.903692, 14.070936, 14.23818 , 14.405424,
+       14.572668, 14.739911, 14.907155, 15.074399, 15.241643, 15.408887,
+       15.576131, 15.743375, 15.910618, 16.077862, 16.245106, 16.41235 ,
+       16.579594, 16.746838, 16.914081, 17.081325, 17.248569, 17.415813,
+       17.583057])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>latitude</span></div><div class='xr-var-dims'>(latitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>40.93 41.09 41.26 ... 53.21 53.38</div><input id='attrs-1b56fca1-79fe-4436-a19b-991438ebea35' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-1b56fca1-79fe-4436-a19b-991438ebea35' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-6725e7e3-adec-42d1-a288-faac14bcddbc' class='xr-var-data-in' type='checkbox'><label for='data-6725e7e3-adec-42d1-a288-faac14bcddbc' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([40.927458, 41.093483, 41.259507, 41.425532, 41.591556, 41.757581,
+       41.923605, 42.08963 , 42.255654, 42.421679, 42.587703, 42.753728,
+       42.919753, 43.085777, 43.251802, 43.417826, 43.583851, 43.749875,
+       43.9159  , 44.081924, 44.247949, 44.413973, 44.579998, 44.746022,
+       44.912047, 45.078071, 45.244096, 45.410121, 45.576145, 45.74217 ,
+       45.908194, 46.074219, 46.240243, 46.406268, 46.572292, 46.738317,
+       46.904341, 47.070366, 47.23639 , 47.402415, 47.568439, 47.734464,
+       47.900489, 48.066513, 48.232538, 48.398562, 48.564587, 48.730611,
+       48.896636, 49.06266 , 49.228685, 49.394709, 49.560734, 49.726758,
+       49.892783, 50.058807, 50.224832, 50.390856, 50.556881, 50.722906,
+       50.88893 , 51.054955, 51.220979, 51.387004, 51.553028, 51.719053,
+       51.885077, 52.051102, 52.217126, 52.383151, 52.549175, 52.7152  ,
+       52.881225, 53.047249, 53.213274, 53.379298])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-8947235c-61bf-4bf7-8a73-7bf0cbe14ff6' class='xr-section-summary-in' type='checkbox'  checked><label for='section-8947235c-61bf-4bf7-8a73-7bf0cbe14ff6' class='xr-section-summary' >Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>velocity_up</span></div><div class='xr-var-dims'>(latitude, longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-2.309 -2.283 ... -0.2794 -0.2871</div><input id='attrs-ebecef41-3b58-4318-8eb6-8cc0746ad00b' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-ebecef41-3b58-4318-8eb6-8cc0746ad00b' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-5981b9ef-31b2-4e9c-962e-d47d06510fb2' class='xr-var-data-in' type='checkbox'><label for='data-5981b9ef-31b2-4e9c-962e-d47d06510fb2' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Spline()</dd></dl></div><div class='xr-var-data'><pre>array([[-2.30946859, -2.2831373 , -2.25710523, ...,  0.70863137,
+         0.69117081,  0.67553537],
+       [-2.25934925, -2.23320237, -2.20736814, ...,  0.68193157,
+         0.66493102,  0.6499585 ],
+       [-2.20864627, -2.1826714 , -2.15702334, ...,  0.65107746,
+         0.63485325,  0.62085794],
+       ...,
+       [-1.61739102, -1.58437417, -1.55152231, ..., -0.22974197,
+        -0.23777817, -0.2452518 ],
+       [-1.65260933, -1.61934574, -1.58625093, ..., -0.25041645,
+        -0.25850395, -0.26606641],
+       [-1.68806071, -1.65455078, -1.62121316, ..., -0.27117401,
+        -0.27938284, -0.28709362]], shape=(76, 139))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-1cc63967-6085-4b2f-96ee-334e49dc3c9a' class='xr-section-summary-in' type='checkbox'  ><label for='section-1cc63967-6085-4b2f-96ee-334e49dc3c9a' class='xr-section-summary' >Indexes: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>longitude</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-3cbd75c7-0987-4e8d-83d0-3639b56d63e4' class='xr-index-data-in' type='checkbox'/><label for='index-3cbd75c7-0987-4e8d-83d0-3639b56d63e4' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([        -5.4965935, -5.329349657246377, -5.162105814492754,
+        -4.99486197173913, -4.827618128985508, -4.660374286231884,
+       -4.493130443478261, -4.325886600724638, -4.158642757971014,
+       -3.991398915217392,
+       ...
+       16.077862215217394, 16.245106057971014,  16.41234990072464,
+       16.579593743478263, 16.746837586231887, 16.914081428985508,
+       17.081325271739132, 17.248569114492756, 17.415812957246377,
+               17.5830568],
+      dtype=&#x27;float64&#x27;, name=&#x27;longitude&#x27;, length=139))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>latitude</div></div><div class='xr-index-preview'>PandasIndex</div><input type='checkbox' disabled/><label></label><input id='index-fe733b29-6b61-4a24-a1d2-a140e7ee1e6d' class='xr-index-data-in' type='checkbox'/><label for='index-fe733b29-6b61-4a24-a1d2-a140e7ee1e6d' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([        40.9274581,  41.09348263333334,  41.25950716666667,
+               41.4255317, 41.591556233333336,  41.75758076666667,
+       41.923605300000006,  42.08962983333333,  42.25565436666667,
+               42.4216789,  42.58770343333334, 42.753727966666666,
+               42.9197525, 43.085777033333336,  43.25180156666667,
+               43.4178261, 43.583850633333334,  43.74987516666667,
+       43.915899700000004,  44.08192423333334,  44.24794876666667,
+               44.4139733,  44.57999783333334, 44.746022366666665,
+               44.9120469, 45.078071433333335,  45.24409596666667,
+       45.410120500000005,  45.57614503333333,  45.74216956666667,
+               45.9081941,  46.07421863333334, 46.240243166666666,
+               46.4062677, 46.572292233333336,  46.73831676666667,
+               46.9043413, 47.070365833333334,  47.23639036666667,
+       47.402414900000004,  47.56843943333334,  47.73446396666667,
+               47.9004885,  48.06651303333334, 48.232537566666664,
+               48.3985621, 48.564586633333334,  48.73061116666667,
+       48.896635700000004,  49.06266023333333,  49.22868476666667,
+               49.3947093,  49.56073383333333, 49.726758366666665,
+               49.8927829, 50.058807433333335,  50.22483196666667,
+               50.3908565,  50.55688103333333,  50.72290556666667,
+               50.8889301,  51.05495463333334, 51.220979166666666,
+               51.3870037, 51.553028233333336, 51.719052766666664,
+               51.8850773, 52.051101833333334,  52.21712636666667,
+       52.383150900000004,  52.54917543333333,  52.71519996666667,
+               52.8812245,  53.04724903333333, 53.213273566666665,
+               53.3792981],
+      dtype=&#x27;float64&#x27;, name=&#x27;latitude&#x27;))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-98e7f8c1-8590-4fce-8c01-a7578fda2f7a' class='xr-section-summary-in' type='checkbox'  checked><label for='section-98e7f8c1-8590-4fce-8c01-a7578fda2f7a' class='xr-section-summary' >Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Spline()</dd></dl></div></li></ul></div></div></div></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Notice that we set the <code class="docutils literal notranslate"><span class="pre">dims</span></code> and <code class="docutils literal notranslate"><span class="pre">data_names</span></code> arguments above. Those
+control the names of the coordinates and the data variables in the final
+grid. It’s useful to set those to avoid Verde’s default names, which for
+this case wouldn’t be appropriate.</p>
+</div>
+<p>Notice that the grid has longitude and latitude coordinates and that they are
+evenly spaced.
+We can use this grid to plot a map of the vertical velocity with coastlines
+and country borders added.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">pygmt</span><span class="o">.</span><span class="n">makecpt</span><span class="p">(</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;polar+h&quot;</span><span class="p">,</span>
+    <span class="n">series</span><span class="o">=</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">velocity_up_mmyr</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">data</span><span class="o">.</span><span class="n">velocity_up_mmyr</span><span class="o">.</span><span class="n">max</span><span class="p">()],</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">grdimage</span><span class="p">(</span>
+    <span class="n">grid</span><span class="o">.</span><span class="n">velocity_up</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;M15c&quot;</span><span class="p">,</span>
+    <span class="n">frame</span><span class="o">=</span><span class="s2">&quot;af&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="s1">&#39;af+l&quot;upward velocity (mm/yr)&quot;&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span>
+    <span class="n">shorelines</span><span class="o">=</span><span class="s2">&quot;#333333&quot;</span><span class="p">,</span> <span class="n">borders</span><span class="o">=</span><span class="s2">&quot;1/#666666&quot;</span><span class="p">,</span> <span class="n">area_thresh</span><span class="o">=</span><span class="mf">1e4</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+    <span class="n">style</span><span class="o">=</span><span class="s2">&quot;c0.1c&quot;</span><span class="p">,</span>
+    <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;#888888&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/geographic_7_0.png" src="../_images/geographic_7_0.png" />
+</div>
+</div>
+</section>
+<section id="make-a-profile-in-geographic-coordinates">
+<h2>Make a profile in geographic coordinates<a class="headerlink" href="#make-a-profile-in-geographic-coordinates" title="Link to this heading">#</a></h2>
+<p>Profiles in geographic coordinates would require a similar workflow to grids:</p>
+<ol class="arabic simple">
+<li><p>Project the geophysics coordinates of the points to Cartesian.</p></li>
+<li><p>Generate the profile coordinates using the Cartesian points.</p></li>
+<li><p>Pass the Cartesian profile coordinates to the <code class="docutils literal notranslate"><span class="pre">predict</span></code> method of the
+interpolator.</p></li>
+<li><p>Convert the projected profile coordinates to geographic with an inverse
+projection.</p></li>
+</ol>
+<p>Once again, we pass the <code class="docutils literal notranslate"><span class="pre">projection</span></code> argument to the <code class="docutils literal notranslate"><span class="pre">profile</span></code> method of
+the interpolator and let it do the work for us.</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">profile</span> <span class="o">=</span> <span class="n">interpolator</span><span class="o">.</span><span class="n">profile</span><span class="p">(</span>
+    <span class="n">point1</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">51</span><span class="p">),</span>  <span class="c1"># longitude, latitude</span>
+    <span class="n">point2</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">42</span><span class="p">),</span>
+    <span class="n">size</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>  <span class="c1"># number of points</span>
+    <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">),</span>
+    <span class="n">data_names</span><span class="o">=</span><span class="s2">&quot;velocity_up&quot;</span><span class="p">,</span>
+    <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">profile</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>distance</th>
+      <th>velocity_up</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>51.000000</td>
+      <td>4.000000</td>
+      <td>0.000000e+00</td>
+      <td>-0.020266</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>50.958517</td>
+      <td>4.035176</td>
+      <td>5.776034e+03</td>
+      <td>-0.018964</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>50.916997</td>
+      <td>4.070352</td>
+      <td>1.155207e+04</td>
+      <td>-0.017694</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>50.875440</td>
+      <td>4.105528</td>
+      <td>1.732810e+04</td>
+      <td>-0.016447</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>50.833845</td>
+      <td>4.140704</td>
+      <td>2.310414e+04</td>
+      <td>-0.015208</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>195</th>
+      <td>42.195756</td>
+      <td>10.859296</td>
+      <td>1.126327e+06</td>
+      <td>0.627948</td>
+    </tr>
+    <tr>
+      <th>196</th>
+      <td>42.146874</td>
+      <td>10.894472</td>
+      <td>1.132103e+06</td>
+      <td>0.642185</td>
+    </tr>
+    <tr>
+      <th>197</th>
+      <td>42.097954</td>
+      <td>10.929648</td>
+      <td>1.137879e+06</td>
+      <td>0.656719</td>
+    </tr>
+    <tr>
+      <th>198</th>
+      <td>42.048996</td>
+      <td>10.964824</td>
+      <td>1.143655e+06</td>
+      <td>0.671429</td>
+    </tr>
+    <tr>
+      <th>199</th>
+      <td>42.000000</td>
+      <td>11.000000</td>
+      <td>1.149431e+06</td>
+      <td>0.686197</td>
+    </tr>
+  </tbody>
+</table>
+<p>200 rows × 4 columns</p>
+</div></div></div>
+</div>
+<p>The output comes as a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> with the longitude and latitude
+coordinates of the points. The distance is calculated from the projected
+coordinates and is <strong>not a great circle distance</strong>.</p>
+<p>Lets plot the profile coordinates onto our map and the profile itself to see
+what it looks like:</p>
+<div class="jupyter_cell jupyter_container docutils container">
+<div class="cell_input code_cell docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">pygmt</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="c1"># Plot the grid</span>
+<span class="n">pygmt</span><span class="o">.</span><span class="n">makecpt</span><span class="p">(</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;polar+h&quot;</span><span class="p">,</span>
+    <span class="n">series</span><span class="o">=</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">velocity_up_mmyr</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">data</span><span class="o">.</span><span class="n">velocity_up_mmyr</span><span class="o">.</span><span class="n">max</span><span class="p">()],</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">grdimage</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">velocity_up</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;M15c&quot;</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="s2">&quot;af&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="s1">&#39;af+l&quot;upward velocity (mm/yr)&quot;&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">coast</span><span class="p">(</span><span class="n">shorelines</span><span class="o">=</span><span class="s2">&quot;#333333&quot;</span><span class="p">,</span> <span class="n">borders</span><span class="o">=</span><span class="s2">&quot;1/#666666&quot;</span><span class="p">,</span> <span class="n">area_thresh</span><span class="o">=</span><span class="mf">1e4</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+    <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;#888888&quot;</span><span class="p">,</span>
+    <span class="n">style</span><span class="o">=</span><span class="s2">&quot;c0.1c&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="c1"># Plot the profile above it</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">shift_origin</span><span class="p">(</span><span class="n">yshift</span><span class="o">=</span><span class="s2">&quot;h+1.5c&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">velocity_up</span><span class="p">,</span>
+    <span class="n">pen</span><span class="o">=</span><span class="s2">&quot;1p&quot;</span><span class="p">,</span>
+    <span class="n">projection</span><span class="o">=</span><span class="s2">&quot;X15c/5c&quot;</span><span class="p">,</span>
+    <span class="n">frame</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;WSne&quot;</span><span class="p">,</span> <span class="s2">&quot;xaf+lDistance along profile (m)&quot;</span><span class="p">,</span> <span class="s2">&quot;yaf+lUpward velocity (mm/yr)&quot;</span><span class="p">],</span>
+    <span class="n">region</span><span class="o">=</span><span class="n">vd</span><span class="o">.</span><span class="n">get_region</span><span class="p">((</span><span class="n">profile</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">velocity_up</span><span class="p">)),</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/geographic_9_0.png" src="../_images/geographic_9_0.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="first-grid.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Making your first grid</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../api/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">List of functions and classes (API)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fetch-some-data">Fetch some data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#projecting-data">Projecting data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fit-an-interpolator-to-the-cartesian-data">Fit an interpolator to the Cartesian data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-a-grid-in-geographic-coordinates">Make a grid in geographic coordinates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-a-profile-in-geographic-coordinates">Make a profile in geographic coordinates</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2017-2025, The Verde Developers.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Jun 12, 2025.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

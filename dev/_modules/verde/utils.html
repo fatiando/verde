@@ -19,22 +19,20 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
-  <!--
-    this give us a css class that will be invisible only if js is disabled
-  -->
-  <noscript>
-    <style>
-      .pst-js-only { display: none !important; }
-
-    </style>
-  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/jupyter-sphinx.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/thebelab.css" />
@@ -45,11 +43,10 @@
     <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=504d3d5d" />
   
-  <!-- So that users can add custom icons -->
-  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
@@ -83,8 +80,19 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <dialog id="pst-search-dialog">
-    
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -92,6 +100,7 @@
   <input type="search"
          class="form-control"
          name="q"
+         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -99,8 +108,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-  </dialog>
+</form></div>
+  </div>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -118,8 +127,7 @@
       
         
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+      <div class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -149,11 +157,15 @@
 </a></div>
         <div class="sidebar-primary-item">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
- <i class="fa-solid fa-magnifying-glass"></i>
- <span class="search-button__default-text">Search</span>
- <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-</button></div>
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
@@ -226,6 +238,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.project_grid.html">verde.project_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.distance_mask.html">verde.distance_mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.convexhull_mask.html">verde.convexhull_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.minmax.html">verde.minmax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.maxabs.html">verde.maxabs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.variance_to_weights.html">verde.variance_to_weights</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.grid_to_table.html">verde.grid_to_table</a></li>
@@ -272,14 +285,9 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
-      <div class="sidebar-primary-item">
-<div id="ethical-ad-placement"
-      class="flat"
-      data-ea-publisher="readthedocs"
-      data-ea-type="readthedocs-sidebar"
-      data-ea-manual="true">
-</div></div>
   </div>
+  
+  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -375,16 +383,24 @@
 
 
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button>
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
 
 
-<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-</button>
+  </button>
+`);
+</script>
 
 </div></div>
       
@@ -579,7 +595,9 @@
     <span class="n">variance</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="n">variance</span><span class="p">)</span>
     <span class="n">weights</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">variance</span><span class="p">:</span>
-        <span class="n">var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">var</span><span class="p">),</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># Pandas 3 can expose Series-backed arrays as read-only, so normalize</span>
+        <span class="c1"># NaNs on a private writeable copy.</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">var</span><span class="p">),</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
         <span class="n">nonzero</span> <span class="o">=</span> <span class="n">var</span> <span class="o">&gt;</span> <span class="n">tol</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">nonzero</span><span class="p">):</span>
@@ -594,7 +612,7 @@
 
 <div class="viewcode-block" id="maxabs">
 <a class="viewcode-back" href="../../api/generated/verde.maxabs.html#verde.maxabs">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">maxabs</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">nan</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">maxabs</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">percentile</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate the maximum absolute value of the given array(s).</span>
 
@@ -605,11 +623,19 @@
 <span class="sd">    args</span>
 <span class="sd">        One or more arrays. If more than one are given, a single maximum will</span>
 <span class="sd">        be calculated across all arrays.</span>
+<span class="sd">    nan : bool, optional</span>
+<span class="sd">        If True, will use the ``nan`` version of numpy functions to ignore</span>
+<span class="sd">        NaNs.</span>
+<span class="sd">    percentile : float, optional</span>
+<span class="sd">        Instead of return the maximum absolute value, return a given</span>
+<span class="sd">        percentile of the absolute values. Must be between 0 and 100. A</span>
+<span class="sd">        value of 100 (default) will give the maximum absolute value, while</span>
+<span class="sd">        a value of 50 will give the median of the absolute values.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    maxabs : float</span>
-<span class="sd">        The maximum absolute value across all arrays.</span>
+<span class="sd">        The maximum (or percentile) absolute value across all arrays.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -634,14 +660,151 @@
 <span class="sd">    &gt;&gt;&gt; float(result)</span>
 <span class="sd">    nan</span>
 
+<span class="sd">    If a more robust statistic is desired, you can use ``percentile`` to get</span>
+<span class="sd">    the value at a given percentile instead of the maximum.</span>
+
+<span class="sd">    &gt;&gt;&gt; result = maxabs((1, -10, 25, 2, 3), percentile=95)</span>
+<span class="sd">    &gt;&gt;&gt; float(result)</span>
+<span class="sd">    21.99</span>
+<span class="sd">    &gt;&gt;&gt; result = maxabs((1, -10, 25, 2, 3), percentile=100)</span>
+<span class="sd">    &gt;&gt;&gt; float(result)</span>
+<span class="sd">    25.0</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">nan</span><span class="p">:</span>
-        <span class="n">npmin</span><span class="p">,</span> <span class="n">npmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span>
+
+    <span class="k">if</span> <span class="n">percentile</span> <span class="o">==</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">nan</span><span class="p">:</span>
+            <span class="n">npmin</span><span class="p">,</span> <span class="n">npmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">npmin</span><span class="p">,</span> <span class="n">npmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span>
+        <span class="n">absolute</span> <span class="o">=</span> <span class="p">[</span><span class="n">npmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">([</span><span class="n">npmin</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">npmax</span><span class="p">(</span><span class="n">i</span><span class="p">)]))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">npmax</span><span class="p">(</span><span class="n">absolute</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">npmin</span><span class="p">,</span> <span class="n">npmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span>
-    <span class="n">absolute</span> <span class="o">=</span> <span class="p">[</span><span class="n">npmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">([</span><span class="n">npmin</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">npmax</span><span class="p">(</span><span class="n">i</span><span class="p">)]))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">npmax</span><span class="p">(</span><span class="n">absolute</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">percentile</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid &#39;percentile&#39; of type &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">percentile</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39;. Percentile must be a float or an integer.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">percentile</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">percentile</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Invalid &#39;percentile&#39; value of &#39;</span><span class="si">{</span><span class="n">percentile</span><span class="si">}</span><span class="s2">&#39;. It must be between 0 and 100.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">nan</span><span class="p">:</span>
+            <span class="n">nppercentile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">nppercentile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span>
+        <span class="n">combined_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">nppercentile</span><span class="p">(</span><span class="n">combined_array</span><span class="p">,</span> <span class="n">percentile</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="minmax">
+<a class="viewcode-back" href="../../api/generated/verde.minmax.html#verde.minmax">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">minmax</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">min_percentile</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_percentile</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the minimum and maximum values of the given array(s).</span>
+
+<span class="sd">    Use this to set the limits of your colorbars for non-diverging data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    args</span>
+<span class="sd">        One or more arrays. If more than one are given, a minimum and maximum</span>
+<span class="sd">        will be calculated across all arrays.</span>
+<span class="sd">    nan : bool, optional</span>
+<span class="sd">        If True, will use the ``nan`` version of numpy functions to ignore</span>
+<span class="sd">        NaNs.</span>
+<span class="sd">    min_percentile : float</span>
+<span class="sd">        Return the supplied percentile (0 to 100) instead of the minimum value</span>
+<span class="sd">        of the arrays. Defaults to 0, giving the minimum value.</span>
+<span class="sd">    max_percentile : float</span>
+<span class="sd">        Return the supplied percentile (0 to 100) instead of the maximum value</span>
+<span class="sd">        of the arrays. Defaults to 100, giving the maximum value.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    min, max : float</span>
+<span class="sd">        The minimum and maximum (or percentile) values across all arrays.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; result = minmax((1, -10, 25, 2, 3))</span>
+<span class="sd">    &gt;&gt;&gt; tuple(map(float, result))</span>
+<span class="sd">    (-10.0, 25.0)</span>
+<span class="sd">    &gt;&gt;&gt; result = minmax(</span>
+<span class="sd">    ...     (1, -10.5, 25, 2), (0.1, 100, -500), (-200, -300, -0.1, -499)</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; tuple(map(float, result))</span>
+<span class="sd">    (-500.0, 100.0)</span>
+
+<span class="sd">    If the array contains NaNs, we&#39;ll use the ``nan`` version of of the numpy</span>
+<span class="sd">    functions by default. You can turn this off through the *nan* argument.</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; result = minmax((1, -10, 25, 2, 3, np.nan))</span>
+<span class="sd">    &gt;&gt;&gt; tuple(map(float, result))</span>
+<span class="sd">    (-10.0, 25.0)</span>
+<span class="sd">    &gt;&gt;&gt; result = minmax((1, -10, 25, 2, 3, np.nan), nan=False)</span>
+<span class="sd">    &gt;&gt;&gt; tuple(map(float, result))</span>
+<span class="sd">    (nan, nan)</span>
+
+<span class="sd">    If a more robust statistic is desired, you can use ``min_percentile`` and</span>
+<span class="sd">    or ``max_percentile`` to get the values at given percentiles instead of</span>
+<span class="sd">    the minimum and maximum.</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; result = minmax(</span>
+<span class="sd">    ...     (1, -10, 25, 2, 3), min_percentile=2, max_percentile=98</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; tuple(map(float, result))</span>
+<span class="sd">    (-9.12, 23.24)</span>
+<span class="sd">    &gt;&gt;&gt; result = minmax(</span>
+<span class="sd">    ...     (1, -10, 25, 2, 3), min_percentile=0, max_percentile=100</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; tuple(map(float, result))</span>
+<span class="sd">    (-10.0, 25.0)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># ensure percentiles are numeric</span>
+    <span class="n">min_percentile</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">min_percentile</span><span class="p">)</span>
+    <span class="n">max_percentile</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">max_percentile</span><span class="p">)</span>
+
+    <span class="n">arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
+
+    <span class="c1"># checks</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">min_percentile</span> <span class="o">&lt;=</span> <span class="n">max_percentile</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&#39;min_percentile&#39; (</span><span class="si">{</span><span class="n">min_percentile</span><span class="si">}</span><span class="s2">) must not be larger than &#39;max_percentile&#39; (</span><span class="si">{</span><span class="n">max_percentile</span><span class="si">}</span><span class="s2">).&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">min_percentile</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;min_percentile&#39; (</span><span class="si">{</span><span class="n">min_percentile</span><span class="si">}</span><span class="s2">). Must be between 0 and 100.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">max_percentile</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;max_percentile&#39; (</span><span class="si">{</span><span class="n">max_percentile</span><span class="si">}</span><span class="s2">). Must be between 0 and 100.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># determine which functions to use</span>
+    <span class="k">if</span> <span class="n">nan</span><span class="p">:</span>
+        <span class="n">npmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span>
+        <span class="n">npmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span>
+        <span class="n">nppercentile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">npmin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span>
+        <span class="n">npmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span>
+        <span class="n">nppercentile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span>
+
+    <span class="k">if</span> <span class="n">min_percentile</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">max_percentile</span> <span class="o">==</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="n">min_</span> <span class="o">=</span> <span class="n">npmin</span><span class="p">([</span><span class="n">npmin</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">])</span>
+        <span class="n">max_</span> <span class="o">=</span> <span class="n">npmax</span><span class="p">([</span><span class="n">npmax</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">min_</span><span class="p">,</span> <span class="n">max_</span>
+
+    <span class="c1"># concatenate values of all arrays</span>
+    <span class="n">combined_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">a</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">])</span>
+    <span class="n">min_</span><span class="p">,</span> <span class="n">max_</span> <span class="o">=</span> <span class="n">nppercentile</span><span class="p">(</span><span class="n">combined_array</span><span class="p">,</span> <span class="p">[</span><span class="n">min_percentile</span><span class="p">,</span> <span class="n">max_percentile</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">min_</span><span class="p">,</span> <span class="n">max_</span></div>
 
 
 
@@ -1283,7 +1446,7 @@
 
   <p class="copyright">
     
-      © Copyright 2017-2025, The Verde Developers.
+      © Copyright 2017-2026, The Verde Developers.
       <br/>
     
   </p>
@@ -1292,7 +1455,7 @@
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Feb 19, 2025.
+  Last updated on Mar 19, 2026.
   <br/>
 </p>
   </div>
@@ -1310,8 +1473,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
 
   <footer class="bd-footer">
   </footer>

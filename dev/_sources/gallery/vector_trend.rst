@@ -55,8 +55,8 @@ all vector components directly using using :meth:`verde.Vector.predict`,
     <xarray.Dataset> Size: 147kB
     Dimensions:          (latitude: 97, longitude: 94)
     Coordinates:
-      * longitude        (longitude) float64 752B 235.7 235.8 235.9 ... 244.9 245.0
       * latitude         (latitude) float64 776B 32.29 32.39 32.49 ... 41.8 41.9
+      * longitude        (longitude) float64 752B 235.7 235.8 235.9 ... 244.9 245.0
     Data variables:
         east_component   (latitude, longitude) float64 73kB -0.09947 ... -0.01609
         north_component  (latitude, longitude) float64 73kB 0.1229 ... 0.01632
@@ -158,7 +158,7 @@ all vector components directly using using :meth:`verde.Vector.predict`,
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.330 seconds)
+   **Total running time of the script:** (0 minutes 0.249 seconds)
 
 
 .. _sphx_glr_download_gallery_vector_trend.py:
