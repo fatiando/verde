@@ -6,7 +6,7 @@ Changelog
 Version 1.9.0
 -------------
 
-Released on: 2023/06/18
+Released on: 2023/06/19
 
 DOI: https://doi.org/10.5281/zenodo.19052803
 
@@ -37,7 +37,7 @@ Maintenance:
 
 This release contains contributions from:
 
--  Gabriel Goes
+-  Gabriel G. R. de Lima
 -  Santiago Soler
 -  Matt Tankersley
 -  Leonardo Uieda
