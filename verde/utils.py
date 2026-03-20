@@ -878,7 +878,8 @@ def fill_missing(
         The verde interpolator class instance to use for filling missing
         values. Can be one of the following  :class:`verde.KNeighbors`,
         :class:`verde.Linear`, :class:`verde.Cubic`, :class:`verde.Spline`,
-        :class:`verde.Trend`, by default is class:`verde.KNeighbors`
+        :class:`verde.Trend`, by default is class:`verde.KNeighbors` using
+        the nearest 5 neighbors.
 
     Returns
     -------
@@ -888,7 +889,7 @@ def fill_missing(
     grid = grid.copy()
 
     if interpolator is None:
-        interpolator = KNeighbors()
+        interpolator = KNeighbors(k=5)
 
     # if input was a datarray turn into dataset
     if isinstance(grid, xr.DataArray):

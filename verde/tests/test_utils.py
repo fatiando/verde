@@ -96,7 +96,7 @@ def test_fill_missing_types_metadata_names():
 
 
 fill_missing_is_fitted_test = [
-    KNeighbors(),
+    KNeighbors(k=1),
     Linear(),
     Trend(1),
     Cubic(),
@@ -138,7 +138,7 @@ def test_fill_missing_is_fitted(interpolator):
 
 fill_missing_nearest_test = [
     (
-        None,
+        KNeighbors(k=1),
         np.array(
             [
                 [4.0, 4.0, 1.0, 1.0, 1.0, 1.0],
