@@ -316,9 +316,7 @@ def test_fill_missing_linear_and_cubic(interpolator, expected):
     )
 
     # check warning about extrapolation raised
-    with pytest.warns(
-        UserWarning, match="NaNs are still present due to the choice of interpolator"
-    ):
+    with pytest.warns(UserWarning, match="NaNs are still present in this grid!"):
         filled_da = fill_missing(grid.dummy, interpolator)
 
     # check correct values

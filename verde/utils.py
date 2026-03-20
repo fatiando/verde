@@ -28,7 +28,6 @@ except ImportError:
     numba = None
 
 from ..neighbors import KNeighbors
-from ..scipygridder import Cubic, Linear
 from .base.utils import (
     check_coordinates,
     check_data,
@@ -923,13 +922,16 @@ def fill_missing(
 
         # warn if still nans due to no extrapolation allowed for
         # `Cubic` and `Linear` interpolators
-        if (filled_da.isnull().any()) and (isinstance(interp, (Cubic, Linear))):
+        if filled_da.isnull().any():
             msg = (
-                "NaNs are still present due to the choice of interpolator "
-                f"{type(interp)}, which doesn't allow extrapolation. "
-                "Run `fill_na()` again with an interpolator of either "
-                "`vd.KNeighbors`, `vd.Trend`, or `vd.Spline` to fill "
-                "remaining values."
+                "NaNs are still present in this grid! This may be due "
+                f"to the choice of interpolator {type(interp)}, "
+                "some of which don't allow extrapolation. To fill the "
+                "remaining values run `fill_missing()` again with an "
+                "interpolator which allows extrpolation. We recommend "
+                "`vd.KNeighbors` if you have a large grid (>~10,000 points) "
+                "or `vd.Spline` if you  have a a smaller grid or required "
+                "smoother results."
             )
             warnings.warn(msg, UserWarning, stacklevel=2)
 
