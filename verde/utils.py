@@ -914,12 +914,14 @@ def fill_missing(
 
         interp.fit(coords_no_nans, df_no_nans[var_name])
 
-        # predict only at NaNs
-        filled_da = interp.grid(
-            coordinates=(ds[coord_names[0]], ds[coord_names[1]]),
-            data_names=var_name,
-            dims=(coord_names[1], coord_names[0]),
-        )[var_name]
+        # predict only at NaNs and add to dataframe
+        df_nans = df[df[var_name].isna()]
+        df.loc[df_nans.index, var_name] = interp.predict(
+            (df_nans.iloc[:, 1], df_nans.iloc[:, 0])
+        )
+
+        # convert to dataarray
+        filled_da = df.set_index([coord_names[0], coord_names[1]]).to_xarray()[var_name]
 
         # warn if still nans due to no extrapolation allowed for
         # `Cubic` and `Linear` interpolators
