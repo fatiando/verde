@@ -374,3 +374,72 @@ def test_fill_missing_spline(interpolator, expected):
 
     # check correct values
     np.testing.assert_allclose(filled_da.values, expected, rtol=1e-3)
+
+
+fill_missing_maxdist_test = [Cubic(), Spline()]
+
+
+@pytest.mark.parametrize(("interpolator"), fill_missing_maxdist_test)
+def test_fill_missing_maxdist(interpolator):
+    """
+    Test filling NaNs on a small sample grid with only using data within
+    maxdist of NaNs. This test uses cubic and spline interpolation of a square
+    grid with a NaN in the middle, surrounded by a ring of values of 3, which
+    is further sounded by a ring of values of 1. With a maxdist of 1, only the
+    values of 3 are used in interpolation, resulting in a fill value of ~3.
+    With an increasing maxdist, more of the lower values are used, resulting in
+    a upwarp in the center, and therfore a higher interpolated value.
+    """
+    region = (-10, -4, 4, 10)
+    easting = np.linspace(*region[:2], 7, dtype=float)
+    northing = np.linspace(*region[2:], 7, dtype=float)
+
+    # make data with 2 corners as nans, and a nan in the middle surrounded
+    # by 2's, and 1's elsewhere
+    data = np.array(
+        [
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 3, 3, 3, 1, 1],
+            [1, 1, 3, np.nan, 3, 1, 1],
+            [1, 1, 3, 3, 3, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+        ]
+    )
+
+    # make dataset
+    grid = make_xarray_grid(
+        (easting, northing),
+        data,
+        data_names="dummy",
+    )
+
+    filled_no_maxdist = fill_missing(
+        grid.dummy,
+        interpolator=interpolator,
+        maxdist=None,
+    )
+    filled_2_maxdist = fill_missing(
+        grid.dummy,
+        interpolator=interpolator,
+        maxdist=2,
+    )
+    filled_1_maxdist = fill_missing(
+        grid.dummy,
+        interpolator=interpolator,
+        maxdist=1,
+    )
+
+    # check no nans remain
+    assert filled_no_maxdist.notnull().any()
+    assert filled_2_maxdist.notnull().any()
+    assert filled_1_maxdist.notnull().any()
+
+    # get filled values
+    val_no_maxdist = filled_no_maxdist.values[3, 3]
+    val_2_maxdist = filled_2_maxdist.values[3, 3]
+    val_1_maxdist = filled_1_maxdist.values[3, 3]
+
+    # check they are in descreasing order
+    assert val_no_maxdist > val_2_maxdist > val_1_maxdist

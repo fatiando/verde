@@ -10,19 +10,24 @@ General utilities.
 import copy
 import warnings
 
+import numpy as np
 import xarray as xr
 
+from .base.utils import n_1d_arrays
 from .neighbors import KNeighbors
-from .utils import grid_to_table
+from .utils import grid_to_table, kdtree
 
 
 def fill_missing(
     grid,
     interpolator=None,
+    maxdist=None,
 ):
     """
     Fill missing values in a grid with a choice of interpolation method.
     This will  fill missing values for all variables in the supplied grid.
+    To speed up the interpolation, use can choose to only use points within
+    maxdist of the missing values during fitting of the interpolator.
 
     Interpolation methods include nearest neighbor, linear, trend, cubic,
     or splines.
@@ -38,6 +43,10 @@ def fill_missing(
         :class:`verde.Linear`, :class:`verde.Cubic`, :class:`verde.Spline`,
         :class:`verde.SplineCV`, :class:`verde.Trend`, by default is
         class:`verde.KNeighbors` using the nearest 5 neighbors.
+    maxdist : float
+        Only use data within this distance to the nearest missing data when
+        fitting the interpolator. For expensive interpolators, such as
+        :class:`verde.SplineCV`, this can significantly speed up the function.
 
     Returns
     -------
@@ -68,9 +77,23 @@ def fill_missing(
         if not df[var_name].isna().any():
             continue
 
-        # drop rows with data column is NaN
-        df_no_nans = df[df[var_name].notna()]
+        # get dataframes of nans and no-nans
+        df_no_nans = df[df[var_name].notna()].copy()
+        df_nans = df[df[var_name].isna()].copy()
 
+        # only use nearby non-nan points for fitting
+        if maxdist is not None:
+            targets = (df_nans.iloc[:, 1], df_nans.iloc[:, 0])
+            tree = kdtree(targets)
+            coords = (df_no_nans.iloc[:, 1], df_no_nans.iloc[:, 0])
+            distances, _indices = tree.query(np.transpose(n_1d_arrays(coords, 2)), k=1)
+            # only retain non-nan points which are closer than maxdist to
+            # nearest nan
+            df_no_nans.loc[:, "tmp_dist"] = distances
+            df_no_nans = df_no_nans[df_no_nans.tmp_dist <= maxdist]
+            assert (
+                len(df_no_nans) > 0
+            ), "maxdist resulted in no points, increase the value"
         # get coordinate columns (first two columns)
         coords_no_nans = (df_no_nans.iloc[:, 1], df_no_nans.iloc[:, 0])
 
@@ -79,10 +102,8 @@ def fill_missing(
         interp.fit(coords_no_nans, df_no_nans[var_name])
 
         # predict only at NaNs and add to dataframe
-        df_nans = df[df[var_name].isna()]
-        df.loc[df_nans.index, var_name] = interp.predict(
-            (df_nans.iloc[:, 1], df_nans.iloc[:, 0])
-        )
+        predicted = interp.predict((df_nans.iloc[:, 1], df_nans.iloc[:, 0]))
+        df.loc[df_nans.index, var_name] = predicted
 
         # convert to dataarray
         filled_da = df.set_index([coord_names[0], coord_names[1]]).to_xarray()[var_name]
