@@ -876,8 +876,8 @@ def fill_missing(
         The verde interpolator class instance to use for filling missing
         values. Can be one of the following  :class:`verde.KNeighbors`,
         :class:`verde.Linear`, :class:`verde.Cubic`, :class:`verde.Spline`,
-        :class:`verde.Trend`, by default is class:`verde.KNeighbors` using
-        the nearest 5 neighbors.
+        :class:`verde.SplineCV`, :class:`verde.Trend`, by default is
+        class:`verde.KNeighbors` using the nearest 5 neighbors.
 
     Returns
     -------
@@ -933,8 +933,8 @@ def fill_missing(
                 "remaining values run `fill_missing()` again with an "
                 "interpolator which allows extrpolation. We recommend "
                 "`vd.KNeighbors` if you have a large grid (>~10,000 points) "
-                "or `vd.Spline` if you  have a a smaller grid or required "
-                "smoother results."
+                "or `vd.Spline` or `vd.SplineCV` if you  have a a smaller grid "
+                "or require smoother results."
             )
             warnings.warn(msg, UserWarning, stacklevel=2)
 
