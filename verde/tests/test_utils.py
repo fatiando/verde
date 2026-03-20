@@ -95,47 +95,6 @@ def test_fill_missing_types_metadata_names():
     assert filled_ds_1var.units == "mGal"
 
 
-fill_missing_is_fitted_test = [
-    KNeighbors(k=1),
-    Linear(),
-    Trend(1),
-    Cubic(),
-    Spline(),
-]
-
-
-@pytest.mark.parametrize(("interpolator"), fill_missing_is_fitted_test)
-def test_fill_missing_is_fitted(interpolator):
-    """
-    Test the correct error is raised if an already-fitted interolator
-    is passed.
-    """
-    region = (-10, -5, 6, 10)
-    easting = np.linspace(*region[:2], 6, dtype=float)
-    northing = np.linspace(*region[2:], 5, dtype=float)
-    data = np.ones((northing.size, easting.size))
-    data[-1][-1] = np.nan
-
-    # make dataset
-    grid = make_xarray_grid(
-        (easting, northing),
-        data,
-        data_names="dummy",
-    )
-    da = grid.dummy
-    df = grid_to_table(da)
-    df_no_nans = df[df.dummy.notna()]
-    coords_no_nans = (df_no_nans.northing, df_no_nans.easting)
-
-    # pre-fit the interpolator
-    interpolator.fit(coords_no_nans, df_no_nans.dummy)
-
-    with pytest.raises(
-        UserWarning, match="The supplied interpolator is already fitted!"
-    ):
-        fill_missing(da, interpolator)
-
-
 fill_missing_nearest_test = [
     (
         KNeighbors(k=1),

@@ -16,8 +16,6 @@ import numpy as np
 import pandas as pd
 import xarray as xr
 from scipy.spatial import cKDTree
-from sklearn.exceptions import NotFittedError
-from sklearn.utils.validation import check_is_fitted
 
 try:
     from pykdtree.kdtree import KDTree as pyKDTree
@@ -911,14 +909,6 @@ def fill_missing(
 
         # get coordinate columns (first two columns)
         coords_no_nans = (df_no_nans.iloc[:, 1], df_no_nans.iloc[:, 0])
-
-        # raise error if supplied interpolator is already fitted
-        try:
-            check_is_fitted(interpolator)
-            msg = "The supplied interpolator is already fitted!"
-            raise UserWarning(msg)
-        except NotFittedError:
-            pass
 
         interp = copy.deepcopy(interpolator)
 
