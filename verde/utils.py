@@ -27,7 +27,6 @@ try:
 except ImportError:
     numba = None
 
-from .neighbors import KNeighbors
 from .base.utils import (
     check_coordinates,
     check_data,
@@ -35,6 +34,7 @@ from .base.utils import (
     check_extra_coords_names,
     n_1d_arrays,
 )
+from .neighbors import KNeighbors
 
 
 def dispatch(function, delayed=False, client=None):
