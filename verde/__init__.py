@@ -23,6 +23,7 @@ from .coordinates import (
     scatter_points,
 )
 from .distances import median_distance
+from .fill import fill_missing
 from .io import load_surfer
 from .mask import convexhull_mask, distance_mask
 from .model_selection import (
@@ -36,14 +37,7 @@ from .projections import project_grid, project_region
 from .scipygridder import Cubic, Linear, ScipyGridder
 from .spline import Spline, SplineCV
 from .trend import Trend
-from .utils import (
-    fill_missing,
-    grid_to_table,
-    make_xarray_grid,
-    maxabs,
-    minmax,
-    variance_to_weights,
-)
+from .utils import grid_to_table, make_xarray_grid, maxabs, minmax, variance_to_weights
 from .vector import Vector, VectorSpline2D
 
 
