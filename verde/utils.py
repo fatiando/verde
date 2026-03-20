@@ -27,7 +27,7 @@ try:
 except ImportError:
     numba = None
 
-from ..neighbors import KNeighbors
+from .neighbors import KNeighbors
 from .base.utils import (
     check_coordinates,
     check_data,
