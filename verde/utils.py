@@ -27,7 +27,7 @@ try:
 except ImportError:
     numba = None
 
-from verde import KNeighbors
+import verde
 
 from .base.utils import (
     check_coordinates,
@@ -887,7 +887,7 @@ def fill_missing(
     grid = grid.copy()
 
     if interpolator is None:
-        interpolator = KNeighbors(k=5)
+        interpolator = verde.KNeighbors(k=5)
 
     # if input was a datarray turn into dataset
     if isinstance(grid, xr.DataArray):
@@ -914,7 +914,7 @@ def fill_missing(
 
         interp.fit(coords_no_nans, df_no_nans[var_name])
 
-        # predict back onto a grid
+        # predict only at NaNs
         filled_da = interp.grid(
             coordinates=(ds[coord_names[0]], ds[coord_names[1]]),
             data_names=var_name,
