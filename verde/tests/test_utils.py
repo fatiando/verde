@@ -16,10 +16,12 @@ import pytest
 import xarray as xr
 from scipy.spatial import cKDTree
 
-import verde
-
 from .. import utils
 from ..coordinates import grid_coordinates, scatter_points
+from ..neighbors import KNeighbors
+from ..scipygridder import Cubic, Linear
+from ..spline import Spline
+from ..trend import Trend
 from ..utils import (
     dummy_jit,
     fill_nans,
@@ -94,11 +96,11 @@ def test_fill_nans_types_metadata_names():
 
 
 fill_nans_is_fitted_test = [
-    verde.KNeighbors(),
-    verde.Linear(),
-    verde.Trend(1),
-    verde.Cubic(),
-    verde.Spline(),
+    KNeighbors(),
+    Linear(),
+    Trend(1),
+    Cubic(),
+    Spline(),
 ]
 
 
@@ -121,7 +123,7 @@ def test_fill_nans_is_fitted(interpolator):
         data_names="dummy",
     )
     da = grid.dummy
-    df = verde.grid_to_table(da)
+    df = grid_to_table(da)
     df_no_nans = df[df.dummy.notna()]
     coords_no_nans = (df_no_nans.northing, df_no_nans.easting)
 
@@ -148,7 +150,7 @@ fill_nans_nearest_test = [
         ),
     ),
     (
-        verde.KNeighbors(k=2),
+        KNeighbors(k=2),
         np.array(
             [
                 [4.0, 4.0, 1.0, 1.0, 1.0, 1.0],
@@ -160,7 +162,7 @@ fill_nans_nearest_test = [
         ),
     ),
     (
-        verde.KNeighbors(k=3),
+        KNeighbors(k=3),
         np.array(
             [
                 [3.0, 4.0, 1.0, 1.0, 1.0, 1.0],
@@ -223,7 +225,7 @@ def test_fill_nans_nearest(interpolator, expected):
 
 fill_nans_trend_test = [
     (
-        verde.Trend(0),
+        Trend(0),
         np.array(
             [
                 [1.2962963, 1, 1, 1, 1, 1],
@@ -235,7 +237,7 @@ fill_nans_trend_test = [
         ),
     ),
     (
-        verde.Trend(1),
+        Trend(1),
         np.array(
             [
                 [1.4616769, 1, 1, 1, 1, 1],
@@ -247,7 +249,7 @@ fill_nans_trend_test = [
         ),
     ),
     (
-        verde.Trend(5),
+        Trend(5),
         np.array(
             [
                 [0.23084858, 1, 1, 1, 1, 1],
@@ -300,7 +302,7 @@ def test_fill_nans_trend(interpolator, expected):
 
 fill_nans_extrapolation = [
     (
-        verde.Linear(),
+        Linear(),
         np.array(
             [
                 [np.nan, 1, 1, 1, 1, 1],
@@ -312,7 +314,7 @@ fill_nans_extrapolation = [
         ),
     ),
     (
-        verde.Cubic(),
+        Cubic(),
         np.array(
             [
                 [np.nan, 1, 1, 1, 1, 1],
@@ -366,7 +368,7 @@ def test_fill_nans_linear_and_cubic(interpolator, expected):
 
 fill_nans_spline = [
     (
-        verde.Spline(),
+        Spline(),
         np.array(
             [
                 [0.00254, 1, 1, 1, 1, 1],
@@ -378,7 +380,7 @@ fill_nans_spline = [
         ),
     ),
     (
-        verde.Spline(damping=100),
+        Spline(damping=100),
         np.array(
             [
                 [0.80490, 1, 1, 1, 1, 1],
