@@ -19,8 +19,6 @@ from scipy.spatial import cKDTree
 from sklearn.exceptions import NotFittedError
 from sklearn.utils.validation import check_is_fitted
 
-import verde as vd
-
 try:
     from pykdtree.kdtree import KDTree as pyKDTree
 except ImportError:
@@ -31,6 +29,8 @@ try:
 except ImportError:
     numba = None
 
+from ..neighbors import KNeighbors
+from ..scipygridder import Cubic, Linear
 from .base.utils import (
     check_coordinates,
     check_data,
@@ -888,7 +888,7 @@ def fill_nans(
     grid = grid.copy()
 
     if interpolator is None:
-        interpolator = vd.KNeighbors()
+        interpolator = KNeighbors()
 
     # if input was a datarray turn into dataset
     if isinstance(grid, xr.DataArray):
@@ -903,7 +903,7 @@ def fill_nans(
     for var_name, var_da in ds.items():
 
         # turn grid into dataframe
-        df = vd.grid_to_table(var_da)
+        df = grid_to_table(var_da)
 
         # drop rows with data column is NaN
         df_no_nans = df[df[var_name].notna()]
@@ -932,9 +932,7 @@ def fill_nans(
 
         # warn if still nans due to no extrapolation allowed for
         # `Cubic` and `Linear` interpolators
-        if (filled_da.isnull().any()) and (
-            isinstance(interp, (vd.scipygridder.Cubic, vd.scipygridder.Linear))
-        ):
+        if (filled_da.isnull().any()) and (isinstance(interp, (Cubic, Linear))):
             msg = (
                 "NaNs are still present due to the choice of interpolator "
                 f"{type(interp)}, which doesn't allow extrapolation. "
