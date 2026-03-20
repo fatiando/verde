@@ -858,7 +858,7 @@ def kdtree(coordinates, use_pykdtree=True, **kwargs):
     return tree
 
 
-def fill_nans(
+def fill_missing(
     grid,
     interpolator=None,
 ):

@@ -24,7 +24,7 @@ from ..spline import Spline
 from ..trend import Trend
 from ..utils import (
     dummy_jit,
-    fill_nans,
+    fill_missing,
     get_ndim_horizontal_coords,
     grid_to_table,
     kdtree,
@@ -39,7 +39,7 @@ from ..utils import (
 )
 
 
-def test_fill_nans_types_metadata_names():
+def test_fill_missing_types_metadata_names():
     """
     Test for correct types, retained metadata, and names when filling grid
     NaNs.
@@ -73,9 +73,9 @@ def test_fill_nans_types_metadata_names():
     ds = grid.dummy1.to_dataset(name="dummy1").assign_attrs({"units": "mGal"})
 
     # 3 types passed, dataarray, dataset with 2 vars, dataset with 1 var
-    filled_da = fill_nans(grid.dummy1)
-    filled_ds_2var = fill_nans(grid)
-    filled_ds_1var = fill_nans(ds)
+    filled_da = fill_missing(grid.dummy1)
+    filled_ds_2var = fill_missing(grid)
+    filled_ds_1var = fill_missing(ds)
 
     # check return types match inputs
     assert isinstance(filled_da, xr.DataArray)
@@ -95,7 +95,7 @@ def test_fill_nans_types_metadata_names():
     assert filled_ds_1var.units == "mGal"
 
 
-fill_nans_is_fitted_test = [
+fill_missing_is_fitted_test = [
     KNeighbors(),
     Linear(),
     Trend(1),
@@ -104,8 +104,8 @@ fill_nans_is_fitted_test = [
 ]
 
 
-@pytest.mark.parametrize(("interpolator"), fill_nans_is_fitted_test)
-def test_fill_nans_is_fitted(interpolator):
+@pytest.mark.parametrize(("interpolator"), fill_missing_is_fitted_test)
+def test_fill_missing_is_fitted(interpolator):
     """
     Test the correct error is raised if an already-fitted interolator
     is passed.
@@ -133,10 +133,10 @@ def test_fill_nans_is_fitted(interpolator):
     with pytest.raises(
         UserWarning, match="The supplied interpolator is already fitted!"
     ):
-        fill_nans(da, interpolator)
+        fill_missing(da, interpolator)
 
 
-fill_nans_nearest_test = [
+fill_missing_nearest_test = [
     (
         None,
         np.array(
@@ -176,8 +176,8 @@ fill_nans_nearest_test = [
 ]
 
 
-@pytest.mark.parametrize(("interpolator", "expected"), fill_nans_nearest_test)
-def test_fill_nans_nearest(interpolator, expected):
+@pytest.mark.parametrize(("interpolator", "expected"), fill_missing_nearest_test)
+def test_fill_missing_nearest(interpolator, expected):
     """
     Test filling NaNs on a small sample grid with multiple numbers of neighbors
     """
@@ -207,9 +207,9 @@ def test_fill_nans_nearest(interpolator, expected):
     ds = grid.dummy1.to_dataset(name="dummy1")
 
     # 3 types passed, dataarray, dataset with 2 vars, dataset with 1 var
-    filled_da = fill_nans(grid.dummy1, interpolator)
-    filled_ds_2var = fill_nans(grid, interpolator)
-    filled_ds_1var = fill_nans(ds, interpolator)
+    filled_da = fill_missing(grid.dummy1, interpolator)
+    filled_ds_2var = fill_missing(grid, interpolator)
+    filled_ds_1var = fill_missing(ds, interpolator)
 
     # check no nans remain
     assert filled_da.notnull().any()
@@ -223,7 +223,7 @@ def test_fill_nans_nearest(interpolator, expected):
     np.testing.assert_allclose(filled_ds_1var.dummy1.values, expected)
 
 
-fill_nans_trend_test = [
+fill_missing_trend_test = [
     (
         Trend(0),
         np.array(
@@ -263,8 +263,8 @@ fill_nans_trend_test = [
 ]
 
 
-@pytest.mark.parametrize(("interpolator", "expected"), fill_nans_trend_test)
-def test_fill_nans_trend(interpolator, expected):
+@pytest.mark.parametrize(("interpolator", "expected"), fill_missing_trend_test)
+def test_fill_missing_trend(interpolator, expected):
     """
     Test filling NaNs on a small sample grid with multiple trend orders
     """
@@ -291,7 +291,7 @@ def test_fill_nans_trend(interpolator, expected):
         data_names="dummy",
     )
 
-    filled_da = fill_nans(grid.dummy, interpolator)
+    filled_da = fill_missing(grid.dummy, interpolator)
 
     # check no nans remain
     assert filled_da.notnull().any()
@@ -300,7 +300,7 @@ def test_fill_nans_trend(interpolator, expected):
     np.testing.assert_allclose(filled_da.values, expected)
 
 
-fill_nans_extrapolation = [
+fill_missing_extrapolation = [
     (
         Linear(),
         np.array(
@@ -328,8 +328,8 @@ fill_nans_extrapolation = [
 ]
 
 
-@pytest.mark.parametrize(("interpolator", "expected"), fill_nans_extrapolation)
-def test_fill_nans_linear_and_cubic(interpolator, expected):
+@pytest.mark.parametrize(("interpolator", "expected"), fill_missing_extrapolation)
+def test_fill_missing_linear_and_cubic(interpolator, expected):
     """
     Test filling NaNs on a small sample grid with a linear interpolation
     """
@@ -360,13 +360,13 @@ def test_fill_nans_linear_and_cubic(interpolator, expected):
     with pytest.warns(
         UserWarning, match="NaNs are still present due to the choice of interpolator"
     ):
-        filled_da = fill_nans(grid.dummy, interpolator)
+        filled_da = fill_missing(grid.dummy, interpolator)
 
     # check correct values
     np.testing.assert_allclose(filled_da.values, expected, rtol=1e-4)
 
 
-fill_nans_spline = [
+fill_missing_spline = [
     (
         Spline(),
         np.array(
@@ -394,8 +394,8 @@ fill_nans_spline = [
 ]
 
 
-@pytest.mark.parametrize(("interpolator", "expected"), fill_nans_spline)
-def test_fill_nans_spline(interpolator, expected):
+@pytest.mark.parametrize(("interpolator", "expected"), fill_missing_spline)
+def test_fill_missing_spline(interpolator, expected):
     """
     Test filling NaNs on a small sample grid with a spline interpolation
     """
@@ -422,7 +422,7 @@ def test_fill_nans_spline(interpolator, expected):
         data_names="dummy",
     )
 
-    filled_da = fill_nans(grid.dummy, interpolator)
+    filled_da = fill_missing(grid.dummy, interpolator)
 
     # check no nans remain
     assert filled_da.notnull().any()

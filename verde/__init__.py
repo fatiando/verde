@@ -37,7 +37,7 @@ from .scipygridder import Cubic, Linear, ScipyGridder
 from .spline import Spline, SplineCV
 from .trend import Trend
 from .utils import (
-    fill_nans,
+    fill_missing,
     grid_to_table,
     make_xarray_grid,
     maxabs,
