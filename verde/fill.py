@@ -64,6 +64,10 @@ def fill_missing(
         # turn grid into dataframe
         df = grid_to_table(var_da)
 
+        # if no nans, continue without change original grid
+        if not df[var_name].isna().any():
+            continue
+
         # drop rows with data column is NaN
         df_no_nans = df[df[var_name].notna()]
 

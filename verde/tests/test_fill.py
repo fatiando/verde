@@ -75,6 +75,13 @@ def test_fill_missing_types_metadata_names():
     assert filled_ds_2var.units == "mGal"
     assert filled_ds_1var.units == "mGal"
 
+    # test that function still works if 1 variable doesn't contain nans
+    grid["dummy1"] = filled_ds_2var.dummy1
+    assert grid.dummy1.notnull().any()
+    filled_ds_no_nans = fill_missing(grid)
+    assert filled_ds_no_nans.dummy1.notnull().any()
+    assert filled_ds_no_nans.dummy2.notnull().any()
+
 
 fill_missing_nearest_test = [
     (
