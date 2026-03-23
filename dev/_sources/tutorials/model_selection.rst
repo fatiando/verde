@@ -1369,7 +1369,7 @@ computed as intermediate values in the scheduled computations.
 
  .. code-block:: none
 
-    Delayed scores: [Delayed('mean-659cf166-13be-4e88-a148-d289fb6a8403'), Delayed('mean-af4f7216-124c-42b9-bc3a-48ac39f9af46'), Delayed('mean-7867d97f-ed7a-46af-8703-9a267364b1c0'), Delayed('mean-fee99cbf-0a9e-4531-a7ec-14a167fd80dd')]
+    Delayed scores: [Delayed('mean-35508b9e-7000-4623-bc3c-fa168849935f'), Delayed('mean-f2873123-217c-407e-826d-14d3dffb0749'), Delayed('mean-1c6d38ad-9d87-4e95-ab1f-eeb5bd16dc17'), Delayed('mean-496b0bd6-ab36-456f-b5a8-9cb402f56877')]
 
 
 
@@ -1469,7 +1469,7 @@ short wavelength features that we get from the defaults.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.492 seconds)
+   **Total running time of the script:** (0 minutes 0.512 seconds)
 
 
 .. _sphx_glr_download_tutorials_model_selection.py:

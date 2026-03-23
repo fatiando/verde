@@ -1391,7 +1391,7 @@ To run :func:`verde.cross_val_score` with Dask, use the ``delayed`` argument:
 
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    Delayed k-fold scores: [Delayed('fit_score-7b9d14a9-465a-4777-98b0-b6c70ff35074'), Delayed('fit_score-fa41e896-6660-4cfa-b070-82d0ca801a48'), Delayed('fit_score-27edf3dc-5c56-4ac1-9a8a-dd3d4e36e517'), Delayed('fit_score-e91e4971-8636-4060-8b52-5d7713989ef4'), Delayed('fit_score-2d25b6e6-7326-490f-a1c3-1f80d68edbf6')]
+    Delayed k-fold scores: [Delayed('fit_score-9a82577d-9158-43fa-a72f-10d8ce1f9096'), Delayed('fit_score-fcc28e5c-8a89-42d0-9e04-202143927d3e'), Delayed('fit_score-652f347d-fc27-4e66-ae19-94d2efdbf238'), Delayed('fit_score-657fa681-b960-4e17-980f-2f254bafd3f5'), Delayed('fit_score-ccdf710a-cd04-4454-a1ae-56e361772cef')]
 
 
 
@@ -1419,7 +1419,7 @@ are interested only in the mean score, we can schedule the mean as well using
 
  .. code-block:: none
 
-    Delayed mean: Delayed('mean-1bfb7189-e430-4d6e-9e75-b75e8040ecd2')
+    Delayed mean: Delayed('mean-da3abf39-2049-446d-a1ac-e230d5522ca2')
 
 
 
@@ -1446,6 +1446,8 @@ things in parallel.
 
  .. code-block:: none
 
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      score = estimator.score(*test_data)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
@@ -1481,7 +1483,7 @@ that.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.475 seconds)
+   **Total running time of the script:** (0 minutes 0.432 seconds)
 
 
 .. _sphx_glr_download_tutorials_model_evaluation.py:

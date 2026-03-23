@@ -1668,7 +1668,7 @@ library for parallel execution.</p>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
   new_object = klass(**new_object_params)
-Delayed k-fold scores: [Delayed(&#39;fit_score-7b9d14a9-465a-4777-98b0-b6c70ff35074&#39;), Delayed(&#39;fit_score-fa41e896-6660-4cfa-b070-82d0ca801a48&#39;), Delayed(&#39;fit_score-27edf3dc-5c56-4ac1-9a8a-dd3d4e36e517&#39;), Delayed(&#39;fit_score-e91e4971-8636-4060-8b52-5d7713989ef4&#39;), Delayed(&#39;fit_score-2d25b6e6-7326-490f-a1c3-1f80d68edbf6&#39;)]
+Delayed k-fold scores: [Delayed(&#39;fit_score-9a82577d-9158-43fa-a72f-10d8ce1f9096&#39;), Delayed(&#39;fit_score-fcc28e5c-8a89-42d0-9e04-202143927d3e&#39;), Delayed(&#39;fit_score-652f347d-fc27-4e66-ae19-94d2efdbf238&#39;), Delayed(&#39;fit_score-657fa681-b960-4e17-980f-2f254bafd3f5&#39;), Delayed(&#39;fit_score-ccdf710a-cd04-4454-a1ae-56e361772cef&#39;)]
 </pre></div>
 </div>
 <p>In this case, the scores haven’t actually been computed yet (hence the
@@ -1679,7 +1679,7 @@ are interested only in the mean score, we can schedule the mean as well using
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Delayed mean:&quot;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">mean_score</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Delayed mean: Delayed(&#39;mean-1bfb7189-e430-4d6e-9e75-b75e8040ecd2&#39;)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Delayed mean: Delayed(&#39;mean-da3abf39-2049-446d-a1ac-e230d5522ca2&#39;)
 </pre></div>
 </div>
 <p>To run the scheduled computations and get the mean score, use
@@ -1690,6 +1690,8 @@ things in parallel.</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+  score = estimator.score(*test_data)
+/usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
   score = estimator.score(*test_data)
 /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
   score = estimator.score(*test_data)
@@ -1713,7 +1715,7 @@ intensive. Make sure you have enough RAM to run multiple fits.</p>
 different combinations manually until we get a good score. A better way is to
 do this automatically. In <a class="reference internal" href="model_selection.html#model-selection"><span class="std std-ref">Model Selection</span></a> we’ll go over how to do just
 that.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.475 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.432 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-model-evaluation-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/20ccfb7485becea704ca8ee5aae7ae9f/model_evaluation.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">model_evaluation.ipynb</span></code></a></p>
@@ -1805,7 +1807,7 @@ that.</p>
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Mar 23, 2026.
   <br/>
 </p>
   </div>
