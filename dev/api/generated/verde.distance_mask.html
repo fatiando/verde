@@ -277,6 +277,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -518,7 +519,7 @@ calculations.</p>
 point is more than <em>maxdist</em> from the closest data point and True
 otherwise.</p></li>
 <li><p>If <em>grid</em> is not None, produces a mask and applies it to <em>grid</em> (an
-<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>).</p></li>
+<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.4.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>).</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -536,11 +537,11 @@ otherwise.</p></li>
 be in the following order: (easting, northing, …). Only easting and
 northing will be used, all subsequent coordinates will be ignored.</p>
 </dd>
-<dt><strong>grid</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a> or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a></span></dt><dd><p>2D grid with values to be masked. Will use the first two dimensions of
+<dt><strong>grid</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a> or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.4.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a></span></dt><dd><p>2D grid with values to be masked. Will use the first two dimensions of
 the grid as northing and easting coordinates, respectively. For this to
 work, the grid dimensions <strong>must be ordered as northing then easting</strong>.
 The mask will be applied to <em>grid</em> using the
-<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.where.html#xarray.Dataset.where" title="(in xarray v2026.2.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">xarray.Dataset.where</span></code></a> method.</p>
+<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.where.html#xarray.Dataset.where" title="(in xarray v2026.4.0)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">xarray.Dataset.where</span></code></a> method.</p>
 </dd>
 <dt><strong>projection</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">callable</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>If not None, then should be a callable object <code class="docutils literal notranslate"><span class="pre">projection(easting,</span>
 <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code> that takes in easting and
@@ -553,9 +554,9 @@ distances.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>mask</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a> or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a></span></dt><dd><p>If <em>coordinates</em> was given, then a boolean array with the same shape as
+<dt><strong>mask</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a> or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.4.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a></span></dt><dd><p>If <em>coordinates</em> was given, then a boolean array with the same shape as
 the elements of <em>coordinates</em>. If <em>grid</em> was given, then an
-<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> with the mask applied to it.</p>
+<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.4.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> with the mask applied to it.</p>
 </dd>
 </dl>
 </dd>
@@ -697,7 +698,7 @@ the elements of <em>coordinates</em>. If <em>grid</em> was given, then an
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Apr 17, 2026.
   <br/>
 </p>
   </div>

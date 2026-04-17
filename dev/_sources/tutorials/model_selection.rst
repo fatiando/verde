@@ -1337,10 +1337,6 @@ search is executed and the optimal parameters are found immediately.
       score = estimator.score(*test_data)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
-      score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
-      score = estimator.score(*test_data)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/spline.py:261: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       self.spline_ = Spline(**parameter_sets[best])
     Best damping: 0.0001
@@ -1369,7 +1365,7 @@ computed as intermediate values in the scheduled computations.
 
  .. code-block:: none
 
-    Delayed scores: [Delayed('mean-659cf166-13be-4e88-a148-d289fb6a8403'), Delayed('mean-af4f7216-124c-42b9-bc3a-48ac39f9af46'), Delayed('mean-7867d97f-ed7a-46af-8703-9a267364b1c0'), Delayed('mean-fee99cbf-0a9e-4531-a7ec-14a167fd80dd')]
+    Delayed scores: [Delayed('mean-afbfb030-ba39-4137-a3fd-1288f7de6227'), Delayed('mean-342a5bb6-8e80-4967-acbe-c2083e339c0d'), Delayed('mean-e46f22ef-a312-45c3-a770-0e8201a4f36a'), Delayed('mean-91f8a806-dd46-4c94-b533-10217fff0a19')]
 
 
 
@@ -1469,7 +1465,7 @@ short wavelength features that we get from the defaults.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.492 seconds)
+   **Total running time of the script:** (0 minutes 0.513 seconds)
 
 
 .. _sphx_glr_download_tutorials_model_selection.py:
