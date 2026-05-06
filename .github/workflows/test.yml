@@ -60,13 +60,6 @@ jobs:
       DEPENDENCIES: ${{ matrix.dependencies }}
 
     steps:
-      # Cancel any previous run of the test job
-      # We pin the commit hash corresponding to v0.5.0, and not pinning the tag
-      # because we are giving full access through the github.token.
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.13.1
-        with:
-          access_token: ${{ github.token }}
 
       # Checks-out your repository under $GITHUB_WORKSPACE
       - name: Checkout
@@ -86,7 +79,7 @@ jobs:
         run: git fetch origin 'refs/tags/*:refs/tags/*'
 
       - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           python-version: ${{ env.PYTHON }}
           channels: conda-forge,defaults
@@ -205,7 +198,7 @@ jobs:
         run: ls -l -R .
 
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           # Upload all coverage report files
           files: ./coverage_*/coverage.xml

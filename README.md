@@ -1,13 +1,14 @@
-<img src="https://github.com/fatiando/verde/raw/main/doc/_static/readme-banner.png" alt="Verde">
+<h1><img src="https://github.com/fatiando/verde/raw/main/doc/_static/readme-banner.png" alt="Verde"></h1>
 
-<h2 align="center">Processing and gridding spatial data, machine-learning style</h2>
+<p align="center"><strong>Processing and gridding spatial data, machine-learning style</strong></p>
 
 <p align="center">
 <a href="https://www.fatiando.org/verde"><strong>Documentation</strong> (latest)</a> •
-<a href="https://www.fatiando.org/verde/dev"><strong>Documentation</strong> (main branch)</a> •
-<a href="https://github.com/fatiando/verde/blob/main/CONTRIBUTING.md"><strong>Contributing</strong></a> •
+<a href="https://www.fatiando.org/verde/dev"><strong>Documentation</strong> (development)</a> •
+<a href="https://github.com/fatiando/verde/blob/main/CONTRIBUTING.md"><strong>Contribute</strong></a> •
 <a href="https://www.fatiando.org/contact/"><strong>Contact</strong></a> •
-<a href="https://github.com/orgs/fatiando/discussions"><strong>Ask a question</strong></a>
+<a href="https://github.com/orgs/fatiando/discussions"><strong>Ask a question</strong></a> •
+<a href="https://www.fatiando.org/verde/latest/citing.html"><strong>Cite</strong></a>
 </p>
 
 <p align="center">
