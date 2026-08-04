@@ -226,7 +226,7 @@ different :class:`verde.Trend`.
 .. raw:: html
 
     <div class="output_subarea output_html rendered_html output_result">
-    <style>#sk-container-id-4 {
+    <style>.sk-global {
       /* Definition of color scheme common for light and dark mode */
       --sklearn-color-text: #000;
       --sklearn-color-text-muted: #666;
@@ -243,7 +243,7 @@ different :class:`verde.Trend`.
       --sklearn-color-fitted-level-3: cornflowerblue;
     }
 
-    #sk-container-id-4.light {
+    .sk-global.light {
       /* Specific color for light theme */
       --sklearn-color-text-on-default-background: black;
       --sklearn-color-background: white;
@@ -251,25 +251,24 @@ different :class:`verde.Trend`.
       --sklearn-color-icon: #696969;
     }
 
-    #sk-container-id-4.dark {
+    .sk-global.dark {
       --sklearn-color-text-on-default-background: white;
       --sklearn-color-background: #111;
       --sklearn-color-border-box: white;
       --sklearn-color-icon: #878787;
     }
 
-    #sk-container-id-4 {
+    .sk-global {
       color: var(--sklearn-color-text);
     }
 
-    #sk-container-id-4 pre {
+    .sk-global pre {
       padding: 0;
     }
 
-    #sk-container-id-4 input.sk-hidden--visually {
+    .sk-global input.sk-hidden--visually {
       border: 0;
-      clip: rect(1px 1px 1px 1px);
-      clip: rect(1px, 1px, 1px, 1px);
+      clip-path: inset(100%);
       height: 1px;
       margin: -1px;
       overflow: hidden;
@@ -278,7 +277,7 @@ different :class:`verde.Trend`.
       width: 1px;
     }
 
-    #sk-container-id-4 div.sk-dashed-wrapped {
+    .sk-global div.sk-dashed-wrapped {
       border: 1px dashed var(--sklearn-color-line);
       margin: 0 0.4em 0.5em 0.4em;
       box-sizing: border-box;
@@ -286,7 +285,7 @@ different :class:`verde.Trend`.
       background-color: var(--sklearn-color-background);
     }
 
-    #sk-container-id-4 div.sk-container {
+    .sk-global div.sk-container {
       /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
          but bootstrap.min.css set `[hidden] { display: none !important; }`
          so we also need the `!important` here to be able to override the
@@ -296,7 +295,7 @@ different :class:`verde.Trend`.
       position: relative;
     }
 
-    #sk-container-id-4 div.sk-text-repr-fallback {
+    .sk-global div.sk-text-repr-fallback {
       display: none;
     }
 
@@ -312,14 +311,14 @@ different :class:`verde.Trend`.
 
     /* Parallel-specific style estimator block */
 
-    #sk-container-id-4 div.sk-parallel-item::after {
+    .sk-global div.sk-parallel-item::after {
       content: "";
       width: 100%;
       border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
       flex-grow: 1;
     }
 
-    #sk-container-id-4 div.sk-parallel {
+    .sk-global div.sk-parallel {
       display: flex;
       align-items: stretch;
       justify-content: center;
@@ -327,28 +326,28 @@ different :class:`verde.Trend`.
       position: relative;
     }
 
-    #sk-container-id-4 div.sk-parallel-item {
+    .sk-global div.sk-parallel-item {
       display: flex;
       flex-direction: column;
     }
 
-    #sk-container-id-4 div.sk-parallel-item:first-child::after {
+    .sk-global div.sk-parallel-item:first-child::after {
       align-self: flex-end;
       width: 50%;
     }
 
-    #sk-container-id-4 div.sk-parallel-item:last-child::after {
+    .sk-global div.sk-parallel-item:last-child::after {
       align-self: flex-start;
       width: 50%;
     }
 
-    #sk-container-id-4 div.sk-parallel-item:only-child::after {
+    .sk-global div.sk-parallel-item:only-child::after {
       width: 0;
     }
 
     /* Serial-specific style estimator block */
 
-    #sk-container-id-4 div.sk-serial {
+    .sk-global div.sk-serial {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -366,14 +365,14 @@ different :class:`verde.Trend`.
 
     /* Pipeline and ColumnTransformer style (default) */
 
-    #sk-container-id-4 div.sk-toggleable {
+    .sk-global div.sk-toggleable {
       /* Default theme specific background. It is overwritten whether we have a
       specific estimator or a Pipeline/ColumnTransformer */
       background-color: var(--sklearn-color-background);
     }
 
     /* Toggleable label */
-    #sk-container-id-4 label.sk-toggleable__label {
+    .sk-global label.sk-toggleable__label {
       cursor: pointer;
       display: flex;
       width: 100%;
@@ -386,13 +385,13 @@ different :class:`verde.Trend`.
       gap: 0.5em;
     }
 
-    #sk-container-id-4 label.sk-toggleable__label .caption {
+    .sk-global label.sk-toggleable__label .caption {
       font-size: 0.6rem;
       font-weight: lighter;
       color: var(--sklearn-color-text-muted);
     }
 
-    #sk-container-id-4 label.sk-toggleable__label-arrow:before {
+    .sk-global label.sk-toggleable__label-arrow:before {
       /* Arrow on the left of the label */
       content: "▸";
       float: left;
@@ -400,25 +399,25 @@ different :class:`verde.Trend`.
       color: var(--sklearn-color-icon);
     }
 
-    #sk-container-id-4 label.sk-toggleable__label-arrow:hover:before {
+    .sk-global label.sk-toggleable__label-arrow:hover:before {
       color: var(--sklearn-color-text);
     }
 
     /* Toggleable content - dropdown */
 
-    #sk-container-id-4 div.sk-toggleable__content {
+    .sk-global div.sk-toggleable__content {
       display: none;
       text-align: left;
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-0);
     }
 
-    #sk-container-id-4 div.sk-toggleable__content.fitted {
+    .sk-global div.sk-toggleable__content.fitted {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-0);
     }
 
-    #sk-container-id-4 div.sk-toggleable__content pre {
+    .sk-global div.sk-toggleable__content pre {
       margin: 0.2em;
       border-radius: 0.25em;
       color: var(--sklearn-color-text);
@@ -426,78 +425,78 @@ different :class:`verde.Trend`.
       background-color: var(--sklearn-color-unfitted-level-0);
     }
 
-    #sk-container-id-4 div.sk-toggleable__content.fitted pre {
+    .sk-global div.sk-toggleable__content.fitted pre {
       /* unfitted */
       background-color: var(--sklearn-color-fitted-level-0);
     }
 
-    #sk-container-id-4 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+    .sk-global input.sk-toggleable__control:checked~div.sk-toggleable__content {
       /* Expand drop-down */
       display: block;
       width: 100%;
       overflow: visible;
     }
 
-    #sk-container-id-4 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+    .sk-global input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
       content: "▾";
     }
 
     /* Pipeline/ColumnTransformer-specific style */
 
-    #sk-container-id-4 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+    .sk-global div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
       color: var(--sklearn-color-text);
       background-color: var(--sklearn-color-unfitted-level-2);
     }
 
-    #sk-container-id-4 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+    .sk-global div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
       background-color: var(--sklearn-color-fitted-level-2);
     }
 
     /* Estimator-specific style */
 
     /* Colorize estimator box */
-    #sk-container-id-4 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+    .sk-global div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-2);
     }
 
-    #sk-container-id-4 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+    .sk-global div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-2);
     }
 
-    #sk-container-id-4 div.sk-label label.sk-toggleable__label,
-    #sk-container-id-4 div.sk-label label {
+    .sk-global div.sk-label label.sk-toggleable__label,
+    .sk-global div.sk-label label {
       /* The background is the default theme color */
       color: var(--sklearn-color-text-on-default-background);
     }
 
     /* On hover, darken the color of the background */
-    #sk-container-id-4 div.sk-label:hover label.sk-toggleable__label {
+    .sk-global div.sk-label:hover label.sk-toggleable__label {
       color: var(--sklearn-color-text);
       background-color: var(--sklearn-color-unfitted-level-2);
     }
 
     /* Label box, darken color on hover, fitted */
-    #sk-container-id-4 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+    .sk-global div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
       color: var(--sklearn-color-text);
       background-color: var(--sklearn-color-fitted-level-2);
     }
 
     /* Estimator label */
 
-    #sk-container-id-4 div.sk-label label {
+    .sk-global div.sk-label label {
       font-family: monospace;
       font-weight: bold;
       line-height: 1.2em;
     }
 
-    #sk-container-id-4 div.sk-label-container {
+    .sk-global div.sk-label-container {
       text-align: center;
     }
 
     /* Estimator-specific */
-    #sk-container-id-4 div.sk-estimator {
+    .sk-global div.sk-estimator {
       font-family: monospace;
       border: 1px dotted var(--sklearn-color-border-box);
       border-radius: 0.25em;
@@ -507,18 +506,18 @@ different :class:`verde.Trend`.
       background-color: var(--sklearn-color-unfitted-level-0);
     }
 
-    #sk-container-id-4 div.sk-estimator.fitted {
+    .sk-global div.sk-estimator.fitted {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-0);
     }
 
     /* on hover */
-    #sk-container-id-4 div.sk-estimator:hover {
+    .sk-global div.sk-estimator:hover {
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-2);
     }
 
-    #sk-container-id-4 div.sk-estimator.fitted:hover {
+    .sk-global div.sk-estimator.fitted:hover {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-2);
     }
@@ -609,7 +608,7 @@ different :class:`verde.Trend`.
 
     /* "?"-specific style due to the `<a>` HTML tag */
 
-    #sk-container-id-4 a.estimator_doc_link {
+    .sk-global a.estimator_doc_link {
       float: right;
       font-size: 1rem;
       line-height: 1em;
@@ -624,7 +623,7 @@ different :class:`verde.Trend`.
       border: var(--sklearn-color-unfitted-level-1) 1pt solid;
     }
 
-    #sk-container-id-4 a.estimator_doc_link.fitted {
+    .sk-global a.estimator_doc_link.fitted {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-0);
       border: var(--sklearn-color-fitted-level-1) 1pt solid;
@@ -632,16 +631,24 @@ different :class:`verde.Trend`.
     }
 
     /* On hover */
-    #sk-container-id-4 a.estimator_doc_link:hover {
+    .sk-global a.estimator_doc_link:hover {
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-3);
       color: var(--sklearn-color-background);
       text-decoration: none;
     }
 
-    #sk-container-id-4 a.estimator_doc_link.fitted:hover {
+    .sk-global a.estimator_doc_link.fitted:hover {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-3);
+    }
+
+    .sk-top-container.sk-global {
+      /* pydata-sphinx-theme hides overflow, so scrolling is disabled.
+       We need to set it to !important and add tabindex="0" in the HTML
+       to allow keyboard-only users to navigate the display. */
+      overflow-x: scroll !important;
+      max-width: 100%;
     }
 
     .estimator-table {
@@ -677,11 +684,11 @@ different :class:`verde.Trend`.
         background-color: #f6f6f6;
     }
 
-    .estimator-table .parameters-table tr:hover {
+    .estimator-table .parameters-table tr:hover td {
         background-color: #e0e0e0;
     }
 
-    .estimator-table table td {
+    .estimator-table table :is(td, th) {
         border: 1px solid rgba(106, 105, 104, 0.232);
     }
 
@@ -705,7 +712,7 @@ different :class:`verde.Trend`.
         background-color: transparent;
     }
 
-    .default td {
+    .default td, .estimator-table th {
         color: black;
         text-align: left !important;
     }
@@ -713,6 +720,10 @@ different :class:`verde.Trend`.
     .user-set td i,
     .default td i {
         color: black;
+    }
+
+    td.fitted-att-type {
+        white-space: preserve nowrap;
     }
 
     /*
@@ -727,6 +738,14 @@ different :class:`verde.Trend`.
         color: inherit;
         display: block;
         padding: .5em;
+    }
+
+    @supports(anchor-name: --doc-link) {
+        a.param-doc-link,
+        a.param-doc-link:link,
+        a.param-doc-link:visited {
+        anchor-name: --doc-link;
+        }
     }
 
     /* "hack" to make the entire area of the cell containing the link clickable */
@@ -755,6 +774,14 @@ different :class:`verde.Trend`.
         border: thin solid var(--sklearn-color-unfitted-level-3);
     }
 
+    @supports(position-area: center right) {
+        .param-doc-description {
+        position-area: center right;
+        position: fixed;
+        margin-left: 0;
+        }
+    }
+
     /* Fitted state for parameter tooltips */
     .fitted .param-doc-description {
         /* fitted */
@@ -776,7 +803,128 @@ different :class:`verde.Trend`.
         height: 14px;
         cursor: pointer;
     }
-    </style><body><div id="sk-container-id-4" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Vector(components=[Trend(degree=4), Trend(degree=1)])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-4" type="checkbox" checked><label for="sk-estimator-id-4" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Vector</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+
+    .features {
+      font-family: monospace;
+      cursor: pointer;
+      background-color: var(--sklearn-color-unfitted-level-0);
+      border: 1px dotted var(--sklearn-color-border-box);
+      border-radius: .20em;
+      margin-bottom: 0.5em;
+      font-size: inherit; /* Needed for jupyter */
+    }
+
+    .features.fitted {
+      background-color: var(--sklearn-color-fitted-level-0);
+    }
+
+    .features summary {
+      cursor: pointer;
+      display: flex;
+      margin-bottom: 0;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5em;
+      padding: .25em;
+    }
+
+    .features details[open] > summary {
+      color: var(--sklearn-color-text);
+      background-color: var(--sklearn-color-unfitted-level-2);
+      border-radius: .20em 0 0 0;
+    }
+
+    .features.fitted details[open] > summary {
+      background-color: var(--sklearn-color-fitted-level-2);
+      border-radius: .20em 0 0 0;
+    }
+
+    .features details > summary .arrow::before {
+      content: "▸";
+      color: grey;
+    }
+
+    .features details[open] > summary .arrow::before {
+      content: "▾";
+    }
+
+    .features details:hover > summary {
+      margin: 0;
+      background-color: var(--sklearn-color-unfitted-level-2);
+    }
+
+    .features.fitted details:hover > summary {
+      margin: 0;
+      background-color: var(--sklearn-color-fitted-level-2);
+    }
+
+    .features .features-container {
+      max-width: 15em;
+      max-height: 10em;
+      overflow: auto;
+      scrollbar-width: thin;
+      padding: .25em 0.1rem;
+      background-color: var(--sklearn-color-unfitted-level-0);
+      border-radius: 0 0 .5em .5em;
+    }
+
+    .features.fitted .features-container {
+      background-color: var(--sklearn-color-fitted-level-0);
+    }
+
+    .features .image-container {
+      block-size: 1em;
+      inline-size: 1em;
+      padding: 0;
+      margin: 0%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .features .copy-paste-icon {
+      background-size: 1em 1em;
+      width: 1em;
+      height: 1em;
+      filter: grayscale(100%) opacity(60%);
+    }
+
+    .features .features-container table {
+      width: 100%;
+      margin: 0.01em;
+    }
+
+    .features .features-container table tr:nth-child(odd) {
+      background-color: #fff;
+    }
+
+    .features .features-container table tr:nth-child(even) {
+      background-color: #f6f6f6;
+    }
+
+    .features .features-container table tr:hover {
+      background-color: #e0e0e0;
+    }
+
+    .features .features-container table {
+      table-layout: inherit;
+    }
+
+    .features .features-container table td {
+      text-align: left;
+      padding: 0 0.5em;
+      border: 1px solid rgba(106, 105, 104, 0.232);
+      white-space: nowrap;
+      color: var(--sklearn-color-text);
+    }
+
+    .total_features {
+      display: flex;
+      justify-content: center;
+      margin-top: 0.5em;
+    }
+    </style><body><div id="sk-container-id-4" tabindex="0" class="sk-top-container sk-global"><div class="sk-text-repr-fallback"><pre>Vector(components=[Trend(degree=4), Trend(degree=1)])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually sk-global" id="sk-estimator-id-4" type="checkbox" checked><label for="sk-estimator-id-4" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Vector</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
             <div class="estimator-table">
                 <details>
                     <summary>Parameters</summary>
@@ -796,7 +944,35 @@ different :class:`verde.Trend`.
                     </table>
                 </details>
             </div>
-        </div></div></div></div></div><script>function copyToClipboard(text, element) {
+    
+            <div class="estimator-table">
+                <details>
+                    <summary>Fitted attributes</summary>
+                    <table class="parameters-table">
+                        <tbody>
+                            <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Value</th>
+                            </tr>
+                        
+           <tr class="default">
+               <td class="param"><a class="param-doc-link" style="text-decoration:none;">region_</a></td>
+               <td class="fitted-att-type">tuple</td>
+               <td>(np.float64(-1...792.618612675), np.float64(-1...878.436857168), np.float64(3058625.116888402), np.float64(4142872.333601131))</td>
+
+
+           </tr>
+    
+                        </tbody>
+                    </table>
+                </details>
+            </div>
+        </div></div></div></div></div><script>/*  Authors: The scikit-learn developers
+     SPDX-License-Identifier: BSD-3-Clause
+    */
+
+    function copyToClipboard(text, element) {
         // Get the parameter prefix from the closest toggleable content
         const toggleableContent = element.closest('.sk-toggleable__content');
         const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
@@ -833,6 +1009,13 @@ different :class:`verde.Trend`.
     document.querySelectorAll('.copy-paste-icon').forEach(function(element) {
         const toggleableContent = element.closest('.sk-toggleable__content');
         const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+
+        const parent = element.parentElement;
+        if (!parent || !parent.nextElementSibling) {
+            console.warn('Expected copy-paste icon is missing from the DOM structure');
+            return;
+        }
+
         const paramName = element.parentElement.nextElementSibling
             .textContent.trim().split(' ')[0];
         const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
@@ -840,7 +1023,51 @@ different :class:`verde.Trend`.
         element.setAttribute('title', fullParamName);
     });
 
+    /**
+     * Copy the list of feature names formatted as a Python list.
+     *
+     * @param {HTMLElement} element - The copy button inside a `.features` block; its siblings
+     *   contain a `details` element and a table containing feature named.
+     * @returns {boolean} Always returns `false` so callers can prevent the default click behavior.
+     */
+    function copyFeatureNamesToClipboard(element) {
+        var detailsElem = element.closest('.features').querySelector('details');
+        var wasOpen = detailsElem.open;
+        detailsElem.open = true;
+        var content = element.closest('.features').querySelector('tbody')
+                      .innerText.trim();
+        if (!wasOpen) detailsElem.open = false;
+        const rows = content.split('\n').map(row => `    "${row}"`);
+        const formattedText = `[\n${rows.join(',\n')},\n]`;
+        const originalHTML = element.innerHTML.replace('✔', '');
+        const originalStyle = element.style;
+        const copyMark = document.createElement('span');
+        copyMark.innerHTML = '✔';
+        copyMark.style.color = 'blue';
+        copyMark.style.fontSize = '1em';
 
+        navigator.clipboard.writeText(formattedText)
+            .then(() => {
+                element.style.display = 'none';
+                element.parentElement.appendChild(copyMark);
+
+                setTimeout(() => {
+                    copyMark.remove();
+                    element.innerHTML = originalHTML;
+                    element.style = originalStyle;
+                }, 1000);
+            })
+            .catch(err => {
+                console.error('Failed to copy:', err);
+                element.style.color = 'orange';
+                element.innerHTML = "Failed!";
+                setTimeout(() => {
+                    element.innerHTML = originalHTML;
+                    element.style = originalStyle;
+                }, 1000);
+            });
+        return false;
+    }
     /**
      * Adapted from Skrub
      * https://github.com/skrub-data/skrub/blob/403466d1d5d4dc76a7ef569b3f8228db59a31dc3/skrub/_reporting/_data/templates/report.js#L789
@@ -938,10 +1165,10 @@ Each estimator can be accessed through the ``components`` attribute:
  .. code-block:: none
 
     [Trend(degree=4), Trend(degree=1)]
-    East trend coefficients: [-3.31743842e+03 -1.61368024e-03 -1.08568612e-03 -2.77735425e-10
-     -2.99424188e-10  7.38718818e-12 -2.03916793e-17 -2.68710016e-17
-      3.36222190e-18  2.00921241e-18 -5.43959103e-25 -7.79030546e-25
-      2.71546631e-25  2.44086928e-25  5.03611061e-26]
+    East trend coefficients: [-9.11465174e-02  5.27820493e-07  1.02586658e-06  8.36830309e-14
+      9.66696826e-14  2.89997368e-14  1.78927988e-21  1.97217807e-21
+      3.83086756e-20  1.53009302e-20 -4.97963782e-28 -2.39477158e-27
+     -6.91247315e-28  6.79683897e-27  1.29112728e-26]
     North trend coefficients: [-3.35415183e-01 -4.50275691e-08 -3.75590521e-08]
 
 
@@ -1018,7 +1245,7 @@ Let's make geographic grids of these trends.
       * latitude         (latitude) float64 392B 32.29 32.49 32.69 ... 41.7 41.9
       * longitude        (longitude) float64 376B 235.7 235.9 236.1 ... 244.8 245.0
     Data variables:
-        east_component   (latitude, longitude) float64 18kB -0.1983 ... 0.01365
+        east_component   (latitude, longitude) float64 18kB -0.146 ... 0.003051
         north_component  (latitude, longitude) float64 18kB 0.0541 ... -0.02427
     Attributes:
         metadata:  Generated by Vector(components=[Trend(degree=4), Trend(degree=...
@@ -1196,7 +1423,7 @@ before.
 
     /home/runner/work/verde/verde/doc/tutorials_src/vectors.py:252: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       print(chain.score(*test))
-    0.9926763528286442
+    0.9926763528276422
     <xarray.Dataset> Size: 38kB
     Dimensions:          (latitude: 49, longitude: 47)
     Coordinates:
@@ -1268,7 +1495,7 @@ functions can be used to achieve better interpolation results. The
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.075 seconds)
+   **Total running time of the script:** (0 minutes 1.051 seconds)
 
 
 .. _sphx_glr_download_tutorials_vectors.py:

@@ -150,4 +150,5 @@ and more!
     How to contribute <https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md>
     Code of Conduct <https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md>
     Source code on GitHub <https://github.com/fatiando/verde>
+    Authors <https://github.com/fatiando/verde/blob/main/AUTHORS.md>
     The Fatiando a Terra project <https://www.fatiando.org>

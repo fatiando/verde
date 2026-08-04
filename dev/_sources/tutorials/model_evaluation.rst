@@ -354,7 +354,7 @@ symbol.
 .. raw:: html
 
     <div class="output_subarea output_html rendered_html output_result">
-    <style>#sk-container-id-2 {
+    <style>.sk-global {
       /* Definition of color scheme common for light and dark mode */
       --sklearn-color-text: #000;
       --sklearn-color-text-muted: #666;
@@ -371,7 +371,7 @@ symbol.
       --sklearn-color-fitted-level-3: cornflowerblue;
     }
 
-    #sk-container-id-2.light {
+    .sk-global.light {
       /* Specific color for light theme */
       --sklearn-color-text-on-default-background: black;
       --sklearn-color-background: white;
@@ -379,25 +379,24 @@ symbol.
       --sklearn-color-icon: #696969;
     }
 
-    #sk-container-id-2.dark {
+    .sk-global.dark {
       --sklearn-color-text-on-default-background: white;
       --sklearn-color-background: #111;
       --sklearn-color-border-box: white;
       --sklearn-color-icon: #878787;
     }
 
-    #sk-container-id-2 {
+    .sk-global {
       color: var(--sklearn-color-text);
     }
 
-    #sk-container-id-2 pre {
+    .sk-global pre {
       padding: 0;
     }
 
-    #sk-container-id-2 input.sk-hidden--visually {
+    .sk-global input.sk-hidden--visually {
       border: 0;
-      clip: rect(1px 1px 1px 1px);
-      clip: rect(1px, 1px, 1px, 1px);
+      clip-path: inset(100%);
       height: 1px;
       margin: -1px;
       overflow: hidden;
@@ -406,7 +405,7 @@ symbol.
       width: 1px;
     }
 
-    #sk-container-id-2 div.sk-dashed-wrapped {
+    .sk-global div.sk-dashed-wrapped {
       border: 1px dashed var(--sklearn-color-line);
       margin: 0 0.4em 0.5em 0.4em;
       box-sizing: border-box;
@@ -414,7 +413,7 @@ symbol.
       background-color: var(--sklearn-color-background);
     }
 
-    #sk-container-id-2 div.sk-container {
+    .sk-global div.sk-container {
       /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
          but bootstrap.min.css set `[hidden] { display: none !important; }`
          so we also need the `!important` here to be able to override the
@@ -424,7 +423,7 @@ symbol.
       position: relative;
     }
 
-    #sk-container-id-2 div.sk-text-repr-fallback {
+    .sk-global div.sk-text-repr-fallback {
       display: none;
     }
 
@@ -440,14 +439,14 @@ symbol.
 
     /* Parallel-specific style estimator block */
 
-    #sk-container-id-2 div.sk-parallel-item::after {
+    .sk-global div.sk-parallel-item::after {
       content: "";
       width: 100%;
       border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
       flex-grow: 1;
     }
 
-    #sk-container-id-2 div.sk-parallel {
+    .sk-global div.sk-parallel {
       display: flex;
       align-items: stretch;
       justify-content: center;
@@ -455,28 +454,28 @@ symbol.
       position: relative;
     }
 
-    #sk-container-id-2 div.sk-parallel-item {
+    .sk-global div.sk-parallel-item {
       display: flex;
       flex-direction: column;
     }
 
-    #sk-container-id-2 div.sk-parallel-item:first-child::after {
+    .sk-global div.sk-parallel-item:first-child::after {
       align-self: flex-end;
       width: 50%;
     }
 
-    #sk-container-id-2 div.sk-parallel-item:last-child::after {
+    .sk-global div.sk-parallel-item:last-child::after {
       align-self: flex-start;
       width: 50%;
     }
 
-    #sk-container-id-2 div.sk-parallel-item:only-child::after {
+    .sk-global div.sk-parallel-item:only-child::after {
       width: 0;
     }
 
     /* Serial-specific style estimator block */
 
-    #sk-container-id-2 div.sk-serial {
+    .sk-global div.sk-serial {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -494,14 +493,14 @@ symbol.
 
     /* Pipeline and ColumnTransformer style (default) */
 
-    #sk-container-id-2 div.sk-toggleable {
+    .sk-global div.sk-toggleable {
       /* Default theme specific background. It is overwritten whether we have a
       specific estimator or a Pipeline/ColumnTransformer */
       background-color: var(--sklearn-color-background);
     }
 
     /* Toggleable label */
-    #sk-container-id-2 label.sk-toggleable__label {
+    .sk-global label.sk-toggleable__label {
       cursor: pointer;
       display: flex;
       width: 100%;
@@ -514,13 +513,13 @@ symbol.
       gap: 0.5em;
     }
 
-    #sk-container-id-2 label.sk-toggleable__label .caption {
+    .sk-global label.sk-toggleable__label .caption {
       font-size: 0.6rem;
       font-weight: lighter;
       color: var(--sklearn-color-text-muted);
     }
 
-    #sk-container-id-2 label.sk-toggleable__label-arrow:before {
+    .sk-global label.sk-toggleable__label-arrow:before {
       /* Arrow on the left of the label */
       content: "▸";
       float: left;
@@ -528,25 +527,25 @@ symbol.
       color: var(--sklearn-color-icon);
     }
 
-    #sk-container-id-2 label.sk-toggleable__label-arrow:hover:before {
+    .sk-global label.sk-toggleable__label-arrow:hover:before {
       color: var(--sklearn-color-text);
     }
 
     /* Toggleable content - dropdown */
 
-    #sk-container-id-2 div.sk-toggleable__content {
+    .sk-global div.sk-toggleable__content {
       display: none;
       text-align: left;
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-0);
     }
 
-    #sk-container-id-2 div.sk-toggleable__content.fitted {
+    .sk-global div.sk-toggleable__content.fitted {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-0);
     }
 
-    #sk-container-id-2 div.sk-toggleable__content pre {
+    .sk-global div.sk-toggleable__content pre {
       margin: 0.2em;
       border-radius: 0.25em;
       color: var(--sklearn-color-text);
@@ -554,78 +553,78 @@ symbol.
       background-color: var(--sklearn-color-unfitted-level-0);
     }
 
-    #sk-container-id-2 div.sk-toggleable__content.fitted pre {
+    .sk-global div.sk-toggleable__content.fitted pre {
       /* unfitted */
       background-color: var(--sklearn-color-fitted-level-0);
     }
 
-    #sk-container-id-2 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+    .sk-global input.sk-toggleable__control:checked~div.sk-toggleable__content {
       /* Expand drop-down */
       display: block;
       width: 100%;
       overflow: visible;
     }
 
-    #sk-container-id-2 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+    .sk-global input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
       content: "▾";
     }
 
     /* Pipeline/ColumnTransformer-specific style */
 
-    #sk-container-id-2 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+    .sk-global div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
       color: var(--sklearn-color-text);
       background-color: var(--sklearn-color-unfitted-level-2);
     }
 
-    #sk-container-id-2 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+    .sk-global div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
       background-color: var(--sklearn-color-fitted-level-2);
     }
 
     /* Estimator-specific style */
 
     /* Colorize estimator box */
-    #sk-container-id-2 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+    .sk-global div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-2);
     }
 
-    #sk-container-id-2 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+    .sk-global div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-2);
     }
 
-    #sk-container-id-2 div.sk-label label.sk-toggleable__label,
-    #sk-container-id-2 div.sk-label label {
+    .sk-global div.sk-label label.sk-toggleable__label,
+    .sk-global div.sk-label label {
       /* The background is the default theme color */
       color: var(--sklearn-color-text-on-default-background);
     }
 
     /* On hover, darken the color of the background */
-    #sk-container-id-2 div.sk-label:hover label.sk-toggleable__label {
+    .sk-global div.sk-label:hover label.sk-toggleable__label {
       color: var(--sklearn-color-text);
       background-color: var(--sklearn-color-unfitted-level-2);
     }
 
     /* Label box, darken color on hover, fitted */
-    #sk-container-id-2 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+    .sk-global div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
       color: var(--sklearn-color-text);
       background-color: var(--sklearn-color-fitted-level-2);
     }
 
     /* Estimator label */
 
-    #sk-container-id-2 div.sk-label label {
+    .sk-global div.sk-label label {
       font-family: monospace;
       font-weight: bold;
       line-height: 1.2em;
     }
 
-    #sk-container-id-2 div.sk-label-container {
+    .sk-global div.sk-label-container {
       text-align: center;
     }
 
     /* Estimator-specific */
-    #sk-container-id-2 div.sk-estimator {
+    .sk-global div.sk-estimator {
       font-family: monospace;
       border: 1px dotted var(--sklearn-color-border-box);
       border-radius: 0.25em;
@@ -635,18 +634,18 @@ symbol.
       background-color: var(--sklearn-color-unfitted-level-0);
     }
 
-    #sk-container-id-2 div.sk-estimator.fitted {
+    .sk-global div.sk-estimator.fitted {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-0);
     }
 
     /* on hover */
-    #sk-container-id-2 div.sk-estimator:hover {
+    .sk-global div.sk-estimator:hover {
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-2);
     }
 
-    #sk-container-id-2 div.sk-estimator.fitted:hover {
+    .sk-global div.sk-estimator.fitted:hover {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-2);
     }
@@ -737,7 +736,7 @@ symbol.
 
     /* "?"-specific style due to the `<a>` HTML tag */
 
-    #sk-container-id-2 a.estimator_doc_link {
+    .sk-global a.estimator_doc_link {
       float: right;
       font-size: 1rem;
       line-height: 1em;
@@ -752,7 +751,7 @@ symbol.
       border: var(--sklearn-color-unfitted-level-1) 1pt solid;
     }
 
-    #sk-container-id-2 a.estimator_doc_link.fitted {
+    .sk-global a.estimator_doc_link.fitted {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-0);
       border: var(--sklearn-color-fitted-level-1) 1pt solid;
@@ -760,16 +759,24 @@ symbol.
     }
 
     /* On hover */
-    #sk-container-id-2 a.estimator_doc_link:hover {
+    .sk-global a.estimator_doc_link:hover {
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-3);
       color: var(--sklearn-color-background);
       text-decoration: none;
     }
 
-    #sk-container-id-2 a.estimator_doc_link.fitted:hover {
+    .sk-global a.estimator_doc_link.fitted:hover {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-3);
+    }
+
+    .sk-top-container.sk-global {
+      /* pydata-sphinx-theme hides overflow, so scrolling is disabled.
+       We need to set it to !important and add tabindex="0" in the HTML
+       to allow keyboard-only users to navigate the display. */
+      overflow-x: scroll !important;
+      max-width: 100%;
     }
 
     .estimator-table {
@@ -805,11 +812,11 @@ symbol.
         background-color: #f6f6f6;
     }
 
-    .estimator-table .parameters-table tr:hover {
+    .estimator-table .parameters-table tr:hover td {
         background-color: #e0e0e0;
     }
 
-    .estimator-table table td {
+    .estimator-table table :is(td, th) {
         border: 1px solid rgba(106, 105, 104, 0.232);
     }
 
@@ -833,7 +840,7 @@ symbol.
         background-color: transparent;
     }
 
-    .default td {
+    .default td, .estimator-table th {
         color: black;
         text-align: left !important;
     }
@@ -841,6 +848,10 @@ symbol.
     .user-set td i,
     .default td i {
         color: black;
+    }
+
+    td.fitted-att-type {
+        white-space: preserve nowrap;
     }
 
     /*
@@ -855,6 +866,14 @@ symbol.
         color: inherit;
         display: block;
         padding: .5em;
+    }
+
+    @supports(anchor-name: --doc-link) {
+        a.param-doc-link,
+        a.param-doc-link:link,
+        a.param-doc-link:visited {
+        anchor-name: --doc-link;
+        }
     }
 
     /* "hack" to make the entire area of the cell containing the link clickable */
@@ -883,6 +902,14 @@ symbol.
         border: thin solid var(--sklearn-color-unfitted-level-3);
     }
 
+    @supports(position-area: center right) {
+        .param-doc-description {
+        position-area: center right;
+        position: fixed;
+        margin-left: 0;
+        }
+    }
+
     /* Fitted state for parameter tooltips */
     .fitted .param-doc-description {
         /* fitted */
@@ -904,7 +931,128 @@ symbol.
         height: 14px;
         cursor: pointer;
     }
-    </style><body><div id="sk-container-id-2" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Spline(mindist=0)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Spline</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+
+    .features {
+      font-family: monospace;
+      cursor: pointer;
+      background-color: var(--sklearn-color-unfitted-level-0);
+      border: 1px dotted var(--sklearn-color-border-box);
+      border-radius: .20em;
+      margin-bottom: 0.5em;
+      font-size: inherit; /* Needed for jupyter */
+    }
+
+    .features.fitted {
+      background-color: var(--sklearn-color-fitted-level-0);
+    }
+
+    .features summary {
+      cursor: pointer;
+      display: flex;
+      margin-bottom: 0;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5em;
+      padding: .25em;
+    }
+
+    .features details[open] > summary {
+      color: var(--sklearn-color-text);
+      background-color: var(--sklearn-color-unfitted-level-2);
+      border-radius: .20em 0 0 0;
+    }
+
+    .features.fitted details[open] > summary {
+      background-color: var(--sklearn-color-fitted-level-2);
+      border-radius: .20em 0 0 0;
+    }
+
+    .features details > summary .arrow::before {
+      content: "▸";
+      color: grey;
+    }
+
+    .features details[open] > summary .arrow::before {
+      content: "▾";
+    }
+
+    .features details:hover > summary {
+      margin: 0;
+      background-color: var(--sklearn-color-unfitted-level-2);
+    }
+
+    .features.fitted details:hover > summary {
+      margin: 0;
+      background-color: var(--sklearn-color-fitted-level-2);
+    }
+
+    .features .features-container {
+      max-width: 15em;
+      max-height: 10em;
+      overflow: auto;
+      scrollbar-width: thin;
+      padding: .25em 0.1rem;
+      background-color: var(--sklearn-color-unfitted-level-0);
+      border-radius: 0 0 .5em .5em;
+    }
+
+    .features.fitted .features-container {
+      background-color: var(--sklearn-color-fitted-level-0);
+    }
+
+    .features .image-container {
+      block-size: 1em;
+      inline-size: 1em;
+      padding: 0;
+      margin: 0%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .features .copy-paste-icon {
+      background-size: 1em 1em;
+      width: 1em;
+      height: 1em;
+      filter: grayscale(100%) opacity(60%);
+    }
+
+    .features .features-container table {
+      width: 100%;
+      margin: 0.01em;
+    }
+
+    .features .features-container table tr:nth-child(odd) {
+      background-color: #fff;
+    }
+
+    .features .features-container table tr:nth-child(even) {
+      background-color: #f6f6f6;
+    }
+
+    .features .features-container table tr:hover {
+      background-color: #e0e0e0;
+    }
+
+    .features .features-container table {
+      table-layout: inherit;
+    }
+
+    .features .features-container table td {
+      text-align: left;
+      padding: 0 0.5em;
+      border: 1px solid rgba(106, 105, 104, 0.232);
+      white-space: nowrap;
+      color: var(--sklearn-color-text);
+    }
+
+    .total_features {
+      display: flex;
+      justify-content: center;
+      margin-top: 0.5em;
+    }
+    </style><body><div id="sk-container-id-2" tabindex="0" class="sk-top-container sk-global"><div class="sk-text-repr-fallback"><pre>Spline(mindist=0)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually sk-global" id="sk-estimator-id-2" type="checkbox" checked><label for="sk-estimator-id-2" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Spline</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
             <div class="estimator-table">
                 <details>
                     <summary>Parameters</summary>
@@ -954,7 +1102,53 @@ symbol.
                     </table>
                 </details>
             </div>
-        </div></div></div></div></div><script>function copyToClipboard(text, element) {
+    
+            <div class="estimator-table">
+                <details>
+                    <summary>Fitted attributes</summary>
+                    <table class="parameters-table">
+                        <tbody>
+                            <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Value</th>
+                            </tr>
+                        
+           <tr class="default">
+               <td class="param"><a class="param-doc-link" style="text-decoration:none;">force_</a></td>
+               <td class="fitted-att-type">ndarray[float64](130,)</td>
+               <td>[ 0., 0., 0.,..., 0.,-0., 0.]</td>
+
+
+           </tr>
+    
+
+           <tr class="default">
+               <td class="param"><a class="param-doc-link" style="text-decoration:none;">force_coords_</a></td>
+               <td class="fitted-att-type">tuple</td>
+               <td>(array([ -9471...615.21391383]), array([265771...243.23756799]))</td>
+
+
+           </tr>
+    
+
+           <tr class="default">
+               <td class="param"><a class="param-doc-link" style="text-decoration:none;">region_</a></td>
+               <td class="fitted-att-type">tuple</td>
+               <td>(np.float64(-1...535.320915235), np.float64(-9038200.59940965), np.float64(2545954.590147878), np.float64(3667917.1194500993))</td>
+
+
+           </tr>
+    
+                        </tbody>
+                    </table>
+                </details>
+            </div>
+        </div></div></div></div></div><script>/*  Authors: The scikit-learn developers
+     SPDX-License-Identifier: BSD-3-Clause
+    */
+
+    function copyToClipboard(text, element) {
         // Get the parameter prefix from the closest toggleable content
         const toggleableContent = element.closest('.sk-toggleable__content');
         const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
@@ -991,6 +1185,13 @@ symbol.
     document.querySelectorAll('.copy-paste-icon').forEach(function(element) {
         const toggleableContent = element.closest('.sk-toggleable__content');
         const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+
+        const parent = element.parentElement;
+        if (!parent || !parent.nextElementSibling) {
+            console.warn('Expected copy-paste icon is missing from the DOM structure');
+            return;
+        }
+
         const paramName = element.parentElement.nextElementSibling
             .textContent.trim().split(' ')[0];
         const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
@@ -998,7 +1199,51 @@ symbol.
         element.setAttribute('title', fullParamName);
     });
 
+    /**
+     * Copy the list of feature names formatted as a Python list.
+     *
+     * @param {HTMLElement} element - The copy button inside a `.features` block; its siblings
+     *   contain a `details` element and a table containing feature named.
+     * @returns {boolean} Always returns `false` so callers can prevent the default click behavior.
+     */
+    function copyFeatureNamesToClipboard(element) {
+        var detailsElem = element.closest('.features').querySelector('details');
+        var wasOpen = detailsElem.open;
+        detailsElem.open = true;
+        var content = element.closest('.features').querySelector('tbody')
+                      .innerText.trim();
+        if (!wasOpen) detailsElem.open = false;
+        const rows = content.split('\n').map(row => `    "${row}"`);
+        const formattedText = `[\n${rows.join(',\n')},\n]`;
+        const originalHTML = element.innerHTML.replace('✔', '');
+        const originalStyle = element.style;
+        const copyMark = document.createElement('span');
+        copyMark.innerHTML = '✔';
+        copyMark.style.color = 'blue';
+        copyMark.style.fontSize = '1em';
 
+        navigator.clipboard.writeText(formattedText)
+            .then(() => {
+                element.style.display = 'none';
+                element.parentElement.appendChild(copyMark);
+
+                setTimeout(() => {
+                    copyMark.remove();
+                    element.innerHTML = originalHTML;
+                    element.style = originalStyle;
+                }, 1000);
+            })
+            .catch(err => {
+                console.error('Failed to copy:', err);
+                element.style.color = 'orange';
+                element.innerHTML = "Failed!";
+                setTimeout(() => {
+                    element.innerHTML = originalHTML;
+                    element.style = originalStyle;
+                }, 1000);
+            });
+        return false;
+    }
     /**
      * Adapted from Skrub
      * https://github.com/skrub-data/skrub/blob/403466d1d5d4dc76a7ef569b3f8228db59a31dc3/skrub/_reporting/_data/templates/report.js#L789
@@ -1106,7 +1351,7 @@ a geographic grid:
       * latitude     (latitude) float64 344B 25.91 26.16 26.41 ... 35.91 36.16 36.41
       * longitude    (longitude) float64 408B -106.4 -106.1 -105.9 ... -94.06 -93.8
     Data variables:
-        temperature  (latitude, longitude) float64 18kB 36.72 36.32 ... 4.568 4.711
+        temperature  (latitude, longitude) float64 18kB 36.46 36.07 ... 4.63 4.737
     Attributes:
         metadata:  Generated by Spline(mindist=0)
 
@@ -1186,7 +1431,7 @@ a perfect prediction, but has no lower bound.
 
     /home/runner/work/verde/verde/doc/tutorials_src/model_evaluation.py:144: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = spline.score(*test)
-    R² score: 0.8404552995855096
+    R² score: 0.8398947930426404
 
 
 
@@ -1224,7 +1469,7 @@ data that wasn't used in the gridding algorithm.
 
     /home/runner/work/verde/verde/doc/tutorials_src/model_evaluation.py:162: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       print("R² score with seed 1:", vd.Spline().fit(*train_other).score(*test_other))
-    R² score with seed 1: 0.7832246935464103
+    R² score with seed 1: 0.810538933997802
 
 
 
@@ -1258,28 +1503,28 @@ by default. It will split the data *k* times and return the score on each
 
  .. code-block:: none
 
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:131: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:131: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:131: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:131: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:131: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    k-fold scores: [0.81655898 0.72019255 0.81596348 0.87740087 0.75006854]
-    Mean score: 0.796036885708074
+    k-fold scores: [0.81199402 0.71835491 0.79767429 0.86616914 0.69914814]
+    Mean score: 0.7786680987672432
 
 
 
@@ -1312,49 +1557,49 @@ example, if we want to shuffle then split the data *n* times
 
  .. code-block:: none
 
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:131: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:131: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:131: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:131: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:131: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:131: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:131: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:131: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:131: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:131: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    shuffle scores: [0.8404553  0.79219264 0.60098099 0.73123421 0.67325199 0.70560489
-     0.68905623 0.83517217 0.86908658 0.84133251]
-    Mean score: 0.757836752126395
+    shuffle scores: [0.83989479 0.79364605 0.55072126 0.67171027 0.65571502 0.71161345
+     0.82506505 0.82970138 0.85958279 0.84168093]
+    Mean score: 0.7579330991177475
 
 
 
@@ -1389,9 +1634,9 @@ To run :func:`verde.cross_val_score` with Dask, use the ``delayed`` argument:
 
  .. code-block:: none
 
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:129: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/sklearn/base.py:131: FutureWarning: The mindist parameter of verde.Spline is no longer required and will be removed in Verde 2.0.0. Use the default value to obtain the future behavior.
       new_object = klass(**new_object_params)
-    Delayed k-fold scores: [Delayed('fit_score-7b9d14a9-465a-4777-98b0-b6c70ff35074'), Delayed('fit_score-fa41e896-6660-4cfa-b070-82d0ca801a48'), Delayed('fit_score-27edf3dc-5c56-4ac1-9a8a-dd3d4e36e517'), Delayed('fit_score-e91e4971-8636-4060-8b52-5d7713989ef4'), Delayed('fit_score-2d25b6e6-7326-490f-a1c3-1f80d68edbf6')]
+    Delayed k-fold scores: [Delayed('fit_score-a588d253-10d9-453c-9c9a-319da5483844'), Delayed('fit_score-f660e56f-0103-4579-b7b5-6a3ab8c497d7'), Delayed('fit_score-755224ec-59f7-4911-b5bf-3bca9f0780b0'), Delayed('fit_score-6ff1d4be-5a32-4441-8ce6-ede2f675ffa0'), Delayed('fit_score-7c77fd80-d619-415f-bb12-660e36496d28')]
 
 
 
@@ -1419,7 +1664,7 @@ are interested only in the mean score, we can schedule the mean as well using
 
  .. code-block:: none
 
-    Delayed mean: Delayed('mean-1bfb7189-e430-4d6e-9e75-b75e8040ecd2')
+    Delayed mean: Delayed('mean-463ba24e-0d72-48f3-b318-13e8c15cbc9d')
 
 
 
@@ -1454,7 +1699,9 @@ things in parallel.
       score = estimator.score(*test_data)
     /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
       score = estimator.score(*test_data)
-    Mean score: 0.796036885708074
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/model_selection.py:785: FutureWarning: The default scoring will change from R² to negative root mean squared error (RMSE) in Verde 2.0.0. This may change model selection results slightly.
+      score = estimator.score(*test_data)
+    Mean score: 0.7786680987672432
 
 
 
@@ -1481,7 +1728,7 @@ that.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.475 seconds)
+   **Total running time of the script:** (0 minutes 0.484 seconds)
 
 
 .. _sphx_glr_download_tutorials_model_evaluation.py:

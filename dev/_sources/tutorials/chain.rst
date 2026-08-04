@@ -130,7 +130,7 @@ polynomial trend, and then fits a standard gridder to the trend residuals.
  .. code-block:: none
 
     Chain(steps=[('reduce',
-                  BlockReduce(reduction=<function median at 0x7f0d36285730>,
+                  BlockReduce(reduction=<function median at 0x7fe8264cd4f0>,
                               spacing=18500.0)),
                  ('trend', Trend(degree=1)), ('spline', Spline(mindist=0))])
 
@@ -161,16 +161,16 @@ chain:
 
  .. code-block:: none
 
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:179: FutureWarning: The provided callable <function median at 0x7f0d36282d40> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:179: FutureWarning: The provided callable <function median at 0x7fe8264cb420> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
       blocked = pd.DataFrame(columns).groupby("block").aggregate(reduction)
-    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:236: FutureWarning: The provided callable <function median at 0x7f0d36282d40> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
+    /usr/share/miniconda/envs/test/lib/python3.12/site-packages/verde/blockreduce.py:236: FutureWarning: The provided callable <function median at 0x7fe8264cb420> is currently using DataFrameGroupBy.median. In a future version of pandas, the provided callable will be used directly. To keep current behavior pass the string "median" instead.
       grouped = table.groupby("block").aggregate(self.reduction)
 
 
 .. raw:: html
 
     <div class="output_subarea output_html rendered_html output_result">
-    <style>#sk-container-id-1 {
+    <style>.sk-global {
       /* Definition of color scheme common for light and dark mode */
       --sklearn-color-text: #000;
       --sklearn-color-text-muted: #666;
@@ -187,7 +187,7 @@ chain:
       --sklearn-color-fitted-level-3: cornflowerblue;
     }
 
-    #sk-container-id-1.light {
+    .sk-global.light {
       /* Specific color for light theme */
       --sklearn-color-text-on-default-background: black;
       --sklearn-color-background: white;
@@ -195,25 +195,24 @@ chain:
       --sklearn-color-icon: #696969;
     }
 
-    #sk-container-id-1.dark {
+    .sk-global.dark {
       --sklearn-color-text-on-default-background: white;
       --sklearn-color-background: #111;
       --sklearn-color-border-box: white;
       --sklearn-color-icon: #878787;
     }
 
-    #sk-container-id-1 {
+    .sk-global {
       color: var(--sklearn-color-text);
     }
 
-    #sk-container-id-1 pre {
+    .sk-global pre {
       padding: 0;
     }
 
-    #sk-container-id-1 input.sk-hidden--visually {
+    .sk-global input.sk-hidden--visually {
       border: 0;
-      clip: rect(1px 1px 1px 1px);
-      clip: rect(1px, 1px, 1px, 1px);
+      clip-path: inset(100%);
       height: 1px;
       margin: -1px;
       overflow: hidden;
@@ -222,7 +221,7 @@ chain:
       width: 1px;
     }
 
-    #sk-container-id-1 div.sk-dashed-wrapped {
+    .sk-global div.sk-dashed-wrapped {
       border: 1px dashed var(--sklearn-color-line);
       margin: 0 0.4em 0.5em 0.4em;
       box-sizing: border-box;
@@ -230,7 +229,7 @@ chain:
       background-color: var(--sklearn-color-background);
     }
 
-    #sk-container-id-1 div.sk-container {
+    .sk-global div.sk-container {
       /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
          but bootstrap.min.css set `[hidden] { display: none !important; }`
          so we also need the `!important` here to be able to override the
@@ -240,7 +239,7 @@ chain:
       position: relative;
     }
 
-    #sk-container-id-1 div.sk-text-repr-fallback {
+    .sk-global div.sk-text-repr-fallback {
       display: none;
     }
 
@@ -256,14 +255,14 @@ chain:
 
     /* Parallel-specific style estimator block */
 
-    #sk-container-id-1 div.sk-parallel-item::after {
+    .sk-global div.sk-parallel-item::after {
       content: "";
       width: 100%;
       border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
       flex-grow: 1;
     }
 
-    #sk-container-id-1 div.sk-parallel {
+    .sk-global div.sk-parallel {
       display: flex;
       align-items: stretch;
       justify-content: center;
@@ -271,28 +270,28 @@ chain:
       position: relative;
     }
 
-    #sk-container-id-1 div.sk-parallel-item {
+    .sk-global div.sk-parallel-item {
       display: flex;
       flex-direction: column;
     }
 
-    #sk-container-id-1 div.sk-parallel-item:first-child::after {
+    .sk-global div.sk-parallel-item:first-child::after {
       align-self: flex-end;
       width: 50%;
     }
 
-    #sk-container-id-1 div.sk-parallel-item:last-child::after {
+    .sk-global div.sk-parallel-item:last-child::after {
       align-self: flex-start;
       width: 50%;
     }
 
-    #sk-container-id-1 div.sk-parallel-item:only-child::after {
+    .sk-global div.sk-parallel-item:only-child::after {
       width: 0;
     }
 
     /* Serial-specific style estimator block */
 
-    #sk-container-id-1 div.sk-serial {
+    .sk-global div.sk-serial {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -310,14 +309,14 @@ chain:
 
     /* Pipeline and ColumnTransformer style (default) */
 
-    #sk-container-id-1 div.sk-toggleable {
+    .sk-global div.sk-toggleable {
       /* Default theme specific background. It is overwritten whether we have a
       specific estimator or a Pipeline/ColumnTransformer */
       background-color: var(--sklearn-color-background);
     }
 
     /* Toggleable label */
-    #sk-container-id-1 label.sk-toggleable__label {
+    .sk-global label.sk-toggleable__label {
       cursor: pointer;
       display: flex;
       width: 100%;
@@ -330,13 +329,13 @@ chain:
       gap: 0.5em;
     }
 
-    #sk-container-id-1 label.sk-toggleable__label .caption {
+    .sk-global label.sk-toggleable__label .caption {
       font-size: 0.6rem;
       font-weight: lighter;
       color: var(--sklearn-color-text-muted);
     }
 
-    #sk-container-id-1 label.sk-toggleable__label-arrow:before {
+    .sk-global label.sk-toggleable__label-arrow:before {
       /* Arrow on the left of the label */
       content: "▸";
       float: left;
@@ -344,25 +343,25 @@ chain:
       color: var(--sklearn-color-icon);
     }
 
-    #sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {
+    .sk-global label.sk-toggleable__label-arrow:hover:before {
       color: var(--sklearn-color-text);
     }
 
     /* Toggleable content - dropdown */
 
-    #sk-container-id-1 div.sk-toggleable__content {
+    .sk-global div.sk-toggleable__content {
       display: none;
       text-align: left;
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-0);
     }
 
-    #sk-container-id-1 div.sk-toggleable__content.fitted {
+    .sk-global div.sk-toggleable__content.fitted {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-0);
     }
 
-    #sk-container-id-1 div.sk-toggleable__content pre {
+    .sk-global div.sk-toggleable__content pre {
       margin: 0.2em;
       border-radius: 0.25em;
       color: var(--sklearn-color-text);
@@ -370,78 +369,78 @@ chain:
       background-color: var(--sklearn-color-unfitted-level-0);
     }
 
-    #sk-container-id-1 div.sk-toggleable__content.fitted pre {
+    .sk-global div.sk-toggleable__content.fitted pre {
       /* unfitted */
       background-color: var(--sklearn-color-fitted-level-0);
     }
 
-    #sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+    .sk-global input.sk-toggleable__control:checked~div.sk-toggleable__content {
       /* Expand drop-down */
       display: block;
       width: 100%;
       overflow: visible;
     }
 
-    #sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+    .sk-global input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
       content: "▾";
     }
 
     /* Pipeline/ColumnTransformer-specific style */
 
-    #sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+    .sk-global div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
       color: var(--sklearn-color-text);
       background-color: var(--sklearn-color-unfitted-level-2);
     }
 
-    #sk-container-id-1 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+    .sk-global div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
       background-color: var(--sklearn-color-fitted-level-2);
     }
 
     /* Estimator-specific style */
 
     /* Colorize estimator box */
-    #sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+    .sk-global div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-2);
     }
 
-    #sk-container-id-1 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+    .sk-global div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-2);
     }
 
-    #sk-container-id-1 div.sk-label label.sk-toggleable__label,
-    #sk-container-id-1 div.sk-label label {
+    .sk-global div.sk-label label.sk-toggleable__label,
+    .sk-global div.sk-label label {
       /* The background is the default theme color */
       color: var(--sklearn-color-text-on-default-background);
     }
 
     /* On hover, darken the color of the background */
-    #sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {
+    .sk-global div.sk-label:hover label.sk-toggleable__label {
       color: var(--sklearn-color-text);
       background-color: var(--sklearn-color-unfitted-level-2);
     }
 
     /* Label box, darken color on hover, fitted */
-    #sk-container-id-1 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+    .sk-global div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
       color: var(--sklearn-color-text);
       background-color: var(--sklearn-color-fitted-level-2);
     }
 
     /* Estimator label */
 
-    #sk-container-id-1 div.sk-label label {
+    .sk-global div.sk-label label {
       font-family: monospace;
       font-weight: bold;
       line-height: 1.2em;
     }
 
-    #sk-container-id-1 div.sk-label-container {
+    .sk-global div.sk-label-container {
       text-align: center;
     }
 
     /* Estimator-specific */
-    #sk-container-id-1 div.sk-estimator {
+    .sk-global div.sk-estimator {
       font-family: monospace;
       border: 1px dotted var(--sklearn-color-border-box);
       border-radius: 0.25em;
@@ -451,18 +450,18 @@ chain:
       background-color: var(--sklearn-color-unfitted-level-0);
     }
 
-    #sk-container-id-1 div.sk-estimator.fitted {
+    .sk-global div.sk-estimator.fitted {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-0);
     }
 
     /* on hover */
-    #sk-container-id-1 div.sk-estimator:hover {
+    .sk-global div.sk-estimator:hover {
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-2);
     }
 
-    #sk-container-id-1 div.sk-estimator.fitted:hover {
+    .sk-global div.sk-estimator.fitted:hover {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-2);
     }
@@ -553,7 +552,7 @@ chain:
 
     /* "?"-specific style due to the `<a>` HTML tag */
 
-    #sk-container-id-1 a.estimator_doc_link {
+    .sk-global a.estimator_doc_link {
       float: right;
       font-size: 1rem;
       line-height: 1em;
@@ -568,7 +567,7 @@ chain:
       border: var(--sklearn-color-unfitted-level-1) 1pt solid;
     }
 
-    #sk-container-id-1 a.estimator_doc_link.fitted {
+    .sk-global a.estimator_doc_link.fitted {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-0);
       border: var(--sklearn-color-fitted-level-1) 1pt solid;
@@ -576,16 +575,24 @@ chain:
     }
 
     /* On hover */
-    #sk-container-id-1 a.estimator_doc_link:hover {
+    .sk-global a.estimator_doc_link:hover {
       /* unfitted */
       background-color: var(--sklearn-color-unfitted-level-3);
       color: var(--sklearn-color-background);
       text-decoration: none;
     }
 
-    #sk-container-id-1 a.estimator_doc_link.fitted:hover {
+    .sk-global a.estimator_doc_link.fitted:hover {
       /* fitted */
       background-color: var(--sklearn-color-fitted-level-3);
+    }
+
+    .sk-top-container.sk-global {
+      /* pydata-sphinx-theme hides overflow, so scrolling is disabled.
+       We need to set it to !important and add tabindex="0" in the HTML
+       to allow keyboard-only users to navigate the display. */
+      overflow-x: scroll !important;
+      max-width: 100%;
     }
 
     .estimator-table {
@@ -621,11 +628,11 @@ chain:
         background-color: #f6f6f6;
     }
 
-    .estimator-table .parameters-table tr:hover {
+    .estimator-table .parameters-table tr:hover td {
         background-color: #e0e0e0;
     }
 
-    .estimator-table table td {
+    .estimator-table table :is(td, th) {
         border: 1px solid rgba(106, 105, 104, 0.232);
     }
 
@@ -649,7 +656,7 @@ chain:
         background-color: transparent;
     }
 
-    .default td {
+    .default td, .estimator-table th {
         color: black;
         text-align: left !important;
     }
@@ -657,6 +664,10 @@ chain:
     .user-set td i,
     .default td i {
         color: black;
+    }
+
+    td.fitted-att-type {
+        white-space: preserve nowrap;
     }
 
     /*
@@ -671,6 +682,14 @@ chain:
         color: inherit;
         display: block;
         padding: .5em;
+    }
+
+    @supports(anchor-name: --doc-link) {
+        a.param-doc-link,
+        a.param-doc-link:link,
+        a.param-doc-link:visited {
+        anchor-name: --doc-link;
+        }
     }
 
     /* "hack" to make the entire area of the cell containing the link clickable */
@@ -699,6 +718,14 @@ chain:
         border: thin solid var(--sklearn-color-unfitted-level-3);
     }
 
+    @supports(position-area: center right) {
+        .param-doc-description {
+        position-area: center right;
+        position: fixed;
+        margin-left: 0;
+        }
+    }
+
     /* Fitted state for parameter tooltips */
     .fitted .param-doc-description {
         /* fitted */
@@ -720,10 +747,131 @@ chain:
         height: 14px;
         cursor: pointer;
     }
-    </style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>Chain(steps=[(&#x27;reduce&#x27;,
-                  BlockReduce(reduction=&lt;function median at 0x7f0d36285730&gt;,
+
+    .features {
+      font-family: monospace;
+      cursor: pointer;
+      background-color: var(--sklearn-color-unfitted-level-0);
+      border: 1px dotted var(--sklearn-color-border-box);
+      border-radius: .20em;
+      margin-bottom: 0.5em;
+      font-size: inherit; /* Needed for jupyter */
+    }
+
+    .features.fitted {
+      background-color: var(--sklearn-color-fitted-level-0);
+    }
+
+    .features summary {
+      cursor: pointer;
+      display: flex;
+      margin-bottom: 0;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5em;
+      padding: .25em;
+    }
+
+    .features details[open] > summary {
+      color: var(--sklearn-color-text);
+      background-color: var(--sklearn-color-unfitted-level-2);
+      border-radius: .20em 0 0 0;
+    }
+
+    .features.fitted details[open] > summary {
+      background-color: var(--sklearn-color-fitted-level-2);
+      border-radius: .20em 0 0 0;
+    }
+
+    .features details > summary .arrow::before {
+      content: "▸";
+      color: grey;
+    }
+
+    .features details[open] > summary .arrow::before {
+      content: "▾";
+    }
+
+    .features details:hover > summary {
+      margin: 0;
+      background-color: var(--sklearn-color-unfitted-level-2);
+    }
+
+    .features.fitted details:hover > summary {
+      margin: 0;
+      background-color: var(--sklearn-color-fitted-level-2);
+    }
+
+    .features .features-container {
+      max-width: 15em;
+      max-height: 10em;
+      overflow: auto;
+      scrollbar-width: thin;
+      padding: .25em 0.1rem;
+      background-color: var(--sklearn-color-unfitted-level-0);
+      border-radius: 0 0 .5em .5em;
+    }
+
+    .features.fitted .features-container {
+      background-color: var(--sklearn-color-fitted-level-0);
+    }
+
+    .features .image-container {
+      block-size: 1em;
+      inline-size: 1em;
+      padding: 0;
+      margin: 0%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .features .copy-paste-icon {
+      background-size: 1em 1em;
+      width: 1em;
+      height: 1em;
+      filter: grayscale(100%) opacity(60%);
+    }
+
+    .features .features-container table {
+      width: 100%;
+      margin: 0.01em;
+    }
+
+    .features .features-container table tr:nth-child(odd) {
+      background-color: #fff;
+    }
+
+    .features .features-container table tr:nth-child(even) {
+      background-color: #f6f6f6;
+    }
+
+    .features .features-container table tr:hover {
+      background-color: #e0e0e0;
+    }
+
+    .features .features-container table {
+      table-layout: inherit;
+    }
+
+    .features .features-container table td {
+      text-align: left;
+      padding: 0 0.5em;
+      border: 1px solid rgba(106, 105, 104, 0.232);
+      white-space: nowrap;
+      color: var(--sklearn-color-text);
+    }
+
+    .total_features {
+      display: flex;
+      justify-content: center;
+      margin-top: 0.5em;
+    }
+    </style><body><div id="sk-container-id-1" tabindex="0" class="sk-top-container sk-global"><div class="sk-text-repr-fallback"><pre>Chain(steps=[(&#x27;reduce&#x27;,
+                  BlockReduce(reduction=&lt;function median at 0x7fe8264cd4f0&gt;,
                               spacing=18500.0)),
-                 (&#x27;trend&#x27;, Trend(degree=1)), (&#x27;spline&#x27;, Spline(mindist=0))])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Chain</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+                 (&#x27;trend&#x27;, Trend(degree=1)), (&#x27;spline&#x27;, Spline(mindist=0))])</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually sk-global" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>Chain</div></div><div><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
             <div class="estimator-table">
                 <details>
                     <summary>Parameters</summary>
@@ -743,7 +891,35 @@ chain:
                     </table>
                 </details>
             </div>
-        </div></div></div></div></div><script>function copyToClipboard(text, element) {
+    
+            <div class="estimator-table">
+                <details>
+                    <summary>Fitted attributes</summary>
+                    <table class="parameters-table">
+                        <tbody>
+                            <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Value</th>
+                            </tr>
+                        
+           <tr class="default">
+               <td class="param"><a class="param-doc-link" style="text-decoration:none;">region_</a></td>
+               <td class="fitted-att-type">tuple</td>
+               <td>(np.float64(-1...227.040186355), np.float64(-1...610.053881934), np.float64(2072920.371938575), np.float64(3195147.621465898))</td>
+
+
+           </tr>
+    
+                        </tbody>
+                    </table>
+                </details>
+            </div>
+        </div></div></div></div></div><script>/*  Authors: The scikit-learn developers
+     SPDX-License-Identifier: BSD-3-Clause
+    */
+
+    function copyToClipboard(text, element) {
         // Get the parameter prefix from the closest toggleable content
         const toggleableContent = element.closest('.sk-toggleable__content');
         const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
@@ -780,6 +956,13 @@ chain:
     document.querySelectorAll('.copy-paste-icon').forEach(function(element) {
         const toggleableContent = element.closest('.sk-toggleable__content');
         const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+
+        const parent = element.parentElement;
+        if (!parent || !parent.nextElementSibling) {
+            console.warn('Expected copy-paste icon is missing from the DOM structure');
+            return;
+        }
+
         const paramName = element.parentElement.nextElementSibling
             .textContent.trim().split(' ')[0];
         const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
@@ -787,7 +970,51 @@ chain:
         element.setAttribute('title', fullParamName);
     });
 
+    /**
+     * Copy the list of feature names formatted as a Python list.
+     *
+     * @param {HTMLElement} element - The copy button inside a `.features` block; its siblings
+     *   contain a `details` element and a table containing feature named.
+     * @returns {boolean} Always returns `false` so callers can prevent the default click behavior.
+     */
+    function copyFeatureNamesToClipboard(element) {
+        var detailsElem = element.closest('.features').querySelector('details');
+        var wasOpen = detailsElem.open;
+        detailsElem.open = true;
+        var content = element.closest('.features').querySelector('tbody')
+                      .innerText.trim();
+        if (!wasOpen) detailsElem.open = false;
+        const rows = content.split('\n').map(row => `    "${row}"`);
+        const formattedText = `[\n${rows.join(',\n')},\n]`;
+        const originalHTML = element.innerHTML.replace('✔', '');
+        const originalStyle = element.style;
+        const copyMark = document.createElement('span');
+        copyMark.innerHTML = '✔';
+        copyMark.style.color = 'blue';
+        copyMark.style.fontSize = '1em';
 
+        navigator.clipboard.writeText(formattedText)
+            .then(() => {
+                element.style.display = 'none';
+                element.parentElement.appendChild(copyMark);
+
+                setTimeout(() => {
+                    copyMark.remove();
+                    element.innerHTML = originalHTML;
+                    element.style = originalStyle;
+                }, 1000);
+            })
+            .catch(err => {
+                console.error('Failed to copy:', err);
+                element.style.color = 'orange';
+                element.innerHTML = "Failed!";
+                setTimeout(() => {
+                    element.innerHTML = originalHTML;
+                    element.style = originalStyle;
+                }, 1000);
+            });
+        return false;
+    }
     /**
      * Adapted from Skrub
      * https://github.com/skrub-data/skrub/blob/403466d1d5d4dc76a7ef569b3f8228db59a31dc3/skrub/_reporting/_data/templates/report.js#L789
@@ -1483,9 +1710,9 @@ procedure that should be familiar to the geodesists among us.
       * latitude    (latitude) float64 488B 20.0 20.17 20.33 ... 29.66 29.82 29.99
       * longitude   (longitude) float64 472B 245.0 245.2 245.3 ... 254.4 254.5 254.7
     Data variables:
-        bathymetry  (latitude, longitude) float64 29kB -3.621e+03 -3.709e+03 ... nan
+        bathymetry  (latitude, longitude) float64 29kB -3.79e+03 -3.847e+03 ... nan
     Attributes:
-        metadata:  Generated by Chain(steps=[(&#x27;reduce&#x27;,\n              BlockReduc...</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-7dca58c1-27f9-4866-b037-c29b50eb34f8' class='xr-section-summary-in' type='checkbox' disabled /><label for='section-7dca58c1-27f9-4866-b037-c29b50eb34f8' class='xr-section-summary'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>latitude</span>: 61</li><li><span class='xr-has-index'>longitude</span>: 59</li></ul></div></li><li class='xr-section-item'><input id='section-26c3c9b3-d153-4d06-beec-c71919dde692' class='xr-section-summary-in' type='checkbox' checked /><label for='section-26c3c9b3-d153-4d06-beec-c71919dde692' class='xr-section-summary' title='Expand/collapse section'>Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>latitude</span></div><div class='xr-var-dims'>(latitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>20.0 20.17 20.33 ... 29.82 29.99</div><input id='attrs-979697b8-8426-4033-94ff-75410b99178d' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-979697b8-8426-4033-94ff-75410b99178d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-b3050437-595f-44f4-aa53-4f7c2eba560f' class='xr-var-data-in' type='checkbox'><label for='data-b3050437-595f-44f4-aa53-4f7c2eba560f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([20.      , 20.166522, 20.333044, 20.499565, 20.666087, 20.832609,
+        metadata:  Generated by Chain(steps=[(&#x27;reduce&#x27;,\n              BlockReduc...</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-c09246be-5a64-41c1-83ee-5552296bd6ef' class='xr-section-summary-in' type='checkbox' disabled /><label for='section-c09246be-5a64-41c1-83ee-5552296bd6ef' class='xr-section-summary'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>latitude</span>: 61</li><li><span class='xr-has-index'>longitude</span>: 59</li></ul></div></li><li class='xr-section-item'><input id='section-5e35e59b-f8cb-45f0-b00d-38f9e9b29a90' class='xr-section-summary-in' type='checkbox' checked /><label for='section-5e35e59b-f8cb-45f0-b00d-38f9e9b29a90' class='xr-section-summary' title='Expand/collapse section'>Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>latitude</span></div><div class='xr-var-dims'>(latitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>20.0 20.17 20.33 ... 29.82 29.99</div><input id='attrs-6f90c6bc-ba22-4945-9061-c7c3c846067f' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-6f90c6bc-ba22-4945-9061-c7c3c846067f' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-9f175b25-072f-4544-80e7-e6aa2c4d0ba5' class='xr-var-data-in' type='checkbox'><label for='data-9f175b25-072f-4544-80e7-e6aa2c4d0ba5' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([20.      , 20.166522, 20.333044, 20.499565, 20.666087, 20.832609,
            20.999131, 21.165653, 21.332175, 21.498697, 21.665218, 21.83174 ,
            21.998262, 22.164784, 22.331306, 22.497827, 22.664349, 22.830871,
            22.997393, 23.163915, 23.330437, 23.496958, 23.66348 , 23.830002,
@@ -1495,7 +1722,7 @@ procedure that should be familiar to the geodesists among us.
            26.993917, 27.160439, 27.326961, 27.493482, 27.660004, 27.826526,
            27.993048, 28.15957 , 28.326092, 28.492613, 28.659135, 28.825657,
            28.992179, 29.158701, 29.325223, 29.491744, 29.658266, 29.824788,
-           29.99131 ])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>longitude</span></div><div class='xr-var-dims'>(longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>245.0 245.2 245.3 ... 254.5 254.7</div><input id='attrs-93d59e0f-eb7a-48c1-9179-e2df5fecda8f' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-93d59e0f-eb7a-48c1-9179-e2df5fecda8f' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-fba2e917-3e15-4523-afeb-cc085eb05914' class='xr-var-data-in' type='checkbox'><label for='data-fba2e917-3e15-4523-afeb-cc085eb05914' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([245.      , 245.167328, 245.334655, 245.501983, 245.66931 , 245.836638,
+           29.99131 ])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>longitude</span></div><div class='xr-var-dims'>(longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>245.0 245.2 245.3 ... 254.5 254.7</div><input id='attrs-ba257d3c-16c0-4c87-b161-87df44aa381a' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-ba257d3c-16c0-4c87-b161-87df44aa381a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-52c1d5f8-0c1c-44c5-87b2-dd2040a19888' class='xr-var-data-in' type='checkbox'><label for='data-52c1d5f8-0c1c-44c5-87b2-dd2040a19888' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([245.      , 245.167328, 245.334655, 245.501983, 245.66931 , 245.836638,
            246.003966, 246.171293, 246.338621, 246.505948, 246.673276, 246.840603,
            247.007931, 247.175259, 247.342586, 247.509914, 247.677241, 247.844569,
            248.011897, 248.179224, 248.346552, 248.513879, 248.681207, 248.848534,
@@ -1504,23 +1731,23 @@ procedure that should be familiar to the geodesists among us.
            251.023793, 251.191121, 251.358448, 251.525776, 251.693103, 251.860431,
            252.027759, 252.195086, 252.362414, 252.529741, 252.697069, 252.864397,
            253.031724, 253.199052, 253.366379, 253.533707, 253.701034, 253.868362,
-           254.03569 , 254.203017, 254.370345, 254.537672, 254.705   ])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-76a29709-6e0e-4921-ba56-82cf9e787b94' class='xr-section-summary-in' type='checkbox' checked /><label for='section-76a29709-6e0e-4921-ba56-82cf9e787b94' class='xr-section-summary' title='Expand/collapse section'>Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>bathymetry</span></div><div class='xr-var-dims'>(latitude, longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-3.621e+03 -3.709e+03 ... nan nan</div><input id='attrs-b1118775-8cf6-4074-8d3d-d65cc268f3cb' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-b1118775-8cf6-4074-8d3d-d65cc268f3cb' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-8ee1e4dc-6e8a-4f9c-b6d6-8f3539fb4d33' class='xr-var-data-in' type='checkbox'><label for='data-8ee1e4dc-6e8a-4f9c-b6d6-8f3539fb4d33' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Chain(steps=[(&#x27;reduce&#x27;,
-                  BlockReduce(reduction=&lt;function median at 0x7f0d36285730&gt;,
+           254.03569 , 254.203017, 254.370345, 254.537672, 254.705   ])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-840b7803-0729-4afd-85aa-bc08920179cf' class='xr-section-summary-in' type='checkbox' checked /><label for='section-840b7803-0729-4afd-85aa-bc08920179cf' class='xr-section-summary' title='Expand/collapse section'>Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>bathymetry</span></div><div class='xr-var-dims'>(latitude, longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-3.79e+03 -3.847e+03 ... nan nan</div><input id='attrs-1e4a7997-d256-414a-a446-92a8af102f44' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-1e4a7997-d256-414a-a446-92a8af102f44' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-a574f7ef-d669-4e56-bbdb-2d1e146193cd' class='xr-var-data-in' type='checkbox'><label for='data-a574f7ef-d669-4e56-bbdb-2d1e146193cd' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Chain(steps=[(&#x27;reduce&#x27;,
+                  BlockReduce(reduction=&lt;function median at 0x7fe8264cd4f0&gt;,
                               spacing=18500.0)),
-                 (&#x27;trend&#x27;, Trend(degree=1)), (&#x27;spline&#x27;, Spline(mindist=0))])</dd></dl></div><div class='xr-var-data'><pre>array([[-3620.55694118, -3708.83531399, -3770.71865008, ...,
-             -382.20217909,    76.30770964,            nan],
-           [-3685.62921311, -3781.66923417,            nan, ...,
-             -109.13716685,            nan,            nan],
-           [-3649.29234512, -3814.40699563,            nan, ...,
-             -584.59173034,            nan,            nan],
+                 (&#x27;trend&#x27;, Trend(degree=1)), (&#x27;spline&#x27;, Spline(mindist=0))])</dd></dl></div><div class='xr-var-data'><pre>array([[-3789.99738434, -3846.73345539, -3873.06438994, ...,
+             -658.46729518,  -231.54320791,            nan],
+           [-3675.73972926, -3736.82099723,            nan, ...,
+             -664.15818664,            nan,            nan],
+           [-3533.4636412 , -3601.08577514,            nan, ...,
+             -660.7800534 ,            nan,            nan],
            ...,
            [           nan,            nan,            nan, ...,
                        nan,            nan,            nan],
            [           nan,            nan,            nan, ...,
                        nan,            nan,            nan],
            [           nan,            nan,            nan, ...,
-                       nan,            nan,            nan]], shape=(61, 59))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-357b9252-cc0c-463d-834d-ec223fa789c5' class='xr-section-summary-in' type='checkbox' checked /><label for='section-357b9252-cc0c-463d-834d-ec223fa789c5' class='xr-section-summary' title='Expand/collapse section'>Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Chain(steps=[(&#x27;reduce&#x27;,
-                  BlockReduce(reduction=&lt;function median at 0x7f0d36285730&gt;,
+                       nan,            nan,            nan]], shape=(61, 59))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-1e0f4bd0-cdd8-4cdb-9191-10144c7cbaf6' class='xr-section-summary-in' type='checkbox' checked /><label for='section-1e0f4bd0-cdd8-4cdb-9191-10144c7cbaf6' class='xr-section-summary' title='Expand/collapse section'>Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Chain(steps=[(&#x27;reduce&#x27;,
+                  BlockReduce(reduction=&lt;function median at 0x7fe8264cd4f0&gt;,
                               spacing=18500.0)),
                  (&#x27;trend&#x27;, Trend(degree=1)), (&#x27;spline&#x27;, Spline(mindist=0))])</dd></dl></div></li></ul></div></div>
     </div>
@@ -2171,7 +2398,7 @@ estimated trend:
     Data variables:
         bathymetry  (latitude, longitude) float64 29kB -4.911e+03 -4.864e+03 ... nan
     Attributes:
-        metadata:  Generated by Trend(degree=1)</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-42352177-7e17-4d44-a914-28476dfa832f' class='xr-section-summary-in' type='checkbox' disabled /><label for='section-42352177-7e17-4d44-a914-28476dfa832f' class='xr-section-summary'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>latitude</span>: 61</li><li><span class='xr-has-index'>longitude</span>: 59</li></ul></div></li><li class='xr-section-item'><input id='section-46d8ca5d-904a-4695-a163-4362e3e5e852' class='xr-section-summary-in' type='checkbox' checked /><label for='section-46d8ca5d-904a-4695-a163-4362e3e5e852' class='xr-section-summary' title='Expand/collapse section'>Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>latitude</span></div><div class='xr-var-dims'>(latitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>20.0 20.17 20.33 ... 29.82 29.99</div><input id='attrs-2eaf359b-8541-4ca4-ae1e-c4a736b4e011' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-2eaf359b-8541-4ca4-ae1e-c4a736b4e011' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-dce458d4-9168-4559-bdda-f13588e58ab4' class='xr-var-data-in' type='checkbox'><label for='data-dce458d4-9168-4559-bdda-f13588e58ab4' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([20.      , 20.166522, 20.333044, 20.499565, 20.666087, 20.832609,
+        metadata:  Generated by Trend(degree=1)</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-f64bb1be-51cc-4770-a3dc-1ee457899a72' class='xr-section-summary-in' type='checkbox' disabled /><label for='section-f64bb1be-51cc-4770-a3dc-1ee457899a72' class='xr-section-summary'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>latitude</span>: 61</li><li><span class='xr-has-index'>longitude</span>: 59</li></ul></div></li><li class='xr-section-item'><input id='section-f63a2ca2-7b37-4df0-b6ef-02fb48dc8fac' class='xr-section-summary-in' type='checkbox' checked /><label for='section-f63a2ca2-7b37-4df0-b6ef-02fb48dc8fac' class='xr-section-summary' title='Expand/collapse section'>Coordinates: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>latitude</span></div><div class='xr-var-dims'>(latitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>20.0 20.17 20.33 ... 29.82 29.99</div><input id='attrs-64868e72-cd91-45d7-a8cb-c39338997681' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-64868e72-cd91-45d7-a8cb-c39338997681' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-cf2912f8-5ac8-4644-a22a-cdb5901e9c96' class='xr-var-data-in' type='checkbox'><label for='data-cf2912f8-5ac8-4644-a22a-cdb5901e9c96' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([20.      , 20.166522, 20.333044, 20.499565, 20.666087, 20.832609,
            20.999131, 21.165653, 21.332175, 21.498697, 21.665218, 21.83174 ,
            21.998262, 22.164784, 22.331306, 22.497827, 22.664349, 22.830871,
            22.997393, 23.163915, 23.330437, 23.496958, 23.66348 , 23.830002,
@@ -2181,7 +2408,7 @@ estimated trend:
            26.993917, 27.160439, 27.326961, 27.493482, 27.660004, 27.826526,
            27.993048, 28.15957 , 28.326092, 28.492613, 28.659135, 28.825657,
            28.992179, 29.158701, 29.325223, 29.491744, 29.658266, 29.824788,
-           29.99131 ])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>longitude</span></div><div class='xr-var-dims'>(longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>245.0 245.2 245.3 ... 254.5 254.7</div><input id='attrs-35d54c8b-cc87-40be-aec4-9c1c6f264689' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-35d54c8b-cc87-40be-aec4-9c1c6f264689' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-13d27044-e892-4ba7-b1c2-be8445e4665c' class='xr-var-data-in' type='checkbox'><label for='data-13d27044-e892-4ba7-b1c2-be8445e4665c' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([245.      , 245.167328, 245.334655, 245.501983, 245.66931 , 245.836638,
+           29.99131 ])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>longitude</span></div><div class='xr-var-dims'>(longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>245.0 245.2 245.3 ... 254.5 254.7</div><input id='attrs-ee7729a1-2a0c-46b7-9fcd-8b3ed0beaf4a' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-ee7729a1-2a0c-46b7-9fcd-8b3ed0beaf4a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-080ba774-0566-4852-bcd7-89f5766c63f0' class='xr-var-data-in' type='checkbox'><label for='data-080ba774-0566-4852-bcd7-89f5766c63f0' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([245.      , 245.167328, 245.334655, 245.501983, 245.66931 , 245.836638,
            246.003966, 246.171293, 246.338621, 246.505948, 246.673276, 246.840603,
            247.007931, 247.175259, 247.342586, 247.509914, 247.677241, 247.844569,
            248.011897, 248.179224, 248.346552, 248.513879, 248.681207, 248.848534,
@@ -2190,7 +2417,7 @@ estimated trend:
            251.023793, 251.191121, 251.358448, 251.525776, 251.693103, 251.860431,
            252.027759, 252.195086, 252.362414, 252.529741, 252.697069, 252.864397,
            253.031724, 253.199052, 253.366379, 253.533707, 253.701034, 253.868362,
-           254.03569 , 254.203017, 254.370345, 254.537672, 254.705   ])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-ef59d3f5-75be-4556-b07b-3e1cae43b2e7' class='xr-section-summary-in' type='checkbox' checked /><label for='section-ef59d3f5-75be-4556-b07b-3e1cae43b2e7' class='xr-section-summary' title='Expand/collapse section'>Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>bathymetry</span></div><div class='xr-var-dims'>(latitude, longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-4.911e+03 -4.864e+03 ... nan nan</div><input id='attrs-867a6cea-57b7-4997-8b62-df94e03044ee' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-867a6cea-57b7-4997-8b62-df94e03044ee' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-287e2ad5-df1b-4392-bd82-7276bde29121' class='xr-var-data-in' type='checkbox'><label for='data-287e2ad5-df1b-4392-bd82-7276bde29121' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Trend(degree=1)</dd></dl></div><div class='xr-var-data'><pre>array([[-4910.61091961, -4864.15471186, -4817.6985041 , ...,
+           254.03569 , 254.203017, 254.370345, 254.537672, 254.705   ])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-297771b5-aea4-4199-833b-7b4cbeb41c7b' class='xr-section-summary-in' type='checkbox' checked /><label for='section-297771b5-aea4-4199-833b-7b4cbeb41c7b' class='xr-section-summary' title='Expand/collapse section'>Data variables: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>bathymetry</span></div><div class='xr-var-dims'>(latitude, longitude)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>-4.911e+03 -4.864e+03 ... nan nan</div><input id='attrs-6d28c6fd-6ae1-4c7e-815c-befa7f7dbc56' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-6d28c6fd-6ae1-4c7e-815c-befa7f7dbc56' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-eedd8e09-a9b9-4302-91b3-1052a8251e33' class='xr-var-data-in' type='checkbox'><label for='data-eedd8e09-a9b9-4302-91b3-1052a8251e33' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Trend(degree=1)</dd></dl></div><div class='xr-var-data'><pre>array([[-4910.61091961, -4864.15471186, -4817.6985041 , ...,
             -2309.06328524, -2262.60707748,            nan],
            [-4838.72028329, -4792.26407553,            nan, ...,
             -2237.17264891,            nan,            nan],
@@ -2202,7 +2429,7 @@ estimated trend:
            [           nan,            nan,            nan, ...,
                        nan,            nan,            nan],
            [           nan,            nan,            nan, ...,
-                       nan,            nan,            nan]], shape=(61, 59))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-123067ac-3591-4242-930b-5f9de53486ad' class='xr-section-summary-in' type='checkbox' checked /><label for='section-123067ac-3591-4242-930b-5f9de53486ad' class='xr-section-summary' title='Expand/collapse section'>Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Trend(degree=1)</dd></dl></div></li></ul></div></div>
+                       nan,            nan,            nan]], shape=(61, 59))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-e1eb86c0-ec20-402d-a61b-20b6ca414c9c' class='xr-section-summary-in' type='checkbox' checked /><label for='section-e1eb86c0-ec20-402d-a61b-20b6ca414c9c' class='xr-section-summary' title='Expand/collapse section'>Attributes: <span>(1)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>metadata :</span></dt><dd>Generated by Trend(degree=1)</dd></dl></div></li></ul></div></div>
     </div>
     <br />
     <br />
@@ -2237,7 +2464,7 @@ estimated trend:
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.600 seconds)
+   **Total running time of the script:** (0 minutes 3.555 seconds)
 
 
 .. _sphx_glr_download_tutorials_chain.py:

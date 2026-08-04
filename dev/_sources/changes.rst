@@ -6,7 +6,7 @@ Changelog
 Version 1.9.0
 -------------
 
-Released on: 2023/06/19
+Released on: 2026/03/19
 
 DOI: https://doi.org/10.5281/zenodo.19052803
 
