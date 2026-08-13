@@ -467,3 +467,37 @@ def test_least_squares_copy_jacobian():
     npt.assert_allclose(jacobian, original_jacobian)
     least_squares(jacobian, data, weights=None)
     assert not np.allclose(jacobian, original_jacobian)
+
+
+def test_least_squares_undamped_full_precision():
+    """
+    Undamped least-squares must recover the full-precision solution.
+
+    Regression test for #558: since scikit-learn 1.9, LinearRegression.fit
+    passes its ``tol`` (default 1e-6) as ``cond`` to scipy.linalg.lstsq, which
+    truncates small singular values and silently degrades the fit for the
+    ill-conditioned Jacobians produced by Spline. For a full-rank square
+    system, the undamped fit must reproduce the data to near machine precision.
+    """
+    rng = np.random.default_rng(42)
+    n_params = 25
+    left = np.linalg.qr(rng.standard_normal((n_params, n_params)))[0]
+    right = np.linalg.qr(rng.standard_normal((n_params, n_params)))[0]
+    # Ill-conditioned but full-rank: singular values spanning 1 down to 1e-8.
+    jacobian = (left * np.logspace(0, -8, n_params)) @ right.T
+    true_params = rng.standard_normal(n_params)
+    data = jacobian @ true_params
+    params = least_squares(jacobian.copy(), data, weights=None)
+    npt.assert_allclose(jacobian @ params, data, atol=1e-10)
+
+
+def test_least_squares_undamped_weights():
+    """
+    Undamped least-squares with uniform weights matches the unweighted fit.
+    """
+    rng = np.random.default_rng(0)
+    jacobian = rng.standard_normal((30, 5))
+    data = rng.standard_normal(30)
+    unweighted = least_squares(jacobian.copy(), data, weights=None)
+    weighted = least_squares(jacobian.copy(), data, weights=np.ones(30))
+    npt.assert_allclose(weighted, unweighted)
