@@ -40,10 +40,8 @@ check-style:
 	flake8 $(CHECK_STYLE)
 
 clean:
-	find . -name "*.pyc" -exec rm -v {} \;
 	find . -name ".coverage.*" -exec rm -v {} \;
 	find . -name "*.orig" -exec rm -v {} \;
-	find . -name "__pycache__" -exec rm -v {} \;
-	rm src/$(PROJECT)/_version.py
-	rm -rvf build dist MANIFEST *.egg-info __pycache__ .coverage .cache .pytest_cache
-	rm -rvf dask-worker-space
+	find . -depth -name "__pycache__" -exec rm -v {} \;
+	find . -depth -name "*.egg-info " -exec rm -v {} \;
+	rm -rvf build dist MANIFEST .coverage .cache .pytest_cache src/$(PROJECT)/_version.py
