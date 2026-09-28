@@ -68,6 +68,10 @@ Please read our
 [Contributing Guide](https://github.com/fatiando/verde/blob/main/CONTRIBUTING.md)
 to see how you can help and give feedback.
 
+🤖 **Policy on AI usage:**
+Please read our
+[AI Usage Policy](https://github.com/fatiando/community/blob/main/AI.md).
+
 🧑🏾‍🤝‍🧑🏼 **Code of conduct:**
 This project is released with a
 [Code of Conduct](https://github.com/fatiando/community/blob/main/CODE_OF_CONDUCT.md).
