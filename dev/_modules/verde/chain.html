@@ -276,6 +276,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -433,9 +434,9 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">Class for chaining gridders.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_is_fitted</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseGridder</span>
@@ -446,7 +447,7 @@ document.write(`
 <div class="viewcode-block" id="Chain">
 <a class="viewcode-back" href="../../api/generated/verde.Chain.html#verde.Chain">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Chain</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Chain filtering operations to fit on each subsequent output.</span>
 
 <span class="sd">    The :meth:`~verde.base.BaseGridder.filter` method of each element of the</span>
@@ -455,7 +456,7 @@ document.write(`
 <span class="sd">    minus predicted data) of the previous one.</span>
 
 <span class="sd">    When predicting data, the predictions of each step in the chain are added</span>
-<span class="sd">    together. Steps that don&#39;t implement a</span>
+<span class="sd">    together. Steps that don't implement a</span>
 <span class="sd">    :meth:`~verde.base.BaseGridder.predict` method are ignored.</span>
 
 <span class="sd">    This provides a convenient way to chaining operations like trend estimation</span>
@@ -464,7 +465,7 @@ document.write(`
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    steps : list</span>
-<span class="sd">        A list of ``(&#39;name&#39;, step)`` pairs where ``step`` is any verde</span>
+<span class="sd">        A list of ``('name', step)`` pairs where ``step`` is any verde</span>
 <span class="sd">        class that implements a ``filter(coordinates, data, weights)`` method</span>
 <span class="sd">        (including ``Chain`` itself).</span>
 
@@ -475,14 +476,14 @@ document.write(`
 <span class="sd">        Used as the default region for the :meth:`~verde.Chain.grid` and</span>
 <span class="sd">        :meth:`~verde.Chain.scatter` methods.</span>
 <span class="sd">    named_steps : dict</span>
-<span class="sd">        A dictionary version of *steps* where the ``&#39;name&#39;``  strings are keys</span>
+<span class="sd">        A dictionary version of *steps* where the ``'name'``  strings are keys</span>
 <span class="sd">        and the estimator/gridder/processor objects are the values.</span>
 
 <span class="sd">    See also</span>
 <span class="sd">    --------</span>
 <span class="sd">    verde.Vector : Fit an estimator to each component of vector data</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -490,15 +491,15 @@ document.write(`
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">named_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        A dictionary version of steps.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Chain.fit">
 <a class="viewcode-back" href="../../api/generated/verde.Chain.html#verde.Chain.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Fit the chained estimators to the given data.</span>
 
 <span class="sd">        Each estimator in the chain is fitted to the residuals of the previous</span>
@@ -529,7 +530,7 @@ document.write(`
 <span class="sd">        self</span>
 <span class="sd">            Returns this estimator instance for chaining operations.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">region_</span> <span class="o">=</span> <span class="n">get_region</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
         <span class="n">args</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">step</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">:</span>
@@ -540,11 +541,11 @@ document.write(`
 <div class="viewcode-block" id="Chain.predict">
 <a class="viewcode-back" href="../../api/generated/verde.Chain.html#verde.Chain.predict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Evaluates the data predicted by the chain on the given set of points.</span>
 
 <span class="sd">        Predictions from each step in the chain are added together. Any step</span>
-<span class="sd">        that doesn&#39;t implement a ``predict`` method is ignored.</span>
+<span class="sd">        that doesn't implement a ``predict`` method is ignored.</span>
 
 <span class="sd">        Requires a fitted gridder (see :meth:`~verde.Chain.fit`).</span>
 
@@ -559,11 +560,11 @@ document.write(`
 <span class="sd">        data : array</span>
 <span class="sd">            The data values predicted on the given points.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;region_&quot;</span><span class="p">])</span>
+<span class="sd">        """</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">"region_"</span><span class="p">])</span>
         <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">step</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="s2">&quot;predict&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="s2">"predict"</span><span class="p">):</span>
                 <span class="n">predicted</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">predicted</span><span class="p">))]</span>
@@ -617,7 +618,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>

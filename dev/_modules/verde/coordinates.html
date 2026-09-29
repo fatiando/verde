@@ -276,6 +276,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -433,9 +434,9 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">Functions for generating and manipulating coordinates.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -446,7 +447,7 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">check_region</span><span class="p">(</span><span class="n">region</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Check that the given region dimensions are valid.</span>
 
 <span class="sd">    For example, the west limit should not be greater than the east and there</span>
@@ -461,28 +462,28 @@ document.write(`
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
 <span class="sd">    ValueError</span>
-<span class="sd">        If the region doesn&#39;t have exactly 4 entries, W &gt; E, or S &gt; N.</span>
+<span class="sd">        If the region doesn't have exactly 4 entries, W &gt; E, or S &gt; N.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">region</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid region &#39;</span><span class="si">{}</span><span class="s2">&#39;. Only 4 values allowed.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">region</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Invalid region '</span><span class="si">{}</span><span class="s2">'. Only 4 values allowed."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">region</span><span class="p">))</span>
     <span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">region</span>
     <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="n">e</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Invalid region &#39;</span><span class="si">{}</span><span class="s2">&#39; (W, E, S, N). Must have W =&lt; E. &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
-            <span class="o">+</span> <span class="s2">&quot;If working with geographic coordinates, don&#39;t forget to match geographic&quot;</span>
-            <span class="o">+</span> <span class="s2">&quot; region with coordinates using &#39;verde.longitude_continuity&#39;.&quot;</span>
+            <span class="s2">"Invalid region '</span><span class="si">{}</span><span class="s2">' (W, E, S, N). Must have W =&lt; E. "</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">"If working with geographic coordinates, don't forget to match geographic"</span>
+            <span class="o">+</span> <span class="s2">" region with coordinates using 'verde.longitude_continuity'."</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="n">n</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Invalid region &#39;</span><span class="si">{}</span><span class="s2">&#39; (W, E, S, N). Must have S =&lt; N.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
+            <span class="s2">"Invalid region '</span><span class="si">{}</span><span class="s2">' (W, E, S, N). Must have S =&lt; N."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
         <span class="p">)</span>
 
 
 <div class="viewcode-block" id="get_region">
 <a class="viewcode-back" href="../../api/generated/verde.get_region.html#verde.get_region">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_region</span><span class="p">(</span><span class="n">coordinates</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Get the bounding region of the given coordinates.</span>
 
 <span class="sd">    Parameters</span>
@@ -506,7 +507,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; print(tuple(float(c) for c in region))</span>
 <span class="sd">    (0.0, 1.0, -10.0, -6.0)</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
     <span class="n">region</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">easting</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">easting</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">northing</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">northing</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">region</span></div>
@@ -516,7 +517,7 @@ document.write(`
 <div class="viewcode-block" id="pad_region">
 <a class="viewcode-back" href="../../api/generated/verde.pad_region.html#verde.pad_region">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">pad_region</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">pad</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Extend the borders of a region by the given amount.</span>
 
 <span class="sd">    Parameters</span>
@@ -525,8 +526,8 @@ document.write(`
 <span class="sd">        The boundaries of a given region in Cartesian or geographic</span>
 <span class="sd">        coordinates.</span>
 <span class="sd">    pad : float or tuple = (pad_north, pad_east)</span>
-<span class="sd">        The amount of padding to add to the region. If it&#39;s a single number,</span>
-<span class="sd">        add this to all boundaries of region equally. If it&#39;s a tuple of</span>
+<span class="sd">        The amount of padding to add to the region. If it's a single number,</span>
+<span class="sd">        add this to all boundaries of region equally. If it's a tuple of</span>
 <span class="sd">        numbers, then will add different padding to the North-South and</span>
 <span class="sd">        East-West dimensions.</span>
 
@@ -543,7 +544,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; pad_region((0, 1, -5, -3), (3, 2))</span>
 <span class="sd">    (-2, 3, -8, 0)</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">pad</span><span class="p">):</span>
         <span class="n">pad</span> <span class="o">=</span> <span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="n">pad</span><span class="p">)</span>
     <span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">region</span>
@@ -555,7 +556,7 @@ document.write(`
 <div class="viewcode-block" id="scatter_points">
 <a class="viewcode-back" href="../../api/generated/verde.scatter_points.html#verde.scatter_points">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">scatter_points</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_coords</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Generate the coordinates for a random scatter of points.</span>
 
 <span class="sd">    The points are drawn from a uniform distribution.</span>
@@ -590,12 +591,12 @@ document.write(`
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; # We&#39;ll use a seed value will ensure that the same will be generated</span>
+<span class="sd">    &gt;&gt;&gt; # We'll use a seed value will ensure that the same will be generated</span>
 <span class="sd">    &gt;&gt;&gt; # every time.</span>
 <span class="sd">    &gt;&gt;&gt; easting, northing = scatter_points((0, 10, -2, -1), 4, random_state=0)</span>
-<span class="sd">    &gt;&gt;&gt; print(&#39;, &#39;.join([&#39;{:.4f}&#39;.format(i) for i in easting]))</span>
+<span class="sd">    &gt;&gt;&gt; print(', '.join(['{:.4f}'.format(i) for i in easting]))</span>
 <span class="sd">    5.4881, 7.1519, 6.0276, 5.4488</span>
-<span class="sd">    &gt;&gt;&gt; print(&#39;, &#39;.join([&#39;{:.4f}&#39;.format(i) for i in northing]))</span>
+<span class="sd">    &gt;&gt;&gt; print(', '.join(['{:.4f}'.format(i) for i in northing]))</span>
 <span class="sd">    -1.5763, -1.3541, -1.5624, -1.1082</span>
 <span class="sd">    &gt;&gt;&gt; easting, northing, height = scatter_points(</span>
 <span class="sd">    ...     (0, 10, -2, -1), 4, random_state=0, extra_coords=12</span>
@@ -614,7 +615,7 @@ document.write(`
 <span class="sd">    grid_coordinates : Generate coordinates for each point on a regular grid</span>
 <span class="sd">    profile_coordinates : Coordinates for a profile between two points</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">check_region</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
     <span class="n">random</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
     <span class="n">coordinates</span> <span class="o">=</span> <span class="p">[]</span>
@@ -630,9 +631,9 @@ document.write(`
 <div class="viewcode-block" id="line_coordinates">
 <a class="viewcode-back" href="../../api/generated/verde.line_coordinates.html#verde.line_coordinates">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">line_coordinates</span><span class="p">(</span>
-    <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">adjust</span><span class="o">=</span><span class="s2">&quot;spacing&quot;</span><span class="p">,</span> <span class="n">pixel_register</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">adjust</span><span class="o">=</span><span class="s2">"spacing"</span><span class="p">,</span> <span class="n">pixel_register</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Generate evenly spaced points between two values.</span>
 
 <span class="sd">    Able to handle either specifying the number of points required (*size*) or</span>
@@ -655,7 +656,7 @@ document.write(`
 <span class="sd">    spacing : float or None</span>
 <span class="sd">        The step size (interval) between points in the sequence. If None,</span>
 <span class="sd">        *size* must be provided.</span>
-<span class="sd">    adjust : {&#39;spacing&#39;, &#39;region&#39;}</span>
+<span class="sd">    adjust : {'spacing', 'region'}</span>
 <span class="sd">        Whether to adjust the spacing or the interval/region if required.</span>
 <span class="sd">        Ignored if *size* is given instead of *spacing*. Defaults to adjusting</span>
 <span class="sd">        the spacing.</span>
@@ -689,11 +690,11 @@ document.write(`
 
 <span class="sd">    &gt;&gt;&gt; print(line_coordinates(0, 10, spacing=2.4))</span>
 <span class="sd">    [ 0.   2.5  5.   7.5 10. ]</span>
-<span class="sd">    &gt;&gt;&gt; print(line_coordinates(0, 10, spacing=2.4, adjust=&quot;region&quot;))</span>
+<span class="sd">    &gt;&gt;&gt; print(line_coordinates(0, 10, spacing=2.4, adjust="region"))</span>
 <span class="sd">    [0.  2.4 4.8 7.2 9.6]</span>
 <span class="sd">    &gt;&gt;&gt; print(line_coordinates(0, 10, spacing=2.6))</span>
 <span class="sd">    [ 0.   2.5  5.   7.5 10. ]</span>
-<span class="sd">    &gt;&gt;&gt; print(line_coordinates(0, 10, spacing=2.6, adjust=&quot;region&quot;))</span>
+<span class="sd">    &gt;&gt;&gt; print(line_coordinates(0, 10, spacing=2.6, adjust="region"))</span>
 <span class="sd">    [ 0.   2.6  5.2  7.8 10.4]</span>
 
 <span class="sd">    Optionally, return values at the center of the intervals instead of their</span>
@@ -710,11 +711,11 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; print(line_coordinates(0, 10, size=5, pixel_register=True))</span>
 <span class="sd">    [1. 3. 5. 7. 9.]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">spacing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Both size and spacing provided. Only one is allowed.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Both size and spacing provided. Only one is allowed."</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">spacing</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either a size or a spacing must be provided.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Either a size or a spacing must be provided."</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">spacing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">size</span><span class="p">,</span> <span class="n">stop</span> <span class="o">=</span> <span class="n">spacing_to_size</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">adjust</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">pixel_register</span><span class="p">:</span>
@@ -736,12 +737,12 @@ document.write(`
     <span class="n">region</span><span class="p">,</span>
     <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">adjust</span><span class="o">=</span><span class="s2">&quot;spacing&quot;</span><span class="p">,</span>
+    <span class="n">adjust</span><span class="o">=</span><span class="s2">"spacing"</span><span class="p">,</span>
     <span class="n">pixel_register</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">extra_coords</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">meshgrid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Generate the coordinates for each point on a regular grid.</span>
 
 <span class="sd">    The grid can be specified by either the number of points in each dimension</span>
@@ -765,7 +766,7 @@ document.write(`
 <span class="sd">        The grid spacing in the South-North and West-East directions,</span>
 <span class="sd">        respectively. A single value means that the spacing is equal in both</span>
 <span class="sd">        directions.</span>
-<span class="sd">    adjust : {&#39;spacing&#39;, &#39;region&#39;}</span>
+<span class="sd">    adjust : {'spacing', 'region'}</span>
 <span class="sd">        Whether to adjust the spacing or the region if required. Ignored if</span>
 <span class="sd">        *shape* is given instead of *spacing*. Defaults to adjusting the</span>
 <span class="sd">        spacing.</span>
@@ -784,7 +785,7 @@ document.write(`
 <span class="sd">        If True, will call :func:`numpy.meshgrid` on the generated coordinates</span>
 <span class="sd">        and return 2D arrays (useful if you need the coordinate values for</span>
 <span class="sd">        every single point on a grid). Otherwise, will return 1D coordinate</span>
-<span class="sd">        arrays (useful if you&#39;re making a :class:`xarray.DataArray` or looping</span>
+<span class="sd">        arrays (useful if you're making a :class:`xarray.DataArray` or looping</span>
 <span class="sd">        over grid coordinates with two ``for`` loops). Passing False to</span>
 <span class="sd">        *meshgrid* is **incompatible with *extra_coords* and an exception will</span>
 <span class="sd">        be raised** if used together (:class:`ValueError`).</span>
@@ -835,7 +836,7 @@ document.write(`
 <span class="sd">     [ 7.5  7.5  7.5]</span>
 <span class="sd">     [10.  10.  10. ]]</span>
 
-<span class="sd">    If you don&#39;t need the 2D arrays, then use ``meshgrid=False``:</span>
+<span class="sd">    If you don't need the 2D arrays, then use ``meshgrid=False``:</span>
 
 <span class="sd">    &gt;&gt;&gt; east, north = grid_coordinates(</span>
 <span class="sd">    ...     region=(0, 5, 0, 10), spacing=2.5, meshgrid=False,</span>
@@ -865,7 +866,7 @@ document.write(`
 <span class="sd">     [ 7.5  7.5  7.5  7.5  7.5  7.5  7.5]</span>
 <span class="sd">     [10.  10.  10.  10.  10.  10.  10. ]]</span>
 
-<span class="sd">    If the region can&#39;t be divided into the desired spacing, the spacing will</span>
+<span class="sd">    If the region can't be divided into the desired spacing, the spacing will</span>
 <span class="sd">    be adjusted to conform to the region:</span>
 
 <span class="sd">    &gt;&gt;&gt; east, north = grid_coordinates(region=(-5, 0, 0, 5), spacing=2.6)</span>
@@ -895,7 +896,7 @@ document.write(`
 <span class="sd">    instead:</span>
 
 <span class="sd">    &gt;&gt;&gt; east, north = grid_coordinates(region=(-5, 0, 0, 5), spacing=2.6,</span>
-<span class="sd">    ...                                adjust=&#39;region&#39;)</span>
+<span class="sd">    ...                                adjust='region')</span>
 <span class="sd">    &gt;&gt;&gt; print(east.shape, north.shape)</span>
 <span class="sd">    (3, 3) (3, 3)</span>
 <span class="sd">    &gt;&gt;&gt; print(east)</span>
@@ -907,7 +908,7 @@ document.write(`
 <span class="sd">     [2.6 2.6 2.6]</span>
 <span class="sd">     [5.2 5.2 5.2]]</span>
 <span class="sd">    &gt;&gt;&gt; east, north = grid_coordinates(region=(-5, 0, 0, 5), spacing=2.4,</span>
-<span class="sd">    ...                                adjust=&#39;region&#39;)</span>
+<span class="sd">    ...                                adjust='region')</span>
 <span class="sd">    &gt;&gt;&gt; print(east.shape, north.shape)</span>
 <span class="sd">    (3, 3) (3, 3)</span>
 <span class="sd">    &gt;&gt;&gt; print(east)</span>
@@ -987,12 +988,12 @@ document.write(`
 <span class="sd">    profile_coordinates : Coordinates for a profile between two points</span>
 <span class="sd">    line_coordinates: Generate evenly spaced points between two values</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">check_region</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">spacing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Both grid shape and spacing provided. Only one is allowed.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Both grid shape and spacing provided. Only one is allowed."</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">spacing</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either a grid shape or a spacing must be provided.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Either a grid shape or a spacing must be provided."</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="c1"># Make sure the spacing is a tuple of 2 numbers</span>
@@ -1000,7 +1001,7 @@ document.write(`
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">spacing</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">spacing</span> <span class="o">=</span> <span class="p">(</span><span class="n">spacing</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">spacing</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">spacing</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Only two values allowed for grid spacing: </span><span class="si">{</span><span class="n">spacing</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Only two values allowed for grid spacing: </span><span class="si">{</span><span class="n">spacing</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">spacing</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
@@ -1026,7 +1027,7 @@ document.write(`
     <span class="k">if</span> <span class="n">extra_coords</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">meshgrid</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Using &#39;meshgrid=False&#39; and &#39;extra_coords&#39; is &#39;verde.grid_coordinates&#39; is not allowed.&quot;</span>
+                <span class="s2">"Using 'meshgrid=False' and 'extra_coords' is 'verde.grid_coordinates' is not allowed."</span>
             <span class="p">)</span>
         <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">extra_coords</span><span class="p">):</span>
             <span class="n">coordinates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">value</span><span class="p">)</span>
@@ -1035,7 +1036,7 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">spacing_to_size</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">adjust</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Convert a spacing to the number of points between start and stop.</span>
 
 <span class="sd">    Takes into account if the spacing or the interval needs to be adjusted.</span>
@@ -1048,7 +1049,7 @@ document.write(`
 <span class="sd">        The end value of the sequence.</span>
 <span class="sd">    spacing : float</span>
 <span class="sd">        The step size (interval) between points in the sequence.</span>
-<span class="sd">    adjust : {&#39;spacing&#39;, &#39;region&#39;}</span>
+<span class="sd">    adjust : {'spacing', 'region'}</span>
 <span class="sd">        Whether to adjust the spacing or the interval/region if required.</span>
 <span class="sd">        Defaults to adjusting the spacing.</span>
 
@@ -1059,32 +1060,32 @@ document.write(`
 <span class="sd">    stop : float</span>
 <span class="sd">        The end of the interval, which may or may not have been adjusted.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">adjust</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;spacing&quot;</span><span class="p">,</span> <span class="s2">&quot;region&quot;</span><span class="p">]:</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">adjust</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"spacing"</span><span class="p">,</span> <span class="s2">"region"</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Invalid value for *adjust* &#39;</span><span class="si">{}</span><span class="s2">&#39;. Should be &#39;spacing&#39; or &#39;region&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s2">"Invalid value for *adjust* '</span><span class="si">{}</span><span class="s2">'. Should be 'spacing' or 'region'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">adjust</span>
             <span class="p">)</span>
         <span class="p">)</span>
     <span class="c1"># Add 1 to get the number of nodes, not segments</span>
     <span class="n">size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="n">stop</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="o">/</span> <span class="n">spacing</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="c1"># If the spacing &gt;= 2 * (stop - start), it rounds to zero so we&#39;d be</span>
-    <span class="c1"># generating a single point, which isn&#39;t equivalent to adjusting the</span>
+    <span class="c1"># If the spacing &gt;= 2 * (stop - start), it rounds to zero so we'd be</span>
+    <span class="c1"># generating a single point, which isn't equivalent to adjusting the</span>
     <span class="c1"># spacing or the region. To get the appropriate behaviour of decreasing the</span>
     <span class="c1"># spacing until it fits the region or increasing the region until it fits</span>
     <span class="c1"># at least 1 spacing, we need to always round to at least 1 in the code</span>
     <span class="c1"># above.</span>
     <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">size</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">if</span> <span class="n">adjust</span> <span class="o">==</span> <span class="s2">&quot;region&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">adjust</span> <span class="o">==</span> <span class="s2">"region"</span><span class="p">:</span>
         <span class="c1"># The size is the same but we adjust the interval so that the spacing</span>
-        <span class="c1"># isn&#39;t altered when we do the linspace.</span>
+        <span class="c1"># isn't altered when we do the linspace.</span>
         <span class="n">stop</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="p">(</span><span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">spacing</span>
     <span class="k">return</span> <span class="n">size</span><span class="p">,</span> <span class="n">stop</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">shape_to_spacing</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">pixel_register</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Calculate the spacing of a grid given region and shape.</span>
 
 <span class="sd">    Parameters</span>
@@ -1111,26 +1112,26 @@ document.write(`
 <span class="sd">    --------</span>
 
 <span class="sd">    &gt;&gt;&gt; spacing = shape_to_spacing([0, 10, -5, 1], (7, 11))</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;{:.1f}, {:.1f}&quot;.format(*spacing))</span>
+<span class="sd">    &gt;&gt;&gt; print("{:.1f}, {:.1f}".format(*spacing))</span>
 <span class="sd">    1.0, 1.0</span>
 <span class="sd">    &gt;&gt;&gt; spacing = shape_to_spacing([0, 10, -5, 1], (14, 11))</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;{:.1f}, {:.1f}&quot;.format(*spacing))</span>
+<span class="sd">    &gt;&gt;&gt; print("{:.1f}, {:.1f}".format(*spacing))</span>
 <span class="sd">    0.5, 1.0</span>
 <span class="sd">    &gt;&gt;&gt; spacing = shape_to_spacing([0, 10, -5, 1], (7, 21))</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;{:.1f}, {:.1f}&quot;.format(*spacing))</span>
+<span class="sd">    &gt;&gt;&gt; print("{:.1f}, {:.1f}".format(*spacing))</span>
 <span class="sd">    1.0, 0.5</span>
 <span class="sd">    &gt;&gt;&gt; spacing = shape_to_spacing(</span>
 <span class="sd">    ...     [-0.5, 10.5, -5.5, 1.5], (7, 11), pixel_register=True,</span>
 <span class="sd">    ... )</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;{:.1f}, {:.1f}&quot;.format(*spacing))</span>
+<span class="sd">    &gt;&gt;&gt; print("{:.1f}, {:.1f}".format(*spacing))</span>
 <span class="sd">    1.0, 1.0</span>
 <span class="sd">    &gt;&gt;&gt; spacing = shape_to_spacing(</span>
 <span class="sd">    ...     [-0.25, 10.25, -5.5, 1.5], (7, 21), pixel_register=True,</span>
 <span class="sd">    ... )</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;{:.1f}, {:.1f}&quot;.format(*spacing))</span>
+<span class="sd">    &gt;&gt;&gt; print("{:.1f}, {:.1f}".format(*spacing))</span>
 <span class="sd">    1.0, 0.5</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">spacing</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">n_points</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">shape</span><span class="p">)):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">pixel_register</span><span class="p">:</span>
@@ -1142,7 +1143,7 @@ document.write(`
 <div class="viewcode-block" id="profile_coordinates">
 <a class="viewcode-back" href="../../api/generated/verde.profile_coordinates.html#verde.profile_coordinates">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">profile_coordinates</span><span class="p">(</span><span class="n">point1</span><span class="p">,</span> <span class="n">point2</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">extra_coords</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Coordinates for a profile along a straight line between two points.</span>
 
 <span class="sd">    Parameters</span>
@@ -1172,11 +1173,11 @@ document.write(`
 <span class="sd">    --------</span>
 
 <span class="sd">    &gt;&gt;&gt; (east, north), dist = profile_coordinates((1, 10), (1, 20), size=11)</span>
-<span class="sd">    &gt;&gt;&gt; print(&#39;easting:&#39;, &#39;, &#39;.join(&#39;{:.1f}&#39;.format(i) for i in east))</span>
+<span class="sd">    &gt;&gt;&gt; print('easting:', ', '.join('{:.1f}'.format(i) for i in east))</span>
 <span class="sd">    easting: 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0</span>
-<span class="sd">    &gt;&gt;&gt; print(&#39;northing:&#39;, &#39;, &#39;.join(&#39;{:.1f}&#39;.format(i) for i in north))</span>
+<span class="sd">    &gt;&gt;&gt; print('northing:', ', '.join('{:.1f}'.format(i) for i in north))</span>
 <span class="sd">    northing: 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0</span>
-<span class="sd">    &gt;&gt;&gt; print(&#39;distance:&#39;, &#39;, &#39;.join(&#39;{:.1f}&#39;.format(i) for i in dist))</span>
+<span class="sd">    &gt;&gt;&gt; print('distance:', ', '.join('{:.1f}'.format(i) for i in dist))</span>
 <span class="sd">    distance: 0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0</span>
 <span class="sd">    &gt;&gt;&gt; (east, north, height), dist = profile_coordinates(</span>
 <span class="sd">    ...     (1, 10), (1, 20), size=11, extra_coords=35)</span>
@@ -1194,9 +1195,9 @@ document.write(`
 <span class="sd">    scatter_points : Generate the coordinates for a random scatter of points</span>
 <span class="sd">    grid_coordinates : Generate coordinates for each point on a regular grid</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">size</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid profile size &#39;</span><span class="si">{}</span><span class="s2">&#39;. Must be &gt; 0.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Invalid profile size '</span><span class="si">{}</span><span class="s2">'. Must be &gt; 0."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
     <span class="n">diffs</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">point2</span><span class="p">,</span> <span class="n">point1</span><span class="p">)]</span>
     <span class="n">separation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="o">*</span><span class="n">diffs</span><span class="p">)</span>
     <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">separation</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
@@ -1215,7 +1216,7 @@ document.write(`
 <div class="viewcode-block" id="inside">
 <a class="viewcode-back" href="../../api/generated/verde.inside.html#verde.inside">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">inside</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">region</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Determine which points fall inside a given region.</span>
 
 <span class="sd">    Points at the boundary are counted as being outsize.</span>
@@ -1271,7 +1272,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; print(north[are_inside])</span>
 <span class="sd">    [-10. -10. -10.   0.   0.   0.  10.  10.  10.]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">check_region</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
     <span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">region</span>
     <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
@@ -1297,8 +1298,8 @@ document.write(`
 
 <div class="viewcode-block" id="block_split">
 <a class="viewcode-back" href="../../api/generated/verde.block_split.html#verde.block_split">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">block_split</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">adjust</span><span class="o">=</span><span class="s2">&quot;spacing&quot;</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">block_split</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">adjust</span><span class="o">=</span><span class="s2">"spacing"</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Split a region into blocks and label points according to where they fall.</span>
 
 <span class="sd">    The labels are integers corresponding to the index of the block. Also</span>
@@ -1327,7 +1328,7 @@ document.write(`
 <span class="sd">        The block size in the South-North and West-East directions,</span>
 <span class="sd">        respectively. A single value means that the size is equal in both</span>
 <span class="sd">        directions.</span>
-<span class="sd">    adjust : {&#39;spacing&#39;, &#39;region&#39;}</span>
+<span class="sd">    adjust : {'spacing', 'region'}</span>
 <span class="sd">        Whether to adjust the spacing or the region if required. Ignored if</span>
 <span class="sd">        *shape* is given instead of *spacing*. Defaults to adjusting the</span>
 <span class="sd">        spacing.</span>
@@ -1358,7 +1359,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; coords = grid_coordinates((-5, 0, 5, 10), spacing=1)</span>
 <span class="sd">    &gt;&gt;&gt; block_coords, labels = block_split(coords, spacing=2.5)</span>
 <span class="sd">    &gt;&gt;&gt; for coord in block_coords:</span>
-<span class="sd">    ...     print(&#39;, &#39;.join([&#39;{:.2f}&#39;.format(i) for i in coord]))</span>
+<span class="sd">    ...     print(', '.join(['{:.2f}'.format(i) for i in coord]))</span>
 <span class="sd">    -3.75, -1.25, -3.75, -1.25</span>
 <span class="sd">    6.25, 6.25, 8.75, 8.75</span>
 <span class="sd">    &gt;&gt;&gt; print(labels.reshape(coords[0].shape))</span>
@@ -1371,7 +1372,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; # Use the shape instead of the block size</span>
 <span class="sd">    &gt;&gt;&gt; block_coords, labels = block_split(coords, shape=(4, 2))</span>
 <span class="sd">    &gt;&gt;&gt; for coord in block_coords:</span>
-<span class="sd">    ...     print(&#39;, &#39;.join([&#39;{:.3f}&#39;.format(i) for i in coord]))</span>
+<span class="sd">    ...     print(', '.join(['{:.3f}'.format(i) for i in coord]))</span>
 <span class="sd">    -3.750, -1.250, -3.750, -1.250, -3.750, -1.250, -3.750, -1.250</span>
 <span class="sd">    5.625, 5.625, 6.875, 6.875, 8.125, 8.125, 9.375, 9.375</span>
 <span class="sd">    &gt;&gt;&gt; print(labels.reshape(coords[0].shape))</span>
@@ -1382,7 +1383,7 @@ document.write(`
 <span class="sd">     [6 6 6 7 7 7]</span>
 <span class="sd">     [6 6 6 7 7 7]]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Select the coordinates after checking to make sure indexing will still</span>
     <span class="c1"># work on the ignored coordinates.</span>
     <span class="n">coordinates</span> <span class="o">=</span> <span class="n">check_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]</span>
@@ -1400,9 +1401,9 @@ document.write(`
 <div class="viewcode-block" id="rolling_window">
 <a class="viewcode-back" href="../../api/generated/verde.rolling_window.html#verde.rolling_window">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">rolling_window</span><span class="p">(</span>
-    <span class="n">coordinates</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">adjust</span><span class="o">=</span><span class="s2">&quot;spacing&quot;</span>
+    <span class="n">coordinates</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">adjust</span><span class="o">=</span><span class="s2">"spacing"</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Select points on a rolling (moving) window.</span>
 
 <span class="sd">    A window of the given size is moved across the region at a given step</span>
@@ -1434,7 +1435,7 @@ document.write(`
 <span class="sd">        The boundaries of a given region in Cartesian or geographic</span>
 <span class="sd">        coordinates. If not region is given, will use the bounding region of</span>
 <span class="sd">        the given points.</span>
-<span class="sd">    adjust : {&#39;spacing&#39;, &#39;region&#39;}</span>
+<span class="sd">    adjust : {'spacing', 'region'}</span>
 <span class="sd">        Whether to adjust the spacing or the region if required. Ignored if</span>
 <span class="sd">        *shape* is given instead of *spacing*. Defaults to adjusting the</span>
 <span class="sd">        spacing.</span>
@@ -1541,7 +1542,7 @@ document.write(`
 <span class="sd">    [6. 6. 6. 7. 7. 7. 8. 8. 8.]</span>
 
 <span class="sd">    By default, the windows will span the entire data region. You can also</span>
-<span class="sd">    control the specific region you&#39;d like the windows to cover:</span>
+<span class="sd">    control the specific region you'd like the windows to cover:</span>
 
 <span class="sd">    &gt;&gt;&gt; # Coordinates on a larger region but with the same spacing as before</span>
 <span class="sd">    &gt;&gt;&gt; coords = grid_coordinates((-10, 5, 0, 20), spacing=1)</span>
@@ -1606,10 +1607,10 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; print(coords[2][indices[0, 0]])</span>
 <span class="sd">    [20. 20. 20. 20. 20. 20. 20. 20. 20.]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Check if shape or spacing were passed</span>
     <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">spacing</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either a shape or a spacing must be provided.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Either a shape or a spacing must be provided."</span><span class="p">)</span>
     <span class="c1"># Select the coordinates after checking to make sure indexing will still</span>
     <span class="c1"># work on the ignored coordinates.</span>
     <span class="n">coordinates</span> <span class="o">=</span> <span class="n">check_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]</span>
@@ -1619,8 +1620,8 @@ document.write(`
     <span class="n">region_min_width</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">region</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">region</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">region_min_width</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Window size &#39;</span><span class="si">{}</span><span class="s2">&#39; is larger &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
-            <span class="o">+</span> <span class="s2">&quot;than dimensions of the region &#39;</span><span class="si">{}</span><span class="s2">&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
+            <span class="s2">"Window size '</span><span class="si">{}</span><span class="s2">' is larger "</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">"than dimensions of the region '</span><span class="si">{}</span><span class="s2">'."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
         <span class="p">)</span>
     <span class="c1"># Calculate the region spanning the centers of the rolling windows</span>
     <span class="n">window_region</span> <span class="o">=</span> <span class="p">[</span>
@@ -1630,7 +1631,7 @@ document.write(`
     <span class="n">centers</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span>
         <span class="n">window_region</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">adjust</span><span class="o">=</span><span class="n">adjust</span>
     <span class="p">)</span>
-    <span class="c1"># pykdtree doesn&#39;t support query_ball_point yet and we need that</span>
+    <span class="c1"># pykdtree doesn't support query_ball_point yet and we need that</span>
     <span class="n">tree</span> <span class="o">=</span> <span class="n">kdtree</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">use_pykdtree</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="c1"># Coordinates must be transposed because the kd-tree wants them as columns</span>
     <span class="c1"># of a matrix</span>
@@ -1642,16 +1643,16 @@ document.write(`
     <span class="c1"># That preserves the information of the number of windows in each</span>
     <span class="c1"># dimension. Need to first create an empty array of object type because</span>
     <span class="c1"># otherwise numpy tries to use the index tuples as dimensions (even if</span>
-    <span class="c1"># given ndim=1 explicitly). Can&#39;t make it 1D and then reshape because the</span>
+    <span class="c1"># given ndim=1 explicitly). Can't make it 1D and then reshape because the</span>
     <span class="c1"># reshape is ignored for some reason. The workaround is to create the array</span>
     <span class="c1"># with the correct shape and assign the values to a raveled view of the</span>
     <span class="c1"># array.</span>
-    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">centers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;object&quot;</span><span class="p">)</span>
-    <span class="c1"># Need to convert the indices to int arrays because unravel_index doesn&#39;t</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">centers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"object"</span><span class="p">)</span>
+    <span class="c1"># Need to convert the indices to int arrays because unravel_index doesn't</span>
     <span class="c1"># like empty lists but can handle empty integer arrays in case a window has</span>
     <span class="c1"># no points inside it.</span>
     <span class="n">indices</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[:]</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"int"</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices1d</span>
     <span class="p">]</span>
     <span class="k">return</span> <span class="n">centers</span><span class="p">,</span> <span class="n">indices</span></div>
@@ -1659,9 +1660,9 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_check_rolling_window_overlap</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">spacing</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Warn the user if there is no overlap between neighboring windows.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ndims</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
         <span class="n">dimensions</span> <span class="o">=</span> <span class="p">[</span><span class="n">region</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">ndims</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">region</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">ndims</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndims</span><span class="p">)]</span>
@@ -1671,9 +1672,9 @@ document.write(`
     <span class="n">spacing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">spacing</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">spacing</span> <span class="o">&gt;</span> <span class="n">size</span><span class="p">):</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Rolling windows do not overlap (size &#39;</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">&#39; and spacing &#39;</span><span class="si">{</span><span class="n">spacing</span><span class="si">}</span><span class="s2">&#39;). &quot;</span>
-            <span class="s2">&quot;Some data points may not be included in any window. &quot;</span>
-            <span class="s2">&quot;Increase size or decrease spacing to avoid this.&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"Rolling windows do not overlap (size '</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">' and spacing '</span><span class="si">{</span><span class="n">spacing</span><span class="si">}</span><span class="s2">'). "</span>
+            <span class="s2">"Some data points may not be included in any window. "</span>
+            <span class="s2">"Increase size or decrease spacing to avoid this."</span><span class="p">,</span>
             <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -1681,7 +1682,7 @@ document.write(`
 <div class="viewcode-block" id="expanding_window">
 <a class="viewcode-back" href="../../api/generated/verde.expanding_window.html#verde.expanding_window">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">expanding_window</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">sizes</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Select points on windows of changing size around a center point.</span>
 
 <span class="sd">    Returns the indices of points falling inside each window.</span>
@@ -1818,27 +1819,27 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; print(coords[2][indices[0]])</span>
 <span class="sd">    [15.]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Select the coordinates after checking to make sure indexing will still</span>
     <span class="c1"># work on the ignored coordinates.</span>
     <span class="n">coordinates</span> <span class="o">=</span> <span class="n">check_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]</span>
     <span class="n">shape</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">center</span><span class="p">)</span>
-    <span class="c1"># pykdtree doesn&#39;t support query_ball_point yet and we need that</span>
+    <span class="c1"># pykdtree doesn't support query_ball_point yet and we need that</span>
     <span class="n">tree</span> <span class="o">=</span> <span class="n">kdtree</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">use_pykdtree</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">indices</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">sizes</span><span class="p">:</span>
         <span class="c1"># Use p=inf (infinity norm) to get square windows instead of circular</span>
         <span class="n">index1d</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query_ball_point</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">size</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="c1"># Convert indices to an array to avoid errors when the index is empty</span>
-        <span class="c1"># (no points in the window). unravel_index doesn&#39;t like empty lists.</span>
-        <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">index1d</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int&quot;</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">))</span>
+        <span class="c1"># (no points in the window). unravel_index doesn't like empty lists.</span>
+        <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">index1d</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"int"</span><span class="p">),</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">indices</span></div>
 
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">longitude_continuity</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">region</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Modify coordinates and region boundaries to ensure longitude continuity.</span>
 
 <span class="sd">    Longitudinal boundaries of the region are moved to the ``[0, 360)`` or</span>
@@ -1890,7 +1891,7 @@ document.write(`
 <span class="sd">    [-20  20 -20  20]</span>
 <span class="sd">    &gt;&gt;&gt; print(longitude.min(), longitude.max())</span>
 <span class="sd">    -180.0 170.0</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Get longitudinal boundaries and check region</span>
     <span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">region</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
     <span class="c1"># Run sanity checks for region</span>
@@ -1927,41 +1928,41 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_check_geographic_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">):</span>
-    <span class="s2">&quot;Check if geographic coordinates are within accepted degrees intervals&quot;</span>
+    <span class="s2">"Check if geographic coordinates are within accepted degrees intervals"</span>
     <span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">longitude</span> <span class="o">&gt;</span> <span class="mi">360</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">longitude</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">180</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Invalid longitude coordinates. They should be &lt; 360 and &gt; -180 degrees.&quot;</span>
+            <span class="s2">"Invalid longitude coordinates. They should be &lt; 360 and &gt; -180 degrees."</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">latitude</span> <span class="o">&gt;</span> <span class="mi">90</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">latitude</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">90</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Invalid latitude coordinates. They should be &lt; 90 and &gt; -90 degrees.&quot;</span>
+            <span class="s2">"Invalid latitude coordinates. They should be &lt; 90 and &gt; -90 degrees."</span>
         <span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_check_geographic_region</span><span class="p">(</span><span class="n">region</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Check if region is in geographic coordinates are within accepted intervals.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">region</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
     <span class="c1"># Check if coordinates are within accepted degrees intervals</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">360</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">w</span><span class="p">,</span> <span class="n">e</span><span class="p">])</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">180</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Invalid region &#39;</span><span class="si">{}</span><span class="s2">&#39; (W, E, S, N). &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
-            <span class="o">+</span> <span class="s2">&quot;Longitudinal coordinates should be &lt; 360 and &gt; -180 degrees.&quot;</span>
+            <span class="s2">"Invalid region '</span><span class="si">{}</span><span class="s2">' (W, E, S, N). "</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">"Longitudinal coordinates should be &lt; 360 and &gt; -180 degrees."</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">90</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="p">])</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">90</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Invalid region &#39;</span><span class="si">{}</span><span class="s2">&#39; (W, E, S, N). &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
-            <span class="o">+</span> <span class="s2">&quot;Latitudinal coordinates should be &lt; 90 and &gt; -90 degrees.&quot;</span>
+            <span class="s2">"Invalid region '</span><span class="si">{}</span><span class="s2">' (W, E, S, N). "</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">"Latitudinal coordinates should be &lt; 90 and &gt; -90 degrees."</span>
         <span class="p">)</span>
     <span class="c1"># Check if longitude boundaries do not involve more than one spin around</span>
     <span class="c1"># the globe</span>
     <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">e</span> <span class="o">-</span> <span class="n">w</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">360</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Invalid region &#39;</span><span class="si">{}</span><span class="s2">&#39; (W, E, S, N). &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
-            <span class="o">+</span> <span class="s2">&quot;East and West boundaries must not be separated by an angle greater &quot;</span>
-            <span class="o">+</span> <span class="s2">&quot;than 360 degrees.&quot;</span>
+            <span class="s2">"Invalid region '</span><span class="si">{}</span><span class="s2">' (W, E, S, N). "</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">"East and West boundaries must not be separated by an angle greater "</span>
+            <span class="o">+</span> <span class="s2">"than 360 degrees."</span>
         <span class="p">)</span>
 </pre></div>
 
@@ -2006,7 +2007,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>

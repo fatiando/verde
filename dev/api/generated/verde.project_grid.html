@@ -277,6 +277,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -539,21 +540,21 @@ cases, you might want to try
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>grid</strong><span class="classifier"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a></span></dt><dd><p>A single 2D grid of values. The first dimension is assumed to be the
+<dt><strong>grid</strong><span class="classifier"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.7.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a></span></dt><dd><p>A single 2D grid of values. The first dimension is assumed to be the
 northing/latitude dimension while the second is assumed to be the
 easting/longitude dimension.</p>
 </dd>
-<dt><strong>projection</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">callable</span></code></a></span></dt><dd><p>Should be a callable object (like a function) <code class="docutils literal notranslate"><span class="pre">projection(easting,</span>
+<dt><strong>projection</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#callable" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">callable</span></code></a></span></dt><dd><p>Should be a callable object (like a function) <code class="docutils literal notranslate"><span class="pre">projection(easting,</span>
 <span class="pre">northing)</span> <span class="pre">-&gt;</span> <span class="pre">(proj_easting,</span> <span class="pre">proj_northing)</span></code> that takes in easting and
 northing coordinate arrays and returns projected northing and easting
 coordinate arrays.</p>
 </dd>
-<dt><strong>method</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">Verde</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">gridder</span></code></span></dt><dd><p>If a string, will use it to create <a class="reference internal" href="verde.KNeighbors.html#verde.KNeighbors" title="verde.KNeighbors"><code class="xref py py-class docutils literal notranslate"><span class="pre">KNeighbors</span></code></a>,
+<dt><strong>method</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">Verde</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">gridder</span></code></span></dt><dd><p>If a string, will use it to create <a class="reference internal" href="verde.KNeighbors.html#verde.KNeighbors" title="verde.KNeighbors"><code class="xref py py-class docutils literal notranslate"><span class="pre">KNeighbors</span></code></a>,
 <a class="reference internal" href="verde.Linear.html#verde.Linear" title="verde.Linear"><code class="xref py py-class docutils literal notranslate"><span class="pre">Linear</span></code></a>, or <a class="reference internal" href="verde.Cubic.html#verde.Cubic" title="verde.Cubic"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cubic</span></code></a> (<code class="docutils literal notranslate"><span class="pre">&quot;nearest&quot;</span></code>,
 <code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;cubic&quot;</span></code>). Otherwise, should be a gridder/estimator
 object, like <a class="reference internal" href="verde.Spline.html#verde.Spline" title="verde.Spline"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spline</span></code></a>. Default is <code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code>.</p>
 </dd>
-<dt><strong>antialias</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.14)"><span class="xref std std-ref">bool</span></a></span></dt><dd><p>If True, will run a <a class="reference internal" href="verde.BlockReduce.html#verde.BlockReduce" title="verde.BlockReduce"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockReduce</span></code></a> with a mean function to
+<dt><strong>antialias</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#bltin-boolean-values" title="(in Python v3.14)"><span class="xref std std-ref">bool</span></a></span></dt><dd><p>If True, will run a <a class="reference internal" href="verde.BlockReduce.html#verde.BlockReduce" title="verde.BlockReduce"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlockReduce</span></code></a> with a mean function to
 avoid aliasing when the projection results in oversampling of the data
 in some areas (for example, in polar projections). If False, will not
 run the blocked mean.</p>
@@ -562,7 +563,7 @@ run the blocked mean.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>projected_grid</strong><span class="classifier"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a></span></dt><dd><p>The projected grid, interpolated with the given parameters.</p>
+<dt><strong>projected_grid</strong><span class="classifier"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.7.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a></span></dt><dd><p>The projected grid, interpolated with the given parameters.</p>
 </dd>
 </dl>
 </dd>
@@ -653,7 +654,7 @@ run the blocked mean.</p>
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>

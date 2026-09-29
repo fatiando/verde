@@ -276,6 +276,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -433,9 +434,9 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">Functions for least-squares fitting with optional regularization.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -446,14 +447,14 @@ document.write(`
 <div class="viewcode-block" id="least_squares">
 <a class="viewcode-back" href="../../../api/generated/verde.base.least_squares.html#verde.base.least_squares">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">least_squares</span><span class="p">(</span><span class="n">jacobian</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">copy_jacobian</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Solve a weighted least-squares problem with optional damping regularization</span>
 
 <span class="sd">    Scales the Jacobian matrix so that each column has unit variance. This</span>
 <span class="sd">    helps keep the regularization parameter in a sensible range. The scaling is</span>
-<span class="sd">    undone before returning the estimated parameters so that scaling isn&#39;t</span>
-<span class="sd">    required for predictions. Doesn&#39;t normalize the column means because that</span>
-<span class="sd">    operation can&#39;t be undone.</span>
+<span class="sd">    undone before returning the estimated parameters so that scaling isn't</span>
+<span class="sd">    required for predictions. Doesn't normalize the column means because that</span>
+<span class="sd">    operation can't be undone.</span>
 
 <span class="sd">    .. warning::</span>
 
@@ -484,10 +485,10 @@ document.write(`
 <span class="sd">    parameters : 1d-array</span>
 <span class="sd">        The estimated 1D array of parameters that fit the data.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">jacobian</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">jacobian</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
         <span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;Under-determined problem detected (ndata, nparams)=</span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s2">"Under-determined problem detected (ndata, nparams)=</span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">jacobian</span><span class="o">.</span><span class="n">shape</span>
             <span class="p">)</span>
         <span class="p">)</span>
@@ -544,7 +545,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>

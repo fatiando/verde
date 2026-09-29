@@ -276,6 +276,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -433,9 +434,9 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">Classes for dealing with vector data.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -457,7 +458,7 @@ document.write(`
 <div class="viewcode-block" id="Vector">
 <a class="viewcode-back" href="../../api/generated/verde.Vector.html#verde.Vector">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Vector</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Fit an estimator to each component of multi-component vector data.</span>
 
 <span class="sd">    Provides a convenient way of fitting and gridding vector data using scalar</span>
@@ -495,7 +496,7 @@ document.write(`
 <span class="sd">    --------</span>
 <span class="sd">    verde.Chain : Chain filtering operations to fit on each subsequent output.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -504,7 +505,7 @@ document.write(`
 <div class="viewcode-block" id="Vector.fit">
 <a class="viewcode-back" href="../../api/generated/verde.Vector.html#verde.Vector.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Fit the estimators to the given multi-component data.</span>
 
 <span class="sd">        The data region is captured and used as default for the</span>
@@ -533,14 +534,14 @@ document.write(`
 <span class="sd">        self</span>
 <span class="sd">            Returns this estimator instance for chaining operations.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Data must be a tuple of arrays. </span><span class="si">{}</span><span class="s2"> given.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+                <span class="s2">"Data must be a tuple of arrays. </span><span class="si">{}</span><span class="s2"> given."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Weights must be a tuple of arrays. </span><span class="si">{}</span><span class="s2"> given.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">weights</span><span class="p">))</span>
+                <span class="s2">"Weights must be a tuple of arrays. </span><span class="si">{}</span><span class="s2"> given."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">weights</span><span class="p">))</span>
             <span class="p">)</span>
         <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">check_fit_input</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">region_</span> <span class="o">=</span> <span class="n">get_region</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
@@ -552,7 +553,7 @@ document.write(`
 <div class="viewcode-block" id="Vector.predict">
 <a class="viewcode-back" href="../../api/generated/verde.Vector.html#verde.Vector.predict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Evaluate each data component on a set of points.</span>
 
 <span class="sd">        Requires a fitted estimator (see :meth:`~verde.Vector.fit`).</span>
@@ -572,8 +573,8 @@ document.write(`
 <span class="sd">            The order of components will be the same as was provided to</span>
 <span class="sd">            :meth:`~verde.Vector.fit`.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;region_&quot;</span><span class="p">])</span>
+<span class="sd">        """</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">"region_"</span><span class="p">])</span>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">comp</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span> <span class="k">for</span> <span class="n">comp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">)</span></div>
 </div>
 
@@ -582,22 +583,22 @@ document.write(`
 <div class="viewcode-block" id="VectorSpline2D">
 <a class="viewcode-back" href="../../api/generated/verde.VectorSpline2D.html#verde.VectorSpline2D">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">VectorSpline2D</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Elastically coupled interpolation of 2-component vector data.</span>
 
 <span class="sd">    This gridder assumes Cartesian coordinates.</span>
 
-<span class="sd">    Uses the Green&#39;s functions based on elastic deformation from</span>
+<span class="sd">    Uses the Green's functions based on elastic deformation from</span>
 <span class="sd">    [SandwellWessel2016]_. The interpolation is done by estimating point forces</span>
 <span class="sd">    that generate an elastic deformation that fits the observed vector data.</span>
 <span class="sd">    The deformation equations are based on a 2D elastic sheet with a constant</span>
-<span class="sd">    Poisson&#39;s ratio. The data can then be predicted at any desired location.</span>
+<span class="sd">    Poisson's ratio. The data can then be predicted at any desired location.</span>
 
 <span class="sd">    The east and north data components are coupled through the elastic</span>
-<span class="sd">    deformation equations. This coupling is controlled by the Poisson&#39;s ratio,</span>
-<span class="sd">    which is usually between -1 and 1. The special case of Poisson&#39;s ratio -1</span>
+<span class="sd">    deformation equations. This coupling is controlled by the Poisson's ratio,</span>
+<span class="sd">    which is usually between -1 and 1. The special case of Poisson's ratio -1</span>
 <span class="sd">    leads to an uncoupled interpolation, meaning that the east and north</span>
-<span class="sd">    components don&#39;t interfere with each other.</span>
+<span class="sd">    components don't interfere with each other.</span>
 
 <span class="sd">    The point forces are traditionally placed under each data point. The force</span>
 <span class="sd">    locations are set the first time :meth:`~verde.VectorSpline2D.fit` is</span>
@@ -621,12 +622,12 @@ document.write(`
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    poisson : float</span>
-<span class="sd">        The Poisson&#39;s ratio for the elastic deformation Green&#39;s functions.</span>
+<span class="sd">        The Poisson's ratio for the elastic deformation Green's functions.</span>
 <span class="sd">        Default is 0.5. A value of -1 will lead to uncoupled interpolation of</span>
 <span class="sd">        the east and north data components.</span>
 <span class="sd">    mindist : float</span>
 <span class="sd">        A minimum distance between the point forces and data points. Needed</span>
-<span class="sd">        because the Green&#39;s functions are singular when forces and data points</span>
+<span class="sd">        because the Green's functions are singular when forces and data points</span>
 <span class="sd">        coincide. Acts as a fudge factor. A good rule of thumb is to use the</span>
 <span class="sd">        average spacing between data points.</span>
 <span class="sd">    damping : None or float</span>
@@ -640,8 +641,8 @@ document.write(`
 <span class="sd">    engine : str</span>
 <span class="sd">        **DEPRECATED:** This option is deprecated and will be removed in Verde</span>
 <span class="sd">        v2.0.0. The numba engine will be the only option. Computation engine</span>
-<span class="sd">        for the Jacobian matrix and prediction. Can be ``&#39;auto&#39;``, ``&#39;numba&#39;``,</span>
-<span class="sd">        or ``&#39;numpy&#39;``. If ``&#39;auto&#39;``, will use numba if it is installed or</span>
+<span class="sd">        for the Jacobian matrix and prediction. Can be ``'auto'``, ``'numba'``,</span>
+<span class="sd">        or ``'numpy'``. If ``'auto'``, will use numba if it is installed or</span>
 <span class="sd">        numpy otherwise. The numba version is multi-threaded and usually</span>
 <span class="sd">        faster, which makes fitting and predicting faster.</span>
 
@@ -655,10 +656,10 @@ document.write(`
 <span class="sd">        :meth:`~verde.VectorSpline2D.grid` and</span>
 <span class="sd">        :meth:`~verde.VectorSpline2D.scatter` methods.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">poisson</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">mindist</span><span class="o">=</span><span class="mf">10e3</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_coords</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">poisson</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">mindist</span><span class="o">=</span><span class="mf">10e3</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force_coords</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">"auto"</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">poisson</span> <span class="o">=</span> <span class="n">poisson</span>
@@ -666,12 +667,12 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">damping</span> <span class="o">=</span> <span class="n">damping</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">force_coords</span> <span class="o">=</span> <span class="n">force_coords</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">engine</span>
-        <span class="k">if</span> <span class="n">engine</span> <span class="o">!=</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">engine</span> <span class="o">!=</span> <span class="s2">"auto"</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="s2">&quot;The &#39;engine&#39; parameter of &#39;verde.VectorSpline2D&#39; is &quot;</span>
-                <span class="s2">&quot;deprecated and will be removed in Verde 2.0.0. &quot;</span>
-                <span class="s2">&quot;The faster and memory efficient numba engine will be &quot;</span>
-                <span class="s2">&quot;the only option.&quot;</span><span class="p">,</span>
+                <span class="s2">"The 'engine' parameter of 'verde.VectorSpline2D' is "</span>
+                <span class="s2">"deprecated and will be removed in Verde 2.0.0. "</span>
+                <span class="s2">"The faster and memory efficient numba engine will be "</span>
+                <span class="s2">"the only option."</span><span class="p">,</span>
                 <span class="ne">FutureWarning</span><span class="p">,</span>
                 <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="p">)</span>
@@ -679,7 +680,7 @@ document.write(`
 <div class="viewcode-block" id="VectorSpline2D.fit">
 <a class="viewcode-back" href="../../api/generated/verde.VectorSpline2D.html#verde.VectorSpline2D.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Fit the gridder to the given 2-component vector data.</span>
 
 <span class="sd">        The data region is captured and used as default for the</span>
@@ -708,13 +709,13 @@ document.write(`
 <span class="sd">        self</span>
 <span class="sd">            Returns this estimator instance for chaining operations.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">check_fit_input</span><span class="p">(</span>
             <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Need two data components. Only </span><span class="si">{}</span><span class="s2"> given.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+                <span class="s2">"Need two data components. Only </span><span class="si">{}</span><span class="s2"> given."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
             <span class="p">)</span>
         <span class="c1"># Capture the data region to use as a default when gridding.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">region_</span> <span class="o">=</span> <span class="n">get_region</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
@@ -734,7 +735,7 @@ document.write(`
 <div class="viewcode-block" id="VectorSpline2D.predict">
 <a class="viewcode-back" href="../../api/generated/verde.VectorSpline2D.html#verde.VectorSpline2D.predict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Evaluate the fitted gridder on the given set of points.</span>
 
 <span class="sd">        Requires a fitted estimator (see :meth:`~verde.VectorSpline2D.fit`).</span>
@@ -753,8 +754,8 @@ document.write(`
 <span class="sd">            A tuple ``(east_component, north_component)`` of arrays with the</span>
 <span class="sd">            predicted vector data values at each point.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;force_&quot;</span><span class="p">])</span>
+<span class="sd">        """</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">"force_"</span><span class="p">])</span>
         <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_coords</span>
         <span class="n">east</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">cast</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
@@ -763,7 +764,7 @@ document.write(`
             <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">npoints</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">east</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span>
             <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">npoints</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">east</span><span class="o">.</span><span class="n">dtype</span><span class="p">),</span>
         <span class="p">)</span>
-        <span class="k">if</span> <span class="n">parse_engine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;numba&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">parse_engine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"numba"</span><span class="p">:</span>
             <span class="n">components</span> <span class="o">=</span> <span class="n">predict_2d_numba</span><span class="p">(</span>
                 <span class="n">east</span><span class="p">,</span>
                 <span class="n">north</span><span class="p">,</span>
@@ -792,8 +793,8 @@ document.write(`
 
 <div class="viewcode-block" id="VectorSpline2D.jacobian">
 <a class="viewcode-back" href="../../api/generated/verde.VectorSpline2D.html#verde.VectorSpline2D.jacobian">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">jacobian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">force_coords</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">jacobian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">force_coords</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"float64"</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Make the Jacobian matrix for the 2D coupled elastic deformation.</span>
 
 <span class="sd">        The Jacobian is segmented into 4 parts, each relating a force component</span>
@@ -823,11 +824,11 @@ document.write(`
 <span class="sd">        jacobian : 2D array</span>
 <span class="sd">            The (n_data*2, n_forces*2) Jacobian matrix.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span> <span class="o">=</span> <span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">force_coords</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">east</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">jac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">east</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">force_east</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">parse_engine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;numba&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">parse_engine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"numba"</span><span class="p">:</span>
             <span class="n">jac</span> <span class="o">=</span> <span class="n">jacobian_2d_numba</span><span class="p">(</span>
                 <span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mindist</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">poisson</span><span class="p">,</span> <span class="n">jac</span>
             <span class="p">)</span>
@@ -841,12 +842,12 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">greens_func_2d</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">poisson</span><span class="p">):</span>
-    <span class="s2">&quot;Calculate the Green&#39;s functions for the 2D elastic case.&quot;</span>
+    <span class="s2">"Calculate the Green's functions for the 2D elastic case."</span>
     <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">east</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">north</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="c1"># The mindist factor helps avoid singular matrices when the force and</span>
     <span class="c1"># computation point are too close</span>
     <span class="n">distance</span> <span class="o">+=</span> <span class="n">mindist</span>
-    <span class="c1"># Pre-compute common terms for the Green&#39;s functions of each component</span>
+    <span class="c1"># Pre-compute common terms for the Green's functions of each component</span>
     <span class="n">ln_r</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span> <span class="o">-</span> <span class="n">poisson</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
     <span class="n">over_r2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">poisson</span><span class="p">)</span> <span class="o">/</span> <span class="n">distance</span><span class="o">**</span><span class="mi">2</span>
     <span class="n">green_ee</span> <span class="o">=</span> <span class="n">ln_r</span> <span class="o">+</span> <span class="n">over_r2</span> <span class="o">*</span> <span class="n">north</span><span class="o">**</span><span class="mi">2</span>
@@ -858,7 +859,7 @@ document.write(`
 <span class="k">def</span><span class="w"> </span><span class="nf">predict_2d_numpy</span><span class="p">(</span>
     <span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">poisson</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">vec_east</span><span class="p">,</span> <span class="n">vec_north</span>
 <span class="p">):</span>
-    <span class="s2">&quot;Calculate the predicted data using numpy.&quot;</span>
+    <span class="s2">"Calculate the predicted data using numpy."</span>
     <span class="n">vec_east</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">vec_north</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">nforces</span> <span class="o">=</span> <span class="n">forces</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="mi">2</span>
@@ -872,11 +873,11 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">jacobian_2d_numpy</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">poisson</span><span class="p">,</span> <span class="n">jac</span><span class="p">):</span>
-    <span class="s2">&quot;Calculate the Jacobian matrix using numpy broadcasting.&quot;</span>
+    <span class="s2">"Calculate the Jacobian matrix using numpy broadcasting."</span>
     <span class="n">npoints</span> <span class="o">=</span> <span class="n">east</span><span class="o">.</span><span class="n">size</span>
     <span class="n">nforces</span> <span class="o">=</span> <span class="n">force_east</span><span class="o">.</span><span class="n">size</span>
     <span class="c1"># Reshaping the data coordinates to a column vector will automatically</span>
-    <span class="c1"># build a Green&#39;s functions matrix between each data point and force.</span>
+    <span class="c1"># build a Green's functions matrix between each data point and force.</span>
     <span class="n">green_ee</span><span class="p">,</span> <span class="n">green_nn</span><span class="p">,</span> <span class="n">green_ne</span> <span class="o">=</span> <span class="n">greens_func_2d</span><span class="p">(</span>
         <span class="n">east</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">npoints</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">force_east</span><span class="p">,</span>
         <span class="n">north</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">npoints</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="n">force_north</span><span class="p">,</span>
@@ -894,7 +895,7 @@ document.write(`
 <span class="k">def</span><span class="w"> </span><span class="nf">predict_2d_numba</span><span class="p">(</span>
     <span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">poisson</span><span class="p">,</span> <span class="n">forces</span><span class="p">,</span> <span class="n">vec_east</span><span class="p">,</span> <span class="n">vec_north</span>
 <span class="p">):</span>
-    <span class="s2">&quot;Calculate the predicted data using numba to speed things up.&quot;</span>
+    <span class="s2">"Calculate the predicted data using numba to speed things up."</span>
     <span class="n">nforces</span> <span class="o">=</span> <span class="n">forces</span><span class="o">.</span><span class="n">size</span> <span class="o">//</span> <span class="mi">2</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">numba</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
         <span class="n">vec_east</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
@@ -910,7 +911,7 @@ document.write(`
 
 <span class="nd">@jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">jacobian_2d_numba</span><span class="p">(</span><span class="n">east</span><span class="p">,</span> <span class="n">north</span><span class="p">,</span> <span class="n">force_east</span><span class="p">,</span> <span class="n">force_north</span><span class="p">,</span> <span class="n">mindist</span><span class="p">,</span> <span class="n">poisson</span><span class="p">,</span> <span class="n">jac</span><span class="p">):</span>
-    <span class="s2">&quot;Calculate the Jacobian matrix using numba to speed things up.&quot;</span>
+    <span class="s2">"Calculate the Jacobian matrix using numba to speed things up."</span>
     <span class="n">nforces</span> <span class="o">=</span> <span class="n">force_east</span><span class="o">.</span><span class="n">size</span>
     <span class="n">npoints</span> <span class="o">=</span> <span class="n">east</span><span class="o">.</span><span class="n">size</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">numba</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="n">npoints</span><span class="p">):</span>
@@ -970,7 +971,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>

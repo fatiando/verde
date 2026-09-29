@@ -276,6 +276,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -433,9 +434,9 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">Classes for reducing/aggregating data in blocks.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseEstimator</span>
@@ -446,16 +447,16 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">attach_weights</span><span class="p">(</span><span class="n">reduction</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Create a partial application of reduction with the proper weights attached.</span>
 
 <span class="sd">    Makes a function that calls *reduction* and gives it the weights</span>
 <span class="sd">    corresponding to the index of the particular values it receives. Meant for</span>
 <span class="sd">    used in a groupby aggregation of a pandas.DataFrame. See class BlockReduce.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">weighted_reduction</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
-        <span class="s2">&quot;weighted reduction using the stored from the outer scope weights&quot;</span>
+        <span class="s2">"weighted reduction using the stored from the outer scope weights"</span>
         <span class="n">w</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="n">values</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">reduction</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">w</span><span class="p">)</span>
 
@@ -465,7 +466,7 @@ document.write(`
 <div class="viewcode-block" id="BlockReduce">
 <a class="viewcode-back" href="../../api/generated/verde.BlockReduce.html#verde.BlockReduce">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BlockReduce</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Apply a reduction/aggregation operation to the data in blocks/windows.</span>
 
 <span class="sd">    Returns the reduced data value for each block along with the associated</span>
@@ -474,7 +475,7 @@ document.write(`
 
 <span class="sd">    If a data region to be divided into blocks is not given, it will be the</span>
 <span class="sd">    bounding region of the data. When using this class to decimate data before</span>
-<span class="sd">    gridding, it&#39;s best to use the same region and spacing as the desired grid.</span>
+<span class="sd">    gridding, it's best to use the same region and spacing as the desired grid.</span>
 
 <span class="sd">    The size of the blocks can be specified by the *spacing* parameter.</span>
 <span class="sd">    Alternatively, the number of blocks in the South-North and West-East</span>
@@ -506,7 +507,7 @@ document.write(`
 <span class="sd">    region : list = [W, E, S, N]</span>
 <span class="sd">        The boundaries of a given region in Cartesian or geographic</span>
 <span class="sd">        coordinates.</span>
-<span class="sd">    adjust : {&#39;spacing&#39;, &#39;region&#39;}</span>
+<span class="sd">    adjust : {'spacing', 'region'}</span>
 <span class="sd">        Whether to adjust the spacing or the region if required. Ignored if</span>
 <span class="sd">        *shape* is given instead of *spacing*. Defaults to adjusting the</span>
 <span class="sd">        spacing.</span>
@@ -525,14 +526,14 @@ document.write(`
 <span class="sd">    BlockMean : Apply the mean in blocks. Will output weights.</span>
 <span class="sd">    verde.Chain : Apply filter operations successively on data.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">reduction</span><span class="p">,</span>
         <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">adjust</span><span class="o">=</span><span class="s2">&quot;spacing&quot;</span><span class="p">,</span>
+        <span class="n">adjust</span><span class="o">=</span><span class="s2">"spacing"</span><span class="p">,</span>
         <span class="n">center_coordinates</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">drop_coords</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -548,7 +549,7 @@ document.write(`
 <div class="viewcode-block" id="BlockReduce.filter">
 <a class="viewcode-back" href="../../api/generated/verde.BlockReduce.html#verde.BlockReduce.filter">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: A003</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Apply the blocked aggregation to the given data.</span>
 
 <span class="sd">        Returns the reduced data value for each block along with the associated</span>
@@ -589,7 +590,7 @@ document.write(`
 <span class="sd">        blocked_data : array</span>
 <span class="sd">            The block reduced data values.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">check_fit_input</span><span class="p">(</span>
             <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
@@ -604,14 +605,14 @@ document.write(`
             <span class="n">reduction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduction</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">reduction</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;data</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">attach_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+                <span class="s2">"data</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">attach_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
             <span class="p">}</span>
-        <span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;data</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">comp</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">)}</span>
-        <span class="n">columns</span><span class="p">[</span><span class="s2">&quot;block&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
-        <span class="n">blocked</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;block&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">reduction</span><span class="p">)</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"data</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">comp</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">)}</span>
+        <span class="n">columns</span><span class="p">[</span><span class="s2">"block"</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
+        <span class="n">blocked</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"block"</span><span class="p">)</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">reduction</span><span class="p">)</span>
         <span class="n">blocked_data</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">blocked</span><span class="p">[</span><span class="s2">&quot;data</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)])</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">blocked</span><span class="p">[</span><span class="s2">"data</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)])</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="n">blocked_coords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_block_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">blocks</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">blocked_data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -620,7 +621,7 @@ document.write(`
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_block_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">block_coordinates</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Calculate a coordinate assigned to each block.</span>
 
 <span class="sd">        If self.center_coordinates, the coordinates will be the center of each</span>
@@ -655,25 +656,25 @@ document.write(`
 <span class="sd">            ``False``, it will contain (``easting``, ``northing``,</span>
 <span class="sd">            ``vertical``, ...).</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Doing the coordinates separately from the data because in case of</span>
         <span class="c1"># weights the reduction applied to then is different (no weights</span>
         <span class="c1"># ever)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop_coords</span><span class="p">:</span>
             <span class="n">coordinates</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
         <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;coordinate</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span>
+            <span class="s2">"coordinate</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">coord</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
         <span class="p">}</span>
-        <span class="n">coords</span><span class="p">[</span><span class="s2">&quot;block&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
+        <span class="n">coords</span><span class="p">[</span><span class="s2">"block"</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
         <span class="n">table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
-        <span class="n">grouped</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;block&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="p">)</span>
+        <span class="n">grouped</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"block"</span><span class="p">)</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">center_coordinates</span><span class="p">:</span>
             <span class="n">unique</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">block_coord</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">block_coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">]):</span>
-                <span class="n">grouped</span><span class="p">[</span><span class="s2">&quot;coordinate</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">block_coord</span><span class="p">[</span><span class="n">unique</span><span class="p">])</span>
+                <span class="n">grouped</span><span class="p">[</span><span class="s2">"coordinate</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">block_coord</span><span class="p">[</span><span class="n">unique</span><span class="p">])</span>
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
-            <span class="n">grouped</span><span class="p">[</span><span class="s2">&quot;coordinate</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
+            <span class="n">grouped</span><span class="p">[</span><span class="s2">"coordinate</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
         <span class="p">)</span></div>
 
 
@@ -681,7 +682,7 @@ document.write(`
 <div class="viewcode-block" id="BlockMean">
 <a class="viewcode-back" href="../../api/generated/verde.BlockMean.html#verde.BlockMean">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BlockMean</span><span class="p">(</span><span class="n">BlockReduce</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Apply a (weighted) mean to the data in blocks/windows.</span>
 
 <span class="sd">    Returns the mean data value for each block along with the associated</span>
@@ -706,17 +707,17 @@ document.write(`
 
 <span class="sd">    Using the propagated uncertainties may be more adequate if your data is</span>
 <span class="sd">    smooth in each block but have very different uncertainties. The propagation</span>
-<span class="sd">    will preserve a low weight for data that have large uncertainties but don&#39;t</span>
+<span class="sd">    will preserve a low weight for data that have large uncertainties but don't</span>
 <span class="sd">    vary much inside the block.</span>
 
 <span class="sd">    The weighted variance should be used when the data vary a lot in each block</span>
 <span class="sd">    but have very similar uncertainties. This is also the best choice if your</span>
-<span class="sd">    input weights aren&#39;t ``1/uncertainty**2`` but are a relative importance of</span>
+<span class="sd">    input weights aren't ``1/uncertainty**2`` but are a relative importance of</span>
 <span class="sd">    the data instead.</span>
 
 <span class="sd">    If a data region to be divided into blocks is not given, it will be the</span>
 <span class="sd">    bounding region of the data. When using this class to decimate data before</span>
-<span class="sd">    gridding, it&#39;s best to use the same region and spacing as the desired grid.</span>
+<span class="sd">    gridding, it's best to use the same region and spacing as the desired grid.</span>
 
 <span class="sd">    The size of the blocks can be specified by the *spacing* parameter.</span>
 <span class="sd">    Alternatively, the number of blocks in the South-North and West-East</span>
@@ -745,7 +746,7 @@ document.write(`
 <span class="sd">    region : list = [W, E, S, N]</span>
 <span class="sd">        The boundaries of a given region in Cartesian or geographic</span>
 <span class="sd">        coordinates.</span>
-<span class="sd">    adjust : {&#39;spacing&#39;, &#39;region&#39;}</span>
+<span class="sd">    adjust : {'spacing', 'region'}</span>
 <span class="sd">        Whether to adjust the spacing or the region if required. Ignored if</span>
 <span class="sd">        *shape* is given instead of *spacing*. Defaults to adjusting the</span>
 <span class="sd">        spacing.</span>
@@ -771,13 +772,13 @@ document.write(`
 <span class="sd">    BlockReduce : Apply the mean in blocks. Will output weights.</span>
 <span class="sd">    verde.Chain : Apply filter operations successively on data.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">adjust</span><span class="o">=</span><span class="s2">&quot;spacing&quot;</span><span class="p">,</span>
+        <span class="n">adjust</span><span class="o">=</span><span class="s2">"spacing"</span><span class="p">,</span>
         <span class="n">center_coordinates</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">uncertainty</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -797,7 +798,7 @@ document.write(`
 <div class="viewcode-block" id="BlockMean.filter">
 <a class="viewcode-back" href="../../api/generated/verde.BlockMean.html#verde.BlockMean.filter">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: A003</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Apply the blocked mean to the given data.</span>
 
 <span class="sd">        Returns the reduced data value for each block along with the associated</span>
@@ -835,15 +836,15 @@ document.write(`
 <span class="sd">        blocked_weights : array or tuple of arrays</span>
 <span class="sd">            The weights calculated for the blocked data values.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">check_fit_input</span><span class="p">(</span>
             <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">w</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Weights are required for uncertainty propagation.&quot;</span>
-                <span class="s2">&quot;Either provide weights (as 1/uncertainty**2) or use &quot;</span>
-                <span class="s2">&quot;&#39;uncertainty=False&#39; to produce variance weights instead.&quot;</span>
+                <span class="s2">"Weights are required for uncertainty propagation."</span>
+                <span class="s2">"Either provide weights (as 1/uncertainty**2) or use "</span>
+                <span class="s2">"'uncertainty=False' to produce variance weights instead."</span>
             <span class="p">)</span>
         <span class="n">blocks</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">block_split</span><span class="p">(</span>
             <span class="n">coordinates</span><span class="p">,</span>
@@ -853,13 +854,13 @@ document.write(`
             <span class="n">region</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">region</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">ncomps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;data</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">comp</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">)}</span>
-        <span class="n">columns</span><span class="p">[</span><span class="s2">&quot;block&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"data</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">comp</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">)}</span>
+        <span class="n">columns</span><span class="p">[</span><span class="s2">"block"</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">w</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">):</span>
             <span class="n">mean</span><span class="p">,</span> <span class="n">variance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blocked_mean_variance</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="p">),</span> <span class="n">ncomps</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">columns</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                <span class="p">{</span><span class="s2">&quot;weight</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">comp</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">weights</span><span class="p">)}</span>
+                <span class="p">{</span><span class="s2">"weight</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">comp</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">weights</span><span class="p">)}</span>
             <span class="p">)</span>
             <span class="n">table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty</span><span class="p">:</span>
@@ -875,63 +876,63 @@ document.write(`
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_blocked_mean_uncertainty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">ncomps</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Calculate the blocked weighted mean and propagate the uncertainty from</span>
 <span class="sd">        the points to the weighted mean. Assumes that the weights are</span>
 <span class="sd">        1/uncertainty**2. The propagated uncertainty of the weighted mean</span>
 <span class="sd">        squared is 1/(sum(1/uncertainty**2)) = 1/sum(weights).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">reduction</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;data</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">attach_weights</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="p">,</span> <span class="n">table</span><span class="p">[</span><span class="s2">&quot;weight</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
+            <span class="s2">"data</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">attach_weights</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="p">,</span> <span class="n">table</span><span class="p">[</span><span class="s2">"weight</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomps</span><span class="p">)</span>
         <span class="p">}</span>
         <span class="c1"># The reduction of the weights will turn them into the propagated</span>
         <span class="c1"># uncertainty squared.</span>
         <span class="n">reduction</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-            <span class="p">{</span><span class="s2">&quot;weight</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomps</span><span class="p">)}</span>
+            <span class="p">{</span><span class="s2">"weight</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomps</span><span class="p">)}</span>
         <span class="p">)</span>
-        <span class="n">blocked</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;block&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">reduction</span><span class="p">)</span>
-        <span class="n">variance</span> <span class="o">=</span> <span class="p">[</span><span class="n">blocked</span><span class="p">[</span><span class="s2">&quot;weight</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomps</span><span class="p">)]</span>
-        <span class="n">mean</span> <span class="o">=</span> <span class="p">[</span><span class="n">blocked</span><span class="p">[</span><span class="s2">&quot;data</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomps</span><span class="p">)]</span>
+        <span class="n">blocked</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"block"</span><span class="p">)</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">reduction</span><span class="p">)</span>
+        <span class="n">variance</span> <span class="o">=</span> <span class="p">[</span><span class="n">blocked</span><span class="p">[</span><span class="s2">"weight</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomps</span><span class="p">)]</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="p">[</span><span class="n">blocked</span><span class="p">[</span><span class="s2">"data</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomps</span><span class="p">)]</span>
         <span class="k">return</span> <span class="n">mean</span><span class="p">,</span> <span class="n">variance</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_blocked_mean_variance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">ncomps</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Calculate the blocked mean and variance without weights.</span>
 <span class="sd">        The variance will be the unweighted variance of the blocks.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">reduction</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;data</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="p">((</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;variance&quot;</span><span class="p">,</span> <span class="s2">&quot;var&quot;</span><span class="p">))</span>
+            <span class="s2">"data</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="p">((</span><span class="s2">"mean"</span><span class="p">,</span> <span class="s2">"mean"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"variance"</span><span class="p">,</span> <span class="s2">"var"</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomps</span><span class="p">)</span>
         <span class="p">}</span>
-        <span class="n">blocked</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;block&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">reduction</span><span class="p">)</span>
-        <span class="n">mean</span> <span class="o">=</span> <span class="p">[</span><span class="n">blocked</span><span class="p">[</span><span class="s2">&quot;data</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="s2">&quot;mean&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomps</span><span class="p">)]</span>
-        <span class="n">variance</span> <span class="o">=</span> <span class="p">[</span><span class="n">blocked</span><span class="p">[</span><span class="s2">&quot;data</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="s2">&quot;variance&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomps</span><span class="p">)]</span>
+        <span class="n">blocked</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"block"</span><span class="p">)</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">reduction</span><span class="p">)</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="p">[</span><span class="n">blocked</span><span class="p">[</span><span class="s2">"data</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="s2">"mean"</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomps</span><span class="p">)]</span>
+        <span class="n">variance</span> <span class="o">=</span> <span class="p">[</span><span class="n">blocked</span><span class="p">[</span><span class="s2">"data</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="s2">"variance"</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomps</span><span class="p">)]</span>
         <span class="k">return</span> <span class="n">mean</span><span class="p">,</span> <span class="n">variance</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_blocked_mean_variance_weighted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">ncomps</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Calculate the blocked weighted mean and the weighted variance.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Need to make a function that takes a group (a pandas.DataFrame) and</span>
-        <span class="c1"># calculates the weighted average and weighted variance. Can&#39;t use</span>
+        <span class="c1"># calculates the weighted average and weighted variance. Can't use</span>
         <span class="c1"># reduce because the weighted variance requires the average, so it</span>
         <span class="c1"># would be calculated twice. This way, we can calculate the average</span>
         <span class="c1"># only once and return both values.</span>
-        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mean</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomps</span><span class="p">)]</span>
-        <span class="n">columns</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="s2">&quot;variance</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomps</span><span class="p">))</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"mean</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomps</span><span class="p">)]</span>
+        <span class="n">columns</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="s2">"variance</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomps</span><span class="p">))</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">weighted_average_variance</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">"""</span>
 <span class="sd">            Calculate the weighted average and variance of a group.</span>
 <span class="sd">            Returns a DataFrame with columns for the averages and variances.</span>
-<span class="sd">            &quot;&quot;&quot;</span>
+<span class="sd">            """</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">ncomps</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncomps</span><span class="p">):</span>
-                <span class="n">weights</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="s2">&quot;weight</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
-                <span class="n">values</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="s2">&quot;data</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
+                <span class="n">weights</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="s2">"weight</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="s2">"data</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
                 <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
                 <span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">ncomps</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduction</span><span class="p">(</span>
                     <span class="p">(</span><span class="n">values</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span>
@@ -940,7 +941,7 @@ document.write(`
                 <span class="n">data</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">size</span><span class="p">)),</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span>
             <span class="p">)</span>
 
-        <span class="n">blocked</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;block&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">weighted_average_variance</span><span class="p">)</span>
+        <span class="n">blocked</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"block"</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">weighted_average_variance</span><span class="p">)</span>
         <span class="n">mean</span> <span class="o">=</span> <span class="p">[</span><span class="n">blocked</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">[:</span><span class="n">ncomps</span><span class="p">]]</span>
         <span class="n">variance</span> <span class="o">=</span> <span class="p">[</span><span class="n">blocked</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">[</span><span class="n">ncomps</span><span class="p">:]]</span>
         <span class="k">return</span> <span class="n">mean</span><span class="p">,</span> <span class="n">variance</span></div>
@@ -988,7 +989,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>

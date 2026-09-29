@@ -276,6 +276,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -433,9 +434,9 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">General utilities.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">dask</span>
@@ -464,7 +465,7 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">dispatch</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">delayed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Decide how to wrap a function for Dask depending on the options given.</span>
 
 <span class="sd">    Parameters</span>
@@ -482,7 +483,7 @@ document.write(`
 <span class="sd">    function : callable</span>
 <span class="sd">        The function wrapped in Dask.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">delayed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -491,13 +492,13 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_engine</span><span class="p">(</span><span class="n">engine</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Choose the best engine available and check if it&#39;s valid.</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Choose the best engine available and check if it's valid.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    engine : str</span>
-<span class="sd">        The name of the engine. If ``&quot;auto&quot;`` will favor numba if it&#39;s</span>
+<span class="sd">        The name of the engine. If ``"auto"`` will favor numba if it's</span>
 <span class="sd">        available.</span>
 
 <span class="sd">    Returns</span>
@@ -505,19 +506,19 @@ document.write(`
 <span class="sd">    engine : str</span>
 <span class="sd">        The name of the engine that should be used.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">engines</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="s2">&quot;numba&quot;</span><span class="p">,</span> <span class="s2">&quot;numpy&quot;</span><span class="p">}</span>
+<span class="sd">    """</span>
+    <span class="n">engines</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"auto"</span><span class="p">,</span> <span class="s2">"numba"</span><span class="p">,</span> <span class="s2">"numpy"</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">engine</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">engines</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid engine &#39;</span><span class="si">{}</span><span class="s2">&#39;. Must be in </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">engines</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">engine</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Invalid engine '</span><span class="si">{}</span><span class="s2">'. Must be in </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">engines</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">engine</span> <span class="o">==</span> <span class="s2">"auto"</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">numba</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s2">&quot;numpy&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;numba&quot;</span>
+            <span class="k">return</span> <span class="s2">"numpy"</span>
+        <span class="k">return</span> <span class="s2">"numba"</span>
     <span class="k">return</span> <span class="n">engine</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">dummy_jit</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># noqa: U100</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Replace numba.jit if not installed with a function that raises RunTimeError</span>
 
 <span class="sd">    Use as a decorator.</span>
@@ -530,18 +531,18 @@ document.write(`
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    function</span>
-<span class="sd">        A function that raises :class:`RunTimeError` warning that numba isn&#39;t</span>
+<span class="sd">        A function that raises :class:`RunTimeError` warning that numba isn't</span>
 <span class="sd">        installed.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">dummy_decorator</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
-        <span class="s2">&quot;The actual decorator&quot;</span>
+        <span class="s2">"The actual decorator"</span>
 
         <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">dummy_function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># noqa: U100</span>
-            <span class="s2">&quot;Just raise an exception.&quot;</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Could not find numba.&quot;</span><span class="p">)</span>
+            <span class="s2">"Just raise an exception."</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"Could not find numba."</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">dummy_function</span>
 
@@ -550,8 +551,8 @@ document.write(`
 
 <div class="viewcode-block" id="variance_to_weights">
 <a class="viewcode-back" href="../../api/generated/verde.variance_to_weights.html#verde.variance_to_weights">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">variance_to_weights</span><span class="p">(</span><span class="n">variance</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-15</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">variance_to_weights</span><span class="p">(</span><span class="n">variance</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-15</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"float64"</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Converts data variances to weights for gridding.</span>
 
 <span class="sd">    Weights are defined as the inverse of the variance, scaled to the range</span>
@@ -591,7 +592,7 @@ document.write(`
 <span class="sd">    [1.  1.  0.1]</span>
 <span class="sd">    [1.   0.5  0.25]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">variance</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="n">variance</span><span class="p">)</span>
     <span class="n">weights</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">variance</span><span class="p">:</span>
@@ -613,7 +614,7 @@ document.write(`
 <div class="viewcode-block" id="maxabs">
 <a class="viewcode-back" href="../../api/generated/verde.maxabs.html#verde.maxabs">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">maxabs</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">percentile</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Calculate the maximum absolute value of the given array(s).</span>
 
 <span class="sd">    Use this to set the limits of your colorbars and center them on zero.</span>
@@ -649,7 +650,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; float(result)</span>
 <span class="sd">    500.0</span>
 
-<span class="sd">    If the array contains NaNs, we&#39;ll use the ``nan`` version of of the numpy</span>
+<span class="sd">    If the array contains NaNs, we'll use the ``nan`` version of of the numpy</span>
 <span class="sd">    functions by default. You can turn this off through the *nan* argument.</span>
 
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
@@ -670,7 +671,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; float(result)</span>
 <span class="sd">    25.0</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">percentile</span> <span class="o">==</span> <span class="mi">100</span><span class="p">:</span>
@@ -683,11 +684,11 @@ document.write(`
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">percentile</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Invalid &#39;percentile&#39; of type &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">percentile</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39;. Percentile must be a float or an integer.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Invalid 'percentile' of type '</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">percentile</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">'. Percentile must be a float or an integer."</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">percentile</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">percentile</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Invalid &#39;percentile&#39; value of &#39;</span><span class="si">{</span><span class="n">percentile</span><span class="si">}</span><span class="s2">&#39;. It must be between 0 and 100.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Invalid 'percentile' value of '</span><span class="si">{</span><span class="n">percentile</span><span class="si">}</span><span class="s2">'. It must be between 0 and 100."</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">nan</span><span class="p">:</span>
             <span class="n">nppercentile</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span>
@@ -701,7 +702,7 @@ document.write(`
 <div class="viewcode-block" id="minmax">
 <a class="viewcode-back" href="../../api/generated/verde.minmax.html#verde.minmax">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">minmax</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">min_percentile</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_percentile</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Calculate the minimum and maximum values of the given array(s).</span>
 
 <span class="sd">    Use this to set the limits of your colorbars for non-diverging data.</span>
@@ -738,7 +739,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; tuple(map(float, result))</span>
 <span class="sd">    (-500.0, 100.0)</span>
 
-<span class="sd">    If the array contains NaNs, we&#39;ll use the ``nan`` version of of the numpy</span>
+<span class="sd">    If the array contains NaNs, we'll use the ``nan`` version of of the numpy</span>
 <span class="sd">    functions by default. You can turn this off through the *nan* argument.</span>
 
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
@@ -765,7 +766,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; tuple(map(float, result))</span>
 <span class="sd">    (-10.0, 25.0)</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># ensure percentiles are numeric</span>
     <span class="n">min_percentile</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">min_percentile</span><span class="p">)</span>
     <span class="n">max_percentile</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">max_percentile</span><span class="p">)</span>
@@ -775,15 +776,15 @@ document.write(`
     <span class="c1"># checks</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">min_percentile</span> <span class="o">&lt;=</span> <span class="n">max_percentile</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;&#39;min_percentile&#39; (</span><span class="si">{</span><span class="n">min_percentile</span><span class="si">}</span><span class="s2">) must not be larger than &#39;max_percentile&#39; (</span><span class="si">{</span><span class="n">max_percentile</span><span class="si">}</span><span class="s2">).&quot;</span>
+            <span class="sa">f</span><span class="s2">"'min_percentile' (</span><span class="si">{</span><span class="n">min_percentile</span><span class="si">}</span><span class="s2">) must not be larger than 'max_percentile' (</span><span class="si">{</span><span class="n">max_percentile</span><span class="si">}</span><span class="s2">)."</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="n">min_percentile</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;min_percentile&#39; (</span><span class="si">{</span><span class="n">min_percentile</span><span class="si">}</span><span class="s2">). Must be between 0 and 100.&quot;</span>
+            <span class="sa">f</span><span class="s2">"Invalid value for 'min_percentile' (</span><span class="si">{</span><span class="n">min_percentile</span><span class="si">}</span><span class="s2">). Must be between 0 and 100."</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="n">max_percentile</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Invalid value for &#39;max_percentile&#39; (</span><span class="si">{</span><span class="n">max_percentile</span><span class="si">}</span><span class="s2">). Must be between 0 and 100.&quot;</span>
+            <span class="sa">f</span><span class="s2">"Invalid value for 'max_percentile' (</span><span class="si">{</span><span class="n">max_percentile</span><span class="si">}</span><span class="s2">). Must be between 0 and 100."</span>
         <span class="p">)</span>
 
     <span class="c1"># determine which functions to use</span>
@@ -814,10 +815,10 @@ document.write(`
     <span class="n">coordinates</span><span class="p">,</span>
     <span class="n">data</span><span class="p">,</span>
     <span class="n">data_names</span><span class="p">,</span>
-    <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;northing&quot;</span><span class="p">,</span> <span class="s2">&quot;easting&quot;</span><span class="p">),</span>
+    <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">"northing"</span><span class="p">,</span> <span class="s2">"easting"</span><span class="p">),</span>
     <span class="n">extra_coords_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Create an :class:`xarray.Dataset` grid from 2D numpy arrays</span>
 
 <span class="sd">    This function creates an :class:`xarray.Dataset` out of 2d gridded data</span>
@@ -862,8 +863,8 @@ document.write(`
 <span class="sd">        The names of the northing and easting data dimensions, respectively,</span>
 <span class="sd">        in the output grid. Must be defined in the following order: northing</span>
 <span class="sd">        dimension, easting dimension.</span>
-<span class="sd">        **NOTE: This is an exception to the &quot;easting&quot; then</span>
-<span class="sd">        &quot;northing&quot; pattern but is required for compatibility with xarray.**</span>
+<span class="sd">        **NOTE: This is an exception to the "easting" then</span>
+<span class="sd">        "northing" pattern but is required for compatibility with xarray.**</span>
 <span class="sd">        The easting and northing coordinates in the :class:`xarray.Dataset`</span>
 <span class="sd">        will have the same names as the passed dimensions.</span>
 <span class="sd">    extra_coords_names : str or list (optional)</span>
@@ -887,7 +888,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; # And some dummy data for each point of the grid</span>
 <span class="sd">    &gt;&gt;&gt; data = np.ones_like(coordinates[0])</span>
 <span class="sd">    &gt;&gt;&gt; # Create the grid</span>
-<span class="sd">    &gt;&gt;&gt; grid = make_xarray_grid(coordinates, data, data_names=&quot;dummy&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; grid = make_xarray_grid(coordinates, data, data_names="dummy")</span>
 <span class="sd">    &gt;&gt;&gt; print(grid) # doctest: +SKIP</span>
 <span class="sd">    &lt;xarray.Dataset&gt;</span>
 <span class="sd">    Dimensions:   (northing: 2, easting: 3)</span>
@@ -905,7 +906,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; data = np.ones_like(coordinates[0])</span>
 <span class="sd">    &gt;&gt;&gt; # Create the grid</span>
 <span class="sd">    &gt;&gt;&gt; grid = make_xarray_grid(</span>
-<span class="sd">    ...     coordinates, data, data_names=&quot;dummy&quot;, extra_coords_names=&quot;upward&quot;</span>
+<span class="sd">    ...     coordinates, data, data_names="dummy", extra_coords_names="upward"</span>
 <span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; print(grid) # doctest: +SKIP</span>
 <span class="sd">    &lt;xarray.Dataset&gt;</span>
@@ -925,7 +926,7 @@ document.write(`
 <span class="sd">    ...     coordinates,</span>
 <span class="sd">    ...     data=None,</span>
 <span class="sd">    ...     data_names=None,</span>
-<span class="sd">    ...     extra_coords_names=&quot;upward&quot;,</span>
+<span class="sd">    ...     extra_coords_names="upward",</span>
 <span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; print(grid) # doctest: +SKIP</span>
 <span class="sd">    &lt;xarray.Dataset&gt;</span>
@@ -937,7 +938,7 @@ document.write(`
 <span class="sd">    Data variables:</span>
 <span class="sd">        *empty*</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Check dimensions of the horizontal coordinates of the regular grid</span>
     <span class="n">ndim</span> <span class="o">=</span> <span class="n">get_ndim_horizontal_coords</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
     <span class="c1"># Convert 2d horizontal coordinates to 1d arrays if needed</span>
@@ -964,7 +965,7 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">meshgrid_to_1d</span><span class="p">(</span><span class="n">coordinates</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Convert horizontal coordinates of 2d grids into 1d-arrays</span>
 
 <span class="sd">    Parameters</span>
@@ -1003,7 +1004,7 @@ document.write(`
 <span class="sd">     [2. 2. 2. 2. 2.]</span>
 <span class="sd">     [2. 2. 2. 2. 2.]</span>
 <span class="sd">     [2. 2. 2. 2. 2.]]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">check_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
     <span class="n">check_meshgrid</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
     <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">][:,</span> <span class="mi">0</span><span class="p">]</span>
@@ -1012,7 +1013,7 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">meshgrid_from_1d</span><span class="p">(</span><span class="n">coordinates</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Convert horizontal coordinates of 2d grids from 1d-arrays to 2d-arrays</span>
 
 <span class="sd">    Parameters</span>
@@ -1057,11 +1058,11 @@ document.write(`
 <span class="sd">     [ 2.  2.  2.  2.  2.]</span>
 <span class="sd">     [ 3.  3.  3.  3.  3.]]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">ndim</span> <span class="o">=</span> <span class="n">get_ndim_horizontal_coords</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Horizontal coordinates must be 1d-arrays. &quot;</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ndim</span><span class="si">}</span><span class="s2">d-arrays provided.&quot;</span>
+            <span class="s2">"Horizontal coordinates must be 1d-arrays. "</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">ndim</span><span class="si">}</span><span class="s2">d-arrays provided."</span>
         <span class="p">)</span>
     <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">coordinates</span> <span class="o">=</span> <span class="p">(</span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">,</span> <span class="o">*</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
@@ -1070,7 +1071,7 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_ndim_horizontal_coords</span><span class="p">(</span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Return the number of dimensions of the horizontal coordinates arrays</span>
 
 <span class="sd">    Also check if the two horizontal coordinates arrays same dimensions.</span>
@@ -1086,19 +1087,19 @@ document.write(`
 <span class="sd">    -------</span>
 <span class="sd">    ndim : int</span>
 <span class="sd">        Number of dimensions of the ``easting`` and ``northing`` arrays.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">ndim</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">easting</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">ndim</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">northing</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Horizontal coordinates dimensions mismatch. &quot;</span>
-            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;The easting coordinate array has </span><span class="si">{</span><span class="n">easting</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> dimensions &quot;</span>
-            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;while the northing has </span><span class="si">{</span><span class="n">northing</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="s2">"Horizontal coordinates dimensions mismatch. "</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">"The easting coordinate array has </span><span class="si">{</span><span class="n">easting</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> dimensions "</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">"while the northing has </span><span class="si">{</span><span class="n">northing</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2">."</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">ndim</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">check_meshgrid</span><span class="p">(</span><span class="n">coordinates</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Check if the given horizontal coordinates define a meshgrid</span>
 
 <span class="sd">    Check if the rows of the easting 2d-array are identical. Check if the</span>
@@ -1113,13 +1114,13 @@ document.write(`
 <span class="sd">        vertical, etc. Only easting and northing will be checked, the other</span>
 <span class="sd">        ones will be ignored. All arrays must be 2d and need to have the same</span>
 <span class="sd">        *shape*.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Get the two first arrays as easting and northing</span>
     <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
     <span class="c1"># Check if all elements of easting along the zeroth axis are equal</span>
     <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;Invalid coordinate array. The arrays for the horizontal &quot;</span>
-        <span class="o">+</span> <span class="s2">&quot;coordinates of a regular grid must be meshgrids.&quot;</span>
+        <span class="s2">"Invalid coordinate array. The arrays for the horizontal "</span>
+        <span class="o">+</span> <span class="s2">"coordinates of a regular grid must be meshgrids."</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">easting</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">easting</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
@@ -1132,7 +1133,7 @@ document.write(`
 <div class="viewcode-block" id="grid_to_table">
 <a class="viewcode-back" href="../../api/generated/verde.grid_to_table.html#verde.grid_to_table">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">grid_to_table</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Convert a grid to a table with the values and coordinates of each point.</span>
 
 <span class="sd">    Takes a 2D grid as input, extracts the coordinates and runs them through</span>
@@ -1150,8 +1151,8 @@ document.write(`
 <span class="sd">    table : :class:`pandas.DataFrame`</span>
 <span class="sd">        Table with coordinates and variable values for each point in the grid.</span>
 <span class="sd">        Column names are taken from the grid. If *grid* is a</span>
-<span class="sd">        :class:`xarray.DataArray` that doesn&#39;t have a ``name`` attribute</span>
-<span class="sd">        defined, the column with data values will be called ``&quot;scalars&quot;``.</span>
+<span class="sd">        :class:`xarray.DataArray` that doesn't have a ``name`` attribute</span>
+<span class="sd">        defined, the column with data values will be called ``"scalars"``.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -1162,33 +1163,33 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; temperature = xr.DataArray(</span>
 <span class="sd">    ...     np.arange(20).reshape((4, 5)),</span>
 <span class="sd">    ...     coords=(np.arange(4), np.arange(5, 10)),</span>
-<span class="sd">    ...     dims=[&#39;northing&#39;, &#39;easting&#39;]</span>
+<span class="sd">    ...     dims=['northing', 'easting']</span>
 <span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; print(temperature.values)</span>
 <span class="sd">    [[ 0  1  2  3  4]</span>
 <span class="sd">     [ 5  6  7  8  9]</span>
 <span class="sd">     [10 11 12 13 14]</span>
 <span class="sd">     [15 16 17 18 19]]</span>
-<span class="sd">    &gt;&gt;&gt; # For DataArrays, the data column will be &quot;scalars&quot; by default</span>
+<span class="sd">    &gt;&gt;&gt; # For DataArrays, the data column will be "scalars" by default</span>
 <span class="sd">    &gt;&gt;&gt; table = grid_to_table(temperature)</span>
 <span class="sd">    &gt;&gt;&gt; list(sorted(table.columns))</span>
-<span class="sd">    [&#39;easting&#39;, &#39;northing&#39;, &#39;scalars&#39;]</span>
+<span class="sd">    ['easting', 'northing', 'scalars']</span>
 <span class="sd">    &gt;&gt;&gt; print(table.scalars.values)</span>
 <span class="sd">    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]</span>
 <span class="sd">    &gt;&gt;&gt; print(table.northing.values)</span>
 <span class="sd">    [0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]</span>
 <span class="sd">    &gt;&gt;&gt; print(table.easting.values)</span>
 <span class="sd">    [5 6 7 8 9 5 6 7 8 9 5 6 7 8 9 5 6 7 8 9]</span>
-<span class="sd">    &gt;&gt;&gt; # If the DataArray defines a &quot;name&quot;, we will use that instead</span>
-<span class="sd">    &gt;&gt;&gt; temperature.name = &quot;temperature_K&quot;</span>
+<span class="sd">    &gt;&gt;&gt; # If the DataArray defines a "name", we will use that instead</span>
+<span class="sd">    &gt;&gt;&gt; temperature.name = "temperature_K"</span>
 <span class="sd">    &gt;&gt;&gt; table = grid_to_table(temperature)</span>
 <span class="sd">    &gt;&gt;&gt; list(sorted(table.columns))</span>
-<span class="sd">    [&#39;easting&#39;, &#39;northing&#39;, &#39;temperature_K&#39;]</span>
+<span class="sd">    ['easting', 'northing', 'temperature_K']</span>
 <span class="sd">    &gt;&gt;&gt; # Conversion of Datasets will preserve the data variable names</span>
-<span class="sd">    &gt;&gt;&gt; grid = xr.Dataset({&quot;temperature&quot;: temperature})</span>
+<span class="sd">    &gt;&gt;&gt; grid = xr.Dataset({"temperature": temperature})</span>
 <span class="sd">    &gt;&gt;&gt; table  = grid_to_table(grid)</span>
 <span class="sd">    &gt;&gt;&gt; list(sorted(table.columns))</span>
-<span class="sd">    [&#39;easting&#39;, &#39;northing&#39;, &#39;temperature&#39;]</span>
+<span class="sd">    ['easting', 'northing', 'temperature']</span>
 <span class="sd">    &gt;&gt;&gt; print(table.temperature.values)</span>
 <span class="sd">    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]</span>
 <span class="sd">    &gt;&gt;&gt; print(table.northing.values)</span>
@@ -1199,12 +1200,12 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; wind_speed = xr.DataArray(</span>
 <span class="sd">    ...     np.arange(20, 40).reshape((4, 5)),</span>
 <span class="sd">    ...     coords=(np.arange(4), np.arange(5, 10)),</span>
-<span class="sd">    ...     dims=[&#39;northing&#39;, &#39;easting&#39;]</span>
+<span class="sd">    ...     dims=['northing', 'easting']</span>
 <span class="sd">    ... )</span>
-<span class="sd">    &gt;&gt;&gt; grid[&#39;wind_speed&#39;] = wind_speed</span>
+<span class="sd">    &gt;&gt;&gt; grid['wind_speed'] = wind_speed</span>
 <span class="sd">    &gt;&gt;&gt; table = grid_to_table(grid)</span>
 <span class="sd">    &gt;&gt;&gt; list(sorted(table.columns))</span>
-<span class="sd">    [&#39;easting&#39;, &#39;northing&#39;, &#39;temperature&#39;, &#39;wind_speed&#39;]</span>
+<span class="sd">    ['easting', 'northing', 'temperature', 'wind_speed']</span>
 <span class="sd">    &gt;&gt;&gt; print(table.northing.values)</span>
 <span class="sd">    [0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]</span>
 <span class="sd">    &gt;&gt;&gt; print(table.easting.values)</span>
@@ -1217,28 +1218,28 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; temperature = xr.DataArray(</span>
 <span class="sd">    ...     np.arange(20).reshape((4, 5)),</span>
 <span class="sd">    ...     coords=(np.arange(4), np.arange(5, 10)),</span>
-<span class="sd">    ...     dims=[&#39;northing&#39;, &#39;easting&#39;]</span>
+<span class="sd">    ...     dims=['northing', 'easting']</span>
 <span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; temperature = temperature.assign_coords(</span>
 <span class="sd">    ...     upward=(</span>
-<span class="sd">    ...         (&quot;northing&quot;, &quot;easting&quot;),</span>
+<span class="sd">    ...         ("northing", "easting"),</span>
 <span class="sd">    ...         np.arange(20).reshape((4, 5))</span>
 <span class="sd">    ...     )</span>
 <span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; table = grid_to_table(temperature)</span>
 <span class="sd">    &gt;&gt;&gt; list(sorted(table.columns))</span>
-<span class="sd">    [&#39;easting&#39;, &#39;northing&#39;, &#39;scalars&#39;, &#39;upward&#39;]</span>
+<span class="sd">    ['easting', 'northing', 'scalars', 'upward']</span>
 <span class="sd">    &gt;&gt;&gt; print(table.upward.values)</span>
 <span class="sd">    [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="s2">&quot;data_vars&quot;</span><span class="p">):</span>
-        <span class="c1"># It&#39;s a Dataset</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="s2">"data_vars"</span><span class="p">):</span>
+        <span class="c1"># It's a Dataset</span>
         <span class="n">data_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">data_vars</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
         <span class="n">data_arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">grid</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">data_names</span><span class="p">]</span>
         <span class="n">coordinate_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">data_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># It&#39;s a DataArray</span>
-        <span class="n">data_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">grid</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">grid</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;scalars&quot;</span><span class="p">]</span>
+        <span class="c1"># It's a DataArray</span>
+        <span class="n">data_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">grid</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">grid</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">"scalars"</span><span class="p">]</span>
         <span class="n">data_arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">grid</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">()]</span>
         <span class="n">coordinate_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
     <span class="n">north</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">coordinate_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
@@ -1258,7 +1259,7 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">kdtree</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">use_pykdtree</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Create a KD-Tree object with the given coordinate arrays.</span>
 
 <span class="sd">    Automatically transposes and flattens the coordinate arrays into a single</span>
@@ -1287,7 +1288,7 @@ document.write(`
 <span class="sd">    tree : :class:`scipy.spatial.cKDTree` or ``pykdtree.kdtree.KDTree``</span>
 <span class="sd">        The tree instance initialized with the given coordinates and arguments.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)))</span>
     <span class="k">if</span> <span class="n">pyKDTree</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">use_pykdtree</span><span class="p">:</span>
         <span class="n">tree</span> <span class="o">=</span> <span class="n">pyKDTree</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -1297,7 +1298,7 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">partition_by_sum</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">parts</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Partition an array into parts of approximately equal sum.</span>
 
 <span class="sd">    Does not change the order of the array elements.</span>
@@ -1383,11 +1384,11 @@ document.write(`
 <span class="sd">    [8 1 2] 11</span>
 <span class="sd">    [6 3 3] 12</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">array</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">parts</span> <span class="o">&gt;</span> <span class="n">array</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Cannot partition an array of size </span><span class="si">{}</span><span class="s2"> into </span><span class="si">{}</span><span class="s2"> parts of equal sum.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s2">"Cannot partition an array of size </span><span class="si">{}</span><span class="s2"> into </span><span class="si">{}</span><span class="s2"> parts of equal sum."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">array</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">parts</span>
             <span class="p">)</span>
         <span class="p">)</span>
@@ -1403,13 +1404,13 @@ document.write(`
     <span class="c1"># side so that we find cumsum[i - 1] &lt;= ideal &lt; cumsum[i]. This way, if a</span>
     <span class="c1"># part has ideal sum, the last element (i - 1) will be included. Otherwise,</span>
     <span class="c1"># we would never have ideal sums.</span>
-    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">cumulative_sum</span><span class="p">,</span> <span class="n">ideal_cumsum</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">cumulative_sum</span><span class="p">,</span> <span class="n">ideal_cumsum</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="s2">"right"</span><span class="p">)</span>
     <span class="c1"># Check for repeated split points, which indicates that there is no way to</span>
     <span class="c1"># split the array.</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">indices</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Could not find partition points to split the array into </span><span class="si">{}</span><span class="s2"> parts &quot;</span>
-            <span class="s2">&quot;of equal sum.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+            <span class="s2">"Could not find partition points to split the array into </span><span class="si">{}</span><span class="s2"> parts "</span>
+            <span class="s2">"of equal sum."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">indices</span>
 </pre></div>
@@ -1455,7 +1456,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>

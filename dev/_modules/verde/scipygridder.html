@@ -276,6 +276,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -433,9 +434,9 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">Gridders that use scipy.interpolate as the backend.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
 
@@ -452,7 +453,7 @@ document.write(`
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">_BaseScipyGridder</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    A scipy.interpolate base gridder for scalar Cartesian data.</span>
 
 <span class="sd">    Used as a base class for each of the SciPy ND based interpolators.</span>
@@ -467,17 +468,17 @@ document.write(`
 <span class="sd">        :meth:`~verde.ScipyGridder.grid` and</span>
 <span class="sd">        :meth:`~verde.ScipyGridder.scatter` methods.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_interpolator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return the SciPy interpolator class and any extra keyword arguments as</span>
 <span class="sd">        a dictionary.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Fit the interpolator to the given data.</span>
 
 <span class="sd">        The data region is captured and used as default for the</span>
@@ -501,10 +502,10 @@ document.write(`
 <span class="sd">        self</span>
 <span class="sd">            Returns this gridder instance for chaining operations.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">warn</span><span class="p">(</span>
-                <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> does not support weights and they will be ignored.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">"</span><span class="si">{}</span><span class="s2"> does not support weights and they will be ignored."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
                 <span class="p">)</span>
             <span class="p">)</span>
@@ -517,7 +518,7 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Interpolate data on the given set of points.</span>
 
 <span class="sd">        Requires a fitted gridder (see :meth:`~verde._BaseScipyGridder.fit`).</span>
@@ -535,8 +536,8 @@ document.write(`
 <span class="sd">        data : array</span>
 <span class="sd">            The data values interpolated on the given points.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;interpolator_&quot;</span><span class="p">])</span>
+<span class="sd">        """</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">"interpolator_"</span><span class="p">])</span>
         <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolator_</span><span class="p">((</span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">))</span>
 
@@ -544,7 +545,7 @@ document.write(`
 <div class="viewcode-block" id="Linear">
 <a class="viewcode-back" href="../../api/generated/verde.Linear.html#verde.Linear">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Linear</span><span class="p">(</span><span class="n">_BaseScipyGridder</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Piecewise linear interpolation.</span>
 
 <span class="sd">    Provides a Verde interface to</span>
@@ -566,25 +567,25 @@ document.write(`
 <span class="sd">        interpolator. Used as the default region for the</span>
 <span class="sd">        :meth:`~verde.Linear.grid` method.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rescale</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rescale</span> <span class="o">=</span> <span class="n">rescale</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_interpolator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return the SciPy interpolator class and any extra keyword arguments as</span>
 <span class="sd">        a dictionary.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">LinearNDInterpolator</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;rescale&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rescale</span><span class="p">}</span></div>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">LinearNDInterpolator</span><span class="p">,</span> <span class="p">{</span><span class="s2">"rescale"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rescale</span><span class="p">}</span></div>
 
 
 
 <div class="viewcode-block" id="Cubic">
 <a class="viewcode-back" href="../../api/generated/verde.Cubic.html#verde.Cubic">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Cubic</span><span class="p">(</span><span class="n">_BaseScipyGridder</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Piecewise cubic interpolation.</span>
 
 <span class="sd">    Provides a Verde interface to</span>
@@ -606,25 +607,25 @@ document.write(`
 <span class="sd">        interpolator. Used as the default region for the</span>
 <span class="sd">        :meth:`~verde.Cubic.grid` method.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rescale</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rescale</span> <span class="o">=</span> <span class="n">rescale</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_interpolator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return the SciPy interpolator class and any extra keyword arguments as</span>
 <span class="sd">        a dictionary.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">CloughTocher2DInterpolator</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;rescale&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rescale</span><span class="p">}</span></div>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">CloughTocher2DInterpolator</span><span class="p">,</span> <span class="p">{</span><span class="s2">"rescale"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rescale</span><span class="p">}</span></div>
 
 
 
 <div class="viewcode-block" id="ScipyGridder">
 <a class="viewcode-back" href="../../api/generated/verde.ScipyGridder.html#verde.ScipyGridder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ScipyGridder</span><span class="p">(</span><span class="n">_BaseScipyGridder</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    A scipy.interpolate based gridder for scalar Cartesian data.</span>
 
 <span class="sd">    .. warning::</span>
@@ -641,8 +642,8 @@ document.write(`
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    method : str</span>
-<span class="sd">        The interpolation method. Either ``&#39;linear&#39;``, ``&#39;nearest&#39;``, or</span>
-<span class="sd">        ``&#39;cubic&#39;``.</span>
+<span class="sd">        The interpolation method. Either ``'linear'``, ``'nearest'``, or</span>
+<span class="sd">        ``'cubic'``.</span>
 <span class="sd">    extra_args : None or dict</span>
 <span class="sd">        Extra keyword arguments to pass to the scipy interpolator class. See</span>
 <span class="sd">        the documentation for each interpolator for a list of possible</span>
@@ -658,23 +659,23 @@ document.write(`
 <span class="sd">        :meth:`~verde.ScipyGridder.grid` and</span>
 <span class="sd">        :meth:`~verde.ScipyGridder.scatter` methods.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;cubic&quot;</span><span class="p">,</span> <span class="n">extra_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"cubic"</span><span class="p">,</span> <span class="n">extra_args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">extra_args</span> <span class="o">=</span> <span class="n">extra_args</span>
         <span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;verde.ScipyGridder is deprecated and will be removed in Verde &quot;</span>
-            <span class="s2">&quot;v2.0.0. Use the KNeighbors, Linear, and Cubic classes instead.&quot;</span><span class="p">,</span>
+            <span class="s2">"verde.ScipyGridder is deprecated and will be removed in Verde "</span>
+            <span class="s2">"v2.0.0. Use the KNeighbors, Linear, and Cubic classes instead."</span><span class="p">,</span>
             <span class="ne">FutureWarning</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_interpolator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return the SciPy interpolator class and any extra keyword arguments as</span>
 <span class="sd">        a dictionary.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">classes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
             <span class="n">linear</span><span class="o">=</span><span class="n">LinearNDInterpolator</span><span class="p">,</span>
             <span class="n">nearest</span><span class="o">=</span><span class="n">NearestNDInterpolator</span><span class="p">,</span>
@@ -682,7 +683,7 @@ document.write(`
         <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Invalid interpolation method &#39;</span><span class="si">{}</span><span class="s2">&#39;. Must be one of </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">"Invalid interpolation method '</span><span class="si">{}</span><span class="s2">'. Must be one of </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">classes</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
                 <span class="p">)</span>
             <span class="p">)</span>
@@ -735,7 +736,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>

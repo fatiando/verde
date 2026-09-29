@@ -276,6 +276,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -433,9 +434,9 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">Functions for automating model selection through cross-validation.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -452,7 +453,7 @@ document.write(`
 <div class="viewcode-block" id="BlockShuffleSplit">
 <a class="viewcode-back" href="../../api/generated/verde.BlockShuffleSplit.html#verde.BlockShuffleSplit">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BlockShuffleSplit</span><span class="p">(</span><span class="n">BaseBlockCrossValidator</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Random permutation of spatial blocks cross-validator.</span>
 
 <span class="sd">    Yields indices to split data into training and test sets. Data are first</span>
@@ -534,37 +535,37 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; shuffle = BlockShuffleSplit(spacing=1.5, n_splits=3, random_state=0)</span>
 <span class="sd">    &gt;&gt;&gt; # These are the 1D indices of the points belonging to each set</span>
 <span class="sd">    &gt;&gt;&gt; for train, test in shuffle.split(X):</span>
-<span class="sd">    ...     print(&quot;Train: {} Test: {}&quot;.format(train, test))</span>
+<span class="sd">    ...     print("Train: {} Test: {}".format(train, test))</span>
 <span class="sd">    Train: [ 0  1  2  3  4  5  6  7 10 11 14 15] Test: [ 8  9 12 13]</span>
 <span class="sd">    Train: [ 2  3  6  7  8  9 10 11 12 13 14 15] Test: [0 1 4 5]</span>
 <span class="sd">    Train: [ 0  1  4  5  8  9 10 11 12 13 14 15] Test: [2 3 6 7]</span>
 <span class="sd">    &gt;&gt;&gt; # A better way to visualize this is to create a 2D array and put</span>
-<span class="sd">    &gt;&gt;&gt; # &quot;train&quot; or &quot;test&quot; in the corresponding locations.</span>
+<span class="sd">    &gt;&gt;&gt; # "train" or "test" in the corresponding locations.</span>
 <span class="sd">    &gt;&gt;&gt; shape = coords[0].shape</span>
-<span class="sd">    &gt;&gt;&gt; mask = np.full(shape=shape, fill_value=&quot;     &quot;)</span>
+<span class="sd">    &gt;&gt;&gt; mask = np.full(shape=shape, fill_value="     ")</span>
 <span class="sd">    &gt;&gt;&gt; for iteration, (train, test) in enumerate(shuffle.split(X)):</span>
 <span class="sd">    ...     # The index needs to be converted to 2D so we can index our matrix.</span>
-<span class="sd">    ...     mask[np.unravel_index(train, shape)] = &quot;train&quot;</span>
-<span class="sd">    ...     mask[np.unravel_index(test, shape)] = &quot; test&quot;</span>
-<span class="sd">    ...     print(&quot;Iteration {}:&quot;.format(iteration))</span>
+<span class="sd">    ...     mask[np.unravel_index(train, shape)] = "train"</span>
+<span class="sd">    ...     mask[np.unravel_index(test, shape)] = " test"</span>
+<span class="sd">    ...     print("Iteration {}:".format(iteration))</span>
 <span class="sd">    ...     print(mask)</span>
 <span class="sd">    Iteration 0:</span>
-<span class="sd">    [[&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="sd">     [&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="sd">     [&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]]</span>
+<span class="sd">    [['train' 'train' 'train' 'train']</span>
+<span class="sd">     ['train' 'train' 'train' 'train']</span>
+<span class="sd">     [' test' ' test' 'train' 'train']</span>
+<span class="sd">     [' test' ' test' 'train' 'train']]</span>
 <span class="sd">    Iteration 1:</span>
-<span class="sd">    [[&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="sd">     [&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]]</span>
+<span class="sd">    [[' test' ' test' 'train' 'train']</span>
+<span class="sd">     [' test' ' test' 'train' 'train']</span>
+<span class="sd">     ['train' 'train' 'train' 'train']</span>
+<span class="sd">     ['train' 'train' 'train' 'train']]</span>
 <span class="sd">    Iteration 2:</span>
-<span class="sd">    [[&#39;train&#39; &#39;train&#39; &#39; test&#39; &#39; test&#39;]</span>
-<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39; test&#39; &#39; test&#39;]</span>
-<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]]</span>
+<span class="sd">    [['train' 'train' ' test' ' test']</span>
+<span class="sd">     ['train' 'train' ' test' ' test']</span>
+<span class="sd">     ['train' 'train' 'train' 'train']</span>
+<span class="sd">     ['train' 'train' 'train' 'train']]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -579,7 +580,7 @@ document.write(`
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">balancing</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;The *balancing* argument must be &gt;= 1. To disable balancing, use 1.&quot;</span>
+                <span class="s2">"The *balancing* argument must be &gt;= 1. To disable balancing, use 1."</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">test_size</span> <span class="o">=</span> <span class="n">test_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">train_size</span> <span class="o">=</span> <span class="n">train_size</span>
@@ -587,7 +588,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">balancing</span> <span class="o">=</span> <span class="n">balancing</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_iter_test_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803,U100</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Generates integer indices corresponding to test sets.</span>
 
 <span class="sd">        Runs several iterations until a split is found that yields blocks with</span>
@@ -610,13 +611,13 @@ document.write(`
 <span class="sd">        test : ndarray</span>
 <span class="sd">            The testing set indices for that split.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="n">block_split</span><span class="p">(</span>
             <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]),</span>
             <span class="n">spacing</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spacing</span><span class="p">,</span>
             <span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
             <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">adjust</span><span class="o">=</span><span class="s2">&quot;spacing&quot;</span><span class="p">,</span>
+            <span class="n">adjust</span><span class="o">=</span><span class="s2">"spacing"</span><span class="p">,</span>
         <span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">block_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
         <span class="c1"># Generate many more splits so that we can pick and choose the ones</span>
@@ -650,7 +651,7 @@ document.write(`
 <div class="viewcode-block" id="BlockKFold">
 <a class="viewcode-back" href="../../api/generated/verde.BlockKFold.html#verde.BlockKFold">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BlockKFold</span><span class="p">(</span><span class="n">BaseBlockCrossValidator</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    K-Folds over spatial blocks cross-validator.</span>
 
 <span class="sd">    Yields indices to split data into training and test sets. Data are first</span>
@@ -720,43 +721,43 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; kfold = BlockKFold(spacing=1.5, n_splits=4)</span>
 <span class="sd">    &gt;&gt;&gt; # These are the 1D indices of the points belonging to each set</span>
 <span class="sd">    &gt;&gt;&gt; for train, test in kfold.split(X):</span>
-<span class="sd">    ...     print(&quot;Train: {} Test: {}&quot;.format(train, test))</span>
+<span class="sd">    ...     print("Train: {} Test: {}".format(train, test))</span>
 <span class="sd">    Train: [ 2  3  6  7  8  9 10 11 12 13 14 15] Test: [0 1 4 5]</span>
 <span class="sd">    Train: [ 0  1  4  5  8  9 10 11 12 13 14 15] Test: [2 3 6 7]</span>
 <span class="sd">    Train: [ 0  1  2  3  4  5  6  7 10 11 14 15] Test: [ 8  9 12 13]</span>
 <span class="sd">    Train: [ 0  1  2  3  4  5  6  7  8  9 12 13] Test: [10 11 14 15]</span>
 <span class="sd">    &gt;&gt;&gt; # A better way to visualize this is to create a 2D array and put</span>
-<span class="sd">    &gt;&gt;&gt; # &quot;train&quot; or &quot;test&quot; in the corresponding locations.</span>
+<span class="sd">    &gt;&gt;&gt; # "train" or "test" in the corresponding locations.</span>
 <span class="sd">    &gt;&gt;&gt; shape = coords[0].shape</span>
-<span class="sd">    &gt;&gt;&gt; mask = np.full(shape=shape, fill_value=&quot;     &quot;)</span>
+<span class="sd">    &gt;&gt;&gt; mask = np.full(shape=shape, fill_value="     ")</span>
 <span class="sd">    &gt;&gt;&gt; for iteration, (train, test) in enumerate(kfold.split(X)):</span>
 <span class="sd">    ...     # The index needs to be converted to 2D so we can index our matrix.</span>
-<span class="sd">    ...     mask[np.unravel_index(train, shape)] = &quot;train&quot;</span>
-<span class="sd">    ...     mask[np.unravel_index(test, shape)] = &quot; test&quot;</span>
-<span class="sd">    ...     print(&quot;Iteration {}:&quot;.format(iteration))</span>
+<span class="sd">    ...     mask[np.unravel_index(train, shape)] = "train"</span>
+<span class="sd">    ...     mask[np.unravel_index(test, shape)] = " test"</span>
+<span class="sd">    ...     print("Iteration {}:".format(iteration))</span>
 <span class="sd">    ...     print(mask)</span>
 <span class="sd">    Iteration 0:</span>
-<span class="sd">    [[&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="sd">     [&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]]</span>
+<span class="sd">    [[' test' ' test' 'train' 'train']</span>
+<span class="sd">     [' test' ' test' 'train' 'train']</span>
+<span class="sd">     ['train' 'train' 'train' 'train']</span>
+<span class="sd">     ['train' 'train' 'train' 'train']]</span>
 <span class="sd">    Iteration 1:</span>
-<span class="sd">    [[&#39;train&#39; &#39;train&#39; &#39; test&#39; &#39; test&#39;]</span>
-<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39; test&#39; &#39; test&#39;]</span>
-<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]]</span>
+<span class="sd">    [['train' 'train' ' test' ' test']</span>
+<span class="sd">     ['train' 'train' ' test' ' test']</span>
+<span class="sd">     ['train' 'train' 'train' 'train']</span>
+<span class="sd">     ['train' 'train' 'train' 'train']]</span>
 <span class="sd">    Iteration 2:</span>
-<span class="sd">    [[&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="sd">     [&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="sd">     [&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]]</span>
+<span class="sd">    [['train' 'train' 'train' 'train']</span>
+<span class="sd">     ['train' 'train' 'train' 'train']</span>
+<span class="sd">     [' test' ' test' 'train' 'train']</span>
+<span class="sd">     [' test' ' test' 'train' 'train']]</span>
 <span class="sd">    Iteration 3:</span>
-<span class="sd">    [[&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39; test&#39; &#39; test&#39;]</span>
-<span class="sd">     [&#39;train&#39; &#39;train&#39; &#39; test&#39; &#39; test&#39;]]</span>
+<span class="sd">    [['train' 'train' 'train' 'train']</span>
+<span class="sd">     ['train' 'train' 'train' 'train']</span>
+<span class="sd">     ['train' 'train' ' test' ' test']</span>
+<span class="sd">     ['train' 'train' ' test' ' test']]</span>
 
-<span class="sd">    For spatial data, it&#39;s often good to shuffle the blocks before assigning</span>
+<span class="sd">    For spatial data, it's often good to shuffle the blocks before assigning</span>
 <span class="sd">    them to folds:</span>
 
 <span class="sd">    &gt;&gt;&gt; # Set the random_state to make sure we always get the same result.</span>
@@ -764,7 +765,7 @@ document.write(`
 <span class="sd">    ...     spacing=1.5, n_splits=4, shuffle=True, random_state=123,</span>
 <span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; for train, test in kfold.split(X):</span>
-<span class="sd">    ...     print(&quot;Train: {} Test: {}&quot;.format(train, test))</span>
+<span class="sd">    ...     print("Train: {} Test: {}".format(train, test))</span>
 <span class="sd">    Train: [ 0  1  2  3  4  5  6  7  8  9 12 13] Test: [10 11 14 15]</span>
 <span class="sd">    Train: [ 2  3  6  7  8  9 10 11 12 13 14 15] Test: [0 1 4 5]</span>
 <span class="sd">    Train: [ 0  1  4  5  8  9 10 11 12 13 14 15] Test: [2 3 6 7]</span>
@@ -775,7 +776,7 @@ document.write(`
 <span class="sd">    equal to the number of blocks (4). With real data the effects would be more</span>
 <span class="sd">    dramatic.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -789,7 +790,7 @@ document.write(`
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">n_splits</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Number of splits must be &gt;=2 for BlockKFold. Given </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">"Number of splits must be &gt;=2 for BlockKFold. Given </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="n">n_splits</span>
                 <span class="p">)</span>
             <span class="p">)</span>
@@ -798,7 +799,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">balance</span> <span class="o">=</span> <span class="n">balance</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_iter_test_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803,U100</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Generates integer indices corresponding to test sets.</span>
 
 <span class="sd">        Parameters</span>
@@ -818,20 +819,20 @@ document.write(`
 <span class="sd">        test : ndarray</span>
 <span class="sd">            The testing set indices for that split.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">labels</span> <span class="o">=</span> <span class="n">block_split</span><span class="p">(</span>
             <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]),</span>
             <span class="n">spacing</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spacing</span><span class="p">,</span>
             <span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
             <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">adjust</span><span class="o">=</span><span class="s2">&quot;spacing&quot;</span><span class="p">,</span>
+            <span class="n">adjust</span><span class="o">=</span><span class="s2">"spacing"</span><span class="p">,</span>
         <span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">block_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span> <span class="o">&gt;</span> <span class="n">block_ids</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Number of k-fold splits (</span><span class="si">{}</span><span class="s2">) cannot be greater than the number of &quot;</span>
-                <span class="s2">&quot;blocks (</span><span class="si">{}</span><span class="s2">). Either decrease n_splits or increase the number of &quot;</span>
-                <span class="s2">&quot;blocks.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">,</span> <span class="n">block_ids</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+                <span class="s2">"Number of k-fold splits (</span><span class="si">{}</span><span class="s2">) cannot be greater than the number of "</span>
+                <span class="s2">"blocks (</span><span class="si">{}</span><span class="s2">). Either decrease n_splits or increase the number of "</span>
+                <span class="s2">"blocks."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span><span class="p">,</span> <span class="n">block_ids</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span><span class="p">:</span>
             <span class="n">check_random_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">block_ids</span><span class="p">)</span>
@@ -842,10 +843,10 @@ document.write(`
                 <span class="n">folds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">block_ids</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="n">split_points</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                    <span class="s2">&quot;Could not balance folds to have approximately the same &quot;</span>
-                    <span class="s2">&quot;number of data points. Dividing into folds with equal &quot;</span>
-                    <span class="s2">&quot;number of blocks instead. Decreasing n_splits or increasing &quot;</span>
-                    <span class="s2">&quot;the number of blocks may help.&quot;</span><span class="p">,</span>
+                    <span class="s2">"Could not balance folds to have approximately the same "</span>
+                    <span class="s2">"number of data points. Dividing into folds with equal "</span>
+                    <span class="s2">"number of blocks instead. Decreasing n_splits or increasing "</span>
+                    <span class="s2">"the number of blocks may help."</span><span class="p">,</span>
                     <span class="ne">UserWarning</span><span class="p">,</span>
                     <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                 <span class="p">)</span>
@@ -863,7 +864,7 @@ document.write(`
 <span class="k">def</span><span class="w"> </span><span class="nf">train_test_split</span><span class="p">(</span>
     <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Split a dataset into a training and a testing set for cross-validation.</span>
 
 <span class="sd">    Similar to :func:`sklearn.model_selection.train_test_split` but is tuned to</span>
@@ -931,14 +932,14 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; coordinates = (np.arange(4), np.arange(-4, 0))</span>
 <span class="sd">    &gt;&gt;&gt; train, test = train_test_split(coordinates, data, random_state=0)</span>
 <span class="sd">    &gt;&gt;&gt; # The training set:</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;coords:&quot;, train[0])</span>
+<span class="sd">    &gt;&gt;&gt; print("coords:", train[0])</span>
 <span class="sd">    coords: (array([3, 1, 0]), array([-1, -3, -4]))</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;data:&quot;, train[1])</span>
+<span class="sd">    &gt;&gt;&gt; print("data:", train[1])</span>
 <span class="sd">    data: (array([70, 30, 10]),)</span>
 <span class="sd">    &gt;&gt;&gt; # The testing set:</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;coords:&quot;, test[0])</span>
+<span class="sd">    &gt;&gt;&gt; print("coords:", test[0])</span>
 <span class="sd">    coords: (array([2]), array([-2]))</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;data:&quot;, test[1])</span>
+<span class="sd">    &gt;&gt;&gt; print("data:", test[1])</span>
 <span class="sd">    data: (array([50]),)</span>
 
 <span class="sd">    If weights are given, they will also be split among the sets:</span>
@@ -948,18 +949,18 @@ document.write(`
 <span class="sd">    ...     coordinates, data, weights, random_state=0,</span>
 <span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; # The training set:</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;coords:&quot;, train[0])</span>
+<span class="sd">    &gt;&gt;&gt; print("coords:", train[0])</span>
 <span class="sd">    coords: (array([3, 1, 0]), array([-1, -3, -4]))</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;data:&quot;, train[1])</span>
+<span class="sd">    &gt;&gt;&gt; print("data:", train[1])</span>
 <span class="sd">    data: (array([70, 30, 10]),)</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;weights:&quot;, train[2])</span>
+<span class="sd">    &gt;&gt;&gt; print("weights:", train[2])</span>
 <span class="sd">    weights: (array([5, 3, 4]),)</span>
 <span class="sd">    &gt;&gt;&gt; # The testing set:</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;coords:&quot;, test[0])</span>
+<span class="sd">    &gt;&gt;&gt; print("coords:", test[0])</span>
 <span class="sd">    coords: (array([2]), array([-2]))</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;data:&quot;, test[1])</span>
+<span class="sd">    &gt;&gt;&gt; print("data:", test[1])</span>
 <span class="sd">    data: (array([50]),)</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;weights:&quot;, test[2])</span>
+<span class="sd">    &gt;&gt;&gt; print("weights:", test[2])</span>
 <span class="sd">    weights: (array([2]),)</span>
 
 <span class="sd">    Data with multiple components can also be split:</span>
@@ -967,14 +968,14 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; data = (np.array([10, 30, 50, 70]), np.array([-70, -50, -30, -10]))</span>
 <span class="sd">    &gt;&gt;&gt; train, test = train_test_split(coordinates, data, random_state=0)</span>
 <span class="sd">    &gt;&gt;&gt; # The training set:</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;coords:&quot;, train[0])</span>
+<span class="sd">    &gt;&gt;&gt; print("coords:", train[0])</span>
 <span class="sd">    coords: (array([3, 1, 0]), array([-1, -3, -4]))</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;data:&quot;, train[1])</span>
+<span class="sd">    &gt;&gt;&gt; print("data:", train[1])</span>
 <span class="sd">    data: (array([70, 30, 10]), array([-10, -50, -70]))</span>
 <span class="sd">    &gt;&gt;&gt; # The testing set:</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;coords:&quot;, test[0])</span>
+<span class="sd">    &gt;&gt;&gt; print("coords:", test[0])</span>
 <span class="sd">    coords: (array([2]), array([-2]))</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;data:&quot;, test[1])</span>
+<span class="sd">    &gt;&gt;&gt; print("data:", test[1])</span>
 <span class="sd">    data: (array([50]), array([-30]))</span>
 
 <span class="sd">    To split data grouped in spatial blocks:</span>
@@ -989,19 +990,19 @@ document.write(`
 <span class="sd">    ...     coordinates, data, random_state=0, spacing=1.5,</span>
 <span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; # The training set:</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;coords:&quot;, train[0][0], train[0][1], sep=&quot;\n&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print("coords:", train[0][0], train[0][1], sep="\n")</span>
 <span class="sd">    coords:</span>
 <span class="sd">    [0. 1. 2. 3. 0. 1. 2. 3. 2. 3. 2. 3.]</span>
 <span class="sd">    [4. 4. 4. 4. 5. 5. 5. 5. 6. 6. 7. 7.]</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;data:&quot;, train[1])</span>
+<span class="sd">    &gt;&gt;&gt; print("data:", train[1])</span>
 <span class="sd">    data: (array([ 0,  1,  2,  3,  4,  5,  6,  7, 10, 11, 14, 15]),)</span>
 <span class="sd">    &gt;&gt;&gt; # The testing set:</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;coords:&quot;, test[0][0], test[0][1])</span>
+<span class="sd">    &gt;&gt;&gt; print("coords:", test[0][0], test[0][1])</span>
 <span class="sd">    coords: [0. 1. 0. 1.] [6. 6. 7. 7.]</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;data:&quot;, test[1])</span>
+<span class="sd">    &gt;&gt;&gt; print("data:", test[1])</span>
 <span class="sd">    data: (array([ 8,  9, 12, 13]),)</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">check_fit_input</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">spacing</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
@@ -1029,7 +1030,7 @@ document.write(`
     <span class="n">delayed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">scoring</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Score an estimator/gridder using cross-validation.</span>
 
 <span class="sd">    Similar to :func:`sklearn.model_selection.cross_val_score` but modified to</span>
@@ -1040,13 +1041,13 @@ document.write(`
 <span class="sd">    cross-validation class from scikit-learn or Verde can be passed in through</span>
 <span class="sd">    the *cv* argument.</span>
 
-<span class="sd">    The score is calculated using the estimator/gridder&#39;s ``.score`` method by</span>
+<span class="sd">    The score is calculated using the estimator/gridder's ``.score`` method by</span>
 <span class="sd">    default. Alternatively, use the *scoring* parameter to specify a different</span>
 <span class="sd">    scoring function (e.g., mean square error, mean absolute error, etc).</span>
 
 <span class="sd">    Can optionally run in parallel using :mod:`dask`. To do this, use</span>
 <span class="sd">    ``delayed=True`` to dispatch computations with :func:`dask.delayed.delayed`</span>
-<span class="sd">    instead of running them. The returned scores will be &quot;lazy&quot; objects instead</span>
+<span class="sd">    instead of running them. The returned scores will be "lazy" objects instead</span>
 <span class="sd">    of the actual scores. To trigger the computation (which Dask will run in</span>
 <span class="sd">    parallel) call the `.compute()` method of each score or</span>
 <span class="sd">    :func:`dask.compute` with the entire list of scores.</span>
@@ -1088,7 +1089,7 @@ document.write(`
 <span class="sd">        A scoring function (or name of a function) known to scikit-learn. See</span>
 <span class="sd">        the description of *scoring* in</span>
 <span class="sd">        :func:`sklearn.model_selection.cross_val_score` for details. If None,</span>
-<span class="sd">        will fall back to the estimator&#39;s ``.score`` method.</span>
+<span class="sd">        will fall back to the estimator's ``.score`` method.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -1117,7 +1118,7 @@ document.write(`
 <span class="sd">    should be equal to 1.</span>
 
 <span class="sd">    &gt;&gt;&gt; scores = cross_val_score(model, coords, data)</span>
-<span class="sd">    &gt;&gt;&gt; print(&#39;, &#39;.join([&#39;{:.2f}&#39;.format(score) for score in scores]))</span>
+<span class="sd">    &gt;&gt;&gt; print(', '.join(['{:.2f}'.format(score) for score in scores]))</span>
 <span class="sd">    1.00, 1.00, 1.00, 1.00, 1.00</span>
 
 <span class="sd">    There are 5 scores because the default cross-validator is</span>
@@ -1126,15 +1127,15 @@ document.write(`
 <span class="sd">    To calculate the score with a different metric, use the *scoring* argument:</span>
 
 <span class="sd">    &gt;&gt;&gt; scores = cross_val_score(</span>
-<span class="sd">    ...     model, coords, data, scoring=&quot;neg_mean_squared_error&quot;,</span>
+<span class="sd">    ...     model, coords, data, scoring="neg_mean_squared_error",</span>
 <span class="sd">    ... )</span>
-<span class="sd">    &gt;&gt;&gt; print(&#39;, &#39;.join([&#39;{:.2f}&#39;.format(-score) for score in scores]))</span>
+<span class="sd">    &gt;&gt;&gt; print(', '.join(['{:.2f}'.format(-score) for score in scores]))</span>
 <span class="sd">    0.00, 0.00, 0.00, 0.00, 0.00</span>
 
 <span class="sd">    In this case, we calculated the (negative) mean squared error (MSE) which</span>
 <span class="sd">    measures the distance between test data and predictions. This way, 0 is the</span>
 <span class="sd">    best possible value meaning that the data and prediction are the same. The</span>
-<span class="sd">    &quot;neg&quot; part indicates that this is the negative mean square error. This is</span>
+<span class="sd">    "neg" part indicates that this is the negative mean square error. This is</span>
 <span class="sd">    required because scikit-learn assumes that higher scores are always treated</span>
 <span class="sd">    as better (which is the opposite for MSE). For display, we take the</span>
 <span class="sd">    negative of the score to get the actual MSE.</span>
@@ -1146,7 +1147,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; # Set the random state to get reproducible results</span>
 <span class="sd">    &gt;&gt;&gt; cross_validator = ShuffleSplit(n_splits=3, random_state=0)</span>
 <span class="sd">    &gt;&gt;&gt; scores = cross_val_score(model, coords, data, cv=cross_validator)</span>
-<span class="sd">    &gt;&gt;&gt; print(&#39;, &#39;.join([&#39;{:.2f}&#39;.format(score) for score in scores]))</span>
+<span class="sd">    &gt;&gt;&gt; print(', '.join(['{:.2f}'.format(score) for score in scores]))</span>
 <span class="sd">    1.00, 1.00, 1.00</span>
 
 <span class="sd">    Often, spatial data are autocorrelated (points that are close together are</span>
@@ -1161,10 +1162,10 @@ document.write(`
 <span class="sd">    ...     spacing=2, n_splits=3, random_state=0</span>
 <span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; scores = cross_val_score(model, coords, data, cv=cross_validator)</span>
-<span class="sd">    &gt;&gt;&gt; print(&#39;, &#39;.join([&#39;{:.2f}&#39;.format(score) for score in scores]))</span>
+<span class="sd">    &gt;&gt;&gt; print(', '.join(['{:.2f}'.format(score) for score in scores]))</span>
 <span class="sd">    1.00, 1.00, 1.00</span>
 
-<span class="sd">    We didn&#39;t see a difference here since our model and data are perfect. See</span>
+<span class="sd">    We didn't see a difference here since our model and data are perfect. See</span>
 <span class="sd">    :ref:`model_evaluation` for an example with real data.</span>
 
 <span class="sd">    If using many splits, we can speed up computations by running them in</span>
@@ -1178,18 +1179,18 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; # To actually run the computations, call dask.compute</span>
 <span class="sd">    &gt;&gt;&gt; import dask</span>
 <span class="sd">    &gt;&gt;&gt; scores = dask.compute(*scores_delayed)</span>
-<span class="sd">    &gt;&gt;&gt; print(&#39;, &#39;.join([&#39;{:.2f}&#39;.format(score) for score in scores]))</span>
+<span class="sd">    &gt;&gt;&gt; print(', '.join(['{:.2f}'.format(score) for score in scores]))</span>
 <span class="sd">    1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00</span>
 
 <span class="sd">    Note that you must have enough RAM to fit multiple models simultaneously.</span>
 <span class="sd">    So this is best used when fitting several smaller models.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;The &#39;client&#39; parameter of &#39;verde.cross_val_score&#39; is deprecated &quot;</span>
-            <span class="s2">&quot;and will be removed in Verde 2.0.0. &quot;</span>
-            <span class="s2">&quot;Use the &#39;delayed&#39; parameter instead.&quot;</span><span class="p">,</span>
+            <span class="s2">"The 'client' parameter of 'verde.cross_val_score' is deprecated "</span>
+            <span class="s2">"and will be removed in Verde 2.0.0. "</span>
+            <span class="s2">"Use the 'delayed' parameter instead."</span><span class="p">,</span>
             <span class="ne">FutureWarning</span><span class="p">,</span>
             <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="p">)</span>
@@ -1218,9 +1219,9 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">fit_score</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">,</span> <span class="n">scoring</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Fit an estimator on the training data and then score it on the testing data</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">estimator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="o">*</span><span class="n">train_data</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">scoring</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">score</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="o">*</span><span class="n">test_data</span><span class="p">)</span>
@@ -1230,7 +1231,7 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">select</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Index each array in a tuple of arrays.</span>
 
 <span class="sd">    If the arrays tuple contains a ``None``, the entire tuple will be returned</span>
@@ -1256,7 +1257,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; select((None, None, None, None), [1, 2])</span>
 <span class="sd">    (None, None, None, None)</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">arrays</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">i</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">arrays</span>
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">i</span><span class="p">)[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">)</span>
@@ -1303,7 +1304,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>

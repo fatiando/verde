@@ -276,6 +276,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -433,17 +434,17 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">Functions for input and output of grids in less common formats.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
 
 
 <div class="viewcode-block" id="load_surfer">
 <a class="viewcode-back" href="../../api/generated/verde.load_surfer.html#verde.load_surfer">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">load_surfer</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_surfer</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"float64"</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Read data from a Surfer ASCII grid file.</span>
 
 <span class="sd">    This function reads a Surfer grid file, masks any NaNs in the data,</span>
@@ -470,7 +471,7 @@ document.write(`
 <span class="sd">    data : :class:`xarray.DataArray`</span>
 <span class="sd">        A 2D grid with the data.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Surfer ASCII grid structure</span>
     <span class="c1"># DSAA            Surfer ASCII GRD ID</span>
     <span class="c1"># nCols nRows     number of columns and rows</span>
@@ -480,9 +481,9 @@ document.write(`
     <span class="c1"># z11 z21 z31 ... List of Z values</span>
 
     <span class="c1"># Only open a file if given a path instead of a file-like object</span>
-    <span class="n">ispath</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">&quot;readline&quot;</span><span class="p">)</span>
+    <span class="n">ispath</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">"readline"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">ispath</span><span class="p">:</span>
-        <span class="n">input_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>  <span class="c1"># noqa: SIM115</span>
+        <span class="n">input_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span>  <span class="c1"># noqa: SIM115</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">input_file</span> <span class="o">=</span> <span class="n">fname</span>
     <span class="k">try</span><span class="p">:</span>
@@ -492,13 +493,13 @@ document.write(`
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">nans</span><span class="p">):</span>
             <span class="n">field</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span><span class="p">(</span><span class="n">nans</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
         <span class="n">_check_surfer_integrity</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">data_range</span><span class="p">)</span>
-        <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;gridID&quot;</span><span class="p">:</span> <span class="n">grid_id</span><span class="p">}</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"gridID"</span><span class="p">:</span> <span class="n">grid_id</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">ispath</span><span class="p">:</span>
-            <span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fname</span>
-        <span class="n">dims</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;northing&quot;</span><span class="p">,</span> <span class="s2">&quot;easting&quot;</span><span class="p">)</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s2">"file"</span><span class="p">]</span> <span class="o">=</span> <span class="n">fname</span>
+        <span class="n">dims</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"northing"</span><span class="p">,</span> <span class="s2">"easting"</span><span class="p">)</span>
         <span class="n">coords</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;northing&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">region</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-            <span class="s2">&quot;easting&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">region</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="s2">"northing"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">region</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="s2">"easting"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="n">region</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
         <span class="p">}</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">dims</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
     <span class="k">finally</span><span class="p">:</span>
@@ -509,7 +510,7 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_read_surfer_header</span><span class="p">(</span><span class="n">input_file</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Parse the header record of the grid file.</span>
 
 <span class="sd">    The header contains information on the grid shape, region, and the minimum</span>
@@ -532,7 +533,7 @@ document.write(`
 <span class="sd">    data_range : list = [min, max]</span>
 <span class="sd">        The minimum and maximum data values.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># DSAA is a Surfer ASCII GRD ID</span>
     <span class="n">grid_id</span> <span class="o">=</span> <span class="n">input_file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="c1"># Read the grid shape (n_northing, n_easting)</span>
@@ -547,19 +548,19 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_check_surfer_integrity</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">data_range</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Check that the grid matches the information from the header.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">shape</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span>
-            <span class="s2">&quot;Grid shape </span><span class="si">{}</span><span class="s2"> doesn&#39;t match shape read from header </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s2">"Grid shape </span><span class="si">{}</span><span class="s2"> doesn't match shape read from header </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">field</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">shape</span>
             <span class="p">)</span>
         <span class="p">)</span>
     <span class="n">field_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">field</span><span class="o">.</span><span class="n">max</span><span class="p">()]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">field_range</span><span class="p">,</span> <span class="n">data_range</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span>
-            <span class="s2">&quot;Grid data range </span><span class="si">{}</span><span class="s2"> doesn&#39;t match range read from header </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s2">"Grid data range </span><span class="si">{}</span><span class="s2"> doesn't match range read from header </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">field_range</span><span class="p">,</span> <span class="n">data_range</span>
             <span class="p">)</span>
         <span class="p">)</span>
@@ -606,7 +607,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>

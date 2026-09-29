@@ -276,6 +276,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -445,7 +446,7 @@ document.write(`
 <div class="viewcode-block" id="CheckerBoard">
 <a class="viewcode-back" href="../../api/generated/verde.synthetic.CheckerBoard.html#verde.synthetic.CheckerBoard">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CheckerBoard</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Generate synthetic data in a checkerboard pattern.</span>
 
 <span class="sd">    The mathematical model is:</span>
@@ -486,12 +487,12 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; # scatter and profile generate pandas.DataFrame objects</span>
 <span class="sd">    &gt;&gt;&gt; table = synth.scatter()</span>
 <span class="sd">    &gt;&gt;&gt; print(sorted(table.columns))</span>
-<span class="sd">    [&#39;easting&#39;, &#39;northing&#39;, &#39;scalars&#39;]</span>
+<span class="sd">    ['easting', 'northing', 'scalars']</span>
 <span class="sd">    &gt;&gt;&gt; profile = synth.profile(point1=(0, 0), point2=(2500, -2500), size=100)</span>
 <span class="sd">    &gt;&gt;&gt; print(sorted(profile.columns))</span>
-<span class="sd">    [&#39;distance&#39;, &#39;easting&#39;, &#39;northing&#39;, &#39;scalars&#39;]</span>
+<span class="sd">    ['distance', 'easting', 'northing', 'scalars']</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="o">-</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">w_east</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">w_north</span><span class="o">=</span><span class="kc">None</span>
@@ -504,28 +505,28 @@ document.write(`
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">w_east_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="s2">&quot;Use half of the E-W extent&quot;</span>
+        <span class="s2">"Use half of the E-W extent"</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_east</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">region</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_east</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">w_north_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="s2">&quot;Use half of the N-S extent&quot;</span>
+        <span class="s2">"Use half of the N-S extent"</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_north</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">region</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">region</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">w_north</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">region_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="s2">&quot;Used to fool the BaseGridder methods&quot;</span>
+        <span class="s2">"Used to fool the BaseGridder methods"</span>
         <span class="n">check_region</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">region</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">region</span>
 
 <div class="viewcode-block" id="CheckerBoard.predict">
 <a class="viewcode-back" href="../../api/generated/verde.synthetic.CheckerBoard.html#verde.synthetic.CheckerBoard.predict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Evaluate the checkerboard function on a given set of points.</span>
 
 <span class="sd">        Parameters</span>
@@ -541,7 +542,7 @@ document.write(`
 <span class="sd">        data : array</span>
 <span class="sd">            The evaluated checkerboard function.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">amplitude</span>
@@ -563,7 +564,7 @@ document.write(`
         <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Generate values on a random scatter of points.</span>
 
 <span class="sd">        Point coordinates are generated by :func:`verde.scatter_points`. Other</span>
@@ -593,13 +594,13 @@ document.write(`
 <span class="sd">            respectively, in the output dataframe. Default is determined from</span>
 <span class="sd">            the ``dims`` attribute of the class. Must be defined in the</span>
 <span class="sd">            following order: northing dimension, easting dimension.</span>
-<span class="sd">            **NOTE: This is an exception to the &quot;easting&quot; then</span>
-<span class="sd">            &quot;northing&quot; pattern but is required for compatibility with xarray.**</span>
+<span class="sd">            **NOTE: This is an exception to the "easting" then</span>
+<span class="sd">            "northing" pattern but is required for compatibility with xarray.**</span>
 <span class="sd">        data_names : str, list or None</span>
 <span class="sd">            The name(s) of the data variables in the output dataframe. Defaults</span>
-<span class="sd">            to ``&#39;scalars&#39;`` for scalar data,</span>
-<span class="sd">            ``[&#39;east_component&#39;, &#39;north_component&#39;]`` for 2D vector data, and</span>
-<span class="sd">            ``[&#39;east_component&#39;, &#39;north_component&#39;, &#39;vertical_component&#39;]`` for</span>
+<span class="sd">            to ``'scalars'`` for scalar data,</span>
+<span class="sd">            ``['east_component', 'north_component']`` for 2D vector data, and</span>
+<span class="sd">            ``['east_component', 'north_component', 'vertical_component']`` for</span>
 <span class="sd">            3D vector data.</span>
 <span class="sd">        projection : callable or None</span>
 <span class="sd">            If not None, then should be a callable object</span>
@@ -615,7 +616,7 @@ document.write(`
 <span class="sd">        table : pandas.DataFrame</span>
 <span class="sd">            The interpolated values on a random set of points.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">dims</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_dims</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span>
         <span class="n">region</span> <span class="o">=</span> <span class="n">get_instance_region</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">region</span><span class="p">)</span>
         <span class="n">coordinates</span> <span class="o">=</span> <span class="n">scatter_points</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -676,7 +677,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>

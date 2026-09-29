@@ -276,6 +276,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -433,9 +434,9 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">Operations with projections for grids, regions, etc.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.blockreduce</span><span class="w"> </span><span class="kn">import</span> <span class="n">BlockReduce</span>
@@ -450,7 +451,7 @@ document.write(`
 <div class="viewcode-block" id="project_region">
 <a class="viewcode-back" href="../../api/generated/verde.project_region.html#verde.project_region">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">project_region</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">projection</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Calculate the bounding box of a region in projected coordinates.</span>
 
 <span class="sd">    Parameters</span>
@@ -478,7 +479,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; print(tuple(float(c) for c in region_proj))</span>
 <span class="sd">    (6.0, 10.0, 4.0, 9.0)</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">east</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="n">grid_coordinates</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">101</span><span class="p">,</span> <span class="mi">101</span><span class="p">))</span>
     <span class="n">east</span><span class="p">,</span> <span class="n">north</span> <span class="o">=</span> <span class="n">projection</span><span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">north</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">east</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">east</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">north</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">north</span><span class="o">.</span><span class="n">max</span><span class="p">())</span></div>
@@ -487,8 +488,8 @@ document.write(`
 
 <div class="viewcode-block" id="project_grid">
 <a class="viewcode-back" href="../../api/generated/verde.project_grid.html#verde.project_grid">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">project_grid</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="n">antialias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">project_grid</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"linear"</span><span class="p">,</span> <span class="n">antialias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Apply the given map projection to a grid and re-sample it.</span>
 
 <span class="sd">    Creates a new grid in the projected coordinates by interpolating the</span>
@@ -536,9 +537,9 @@ document.write(`
 <span class="sd">        coordinate arrays.</span>
 <span class="sd">    method : string or Verde gridder</span>
 <span class="sd">        If a string, will use it to create :class:`~verde.KNeighbors`,</span>
-<span class="sd">        :class:`~verde.Linear`, or :class:`~verde.Cubic` (``&quot;nearest&quot;``,</span>
-<span class="sd">        ``&quot;linear&quot;``, or ``&quot;cubic&quot;``). Otherwise, should be a gridder/estimator</span>
-<span class="sd">        object, like :class:`~verde.Spline`. Default is ``&quot;linear&quot;``.</span>
+<span class="sd">        :class:`~verde.Linear`, or :class:`~verde.Cubic` (``"nearest"``,</span>
+<span class="sd">        ``"linear"``, or ``"cubic"``). Otherwise, should be a gridder/estimator</span>
+<span class="sd">        object, like :class:`~verde.Spline`. Default is ``"linear"``.</span>
 <span class="sd">    antialias : bool</span>
 <span class="sd">        If True, will run a :class:`~verde.BlockReduce` with a mean function to</span>
 <span class="sd">        avoid aliasing when the projection results in oversampling of the data</span>
@@ -550,16 +551,16 @@ document.write(`
 <span class="sd">    projected_grid : :class:`xarray.DataArray`</span>
 <span class="sd">        The projected grid, interpolated with the given parameters.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="s2">&quot;data_vars&quot;</span><span class="p">):</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="s2">"data_vars"</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Projecting xarray.Dataset is not currently supported. &quot;</span>
-            <span class="s2">&quot;Please provide a DataArray instead.&quot;</span>
+            <span class="s2">"Projecting xarray.Dataset is not currently supported. "</span>
+            <span class="s2">"Please provide a DataArray instead."</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Projecting grids with number of dimensions other than 2 is not &quot;</span>
-            <span class="s2">&quot;currently supported (dimensions of the given DataArray: </span><span class="si">{}</span><span class="s2">).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s2">"Projecting grids with number of dimensions other than 2 is not "</span>
+            <span class="s2">"currently supported (dimensions of the given DataArray: </span><span class="si">{}</span><span class="s2">)."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="p">)</span>
@@ -571,39 +572,39 @@ document.write(`
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Invalid interpolation method &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39;. Must be one of </span><span class="si">{</span><span class="n">classes</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="sa">f</span><span class="s2">"Invalid interpolation method '</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">'. Must be one of </span><span class="si">{</span><span class="n">classes</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s2">."</span>
             <span class="p">)</span>
         <span class="n">method</span> <span class="o">=</span> <span class="n">classes</span><span class="p">[</span><span class="n">method</span><span class="p">]()</span>
 
     <span class="c1"># Can be set to None for some data arrays depending on how they are created</span>
-    <span class="c1"># so we can&#39;t just rely on the default value for getattr.</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="c1"># so we can't just rely on the default value for getattr.</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;scalars&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">"scalars"</span>
 
     <span class="n">data</span> <span class="o">=</span> <span class="n">grid_to_table</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
     <span class="n">coordinates</span> <span class="o">=</span> <span class="n">projection</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">grid</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">grid</span><span class="o">.</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
     <span class="n">data_region</span> <span class="o">=</span> <span class="n">get_region</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
 
-    <span class="n">region</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;region&quot;</span><span class="p">,</span> <span class="n">data_region</span><span class="p">)</span>
-    <span class="n">shape</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;shape&quot;</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-    <span class="n">spacing</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;spacing&quot;</span><span class="p">,</span> <span class="n">shape_to_spacing</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">shape</span><span class="p">))</span>
+    <span class="n">region</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"region"</span><span class="p">,</span> <span class="n">data_region</span><span class="p">)</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"shape"</span><span class="p">,</span> <span class="n">grid</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">spacing</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"spacing"</span><span class="p">,</span> <span class="n">shape_to_spacing</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">shape</span><span class="p">))</span>
 
     <span class="n">check_region</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
 
     <span class="n">steps</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">antialias</span><span class="p">:</span>
         <span class="n">steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="n">BlockReduce</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="n">data_region</span><span class="p">))</span>
+            <span class="p">(</span><span class="s2">"mean"</span><span class="p">,</span> <span class="n">BlockReduce</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="n">data_region</span><span class="p">))</span>
         <span class="p">)</span>
-    <span class="n">steps</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;interpolator&quot;</span><span class="p">,</span> <span class="n">method</span><span class="p">))</span>
+    <span class="n">steps</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">"interpolator"</span><span class="p">,</span> <span class="n">method</span><span class="p">))</span>
     <span class="n">interpolator</span> <span class="o">=</span> <span class="n">Chain</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span>
     <span class="n">interpolator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
 
     <span class="n">projected</span> <span class="o">=</span> <span class="n">interpolator</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span>
         <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
         <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
-        <span class="n">data_names</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;data_names&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">name</span><span class="p">]),</span>
+        <span class="n">data_names</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"data_names"</span><span class="p">,</span> <span class="p">[</span><span class="n">name</span><span class="p">]),</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">projected</span> <span class="o">=</span> <span class="n">convexhull_mask</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="n">projected</span><span class="p">)</span>
@@ -652,7 +653,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>

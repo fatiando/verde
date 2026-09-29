@@ -277,6 +277,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -509,21 +510,21 @@ document.write(`
 <span class="sig-prename descclassname"><span class="pre">verde.</span></span><span class="sig-name descname"><span class="pre">grid_to_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/utils.html#grid_to_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#verde.grid_to_table" title="Link to this definition">#</a></dt>
 <dd><p>Convert a grid to a table with the values and coordinates of each point.</p>
 <p>Takes a 2D grid as input, extracts the coordinates and runs them through
-<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html#numpy.meshgrid" title="(in NumPy v2.4)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.meshgrid</span></code></a> to create a 2D table. Works for 2D grids and any
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html#numpy.meshgrid" title="(in NumPy v2.5)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.meshgrid</span></code></a> to create a 2D table. Works for 2D grids and any
 number of variables. Use cases includes passing gridded data to functions
 that expect data in XYZ format, such as <a class="reference internal" href="verde.BlockReduce.html#verde.BlockReduce" title="verde.BlockReduce"><code class="xref py py-class docutils literal notranslate"><span class="pre">verde.BlockReduce</span></code></a></p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>grid</strong><span class="classifier"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a></span></dt><dd><p>A 2D grid with one or more data variables.</p>
+<dt><strong>grid</strong><span class="classifier"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.7.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> or <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.7.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a></span></dt><dd><p>A 2D grid with one or more data variables.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>table</strong><span class="classifier"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></span></dt><dd><p>Table with coordinates and variable values for each point in the grid.
+<dt><strong>table</strong><span class="classifier"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v3.0.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></span></dt><dd><p>Table with coordinates and variable values for each point in the grid.
 Column names are taken from the grid. If <em>grid</em> is a
-<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.2.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> that doesn’t have a <code class="docutils literal notranslate"><span class="pre">name</span></code> attribute
+<a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.7.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> that doesn’t have a <code class="docutils literal notranslate"><span class="pre">name</span></code> attribute
 defined, the column with data values will be called <code class="docutils literal notranslate"><span class="pre">&quot;scalars&quot;</span></code>.</p>
 </dd>
 </dl>
@@ -536,33 +537,33 @@ defined, the column with data values will be called <code class="docutils litera
 <span class="gp">&gt;&gt;&gt; </span><span class="n">temperature</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span>
 <span class="gp">... </span>    <span class="n">coords</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)),</span>
-<span class="gp">... </span>    <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;northing&#39;</span><span class="p">,</span> <span class="s1">&#39;easting&#39;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s1">'northing'</span><span class="p">,</span> <span class="s1">'easting'</span><span class="p">]</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">temperature</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <span class="go">[[ 0  1  2  3  4]</span>
 <span class="go"> [ 5  6  7  8  9]</span>
 <span class="go"> [10 11 12 13 14]</span>
 <span class="go"> [15 16 17 18 19]]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># For DataArrays, the data column will be &quot;scalars&quot; by default</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># For DataArrays, the data column will be "scalars" by default</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">grid_to_table</span><span class="p">(</span><span class="n">temperature</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
-<span class="go">[&#39;easting&#39;, &#39;northing&#39;, &#39;scalars&#39;]</span>
+<span class="go">['easting', 'northing', 'scalars']</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">scalars</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <span class="go">[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">northing</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <span class="go">[0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">easting</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <span class="go">[5 6 7 8 9 5 6 7 8 9 5 6 7 8 9 5 6 7 8 9]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># If the DataArray defines a &quot;name&quot;, we will use that instead</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">temperature</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;temperature_K&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># If the DataArray defines a "name", we will use that instead</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">temperature</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"temperature_K"</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">grid_to_table</span><span class="p">(</span><span class="n">temperature</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
-<span class="go">[&#39;easting&#39;, &#39;northing&#39;, &#39;temperature_K&#39;]</span>
+<span class="go">['easting', 'northing', 'temperature_K']</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Conversion of Datasets will preserve the data variable names</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">({</span><span class="s2">&quot;temperature&quot;</span><span class="p">:</span> <span class="n">temperature</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">({</span><span class="s2">"temperature"</span><span class="p">:</span> <span class="n">temperature</span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">table</span>  <span class="o">=</span> <span class="n">grid_to_table</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
-<span class="go">[&#39;easting&#39;, &#39;northing&#39;, &#39;temperature&#39;]</span>
+<span class="go">['easting', 'northing', 'temperature']</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">temperature</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <span class="go">[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">northing</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
@@ -573,12 +574,12 @@ defined, the column with data values will be called <code class="docutils litera
 <span class="gp">&gt;&gt;&gt; </span><span class="n">wind_speed</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span>
 <span class="gp">... </span>    <span class="n">coords</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)),</span>
-<span class="gp">... </span>    <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;northing&#39;</span><span class="p">,</span> <span class="s1">&#39;easting&#39;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s1">'northing'</span><span class="p">,</span> <span class="s1">'easting'</span><span class="p">]</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span><span class="p">[</span><span class="s1">&#39;wind_speed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wind_speed</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span><span class="p">[</span><span class="s1">'wind_speed'</span><span class="p">]</span> <span class="o">=</span> <span class="n">wind_speed</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">grid_to_table</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
-<span class="go">[&#39;easting&#39;, &#39;northing&#39;, &#39;temperature&#39;, &#39;wind_speed&#39;]</span>
+<span class="go">['easting', 'northing', 'temperature', 'wind_speed']</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">northing</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <span class="go">[0 0 0 0 0 1 1 1 1 1 2 2 2 2 2 3 3 3 3 3]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">easting</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
@@ -591,17 +592,17 @@ defined, the column with data values will be called <code class="docutils litera
 <span class="gp">&gt;&gt;&gt; </span><span class="n">temperature</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span>
 <span class="gp">... </span>    <span class="n">coords</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)),</span>
-<span class="gp">... </span>    <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;northing&#39;</span><span class="p">,</span> <span class="s1">&#39;easting&#39;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="n">dims</span><span class="o">=</span><span class="p">[</span><span class="s1">'northing'</span><span class="p">,</span> <span class="s1">'easting'</span><span class="p">]</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">upward</span><span class="o">=</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="p">(</span><span class="s2">&quot;northing&quot;</span><span class="p">,</span> <span class="s2">&quot;easting&quot;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="p">(</span><span class="s2">"northing"</span><span class="p">,</span> <span class="s2">"easting"</span><span class="p">),</span>
 <span class="gp">... </span>        <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="gp">... </span>    <span class="p">)</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">grid_to_table</span><span class="p">(</span><span class="n">temperature</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
-<span class="go">[&#39;easting&#39;, &#39;northing&#39;, &#39;scalars&#39;, &#39;upward&#39;]</span>
+<span class="go">['easting', 'northing', 'scalars', 'upward']</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">upward</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <span class="go">[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]</span>
 </pre></div>
@@ -685,7 +686,7 @@ defined, the column with data values will be called <code class="docutils litera
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>

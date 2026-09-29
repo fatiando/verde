@@ -276,6 +276,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -433,9 +434,9 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">Functions to load sample data</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -451,25 +452,25 @@ document.write(`
 <span class="kn">from</span><span class="w"> </span><span class="nn">.._version</span><span class="w"> </span><span class="kn">import</span> <span class="n">__version__</span>
 
 <span class="n">REGISTRY</span> <span class="o">=</span> <span class="n">pooch</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-    <span class="n">path</span><span class="o">=</span><span class="n">pooch</span><span class="o">.</span><span class="n">os_cache</span><span class="p">(</span><span class="s2">&quot;verde&quot;</span><span class="p">),</span>
-    <span class="n">base_url</span><span class="o">=</span><span class="s2">&quot;https://github.com/fatiando/verde/raw/</span><span class="si">{version}</span><span class="s2">/data/&quot;</span><span class="p">,</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">pooch</span><span class="o">.</span><span class="n">os_cache</span><span class="p">(</span><span class="s2">"verde"</span><span class="p">),</span>
+    <span class="n">base_url</span><span class="o">=</span><span class="s2">"https://github.com/fatiando/verde/raw/</span><span class="si">{version}</span><span class="s2">/data/"</span><span class="p">,</span>
     <span class="n">version</span><span class="o">=</span><span class="n">__version__</span><span class="p">,</span>
-    <span class="n">version_dev</span><span class="o">=</span><span class="s2">&quot;main&quot;</span><span class="p">,</span>
-    <span class="n">env</span><span class="o">=</span><span class="s2">&quot;VERDE_DATA_DIR&quot;</span><span class="p">,</span>
+    <span class="n">version_dev</span><span class="o">=</span><span class="s2">"main"</span><span class="p">,</span>
+    <span class="n">env</span><span class="o">=</span><span class="s2">"VERDE_DATA_DIR"</span><span class="p">,</span>
     <span class="n">registry</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;baja-bathymetry.csv.xz&quot;</span><span class="p">:</span> <span class="s2">&quot;64bc38514e771caa468b8230d94bf3a2abdac9e8b784273a0ca9ed6cb5165c32&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;california-gps.csv.xz&quot;</span><span class="p">:</span> <span class="s2">&quot;54fa4aa490883c41362fae5cbf4925f2b1036361f4169ce5d2035828e22ff89a&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;rio-magnetic.csv.xz&quot;</span><span class="p">:</span> <span class="s2">&quot;0e826932045e177b3d558b93be35a33548aa24529d1293cccfd4b8e7e706a03b&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;texas-wind.csv&quot;</span><span class="p">:</span> <span class="s2">&quot;89213be635006e3838f906918427ec838142d44f5de3f5b2c5d82f9e11d93a24&quot;</span><span class="p">,</span>
+        <span class="s2">"baja-bathymetry.csv.xz"</span><span class="p">:</span> <span class="s2">"64bc38514e771caa468b8230d94bf3a2abdac9e8b784273a0ca9ed6cb5165c32"</span><span class="p">,</span>
+        <span class="s2">"california-gps.csv.xz"</span><span class="p">:</span> <span class="s2">"54fa4aa490883c41362fae5cbf4925f2b1036361f4169ce5d2035828e22ff89a"</span><span class="p">,</span>
+        <span class="s2">"rio-magnetic.csv.xz"</span><span class="p">:</span> <span class="s2">"0e826932045e177b3d558b93be35a33548aa24529d1293cccfd4b8e7e706a03b"</span><span class="p">,</span>
+        <span class="s2">"texas-wind.csv"</span><span class="p">:</span> <span class="s2">"89213be635006e3838f906918427ec838142d44f5de3f5b2c5d82f9e11d93a24"</span><span class="p">,</span>
     <span class="p">},</span>
 <span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_datasets_deprecation_warning</span><span class="p">():</span>
     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-        <span class="s2">&quot;All sample datasets in Verde are deprecated and will be &quot;</span>
-        <span class="s2">&quot;removed in Verde v2.0.0. The tutorials/examples will transition &quot;</span>
-        <span class="s2">&quot;to using Ensaio (https://www.fatiando.org/ensaio/) instead.&quot;</span><span class="p">,</span>
+        <span class="s2">"All sample datasets in Verde are deprecated and will be "</span>
+        <span class="s2">"removed in Verde v2.0.0. The tutorials/examples will transition "</span>
+        <span class="s2">"to using Ensaio (https://www.fatiando.org/ensaio/) instead."</span><span class="p">,</span>
         <span class="ne">DeprecationWarning</span><span class="p">,</span>
         <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
     <span class="p">)</span>
@@ -478,7 +479,7 @@ document.write(`
 <div class="viewcode-block" id="locate">
 <a class="viewcode-back" href="../../../api/generated/verde.datasets.locate.html#verde.datasets.locate">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">locate</span><span class="p">():</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    The absolute path to the sample data storage location on disk.</span>
 
 <span class="sd">    .. warning::</span>
@@ -501,7 +502,7 @@ document.write(`
 <span class="sd">    path : str</span>
 <span class="sd">        The local data storage location.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">REGISTRY</span><span class="o">.</span><span class="n">abspath</span><span class="p">)</span></div>
 
 
@@ -514,9 +515,9 @@ document.write(`
     <span class="n">region</span><span class="p">,</span>
     <span class="n">coastlines</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Setup a Cartopy map with coastlines and proper tick labels.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">coastlines</span><span class="p">:</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">()</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="n">region</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
@@ -530,7 +531,7 @@ document.write(`
 <div class="viewcode-block" id="fetch_baja_bathymetry">
 <a class="viewcode-back" href="../../../api/generated/verde.datasets.fetch_baja_bathymetry.html#verde.datasets.fetch_baja_bathymetry">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">fetch_baja_bathymetry</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Fetch sample bathymetry data from Baja California.</span>
 
 <span class="sd">    .. warning::</span>
@@ -543,7 +544,7 @@ document.write(`
 <span class="sd">    This is the ``@tut_ship.xyz`` sample data from the `GMT</span>
 <span class="sd">    &lt;http://gmt.soest.hawaii.edu/&gt;`__ tutorial.</span>
 
-<span class="sd">    If the file isn&#39;t already in your data directory, it will be downloaded</span>
+<span class="sd">    If the file isn't already in your data directory, it will be downloaded</span>
 <span class="sd">    automatically.</span>
 
 <span class="sd">    Returns</span>
@@ -556,10 +557,10 @@ document.write(`
 <span class="sd">    --------</span>
 <span class="sd">    setup_baja_bathymetry_map: Utility function to help setup a Cartopy map.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">_datasets_deprecation_warning</span><span class="p">()</span>
-    <span class="n">data_file</span> <span class="o">=</span> <span class="n">REGISTRY</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;baja-bathymetry.csv.xz&quot;</span><span class="p">)</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;xz&quot;</span><span class="p">)</span>
+    <span class="n">data_file</span> <span class="o">=</span> <span class="n">REGISTRY</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">"baja-bathymetry.csv.xz"</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">"xz"</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">data</span></div>
 
 
@@ -569,7 +570,7 @@ document.write(`
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_baja_bathymetry_map</span><span class="p">(</span>
     <span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mf">245.0</span><span class="p">,</span> <span class="mf">254.705</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mf">29.99</span><span class="p">),</span> <span class="n">coastlines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Setup a Cartopy map for the Baja California bathymetry dataset.</span>
 
 <span class="sd">    .. warning::</span>
@@ -595,11 +596,11 @@ document.write(`
 <span class="sd">    --------</span>
 <span class="sd">    fetch_baja_bathymetry: Sample bathymetry data from Baja California.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;All kwargs are being ignored. They are accepted to &quot;</span>
-            <span class="o">+</span> <span class="s2">&quot;guarantee backward compatibility.&quot;</span><span class="p">,</span>
+            <span class="s2">"All kwargs are being ignored. They are accepted to "</span>
+            <span class="o">+</span> <span class="s2">"guarantee backward compatibility."</span><span class="p">,</span>
             <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="n">_setup_map</span><span class="p">(</span>
@@ -616,7 +617,7 @@ document.write(`
 <div class="viewcode-block" id="fetch_rio_magnetic">
 <a class="viewcode-back" href="../../../api/generated/verde.datasets.fetch_rio_magnetic.html#verde.datasets.fetch_rio_magnetic">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">fetch_rio_magnetic</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Fetch total-field magnetic anomaly data from Rio de Janeiro, Brazil.</span>
 
 <span class="sd">    .. warning::</span>
@@ -639,10 +640,10 @@ document.write(`
 <span class="sd">    +----------+-----------+----------------+-------------+-------------+</span>
 <span class="sd">    | Latitude | Longitude | Intensity (nT) | Declination | Inclination |</span>
 <span class="sd">    +==========+===========+================+=============+=============+</span>
-<span class="sd">    |  -22º15&#39; |  -42º15&#39;  |     23834      |   -19º19&#39;   |   -27º33&#39;   |</span>
+<span class="sd">    |  -22º15' |  -42º15'  |     23834      |   -19º19'   |   -27º33'   |</span>
 <span class="sd">    +----------+-----------+----------------+-------------+-------------+</span>
 
-<span class="sd">    If the file isn&#39;t already in your data directory, it will be downloaded</span>
+<span class="sd">    If the file isn't already in your data directory, it will be downloaded</span>
 <span class="sd">    automatically.</span>
 
 <span class="sd">    Returns</span>
@@ -657,15 +658,15 @@ document.write(`
 <span class="sd">    --------</span>
 <span class="sd">    setup_rio_magnetic_map: Utility function to help setup a Cartopy map.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-        <span class="s2">&quot;The Rio magnetic anomaly dataset is deprecated and will be removed &quot;</span>
-        <span class="s2">&quot;in Verde v2.0.0. Use a different dataset instead.&quot;</span><span class="p">,</span>
+        <span class="s2">"The Rio magnetic anomaly dataset is deprecated and will be removed "</span>
+        <span class="s2">"in Verde v2.0.0. Use a different dataset instead."</span><span class="p">,</span>
         <span class="ne">FutureWarning</span><span class="p">,</span>
         <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">data_file</span> <span class="o">=</span> <span class="n">REGISTRY</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;rio-magnetic.csv.xz&quot;</span><span class="p">)</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;xz&quot;</span><span class="p">)</span>
+    <span class="n">data_file</span> <span class="o">=</span> <span class="n">REGISTRY</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">"rio-magnetic.csv.xz"</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">"xz"</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">data</span></div>
 
 
@@ -673,7 +674,7 @@ document.write(`
 <div class="viewcode-block" id="setup_rio_magnetic_map">
 <a class="viewcode-back" href="../../../api/generated/verde.datasets.setup_rio_magnetic_map.html#verde.datasets.setup_rio_magnetic_map">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_rio_magnetic_map</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">42.6</span><span class="p">,</span> <span class="o">-</span><span class="mi">42</span><span class="p">,</span> <span class="o">-</span><span class="mf">22.5</span><span class="p">,</span> <span class="o">-</span><span class="mi">22</span><span class="p">)):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Setup a Cartopy map for the Rio de Janeiro magnetic anomaly dataset.</span>
 
 <span class="sd">    .. warning::</span>
@@ -694,10 +695,10 @@ document.write(`
 <span class="sd">    --------</span>
 <span class="sd">    fetch_rio_magnetic: Magnetic anomaly data from Rio de Janeiro, Brazil.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-        <span class="s2">&quot;The Rio magnetic anomaly dataset is deprecated and will be removed &quot;</span>
-        <span class="s2">&quot;in Verde v2.0.0. Use a different dataset instead.&quot;</span><span class="p">,</span>
+        <span class="s2">"The Rio magnetic anomaly dataset is deprecated and will be removed "</span>
+        <span class="s2">"in Verde v2.0.0. Use a different dataset instead."</span><span class="p">,</span>
         <span class="ne">FutureWarning</span><span class="p">,</span>
         <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
     <span class="p">)</span>
@@ -714,7 +715,7 @@ document.write(`
 <div class="viewcode-block" id="fetch_california_gps">
 <a class="viewcode-back" href="../../../api/generated/verde.datasets.fetch_california_gps.html#verde.datasets.fetch_california_gps">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">fetch_california_gps</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Fetch sample GPS velocity data from California (the U.S. West coast).</span>
 
 <span class="sd">    .. warning::</span>
@@ -734,7 +735,7 @@ document.write(`
 <span class="sd">    National Science Foundation (NSF) and National Aeronautics and Space</span>
 <span class="sd">    Administration (NASA) under NSF Cooperative Agreement No. EAR-1261833.</span>
 
-<span class="sd">    If the file isn&#39;t already in your data directory, it will be downloaded</span>
+<span class="sd">    If the file isn't already in your data directory, it will be downloaded</span>
 <span class="sd">    automatically.</span>
 
 <span class="sd">    Returns</span>
@@ -750,10 +751,10 @@ document.write(`
 <span class="sd">    --------</span>
 <span class="sd">    setup_california_gps_map: Utility function to help setup a Cartopy map.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">_datasets_deprecation_warning</span><span class="p">()</span>
-    <span class="n">data_file</span> <span class="o">=</span> <span class="n">REGISTRY</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;california-gps.csv.xz&quot;</span><span class="p">)</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;xz&quot;</span><span class="p">)</span>
+    <span class="n">data_file</span> <span class="o">=</span> <span class="n">REGISTRY</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">"california-gps.csv.xz"</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">"xz"</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">data</span></div>
 
 
@@ -763,7 +764,7 @@ document.write(`
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_california_gps_map</span><span class="p">(</span>
     <span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="mf">235.2</span><span class="p">,</span> <span class="mf">245.3</span><span class="p">,</span> <span class="mf">31.9</span><span class="p">,</span> <span class="mf">42.3</span><span class="p">),</span> <span class="n">coastlines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Setup a Cartopy map for the California GPS velocity dataset.</span>
 
 <span class="sd">    .. warning::</span>
@@ -789,11 +790,11 @@ document.write(`
 <span class="sd">    --------</span>
 <span class="sd">    fetch_california_gps: Sample GPS velocity data from California.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;All kwargs are being ignored. They are accepted to &quot;</span>
-            <span class="o">+</span> <span class="s2">&quot;guarantee backward compatibility.&quot;</span><span class="p">,</span>
+            <span class="s2">"All kwargs are being ignored. They are accepted to "</span>
+            <span class="o">+</span> <span class="s2">"guarantee backward compatibility."</span><span class="p">,</span>
             <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="n">_setup_map</span><span class="p">(</span>
@@ -810,7 +811,7 @@ document.write(`
 <div class="viewcode-block" id="fetch_texas_wind">
 <a class="viewcode-back" href="../../../api/generated/verde.datasets.fetch_texas_wind.html#verde.datasets.fetch_texas_wind">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">fetch_texas_wind</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Fetch sample wind speed and air temperature data for Texas, USA.</span>
 
 <span class="sd">    .. warning::</span>
@@ -824,7 +825,7 @@ document.write(`
 <span class="sd">    2018. The original data was downloaded from `Iowa State University</span>
 <span class="sd">    &lt;https://mesonet.agron.iastate.edu/request/download.phtml&gt;`__.</span>
 
-<span class="sd">    If the file isn&#39;t already in your data directory, it will be downloaded</span>
+<span class="sd">    If the file isn't already in your data directory, it will be downloaded</span>
 <span class="sd">    automatically.</span>
 
 <span class="sd">    Returns</span>
@@ -838,9 +839,9 @@ document.write(`
 <span class="sd">    --------</span>
 <span class="sd">    setup_texas_wind_map: Utility function to help setup a Cartopy map.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">_datasets_deprecation_warning</span><span class="p">()</span>
-    <span class="n">data_file</span> <span class="o">=</span> <span class="n">REGISTRY</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">&quot;texas-wind.csv&quot;</span><span class="p">)</span>
+    <span class="n">data_file</span> <span class="o">=</span> <span class="n">REGISTRY</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">"texas-wind.csv"</span><span class="p">)</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">data</span></div>
 
@@ -849,7 +850,7 @@ document.write(`
 <div class="viewcode-block" id="setup_texas_wind_map">
 <a class="viewcode-back" href="../../../api/generated/verde.datasets.setup_texas_wind_map.html#verde.datasets.setup_texas_wind_map">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_texas_wind_map</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">107</span><span class="p">,</span> <span class="o">-</span><span class="mi">93</span><span class="p">,</span> <span class="mf">25.5</span><span class="p">,</span> <span class="mi">37</span><span class="p">),</span> <span class="n">coastlines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Setup a Cartopy map for the Texas wind speed and air temperature dataset.</span>
 
 <span class="sd">    .. warning::</span>
@@ -875,11 +876,11 @@ document.write(`
 <span class="sd">    --------</span>
 <span class="sd">    fetch_texas_wind: Sample wind speed and air temperature data for Texas.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;All kwargs are being ignored. They are accepted to &quot;</span>
-            <span class="o">+</span> <span class="s2">&quot;guarantee backward compatibility.&quot;</span><span class="p">,</span>
+            <span class="s2">"All kwargs are being ignored. They are accepted to "</span>
+            <span class="o">+</span> <span class="s2">"guarantee backward compatibility."</span><span class="p">,</span>
             <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="n">_setup_map</span><span class="p">(</span>
@@ -934,7 +935,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>

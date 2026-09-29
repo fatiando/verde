@@ -276,6 +276,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -433,9 +434,9 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">2D polynomial trends.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_is_fitted</span>
 
@@ -446,7 +447,7 @@ document.write(`
 <div class="viewcode-block" id="Trend">
 <a class="viewcode-back" href="../../api/generated/verde.Trend.html#verde.Trend">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Trend</span><span class="p">(</span><span class="n">BaseGridder</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Fit a 2D polynomial trend to spatial data.</span>
 
 <span class="sd">    The polynomial of degree :math:`N` is defined as:</span>
@@ -488,8 +489,8 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; data = 10 + 2*coordinates[0] - 0.4*coordinates[1]</span>
 <span class="sd">    &gt;&gt;&gt; trend = Trend(degree=1).fit(coordinates, data)</span>
 <span class="sd">    &gt;&gt;&gt; print(</span>
-<span class="sd">    ...     &quot;Coefficients:&quot;,</span>
-<span class="sd">    ...     &#39;, &#39;.join([&#39;{:.1f}&#39;.format(i) for i in trend.coef_])</span>
+<span class="sd">    ...     "Coefficients:",</span>
+<span class="sd">    ...     ', '.join(['{:.1f}'.format(i) for i in trend.coef_])</span>
 <span class="sd">    ... )</span>
 <span class="sd">    Coefficients: 10.0, 2.0, -0.4</span>
 <span class="sd">    &gt;&gt;&gt; np.allclose(trend.predict(coordinates), data)</span>
@@ -500,9 +501,9 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; mean = Trend(degree=0).fit(coordinates, data)</span>
 <span class="sd">    &gt;&gt;&gt; np.allclose(mean.predict(coordinates), data.mean())</span>
 <span class="sd">    True</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;Data mean:&quot;, &#39;{:.2f}&#39;.format(data.mean()))</span>
+<span class="sd">    &gt;&gt;&gt; print("Data mean:", '{:.2f}'.format(data.mean()))</span>
 <span class="sd">    Data mean: 17.20</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;Coefficient:&quot;, &#39;{:.2f}&#39;.format(mean.coef_[0]))</span>
+<span class="sd">    &gt;&gt;&gt; print("Coefficient:", '{:.2f}'.format(mean.coef_[0]))</span>
 <span class="sd">    Coefficient: 17.20</span>
 
 <span class="sd">    We can use weights to account for outliers or data points with variable</span>
@@ -515,17 +516,17 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; trend_out = Trend(degree=1).fit(coordinates, data_out, weights)</span>
 <span class="sd">    &gt;&gt;&gt; # Still recover the coefficients even with the added outlier</span>
 <span class="sd">    &gt;&gt;&gt; print(</span>
-<span class="sd">    ...     &quot;Coefficients:&quot;,</span>
-<span class="sd">    ...     &#39;, &#39;.join([&#39;{:.1f}&#39;.format(i) for i in trend_out.coef_])</span>
+<span class="sd">    ...     "Coefficients:",</span>
+<span class="sd">    ...     ', '.join(['{:.1f}'.format(i) for i in trend_out.coef_])</span>
 <span class="sd">    ... )</span>
 <span class="sd">    Coefficients: 10.0, 2.0, -0.4</span>
 <span class="sd">    &gt;&gt;&gt; # The residual at the outlier location should be values we added to</span>
 <span class="sd">    &gt;&gt;&gt; # that point</span>
 <span class="sd">    &gt;&gt;&gt; residual = data_out - trend_out.predict(coordinates)</span>
-<span class="sd">    &gt;&gt;&gt; print(&#39;{:.2f}&#39;.format(residual[2, 2]))</span>
+<span class="sd">    &gt;&gt;&gt; print('{:.2f}'.format(residual[2, 2]))</span>
 <span class="sd">    500.00</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">degree</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -534,7 +535,7 @@ document.write(`
 <div class="viewcode-block" id="Trend.fit">
 <a class="viewcode-back" href="../../api/generated/verde.Trend.html#verde.Trend.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Fit the trend to the given data.</span>
 
 <span class="sd">        The data region is captured and used as default for the</span>
@@ -560,7 +561,7 @@ document.write(`
 <span class="sd">        self</span>
 <span class="sd">            Returns this estimator instance for chaining operations.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">check_fit_input</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
         <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">region_</span> <span class="o">=</span> <span class="n">get_region</span><span class="p">((</span><span class="n">easting</span><span class="p">,</span> <span class="n">northing</span><span class="p">))</span>
@@ -572,7 +573,7 @@ document.write(`
 <div class="viewcode-block" id="Trend.predict">
 <a class="viewcode-back" href="../../api/generated/verde.Trend.html#verde.Trend.predict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Evaluate the polynomial trend on the given set of points.</span>
 
 <span class="sd">        Requires a fitted estimator (see :meth:`~verde.Trend.fit`).</span>
@@ -590,8 +591,8 @@ document.write(`
 <span class="sd">        data : array</span>
 <span class="sd">            The trend values evaluated on the given points.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;coef_&quot;</span><span class="p">])</span>
+<span class="sd">        """</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">"coef_"</span><span class="p">])</span>
         <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">easting</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">easting</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
@@ -603,8 +604,8 @@ document.write(`
 
 <div class="viewcode-block" id="Trend.jacobian">
 <a class="viewcode-back" href="../../api/generated/verde.Trend.html#verde.Trend.jacobian">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">jacobian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float64&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">jacobian</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">"float64"</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Make the Jacobian matrix for a 2D polynomial.</span>
 
 <span class="sd">        Each column of the Jacobian is ``easting**i * northing**j`` for each</span>
@@ -644,10 +645,10 @@ document.write(`
 <span class="sd">         [ 1  3 -2  9 -6  4]</span>
 <span class="sd">         [ 1  4 -1 16 -4  1]]</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">easting</span><span class="p">,</span> <span class="n">northing</span> <span class="o">=</span> <span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">easting</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">northing</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Coordinate arrays must have the same shape.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Coordinate arrays must have the same shape."</span><span class="p">)</span>
         <span class="n">combinations</span> <span class="o">=</span> <span class="n">polynomial_power_combinations</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
         <span class="n">ndata</span> <span class="o">=</span> <span class="n">easting</span><span class="o">.</span><span class="n">size</span>
         <span class="n">nparams</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">combinations</span><span class="p">)</span>
@@ -660,7 +661,7 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">polynomial_power_combinations</span><span class="p">(</span><span class="n">degree</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Combinations of powers for a 2D polynomial of a given degree.</span>
 
 <span class="sd">    Produces the (i, j) pairs to evaluate the polynomial with ``x**i*y**j``.</span>
@@ -683,15 +684,15 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; print(polynomial_power_combinations(2))</span>
 <span class="sd">    ((0, 0), (1, 0), (0, 1), (2, 0), (1, 1), (0, 2))</span>
 <span class="sd">    &gt;&gt;&gt; # This is a long polynomial so split it in two lines</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot; &quot;.join([str(c) for c in polynomial_power_combinations(3)]))</span>
+<span class="sd">    &gt;&gt;&gt; print(" ".join([str(c) for c in polynomial_power_combinations(3)]))</span>
 <span class="sd">    (0, 0) (1, 0) (0, 1) (2, 0) (1, 1) (0, 2) (3, 0) (2, 1) (1, 2) (0, 3)</span>
 <span class="sd">    &gt;&gt;&gt; # A degree zero polynomial would be just the mean</span>
 <span class="sd">    &gt;&gt;&gt; print(polynomial_power_combinations(0))</span>
 <span class="sd">    ((0, 0),)</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">degree</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid polynomial degree &#39;</span><span class="si">{}</span><span class="s2">&#39;. Must be &gt;= 0.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">degree</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Invalid polynomial degree '</span><span class="si">{}</span><span class="s2">'. Must be &gt;= 0."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">degree</span><span class="p">))</span>
     <span class="n">combinations</span> <span class="o">=</span> <span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">degree</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">degree</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">j</span><span class="p">))</span>
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">combinations</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">sum</span><span class="p">))</span>
 </pre></div>
@@ -737,7 +738,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>

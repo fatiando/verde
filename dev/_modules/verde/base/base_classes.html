@@ -276,6 +276,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -433,9 +434,9 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">Base classes for all gridders.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
 
@@ -456,7 +457,7 @@ document.write(`
 <div class="viewcode-block" id="BaseBlockCrossValidator">
 <a class="viewcode-back" href="../../../api/generated/verde.base.BaseBlockCrossValidator.html#verde.base.BaseBlockCrossValidator">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BaseBlockCrossValidator</span><span class="p">(</span><span class="n">BaseCrossValidator</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Base class for spatially blocked cross-validators.</span>
 
 <span class="sd">    Parameters</span>
@@ -471,7 +472,7 @@ document.write(`
 <span class="sd">    n_splits : int</span>
 <span class="sd">        Number of splitting iterations.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -480,7 +481,7 @@ document.write(`
         <span class="n">n_splits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="n">spacing</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either &#39;spacing&#39; or &#39;shape&#39; must be provided.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Either 'spacing' or 'shape' must be provided."</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span> <span class="o">=</span> <span class="n">spacing</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">shape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span> <span class="o">=</span> <span class="n">n_splits</span>
@@ -488,7 +489,7 @@ document.write(`
 <div class="viewcode-block" id="BaseBlockCrossValidator.split">
 <a class="viewcode-back" href="../../../api/generated/verde.base.BaseBlockCrossValidator.html#verde.base.BaseBlockCrossValidator.split">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: N803</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Generate indices to split data into training and test set.</span>
 
 <span class="sd">        Parameters</span>
@@ -510,10 +511,10 @@ document.write(`
 <span class="sd">        test : ndarray</span>
 <span class="sd">            The testing set indices for that split.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;X must have exactly 2 columns (</span><span class="si">{}</span><span class="s2"> given).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="s2">"X must have exactly 2 columns (</span><span class="si">{}</span><span class="s2"> given)."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="p">)</span>
         <span class="k">for</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="ow">in</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">groups</span><span class="p">):</span>
             <span class="k">yield</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span></div>
@@ -522,7 +523,7 @@ document.write(`
 <div class="viewcode-block" id="BaseBlockCrossValidator.get_n_splits">
 <a class="viewcode-back" href="../../../api/generated/verde.base.BaseBlockCrossValidator.html#verde.base.BaseBlockCrossValidator.get_n_splits">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_n_splits</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: U100,N803</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Returns the number of splitting iterations in the cross-validator</span>
 
 <span class="sd">        Parameters</span>
@@ -538,13 +539,13 @@ document.write(`
 <span class="sd">        -------</span>
 <span class="sd">        n_splits : int</span>
 <span class="sd">            Returns the number of splitting iterations in the cross-validator.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_splits</span></div>
 
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_iter_test_indices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: U100,N803</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Generates integer indices corresponding to test sets.</span>
 
 <span class="sd">        MUST BE IMPLEMENTED BY DERIVED CLASSES.</span>
@@ -566,14 +567,14 @@ document.write(`
 <span class="sd">        test : ndarray</span>
 <span class="sd">            The testing set indices for that split.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span></div>
+<span class="sd">        """</span></div>
 
 
 
 <div class="viewcode-block" id="BaseGridder">
 <a class="viewcode-back" href="../../../api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BaseGridder</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Base class for gridders.</span>
 
 <span class="sd">    Most methods of this class requires the implementation of a</span>
@@ -585,7 +586,7 @@ document.write(`
 <span class="sd">    implementation of a :meth:`~verde.base.BaseGridder.fit` method to fit the</span>
 <span class="sd">    gridder model to data.</span>
 
-<span class="sd">    Doesn&#39;t define any new attributes.</span>
+<span class="sd">    Doesn't define any new attributes.</span>
 
 <span class="sd">    This is a subclass of :class:`sklearn.base.BaseEstimator` and must abide by</span>
 <span class="sd">    the same rules of the scikit-learn classes. Mainly:</span>
@@ -599,33 +600,33 @@ document.write(`
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    Let&#39;s create a class that interpolates by attributing the mean value of the</span>
-<span class="sd">    data to every single point (it&#39;s not a very good interpolator).</span>
+<span class="sd">    Let's create a class that interpolates by attributing the mean value of the</span>
+<span class="sd">    data to every single point (it's not a very good interpolator).</span>
 
 <span class="sd">    &gt;&gt;&gt; import verde as vd</span>
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">    &gt;&gt;&gt; from sklearn.utils.validation import check_is_fitted</span>
 <span class="sd">    &gt;&gt;&gt; class MeanGridder(vd.base.BaseGridder):</span>
-<span class="sd">    ...     &quot;Gridder that always produces the mean of all data values&quot;</span>
+<span class="sd">    ...     "Gridder that always produces the mean of all data values"</span>
 <span class="sd">    ...     def __init__(self, multiplier=1):</span>
 <span class="sd">    ...         # Init should only assign the parameters to attributes</span>
 <span class="sd">    ...         self.multiplier = multiplier</span>
 <span class="sd">    ...     def fit(self, coordinates, data):</span>
 <span class="sd">    ...         # Argument checking should be done in fit</span>
 <span class="sd">    ...         if self.multiplier &lt;= 0:</span>
-<span class="sd">    ...             raise ValueError(&#39;Invalid multiplier {}&#39;</span>
+<span class="sd">    ...             raise ValueError('Invalid multiplier {}'</span>
 <span class="sd">    ...                              .format(self.multiplier))</span>
 <span class="sd">    ...         self.mean_ = data.mean()*self.multiplier</span>
 <span class="sd">    ...         # fit should return self so that we can chain operations</span>
 <span class="sd">    ...         return self</span>
 <span class="sd">    ...     def predict(self, coordinates):</span>
 <span class="sd">    ...         # We know the gridder has been fitted if it has the mean</span>
-<span class="sd">    ...         check_is_fitted(self, [&#39;mean_&#39;])</span>
+<span class="sd">    ...         check_is_fitted(self, ['mean_'])</span>
 <span class="sd">    ...         return np.ones_like(coordinates[0])*self.mean_</span>
 <span class="sd">    &gt;&gt;&gt; # Try it on some synthetic data</span>
 <span class="sd">    &gt;&gt;&gt; synthetic = vd.synthetic.CheckerBoard(region=(0, 5, -10, 8))</span>
 <span class="sd">    &gt;&gt;&gt; data = synthetic.scatter()</span>
-<span class="sd">    &gt;&gt;&gt; print(&#39;{:.4f}&#39;.format(data.scalars.mean()))</span>
+<span class="sd">    &gt;&gt;&gt; print('{:.4f}'.format(data.scalars.mean()))</span>
 <span class="sd">    -32.2182</span>
 <span class="sd">    &gt;&gt;&gt; # Fit the gridder to our synthetic data</span>
 <span class="sd">    &gt;&gt;&gt; grd = MeanGridder().fit((data.easting, data.northing), data.scalars)</span>
@@ -637,35 +638,35 @@ document.write(`
 <span class="sd">    True</span>
 <span class="sd">    &gt;&gt;&gt; # Interpolate along a profile</span>
 <span class="sd">    &gt;&gt;&gt; profile = grd.profile(point1=(0, -10), point2=(5, -8), size=10)</span>
-<span class="sd">    &gt;&gt;&gt; print(&#39;, &#39;.join([&#39;{:.2f}&#39;.format(i) for i in profile.distance]))</span>
+<span class="sd">    &gt;&gt;&gt; print(', '.join(['{:.2f}'.format(i) for i in profile.distance]))</span>
 <span class="sd">    0.00, 0.60, 1.20, 1.80, 2.39, 2.99, 3.59, 4.19, 4.79, 5.39</span>
-<span class="sd">    &gt;&gt;&gt; print(&#39;, &#39;.join([&#39;{:.1f}&#39;.format(i) for i in profile.scalars]))</span>
+<span class="sd">    &gt;&gt;&gt; print(', '.join(['{:.1f}'.format(i) for i in profile.scalars]))</span>
 <span class="sd">    -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2, -32.2</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># The default dimension names for generated outputs</span>
     <span class="c1"># (pd.DataFrame, xr.Dataset, etc)</span>
-    <span class="n">dims</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;northing&quot;</span><span class="p">,</span> <span class="s2">&quot;easting&quot;</span><span class="p">)</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"northing"</span><span class="p">,</span> <span class="s2">"easting"</span><span class="p">)</span>
 
     <span class="c1"># The default name for any extra coordinates given to methods below</span>
     <span class="c1"># through the `extra_coords` keyword argument. Coordinates are</span>
     <span class="c1"># included in the outputs (pandas.DataFrame or xarray.Dataset)</span>
     <span class="c1"># using this name as a basis.</span>
-    <span class="n">extra_coords_name</span> <span class="o">=</span> <span class="s2">&quot;extra_coord&quot;</span>
+    <span class="n">extra_coords_name</span> <span class="o">=</span> <span class="s2">"extra_coord"</span>
 
     <span class="c1"># Define default values for data_names depending on the number of data</span>
     <span class="c1"># arrays returned by predict method.</span>
     <span class="n">data_names_defaults</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">(</span><span class="s2">&quot;scalars&quot;</span><span class="p">,),</span>
-        <span class="p">(</span><span class="s2">&quot;east_component&quot;</span><span class="p">,</span> <span class="s2">&quot;north_component&quot;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;east_component&quot;</span><span class="p">,</span> <span class="s2">&quot;north_component&quot;</span><span class="p">,</span> <span class="s2">&quot;vertical_component&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"scalars"</span><span class="p">,),</span>
+        <span class="p">(</span><span class="s2">"east_component"</span><span class="p">,</span> <span class="s2">"north_component"</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"east_component"</span><span class="p">,</span> <span class="s2">"north_component"</span><span class="p">,</span> <span class="s2">"vertical_component"</span><span class="p">),</span>
     <span class="p">]</span>
 
 <div class="viewcode-block" id="BaseGridder.predict">
 <a class="viewcode-back" href="../../../api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.predict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>  <span class="c1"># noqa: U100</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Predict data on the given coordinate values. NOT IMPLEMENTED.</span>
 
 <span class="sd">        This is a dummy placeholder for an actual method.</span>
@@ -681,14 +682,14 @@ document.write(`
 <span class="sd">        data : array</span>
 <span class="sd">            The data predicted at the give coordinates.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="BaseGridder.fit">
 <a class="viewcode-back" href="../../../api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: U100</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Fit the gridder to observed data. NOT IMPLEMENTED.</span>
 
 <span class="sd">        This is a dummy placeholder for an actual method.</span>
@@ -712,14 +713,14 @@ document.write(`
 <span class="sd">        self</span>
 <span class="sd">            This instance of the gridder. Useful to chain operations.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="BaseGridder.filter">
 <a class="viewcode-back" href="../../../api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.filter">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  <span class="c1"># noqa: A003</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Filter the data through the gridder and produce residuals.</span>
 
 <span class="sd">        Calls ``fit`` on the data, evaluates the residuals (data - predicted</span>
@@ -752,7 +753,7 @@ document.write(`
 <span class="sd">            The coordinates and weights are same as the input. Residuals are</span>
 <span class="sd">            the input data minus the predicted data.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="n">pred</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
@@ -767,7 +768,7 @@ document.write(`
 <div class="viewcode-block" id="BaseGridder.score">
 <a class="viewcode-back" href="../../../api/generated/verde.base.BaseGridder.html#verde.base.BaseGridder.score">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Score the gridder predictions against the given data.</span>
 
 <span class="sd">        Calculates the R^2 coefficient of determination of between the</span>
@@ -806,15 +807,15 @@ document.write(`
 <span class="sd">        score : float</span>
 <span class="sd">            The R^2 score</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;The default scoring will change from R² to negative root mean &quot;</span>
-            <span class="s2">&quot;squared error (RMSE) in Verde 2.0.0. &quot;</span>
-            <span class="s2">&quot;This may change model selection results slightly.&quot;</span><span class="p">,</span>
+            <span class="s2">"The default scoring will change from R² to negative root mean "</span>
+            <span class="s2">"squared error (RMSE) in Verde 2.0.0. "</span>
+            <span class="s2">"This may change model selection results slightly."</span><span class="p">,</span>
             <span class="ne">FutureWarning</span><span class="p">,</span>
             <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">score_estimator</span><span class="p">(</span><span class="s2">&quot;r2&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">score_estimator</span><span class="p">(</span><span class="s2">"r2"</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BaseGridder.grid">
@@ -830,7 +831,7 @@ document.write(`
         <span class="n">coordinates</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Interpolate the data onto a regular grid.</span>
 
 <span class="sd">        The grid can be specified by two methods:</span>
@@ -868,13 +869,13 @@ document.write(`
 <span class="sd">            respectively, in the output grid. Default is determined from the</span>
 <span class="sd">            ``dims`` attribute of the class. Must be defined in the following</span>
 <span class="sd">            order: northing dimension, easting dimension.</span>
-<span class="sd">            **NOTE: This is an exception to the &quot;easting&quot; then</span>
-<span class="sd">            &quot;northing&quot; pattern but is required for compatibility with xarray.**</span>
+<span class="sd">            **NOTE: This is an exception to the "easting" then</span>
+<span class="sd">            "northing" pattern but is required for compatibility with xarray.**</span>
 <span class="sd">        data_names : str, list or None</span>
 <span class="sd">            The name(s) of the data variables in the output grid. Defaults to</span>
-<span class="sd">            ``&#39;scalars&#39;`` for scalar data,</span>
-<span class="sd">            ``[&#39;east_component&#39;, &#39;north_component&#39;]`` for 2D vector data, and</span>
-<span class="sd">            ``[&#39;east_component&#39;, &#39;north_component&#39;, &#39;vertical_component&#39;]`` for</span>
+<span class="sd">            ``'scalars'`` for scalar data,</span>
+<span class="sd">            ``['east_component', 'north_component']`` for 2D vector data, and</span>
+<span class="sd">            ``['east_component', 'north_component', 'vertical_component']`` for</span>
 <span class="sd">            3D vector data.</span>
 <span class="sd">        projection : callable or None</span>
 <span class="sd">            If not None, then should be a callable object</span>
@@ -902,16 +903,16 @@ document.write(`
 <span class="sd">        --------</span>
 <span class="sd">        verde.grid_coordinates : Generate the coordinate values for the grid.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">coordinates</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">spacing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Both coordinates and spacing or shape were provided. &quot;</span>
-                <span class="o">+</span> <span class="s2">&quot;Please pass only coordinates or either the spacing or the shape.&quot;</span>
+                <span class="s2">"Both coordinates and spacing or shape were provided. "</span>
+                <span class="o">+</span> <span class="s2">"Please pass only coordinates or either the spacing or the shape."</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">coordinates</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">region</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Both coordinates and region were provided. &quot;</span>
-                <span class="o">+</span> <span class="s2">&quot;Please pass region only if spacing or shape is specified.&quot;</span>
+                <span class="s2">"Both coordinates and region were provided. "</span>
+                <span class="o">+</span> <span class="s2">"Please pass region only if spacing or shape is specified."</span>
             <span class="p">)</span>
         <span class="c1"># Get grid coordinates from coordinates parameter</span>
         <span class="k">if</span> <span class="n">coordinates</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -947,10 +948,10 @@ document.write(`
             <span class="n">extra_coords_names</span><span class="o">=</span><span class="n">extra_coords_names</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="c1"># Add metadata as attrs</span>
-        <span class="n">metadata</span> <span class="o">=</span> <span class="s2">&quot;Generated by </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
-        <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="s2">"Generated by </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"metadata"</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span>
         <span class="k">for</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">:</span>
-            <span class="n">dataset</span><span class="p">[</span><span class="n">array</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span>
+            <span class="n">dataset</span><span class="p">[</span><span class="n">array</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">"metadata"</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span>
         <span class="k">return</span> <span class="n">dataset</span></div>
 
 
@@ -966,7 +967,7 @@ document.write(`
         <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Interpolate values onto a random scatter of points.</span>
 
 <span class="sd">        Point coordinates are generated by :func:`verde.scatter_points`. Other</span>
@@ -1002,13 +1003,13 @@ document.write(`
 <span class="sd">            respectively, in the output dataframe. Default is determined from</span>
 <span class="sd">            the ``dims`` attribute of the class. Must be defined in the</span>
 <span class="sd">            following order: northing dimension, easting dimension.</span>
-<span class="sd">            **NOTE: This is an exception to the &quot;easting&quot; then</span>
-<span class="sd">            &quot;northing&quot; pattern but is required for compatibility with xarray.**</span>
+<span class="sd">            **NOTE: This is an exception to the "easting" then</span>
+<span class="sd">            "northing" pattern but is required for compatibility with xarray.**</span>
 <span class="sd">        data_names : str, list or None</span>
 <span class="sd">            The name(s) of the data variables in the output dataframe. Defaults</span>
-<span class="sd">            to ``&#39;scalars&#39;`` for scalar data,</span>
-<span class="sd">            ``[&#39;east_component&#39;, &#39;north_component&#39;]`` for 2D vector data, and</span>
-<span class="sd">            ``[&#39;east_component&#39;, &#39;north_component&#39;, &#39;vertical_component&#39;]`` for</span>
+<span class="sd">            to ``'scalars'`` for scalar data,</span>
+<span class="sd">            ``['east_component', 'north_component']`` for 2D vector data, and</span>
+<span class="sd">            ``['east_component', 'north_component', 'vertical_component']`` for</span>
 <span class="sd">            3D vector data.</span>
 <span class="sd">        projection : callable or None</span>
 <span class="sd">            If not None, then should be a callable object</span>
@@ -1024,11 +1025,11 @@ document.write(`
 <span class="sd">        table : pandas.DataFrame</span>
 <span class="sd">            The interpolated values on a random set of points.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;The &#39;scatter&#39; method is deprecated and will be removed in Verde &quot;</span>
-            <span class="s2">&quot;2.0.0. Use &#39;verde.scatter_points&#39; and the &#39;predict&#39; method &quot;</span>
-            <span class="s2">&quot;instead.&quot;</span><span class="p">,</span>
+            <span class="s2">"The 'scatter' method is deprecated and will be removed in Verde "</span>
+            <span class="s2">"2.0.0. Use 'verde.scatter_points' and the 'predict' method "</span>
+            <span class="s2">"instead."</span><span class="p">,</span>
             <span class="ne">FutureWarning</span><span class="p">,</span>
             <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="p">)</span>
@@ -1061,7 +1062,7 @@ document.write(`
         <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Interpolate data along a profile between two points.</span>
 
 <span class="sd">        Generates the profile along a straight line assuming Cartesian</span>
@@ -1090,9 +1091,9 @@ document.write(`
 <span class="sd">            **The profile calculation method with a projection has changed in</span>
 <span class="sd">            Verde 1.4.0**. Previous versions generated coordinates (assuming</span>
 <span class="sd">            they were Cartesian) and projected them afterwards. This led to</span>
-<span class="sd">            &quot;distances&quot; being incorrectly handled and returned in unprojected</span>
+<span class="sd">            "distances" being incorrectly handled and returned in unprojected</span>
 <span class="sd">            coordinates. For example, if ``projection`` is from geographic to</span>
-<span class="sd">            Mercator, the distances would be &quot;angles&quot; (incorrectly calculated</span>
+<span class="sd">            Mercator, the distances would be "angles" (incorrectly calculated</span>
 <span class="sd">            as if they were Cartesian). After 1.4.0, *point1* and *point2* are</span>
 <span class="sd">            projected prior to generating coordinates for the profile,</span>
 <span class="sd">            guaranteeing that distances are properly handled in a Cartesian</span>
@@ -1115,13 +1116,13 @@ document.write(`
 <span class="sd">            respectively, in the output dataframe. Default is determined from</span>
 <span class="sd">            the ``dims`` attribute of the class. Must be defined in the</span>
 <span class="sd">            following order: northing dimension, easting dimension.</span>
-<span class="sd">            **NOTE: This is an exception to the &quot;easting&quot; then</span>
-<span class="sd">            &quot;northing&quot; pattern but is required for compatibility with xarray.**</span>
+<span class="sd">            **NOTE: This is an exception to the "easting" then</span>
+<span class="sd">            "northing" pattern but is required for compatibility with xarray.**</span>
 <span class="sd">        data_names : str, list or None</span>
 <span class="sd">            The name(s) of the data variables in the output dataframe. Defaults</span>
-<span class="sd">            to ``&#39;scalars&#39;`` for scalar data,</span>
-<span class="sd">            ``[&#39;east_component&#39;, &#39;north_component&#39;]`` for 2D vector data, and</span>
-<span class="sd">            ``[&#39;east_component&#39;, &#39;north_component&#39;, &#39;vertical_component&#39;]`` for</span>
+<span class="sd">            to ``'scalars'`` for scalar data,</span>
+<span class="sd">            ``['east_component', 'north_component']`` for 2D vector data, and</span>
+<span class="sd">            ``['east_component', 'north_component', 'vertical_component']`` for</span>
 <span class="sd">            3D vector data.</span>
 <span class="sd">        projection : callable or None</span>
 <span class="sd">            If not None, then should be a callable object ``projection(easting,</span>
@@ -1140,11 +1141,11 @@ document.write(`
 <span class="sd">        table : pandas.DataFrame</span>
 <span class="sd">            The interpolated values along the profile.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">dims</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_dims</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span>
         <span class="c1"># Project the input points to generate the profile in Cartesian</span>
-        <span class="c1"># coordinates (the distance calculation doesn&#39;t make sense in</span>
-        <span class="c1"># geographic coordinates since we don&#39;t do actual distances on a</span>
+        <span class="c1"># coordinates (the distance calculation doesn't make sense in</span>
+        <span class="c1"># geographic coordinates since we don't do actual distances on a</span>
         <span class="c1"># sphere).</span>
         <span class="k">if</span> <span class="n">projection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">point1</span> <span class="o">=</span> <span class="n">project_coordinates</span><span class="p">(</span><span class="n">point1</span><span class="p">,</span> <span class="n">projection</span><span class="p">)</span>
@@ -1159,7 +1160,7 @@ document.write(`
         <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span>
             <span class="p">(</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
             <span class="p">(</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-            <span class="p">(</span><span class="s2">&quot;distance&quot;</span><span class="p">,</span> <span class="n">distances</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">"distance"</span><span class="p">,</span> <span class="n">distances</span><span class="p">),</span>
         <span class="p">]</span>
         <span class="n">extra_coords_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_extra_coords_names</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
         <span class="n">columns</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">extra_coords_names</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:]))</span>
@@ -1168,15 +1169,15 @@ document.write(`
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dims</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Get default dimension names.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">dims</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">dims</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dims</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_extra_coords_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Return names for extra coordinates</span>
 
 <span class="sd">        Examples</span>
@@ -1185,25 +1186,25 @@ document.write(`
 <span class="sd">        &gt;&gt;&gt; coordinates = (-5, 4, 3, 5, 1)</span>
 <span class="sd">        &gt;&gt;&gt; grd = BaseGridder()</span>
 <span class="sd">        &gt;&gt;&gt; grd._get_extra_coords_names(coordinates)</span>
-<span class="sd">        [&#39;extra_coord&#39;, &#39;extra_coord_1&#39;, &#39;extra_coord_2&#39;]</span>
+<span class="sd">        ['extra_coord', 'extra_coord_1', 'extra_coord_2']</span>
 
 <span class="sd">        &gt;&gt;&gt; coordinates = (-5, 4, 3)</span>
 <span class="sd">        &gt;&gt;&gt; grd = BaseGridder()</span>
-<span class="sd">        &gt;&gt;&gt; grd.extra_coords_name = &quot;upward&quot;</span>
+<span class="sd">        &gt;&gt;&gt; grd.extra_coords_name = "upward"</span>
 <span class="sd">        &gt;&gt;&gt; grd._get_extra_coords_names(coordinates)</span>
-<span class="sd">        [&#39;upward&#39;]</span>
+<span class="sd">        ['upward']</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:])):</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_coords_name</span>
             <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">name</span> <span class="o">+=</span> <span class="s2">&quot;_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="n">name</span> <span class="o">+=</span> <span class="s2">"_</span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
             <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">names</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_data_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">data_names</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Get default names for data fields if none are given based on the data.</span>
 
 <span class="sd">        Examples</span>
@@ -1213,29 +1214,29 @@ document.write(`
 <span class="sd">        &gt;&gt;&gt; east, north, up = [np.arange(10)]*3</span>
 <span class="sd">        &gt;&gt;&gt; gridder = BaseGridder()</span>
 <span class="sd">        &gt;&gt;&gt; gridder._get_data_names((east,), data_names=None)</span>
-<span class="sd">        (&#39;scalars&#39;,)</span>
+<span class="sd">        ('scalars',)</span>
 <span class="sd">        &gt;&gt;&gt; gridder._get_data_names((east, north), data_names=None)</span>
-<span class="sd">        (&#39;east_component&#39;, &#39;north_component&#39;)</span>
+<span class="sd">        ('east_component', 'north_component')</span>
 <span class="sd">        &gt;&gt;&gt; gridder._get_data_names((east, north, up), data_names=None)</span>
-<span class="sd">        (&#39;east_component&#39;, &#39;north_component&#39;, &#39;vertical_component&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; gridder._get_data_names((east,), data_names=&quot;john&quot;)</span>
-<span class="sd">        (&#39;john&#39;,)</span>
-<span class="sd">        &gt;&gt;&gt; gridder._get_data_names((east,), data_names=(&quot;paul&quot;,))</span>
-<span class="sd">        (&#39;paul&#39;,)</span>
+<span class="sd">        ('east_component', 'north_component', 'vertical_component')</span>
+<span class="sd">        &gt;&gt;&gt; gridder._get_data_names((east,), data_names="john")</span>
+<span class="sd">        ('john',)</span>
+<span class="sd">        &gt;&gt;&gt; gridder._get_data_names((east,), data_names=("paul",))</span>
+<span class="sd">        ('paul',)</span>
 <span class="sd">        &gt;&gt;&gt; gridder._get_data_names(</span>
-<span class="sd">        ...     (up, north), data_names=(&#39;ringo&#39;, &#39;george&#39;)</span>
+<span class="sd">        ...     (up, north), data_names=('ringo', 'george')</span>
 <span class="sd">        ... )</span>
-<span class="sd">        (&#39;ringo&#39;, &#39;george&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; gridder._get_data_names((north,), data_names=[&quot;brian&quot;])</span>
-<span class="sd">        [&#39;brian&#39;]</span>
+<span class="sd">        ('ringo', 'george')</span>
+<span class="sd">        &gt;&gt;&gt; gridder._get_data_names((north,), data_names=["brian"])</span>
+<span class="sd">        ['brian']</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Return the defaults data_names for the class</span>
         <span class="k">if</span> <span class="n">data_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_names_defaults</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">&quot;Default data names only available for up to 3 components. &quot;</span>
-                    <span class="o">+</span> <span class="s2">&quot;Must provide custom names through the &#39;data_names&#39; argument.&quot;</span>
+                    <span class="s2">"Default data names only available for up to 3 components. "</span>
+                    <span class="o">+</span> <span class="s2">"Must provide custom names through the 'data_names' argument."</span>
                 <span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_names_defaults</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
         <span class="c1"># Return the passed data_names if valid</span>
@@ -1245,7 +1246,7 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">project_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Apply projection to given coordinates</span>
 
 <span class="sd">    Allows to apply projections to any number of coordinates, assuming</span>
@@ -1256,7 +1257,7 @@ document.write(`
 
 <span class="sd">    &gt;&gt;&gt; # Define a custom projection function</span>
 <span class="sd">    &gt;&gt;&gt; def projection(lon, lat, inverse=False):</span>
-<span class="sd">    ...     &quot;Simple projection of geographic coordinates&quot;</span>
+<span class="sd">    ...     "Simple projection of geographic coordinates"</span>
 <span class="sd">    ...     radius = 1000</span>
 <span class="sd">    ...     if inverse:</span>
 <span class="sd">    ...         return (lon / radius, lat / radius)</span>
@@ -1273,7 +1274,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; project_coordinates(coordinates, projection, inverse=True)</span>
 <span class="sd">    (-0.5, 1.5, -19.0)</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">proj_coordinates</span> <span class="o">=</span> <span class="n">projection</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
         <span class="n">proj_coordinates</span> <span class="o">+=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
@@ -1281,12 +1282,12 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_instance_region</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">region</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Get the region attribute stored in instance if one is not provided.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">region</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="s2">&quot;region_&quot;</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No default region found. Argument must be supplied.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="s2">"region_"</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"No default region found. Argument must be supplied."</span><span class="p">)</span>
         <span class="n">region</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">region_</span>
     <span class="k">return</span> <span class="n">region</span>
 </pre></div>
@@ -1332,7 +1333,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>

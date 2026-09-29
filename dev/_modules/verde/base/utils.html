@@ -276,6 +276,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -433,16 +434,16 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">Utility functions for building gridders and checking arguments.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseEstimator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_scoring</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">score_estimator</span><span class="p">(</span><span class="n">scoring</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Score the given gridder against the given data using the given metric.</span>
 
 <span class="sd">    If the data and predictions have more than 1 component, the scores of each</span>
@@ -475,7 +476,7 @@ document.write(`
 <span class="sd">    score : float</span>
 <span class="sd">        The score.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">check_fit_input</span><span class="p">(</span>
         <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span>
@@ -496,7 +497,7 @@ document.write(`
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">DummyEstimator</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Dummy estimator that does nothing but pass along the predicted data.</span>
 <span class="sd">    Used to fool the scikit-learn scorer functions to fit our API</span>
 <span class="sd">    (multi-component estimators return a tuple on .predict).</span>
@@ -505,23 +506,23 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; print(est.fit().predict())</span>
 <span class="sd">    [1, 2, 3]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicted</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_predicted</span> <span class="o">=</span> <span class="n">predicted</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># noqa: U100</span>
-        <span class="s2">&quot;Return the stored predicted values&quot;</span>
+        <span class="s2">"Return the stored predicted values"</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predicted</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwards</span><span class="p">):</span>  <span class="c1"># noqa: U100</span>
-        <span class="s2">&quot;Does nothing. Just here to satisfy the API.&quot;</span>
+        <span class="s2">"Does nothing. Just here to satisfy the API."</span>
         <span class="k">return</span> <span class="bp">self</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">check_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check the *data* argument and make sure it&#39;s a tuple.</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Check the *data* argument and make sure it's a tuple.</span>
 <span class="sd">    If the data is a single array, return it as a tuple with a single element.</span>
 
 <span class="sd">    This is the default format accepted and used by all gridders and processing</span>
@@ -534,42 +535,42 @@ document.write(`
 <span class="sd">    ([1, 2, 3],)</span>
 <span class="sd">    &gt;&gt;&gt; check_data(([1, 2], [3, 4]))</span>
 <span class="sd">    ([1, 2], [3, 4])</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">,)</span>
     <span class="k">return</span> <span class="n">data</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">check_data_names</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_names</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Check *data_names* against *data*.</span>
 
-<span class="sd">    Also, convert ``data_names`` to a tuple if it&#39;s a single string.</span>
+<span class="sd">    Also, convert ``data_names`` to a tuple if it's a single string.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">    &gt;&gt;&gt; east, north, scalar = [np.array(10)]*3</span>
-<span class="sd">    &gt;&gt;&gt; check_data_names((scalar,), &quot;dummy&quot;)</span>
-<span class="sd">    (&#39;dummy&#39;,)</span>
-<span class="sd">    &gt;&gt;&gt; check_data_names((scalar,), (&quot;dummy&quot;,))</span>
-<span class="sd">    (&#39;dummy&#39;,)</span>
-<span class="sd">    &gt;&gt;&gt; check_data_names((scalar,), [&quot;dummy&quot;])</span>
-<span class="sd">    [&#39;dummy&#39;]</span>
-<span class="sd">    &gt;&gt;&gt; check_data_names((east, north), (&quot;component_x&quot;, &quot;component_y&quot;))</span>
-<span class="sd">    (&#39;component_x&#39;, &#39;component_y&#39;)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &gt;&gt;&gt; check_data_names((scalar,), "dummy")</span>
+<span class="sd">    ('dummy',)</span>
+<span class="sd">    &gt;&gt;&gt; check_data_names((scalar,), ("dummy",))</span>
+<span class="sd">    ('dummy',)</span>
+<span class="sd">    &gt;&gt;&gt; check_data_names((scalar,), ["dummy"])</span>
+<span class="sd">    ['dummy']</span>
+<span class="sd">    &gt;&gt;&gt; check_data_names((east, north), ("component_x", "component_y"))</span>
+<span class="sd">    ('component_x', 'component_y')</span>
+<span class="sd">    """</span>
     <span class="c1"># Convert single string to tuple</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_names</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">data_names</span> <span class="o">=</span> <span class="p">(</span><span class="n">data_names</span><span class="p">,)</span>
     <span class="c1"># Raise error if data_names is None</span>
     <span class="k">if</span> <span class="n">data_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid data_names equal to None.&quot;</span><span class="p">)</span>
-    <span class="c1"># Raise error if data and data_names don&#39;t have the same number of elements</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Invalid data_names equal to None."</span><span class="p">)</span>
+    <span class="c1"># Raise error if data and data_names don't have the same number of elements</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_names</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Data has </span><span class="si">{}</span><span class="s2"> components but only </span><span class="si">{}</span><span class="s2"> names provided: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s2">"Data has </span><span class="si">{}</span><span class="s2"> components but only </span><span class="si">{}</span><span class="s2"> names provided: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_names</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">data_names</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="p">)</span>
@@ -577,14 +578,14 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">check_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Check that the given coordinate arrays are what we expect them to be.</span>
 <span class="sd">    Should be a tuple with arrays of the same shape.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">shapes</span> <span class="o">=</span> <span class="p">[</span><span class="n">coord</span><span class="o">.</span><span class="n">shape</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">coordinates</span><span class="p">]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">shape</span> <span class="o">==</span> <span class="n">shapes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Coordinate arrays must have the same shape. Coordinate shapes: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s2">"Coordinate arrays must have the same shape. Coordinate shapes: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">shapes</span>
             <span class="p">)</span>
         <span class="p">)</span>
@@ -592,10 +593,10 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">check_extra_coords_names</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">extra_coords_names</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Check extra_coords_names against coordinates.</span>
 
-<span class="sd">    Also, convert ``extra_coords_names`` to a tuple if it&#39;s a single string.</span>
+<span class="sd">    Also, convert ``extra_coords_names`` to a tuple if it's a single string.</span>
 <span class="sd">    Assume that there are extra coordinates on the ``coordinates`` tuple.</span>
 
 <span class="sd">    Examples</span>
@@ -603,30 +604,30 @@ document.write(`
 
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">    &gt;&gt;&gt; coordinates = [np.array(10)]*3</span>
-<span class="sd">    &gt;&gt;&gt; check_extra_coords_names(coordinates, &quot;upward&quot;)</span>
-<span class="sd">    (&#39;upward&#39;,)</span>
-<span class="sd">    &gt;&gt;&gt; check_extra_coords_names(coordinates, (&quot;upward&quot;,))</span>
-<span class="sd">    (&#39;upward&#39;,)</span>
+<span class="sd">    &gt;&gt;&gt; check_extra_coords_names(coordinates, "upward")</span>
+<span class="sd">    ('upward',)</span>
+<span class="sd">    &gt;&gt;&gt; check_extra_coords_names(coordinates, ("upward",))</span>
+<span class="sd">    ('upward',)</span>
 <span class="sd">    &gt;&gt;&gt; coordinates = [np.array(10)]*4</span>
-<span class="sd">    &gt;&gt;&gt; check_extra_coords_names(coordinates, (&quot;upward&quot;, &quot;time&quot;))</span>
-<span class="sd">    (&#39;upward&#39;, &#39;time&#39;)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &gt;&gt;&gt; check_extra_coords_names(coordinates, ("upward", "time"))</span>
+<span class="sd">    ('upward', 'time')</span>
+<span class="sd">    """</span>
     <span class="c1"># Convert single string to a tuple</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">extra_coords_names</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">extra_coords_names</span> <span class="o">=</span> <span class="p">(</span><span class="n">extra_coords_names</span><span class="p">,)</span>
-    <span class="c1"># Check if it&#39;s not None</span>
+    <span class="c1"># Check if it's not None</span>
     <span class="k">if</span> <span class="n">extra_coords_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Invalid extra_coords_names equal to None. &quot;</span>
-            <span class="o">+</span> <span class="s2">&quot;When passing one or more extra coordinate, &quot;</span>
-            <span class="o">+</span> <span class="s2">&quot;extra_coords_names cannot be None.&quot;</span>
+            <span class="s2">"Invalid extra_coords_names equal to None. "</span>
+            <span class="o">+</span> <span class="s2">"When passing one or more extra coordinate, "</span>
+            <span class="o">+</span> <span class="s2">"extra_coords_names cannot be None."</span>
         <span class="p">)</span>
     <span class="c1"># Check if there are the same number of extra_coords than extra_coords_name</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">extra_coords_names</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Invalid extra_coords_names &#39;</span><span class="si">{}</span><span class="s2">&#39;. &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extra_coords_names</span><span class="p">)</span>
-            <span class="o">+</span> <span class="s2">&quot;Number of extra coordinates names must match the number of &quot;</span>
-            <span class="o">+</span> <span class="s2">&quot;additional coordinates (&#39;</span><span class="si">{}</span><span class="s2">&#39;).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:]))</span>
+            <span class="s2">"Invalid extra_coords_names '</span><span class="si">{}</span><span class="s2">'. "</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extra_coords_names</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">"Number of extra coordinates names must match the number of "</span>
+            <span class="o">+</span> <span class="s2">"additional coordinates ('</span><span class="si">{}</span><span class="s2">')."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">:]))</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">extra_coords_names</span>
 
@@ -634,7 +635,7 @@ document.write(`
 <div class="viewcode-block" id="check_fit_input">
 <a class="viewcode-back" href="../../../api/generated/verde.base.check_fit_input.html#verde.base.check_fit_input">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">check_fit_input</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">unpack</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Validate the inputs to the fit method of gridders.</span>
 
 <span class="sd">    Checks that the coordinates, data, and weights (if given) all have the same</span>
@@ -664,25 +665,25 @@ document.write(`
 <span class="sd">        The validated inputs in the same order. If weights are given, will</span>
 <span class="sd">        ravel the array before returning.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
     <span class="n">weights</span> <span class="o">=</span> <span class="n">check_data</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
     <span class="n">coordinates</span> <span class="o">=</span> <span class="n">check_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Data arrays must have the same shape </span><span class="si">{}</span><span class="s2"> as coordinates. Data shapes: </span><span class="si">{}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="s2">"Data arrays must have the same shape </span><span class="si">{}</span><span class="s2"> as coordinates. Data shapes: </span><span class="si">{}</span><span class="s2">."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">shape</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
             <span class="p">)</span>
         <span class="p">)</span>
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">w</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Number of data &#39;</span><span class="si">{}</span><span class="s2">&#39; and weights &#39;</span><span class="si">{}</span><span class="s2">&#39; must be equal.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="s2">"Number of data '</span><span class="si">{}</span><span class="s2">' and weights '</span><span class="si">{}</span><span class="s2">' must be equal."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                     <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">j</span><span class="o">.</span><span class="n">size</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">weights</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">data</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Weights must have the same size as the data array.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Weights must have the same size as the data array."</span><span class="p">)</span>
         <span class="n">weights</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">weights</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
@@ -698,7 +699,7 @@ document.write(`
 <div class="viewcode-block" id="n_1d_arrays">
 <a class="viewcode-back" href="../../../api/generated/verde.base.n_1d_arrays.html#verde.base.n_1d_arrays">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">n_1d_arrays</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Get the first n elements from a tuple/list, convert to arrays, and ravel.</span>
 
 <span class="sd">    Use this function to make sure that coordinate and data arrays are ready</span>
@@ -725,7 +726,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; n_1d_arrays(arrays, n=2)</span>
 <span class="sd">    (array([0, 1, 2, 3]), array([0, 1, 2, 3]))</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">[:</span><span class="n">n</span><span class="p">])</span></div>
 
 </pre></div>
@@ -771,7 +772,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>

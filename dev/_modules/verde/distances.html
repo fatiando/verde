@@ -276,6 +276,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -433,9 +434,9 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">Distance calculations between points.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.base.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">n_1d_arrays</span>
@@ -445,7 +446,7 @@ document.write(`
 <div class="viewcode-block" id="median_distance">
 <a class="viewcode-back" href="../../api/generated/verde.median_distance.html#verde.median_distance">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">median_distance</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">k_nearest</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Median distance between the *k* nearest neighbors of each point.</span>
 
 <span class="sd">    For each point specified in *coordinates*, calculate the median of the</span>
@@ -454,7 +455,7 @@ document.write(`
 <span class="sd">    Datasets with points clustered into tight groups (e.g., densely sampled</span>
 <span class="sd">    along a flight line or ship track) will have very small distances to the</span>
 <span class="sd">    closest neighbors, which is not representative of the actual median spacing</span>
-<span class="sd">    because it doesn&#39;t take the spacing between lines into account. In these</span>
+<span class="sd">    because it doesn't take the spacing between lines into account. In these</span>
 <span class="sd">    cases, a median of the 10 or 20 nearest neighbors might be more</span>
 <span class="sd">    representative.</span>
 
@@ -517,24 +518,24 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; # The 4 nearest points are at a distance of 1 but on the corners they</span>
 <span class="sd">    &gt;&gt;&gt; # are [1, 1, sqrt(2), 2] away.</span>
 <span class="sd">    &gt;&gt;&gt; distance = median_distance(coords, k_nearest=4)</span>
-<span class="sd">    &gt;&gt;&gt; print(&quot;{:.2f}&quot;.format(np.median([1, 1, np.sqrt(2), 2])))</span>
+<span class="sd">    &gt;&gt;&gt; print("{:.2f}".format(np.median([1, 1, np.sqrt(2), 2])))</span>
 <span class="sd">    1.21</span>
 <span class="sd">    &gt;&gt;&gt; for line in distance:</span>
-<span class="sd">    ...     print(&quot; &quot;.join([&quot;{:.2f}&quot;.format(i) for i in line]))</span>
+<span class="sd">    ...     print(" ".join(["{:.2f}".format(i) for i in line]))</span>
 <span class="sd">    1.21 1.00 1.00 1.00 1.00 1.21</span>
 <span class="sd">    1.00 1.00 1.00 1.00 1.00 1.00</span>
 <span class="sd">    1.00 1.00 1.00 1.00 1.00 1.00</span>
 <span class="sd">    1.21 1.00 1.00 1.00 1.00 1.21</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">coords</span> <span class="o">=</span> <span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">projection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">coords</span> <span class="o">=</span> <span class="n">projection</span><span class="p">(</span><span class="o">*</span><span class="n">coords</span><span class="p">)</span>
     <span class="n">tree</span> <span class="o">=</span> <span class="n">kdtree</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
     <span class="c1"># The k=1 nearest point is going to be the point itself (with a distance of</span>
-    <span class="c1"># zero) because we don&#39;t remove each point from the dataset in turn. We</span>
-    <span class="c1"># don&#39;t care about that distance so start with the second closest. Only get</span>
+    <span class="c1"># zero) because we don't remove each point from the dataset in turn. We</span>
+    <span class="c1"># don't care about that distance so start with the second closest. Only get</span>
     <span class="c1"># the first element returned (the distance) and ignore the rest (the</span>
     <span class="c1"># neighbor indices).</span>
     <span class="n">k_distances</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">coords</span><span class="p">),</span> <span class="n">k</span><span class="o">=</span><span class="n">k_nearest</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][:,</span> <span class="mi">1</span><span class="p">:]</span>
@@ -584,7 +585,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>

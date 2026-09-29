@@ -277,6 +277,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -529,46 +530,46 @@ selects the one with proportion of data points in each set closer to the
 desired amount <a class="reference internal" href="../../references.html#valavi-etal2019" id="id1"><span>[Valavi_etal2019]</span></a>. The number of balancing splits per
 iteration is controlled by the <em>balancing</em> argument.</p>
 <p>This cross-validator is preferred over
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html#sklearn.model_selection.ShuffleSplit" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.ShuffleSplit</span></code></a> for spatial data to avoid
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html#sklearn.model_selection.ShuffleSplit" title="(in scikit-learn v1.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.ShuffleSplit</span></code></a> for spatial data to avoid
 overestimating cross-validation scores. This can happen because of the
 inherent autocorrelation that is usually associated with this type of data
 (points that are close together are more likely to have similar values).
 See <a class="reference internal" href="../../references.html#roberts-etal2017" id="id2"><span>[Roberts_etal2017]</span></a> for an overview of this topic.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Like <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html#sklearn.model_selection.ShuffleSplit" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.ShuffleSplit</span></code></a>, this
+<p>Like <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html#sklearn.model_selection.ShuffleSplit" title="(in scikit-learn v1.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.model_selection.ShuffleSplit</span></code></a>, this
 cross-validator cannot guarantee that all folds will be different,
 although this is still very likely for sizeable datasets.</p>
 </div>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>spacing</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a> = (<code class="xref py py-obj docutils literal notranslate"><span class="pre">s_north</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">s_east</span></code>), <code class="xref py py-obj docutils literal notranslate"><span class="pre">or</span></code> <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>The block size in the South-North and West-East directions,
+<dt><strong>spacing</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a> = (<code class="xref py py-obj docutils literal notranslate"><span class="pre">s_north</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">s_east</span></code>), <code class="xref py py-obj docutils literal notranslate"><span class="pre">or</span></code> <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>The block size in the South-North and West-East directions,
 respectively. A single value means that the spacing is equal in both
 directions. If None, then <em>shape</em> <strong>must be provided</strong>.</p>
 </dd>
-<dt><strong>shape</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a> = (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_north</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_east</span></code>) <code class="xref py py-obj docutils literal notranslate"><span class="pre">or</span></code> <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>The number of blocks in the South-North and West-East directions,
+<dt><strong>shape</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">tuple</span></code></a> = (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_north</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_east</span></code>) <code class="xref py py-obj docutils literal notranslate"><span class="pre">or</span></code> <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>The number of blocks in the South-North and West-East directions,
 respectively. If None, then <em>spacing</em> <strong>must be provided</strong>.</p>
 </dd>
-<dt><strong>n_splits</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">default</span></code> 10</span></dt><dd><p>Number of re-shuffling &amp; splitting iterations.</p>
+<dt><strong>n_splits</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">default</span></code> 10</span></dt><dd><p>Number of re-shuffling &amp; splitting iterations.</p>
 </dd>
-<dt><strong>test_size</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, default=None</span></dt><dd><p>If float, should be between 0.0 and 1.0 and represent the proportion
+<dt><strong>test_size</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, default=None</span></dt><dd><p>If float, should be between 0.0 and 1.0 and represent the proportion
 of the dataset to include in the test split. If int, represents the
 absolute number of test samples. If None, the value is set to the
 complement of the train size. If <code class="docutils literal notranslate"><span class="pre">train_size</span></code> is also None, it will
 be set to 0.1.</p>
 </dd>
-<dt><strong>train_size</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, default=None</span></dt><dd><p>If float, should be between 0.0 and 1.0 and represent the
+<dt><strong>train_size</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a>, <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a> or <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, default=None</span></dt><dd><p>If float, should be between 0.0 and 1.0 and represent the
 proportion of the dataset to include in the train split. If
 int, represents the absolute number of train samples. If None,
 the value is automatically set to the complement of the test size.</p>
 </dd>
-<dt><strong>random_state</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/random/legacy.html#numpy.random.RandomState" title="(in NumPy v2.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RandomState</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">instance</span></code> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code> (default=None)</span></dt><dd><p>If int, random_state is the seed used by the random number generator;
+<dt><strong>random_state</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/random/legacy.html#numpy.random.RandomState" title="(in NumPy v2.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RandomState</span></code></a> <code class="xref py py-obj docutils literal notranslate"><span class="pre">instance</span></code> or <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">None</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code> (default=None)</span></dt><dd><p>If int, random_state is the seed used by the random number generator;
 If RandomState instance, random_state is the random number generator;
 If None, the random number generator is the RandomState instance used
 by <cite>np.random</cite>.</p>
 </dd>
-<dt><strong>balancing</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>The number of splits generated per iteration to try to balance the
+<dt><strong>balancing</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>The number of splits generated per iteration to try to balance the
 amount of data in each set so that <em>test_size</em> and <em>train_size</em> are
 respected. If 1, then no extra splits are generated (essentially
 disabling the balancing). Must be &gt;= 1.</p>
@@ -595,35 +596,35 @@ disabling the balancing). Must be &gt;= 1.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">shuffle</span> <span class="o">=</span> <span class="n">BlockShuffleSplit</span><span class="p">(</span><span class="n">spacing</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">n_splits</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># These are the 1D indices of the points belonging to each set</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="ow">in</span> <span class="n">shuffle</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Train: </span><span class="si">{}</span><span class="s2"> Test: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"Train: </span><span class="si">{}</span><span class="s2"> Test: </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">))</span>
 <span class="go">Train: [ 0  1  2  3  4  5  6  7 10 11 14 15] Test: [ 8  9 12 13]</span>
 <span class="go">Train: [ 2  3  6  7  8  9 10 11 12 13 14 15] Test: [0 1 4 5]</span>
 <span class="go">Train: [ 0  1  4  5  8  9 10 11 12 13 14 15] Test: [2 3 6 7]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># A better way to visualize this is to create a 2D array and put</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># &quot;train&quot; or &quot;test&quot; in the corresponding locations.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># "train" or "test" in the corresponding locations.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">shape</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="s2">&quot;     &quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="s2">"     "</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">iteration</span><span class="p">,</span> <span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shuffle</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">)):</span>
 <span class="gp">... </span>    <span class="c1"># The index needs to be converted to 2D so we can index our matrix.</span>
-<span class="gp">... </span>    <span class="n">mask</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">shape</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">&quot;train&quot;</span>
-<span class="gp">... </span>    <span class="n">mask</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">shape</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">&quot; test&quot;</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Iteration </span><span class="si">{}</span><span class="s2">:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="n">mask</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">shape</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">"train"</span>
+<span class="gp">... </span>    <span class="n">mask</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">shape</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">" test"</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"Iteration </span><span class="si">{}</span><span class="s2">:"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">))</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
 <span class="go">Iteration 0:</span>
-<span class="go">[[&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="go"> [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="go"> [&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="go"> [&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]]</span>
+<span class="go">[['train' 'train' 'train' 'train']</span>
+<span class="go"> ['train' 'train' 'train' 'train']</span>
+<span class="go"> [' test' ' test' 'train' 'train']</span>
+<span class="go"> [' test' ' test' 'train' 'train']]</span>
 <span class="go">Iteration 1:</span>
-<span class="go">[[&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="go"> [&#39; test&#39; &#39; test&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="go"> [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="go"> [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]]</span>
+<span class="go">[[' test' ' test' 'train' 'train']</span>
+<span class="go"> [' test' ' test' 'train' 'train']</span>
+<span class="go"> ['train' 'train' 'train' 'train']</span>
+<span class="go"> ['train' 'train' 'train' 'train']]</span>
 <span class="go">Iteration 2:</span>
-<span class="go">[[&#39;train&#39; &#39;train&#39; &#39; test&#39; &#39; test&#39;]</span>
-<span class="go"> [&#39;train&#39; &#39;train&#39; &#39; test&#39; &#39; test&#39;]</span>
-<span class="go"> [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]</span>
-<span class="go"> [&#39;train&#39; &#39;train&#39; &#39;train&#39; &#39;train&#39;]]</span>
+<span class="go">[['train' 'train' ' test' ' test']</span>
+<span class="go"> ['train' 'train' ' test' ' test']</span>
+<span class="go"> ['train' 'train' 'train' 'train']</span>
+<span class="go"> ['train' 'train' 'train' 'train']]</span>
 </pre></div>
 </div>
 <p class="rubric">Methods</p>
@@ -649,12 +650,12 @@ disabling the balancing). Must be &gt;= 1.</p>
 <dt class="sig sig-object py" id="verde.BlockShuffleSplit.get_metadata_routing">
 <span class="sig-prename descclassname"><span class="pre">BlockShuffleSplit.</span></span><span class="sig-name descname"><span class="pre">get_metadata_routing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#verde.BlockShuffleSplit.get_metadata_routing" title="Link to this definition">#</a></dt>
 <dd><p>Get metadata routing of this object.</p>
-<p>Please check <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.8)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+<p>Please check <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.9)"><span class="xref std std-ref">User Guide</span></a> on how the routing
 mechanism works.</p>
 <dl class="field-list">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>routing</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetadataRequest</span></code></span></dt><dd><p>A <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.utils.metadata_routing.MetadataRequest.html#sklearn.utils.metadata_routing.MetadataRequest" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetadataRequest</span></code></a> encapsulating
+<dt><strong>routing</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MetadataRequest</span></code></span></dt><dd><p>A <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.utils.metadata_routing.MetadataRequest.html#sklearn.utils.metadata_routing.MetadataRequest" title="(in scikit-learn v1.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetadataRequest</span></code></a> encapsulating
 routing information.</p>
 </dd>
 </dl>
@@ -669,17 +670,17 @@ routing information.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></a></span></dt><dd><p>Always ignored, exists for compatibility.</p>
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></a></span></dt><dd><p>Always ignored, exists for compatibility.</p>
 </dd>
-<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></a></span></dt><dd><p>Always ignored, exists for compatibility.</p>
+<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></a></span></dt><dd><p>Always ignored, exists for compatibility.</p>
 </dd>
-<dt><strong>groups</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></a></span></dt><dd><p>Always ignored, exists for compatibility.</p>
+<dt><strong>groups</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></a></span></dt><dd><p>Always ignored, exists for compatibility.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>n_splits</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Returns the number of splitting iterations in the cross-validator.</p>
+<dt><strong>n_splits</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><code class="docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Returns the number of splitting iterations in the cross-validator.</p>
 </dd>
 </dl>
 </dd>
@@ -693,22 +694,22 @@ routing information.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span>array_like</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, 2)</span></dt><dd><p>Columns should be the easting and northing coordinates of data
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.5)"><span>array_like</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, 2)</span></dt><dd><p>Columns should be the easting and northing coordinates of data
 points, respectively.</p>
 </dd>
-<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span>array_like</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code> (n_samples,)</span></dt><dd><p>The target variable for supervised learning problems. Always
+<dt><strong>y</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.5)"><span>array_like</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code> (n_samples,)</span></dt><dd><p>The target variable for supervised learning problems. Always
 ignored.</p>
 </dd>
-<dt><strong>groups</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.4)"><span>array_like</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">with</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code> (n_samples,), <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Group labels for the samples used while splitting the dataset into
+<dt><strong>groups</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-array_like" title="(in NumPy v2.5)"><span>array_like</span></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">with</span></code> <code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code> (n_samples,), <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Group labels for the samples used while splitting the dataset into
 train/test set. Always ignored.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Yields<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>train</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray</span></code></a></span></dt><dd><p>The training set indices for that split.</p>
+<dt><strong>train</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray</span></code></a></span></dt><dd><p>The training set indices for that split.</p>
 </dd>
-<dt><strong>test</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray</span></code></a></span></dt><dd><p>The testing set indices for that split.</p>
+<dt><strong>test</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray</span></code></a></span></dt><dd><p>The testing set indices for that split.</p>
 </dd>
 </dl>
 </dd>
@@ -800,7 +801,7 @@ train/test set. Always ignored.</p>
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Mar 19, 2026.
+  Last updated on Sep 29, 2026.
   <br/>
 </p>
   </div>
