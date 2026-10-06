@@ -23,6 +23,7 @@ from .coordinates import (
     scatter_points,
 )
 from .distances import median_distance
+from .fill import fill_missing
 from .io import load_surfer
 from .mask import convexhull_mask, distance_mask
 from .model_selection import (
