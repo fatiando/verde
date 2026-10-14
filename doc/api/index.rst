@@ -30,14 +30,6 @@ Data Processing
     BlockMean
     Trend
 
-Composite Estimators
---------------------
-
-.. autosummary::
-   :toctree: generated/
-
-    Vector
-
 Model Selection
 ---------------
 
