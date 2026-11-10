@@ -10,8 +10,7 @@ Functions for least-squares fitting with optional regularization.
 from warnings import warn
 
 import numpy as np
-from sklearn.linear_model import LinearRegression, Ridge
-from sklearn.preprocessing import StandardScaler
+import scipy as sp
 
 
 def least_squares(jacobian, data, weights, damping=None, copy_jacobian=False):
@@ -60,12 +59,36 @@ def least_squares(jacobian, data, weights, damping=None, copy_jacobian=False):
                 jacobian.shape
             )
         )
-    scaler = StandardScaler(copy=copy_jacobian, with_mean=False, with_std=True)
-    jacobian = scaler.fit_transform(jacobian)
-    if damping is None:
-        regr = LinearRegression(fit_intercept=False)
+    std = np.std(jacobian, axis=0)
+    std[std < 10 * np.finfo(std.dtype).eps] = 1
+    data = data.ravel()
+    nparams = jacobian.shape[1]
+    if copy_jacobian:
+        jacobian = jacobian / std
     else:
-        regr = Ridge(alpha=damping, fit_intercept=False)
-    regr.fit(jacobian, np.ravel(data), sample_weight=weights)
-    params = regr.coef_ / scaler.scale_
+        jacobian /= std
+    if weights is not None:
+        weights = np.sqrt(weights)
+        data = data * weights
+        if copy_jacobian:
+            jacobian = (jacobian.T * weights).T
+        else:
+            transpose = jacobian.T
+            transpose *= weights
+    hessian = jacobian.T @ jacobian
+    gradient = jacobian.T @ data
+    if damping is None:
+        params = sp.linalg.lstsq(hessian, gradient, overwrite_a=True, overwrite_b=True)[
+            0
+        ]
+    else:
+        hessian.flat[:: nparams + 1] += damping
+        params = sp.linalg.solve(
+            hessian,
+            gradient,
+            overwrite_a=True,
+            overwrite_b=True,
+            assume_a="positive definite",
+        )
+    params = params / std
     return params
