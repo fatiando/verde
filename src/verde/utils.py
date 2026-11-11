@@ -151,11 +151,11 @@ def maxabs(*args, nan=True, percentile=100):
     the value at a given percentile instead of the maximum.
 
     >>> result = maxabs((1, -10, 25, 2, 3), percentile=95)
-    >>> float(result)
-    21.99
+    >>> print(f"{result:.2f}")
+    22.00
     >>> result = maxabs((1, -10, 25, 2, 3), percentile=100)
-    >>> float(result)
-    25.0
+    >>> print(f"{result:.2f}")
+    25.00
 
     """
     arrays = [np.atleast_1d(i) for i in args]
