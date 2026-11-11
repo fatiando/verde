@@ -15,19 +15,18 @@ import scipy as sp
 
 def least_squares(jacobian, data, weights, damping=None, copy_jacobian=False):
     """
-    Solve a weighted least-squares problem with optional damping regularization
+    Solve a least-squares problem with optional damping regularization.
 
     Scales the Jacobian matrix so that each column has unit variance. This
     helps keep the regularization parameter in a sensible range. The scaling is
     undone before returning the estimated parameters so that scaling isn't
-    required for predictions. Doesn't normalize the column means because that
-    operation can't be undone.
+    required for predictions.
 
     .. warning::
 
         Setting `copy_jacobian` to True will copy the Jacobian matrix, doubling
         the memory required. Use it only if the Jacobian matrix is needed
-        afterwards.
+        afterward.
 
     Parameters
     ----------
@@ -42,7 +41,8 @@ def least_squares(jacobian, data, weights, damping=None, copy_jacobian=False):
         without weights.
     damping : None or float
         The positive damping (Tikhonov 0th order) regularization parameter. If
-        ``damping=None``, will use a regular least-squares fit.
+        ``damping=None``, will use :func:`scipy.linalg.lstsq` to calculate the
+        solution. Otherwise, uses :func:`scipy.linalg.solve`.
     copy_jacobian: bool
         If False, the Jacobian matrix will be scaled inplace. If True, the
         Jacobian matrix will be copied before scaling. Default False.
@@ -54,11 +54,10 @@ def least_squares(jacobian, data, weights, damping=None, copy_jacobian=False):
 
     """
     if jacobian.shape[0] < jacobian.shape[1]:
-        warn(
-            "Under-determined problem detected (ndata, nparams)={}.".format(
-                jacobian.shape
-            )
+        message = (
+            f"Under-determined problem detected (ndata, nparams)={jacobian.shape}."
         )
+        warn(message)
     variance = np.var(jacobian, axis=0)
     variance[variance < 10 * np.finfo(variance.dtype).eps] = 1
     std = np.sqrt(variance)
@@ -76,25 +75,22 @@ def least_squares(jacobian, data, weights, damping=None, copy_jacobian=False):
         else:
             transpose = jacobian.T
             transpose *= weights
-    hessian = jacobian.T @ jacobian
-    gradient = jacobian.T @ data
     if damping is None:
-        # Cutoff condition number. This was how scikit-learn used to do it for
-        # linear models.
-        # https://github.com/scikit-learn/scikit-learn/blob/fe2edb3cdbd75ae4e662fda67dcb19277258792b/sklearn/linear_model/_base.py#L702
+        # Cut off condition number. This was how scikit-learn used to do it for
+        # linear models before v1.9.
         condition_number = max(jacobian.shape) * np.finfo(jacobian.dtype).eps
         params = sp.linalg.lstsq(
-            hessian,
-            gradient,
-            # overwrite_a=True,
-            # overwrite_b=True,
+            jacobian,
+            data,
+            overwrite_a=not copy_jacobian,
             cond=condition_number,
         )[0]
     else:
+        hessian = jacobian.T @ jacobian
         hessian.flat[:: nparams + 1] += damping
         params = sp.linalg.solve(
             hessian,
-            gradient,
+            jacobian.T @ data,
             overwrite_a=True,
             overwrite_b=True,
             assume_a="positive definite",
