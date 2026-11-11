@@ -1,3 +1,8 @@
+> [!IMPORTANT]
+> The *main* branch is tracking development towards Verde v2.0, which includes a lot of breaking changes.
+> See the [v2.0 milestone](https://github.com/fatiando/verde/milestone/5) for a list of outstanding issues and pull requests involved.
+
+
 <h1><img src="https://github.com/fatiando/verde/raw/main/doc/_static/readme-banner.png" alt="Verde"></h1>
 
 <p align="center"><strong>Processing and gridding spatial data, machine-learning style</strong></p>
@@ -67,6 +72,10 @@ Find out more about how to reach us at
 Please read our
 [Contributing Guide](https://github.com/fatiando/verde/blob/main/CONTRIBUTING.md)
 to see how you can help and give feedback.
+
+🤖 **Policy on AI usage:**
+Please read our
+[AI Usage Policy](https://github.com/fatiando/community/blob/main/AI.md).
 
 🧑🏾‍🤝‍🧑🏼 **Code of conduct:**
 This project is released with a

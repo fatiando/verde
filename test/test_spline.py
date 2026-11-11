@@ -1,0 +1,190 @@
+# Copyright (c) 2017 The Verde Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This code is part of the Fatiando a Terra project (https://www.fatiando.org)
+#
+"""
+Test the biharmonic splines
+"""
+import warnings
+
+import numpy as np
+import numpy.testing as npt
+import pytest
+from sklearn.model_selection import ShuffleSplit
+
+from verde.model_selection import cross_val_score
+from verde.spline import Spline, SplineCV
+from verde.synthetic import CheckerBoard
+
+
+@pytest.mark.parametrize(
+    "delayed",
+    [(False,), (True,)],
+    ids=["serial", "delayed"],
+)
+def test_spline_cv(delayed):
+    "See if the cross-validated spline solution matches the synthetic data"
+    region = (100, 500, -800, -700)
+    synth = CheckerBoard(region=region)
+    data = synth.scatter(size=1500, random_state=0)
+    coords = (data.easting, data.northing)
+    # Can't test on many configurations because it takes too long for regular
+    # testing
+    spline = SplineCV(
+        dampings=[None, 1e3],
+        cv=ShuffleSplit(n_splits=1, random_state=0),
+        delayed=delayed,
+    ).fit(coords, data.scalars)
+    assert spline.damping_ is None
+    # The interpolation should be perfect on top of the data points
+    npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-5)
+    npt.assert_allclose(spline.score(coords, data.scalars), 1)
+    npt.assert_allclose(spline.force_coords_, coords)
+    # There should be 1 force per data point
+    assert data.scalars.size == spline.force_.size
+    npt.assert_allclose(
+        spline.region_,
+        (
+            data.easting.min(),
+            data.easting.max(),
+            data.northing.min(),
+            data.northing.max(),
+        ),
+    )
+    shape = (5, 5)
+    region = (270, 320, -770, -720)
+    # Tolerance needs to be kind of high to allow for error due to small
+    # dataset
+    npt.assert_allclose(
+        spline.grid(region=region, shape=shape).scalars,
+        synth.grid(region=region, shape=shape).scalars,
+        rtol=5e-2,
+    )
+
+
+@pytest.mark.parametrize(
+    "nodes", ["default", "custom"], ids=["default_nodes", "custom_nodes"]
+)
+@pytest.mark.parametrize("parallel", [True, False], ids=["parallel", "serial"])
+def test_spline(parallel, nodes):
+    "See if the exact spline solution matches the synthetic data"
+    region = (100, 500, -800, -700)
+    synth = CheckerBoard(region=region)
+    data = synth.scatter(size=1500, random_state=1)
+    coords = (data.easting, data.northing)
+    if nodes == "default":
+        force_coords = None
+    else:
+        # Shit the coordinates slightly just so they're not exactly the same
+        force_coords = (data.easting + 0.1, data.northing - 0.1)
+    spline = Spline(force_coords=force_coords, parallel=parallel).fit(
+        coords, data.scalars
+    )
+    # The interpolation should be perfect on top of the data points
+    npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-5)
+    npt.assert_allclose(spline.score(coords, data.scalars), 1)
+    if nodes == "default":
+        # There should be 1 force per data point
+        assert data.scalars.size == spline.force_.size
+        npt.assert_allclose(spline.force_coords_, coords)
+    shape = (5, 5)
+    region = (270, 320, -770, -720)
+    # Tolerance needs to be kind of high to allow for error due to small
+    # dataset
+    npt.assert_allclose(
+        spline.grid(region=region, shape=shape).scalars,
+        synth.grid(region=region, shape=shape).scalars,
+        rtol=5e-2,
+    )
+
+
+@pytest.mark.parametrize("scoring", ["r2", "neg_root_mean_squared_error"])
+def test_spline_cv_scoring(scoring):
+    "Check scoring parameter works with SplineCV"
+    region = (100, 500, -800, -700)
+    synth = CheckerBoard(region=region)
+    data = synth.scatter(size=1000, random_state=1)
+    coords = (data.easting, data.northing)
+    # Compare SplineCV to results from Spline with cross_val_score
+    spline = Spline(damping=None, parallel=False)
+    score_spline = np.mean(
+        cross_val_score(spline, coords, data.scalars, scoring=scoring)
+    )
+    # Limit SplineCV to a single parameter set equal to Spline's defaults
+    spline_cv = SplineCV(dampings=[None], scoring=scoring)
+    spline_cv.fit(coords, data.scalars)
+    score_spline_cv = spline_cv.scores_[0]
+    npt.assert_allclose(score_spline, score_spline_cv, rtol=1e-5)
+
+
+def test_spline_weights():
+    "Use weights to ignore an outlier"
+    data = CheckerBoard().scatter(size=2000, random_state=1)
+    data_outlier = data.scalars.copy()
+    outlier = 500
+    outlier_value = 100e3
+    data_outlier[outlier] += outlier_value
+    weights = np.ones_like(data_outlier)
+    weights[outlier] = 1e-10
+    coords = (data.easting, data.northing)
+    spline = Spline(damping=1e-8).fit(coords, data_outlier, weights=weights)
+    npt.assert_allclose(spline.score(coords, data.scalars), 1, atol=0.01)
+    predicted = spline.predict(coords)
+    npt.assert_allclose(predicted, data.scalars, rtol=1e-2, atol=10)
+    npt.assert_allclose(
+        data_outlier[outlier] - predicted[outlier], outlier_value, rtol=1e-2
+    )
+
+
+def test_spline_region():
+    "See if the region is gotten from the data is correct."
+    region = (1000, 5000, -8000, -6000)
+    grid = CheckerBoard(region=region).grid(shape=(10, 10))
+    coords = tuple(np.meshgrid(grid.easting, grid.northing))
+    grd = Spline().fit(coords, grid.scalars.values)
+    npt.assert_allclose(grd.region_, region)
+
+
+def test_spline_damping():
+    "Test the spline solution with a bit of damping"
+    region = (1000, 5000, -8000, -6000)
+    synth = CheckerBoard(region=region)
+    data = synth.scatter(size=3000, random_state=1)
+    coords = (data.easting, data.northing)
+    # The interpolation should be close on top of the data points
+    spline = Spline(damping=1e-8).fit(coords, data.scalars)
+    npt.assert_allclose(spline.predict(coords), data.scalars, rtol=1e-2, atol=10)
+    shape = (5, 5)
+    region = (2000, 4000, -7500, -6500)
+    # Tolerance needs to be kind of high to allow for error due to small
+    # dataset
+    npt.assert_allclose(
+        spline.grid(region=region, shape=shape).scalars,
+        synth.grid(region=region, shape=shape).scalars,
+        rtol=1e-2,
+        atol=10,
+    )
+
+
+def test_spline_warns_weights():
+    "Check that a warning is issued when using weights and the exact solution."
+    data = CheckerBoard().scatter(random_state=100)
+    weights = np.ones_like(data.scalars)
+    grd = Spline()
+    msg = "Weights might have no effect if no regularization is used"
+    with warnings.catch_warnings(record=True) as warn:
+        grd.fit((data.easting, data.northing), data.scalars, weights=weights)
+        assert len(warn) >= 1
+        assert any(str(w.message).split(".")[0] == msg for w in warn)
+
+
+def test_spline_warns_underdetermined():
+    "Check that a warning is issued when the problem is underdetermined"
+    data = CheckerBoard().scatter(size=50, random_state=100)
+    grd = Spline(force_coords=(np.arange(60), np.arange(60)))
+    with warnings.catch_warnings(record=True) as warn:
+        grd.fit((data.easting, data.northing), data.scalars)
+        assert len(warn) >= 1
+        assert any(str(w.message).startswith("Under-determined problem") for w in warn)
