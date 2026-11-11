@@ -93,7 +93,7 @@ def least_squares(jacobian, data, weights, damping=None, copy_jacobian=False):
             jacobian.T @ data,
             overwrite_a=True,
             overwrite_b=True,
-            assume_a="positive definite",
+            assume_a="pos",
         )
     params = params / std
     return params
