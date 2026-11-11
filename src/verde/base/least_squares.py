@@ -59,8 +59,9 @@ def least_squares(jacobian, data, weights, damping=None, copy_jacobian=False):
                 jacobian.shape
             )
         )
-    std = np.std(jacobian, axis=0)
-    std[std < 10 * np.finfo(std.dtype).eps] = 1
+    variance = np.var(jacobian, axis=0)
+    variance[variance < 10 * np.finfo(variance.dtype).eps] = 1
+    std = np.sqrt(variance)
     data = data.ravel()
     nparams = jacobian.shape[1]
     if copy_jacobian:
@@ -78,9 +79,17 @@ def least_squares(jacobian, data, weights, damping=None, copy_jacobian=False):
     hessian = jacobian.T @ jacobian
     gradient = jacobian.T @ data
     if damping is None:
-        params = sp.linalg.lstsq(hessian, gradient, overwrite_a=True, overwrite_b=True)[
-            0
-        ]
+        # Cutoff condition number. This was how scikit-learn used to do it for
+        # linear models.
+        # https://github.com/scikit-learn/scikit-learn/blob/fe2edb3cdbd75ae4e662fda67dcb19277258792b/sklearn/linear_model/_base.py#L702
+        condition_number = max(jacobian.shape) * np.finfo(jacobian.dtype).eps
+        params = sp.linalg.lstsq(
+            hessian,
+            gradient,
+            # overwrite_a=True,
+            # overwrite_b=True,
+            cond=condition_number,
+        )[0]
     else:
         hessian.flat[:: nparams + 1] += damping
         params = sp.linalg.solve(
