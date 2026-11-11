@@ -58,7 +58,7 @@ jobs:
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
 
       - name: Setup caching for pip packages
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-pip-${{ hashFiles('env/requirements-build.txt') }}
