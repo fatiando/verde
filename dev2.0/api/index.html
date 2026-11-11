@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     
-        <title>List of functions and classes (API) | Verde v1.8.1.post42</title>
+        <title>List of functions and classes (API) | Verde v1.9.0.post38</title>
     
 
   
@@ -149,7 +149,7 @@
   
   
   
-    <p class="title logo__title">Verde <span class="project-version">v1.8.1.post42</span></p>
+    <p class="title logo__title">Verde <span class="project-version">v1.9.0.post38</span></p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -204,6 +204,7 @@
 <li class="toctree-l2"><a class="reference internal" href="generated/verde.project_grid.html">verde.project_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/verde.distance_mask.html">verde.distance_mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/verde.convexhull_mask.html">verde.convexhull_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/verde.minmax.html">verde.minmax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/verde.maxabs.html">verde.maxabs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/verde.variance_to_weights.html">verde.variance_to_weights</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/verde.grid_to_table.html">verde.grid_to_table</a></li>
@@ -230,6 +231,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -605,19 +607,22 @@ document.write(`
 <h2>Utilities<a class="headerlink" href="#utilities" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.maxabs.html#verde.maxabs" title="verde.maxabs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maxabs</span></code></a>(*args[, nan])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.minmax.html#verde.minmax" title="verde.minmax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minmax</span></code></a>(*args[, nan, min_percentile, ...])</p></td>
+<td><p>Calculate the minimum and maximum values of the given array(s).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.maxabs.html#verde.maxabs" title="verde.maxabs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maxabs</span></code></a>(*args[, nan, percentile])</p></td>
 <td><p>Calculate the maximum absolute value of the given array(s).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.variance_to_weights.html#verde.variance_to_weights" title="verde.variance_to_weights"><code class="xref py py-obj docutils literal notranslate"><span class="pre">variance_to_weights</span></code></a>(variance[, tol, dtype])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.variance_to_weights.html#verde.variance_to_weights" title="verde.variance_to_weights"><code class="xref py py-obj docutils literal notranslate"><span class="pre">variance_to_weights</span></code></a>(variance[, tol, dtype])</p></td>
 <td><p>Converts data variances to weights for gridding.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.grid_to_table.html#verde.grid_to_table" title="verde.grid_to_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_to_table</span></code></a>(grid)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.grid_to_table.html#verde.grid_to_table" title="verde.grid_to_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_to_table</span></code></a>(grid)</p></td>
 <td><p>Convert a grid to a table with the values and coordinates of each point.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.make_xarray_grid.html#verde.make_xarray_grid" title="verde.make_xarray_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_xarray_grid</span></code></a>(coordinates, data, data_names)</p></td>
-<td><p>Create an <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> grid from 2D numpy arrays</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.make_xarray_grid.html#verde.make_xarray_grid" title="verde.make_xarray_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_xarray_grid</span></code></a>(coordinates, data, data_names)</p></td>
+<td><p>Create an <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.9.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> grid from 2D numpy arrays</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/verde.median_distance.html#verde.median_distance" title="verde.median_distance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">median_distance</span></code></a>(coordinates[, k_nearest, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/verde.median_distance.html#verde.median_distance" title="verde.median_distance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">median_distance</span></code></a>(coordinates[, k_nearest, ...])</p></td>
 <td><p>Median distance between the <em>k</em> nearest neighbors of each point.</p></td>
 </tr>
 </tbody>
@@ -744,7 +749,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2017-2025, The Verde Developers.
+      © Copyright 2017-2026, The Verde Developers.
       <br/>
     
   </p>
@@ -753,7 +758,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Jun 12, 2025.
+  Last updated on Nov 09, 2026.
   <br/>
 </p>
   </div>

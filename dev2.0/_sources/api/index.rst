@@ -88,6 +88,7 @@ Utilities
 .. autosummary::
    :toctree: generated/
 
+    minmax
     maxabs
     variance_to_weights
     grid_to_table

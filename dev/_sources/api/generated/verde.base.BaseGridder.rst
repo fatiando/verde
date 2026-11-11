@@ -7,30 +7,10 @@ verde.base.BaseGridder
 
 
 
-Attributes
-----------
+Method documentation
+--------------------
 
 
-.. autoattribute:: BaseGridder.data_names_defaults
-
-.. autoattribute:: BaseGridder.dims
-
-.. autoattribute:: BaseGridder.extra_coords_name
-
-
-
-
-
-
-
-Methods
--------
-
-
-
-
-
-.. automethod:: BaseGridder.filter
 
 
 
@@ -58,10 +38,6 @@ Methods
 
 
 
-.. automethod:: BaseGridder.scatter
-
-
-
 .. automethod:: BaseGridder.score
 
 
@@ -83,10 +59,6 @@ Methods
 
 
 
-
-----
-
-.. include:: backreferences/verde.base.BaseGridder.examples
 
 .. raw:: html
 

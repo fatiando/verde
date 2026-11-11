@@ -5,8 +5,6 @@ verde.profile\_coordinates
 
 .. autofunction:: profile_coordinates
 
-.. include:: backreferences/verde.profile_coordinates.examples
-
 .. raw:: html
 
      <div style='clear:both'></div>

@@ -5,8 +5,6 @@ verde.rolling\_window
 
 .. autofunction:: rolling_window
 
-.. include:: backreferences/verde.rolling_window.examples
-
 .. raw:: html
 
      <div style='clear:both'></div>

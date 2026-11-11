@@ -7,11 +7,8 @@ verde.BlockKFold
 
 
 
-
-
-
-Methods
--------
+Method documentation
+--------------------
 
 
 
@@ -30,10 +27,6 @@ Methods
 
 
 
-
-----
-
-.. include:: backreferences/verde.BlockKFold.examples
 
 .. raw:: html
 

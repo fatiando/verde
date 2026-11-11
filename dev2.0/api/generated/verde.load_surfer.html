@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     
-        <title>verde.load_surfer | Verde v1.8.1.post42</title>
+        <title>verde.load_surfer | Verde v1.9.0.post38</title>
     
 
   
@@ -149,7 +149,7 @@
   
   
   
-    <p class="title logo__title">Verde <span class="project-version">v1.8.1.post42</span></p>
+    <p class="title logo__title">Verde <span class="project-version">v1.9.0.post38</span></p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -204,6 +204,7 @@
 <li class="toctree-l2"><a class="reference internal" href="verde.project_grid.html">verde.project_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="verde.distance_mask.html">verde.distance_mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="verde.convexhull_mask.html">verde.convexhull_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.minmax.html">verde.minmax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="verde.maxabs.html">verde.maxabs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="verde.variance_to_weights.html">verde.variance_to_weights</a></li>
 <li class="toctree-l2"><a class="reference internal" href="verde.grid_to_table.html">verde.grid_to_table</a></li>
@@ -230,6 +231,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -462,7 +464,7 @@ document.write(`
 <span class="sig-prename descclassname"><span class="pre">verde.</span></span><span class="sig-name descname"><span class="pre">load_surfer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float64'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/surfer.html#load_surfer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#verde.load_surfer" title="Link to this definition">#</a></dt>
 <dd><p>Read data from a Surfer ASCII grid file.</p>
 <p>This function reads a Surfer grid file, masks any NaNs in the data,
-and outputs a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2025.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> that contains easting and northing
+and outputs a <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.9.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> that contains easting and northing
 coordinates, data values, and associated file metadata.</p>
 <p>Surfer is a contouring, griding and surface mapping software
 from GoldenSoftware. The names and logos for Surfer and Golden
@@ -471,17 +473,17 @@ Software are registered trademarks of Golden Software, Inc.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>fname</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a> or file-like <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></a></span></dt><dd><p>Name or path of the Surfer grid file or an open file (or file-like)
+<dt><strong>fname</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a> or file-like <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></a></span></dt><dd><p>Name or path of the Surfer grid file or an open file (or file-like)
 object.</p>
 </dd>
-<dt><strong>dtype</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.dtype</span></code></a></span></dt><dd><p>The type of variable used for the data. Default is <code class="docutils literal notranslate"><span class="pre">float64</span></code>. Use
+<dt><strong>dtype</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.dtype</span></code></a></span></dt><dd><p>The type of variable used for the data. Default is <code class="docutils literal notranslate"><span class="pre">float64</span></code>. Use
 <code class="docutils literal notranslate"><span class="pre">float32</span></code> if the data are large and precision is not an issue.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>data</strong><span class="classifier"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2025.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a></span></dt><dd><p>A 2D grid with the data.</p>
+<dt><strong>data</strong><span class="classifier"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v2026.9.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a></span></dt><dd><p>A 2D grid with the data.</p>
 </dd>
 </dl>
 </dd>
@@ -556,7 +558,7 @@ object.</p>
 
   <p class="copyright">
     
-      © Copyright 2017-2025, The Verde Developers.
+      © Copyright 2017-2026, The Verde Developers.
       <br/>
     
   </p>
@@ -565,7 +567,7 @@ object.</p>
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Jun 12, 2025.
+  Last updated on Nov 09, 2026.
   <br/>
 </p>
   </div>

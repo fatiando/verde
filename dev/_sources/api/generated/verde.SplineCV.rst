@@ -7,40 +7,10 @@ verde.SplineCV
 
 
 
-Attributes
-----------
+Method documentation
+--------------------
 
 
-.. autoattribute:: SplineCV.damping_
-
-.. autoattribute:: SplineCV.data_names_defaults
-
-.. autoattribute:: SplineCV.dims
-
-.. autoattribute:: SplineCV.extra_coords_name
-
-.. autoattribute:: SplineCV.force_
-
-.. autoattribute:: SplineCV.force_coords_
-
-.. autoattribute:: SplineCV.mindist_
-
-.. autoattribute:: SplineCV.region_
-
-
-
-
-
-
-
-Methods
--------
-
-
-
-
-
-.. automethod:: SplineCV.filter
 
 
 
@@ -68,10 +38,6 @@ Methods
 
 
 
-.. automethod:: SplineCV.scatter
-
-
-
 .. automethod:: SplineCV.score
 
 
@@ -93,10 +59,6 @@ Methods
 
 
 
-
-----
-
-.. include:: backreferences/verde.SplineCV.examples
 
 .. raw:: html
 

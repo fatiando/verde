@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-        <title>verde.base.utils | Verde v1.8.1.post42</title>
+        <title>verde.base.utils | Verde v1.9.0.post38</title>
     
 
   
@@ -148,7 +148,7 @@
   
   
   
-    <p class="title logo__title">Verde <span class="project-version">v1.8.1.post42</span></p>
+    <p class="title logo__title">Verde <span class="project-version">v1.9.0.post38</span></p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -203,6 +203,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/verde.project_grid.html">verde.project_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/verde.distance_mask.html">verde.distance_mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/verde.convexhull_mask.html">verde.convexhull_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/generated/verde.minmax.html">verde.minmax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/verde.maxabs.html">verde.maxabs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/verde.variance_to_weights.html">verde.variance_to_weights</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../api/generated/verde.grid_to_table.html">verde.grid_to_table</a></li>
@@ -229,6 +230,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -386,17 +388,18 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">Utility functions for building gridders and checking arguments.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseEstimator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_scoring</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.._validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_fit_input</span><span class="p">,</span> <span class="n">check_tuple_of_arrays</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">score_estimator</span><span class="p">(</span><span class="n">scoring</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Score the given gridder against the given data using the given metric.</span>
 
 <span class="sd">    If the data and predictions have more than 1 component, the scores of each</span>
@@ -429,9 +432,9 @@ document.write(`
 <span class="sd">    score : float</span>
 <span class="sd">        The score.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">check_fit_input</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
-    <span class="n">predicted</span> <span class="o">=</span> <span class="n">check_tuple_of_arrays</span><span class="p">(</span><span class="n">estimator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;data&quot;</span><span class="p">)</span>
+    <span class="n">predicted</span> <span class="o">=</span> <span class="n">check_tuple_of_arrays</span><span class="p">(</span><span class="n">estimator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">coordinates</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">"data"</span><span class="p">)</span>
     <span class="n">scorer</span> <span class="o">=</span> <span class="n">check_scoring</span><span class="p">(</span><span class="n">DummyEstimator</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="n">scoring</span><span class="p">)</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
         <span class="p">[</span>
@@ -447,8 +450,8 @@ document.write(`
     <span class="k">return</span> <span class="n">result</span>
 
 
-<span class="k">class</span><span class="w"> </span><span class="nc">DummyEstimator</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DummyEstimator</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Dummy estimator that does nothing but pass along the predicted data.</span>
 <span class="sd">    Used to fool the scikit-learn scorer functions to fit our API</span>
 <span class="sd">    (multi-component estimators return a tuple on .predict).</span>
@@ -457,24 +460,24 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; print(est.fit().predict())</span>
 <span class="sd">    [1, 2, 3]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predicted</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_predicted</span> <span class="o">=</span> <span class="n">predicted</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># noqa: U100</span>
-        <span class="s2">&quot;Return the stored predicted values&quot;</span>
+        <span class="s2">"Return the stored predicted values"</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predicted</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwards</span><span class="p">):</span>  <span class="c1"># noqa: U100</span>
-        <span class="s2">&quot;Does nothing. Just here to satisfy the API.&quot;</span>
+        <span class="s2">"Does nothing. Just here to satisfy the API."</span>
         <span class="k">return</span> <span class="bp">self</span>
 
 
 <div class="viewcode-block" id="n_1d_arrays">
 <a class="viewcode-back" href="../../../api/generated/verde.base.n_1d_arrays.html#verde.base.n_1d_arrays">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">n_1d_arrays</span><span class="p">(</span><span class="n">arrays</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Get the first n elements from a tuple/list, convert to arrays, and ravel.</span>
 
 <span class="sd">    Use this function to make sure that coordinate and data arrays are ready</span>
@@ -501,7 +504,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; n_1d_arrays(arrays, n=2)</span>
 <span class="sd">    (array([0, 1, 2, 3]), array([0, 1, 2, 3]))</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">[:</span><span class="n">n</span><span class="p">])</span></div>
 
 </pre></div>
@@ -538,7 +541,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2017-2025, The Verde Developers.
+      © Copyright 2017-2026, The Verde Developers.
       <br/>
     
   </p>
@@ -547,7 +550,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Jun 12, 2025.
+  Last updated on Nov 09, 2026.
   <br/>
 </p>
   </div>

@@ -5,8 +5,6 @@ verde.load\_surfer
 
 .. autofunction:: load_surfer
 
-.. include:: backreferences/verde.load_surfer.examples
-
 .. raw:: html
 
      <div style='clear:both'></div>

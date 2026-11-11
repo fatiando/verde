@@ -20,7 +20,7 @@
 
 .. raw:: html
 
-    <p class="sd-fs-3">
+    <p class="sd-fs-4">
     Processing and gridding spatial data, machine-learning style.
     </p>
 
@@ -111,22 +111,14 @@ and more!
 
     install.rst
     introduction.rst
-    gallery/index.rst
 
 .. toctree::
     :maxdepth: 1
     :hidden:
-    :caption: User Guide
+    :caption: Tutorial
 
-    tutorials/grid_coordinates.rst
-    tutorials/trends.rst
-    tutorials/decimation.rst
-    tutorials/projections.rst
-    tutorials/chain.rst
-    tutorials/model_evaluation.rst
-    tutorials/model_selection.rst
-    tutorials/weights.rst
-    tutorials/vectors.rst
+    tutorial/first-grid.rst
+    tutorial/geographic.rst
 
 .. toctree::
     :maxdepth: 1

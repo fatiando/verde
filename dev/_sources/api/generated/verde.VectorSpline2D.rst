@@ -7,30 +7,10 @@ verde.VectorSpline2D
 
 
 
-Attributes
-----------
+Method documentation
+--------------------
 
 
-.. autoattribute:: VectorSpline2D.data_names_defaults
-
-.. autoattribute:: VectorSpline2D.dims
-
-.. autoattribute:: VectorSpline2D.extra_coords_name
-
-
-
-
-
-
-
-Methods
--------
-
-
-
-
-
-.. automethod:: VectorSpline2D.filter
 
 
 
@@ -62,10 +42,6 @@ Methods
 
 
 
-.. automethod:: VectorSpline2D.scatter
-
-
-
 .. automethod:: VectorSpline2D.score
 
 
@@ -87,10 +63,6 @@ Methods
 
 
 
-
-----
-
-.. include:: backreferences/verde.VectorSpline2D.examples
 
 .. raw:: html
 

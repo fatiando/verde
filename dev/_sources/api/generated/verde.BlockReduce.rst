@@ -7,11 +7,8 @@ verde.BlockReduce
 
 
 
-
-
-
-Methods
--------
+Method documentation
+--------------------
 
 
 
@@ -34,10 +31,6 @@ Methods
 
 
 
-
-----
-
-.. include:: backreferences/verde.BlockReduce.examples
 
 .. raw:: html
 

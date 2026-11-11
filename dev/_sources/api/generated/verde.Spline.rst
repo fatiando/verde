@@ -7,30 +7,10 @@ verde.Spline
 
 
 
-Attributes
-----------
+Method documentation
+--------------------
 
 
-.. autoattribute:: Spline.data_names_defaults
-
-.. autoattribute:: Spline.dims
-
-.. autoattribute:: Spline.extra_coords_name
-
-
-
-
-
-
-
-Methods
--------
-
-
-
-
-
-.. automethod:: Spline.filter
 
 
 
@@ -62,10 +42,6 @@ Methods
 
 
 
-.. automethod:: Spline.scatter
-
-
-
 .. automethod:: Spline.score
 
 
@@ -87,10 +63,6 @@ Methods
 
 
 
-
-----
-
-.. include:: backreferences/verde.Spline.examples
 
 .. raw:: html
 

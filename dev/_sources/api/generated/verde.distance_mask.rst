@@ -5,8 +5,6 @@ verde.distance\_mask
 
 .. autofunction:: distance_mask
 
-.. include:: backreferences/verde.distance_mask.examples
-
 .. raw:: html
 
      <div style='clear:both'></div>

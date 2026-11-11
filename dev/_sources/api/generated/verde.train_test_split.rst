@@ -5,8 +5,6 @@ verde.train\_test\_split
 
 .. autofunction:: train_test_split
 
-.. include:: backreferences/verde.train_test_split.examples
-
 .. raw:: html
 
      <div style='clear:both'></div>

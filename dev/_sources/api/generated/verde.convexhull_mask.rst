@@ -5,8 +5,6 @@ verde.convexhull\_mask
 
 .. autofunction:: convexhull_mask
 
-.. include:: backreferences/verde.convexhull_mask.examples
-
 .. raw:: html
 
      <div style='clear:both'></div>

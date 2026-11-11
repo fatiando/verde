@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     
-        <title>Changelog | Verde v1.8.1.post42</title>
+        <title>Changelog | Verde v1.9.0.post38</title>
     
 
   
@@ -149,7 +149,7 @@
   
   
   
-    <p class="title logo__title">Verde <span class="project-version">v1.8.1.post42</span></p>
+    <p class="title logo__title">Verde <span class="project-version">v1.9.0.post38</span></p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -204,6 +204,7 @@
 <li class="toctree-l2"><a class="reference internal" href="api/generated/verde.project_grid.html">verde.project_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/verde.distance_mask.html">verde.distance_mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/verde.convexhull_mask.html">verde.convexhull_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/generated/verde.minmax.html">verde.minmax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/verde.maxabs.html">verde.maxabs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/verde.variance_to_weights.html">verde.variance_to_weights</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api/generated/verde.grid_to_table.html">verde.grid_to_table</a></li>
@@ -230,6 +231,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -443,6 +445,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-1-9-0">Version 1.9.0</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-1-8-1">Version 1.8.1</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-1-8-0">Version 1.8.0</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-1-7-0">Version 1.7.0</a></li>
@@ -468,6 +471,43 @@ document.write(`
                   
   <section id="changelog">
 <span id="changes"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">#</a></h1>
+<section id="version-1-9-0">
+<h2>Version 1.9.0<a class="headerlink" href="#version-1-9-0" title="Link to this heading">#</a></h2>
+<p>Released on: 2026/03/19</p>
+<p>DOI: <a class="reference external" href="https://doi.org/10.5281/zenodo.19052803">https://doi.org/10.5281/zenodo.19052803</a></p>
+<p>Bug fixes:</p>
+<ul class="simple">
+<li><p>Fix compatibility issues with Pandas &gt; 3.0 (<a class="reference external" href="https://github.com/fatiando/verde/pull/535">#535</a>)</p></li>
+<li><p>Make <code class="docutils literal notranslate"><span class="pre">DummyEstimator</span></code> a child of scikit-learn’s <code class="docutils literal notranslate"><span class="pre">BaseEstimator</span></code> for compatibility with <code class="docutils literal notranslate"><span class="pre">skelarn&gt;=1.8.0</span></code> (<a class="reference external" href="https://github.com/fatiando/verde/pull/531">#531</a>)</p></li>
+</ul>
+<p>New features:</p>
+<ul class="simple">
+<li><p>Add new function <code class="docutils literal notranslate"><span class="pre">minmax</span></code> to calculate min and max of arrays, optionally as user-specified percentiles of the values, which is useful for 1) if you want to plot a series of datasets with the same colorscale so you need to calculate the overall min/max for all the datasets 2) if you want to get robust colormap limits, excluding outliers by using percentiles, such as the 2nd and 98th percentiles (<a class="reference external" href="https://github.com/fatiando/verde/pull/526">#526</a>)</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">percentile</span></code> parameter to the <code class="docutils literal notranslate"><span class="pre">maxabs</span></code> function to be able to easily remove outliers when setting colorbar limits and other actions (<a class="reference external" href="https://github.com/fatiando/verde/pull/524">#524</a>)</p></li>
+</ul>
+<p>Documentation:</p>
+<ul class="simple">
+<li><p>Minor wording, punctuation, and cross-referencing fixes to docs (<a class="reference external" href="https://github.com/fatiando/verde/pull/473">#473</a>)</p></li>
+<li><p>Add a link to the Fatiando Forum in the README (<a class="reference external" href="https://github.com/fatiando/verde/pull/480">#480</a>)</p></li>
+</ul>
+<p>Maintenance:</p>
+<ul class="simple">
+<li><p>Fix examples and tests to pass with Numpy 2 (<a class="reference external" href="https://github.com/fatiando/verde/pull/459">#459</a>)</p></li>
+<li><p>Don’t raise Numpy’s precision in doctests (<a class="reference external" href="https://github.com/fatiando/verde/pull/463">#463</a>)</p></li>
+<li><p>Don’t configure Numpy precision in doctests (<a class="reference external" href="https://github.com/fatiando/verde/pull/462">#462</a>)</p></li>
+<li><p>Fix upload of coverage reports to codecov (<a class="reference external" href="https://github.com/fatiando/verde/pull/520">#520</a>)</p></li>
+<li><p>Move push to codecov to its own job in Actions (<a class="reference external" href="https://github.com/fatiando/verde/pull/455">#455</a>)</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">build</span></code> for <code class="docutils literal notranslate"><span class="pre">python-build</span></code> in <code class="docutils literal notranslate"><span class="pre">environment.yml</span></code> since the package was renamed in conda-forge (<a class="reference external" href="https://github.com/fatiando/verde/pull/460">#460</a>)</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">python-build</span></code> instead of <code class="docutils literal notranslate"><span class="pre">build</span></code> in <code class="docutils literal notranslate"><span class="pre">test.yml</span></code> workflow (<a class="reference external" href="https://github.com/fatiando/verde/pull/465">#465</a>)</p></li>
+</ul>
+<p>This release contains contributions from:</p>
+<ul class="simple">
+<li><p>Gabriel G. R. de Lima</p></li>
+<li><p>Santiago Soler</p></li>
+<li><p>Matt Tankersley</p></li>
+<li><p>Leonardo Uieda</p></li>
+</ul>
+</section>
 <section id="version-1-8-1">
 <h2>Version 1.8.1<a class="headerlink" href="#version-1-8-1" title="Link to this heading">#</a></h2>
 <p>Released on: 2023/06/11</p>
@@ -1043,6 +1083,7 @@ chaining operations to form a pipeline, and more.</p></li>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-1-9-0">Version 1.9.0</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-1-8-1">Version 1.8.1</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-1-8-0">Version 1.8.0</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-1-7-0">Version 1.7.0</a></li>
@@ -1075,7 +1116,7 @@ chaining operations to form a pipeline, and more.</p></li>
 
   <p class="copyright">
     
-      © Copyright 2017-2025, The Verde Developers.
+      © Copyright 2017-2026, The Verde Developers.
       <br/>
     
   </p>
@@ -1084,7 +1125,7 @@ chaining operations to form a pipeline, and more.</p></li>
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Jun 12, 2025.
+  Last updated on Nov 09, 2026.
   <br/>
 </p>
   </div>
