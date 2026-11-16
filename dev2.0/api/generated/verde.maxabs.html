@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     
-        <title>verde.maxabs | Verde v1.8.1.post42</title>
+        <title>verde.maxabs | Verde v1.9.0.post38</title>
     
 
   
@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="verde.variance_to_weights" href="verde.variance_to_weights.html" />
-    <link rel="prev" title="verde.convexhull_mask" href="verde.convexhull_mask.html" />
+    <link rel="prev" title="verde.minmax" href="verde.minmax.html" />
     <!-- Plausible analytics for anonymous usage statistics -->
     <script defer data-domain="fatiando.org" src="https://plausible.io/js/plausible.js"></script>
 
@@ -149,7 +149,7 @@
   
   
   
-    <p class="title logo__title">Verde <span class="project-version">v1.8.1.post42</span></p>
+    <p class="title logo__title">Verde <span class="project-version">v1.9.0.post38</span></p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -204,6 +204,7 @@
 <li class="toctree-l2"><a class="reference internal" href="verde.project_grid.html">verde.project_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="verde.distance_mask.html">verde.distance_mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="verde.convexhull_mask.html">verde.convexhull_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verde.minmax.html">verde.minmax</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">verde.maxabs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="verde.variance_to_weights.html">verde.variance_to_weights</a></li>
 <li class="toctree-l2"><a class="reference internal" href="verde.grid_to_table.html">verde.grid_to_table</a></li>
@@ -230,6 +231,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -459,7 +461,7 @@ document.write(`
 <h1>verde.maxabs<a class="headerlink" href="#verde-maxabs" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="verde.maxabs">
-<span class="sig-prename descclassname"><span class="pre">verde.</span></span><span class="sig-name descname"><span class="pre">maxabs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/utils.html#maxabs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#verde.maxabs" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">verde.</span></span><span class="sig-name descname"><span class="pre">maxabs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percentile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/verde/utils.html#maxabs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#verde.maxabs" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the maximum absolute value of the given array(s).</p>
 <p>Use this to set the limits of your colorbars and center them on zero.</p>
 <dl class="field-list">
@@ -468,15 +470,20 @@ document.write(`
 <dt><strong>args</strong></dt><dd><p>One or more arrays. If more than one are given, a single maximum will
 be calculated across all arrays.</p>
 </dd>
-<dt><strong>nan</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bltin-boolean-values" title="(in Python v3.13)"><span class="xref std std-ref">bool</span></a></span></dt><dd><p>If True, will use the NaN compatible version of the numpy functions,
+<dt><strong>nan</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#bltin-boolean-values" title="(in Python v3.15)"><span class="xref std std-ref">bool</span></a></span></dt><dd><p>If True, will use the NaN compatible version of the numpy functions,
 which ignore NaNs in the arrays. Otherwise, any NaNs will result in the
 return value being also a NaN.</p>
+</dd>
+<dt><strong>percentile</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">optional</span></code></span></dt><dd><p>Instead of return the maximum absolute value, return a given
+percentile of the absolute values. Must be between 0 and 100. A
+value of 100 (default) will give the maximum absolute value, while
+a value of 50 will give the median of the absolute values.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl>
-<dt><strong>maxabs</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>The maximum absolute value across all arrays.</p>
+<dt><strong>maxabs</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><code class="docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>The maximum (or percentile) absolute value across all arrays.</p>
 </dd>
 </dl>
 </dd>
@@ -503,6 +510,16 @@ functions by default. You can turn this off through the <em>nan</em> argument.</
 <span class="go">nan</span>
 </pre></div>
 </div>
+<p>If a more robust statistic is desired, you can use <code class="docutils literal notranslate"><span class="pre">percentile</span></code> to get
+the value at a given percentile instead of the maximum.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">maxabs</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">percentile</span><span class="o">=</span><span class="mi">95</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">float</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">21.99</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">maxabs</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">percentile</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">float</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">25.0</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <div style='clear:both'></div></section>
@@ -519,12 +536,12 @@ functions by default. You can turn this off through the <em>nan</em> argument.</
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="verde.convexhull_mask.html"
+       href="verde.minmax.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">verde.convexhull_mask</p>
+        <p class="prev-next-title">verde.minmax</p>
       </div>
     </a>
     <a class="right-next"
@@ -573,7 +590,7 @@ functions by default. You can turn this off through the <em>nan</em> argument.</
 
   <p class="copyright">
     
-      © Copyright 2017-2025, The Verde Developers.
+      © Copyright 2017-2026, The Verde Developers.
       <br/>
     
   </p>
@@ -582,7 +599,7 @@ functions by default. You can turn this off through the <em>nan</em> argument.</
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Jun 12, 2025.
+  Last updated on Nov 09, 2026.
   <br/>
 </p>
   </div>

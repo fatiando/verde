@@ -7,30 +7,10 @@ verde.Vector
 
 
 
-Attributes
-----------
+Method documentation
+--------------------
 
 
-.. autoattribute:: Vector.data_names_defaults
-
-.. autoattribute:: Vector.dims
-
-.. autoattribute:: Vector.extra_coords_name
-
-
-
-
-
-
-
-Methods
--------
-
-
-
-
-
-.. automethod:: Vector.filter
 
 
 
@@ -58,10 +38,6 @@ Methods
 
 
 
-.. automethod:: Vector.scatter
-
-
-
 .. automethod:: Vector.score
 
 
@@ -83,10 +59,6 @@ Methods
 
 
 
-
-----
-
-.. include:: backreferences/verde.Vector.examples
 
 .. raw:: html
 

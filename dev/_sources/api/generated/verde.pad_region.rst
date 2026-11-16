@@ -5,8 +5,6 @@ verde.pad\_region
 
 .. autofunction:: pad_region
 
-.. include:: backreferences/verde.pad_region.examples
-
 .. raw:: html
 
      <div style='clear:both'></div>

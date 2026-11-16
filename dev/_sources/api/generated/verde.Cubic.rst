@@ -7,30 +7,10 @@ verde.Cubic
 
 
 
-Attributes
-----------
+Method documentation
+--------------------
 
 
-.. autoattribute:: Cubic.data_names_defaults
-
-.. autoattribute:: Cubic.dims
-
-.. autoattribute:: Cubic.extra_coords_name
-
-
-
-
-
-
-
-Methods
--------
-
-
-
-
-
-.. automethod:: Cubic.filter
 
 
 
@@ -58,10 +38,6 @@ Methods
 
 
 
-.. automethod:: Cubic.scatter
-
-
-
 .. automethod:: Cubic.score
 
 
@@ -83,10 +59,6 @@ Methods
 
 
 
-
-----
-
-.. include:: backreferences/verde.Cubic.examples
 
 .. raw:: html
 

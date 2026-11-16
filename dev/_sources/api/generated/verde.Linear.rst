@@ -7,30 +7,10 @@ verde.Linear
 
 
 
-Attributes
-----------
+Method documentation
+--------------------
 
 
-.. autoattribute:: Linear.data_names_defaults
-
-.. autoattribute:: Linear.dims
-
-.. autoattribute:: Linear.extra_coords_name
-
-
-
-
-
-
-
-Methods
--------
-
-
-
-
-
-.. automethod:: Linear.filter
 
 
 
@@ -58,10 +38,6 @@ Methods
 
 
 
-.. automethod:: Linear.scatter
-
-
-
 .. automethod:: Linear.score
 
 
@@ -83,10 +59,6 @@ Methods
 
 
 
-
-----
-
-.. include:: backreferences/verde.Linear.examples
 
 .. raw:: html
 

@@ -7,11 +7,8 @@ verde.BlockShuffleSplit
 
 
 
-
-
-
-Methods
--------
+Method documentation
+--------------------
 
 
 
@@ -30,10 +27,6 @@ Methods
 
 
 
-
-----
-
-.. include:: backreferences/verde.BlockShuffleSplit.examples
 
 .. raw:: html
 

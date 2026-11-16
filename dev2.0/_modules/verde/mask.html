@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-        <title>verde.mask | Verde v1.8.1.post42</title>
+        <title>verde.mask | Verde v1.9.0.post38</title>
     
 
   
@@ -148,7 +148,7 @@
   
   
   
-    <p class="title logo__title">Verde <span class="project-version">v1.8.1.post42</span></p>
+    <p class="title logo__title">Verde <span class="project-version">v1.9.0.post38</span></p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -203,6 +203,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.project_grid.html">verde.project_grid</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.distance_mask.html">verde.distance_mask</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.convexhull_mask.html">verde.convexhull_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.minmax.html">verde.minmax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.maxabs.html">verde.maxabs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.variance_to_weights.html">verde.variance_to_weights</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../api/generated/verde.grid_to_table.html">verde.grid_to_table</a></li>
@@ -229,6 +230,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CONTRIBUTING.md">How to contribute</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/master/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde">Source code on GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/fatiando/verde/blob/main/AUTHORS.md">Authors</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://www.fatiando.org">The Fatiando a Terra project</a></li>
 </ul>
 
@@ -386,9 +388,9 @@ document.write(`
 <span class="c1">#</span>
 <span class="c1"># This code is part of the Fatiando a Terra project (https://www.fatiando.org)</span>
 <span class="c1">#</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">Mask grid points based on different criteria.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">Delaunay</span>
 
@@ -401,7 +403,7 @@ document.write(`
 <span class="k">def</span><span class="w"> </span><span class="nf">distance_mask</span><span class="p">(</span>
     <span class="n">data_coordinates</span><span class="p">,</span> <span class="n">maxdist</span><span class="p">,</span> <span class="n">coordinates</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Mask grid points that are too far from the given data points.</span>
 
 <span class="sd">    Distances are Euclidean norms. If using geographic data, provide a</span>
@@ -465,8 +467,8 @@ document.write(`
 <span class="sd">     [False False False False False False]]</span>
 <span class="sd">    &gt;&gt;&gt; # Mask an xarray.Dataset directly</span>
 <span class="sd">    &gt;&gt;&gt; import xarray as xr</span>
-<span class="sd">    &gt;&gt;&gt; coords_dict = {&quot;easting&quot;: coords[0][0, :], &quot;northing&quot;: coords[1][:, 0]}</span>
-<span class="sd">    &gt;&gt;&gt; data_vars = {&quot;scalars&quot;: ([&quot;northing&quot;, &quot;easting&quot;], np.ones(mask.shape))}</span>
+<span class="sd">    &gt;&gt;&gt; coords_dict = {"easting": coords[0][0, :], "northing": coords[1][:, 0]}</span>
+<span class="sd">    &gt;&gt;&gt; data_vars = {"scalars": (["northing", "easting"], np.ones(mask.shape))}</span>
 <span class="sd">    &gt;&gt;&gt; grid = xr.Dataset(data_vars, coords=coords_dict)</span>
 <span class="sd">    &gt;&gt;&gt; masked = distance_mask((3.5, -7.5), maxdist=2, grid=grid)</span>
 <span class="sd">    &gt;&gt;&gt; print(masked.scalars.values)</span>
@@ -478,7 +480,7 @@ document.write(`
 <span class="sd">     [nan nan nan nan nan nan]</span>
 <span class="sd">     [nan nan nan nan nan nan]]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">coordinates</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="n">_get_grid_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">projection</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">data_coordinates</span> <span class="o">=</span> <span class="n">projection</span><span class="p">(</span><span class="o">*</span><span class="n">n_1d_arrays</span><span class="p">(</span><span class="n">data_coordinates</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
@@ -500,7 +502,7 @@ document.write(`
     <span class="n">grid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Mask grid points that are outside the convex hull of the given data points.</span>
 
 <span class="sd">    Either *coordinates* or *grid* must be given:</span>
@@ -558,8 +560,8 @@ document.write(`
 <span class="sd">     [False False False False False False]]</span>
 <span class="sd">    &gt;&gt;&gt; # Mask an xarray.Dataset directly</span>
 <span class="sd">    &gt;&gt;&gt; import xarray as xr</span>
-<span class="sd">    &gt;&gt;&gt; coords_dict = {&quot;easting&quot;: coords[0][0, :], &quot;northing&quot;: coords[1][:, 0]}</span>
-<span class="sd">    &gt;&gt;&gt; data_vars = {&quot;scalars&quot;: ([&quot;northing&quot;, &quot;easting&quot;], np.ones(mask.shape))}</span>
+<span class="sd">    &gt;&gt;&gt; coords_dict = {"easting": coords[0][0, :], "northing": coords[1][:, 0]}</span>
+<span class="sd">    &gt;&gt;&gt; data_vars = {"scalars": (["northing", "easting"], np.ones(mask.shape))}</span>
 <span class="sd">    &gt;&gt;&gt; grid = xr.Dataset(data_vars, coords=coords_dict)</span>
 <span class="sd">    &gt;&gt;&gt; masked = convexhull_mask(data_coords, grid=grid)</span>
 <span class="sd">    &gt;&gt;&gt; print(masked.scalars.values)</span>
@@ -571,7 +573,7 @@ document.write(`
 <span class="sd">     [nan nan nan nan nan nan]</span>
 <span class="sd">     [nan nan nan nan nan nan]]</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">coordinates</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="n">_get_grid_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
     <span class="n">n_coordinates</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="c1"># Make sure they are arrays so we can normalize</span>
@@ -592,7 +594,7 @@ document.write(`
     <span class="p">)</span>
     <span class="n">triangles</span> <span class="o">=</span> <span class="n">Delaunay</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">data_coordinates</span><span class="p">))</span>
     <span class="c1"># Find the triangle that contains each grid point.</span>
-    <span class="c1"># -1 indicates that it&#39;s not in any triangle.</span>
+    <span class="c1"># -1 indicates that it's not in any triangle.</span>
     <span class="n">in_triangle</span> <span class="o">=</span> <span class="n">triangles</span><span class="o">.</span><span class="n">find_simplex</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
     <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">in_triangle</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">grid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -602,12 +604,12 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_get_grid_coordinates</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    If coordinates is given, return it and their shape. Otherwise, get</span>
 <span class="sd">    coordinate arrays from the grid.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">coordinates</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">grid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either coordinates or grid must be given.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Either coordinates or grid must be given."</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">coordinates</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">dims</span> <span class="o">=</span> <span class="p">[</span><span class="n">grid</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">grid</span><span class="o">.</span><span class="n">data_vars</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">grid</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
@@ -647,7 +649,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2017-2025, The Verde Developers.
+      © Copyright 2017-2026, The Verde Developers.
       <br/>
     
   </p>
@@ -656,7 +658,7 @@ document.write(`
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Jun 12, 2025.
+  Last updated on Nov 09, 2026.
   <br/>
 </p>
   </div>

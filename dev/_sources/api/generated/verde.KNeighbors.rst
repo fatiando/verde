@@ -7,30 +7,10 @@ verde.KNeighbors
 
 
 
-Attributes
-----------
+Method documentation
+--------------------
 
 
-.. autoattribute:: KNeighbors.data_names_defaults
-
-.. autoattribute:: KNeighbors.dims
-
-.. autoattribute:: KNeighbors.extra_coords_name
-
-
-
-
-
-
-
-Methods
--------
-
-
-
-
-
-.. automethod:: KNeighbors.filter
 
 
 
@@ -58,10 +38,6 @@ Methods
 
 
 
-.. automethod:: KNeighbors.scatter
-
-
-
 .. automethod:: KNeighbors.score
 
 
@@ -83,10 +59,6 @@ Methods
 
 
 
-
-----
-
-.. include:: backreferences/verde.KNeighbors.examples
 
 .. raw:: html
 

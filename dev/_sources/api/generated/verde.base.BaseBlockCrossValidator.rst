@@ -7,11 +7,8 @@ verde.base.BaseBlockCrossValidator
 
 
 
-
-
-
-Methods
--------
+Method documentation
+--------------------
 
 
 
@@ -30,10 +27,6 @@ Methods
 
 
 
-
-----
-
-.. include:: backreferences/verde.base.BaseBlockCrossValidator.examples
 
 .. raw:: html
 

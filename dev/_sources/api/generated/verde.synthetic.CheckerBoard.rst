@@ -7,36 +7,10 @@ verde.synthetic.CheckerBoard
 
 
 
-Attributes
-----------
+Method documentation
+--------------------
 
 
-.. autoattribute:: CheckerBoard.data_names_defaults
-
-.. autoattribute:: CheckerBoard.dims
-
-.. autoattribute:: CheckerBoard.extra_coords_name
-
-.. autoattribute:: CheckerBoard.region_
-
-.. autoattribute:: CheckerBoard.w_east_
-
-.. autoattribute:: CheckerBoard.w_north_
-
-
-
-
-
-
-
-Methods
--------
-
-
-
-
-
-.. automethod:: CheckerBoard.filter
 
 
 
@@ -89,10 +63,6 @@ Methods
 
 
 
-
-----
-
-.. include:: backreferences/verde.synthetic.CheckerBoard.examples
 
 .. raw:: html
 

@@ -7,30 +7,10 @@ verde.Trend
 
 
 
-Attributes
-----------
+Method documentation
+--------------------
 
 
-.. autoattribute:: Trend.data_names_defaults
-
-.. autoattribute:: Trend.dims
-
-.. autoattribute:: Trend.extra_coords_name
-
-
-
-
-
-
-
-Methods
--------
-
-
-
-
-
-.. automethod:: Trend.filter
 
 
 
@@ -62,10 +42,6 @@ Methods
 
 
 
-.. automethod:: Trend.scatter
-
-
-
 .. automethod:: Trend.score
 
 
@@ -87,10 +63,6 @@ Methods
 
 
 
-
-----
-
-.. include:: backreferences/verde.Trend.examples
 
 .. raw:: html
 

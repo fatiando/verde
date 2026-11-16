@@ -7,11 +7,8 @@ verde.BlockMean
 
 
 
-
-
-
-Methods
--------
+Method documentation
+--------------------
 
 
 
@@ -34,10 +31,6 @@ Methods
 
 
 
-
-----
-
-.. include:: backreferences/verde.BlockMean.examples
 
 .. raw:: html
 
